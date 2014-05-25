@@ -1,100 +1,114 @@
 
-<!DOCTYPE html>
-<html lang="fr">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <link rel="shortcut icon" href="../images/favicon.ico">
 
-    <title>Oressrouce</title>
 
-    <!-- Bootstrap core CSS -->
-    <link href="../css/bootstrap.min.css" rel="stylesheet">
 
-    <!-- Custom styles for this template -->
-    <link href="../css/oressource.css" rel="stylesheet">
 
-    <!-- Just for debugging purposes. Don't actually copy this line! -->
-    <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+<?php include "tete.php" ?>
 
-    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
-  </head>
 
-  <body>
 
-    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-      <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="#">Oressrouce</a>
-        </div>
-        <div class="navbar-collapse collapse">
-          <form class="navbar-form navbar-right" role="form">
-            <div class="form-group">
-              <input type="text" placeholder="Email" class="form-control">
-            </div>
-            <div class="form-group">
-              <input type="password" placeholder="Mot de passe" class="form-control">
-            </div>
-            <button type="submit" class="btn btn-success">Login</button>
-          </form>
-        </div><!--/.navbar-collapse -->
-      </div>
-    </div>
 
     <!-- Main jumbotron for a primary marketing message or call to action -->
     <div class="jumbotron">
       <div class="container">
         <h1>Bienvenue sur Oressource</h1>
         <p>L'outil libre de quantification et de mise en bilan pour ressourceries</p>
-        <p><a class="btn btn-primary btn-lg" role="button">Learn more &raquo;</a></p>
+        <p><a class="btn btn-primary btn-lg" role="button">Plus d'infos. &raquo;</a></p>
       </div>
     </div>
-
     <div class="container">
       <!-- Example row of columns -->
       <div class="row">
         <div class="col-md-4">
-          <h2>Heading</h2>
-          <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-          <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
+          <h2>collecté ajourdhui:</h2>
+          <p><div id="graphj" style="height: 250px;"></div></p>
+          <p><a class="btn btn-default" href="#" role="button">Details &raquo;</a></p>
         </div>
         <div class="col-md-4">
-          <h2>Heading</h2>
-          <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-          <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
+          <h2>collecté ce mois:</h2>
+          <p><div id="graphm" style="height: 250px;"></div></p>
+          <p><a class="btn btn-default" href="#" role="button">Details &raquo;</a></p>
        </div>
         <div class="col-md-4">
-          <h2>Heading</h2>
-          <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
-          <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
+          <h2>collecté cette année:</h2>
+          <p><div id="grapha" style="height: 250px;"></div></p>
+          <p><a class="btn btn-default" href="#" role="button">Details &raquo;</a></p>
         </div>
       </div>
-
       <hr>
-
-      <footer>
-        <p>&copy; Company 2014</p>
-      </footer>
-    </div> <!-- /container -->
+       </div> <!-- /container -->
 
 
-    <!-- Bootstrap core JavaScript
+    <!-- Bootstrap core JavaScript+morris+raphael
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-    <script src="../js/jquery-2.0.3.min.js"></script>
-    <script src="../js/bootstrap.min.js"></script>
-  </body>
-</html>
+      <script src="../js/jquery-2.0.3.min.js"></script>
+      <script src="../js/raphael.js"></script>
+      <script src="../js/morris/morris.js"></script>
+  <script>       Morris.Donut({
+    element: 'graphj',
+    data: [
+    {value: 70, label: 'd3e'},
+    {value: 15, label: <?php echo "'mobilier'" ?>},
+    {value: 10, label: 'textile'},
+    {value: 5, label: 'livres'}
+    ],
+    backgroundColor: '#ccc',
+    labelColor: '#060',
+    colors: [
+    '#0BA462',
+    '#39B580',
+    '#67C69D',
+    '#95D7BB'
+    ],
+    formatter: function (x) { return x + "%"}
+    });
+</script>
+
+<script>       Morris.Donut({
+    element: 'graphm',
+    data: [
+    {value: 70, label: 'd3e'},
+    {value: 15, label: <?php echo "'mobilier'" ?>},
+    {value: 10, label: 'textile'},
+    {value: 5, label: 'livres'}
+    ],
+    backgroundColor: '#ccc',
+    labelColor: '#060',
+    colors: [
+    '#0BA462',
+    '#39B580',
+    '#67C69D',
+    '#95D7BB'
+    ],
+    formatter: function (x) { return x + "%"}
+    });
+</script>
+
+<script>       Morris.Donut({
+    element: 'grapha',
+    data: [
+    {value: 70, label: 'd3e'},
+    {value: 15, label: <?php echo "'mobilier'" ?>},
+    {value: 10, label: 'textile'},
+    {value: 5, label: 'livres'}
+    ],
+    backgroundColor: '#ccc',
+    labelColor: '#060',
+    colors: [
+    '#0BA462',
+    '#39B580',
+    '#67C69D',
+    '#95D7BB'
+    ],
+    formatter: function (x) { return x + "%"}
+    });
+</script>
+  
+
+
+
+<?php include "pied.php" ?>
+
+
+
