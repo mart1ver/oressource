@@ -40,7 +40,7 @@
 <li><a href="saisie.php">Sorties hors boutiques</a></li>
 <li><a href="saisie.php">Ventes</a></li>
 <li><a href="saisie.php">Prets</a></li>
-<li><a href="saisie.php">Adhesion</a></li>
+<li><a href="adhesions.php">Adhesion</a></li>
 <li><a href="saisie.php">Mailing</a></li>
 
 
