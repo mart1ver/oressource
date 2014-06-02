@@ -41,7 +41,51 @@
     if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource")
       { ?> 
 
-<li><a href="saisie.php">Collectes</a></li>
+<ul class="nav navbar-nav">
+      <?php if(strpos($_SESSION['niveau'], 'b') !== false)
+          {
+          echo '<li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Points de collecte<b class="caret"></b></a>
+            <ul class="dropdown-menu">
+            <li>';
+            try
+            {
+            // On se connecte à MySQL
+            include('../moteur/dbconfig.php');
+            }
+            catch(Exception $e)
+            {
+            // En cas d'erreur, on affiche un message et on arrête tout
+            die('Erreur : '.$e->getMessage());
+            }
+            // Si tout va bien, on peut continuer
+            // On recupère tout le contenu de la table point de vente
+            $reponse = $bdd->query('SELECT * FROM points_collecte');
+            // On affiche chaque entree une à une
+           while ($donnees = $reponse->fetch())
+           {
+            ?>
+          <li>
+              <a href="<?php echo  "vente.php?numero=" . $donnees['id']. "&nom=" . $donnees['nom']. "&adresse=".$donnees['adresse']; ?>">
+               <?php echo $donnees['nom']; ?> 
+              </a>
+          </li>
+          <br>
+   
+              <?php }
+              $reponse->closeCursor(); // Termine le traitement de la requête
+                } ?>
+
+
+            </li>
+        </ul>
+      </li>
+    </ul>
+
+
+
+
+
 <li><a href="saisie.php">Sorties hors boutiques</a></li>
 <li><a href="saisie.php">Ventes</a></li>
 <li><a href="saisie.php">Prets</a></li>
