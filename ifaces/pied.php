@@ -10,7 +10,7 @@
         	<?php
     if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource")
       { ?>
-       <a href="../moteur/destroy.php">se deconnecter</a>
+       <a href="../moteur/destroy.php">Déconnection</a>
        <?php
       }
     else{ 
