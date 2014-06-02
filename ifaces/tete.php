@@ -20,6 +20,7 @@
   </head>
   <body>
 
+    
     <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
       <div class="container">
         <div class="navbar-header">
@@ -31,10 +32,14 @@
           </button>
           <a class="navbar-brand" href="#">Oressource</a>
         </div>
+        
         <div class="navbar-collapse collapse  navbar-right">
           
 
  <ul class="nav navbar-nav">
+  <?php
+    if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource")
+      { ?> 
 
 <li><a href="saisie.php">Collectes</a></li>
 <li><a href="saisie.php">Sorties hors boutiques</a></li>
@@ -64,11 +69,16 @@
           
       </ul>
       </li>
-<li><a href="saisie.php">Bilans</a></li>
 
 
+ <?php }
+    else{ }?>
+<li><a href="aide.php">Aide</a></li>
 </ul>
 
         </div><!--/.navbar-collapse -->
+       
       </div>
     </div>
+    
+    

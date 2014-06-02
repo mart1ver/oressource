@@ -1,9 +1,10 @@
 
 
 
-
-
-<?php include "tete.php" ?>
+<?php session_start(); ?>
+<?php
+    if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource")
+      { include "tete.php" ?>
 
 
 
@@ -109,6 +110,8 @@
 
 
 <?php include "pied.php" ?>
-
+<?php }
+    else{
+     include "login.php"; }?>
 
 
