@@ -23,7 +23,7 @@ catch(Exception $e)
 $req = $bdd->prepare('SELECT * FROM utilisateurs WHERE mail = :mail AND pass = :pass');
 $req->execute(array(
     'mail' => $_POST['mail'],
-    'pass' => $_POST['pass']));
+    'pass' => md5($_POST['pass'])));
     
 $resultat = $req->fetch();
  
@@ -38,7 +38,6 @@ $_SESSION['id'] =$resultat['id'];
 $_SESSION['niveau'] = $resultat['niveau'];
 $_SESSION['nom'] = $resultat['nom'];
 $_SESSION['mail'] = $resultat['mail'];
-$_SESSION['pass'] = $resultat['pass'];
 $_SESSION['systeme'] = "oressource";
     header ('location:../index.php');
 }

@@ -1,3 +1,3 @@
 <?php
-$bdd = new PDO('mysql:host=localhost;dbname=oressource', 'root', 'bvsk6gmp');
+$bdd = new PDO('mysql:host=localhost;dbname=oressource', 'oressource', 'R63h9Hek');
 ?>

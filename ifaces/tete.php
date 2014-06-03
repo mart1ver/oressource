@@ -42,7 +42,7 @@
       { ?> 
 
 <ul class="nav navbar-nav">
-      <?php if(strpos($_SESSION['niveau'], 'b') !== false)
+      <?php if(strpos($_SESSION['niveau'], 'c') !== false)
           {
           echo '<li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">Points de collecte<b class="caret"></b></a>
@@ -100,7 +100,7 @@
         <a href="#" class="dropdown-toggle" data-toggle="dropdown">Gestion<b class="caret"></b></a>
         <ul class="dropdown-menu">
           <li><a href="affectations.php">recettes points de sorties</a></li>
-          <li><a href="affectations.php">Utilisateurs</a></li><li><a href="affectations.php">grilles de prix</a></li>
+          <li><a href="utilisateurs.php">Utilisateurs</a></li><li><a href="affectations.php">grilles de prix</a></li>
           <li><a href="poles.php">Filieres de sorties</a></li>
           <li><a href="poles.php">Points de collecte</a></li>
           <li><a href="poles.php">Points de sorties hors boutique</a></li>
