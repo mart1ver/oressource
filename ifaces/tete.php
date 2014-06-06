@@ -43,11 +43,11 @@
 
 <ul class="nav navbar-nav">
       <?php if(strpos($_SESSION['niveau'], 'c') !== false)
-          {
-          echo '<li class="dropdown">
+          { ?>
+             <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">Points de collecte<b class="caret"></b></a>
             <ul class="dropdown-menu">
-            <li>';
+            <li><?php 
             try
             {
             // On se connecte à MySQL
@@ -91,6 +91,8 @@
 <li><a href="saisie.php">Prets</a></li>
 <li><a href="adhesions.php">Adhesion</a></li>
 <li><a href="saisie.php">Mailing</a></li>
+<li><a href="bilans.php">Bilans</a></li>
+
 
 
 

@@ -4,8 +4,12 @@
       {  include "tete.php" ?>
     <div class="container">
         <h1>Gestions des utilisateurs</h1> 
-         <div class="panel-heading">Gerez ici les utilisateurs.</div>
-         Niveau :  "a" pour admin
+         <ul class="nav nav-tabs">
+  <li class="active"><a href="#">Inscription</a></li>
+  <li><a href="edition_utilisateurs.php">Edition</a></li>
+  
+</ul>
+         
 <?php
 if ($_GET['err'] == "") // SI on a pas de message d'erreur
 {
@@ -33,31 +37,28 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
 
 
 
+
+
+
       <div class="panel-body">
         <div class="row">
             <form action="../moteur/mdp_post.php" method="post">
-  <div class="col-md-3"><label for="saisietitre">Nom:</label> <input type="text" value ="<?php echo $_GET['nom']?>" name="nom" id="nom" class="form-control " required autofocus></div>
-  <div class="col-md-3"><label for="saisiedescription">Mail:</label> <input type="email" value ="<?php echo $_GET['mail']?>" name="mail" id="mail" class="form-control " required ></div>
-  <div class="col-md-3"><label for="saisiedescription">Mot de passe</label> <input type="password" value ="<?php echo $_GET['pass']?>" name="pass" id="pass" class="form-control " required ></div>
-  <div class="col-md-2"><label for="saisiedescription">Niveau</label> <input type="text" value ="<?php echo $_GET['niveau']?>" name="niveau" id="niveau" class="form-control " required ></div>
-  <div class="col-md-1"><br><button name="creer" class="btn btn-default">Creer!</button></div>
-</form>
-</div>
-      </div>
-      <!-- Table -->
-      <table class="table">
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>nom</th>
-            <th>mail</th>
-            <th>niveau</th>
-            <th>supprimer!</th>
-            
-          </tr>
-        </thead>
-        <tbody>
-        <?php 
+  <div class="col-md-2"><label for="saisietitre">Nom:</label> <input type="text" value ="<?php echo $_GET['nom']?>" name="nom" id="nom" class="form-control " required autofocus><br>
+                        <label for="saisiedescription">Mail:</label> <input type="email" value ="<?php echo $_GET['mail']?>" name="mail" id="mail" class="form-control " required ><br>
+                        <label for="saisiedescription">Mot de passe</label> <input type="password" value ="<?php echo $_GET['pass1']?>" name="pass1" id="pass1" class="form-control " required ><br>
+                                                       Repetez le mot de passe</label> <input type="password" value ="<?php echo $_GET['pass2']?>" name="pass2" id="pass2" class="form-control " required >
+  </div>
+  
+  <div class="col-md-3"><div class="alert alert-info"><label for="saisiedescription">Permissions d'acces</label> <br>
+          <input type="checkbox" name="niveauh" id="niveauh" value="a"> Adhesions<br>
+          <input type="checkbox" name="niveauh" id="niveauh" value="bi"> Bilans<br>
+          <input type="checkbox" name="niveaug" id="niveaug" value="g"> gestion<br>
+          <input type="checkbox" name="niveauc" id="niveauc" value="m"> Mails des adherents<br><br></div>
+  </div>
+<div class="col-md-3"><div class="alert alert-info"><label for="saisiedescription">Points de collecte:</label><br>
+
+
+<?php 
             try
             {
             // On se connecte à MySQL
@@ -68,86 +69,69 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
             // En cas d'erreur, on affiche un message et on arrête tout
             die('Erreur : '.$e->getMessage());
             }
- 
             // Si tout va bien, on peut continuer
- 
-            // On recupère tout le contenu de la table affectations
-            $reponse = $bdd->query('SELECT * FROM utilisateurs');
- 
-           // On affiche chaque entree une à une
+            // On recupère tout le contenu de la table point de collecte
+            $reponse = $bdd->query('SELECT * FROM points_collecte');
+            // On affiche chaque entree une à une
            while ($donnees = $reponse->fetch())
-           {
+           {?>
+         
 
-           ?>
-            <tr> 
-            <td><?php echo $donnees['id']?></td>
-            <td><?php echo $donnees['nom']?></td>
-            <td><?php echo $donnees['mail']?></td>
-            <td><?php echo $donnees['niveau']?></td>
-            <td>
-
-
-
-
-
-
-
-<form action="../moteur/sup_mdp.php" method="post">
-
-  <input type="hidden" name ="id" id="id" value="<?php echo $donnees['id']?>">
-  
-
-
-
-
-
- 
-
-
-
-
-
-   <button  class="btn btn-danger ">Suprimer! 
-  </button>
-</form>
-</td>
-          </tr>
-           <?php }
-              $reponse->closeCursor(); // Termine le traitement de la requête
-                ?>
-       </tbody>
-        <tfoot>
-          <tr>
-            <th></th>
-            <th></th>
-            <th></th>
-            <th></th>
-            <th></th>
-            
-          </tfoot>
-        
-      </table>
-      <br>
-      <div class="row">
-  <div class="col-md-4"></div>
-  <div class="col-md-4"><br> </div>
-  <div class="col-md-4"></div>
-  </div>
-  </div>
-  </div>
-    </div><!-- /.container -->
+            <input type="checkbox" name="niveauc<?php echo $donnees['id']; ?>" id="niveauc<?php echo $donnees['id']; ?>" value="c<?php echo $donnees['id']; ?>"> <?php echo $donnees['nom']; ?> <br><br>
+              
+               
+              
+          
+          
    
- <td style="vertical-align: top; background-color: rgb(204, 204, 255); height: 12px;"><small>Niveau : <br>
-          <input type="checkbox" name="niveaug" id="niveaug" value="g"> gestion<br>
-          <input type="checkbox" name="niveaua" id="niveaua" value="a"> admin<br>
-          <input type="checkbox" name="niveaue" id="niveaue" value="e"> collecte<br>
-          <input type="checkbox" name="niveauc" id="niveauc" value="c"> communication<br>
-          <input type="checkbox" name="niveaub" id="niveaub" value="b"> boutiques<br>
-          <input type="checkbox" name="niveaus" id="niveaus" value="s"> sorties hors boutique<br>
-          <input type="checkbox" name="niveauh" id="niveauh" value="h"> adhesions<br>
+              <?php }
+              $reponse->closeCursor(); // Termine le traitement de la requête
+                 ?>
+</div>
 
-        </small></td>
+          
+                                            <div class="alert alert-info"><label for="saisiedescription">Points de vente:</label><br>
+          <?php 
+            try
+            {
+            // On se connecte à MySQL
+            include('../moteur/dbconfig.php');
+            }
+            catch(Exception $e)
+            {
+            // En cas d'erreur, on affiche un message et on arrête tout
+            die('Erreur : '.$e->getMessage());
+            }
+            // Si tout va bien, on peut continuer
+            // On recupère tout le contenu de la table point de vente
+            $reponse = $bdd->query('SELECT * FROM points_vente');
+            // On affiche chaque entree une à une
+           while ($donnees = $reponse->fetch())
+           {?>
+         
 
+            <input type="checkbox" name="niveauv<?php echo $donnees['id']; ?>" id="niveauv<?php echo $donnees['id']; ?>" value="v<?php echo $donnees['id']; ?>"> <?php echo $donnees['nom']; ?> <br><br>
+              
+               
+              
+          
+          
+   
+              <?php }
+              $reponse->closeCursor(); // Termine le traitement de la requête
+                 ?></div>
+                                            <div class="alert alert-info"><label for="saisiedescription">Points de sortie hors boutique:</label><br>
+          <input type="checkbox" name="niveaus" id="niveaus" value="s"> sorties hors boutique<br><br></div></div>
+  <div class="col-md-4"><br><button name="creer" class="btn btn-default">Creer!</button></div>
+  
+</form>
+</div>
+      </div>
+     
+      
+  </div>
+  
+  
 
 <?php include "pied.php" ?>
 <?php }
