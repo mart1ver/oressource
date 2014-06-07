@@ -16,7 +16,7 @@ catch(Exception $e)
 
 // Vérification des identifiants
 
- // Hachage du mot de passe
+
 
  
 // Vérification des identifiants
@@ -39,6 +39,7 @@ $_SESSION['niveau'] = $resultat['niveau'];
 $_SESSION['nom'] = $resultat['nom'];
 $_SESSION['mail'] = $resultat['mail'];
 $_SESSION['systeme'] = "oressource";
+$_SESSION['structure'] = "";
     header ('location:../index.php');
 }
 

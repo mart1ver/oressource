@@ -1,6 +1,6 @@
 <?php session_start(); ?>
 <?php
-    if (isset($_SESSION['id']) AND (strpos($_SESSION['niveau'], 'a') !== false))
+    if (isset($_SESSION['id']) AND (strpos($_SESSION['niveau'], 'g') !== false))
       {  include "tete.php" ?>
     <div class="container">
         <h1>Edition du profil utilisateur n°:</h1> 

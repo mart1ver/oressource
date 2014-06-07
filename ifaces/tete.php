@@ -42,7 +42,7 @@
       { ?> 
 
 <ul class="nav navbar-nav">
-      <?php if(strpos($_SESSION['niveau'], 'c') !== false)
+      <?php if(strpos$_SESSION['niveau'], 'c') !== false)
           { ?>
              <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">Points de collecte<b class="caret"></b></a>

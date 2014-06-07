@@ -1,6 +1,6 @@
 <?php session_start(); ?>
 <?php
-    if (isset($_SESSION['id']) AND (strpos($_SESSION['niveau'], 'e') !== false))
+    if (isset($_SESSION['id']) AND (strpos(md5($_SESSION['niveau']), 'e') !== false))
       {
       include('menu.php') ;
 ?>

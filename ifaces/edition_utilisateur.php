@@ -1,6 +1,6 @@
 <?php session_start(); ?>
 <?php
-    if (isset($_SESSION['id']) AND (strpos($_SESSION['niveau'], 'a') !== false))
+     if (isset($_SESSION['id']) AND (strpos($_SESSION['niveau'], 'g') !== false))
       {  include "tete.php" ?>
     <div class="container">
         <h1>Edition du profil utilisateur n°:</h1> 
@@ -35,7 +35,7 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
 ?>
 <div class="panel-body">
         <div class="row">
-            <form action="../moteur/in454scription_post.php" method="post">
+            <form action="../moteur/in45scription_post.php" method="post">
   <div class="col-md-2"><label for="nom">Nom:</label> <input type="text" value ="<?php echo $_GET['nom']?>" name="nom" id="nom" class="form-control " required autofocus><br>
                         <label for="prenom">Prénom:</label> <input type="text" value ="<?php echo $_GET['prenom']?>" name="prenom" id="prenom" class="form-control " required><br>
                         <label for="mail">Mail:</label> <input type="email" value ="<?php echo $_GET['mail']?>" name="mail" id="mail" class="form-control " required ><br>
