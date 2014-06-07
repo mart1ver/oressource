@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Client: localhost
--- Généré le : Mar 03 Juin 2014 à 00:23
+-- Généré le : Sam 07 Juin 2014 à 20:26
 -- Version du serveur: 5.5.34
 -- Version de PHP: 5.3.10-1ubuntu3.9
 
@@ -342,14 +342,14 @@ CREATE TABLE IF NOT EXISTS `utilisateurs` (
   `mail` text NOT NULL,
   `pass` text NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=42 ;
 
 --
 -- Contenu de la table `utilisateurs`
 --
 
 INSERT INTO `utilisateurs` (`id`, `timestamp`, `niveau`, `nom`, `prenom`, `mail`, `pass`) VALUES
-(2, '2014-04-08 18:02:48', 'abcesgh', 'admin', 'admin', 'admin@admin.com', 'admin');
+(41, '2014-06-07 17:53:21', 'c1c2v1s1abigmp', 'vetr', 'martin', 'mart1ver@gmail.com', '81dc9bdb52d04dc20036dbd8313ed055');
 
 -- --------------------------------------------------------
 
