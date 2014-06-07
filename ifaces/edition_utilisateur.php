@@ -3,12 +3,8 @@
     if (isset($_SESSION['id']) AND (strpos($_SESSION['niveau'], 'a') !== false))
       {  include "tete.php" ?>
     <div class="container">
-        <h1>Gestions des utilisateurs</h1> 
-         <ul class="nav nav-tabs">
-  <li class="active"><a href="#">Inscription</a></li>
-  <li><a href="edition_utilisateurs.php">Edition</a></li>
-  
-</ul>
+        <h1>Edition du profil utilisateur n°:</h1> 
+         
     <br>     
 <?php
 if ($_GET['err'] == "") // SI on a pas de message d'erreur
@@ -146,7 +142,7 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
   
 
 </div>
-<div class="row"><div class="col-md-3 col-md-offset-3"><br><button name="creer" class="btn btn-default">Creer!</button></div></div>
+<div class="row"><div class="col-md-3 col-md-offset-3"><br><button name="creer" class="btn btn-default">Modifier!</button></div></div>
       </div>
      
       

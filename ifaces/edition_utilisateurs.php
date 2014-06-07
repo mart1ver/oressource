@@ -9,7 +9,7 @@
   <li class="active"><a href="#">Edition</a></li>
   
 </ul>
-         
+    <br>     
 <?php
 if ($_GET['err'] == "") // SI on a pas de message d'erreur
 {
@@ -47,9 +47,10 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
           <tr>
             <th>#</th>
             <th>nom</th>
+            <th>prenom</th>
             <th>mail</th>
-            <th>niveau</th>
-            <th>supprimer!</th>
+             <th>éditer</th>
+            <th>supprimer</th>
             
           </tr>
         </thead>
@@ -79,8 +80,8 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
             <tr> 
             <td><?php echo $donnees['id']?></td>
             <td><?php echo $donnees['nom']?></td>
+            <td><?php echo $donnees['prenom']?></td>
             <td><?php echo $donnees['mail']?></td>
-            <td><?php echo $donnees['niveau']?></td>
             <td>
 
 
@@ -89,7 +90,34 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
 
 
 
-<form action="../moteur/sup_mdp.php" method="post">
+<form action="edition_utilisateur.php" method="post">
+
+  <input type="hidden" name ="id" id="id" value="<?php echo $donnees['id']?>">
+  
+
+
+
+
+
+ 
+
+
+
+
+
+   <button  class="btn btn-warning ">Editer! 
+  </button>
+</form>
+</td>
+            <td>
+
+
+
+
+
+
+
+<form action="../moteur/sup_utilisateur.php" method="post">
 
   <input type="hidden" name ="id" id="id" value="<?php echo $donnees['id']?>">
   
@@ -120,6 +148,7 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
             <th></th>
             <th></th>
             <th></th>
+            <th></th>
             
           </tfoot>
         
@@ -133,10 +162,7 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
   </div>
   </div>
     </div><!-- /.container -->
-   
- <td style="vertical-align: top; background-color: rgb(204, 204, 255); height: 12px;"><small>Niveau : <br>
-         
-        </small></td>
+ 
 
 
 <?php include "pied.php" ?>
