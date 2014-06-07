@@ -42,7 +42,8 @@
       { ?> 
 
 <ul class="nav navbar-nav">
-      <?php if(strpos($_SESSION['niveau'], 'c') !== false)
+      <?php 
+      if(strpos($_SESSION['niveau'], 'c') !== false)
           { ?>
              <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">Points de collecte<b class="caret"></b></a>
@@ -64,39 +65,149 @@
             // On affiche chaque entree une à une
            while ($donnees = $reponse->fetch())
            {
-            ?>
+             
+      if(strpos($_SESSION['niveau'], 'c'.$donnees['id']) !== false)
+          { ?>
           <li>
-              <a href="<?php echo  "vente.php?numero=" . $donnees['id']. "&nom=" . $donnees['nom']. "&adresse=".$donnees['adresse']; ?>">
+              <a href="<?php echo  "collecte.php?numero=" . $donnees['id']. "&nom=" . $donnees['nom']. "&adresse=".$donnees['adresse']; ?>">
                <?php echo $donnees['nom']; ?> 
               </a>
           </li>
-          <br>
+          <br><?php } ?>
    
               <?php }
               $reponse->closeCursor(); // Termine le traitement de la requête
-                } ?>
+                ?>  </li> </ul> </li><?php } else{}?>
 
 
-            </li>
-        </ul>
-      </li>
+           
+        
+      
+    </ul>
+
+<ul class="nav navbar-nav">
+<?php 
+      if(strpos($_SESSION['niveau'], 's') !== false)
+          { ?>
+             <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Sorties hors boutique<b class="caret"></b></a>
+            <ul class="dropdown-menu">
+            <li><?php 
+            try
+            {
+            // On se connecte à MySQL
+            include('../moteur/dbconfig.php');
+            }
+            catch(Exception $e)
+            {
+            // En cas d'erreur, on affiche un message et on arrête tout
+            die('Erreur : '.$e->getMessage());
+            }
+            // Si tout va bien, on peut continuer
+            // On recupère tout le contenu de la table point de vente
+            $reponse = $bdd->query('SELECT * FROM points_sortie');
+            // On affiche chaque entree une à une
+           while ($donnees = $reponse->fetch())
+           {
+             
+      if(strpos($_SESSION['niveau'], 's'.$donnees['id']) !== false)
+          { ?>
+          <li>
+              <a href="<?php echo  "sorties.php?numero=" . $donnees['id']. "&nom=" . $donnees['nom']. "&adresse=".$donnees['adresse']; ?>">
+               <?php echo $donnees['nom']; ?> 
+              </a>
+          </li>
+          <br><?php } ?>
+   
+              <?php }
+              $reponse->closeCursor(); // Termine le traitement de la requête
+               ?>  </li> </ul> </li><?php } else{}?>
+
+
+           
+        
+      
+    </ul>
+
+    
+
+<ul class="nav navbar-nav">
+<?php 
+      if(strpos($_SESSION['niveau'], 'v') !== false)
+          { ?>
+             <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Points de vente<b class="caret"></b></a>
+            <ul class="dropdown-menu">
+            <li><?php 
+            try
+            {
+            // On se connecte à MySQL
+            include('../moteur/dbconfig.php');
+            }
+            catch(Exception $e)
+            {
+            // En cas d'erreur, on affiche un message et on arrête tout
+            die('Erreur : '.$e->getMessage());
+            }
+            // Si tout va bien, on peut continuer
+            // On recupère tout le contenu de la table point de vente
+            $reponse = $bdd->query('SELECT * FROM points_vente');
+            // On affiche chaque entree une à une
+           while ($donnees = $reponse->fetch())
+           {
+            
+      if(strpos($_SESSION['niveau'], 's'.$donnees['id']) !== false)
+          { ?>
+          <li>
+              <a href="<?php echo  "ventes.php?numero=" . $donnees['id']. "&nom=" . $donnees['nom']. "&adresse=".$donnees['adresse']; ?>">
+               <?php echo $donnees['nom']; ?> 
+              </a>
+          </li>
+          <br><?php } ?>
+   
+              <?php }
+              $reponse->closeCursor(); // Termine le traitement de la requête
+               ?>  </li> </ul> </li><?php } else{}?>
+
+
+           
+        
+      
     </ul>
 
 
 
-
-
-<li><a href="saisie.php">Sorties hors boutiques</a></li>
-<li><a href="saisie.php">Ventes</a></li>
+<?php if(strpos($_SESSION['niveau'], 'p') !== false)
+          { ?>
 <li><a href="saisie.php">Prets</a></li>
+          <?php }
+              
+                 else{}?>
+
+<?php if(strpos($_SESSION['niveau'], 'a') !== false)
+          { ?>
 <li><a href="adhesions.php">Adhesion</a></li>
+<?php }
+              
+                 else{}?>
+                 <?php if(strpos($_SESSION['niveau'], 'm') !== false)
+          { ?>
 <li><a href="saisie.php">Mailing</a></li>
+<?php }
+              
+                 else{}?>
+<?php if(strpos($_SESSION['niveau'], 'bi') !== false)
+          { ?>
 <li><a href="bilans.php">Bilans</a></li>
+<?php }
+              
+                 else{}?>
 
 
 
 
-
+<?php if(strpos($_SESSION['niveau'], 'g') !== false)
+          { ?>
 
 <li class="dropdown">
         <a href="#" class="dropdown-toggle" data-toggle="dropdown">Gestion<b class="caret"></b></a>
@@ -115,6 +226,10 @@
           
       </ul>
       </li>
+      <?php }
+              
+                 else{}?>
+
 
 
  <?php }
