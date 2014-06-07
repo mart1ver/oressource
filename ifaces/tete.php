@@ -179,7 +179,7 @@
 
 <?php if(strpos($_SESSION['niveau'], 'p') !== false)
           { ?>
-<li><a href="saisie.php">Prets</a></li>
+<li><a href="prets.php">Prets</a></li>
           <?php }
               
                  else{}?>
@@ -192,7 +192,7 @@
                  else{}?>
                  <?php if(strpos($_SESSION['niveau'], 'm') !== false)
           { ?>
-<li><a href="saisie.php">Mailing</a></li>
+<li><a href="mailling.php">Mailing</a></li>
 <?php }
               
                  else{}?>
