@@ -213,14 +213,19 @@
         <a href="#" class="dropdown-toggle" data-toggle="dropdown">Gestion<b class="caret"></b></a>
         <ul class="dropdown-menu">
           <li><a href="affectations.php">recettes points de sorties</a></li>
-          <li><a href="utilisateurs.php">Utilisateurs</a></li><li><a href="affectations.php">grilles de prix</a></li>
           <li><a href="poles.php">Filieres de sorties</a></li>
-          <li><a href="edition_points_collecte.php">Points de collecte</a></li>
-          <li><a href="edition_points_sorties.php">Points de sorties hors boutique</a></li>
-          <li><a href="edition_points_vente.php">Points de ventes</a></li>
+          <li class="divider"></li>
+          <li><a href="utilisateurs.php">Utilisateurs</a></li>
+          <li><a href="affectations.php">grilles de prix</a></li>
+          <li class="divider"></li>
           <li><a href="affectations.php">Types de collectes</a></li>
           <li><a href="affectations.php">Types de dechets</a></li>
           <li><a href="affectations.php">Types dobjets redistribués</a></li>
+          <li class="divider"></li>
+          <li><a href="edition_points_collecte.php">Points de collecte</a></li>
+          <li><a href="edition_points_sorties.php">Points de sorties hors boutique</a></li>
+          <li><a href="edition_points_vente.php">Points de ventes</a></li>
+          <li class="divider"></li>
           <li><a href="poles.php">Localités</a></li>
           <li><a href="mdp.php">Description de la structure</a></li>
           
