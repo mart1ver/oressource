@@ -1,27 +1,20 @@
-
 <!DOCTYPE html>
 <html lang="fr">
   <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
     <link rel="shortcut icon" href="../images/favicon.ico">
-
     <title>Oressource</title>
-
-    <!-- Bootstrap core CSS -->
+<!-- Bootstrap core CSS -->
     <link href="../css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- Custom styles for this template -->
+<!-- Custom styles for this template -->
     <link href="../css/oressource.css" rel="stylesheet">
     <link rel="stylesheet" href="../js/morris.js/morris.css">
   </head>
   <body>
-
-    
-    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
       <div class="container">
         <div class="navbar-header">
           <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -32,15 +25,11 @@
           </button>
           <a class="navbar-brand" href="../">Oressource</a>
         </div>
-        
         <div class="navbar-collapse collapse  navbar-right">
-          
-
  <ul class="nav navbar-nav">
   <?php
     if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource")
       { ?> 
-
 <ul class="nav navbar-nav">
       <?php 
       if(strpos($_SESSION['niveau'], 'c') !== false)
@@ -65,7 +54,6 @@
             // On affiche chaque entree une à une
            while ($donnees = $reponse->fetch())
            {
-             
       if(strpos($_SESSION['niveau'], 'c'.$donnees['id']) !== false)
           { ?>
           <li>
@@ -74,17 +62,10 @@
               </a>
           </li>
           <br><?php } ?>
-   
-              <?php }
+   <?php }
               $reponse->closeCursor(); // Termine le traitement de la requête
                 ?>  </li> </ul> </li><?php } else{}?>
-
-
-           
-        
-      
-    </ul>
-
+</ul>
 <ul class="nav navbar-nav">
 <?php 
       if(strpos($_SESSION['niveau'], 's') !== false)
@@ -122,15 +103,7 @@
               <?php }
               $reponse->closeCursor(); // Termine le traitement de la requête
                ?>  </li> </ul> </li><?php } else{}?>
-
-
-           
-        
-      
-    </ul>
-
-    
-
+</ul>
 <ul class="nav navbar-nav">
 <?php 
       if(strpos($_SESSION['niveau'], 'v') !== false)
@@ -168,47 +141,29 @@
               <?php }
               $reponse->closeCursor(); // Termine le traitement de la requête
                ?>  </li> </ul> </li><?php } else{}?>
-
-
-           
-        
-      
-    </ul>
-
-
-
+</ul>
 <?php if(strpos($_SESSION['niveau'], 'p') !== false)
           { ?>
 <li><a href="prets.php">Prets</a></li>
           <?php }
-              
-                 else{}?>
-
+              else{}?>
 <?php if(strpos($_SESSION['niveau'], 'a') !== false)
           { ?>
 <li><a href="adhesions.php">Adhesion</a></li>
 <?php }
-              
-                 else{}?>
+              else{}?>
                  <?php if(strpos($_SESSION['niveau'], 'm') !== false)
           { ?>
 <li><a href="mailling.php">Mailing</a></li>
 <?php }
-              
                  else{}?>
 <?php if(strpos($_SESSION['niveau'], 'bi') !== false)
           { ?>
 <li><a href="bilans.php">Bilans</a></li>
 <?php }
-              
-                 else{}?>
-
-
-
-
+              else{}?>
 <?php if(strpos($_SESSION['niveau'], 'g') !== false)
           { ?>
-
 <li class="dropdown">
         <a href="#" class="dropdown-toggle" data-toggle="dropdown">Gestion<b class="caret"></b></a>
         <ul class="dropdown-menu">
@@ -234,17 +189,10 @@
       <?php }
               
                  else{}?>
-
-
-
- <?php }
+<?php }
     else{ }?>
 <li><a href="aide.php">Aide</a></li>
 </ul>
-
-        </div><!--/.navbar-collapse -->
-       
+</div><!--/.navbar-collapse -->
       </div>
     </div>
-    
-    

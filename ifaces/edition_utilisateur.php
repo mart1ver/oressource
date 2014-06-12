@@ -3,12 +3,8 @@
      if (isset($_SESSION['id']) AND (strpos($_SESSION['niveau'], 'g') !== false))
       {  include "tete.php" ?>
     <div class="container">
-        <h1>Edition du profil utilisateur n°:<?php echo $_POST['id']?>, <?php echo $_POST['niveau']?></h1> 
-         <ul class="nav nav-tabs">
-  <li class="active" ><a href="#">Profil</a></li>
-  <li ><a href="edition_mdp_utilisateur.php">Mot de passe</a></li>
-  
-</ul>
+        <h1>Edition du profil utilisateur n°:<?php echo $_POST['id']?>, <?php echo $_POST['mail']?></h1> 
+         
          
     <br>     
 <?php
