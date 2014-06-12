@@ -3,7 +3,7 @@
      if (isset($_SESSION['id']) AND (strpos($_SESSION['niveau'], 'g') !== false))
       {  include "tete.php" ?>
     <div class="container">
-        <h1>Edition du profil utilisateur n°:<?php echo $_POST['id']?>: <?php echo $_POST['mail']?></h1> 
+        <h1>Edition du profil utilisateur n°:<?php echo $_POST['id']?>, <?php echo $_POST['niveau']?></h1> 
          <ul class="nav nav-tabs">
   <li class="active" ><a href="#">Profil</a></li>
   <li ><a href="edition_mdp_utilisateur.php">Mot de passe</a></li>
@@ -35,17 +35,18 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
 ?>
 <div class="panel-body">
         <div class="row">
-            <form action="../moteur/in45scription_post.php" method="post">
+            <form action="../moteur/modification_utilisateur_post.php" method="post">
   <div class="col-md-2"><label for="nom">Nom:</label> <input type="text" value ="<?php echo $_POST['nom']?>" name="nom" id="nom" class="form-control " required autofocus><br>
                         <label for="prenom">Prénom:</label> <input type="text" value ="<?php echo $_POST['prenom']?>" name="prenom" id="prenom" class="form-control " required><br>
                         <label for="mail">Mail:</label> <input type="email" value ="<?php echo $_POST['mail']?>" name="mail" id="mail" class="form-control " required ><br>
                           </div>
-  <div class="col-md-3"><div class="alert alert-info"><label for="niveau">Permissions d'acces</label> <br>
-          <input type="checkbox" name="niveaua" id="niveaua" value="a"> Adhesions<br>
-          <input type="checkbox" name="niveaubi" id="niveaubi" value="bi">Bilans<br>
-          <input type="checkbox" name="niveaug" id="niveaug" value="g"> gestion<br>
-          <input type="checkbox" name="niveaum" id="niveaum" value="m"> Mails des adherents<br>
-          <input type="checkbox" name="niveaup" id="niveaup" value="p"> Prets<br><br></div>
+  <div class="col-md-3"><div class="alert alert-info"><label for="niveau">Pérmissions d'accès</label> <br>
+          <input type="checkbox" name="niveaua" id="niveaua" value="a" <?php if((strpos($_POST['niveau'], 'a') !== false)){ echo "checked";} ?> > Adhésions<br>
+          <input type="checkbox" name="niveaubi" id="niveaubi" value="bi"<?php if((strpos($_POST['niveau'], 'bi') !== false)){ echo "checked";} ?>> Bilans<br>
+          <input type="checkbox" name="niveaug" id="niveaug" value="g"<?php if((strpos($_POST['niveau'], 'g') !== false)){ echo "checked";} ?>> Gestion<br>
+          <input type="checkbox" name="niveaum" id="niveaum" value="m"<?php if((strpos($_POST['niveau'], 'm') !== false)){ echo "checked";} ?>> Mails des adhérents<br>
+          <input type="checkbox" name="niveaup" id="niveaup" value="p"<?php if((strpos($_POST['niveau'], 'p') !== false)){ echo "checked";} ?>> Prèts<br><br></div>
+  <input type="hidden" name ="id" id="id" value="<?php echo $_POST['id']?>">
   </div>
 <div class="col-md-3"><div class="alert alert-info"><label for="niveauc">Points de collecte:</label><br>
 <?php 
@@ -67,7 +68,7 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
            {?>
          
 
-            <input type="checkbox" name="niveauc<?php echo $donnees['id']; ?>" id="niveauc<?php echo $donnees['id']; ?>"> <?php echo $donnees['nom']; ?> <br><br>
+            <input type="checkbox" name="niveauc<?php echo $donnees['id']; ?>" id="niveauc<?php echo $donnees['id']; ?>" <?php if((strpos($_POST['niveau'], 'c'.$donnees['id']) !== false)){ echo "checked";} ?>> <?php echo $donnees['nom']; ?> <br><br>
               <?php }
               $reponse->closeCursor(); // Termine le traitement de la requête
                  ?>
@@ -93,7 +94,7 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
            {?>
          
 
-            <input type="checkbox" name="niveauv<?php echo $donnees['id']; ?>" id="niveauv<?php echo $donnees['id']; ?>" value="v<?php echo $donnees['id']; ?>"> <?php echo $donnees['nom']; ?> <br><br>
+            <input type="checkbox" name="niveauv<?php echo $donnees['id']; ?>" id="niveauv<?php echo $donnees['id']; ?>" value="v<?php echo $donnees['id']; ?>"<?php if((strpos($_POST['niveau'], 'v'.$donnees['id']) !== false)){ echo "checked";} ?>> <?php echo $donnees['nom']; ?> <br><br>
               
                
               
@@ -121,7 +122,7 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
             // On affiche chaque entree une à une
            while ($donnees = $reponse->fetch())
            {?>
-                     <input type="checkbox" name="niveaus<?php echo $donnees['id']; ?>" id="niveaus<?php echo $donnees['id']; ?>" value="s<?php echo $donnees['id']; ?>"> <?php echo $donnees['nom']; ?> <br><br>
+                     <input type="checkbox" name="niveaus<?php echo $donnees['id']; ?>" id="niveaus<?php echo $donnees['id']; ?>" value="s<?php echo $donnees['id']; ?>"<?php if((strpos($_POST['niveau'], 'v'.$donnees['id']) !== false)){ echo "checked";} ?>> <?php echo $donnees['nom']; ?> <br><br>
            
               <?php }
               $reponse->closeCursor(); // Termine le traitement de la requête
@@ -145,7 +146,7 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
   
 
 </div>
-<div class="row"><div class="col-md-3 col-md-offset-3"><br><button name="creer" class="btn btn-default">Modifier!</button></div></div>
+<div class="row"><div class="col-md-3 col-md-offset-3"><br><button name="modifier" class="btn btn-warning">Modifier!</button></div></div>
       </div>
      
       

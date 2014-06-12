@@ -35,7 +35,7 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
 ?>
 <div class="panel-body">
         <div class="row">
-            <form action="../moteur/i45nscription_post.php" method="post">
+            <form action="../moteur/edition_mdp_utilisateur_post.php" method="post">
   <div class="col-md-2"><label>Mot de passe</label> <input type="password"  name="pass1" id="pass1" class="form-control" required ><br>
                                                        Repetez le mot de passe</label> <input type="password"  name="pass2" id="pass2" class="form-control" required >
                           </div>
