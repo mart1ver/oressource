@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Client: localhost
--- Généré le : Sam 07 Juin 2014 à 20:26
+-- Généré le : Jeu 12 Juin 2014 à 17:15
 -- Version du serveur: 5.5.34
 -- Version de PHP: 5.3.10-1ubuntu3.9
 
@@ -48,7 +48,7 @@ CREATE TABLE IF NOT EXISTS `collectes` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `id_type_collecte` int(11) NOT NULL,
-  `adherent` int(11) NOT NULL,
+  `adherent` text NOT NULL,
   `localisation` int(11) NOT NULL,
   `id_point_collecte` int(11) NOT NULL,
   `commentaire` int(11) NOT NULL,
@@ -163,16 +163,18 @@ CREATE TABLE IF NOT EXISTS `points_collecte` (
   `adresse` text NOT NULL,
   `couleur` text NOT NULL,
   `commentaire` text NOT NULL,
+  `visible` text NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=7 ;
 
 --
 -- Contenu de la table `points_collecte`
 --
 
-INSERT INTO `points_collecte` (`id`, `timestamp`, `nom`, `adresse`, `couleur`, `commentaire`) VALUES
-(1, '2014-04-08 18:06:36', 'Point d''apport volontaire en boutique', '125 rue du chemin vert', '', 'le point par lequel tout passe ...'),
-(2, '2014-06-02 19:52:56', 'deuxieme point', '45 rue du du', '', 'oui mais non');
+INSERT INTO `points_collecte` (`id`, `timestamp`, `nom`, `adresse`, `couleur`, `commentaire`, `visible`) VALUES
+(1, '2014-04-08 18:06:36', 'Point d''apport volontaire en boutique', '125 rue du chemin vert', '#ae810f', 'point de collecte de la roro', 'oui'),
+(5, '2014-06-12 13:01:52', 'point de collecte itinerant', 'pas d''adresse fixe!', '#4773a3', 'camion 30 mÃ¨tres cube avec balance!', 'oui'),
+(6, '2014-06-12 14:14:31', 'point de collecte en dechetterie', 'porte des lilas', '#f424ca', 'oui!', 'oui');
 
 -- --------------------------------------------------------
 
@@ -187,6 +189,7 @@ CREATE TABLE IF NOT EXISTS `points_sortie` (
   `adresse` text NOT NULL,
   `couleur` text NOT NULL,
   `commentaire` text NOT NULL,
+  `visible` text NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
 
@@ -194,8 +197,8 @@ CREATE TABLE IF NOT EXISTS `points_sortie` (
 -- Contenu de la table `points_sortie`
 --
 
-INSERT INTO `points_sortie` (`id`, `timestamp`, `nom`, `adresse`, `couleur`, `commentaire`) VALUES
-(1, '2014-04-08 18:19:28', 'sorties hors boutique', '125 rue du chemin vert', '', 'point de sortie hors boutique principale de la ressourcerie de la petite rockette');
+INSERT INTO `points_sortie` (`id`, `timestamp`, `nom`, `adresse`, `couleur`, `commentaire`, `visible`) VALUES
+(1, '2014-04-08 18:19:28', 'sorties hors boutique', '125 rue du chemin vert', '#928b33', 'point de sortie hors boutique principale de la ressourcerie de la petite rockette', 'oui');
 
 -- --------------------------------------------------------
 
@@ -210,6 +213,7 @@ CREATE TABLE IF NOT EXISTS `points_vente` (
   `adresse` text NOT NULL,
   `couleur` text NOT NULL,
   `commentaire` text NOT NULL,
+  `visible` text NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
 
@@ -217,8 +221,8 @@ CREATE TABLE IF NOT EXISTS `points_vente` (
 -- Contenu de la table `points_vente`
 --
 
-INSERT INTO `points_vente` (`id`, `timestamp`, `nom`, `adresse`, `couleur`, `commentaire`) VALUES
-(1, '2014-04-08 18:17:25', 'caisse de la ressourcerie', '125 rue du chemin vert', '', 'la caisse principale de la ressourcerie de la petite rockette              ');
+INSERT INTO `points_vente` (`id`, `timestamp`, `nom`, `adresse`, `couleur`, `commentaire`, `visible`) VALUES
+(1, '2014-04-08 18:17:25', 'caisse de la ressourcerie', '125 rue du chemin vert', '', 'la caisse principale de la ressourcerie de la petite rockette              ', '');
 
 -- --------------------------------------------------------
 
@@ -342,7 +346,7 @@ CREATE TABLE IF NOT EXISTS `utilisateurs` (
   `mail` text NOT NULL,
   `pass` text NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=42 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=43 ;
 
 --
 -- Contenu de la table `utilisateurs`
