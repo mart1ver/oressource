@@ -1,6 +1,6 @@
 <?php session_start(); ?>
 <?php
-    if (isset($_SESSION['id']) AND (strpos($_SESSION['niveau'], 'a') !== false))
+    if (isset($_SESSION['id']) AND (strpos($_SESSION['niveau'], 'g') !== false))
       { include "tete.php" ?>
     <div class="container">
         <h1>Gestions des points de collecte</h1> 
@@ -35,10 +35,10 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
       <div class="panel-body">
         <div class="row">
         	<form action="../moteur/edition_points_collecte_post.php" method="post">
-  <div class="col-md-3"><label for="saisietitre">Nom:</label> <input type="text" value ="<?php echo $_GET['titre']?>" name="titre" id="titre" class="form-control " required autofocus></div>
-  <div class="col-md-3"><label for="saisiedescription">Addresse:</label> <input type="text" value ="<?php echo $_GET['adresse']?>" name="adresse" id="adresse" class="form-control " required ></div>
-  <div class="col-md-1"><label for="saisiedescription">Couleur:</label> <input type="color"  value ="<?php echo $_GET['couleur']?>" name="couleur" id="couleur" class="form-control " required ></div>
-  <div class="col-md-2"><label for="saisiedescription">Commentaire:</label> <input type="textarea" value ="<?php echo $_GET['Commentaire']?>" name="Commentaire" id="Commentaire" class="form-control " required ></div>
+  <div class="col-md-3"><label for="saisienom">Nom:</label> <input type="text"                 value ="<?php echo $_GET['nom']?>" name="nom" id="nom" class="form-control " required autofocus></div>
+  <div class="col-md-3"><label for="saisieaddresse">Addresse:</label> <input type="text"       value ="<?php echo $_GET['adresse']?>" name="adresse" id="adresse" class="form-control " required ></div>
+  <div class="col-md-2"><label for="saisiecommentaire">Commentaire:</label> <input type="text" value ="<?php echo $_GET['commentaire']?>" name="commentaire" id="commentaire" class="form-control " required ></div>
+  <div class="col-md-1"><label for="saisiecouleur">Couleur:</label> <input type="color"        value ="<?php if(isset($_GET['couleur']))echo "#".$_GET['couleur']?>" name="couleur" id="couleur" class="form-control " required ></div>
   <div class="col-md-1"><br><button name="creer" class="btn btn-default">Creer!</button></div>
 </form>
 </div>
@@ -54,6 +54,7 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
             <th>couleur</th>
             <th>commentaire</th>
             <th>visible</th>
+            <th>modifier</th>
             
           </tr>
         </thead>
@@ -85,7 +86,8 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
             <td><?php echo $donnees['timestamp']?></td>
             <td><?php echo $donnees['nom']?></td>
             <td><?php echo $donnees['adresse']?></td>
-            <td><?php echo $donnees['couleur']?></td>
+            <td bgcolor="<?php echo $donnees['couleur']?>"><?php echo $donnees['couleur']?></td> 
+
             <td><?php echo $donnees['commentaire']?></td>
             <td>
 
@@ -127,6 +129,34 @@ else // SINON
   </button>
 </form>
 </td>
+
+
+
+
+<td>
+
+<form action="modification_points_collecte.php" method="post">
+
+<input type="hidden" name ="id" id="id" value="<?php echo $donnees['id']?>">
+<input type="hidden" name ="nom" id="nom" value="<?php echo $donnees['nom']?>">
+<input type="hidden" name ="adresse" id="adresse" value="<?php echo $donnees['adresse']?>">
+<input type="hidden" name ="commentaire" id="commentaire" value="<?php echo $donnees['commentaire']?>">
+<input type="hidden" name ="couleur" id="couleur" value="<?php echo substr($_POST['couleur'],1)?>">
+
+  <button  class="btn btn-warning " >modifier</button>
+
+
+</form>
+
+
+
+</td>
+
+
+
+
+
+
           </tr>
            <?php }
               $reponse->closeCursor(); // Termine le traitement de la requête
@@ -134,6 +164,9 @@ else // SINON
        </tbody>
         <tfoot>
           <tr>
+            <th></th>
+            <th></th>
+            <th></th>
             <th></th>
             <th></th>
             <th></th>
