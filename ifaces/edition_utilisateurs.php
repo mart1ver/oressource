@@ -94,6 +94,10 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
 <form action="edition_utilisateur.php" method="post">
 
   <input type="hidden" name ="id" id="id" value="<?php echo $donnees['id']?>">
+  <input type="hidden" name ="nom" id="nom" value="<?php echo $donnees['nom']?>">
+  <input type="hidden" name ="prenom" id="prenom" value="<?php echo $donnees['prenom']?>">
+  <input type="hidden" name ="mail" id="mail" value="<?php echo $donnees['mail']?>">
+  <input type="hidden" name ="niveau" id="id" value="<?php echo $donnees['niveau']?>">
   
 
 
