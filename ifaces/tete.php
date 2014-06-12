@@ -215,7 +215,7 @@
           <li><a href="affectations.php">recettes points de sorties</a></li>
           <li><a href="utilisateurs.php">Utilisateurs</a></li><li><a href="affectations.php">grilles de prix</a></li>
           <li><a href="poles.php">Filieres de sorties</a></li>
-          <li><a href="poles.php">Points de collecte</a></li>
+          <li><a href="edition_points_collecte.php">Points de collecte</a></li>
           <li><a href="poles.php">Points de sorties hors boutique</a></li>
           <li><a href="moyens.php">Points de ventes</a></li>
           <li><a href="affectations.php">Types de collectes</a></li>
