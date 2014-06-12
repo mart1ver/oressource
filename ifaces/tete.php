@@ -156,7 +156,7 @@
            while ($donnees = $reponse->fetch())
            {
             
-      if(strpos($_SESSION['niveau'], 's'.$donnees['id']) !== false)
+      if(strpos($_SESSION['niveau'], 'v'.$donnees['id']) !== false)
           { ?>
           <li>
               <a href="<?php echo  "ventes.php?numero=" . $donnees['id']. "&nom=" . $donnees['nom']. "&adresse=".$donnees['adresse']; ?>">
