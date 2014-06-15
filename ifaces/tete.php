@@ -144,12 +144,12 @@
 </ul>
 <?php if(strpos($_SESSION['niveau'], 'p') !== false)
           { ?>
-<li><a href="prets.php">Prets</a></li>
+<li><a href="prets.php">Prêts</a></li>
           <?php }
               else{}?>
 <?php if(strpos($_SESSION['niveau'], 'a') !== false)
           { ?>
-<li><a href="adhesions.php">Adhesion</a></li>
+<li><a href="adhesions.php">Adhésion</a></li>
 <?php }
               else{}?>
                  <?php if(strpos($_SESSION['niveau'], 'm') !== false)
@@ -167,22 +167,22 @@
 <li class="dropdown">
         <a href="#" class="dropdown-toggle" data-toggle="dropdown">Gestion<b class="caret"></b></a>
         <ul class="dropdown-menu">
-          <li><a href="affectations.php">recettes points de sorties</a></li>
-          <li><a href="poles.php">Filieres de sorties</a></li>
+          <li><a href="recettes_filieres_sortie.php">Recettes points de sortie</a></li>
+          <li><a href="edition_filieres_sortie.php">Filières de sortie</a></li>
           <li class="divider"></li>
           <li><a href="utilisateurs.php">Utilisateurs</a></li>
-          <li><a href="affectations.php">grilles de prix</a></li>
+          <li><a href="grilles_prix.php">Grilles de prix</a></li>
           <li class="divider"></li>
-          <li><a href="affectations.php">Types de collectes</a></li>
-          <li><a href="affectations.php">Types de dechets</a></li>
-          <li><a href="affectations.php">Types dobjets redistribués</a></li>
+          <li><a href="types_collecte.php">Types de collectes</a></li>
+          <li><a href="types_dechets.php">Types de déchet</a></li>
+          <li><a href="types_objets.php">Types d'objets redistribués</a></li>
           <li class="divider"></li>
           <li><a href="edition_points_collecte.php">Points de collecte</a></li>
-          <li><a href="edition_points_sorties.php">Points de sorties hors boutique</a></li>
-          <li><a href="edition_points_vente.php">Points de ventes</a></li>
+          <li><a href="edition_points_sorties.php">Points de sortie hors boutique</a></li>
+          <li><a href="edition_points_vente.php">Points de vente</a></li>
           <li class="divider"></li>
-          <li><a href="poles.php">Localités</a></li>
-          <li><a href="mdp.php">Description de la structure</a></li>
+          <li><a href="edition_localites">Localités</a></li>
+          <li><a href="edition_description.php">Déscription de la structure</a></li>
           
       </ul>
       </li>
