@@ -14,25 +14,26 @@
       <div class="container">
         <h1>Bienvenue sur Oressource</h1>
         <p>L'outil libre de quantification et de mise en bilan pour ressourceries</p>
-        <p><a class="btn btn-primary btn-lg" role="button">Plus d'infos. &raquo;</a></p>
+        <p><a class="btn btn-primary btn-sm" role="button">Plus d'infos. &raquo;</a></p>
       </div>
     </div>
+
     <div class="container">
       <!-- Example row of columns -->
       <div class="row">
         <div class="col-md-4">
           <h2>collecté ajourdhui:</h2>
-          <p><div id="graphj" style="height: 250px;"></div></p>
+          <p><div id="graphj" style="height: 180px;"></div></p>
           <p><a class="btn btn-default" href="#" role="button">Details &raquo;</a></p>
         </div>
         <div class="col-md-4">
           <h2>collecté ce mois:</h2>
-          <p><div id="graphm" style="height: 250px;"></div></p>
+          <p><div id="graphm" style="height: 180px;"></div></p>
           <p><a class="btn btn-default" href="#" role="button">Details &raquo;</a></p>
        </div>
         <div class="col-md-4">
           <h2>collecté cette année:</h2>
-          <p><div id="grapha" style="height: 250px;"></div></p>
+          <p><div id="grapha" style="height: 180px;"></div></p>
           <p><a class="btn btn-default" href="#" role="button">Details &raquo;</a></p>
         </div>
       </div>
@@ -97,7 +98,7 @@
     backgroundColor: '#ccc',
     labelColor: '#060',
     colors: [
-    '#0BA462',
+    '#4773a3',
     '#39B580',
     '#67C69D',
     '#95D7BB'

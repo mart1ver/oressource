@@ -181,7 +181,7 @@
           <li><a href="edition_points_sorties.php">Points de sortie hors boutique</a></li>
           <li><a href="edition_points_vente.php">Points de vente</a></li>
           <li class="divider"></li>
-          <li><a href="edition_localites">Localités</a></li>
+          <li><a href="edition_localites.php">Localités</a></li>
           <li><a href="edition_description.php">Déscription de la structure</a></li>
           
       </ul>
