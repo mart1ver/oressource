@@ -73,6 +73,10 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
   <div class="col-md-1"><label for="saisiecouleur">Couleur:</label> <input type="color"value ="<?php echo $couleur ?>"name="couleur" id="couleur" class="form-control " required ></div>
   <div class="col-md-1"><br><button name="creer" class="btn btn-warning">Modifier!</button></div>
 </form>
+<br>
+<a href="edition_localites.php">
+<button name="creer" class="btn btn">Anuler</button>
+</a>
 </div>
       </div>
      

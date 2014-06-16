@@ -1,5 +1,11 @@
 <?php session_start(); ?>
 <?php
+ if (isset($_SESSION['id']) AND (strpos($_SESSION['niveau'], 'g') !== false))
+      { include "tete.php" ?>
+    <div class="container">
+        <h1>Gestions des points de sortie hors boutique</h1> 
+         <div class="panel-heading">Modifier les données concernant le point de sortie numero <?php echo $_POST['id']?> </div>
+<?php
 //on obtien la couleur de la localité dans la base
 
 
@@ -67,6 +73,10 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
   <div class="col-md-1"><label for="saisiecouleur">Couleur:</label> <input type="color"        value ="<?php echo $couleur ?>" name="couleur" id="couleur" class="form-control " required ></div>
   <div class="col-md-1"><br><button name="creer" class="btn btn-warning">Modifier!</button></div>
 </form>
+<br>
+<a href="edition_points_sorties.php">
+<button name="creer" class="btn btn">Anuler</button>
+</a>
 </div>
       </div>
      

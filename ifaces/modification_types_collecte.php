@@ -3,8 +3,8 @@
     if (isset($_SESSION['id']) AND (strpos($_SESSION['niveau'], 'g') !== false))
       { include "tete.php" ?>
     <div class="container">
-        <h1>Gestions des points de collecte</h1> 
-         <div class="panel-heading">Modifier les données concernant le point numero <?php echo $_POST['id']?> </div>
+        <h1>Gestions des types de collecte</h1> 
+         <div class="panel-heading">Modifier les données concernant le type de collecte n° <?php echo $_POST['id']?> </div>
 <?php
 //on obtien la couleur de la localité dans la base
 
@@ -26,7 +26,7 @@
             // On recupère tout le contenu de la table point de vente
 
 
-$req = $bdd->prepare("SELECT couleur FROM points_collecte WHERE id = :id ");
+$req = $bdd->prepare("SELECT couleur FROM type_collecte WHERE id = :id ");
 $req->execute(array('id' => $_POST['id']));
 $donnees = $req->fetch();
 
@@ -64,19 +64,19 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
 
       <div class="panel-body">
         <div class="row">
-        	<form action="../moteur/modification_points_collecte_post.php" method="post">
+        	<form action="../moteur/modification_types_collecte_post.php" method="post">
             <input type="hidden" name ="id" id="id" value="<?php echo $_POST['id']?>">
 
-  <div class="col-md-3"><label for="saisienom">Nom:</label> <input type="text"                 value ="<?php echo $_POST['nom']?>" name="nom" id="nom" class="form-control " required autofocus></div>
-  <div class="col-md-3"><label for="saisieaddresse">Addresse:</label> <input type="text"       value ="<?php echo $_POST['adresse']?>" name="adresse" id="adresse" class="form-control " required ></div>
-  <div class="col-md-3"><label for="saisiecommentaire">Commentaire:</label> <input type="text" value ="<?php echo $_POST['commentaire']?>" name="commentaire" id="commentaire" class="form-control " required ></div>
-  <div class="col-md-1"><label for="saisiecouleur">Couleur:</label> <input type="color"        value ="<?php echo $couleur ?>" name="couleur" id="couleur" class="form-control " required ></div>
-  <div class="col-md-1"><br><button name="creer" class="btn btn-warning">Modifier!</button></div>
+  <div class="col-md-2"><label for="saisienom">Nom:</label> <input type="text"value ="<?php echo $_POST['nom']?>" name="nom" id="nom" class="form-control " required autofocus></div>
+  <div class="col-md-3"><label for="saisieaddresse">Déscription:</label> <input type="text"value ="<?php echo $_POST['description']?>" name="description" id="description" class="form-control " required ></div>
+  <div class="col-md-1"><label for="saisiecouleur">Couleur:</label> <input type="color"value ="<?php echo $couleur ?>"name="couleur" id="couleur" class="form-control " required ></div>
+  <div class="col-md-1"><br><button name="creer" class="btn btn-warning">Modifier</button></div>
 </form>
 <br>
-<a href="edition_points_collecte.php">
+<a href="types_collecte.php">
 <button name="creer" class="btn btn">Anuler</button>
 </a>
+
 </div>
       </div>
      

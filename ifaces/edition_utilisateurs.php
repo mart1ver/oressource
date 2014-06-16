@@ -110,7 +110,7 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
 
 
 
-   <button  class="btn btn-warning ">Editer! 
+   <button  class="btn btn-warning btn-sm ">Editer! 
   </button>
 </form>
 </td>
@@ -137,7 +137,7 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
 
 
 
-   <button  class="btn btn-danger ">Suprimer! 
+   <button  class="btn btn-danger btn-sm ">Suprimer! 
   </button>
 </form>
 </td>

@@ -3,9 +3,9 @@
     if (isset($_SESSION['id']) AND (strpos($_SESSION['niveau'], 'g') !== false))
       { include "tete.php" ?>
     <div class="container">
-        <h1>Gestions des localités</h1> 
-         <div class="panel-heading">Gerez ici les localités.</div>
-         <p>Les localités sonts renseigées au momment de la collecte elles permettent d'estimmer la rayonnance géographique de la structure </p>
+        <h1>Gestions des types de collecte</h1> 
+         <div class="panel-heading">Gerez ici les types de collecte.</div>
+         <p>Permet de diffferencier les diffentes provenances des collectes (apport vollontaire ,collecte à domicille...) </p>
 <?php
 if ($_GET['err'] == "") // SI on a pas de message d'erreur
 {
@@ -35,10 +35,10 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
 
       <div class="panel-body">
         <div class="row">
-        	<form action="../moteur/edition_localites_post.php" method="post">
+        	<form action="../moteur/types_collecte_post.php" method="post">
   <div class="col-md-3"><label for="saisienom">Nom:</label> <input type="text"                 value ="<?php echo $_GET['nom']?>" name="nom" id="nom" class="form-control " required autofocus></div>
-    <div class="col-md-2"><label for="saisiecommentaire">Commentaire:</label> <input type="text" value ="<?php echo $_GET['commentaire']?>" name="commentaire" id="commentaire" class="form-control " required ></div>
-    <div class="col-md-3"><label for="saisielien">Lien openstreetmap:</label> <input type="url" value ="<?php echo $_GET['lien']?>" name="lien" id="lien" class="form-control " required ></div>
+    <div class="col-md-2"><label for="saisiecommentaire">Déscription:</label> <input type="text" value ="<?php echo $_GET['description']?>" name="description" id="description" class="form-control " required ></div>
+    
   <div class="col-md-1"><label for="saisiecouleur">Couleur:</label> <input type="color"        value ="<?php echo "#".$_GET['couleur']?>" name="couleur" id="couleur" class="form-control " required ></div>
   <div class="col-md-1"><br><button name="creer" class="btn btn-default">Creer!</button></div>
 </form>
@@ -51,9 +51,8 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
             <th>#</th>
             <th>Date de creation:</th>
             <th>Nom:</th>
-            <th>Commentaire:</th>
+            <th>Description:</th>
             <th>Couleur:</th>
-            <th>Lien:</th>
             <th>Visible:</th>
             <th>Modifier:</th>
             
@@ -75,7 +74,7 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
             // Si tout va bien, on peut continuer
  
             // On recupère tout le contenu de la table affectations
-            $reponse = $bdd->query('SELECT * FROM localites');
+            $reponse = $bdd->query('SELECT * FROM type_collecte');
  
            // On affiche chaque entree une à une
            while ($donnees = $reponse->fetch())
@@ -86,34 +85,16 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
             <td><?php echo $donnees['id']?></td>
             <td><?php echo $donnees['timestamp']?></td>
             <td><?php echo $donnees['nom']?></td>
-            <td><?php echo $donnees['commentaire']?></td>
+            <td><?php echo $donnees['description']?></td>
             <td bgcolor="<?php echo $donnees['couleur']?>"><?php echo $donnees['couleur']?></td> 
-
-            <td><a href="<?php echo $donnees['relation_openstreetmap']?>"><p style="text-align:center"><span class="glyphicon glyphicon-camera"></span></p></a></td>
-            <td>
-
-
-
-
-
-
-
-<form action="../moteur/localites_visibles.php" method="post">
+<td>
+<form action="../moteur/types_collecte_visible.php" method="post">
 
   <input type="hidden" name ="id" id="id" value="<?php echo $donnees['id']?>">
   <input type="hidden"name ="visible" id ="visible" value="<?php if ($donnees['visible'] == "oui") 
 {echo "non";}
 else 
 {echo "oui";}?>">
-
-
-
-
-
- 
-
-
-
 <?php
 if ($donnees['visible'] == "oui") // SI on a pas de message d'erreur
 {?>
@@ -136,12 +117,11 @@ else // SINON
 
 <td>
 
-<form action="modification_localites.php" method="post">
+<form action="modification_types_collecte.php" method="post">
 
 <input type="hidden" name ="id" id="id" value="<?php echo $donnees['id']?>">
 <input type="hidden" name ="nom" id="nom" value="<?php echo $donnees['nom']?>">
-<input type="hidden" name ="lien" id="lien" value="<?php echo $donnees['relation_openstreetmap']?>">
-<input type="hidden" name ="commentaire" id="commentaire" value="<?php echo $donnees['commentaire']?>">
+<input type="hidden" name ="description" id="description" value="<?php echo $donnees['description']?>">
 <input type="hidden" name ="couleur" id="couleur" value="<?php echo substr($_POST['couleur'],1)?>">
 
   <button  class="btn btn-warning btn-sm" >modifier</button>
@@ -165,7 +145,6 @@ else // SINON
        </tbody>
         <tfoot>
           <tr>
-            <th></th>
             <th></th>
             <th></th>
             <th></th>

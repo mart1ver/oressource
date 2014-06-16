@@ -116,13 +116,13 @@ else
 <?php
 if ($donnees['visible'] == "oui") // SI on a pas de message d'erreur
 {?>
- <button  class="btn btn-info " >
+ <button  class="btn btn-info btn-sm " >
   <?php
 }
 
 else // SINON 
 {?>
-   <button  class="btn btn-danger " >
+   <button  class="btn btn-danger btn-sm " >
  <?php
 }
  echo $donnees['visible']?> 
@@ -143,7 +143,7 @@ else // SINON
 <input type="hidden" name ="commentaire" id="commentaire" value="<?php echo $donnees['commentaire']?>">
 <input type="hidden" name ="couleur" id="couleur" value="<?php echo substr($_POST['couleur'],1)?>">
 
-  <button  class="btn btn-warning " >modifier</button>
+  <button  class="btn btn-warning  btn-sm" >modifier</button>
 
 
 </form>
