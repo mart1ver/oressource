@@ -50,18 +50,81 @@
   <script>       Morris.Donut({
     element: 'graphj',
     data: [
-    {value: 70, label: 'd3e'},
-    {value: 15, label: <?php echo "'mobilier'" ?>},
-    {value: 10, label: 'textile'},
-    {value: 5, label: 'livres'}
+
+
+<?php 
+            try
+            {
+            // On se connecte à MySQL
+            include('../moteur/dbconfig.php');
+            }
+            catch(Exception $e)
+            {
+            // En cas d'erreur, on affiche un message et on arrête tout
+            die('Erreur : '.$e->getMessage());
+            }
+ 
+            // Si tout va bien, on peut continuer
+ 
+            // On recupère tout le contenu de la table affectations
+            $reponse = $bdd->query('SELECT * FROM type_dechets');
+ 
+           // On affiche chaque entree une à une
+           while ($donnees = $reponse->fetch())
+           {
+
+            echo "{value: 25, label:'".$donnees['nom']."'},";
+
+
+             }
+              $reponse->closeCursor(); // Termine le traitement de la requête
+                ?>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
     ],
     backgroundColor: '#ccc',
     labelColor: '#060',
     colors: [
-    '#0BA462',
-    '#39B580',
-    '#67C69D',
-    '#95D7BB'
+<?php 
+            try
+            {
+            // On se connecte à MySQL
+            include('../moteur/dbconfig.php');
+            }
+            catch(Exception $e)
+            {
+            // En cas d'erreur, on affiche un message et on arrête tout
+            die('Erreur : '.$e->getMessage());
+            }
+ 
+            // Si tout va bien, on peut continuer
+ 
+            // On recupère tout le contenu de la table affectations
+            $reponse = $bdd->query('SELECT * FROM type_dechets');
+ 
+           // On affiche chaque entree une à une
+           while ($donnees = $reponse->fetch())
+           {
+
+            echo "'".$donnees['couleur']."'".",";
+
+
+             }
+              $reponse->closeCursor(); // Termine le traitement de la requête
+                ?>
     ],
     formatter: function (x) { return x + "%"}
     });

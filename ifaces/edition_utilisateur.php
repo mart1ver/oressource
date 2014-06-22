@@ -142,7 +142,13 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
   
 
 </div>
-<div class="row"><div class="col-md-3 col-md-offset-3"><br><button name="modifier" class="btn btn-warning">Modifier!</button></div></div>
+<div class="row"><div class="col-md-3 col-md-offset-3"><br><button name="modifier" class="btn btn-warning">Modifier!</button></form>
+<a href="edition_utilisateurs.php">
+<button name="creer" class="btn btn">Anuler</button>
+</a>
+
+
+</div></div>
       </div>
      
       
