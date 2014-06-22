@@ -50,8 +50,6 @@
   <script>       Morris.Donut({
     element: 'graphj',
     data: [
-
-
 <?php 
             try
             {
@@ -79,22 +77,7 @@
              }
               $reponse->closeCursor(); // Termine le traitement de la requête
                 ?>
-
-
-
-    
-
-
-
-
-
-
-
-
-
-
-
-    ],
+],
     backgroundColor: '#ccc',
     labelColor: '#060',
     colors: [

@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Client: localhost
--- Généré le : Jeu 12 Juin 2014 à 17:15
+-- Généré le : Dim 22 Juin 2014 à 22:49
 -- Version du serveur: 5.5.34
 -- Version de PHP: 5.3.10-1ubuntu3.9
 
@@ -62,13 +62,23 @@ CREATE TABLE IF NOT EXISTS `collectes` (
 --
 
 CREATE TABLE IF NOT EXISTS `description_structure` (
+  `id` int(11) NOT NULL,
   `nom` text NOT NULL,
   `adresse` text NOT NULL,
-  `siret` int(11) NOT NULL,
-  `telephone` int(11) NOT NULL,
+  `description` text NOT NULL,
+  `siret` text NOT NULL,
+  `telephone` text NOT NULL,
   `mail` text NOT NULL,
-  `id_localité` int(11) NOT NULL
+  `id_localite` text NOT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Contenu de la table `description_structure`
+--
+
+INSERT INTO `description_structure` (`id`, `nom`, `adresse`, `description`, `siret`, `telephone`, `mail`, `id_localite`) VALUES
+(1, 'La petitte rockette', '125 rue du chemin vert', 'la petite rockette est un asso', 'chÃ©po', '0155286118', 'lapetiterockette@gmail.com', '1');
 
 -- --------------------------------------------------------
 
@@ -99,8 +109,17 @@ CREATE TABLE IF NOT EXISTS `localites` (
   `couleur` text NOT NULL,
   `relation_openstreetmap` text NOT NULL,
   `commentaire` text NOT NULL,
+  `visible` text NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+
+--
+-- Contenu de la table `localites`
+--
+
+INSERT INTO `localites` (`id`, `timestamp`, `nom`, `couleur`, `relation_openstreetmap`, `commentaire`, `visible`) VALUES
+(1, '2014-06-15 16:56:47', '11Â° arr', '#89cc58', 'http://www.openstreetmap.org/relation/9533', '11Â° arrondissement de paris ', 'oui'),
+(2, '2014-06-15 17:00:58', '20Â° arr.', '#43d163', 'http://www.openstreetmap.org/relation/9529', '20 eme arrondissement de paris', 'oui');
 
 -- --------------------------------------------------------
 
@@ -172,9 +191,9 @@ CREATE TABLE IF NOT EXISTS `points_collecte` (
 --
 
 INSERT INTO `points_collecte` (`id`, `timestamp`, `nom`, `adresse`, `couleur`, `commentaire`, `visible`) VALUES
-(1, '2014-04-08 18:06:36', 'Point d''apport volontaire en boutique', '125 rue du chemin vert', '#ae810f', 'point de collecte de la roro', 'oui'),
+(1, '2014-04-08 18:06:36', 'Point d''apport volontaire en boutique', '125 rue du chemin vert', '#d13232', 'point de collecte de la roro', 'oui'),
 (5, '2014-06-12 13:01:52', 'point de collecte itinerant', 'pas d''adresse fixe!', '#4773a3', 'camion 30 mÃ¨tres cube avec balance!', 'oui'),
-(6, '2014-06-12 14:14:31', 'point de collecte en dechetterie', 'porte des lilas', '#f424ca', 'oui!', 'oui');
+(6, '2014-06-12 14:14:31', 'point de collecte en dechetterie', 'porte des lilas', '#c4b13a', 'oui!', 'oui');
 
 -- --------------------------------------------------------
 
@@ -222,7 +241,7 @@ CREATE TABLE IF NOT EXISTS `points_vente` (
 --
 
 INSERT INTO `points_vente` (`id`, `timestamp`, `nom`, `adresse`, `couleur`, `commentaire`, `visible`) VALUES
-(1, '2014-04-08 18:17:25', 'caisse de la ressourcerie', '125 rue du chemin vert', '', 'la caisse principale de la ressourcerie de la petite rockette              ', '');
+(1, '2014-04-08 18:17:25', 'caisse de la ressourcerie', '125 rue du chemin vert', '#a4e06e', 'la caisse principale de la ressourcerie de la petite rockette              ', 'oui');
 
 -- --------------------------------------------------------
 
@@ -288,8 +307,17 @@ CREATE TABLE IF NOT EXISTS `type_collecte` (
   `id` int(11) NOT NULL,
   `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `nom` text NOT NULL,
-  `description` text NOT NULL
+  `description` text NOT NULL,
+  `couleur` text NOT NULL,
+  `visible` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Contenu de la table `type_collecte`
+--
+
+INSERT INTO `type_collecte` (`id`, `timestamp`, `nom`, `description`, `couleur`, `visible`) VALUES
+(0, '2014-06-16 19:38:36', 'apport vollontaire', 'quand une personne apporte d''elle mÃªme un ou des objets Ã  la boutique', '#a20f16', 'oui');
 
 -- --------------------------------------------------------
 
@@ -303,17 +331,20 @@ CREATE TABLE IF NOT EXISTS `type_dechets` (
   `nom` text NOT NULL,
   `description` text NOT NULL,
   `couleur` text NOT NULL,
+  `visible` text NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
 
 --
 -- Contenu de la table `type_dechets`
 --
 
-INSERT INTO `type_dechets` (`id`, `timestamp`, `nom`, `description`, `couleur`) VALUES
-(1, '2014-04-08 18:21:16', 'deee', 'déchets équipements électroniques et électroménagers ', ''),
-(2, '2014-04-08 18:21:40', 'mobilier', 'mobilier', ''),
-(3, '2014-04-08 18:22:10', 'textile', 'textile', '');
+INSERT INTO `type_dechets` (`id`, `timestamp`, `nom`, `description`, `couleur`, `visible`) VALUES
+(1, '2014-04-08 18:21:16', 'deee', 'dÃ©chets dâ€™Ã©quipements Ã©lectroniques et Ã©lectromÃ©nagers ', '#a59d49', 'oui'),
+(2, '2014-04-08 18:21:40', 'mobilier', 'mobilier', '#dec50f', 'oui'),
+(3, '2014-04-08 18:22:10', 'textile', 'textile', '#982966', 'oui'),
+(4, '2014-06-22 20:00:31', 'jouets', 'jeux, jouets , comprend aussi les jeux de societÃ©s', '#b01111', 'oui'),
+(5, '2014-06-22 20:34:38', 'informatique', 'ordis, ecrans , claviers , autres pÃ©riphÃ©riques info. ', '#8c7285', 'oui');
 
 -- --------------------------------------------------------
 
@@ -328,6 +359,7 @@ CREATE TABLE IF NOT EXISTS `type_objets` (
   `desciption` text NOT NULL,
   `couleur` text NOT NULL,
   `id_type_dechet` int(11) NOT NULL,
+  `visible` text NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
@@ -346,14 +378,16 @@ CREATE TABLE IF NOT EXISTS `utilisateurs` (
   `mail` text NOT NULL,
   `pass` text NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=43 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=45 ;
 
 --
 -- Contenu de la table `utilisateurs`
 --
 
 INSERT INTO `utilisateurs` (`id`, `timestamp`, `niveau`, `nom`, `prenom`, `mail`, `pass`) VALUES
-(41, '2014-06-07 17:53:21', 'c1c2v1s1abigmp', 'vetr', 'martin', 'mart1ver@gmail.com', '81dc9bdb52d04dc20036dbd8313ed055');
+(41, '2014-06-07 17:53:21', 'c1c5c6v1s1abigmp', 'vert', 'martin', 'mart1ver@gmail.com', '81dc9bdb52d04dc20036dbd8313ed055'),
+(43, '2014-06-15 13:37:33', 'c1c5c6v1s1abip', 'bozo', 'le clown', 'bb@gb.org', '81dc9bdb52d04dc20036dbd8313ed055'),
+(44, '2014-06-16 16:26:03', 'c1c5c6mp', 'dimi', 'di', 'dimi@ff.ff', '47bce5c74f589f4867dbd57e9ca9f808');
 
 -- --------------------------------------------------------
 
