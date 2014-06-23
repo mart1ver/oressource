@@ -24,7 +24,32 @@
         
 bon d'apport:
 
-
+<ul class="list-group">
+  <li class="list-group-item">
+    <span class="badge">masse</span>
+    type
+  </li>
+  <li class="list-group-item">
+    <span class="badge">masse</span>
+    type
+  </li>
+  <li class="list-group-item">
+    <span class="badge">masse</span>
+    type
+  </li>
+  <li class="list-group-item">
+    <span class="badge">masse</span>
+    type
+  </li>
+  <li class="list-group-item">
+    <span class="badge">masse</span>
+    type
+  </li>
+  <li class="list-group-item">
+    <span class="badge">masse</span>
+    type
+  </li>
+</ul>
 
         </div>  
           <div class="col-md-4" >

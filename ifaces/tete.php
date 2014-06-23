@@ -54,7 +54,7 @@
             // On affiche chaque entree une à une
            while ($donnees = $reponse->fetch())
            {
-      if(strpos($_SESSION['niveau'], 'c'.$donnees['id']) !== false)
+      if(strpos($_SESSION['niveau'], 'c'.$donnees['id']) !== false AND $donnees['visible'] == "oui")
           { ?>
           <li>
               <a href="<?php echo  "collecte.php?numero=" . $donnees['id']. "&nom=" . $donnees['nom']. "&adresse=".$donnees['adresse']; ?>">
@@ -68,7 +68,7 @@
 </ul>
 <ul class="nav navbar-nav">
 <?php 
-      if(strpos($_SESSION['niveau'], 's') !== false)
+      if(strpos($_SESSION['niveau'], 's') !== false )
           { ?>
              <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">Sorties hors boutique<b class="caret"></b></a>
@@ -91,7 +91,7 @@
            while ($donnees = $reponse->fetch())
            {
              
-      if(strpos($_SESSION['niveau'], 's'.$donnees['id']) !== false)
+      if(strpos($_SESSION['niveau'], 's'.$donnees['id']) !== false AND $donnees['visible'] == "oui")
           { ?>
           <li>
               <a href="<?php echo  "sorties.php?numero=" . $donnees['id']. "&nom=" . $donnees['nom']. "&adresse=".$donnees['adresse']; ?>">
@@ -129,7 +129,7 @@
            while ($donnees = $reponse->fetch())
            {
             
-      if(strpos($_SESSION['niveau'], 'v'.$donnees['id']) !== false)
+      if(strpos($_SESSION['niveau'], 'v'.$donnees['id']) !== false AND $donnees['visible'] == "oui")
           { ?>
           <li>
               <a href="<?php echo  "ventes.php?numero=" . $donnees['id']. "&nom=" . $donnees['nom']. "&adresse=".$donnees['adresse']; ?>">
