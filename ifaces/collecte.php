@@ -189,6 +189,7 @@ bon d'apport:
         </div>  
           <div class="col-md-4" >
         <label>liste des types de dechets collectés </label><br>
+        
         <?php 
           
             try
@@ -213,11 +214,10 @@ bon d'apport:
 
            ?>
     
-            <li>
+            
               
-            <button class="btn btn-default" onclick="tdechet_write('<?php echo$donnees['nom']?>');" ><?php echo$donnees['nom']?></button> 
-              </a>
-          </li>
+            <button class="btn btn-default btn-sm" onclick="tdechet_write('<?php echo$donnees['nom']?>');" ><?php echo$donnees['nom']?></button> 
+              <br>
           <br>
    
               <?php }
