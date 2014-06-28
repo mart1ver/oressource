@@ -24,8 +24,14 @@ function number_clear()
 }
 function tdechet_write(y)
 {
+
+
+
+
+
   
-document.getElementById(y).innerText = parseInt(document.getElementById(y).innerText) + parseInt(document.getElementById("number").value)  ;
+document.getElementById(y).innerText = parseFloat(document.getElementById(y).innerText) + parseFloat(document.getElementById("number").value)  ;
+document.getElementById("number").value = "";
 
  
   
@@ -86,6 +92,7 @@ document.getElementById('<?php echo$donnees['nom']?>').innerText = "0"  ;
  
   
 }
+
 </script>
 
 
@@ -226,7 +233,7 @@ bon d'apport:
     	<div class="row">
     	<div class="input-group">
   
-  <input type="text" class="form-control" placeholder="Masse" id="number" name="num" ><span class="input-group-addon">Kg.</span>
+  <input type="text" class="form-control" placeholder="Masse" id="number" name="num"  ><span class="input-group-addon">Kg.</span>
 </div>
 </div><br>
         <div class="row">
@@ -247,7 +254,7 @@ bon d'apport:
         <div class="row">
             <button class="btn btn-default btn-lg" onclick="number_clear();" data-value="C">C</button>
             <button class="btn btn-default btn-lg" onclick="number_write('0');" data-value="0">0</button>
-            <button class="btn btn-default btn-lg" onclick="number_write(',');" data-value=",">,</button>
+            <button class="btn btn-default btn-lg" onclick="number_write('.');" data-value=",">,</button>
         </div>
 
 
