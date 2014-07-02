@@ -163,7 +163,7 @@ function tdechet_clear()
         
           </select>
 <br>
-         <label>Type de collecte:     </label>  
+         <label>Localité:     </label>  
           <select>
 
 
@@ -217,7 +217,7 @@ function tdechet_clear()
         
           </select>
           <br>
-           <label>La personne est adhérente?</label> <input type="checkbox" value ="oui">
+           <input type="checkbox" value ="oui"><label>La personne adhére à l'association</label> 
         </div>  
         <div class="col-md-4" >
           
