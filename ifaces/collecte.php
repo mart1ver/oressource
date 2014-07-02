@@ -1,13 +1,5 @@
 <?php session_start(); ?>
 <?php include "tete.php" ?>
-
-
-
-
-
-
-
-
 <script type="text/javascript">
 function number_write(x)
 {
@@ -25,22 +17,18 @@ function number_clear()
 function tdechet_write(y)
 {
 
+if (document.getElementById("number").value > 0) {
+   
 
 
+   document.getElementById(y).innerText = parseFloat(document.getElementById(y).innerText) + parseFloat(document.getElementById("number").value)  ;
+document.getElementById("number").value = "";  
+}
 
 
-  
-document.getElementById(y).innerText = parseFloat(document.getElementById(y).innerText) + parseFloat(document.getElementById("number").value)  ;
-document.getElementById("number").value = "";
-
- 
-  
 }
 function tdechet_clear()
 {
-
-
-
 <?php 
           
             try
@@ -64,49 +52,14 @@ function tdechet_clear()
            {
 
            ?>
-    
-            
-
-
-
-
-
-document.getElementById('<?php echo$donnees['nom']?>').innerText = "0"  ;
-
-
-
-
-
-
-   
-              <?php }
+    document.getElementById('<?php echo$donnees['nom']?>').innerText = "0"  ;
+<?php }
 
               $reponse->closeCursor(); // Termine le traitement de la requête
-                ?>
-
-
-
-  
-
-
- 
-  
+                ?>  
 }
-
 </script>
-
-
-
-
-
-
-
-
-
-
-
-
-          <br><br>
+<br><br>
           <fieldset>
        <legend>
         <?php 
@@ -133,14 +86,13 @@ document.getElementById('<?php echo$donnees['nom']?>').innerText = "0"  ;
            while ($donnees = $req->fetch())
            {
 
-           ?>
-      <?php echo$donnees['nom']?>
+            echo$donnees['nom'];
             
               
             
              
    
-              <?php }
+               }
               $reponse->closeCursor(); // Termine le traitement de la requête
                 ?>
 
