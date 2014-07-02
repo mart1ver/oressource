@@ -105,16 +105,167 @@ document.getElementById('<?php echo$donnees['nom']?>').innerText = "0"  ;
 
 
 
- <p class="text-center"><h1>Point de collecte</h1> 
-           </p> 
-           <b>nom du point de collecte</b>
+
+          <br><br>
+          <fieldset>
+       <legend>
+        <?php 
+          
+            try
+            {
+            // On se connecte à MySQL
+            include('../moteur/dbconfig.php');
+            }
+            catch(Exception $e)
+            {
+            // En cas d'erreur, on affiche un message et on arrête tout
+            die('Erreur : '.$e->getMessage());
+            }
+ 
+            // Si tout va bien, on peut continuer
+ 
+            // On recupère tout le contenu de la table point de collecte
+          
+            $req = $bdd->prepare("SELECT * FROM points_collecte WHERE id = :id ");
+            $req->execute(array('id' => $_GET['numero']));
+ 
+           // On affiche chaque entree une à une
+           while ($donnees = $req->fetch())
+           {
+
+           ?>
+      <?php echo$donnees['nom']?>
+            
+              
+            
+             
+   
+              <?php }
+              $reponse->closeCursor(); // Termine le traitement de la requête
+                ?>
+
+
+
+
+       </legend>
+      
+        
+         
+     
+        
+      </fieldset>     
 <div class="row">
-        <div class="col-md-4" >
-        	Type collecte?
-        <br>
-            localité?
-        <br>
-            adhérent?<input type="checkbox">
+        <div class="col-md-4 col-md-offset-1" >
+          <form>
+         <label>Type de collecte:     </label>  
+          <select>
+
+
+<?php 
+          
+            try
+            {
+            // On se connecte à MySQL
+            include('../moteur/dbconfig.php');
+            }
+            catch(Exception $e)
+            {
+            // En cas d'erreur, on affiche un message et on arrête tout
+            die('Erreur : '.$e->getMessage());
+            }
+ 
+            // Si tout va bien, on peut continuer
+ 
+            // On recupère tout le contenu de la table point de collecte
+            $reponse = $bdd->query('SELECT * FROM type_collecte WHERE visible = "oui"');
+ 
+           // On affiche chaque entree une à une
+           while ($donnees = $reponse->fetch())
+           {
+
+           ?>
+
+  <option value = "<?php echo$donnees['id']?>" ><?php echo$donnees['nom']?></option>
+  
+
+
+
+     
+            <br>
+              
+            
+             
+   
+              <?php }
+              $reponse->closeCursor(); // Termine le traitement de la requête
+                ?>
+
+
+
+        
+
+
+
+
+                    
+        
+          </select>
+<br>
+         <label>Type de collecte:     </label>  
+          <select>
+
+
+<?php 
+          
+            try
+            {
+            // On se connecte à MySQL
+            include('../moteur/dbconfig.php');
+            }
+            catch(Exception $e)
+            {
+            // En cas d'erreur, on affiche un message et on arrête tout
+            die('Erreur : '.$e->getMessage());
+            }
+ 
+            // Si tout va bien, on peut continuer
+ 
+            // On recupère tout le contenu de la table point de collecte
+            $reponse = $bdd->query('SELECT * FROM localites WHERE visible = "oui"');
+ 
+           // On affiche chaque entree une à une
+           while ($donnees = $reponse->fetch())
+           {
+
+           ?>
+
+  <option value = "<?php echo$donnees['id']?>" ><?php echo$donnees['nom']?></option>
+  
+
+
+
+     
+            <br>
+              
+            
+             
+   
+              <?php }
+              $reponse->closeCursor(); // Termine le traitement de la requête
+                ?>
+
+
+
+        
+
+
+
+
+                    
+        
+          </select>
+          <br>
+           <label>La personne est adhérente?</label> <input type="checkbox" value ="oui">
         </div>  
         <div class="col-md-4" >
           
@@ -124,10 +275,10 @@ document.getElementById('<?php echo$donnees['nom']?>').innerText = "0"  ;
         
       </div>
       <div class="row">
-      	<br><br><br>
-        <div class="col-md-4" >
+      	<br>
+        <div class="col-md-3 col-md-offset-1" >
         
-bon d'apport:
+<label>bon d'apport:</label>
 
 
 
@@ -148,7 +299,7 @@ bon d'apport:
             // Si tout va bien, on peut continuer
  
             // On recupère tout le contenu de la table point de collecte
-            $reponse = $bdd->query('SELECT * FROM type_dechets');
+            $reponse = $bdd->query('SELECT * FROM type_dechets WHERE visible = "oui"');
  
            // On affiche chaque entree une à une
            while ($donnees = $reponse->fetch())
@@ -182,12 +333,15 @@ bon d'apport:
                 ?>
 
 </ul>
-
+  <button class="btn btn-default btn-lg">c'est pesé!</button></form>
+            <button class="btn btn-default btn-lg" onclick="tdechet_clear();" >reset</button>
+           
+        <br>
 
 
 
         </div>  
-          <div class="col-md-4" >
+          <div class="col-md-3" >
         <label>liste des types de dechets collectés </label><br>
         
         <?php 
@@ -206,7 +360,7 @@ bon d'apport:
             // Si tout va bien, on peut continuer
  
             // On recupère tout le contenu de la table point de collecte
-            $reponse = $bdd->query('SELECT * FROM type_dechets');
+            $reponse = $bdd->query('SELECT * FROM type_dechets WHERE visible = "oui"');
  
            // On affiche chaque entree une à une
            while ($donnees = $reponse->fetch())
@@ -277,11 +431,7 @@ bon d'apport:
       </div>
       <br><br><br>
       <div class="row">
-        <div class="col-md-4" >
-        	<button class="btn btn-default btn-lg" data-value="C">c'est pesé!</button>
-            <button class="btn btn-default btn-lg" onclick="tdechet_clear();" data-value="0">reset</button>
-            <button class="btn btn-default btn-lg" data-value=",">imprimer</button>
-        <br>
+        
             
         </div>  
         <div class="col-md-4" >

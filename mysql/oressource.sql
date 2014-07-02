@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Client: localhost
--- Généré le : Dim 22 Juin 2014 à 22:49
+-- Généré le : Mer 02 Juillet 2014 à 16:33
 -- Version du serveur: 5.5.34
 -- Version de PHP: 5.3.10-1ubuntu3.9
 
@@ -192,8 +192,8 @@ CREATE TABLE IF NOT EXISTS `points_collecte` (
 
 INSERT INTO `points_collecte` (`id`, `timestamp`, `nom`, `adresse`, `couleur`, `commentaire`, `visible`) VALUES
 (1, '2014-04-08 18:06:36', 'Point d''apport volontaire en boutique', '125 rue du chemin vert', '#d13232', 'point de collecte de la roro', 'oui'),
-(5, '2014-06-12 13:01:52', 'point de collecte itinerant', 'pas d''adresse fixe!', '#4773a3', 'camion 30 mÃ¨tres cube avec balance!', 'oui'),
-(6, '2014-06-12 14:14:31', 'point de collecte en dechetterie', 'porte des lilas', '#c4b13a', 'oui!', 'oui');
+(5, '2014-06-12 13:01:52', 'point de collecte itinerant', 'pas d''adresse fixe!', '#4773a3', 'camion 30 mÃ¨tres cube avec balance! ', 'non'),
+(6, '2014-06-12 14:14:31', 'point de collecte en dechetterie', 'porte des lilas', '#c4b13a', 'oui!', 'non');
 
 -- --------------------------------------------------------
 
@@ -304,20 +304,24 @@ CREATE TABLE IF NOT EXISTS `sorties` (
 --
 
 CREATE TABLE IF NOT EXISTS `type_collecte` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `nom` text NOT NULL,
   `description` text NOT NULL,
   `couleur` text NOT NULL,
-  `visible` text NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `visible` text NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
 
 --
 -- Contenu de la table `type_collecte`
 --
 
 INSERT INTO `type_collecte` (`id`, `timestamp`, `nom`, `description`, `couleur`, `visible`) VALUES
-(0, '2014-06-16 19:38:36', 'apport vollontaire', 'quand une personne apporte d''elle mÃªme un ou des objets Ã  la boutique', '#a20f16', 'oui');
+(1, '2014-07-02 13:21:10', 'apport vollontaire', 'quand une personne apporte d''elle mÃªme un ou des objets Ã  la boutique', '#cb2323', 'oui'),
+(2, '2014-07-02 13:21:40', 'collecte Ã  domicile', 'collecte chez l''habitant en tournÃ©e camion', '#7b1f1f', 'oui'),
+(3, '2014-07-02 13:21:53', 'collecte en pied d''immeule', 'collecte demandÃ©e par un bailleur ', '#934a4a', 'oui'),
+(4, '2014-07-02 13:22:48', 'collecte en brocante', 'collecte effectuÃ©e en fin de brocantes', '#a26b6b', 'non');
 
 -- --------------------------------------------------------
 
@@ -333,18 +337,19 @@ CREATE TABLE IF NOT EXISTS `type_dechets` (
   `couleur` text NOT NULL,
   `visible` text NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=7 ;
 
 --
 -- Contenu de la table `type_dechets`
 --
 
 INSERT INTO `type_dechets` (`id`, `timestamp`, `nom`, `description`, `couleur`, `visible`) VALUES
-(1, '2014-04-08 18:21:16', 'deee', 'dÃ©chets dâ€™Ã©quipements Ã©lectroniques et Ã©lectromÃ©nagers ', '#a59d49', 'oui'),
-(2, '2014-04-08 18:21:40', 'mobilier', 'mobilier', '#dec50f', 'oui'),
-(3, '2014-04-08 18:22:10', 'textile', 'textile', '#982966', 'oui'),
+(1, '2014-04-08 18:21:16', 'deee', 'dÃ©chets dâ€™Ã©quipements Ã©lectroniques et Ã©lectromÃ©nagers ', '#ffcf00', 'oui'),
+(2, '2014-04-08 18:21:40', 'mobilier', 'mobilier', '#43ff12', 'oui'),
+(3, '2014-04-08 18:22:10', 'textile', 'textile', '#81fffb', 'oui'),
 (4, '2014-06-22 20:00:31', 'jouets', 'jeux, jouets , comprend aussi les jeux de societÃ©s', '#b01111', 'oui'),
-(5, '2014-06-22 20:34:38', 'informatique', 'ordis, ecrans , claviers , autres pÃ©riphÃ©riques info. ', '#8c7285', 'oui');
+(5, '2014-06-22 20:34:38', 'informatique', 'ordis, ecrans , claviers , autres pÃ©riphÃ©riques info. DEEE. en fait ... ', '#8c206f', 'non'),
+(6, '2014-07-02 14:00:33', 'vaisselle', 'vaisselle ,tout Ã©tats touts materiaux', '#2253a0', 'oui');
 
 -- --------------------------------------------------------
 
@@ -378,16 +383,14 @@ CREATE TABLE IF NOT EXISTS `utilisateurs` (
   `mail` text NOT NULL,
   `pass` text NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=45 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=46 ;
 
 --
 -- Contenu de la table `utilisateurs`
 --
 
 INSERT INTO `utilisateurs` (`id`, `timestamp`, `niveau`, `nom`, `prenom`, `mail`, `pass`) VALUES
-(41, '2014-06-07 17:53:21', 'c1c5c6v1s1abigmp', 'vert', 'martin', 'mart1ver@gmail.com', '81dc9bdb52d04dc20036dbd8313ed055'),
-(43, '2014-06-15 13:37:33', 'c1c5c6v1s1abip', 'bozo', 'le clown', 'bb@gb.org', '81dc9bdb52d04dc20036dbd8313ed055'),
-(44, '2014-06-16 16:26:03', 'c1c5c6mp', 'dimi', 'di', 'dimi@ff.ff', '47bce5c74f589f4867dbd57e9ca9f808');
+(45, '2014-06-25 22:58:07', 'c1c5c6v1s1abigmp', 'martin', 'vert', 'mart1ver@gmail.com', '81dc9bdb52d04dc20036dbd8313ed055');
 
 -- --------------------------------------------------------
 

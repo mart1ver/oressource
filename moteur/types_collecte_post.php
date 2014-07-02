@@ -49,6 +49,6 @@ $req->execute(array($_POST['nom'],  $_POST['couleur'] , $_POST['description'], "
   $req->closeCursor();
 
 // Redirection du visiteur vers la page de gestion des affectation
-header('Location:../ifaces/types_collecte.php?msg=Localité enregistrée avec succes!');
+header('Location:../ifaces/types_collecte.php?msg=Type de collecte enregistré avec succes!');
  }
 ?>
