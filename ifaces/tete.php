@@ -169,12 +169,14 @@
         <ul class="dropdown-menu">
           <li><a href="recettes_filieres_sortie.php">Recettes points de sortie</a></li>
           <li><a href="edition_filieres_sortie.php">Filières de sortie</a></li>
+          <li><a href="edition_types_sortie.php">Types de sorties hors boutique</a></li>
+          <li><a href="edition_types_poubelles.php">Types de poubelles</a></li>
           <li class="divider"></li>
           <li><a href="utilisateurs.php">Utilisateurs</a></li>
           <li><a href="grilles_prix.php">Grilles de prix</a></li>
           <li class="divider"></li>
           <li><a href="types_collecte.php">Types de collectes</a></li>
-          <li><a href="types_dechets.php">Types de déchet</a></li>
+          <li><a href="types_dechets.php">Types de déchet collectés</a></li>
           <li><a href="types_objets.php">Types d'objets redistribués</a></li>
           <li class="divider"></li>
           <li><a href="edition_points_collecte.php">Points de collecte</a></li>

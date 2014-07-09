@@ -59,7 +59,7 @@ function tdechet_clear()
                 ?>  
 }
 </script>
-<br><br>
+<br><br><div class="panel-body">
           <fieldset>
        <legend>
         <?php 
@@ -217,7 +217,7 @@ function tdechet_clear()
         
           </select>
           <br>
-           <input type="checkbox" value ="oui"><label>La personne adhére à l'association</label> 
+           <input type="checkbox" value ="oui"><label>Adhére à l'association</label> 
         </div>  
         <div class="col-md-4" >
           
@@ -293,8 +293,8 @@ function tdechet_clear()
 
 
         </div>  
-          <div class="col-md-3" >
-        <label>liste des types de dechets collectés </label><br>
+          <div class="col-md-2" >
+        <label>Types d'objets collectés:</label><br>
         
         <?php 
           
@@ -312,7 +312,46 @@ function tdechet_clear()
             // Si tout va bien, on peut continuer
  
             // On recupère tout le contenu de la table point de collecte
-            $reponse = $bdd->query('SELECT * FROM type_dechets WHERE visible = "oui"');
+            $reponse = $bdd->query('SELECT * FROM type_dechets WHERE visible = "oui" AND MOD(id,2)=0');
+ 
+           // On affiche chaque entree une à une
+           while ($donnees = $reponse->fetch())
+           {
+
+           ?>
+    
+            
+              
+            <button class="btn btn-default btn-sm" onclick="tdechet_write('<?php echo$donnees['nom']?>');" ><?php echo$donnees['nom']?></button> 
+              <br>
+          <br>
+   
+              <?php }
+              $reponse->closeCursor(); // Termine le traitement de la requête
+                ?>
+
+        </div>
+
+        <div class="col-md-2" >
+        <br><br>
+        
+        <?php 
+          
+            try
+            {
+            // On se connecte à MySQL
+            include('../moteur/dbconfig.php');
+            }
+            catch(Exception $e)
+            {
+            // En cas d'erreur, on affiche un message et on arrête tout
+            die('Erreur : '.$e->getMessage());
+            }
+ 
+            // Si tout va bien, on peut continuer
+ 
+            // On recupère tout le contenu de la table point de collecte
+            $reponse = $bdd->query('SELECT * FROM type_dechets WHERE visible = "oui" AND MOD(id,2)=1');
  
            // On affiche chaque entree une à une
            while ($donnees = $reponse->fetch())
@@ -333,7 +372,7 @@ function tdechet_clear()
         </div>
 
 
-<div class="col-md-4" >
+<div class="col-md-3" >
           <label>Clavier</label><br>
     <div class="col-md-3" style="width: 200px;">
     	<div class="row">
