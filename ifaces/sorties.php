@@ -59,7 +59,7 @@ function tdechet_clear()
                 ?>  
 }
 </script>
-<br><br><div class="panel-body">
+<div class="panel-body">
           <fieldset>
        <legend>
         <?php 
