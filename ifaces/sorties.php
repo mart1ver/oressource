@@ -358,21 +358,7 @@ function tdechet_clear()
             <button class="btn btn-default btn-lg" onclick="number_write('0');" data-value="0">0</button>
             <button class="btn btn-default btn-lg" onclick="number_write('.');" data-value=",">,</button>
         </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    </div>
+</div>
         </div>
 
 
@@ -385,4 +371,3 @@ function tdechet_clear()
 
 
       <?php include "pied.php" ?>
-sorties.php
