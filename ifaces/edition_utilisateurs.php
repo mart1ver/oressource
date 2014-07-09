@@ -7,7 +7,7 @@
         <h1>Gestions des utilisateurs</h1> 
          <ul class="nav nav-tabs">
   <li ><a href="utilisateurs.php">Inscription</a></li>
-  <li class="active"><a href="#">Edition</a></li>
+  <li class="active"><a>Edition</a></li>
   
 </ul>
     <br>     

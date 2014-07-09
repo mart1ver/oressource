@@ -5,7 +5,7 @@
     <div class="container">
         <h1>Gestions des utilisateurs</h1> 
          <ul class="nav nav-tabs">
-  <li class="active"><a href="#">Inscription</a></li>
+  <li class="active"><a>Inscription</a></li>
   <li><a href="edition_utilisateurs.php">Edition</a></li>
   
 </ul>
