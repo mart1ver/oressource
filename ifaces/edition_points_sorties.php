@@ -132,6 +132,6 @@
    
                               <?php include "pied.php" ?>
                               <?php }
-                                  else
-                                  header('Location: ../') ;
+                              else
+                              header('Location: ../') ;
                               ?>
