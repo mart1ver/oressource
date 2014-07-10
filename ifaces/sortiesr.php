@@ -112,8 +112,8 @@ function tdechet_clear()
 
  <ul class="nav nav-tabs">
   <li><a href="sorties.php">Dons</a></li>
-  <li class="active"><a>Don aux partenaires</a></li>
-  <li><a href="sortiesr.php">Recyclage</a></li>
+  <li><a href="sortiesc.php">Don aux partenaires</a></li>
+  <li class="active"><a>Recyclage</a></li>
   <li><a href="sortiesp.php">Poubelles</a></li>
 </ul>
     <br>   
@@ -124,8 +124,8 @@ function tdechet_clear()
         <div class="col-md-3 col-md-offset-1" >
         	
           <form>
-         <label for="id_convention">Nom du partenaire:</label>  
-          <select name ="id_idconvention" id ="id_convention" class="form-control " required>
+         <label for="id_filiere">Nom de l'entrprise de recyclage</label>  
+          <select name ="id_filiere" id ="id_filiere" class="form-control " required>
 
 
 <?php 
@@ -144,7 +144,7 @@ function tdechet_clear()
             // Si tout va bien, on peut continuer
  
             // On recupère tout le contenu de la table point de collecte
-            $reponse = $bdd->query('SELECT * FROM conventions_sorties WHERE visible = "oui"');
+            $reponse = $bdd->query('SELECT * FROM filieres_sortie WHERE visible = "oui"');
  
            // On affiche chaque entree une à une
            while ($donnees = $reponse->fetch())
@@ -176,6 +176,7 @@ function tdechet_clear()
                     
         
           </select>
+         
 <br>
           
         </div>  

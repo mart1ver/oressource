@@ -112,70 +112,20 @@ function tdechet_clear()
 
  <ul class="nav nav-tabs">
   <li><a href="sorties.php">Dons</a></li>
-  <li class="active"><a>Don aux partenaires</a></li>
+  <li><a href="sortiesc.php">Don aux partenaires</a></li>
   <li><a href="sortiesr.php">Recyclage</a></li>
-  <li><a href="sortiesp.php">Poubelles</a></li>
+  <li class="active"><a>Poubelles</a></li>
 </ul>
     <br>   
 </div>
 </div>          
 <div class="row">
 	  
-        <div class="col-md-3 col-md-offset-1" >
+        <div class="col-md-4 col-md-offset-1" >
         	
           <form>
-         <label for="id_convention">Nom du partenaire:</label>  
-          <select name ="id_idconvention" id ="id_convention" class="form-control " required>
-
-
-<?php 
-          
-            try
-            {
-            // On se connecte à MySQL
-            include('../moteur/dbconfig.php');
-            }
-            catch(Exception $e)
-            {
-            // En cas d'erreur, on affiche un message et on arrête tout
-            die('Erreur : '.$e->getMessage());
-            }
- 
-            // Si tout va bien, on peut continuer
- 
-            // On recupère tout le contenu de la table point de collecte
-            $reponse = $bdd->query('SELECT * FROM conventions_sorties WHERE visible = "oui"');
- 
-           // On affiche chaque entree une à une
-           while ($donnees = $reponse->fetch())
-           {
-
-           ?>
-
-  <option value = "<?php echo$donnees['id']?>" ><?php echo$donnees['nom']?></option>
-  
-
-
-
-     
-              
-            
-             
-   
-              <?php }
-              $reponse->closeCursor(); // Termine le traitement de la requête
-                ?>
-
-
-
-        
-
-
-
-
-                    
-        
-          </select>
+         
+          <label>+poubelles </label> 
 <br>
           
         </div>  

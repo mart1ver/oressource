@@ -111,9 +111,10 @@ function tdechet_clear()
         <div class="col-md-5 col-md-offset-1" >
 
  <ul class="nav nav-tabs">
-  <li class="active"><a>Dons.</a></li>
-  <li><a href="sortiesc.php">Don aux partenaires.</a></li>
-  <li><a href="sortiesr.php">Recyclage et poubelles.</a></li>
+  <li class="active"><a>Dons</a></li>
+  <li><a href="sortiesc.php">Don aux partenaires</a></li>
+  <li><a href="sortiesr.php">Recyclage</a></li>
+  <li><a href="sortiesp.php">Poubelles</a></li>
   
 </ul>
     <br>   
@@ -121,11 +122,12 @@ function tdechet_clear()
 </div>          
 <div class="row">
 	  
-        <div class="col-md-4 col-md-offset-1" >
+        <div class="col-md-3 col-md-offset-1" >
         	
           <form>
-         <label>Type de sortie:     </label>  
-          <select>
+           <label for="type_sortie">Type de sortie:</label>
+          <select name ="type_sortie" id ="type_sortie" class="form-control " required>
+
 
 
 <?php 
@@ -178,7 +180,7 @@ function tdechet_clear()
         
           </select>
 <br>
-           <input type="checkbox" value ="oui"><label>Adhére à l'association</label> 
+           <input name ="adh" id ="adh" type="checkbox" value ="oui"><label for="adh">Adhére à l'association</label> 
         </div>  
         <div class="col-md-4" >
           

@@ -44,8 +44,8 @@ catch(Exception $e)
 // mot de passe crypté md5 
 
 // Insertion du post à l'aide d'une requête préparée
-$req = $bdd->prepare('INSERT INTO filieres_sortie (nom,  couleur, description, visible) VALUES(?, ?,  ?, ?)');
-$req->execute(array($_POST['nom'],  $_POST['couleur'] , $_POST['description'], "oui"));
+$req = $bdd->prepare('INSERT INTO filieres_sortie (nom,  couleur, description, id_type_dechet, visible) VALUES(?, ?, ?,  ?, ?)');
+$req->execute(array($_POST['nom'],  $_POST['couleur'] , $_POST['description'], $_POST['id_dechet'], "oui"));
   $req->closeCursor();
 
 // Redirection du visiteur vers la page de gestion des affectation

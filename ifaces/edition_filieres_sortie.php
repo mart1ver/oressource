@@ -31,9 +31,37 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
       <div class="panel-body">
         <div class="row">
         	<form action="../moteur/filiere_sortie_post.php" method="post">
-  <div class="col-md-3"><label for="saisienom">Nom:</label> <input type="text"                 value ="<?php echo $_GET['nom']?>" name="nom" id="nom" class="form-control " required autofocus></div>
-    <div class="col-md-2"><label for="saisiecommentaire">Déscription:</label> <input type="text" value ="<?php echo $_GET['description']?>" name="description" id="description" class="form-control " required ></div>
+  <div class="col-md-3"><label for="saisienom">Nom:</label> <input type="text"                 value ="<?php echo $_GET['nom']?>" name="nom" id="nom" class="form-control " required autofocus>
+<label>Type de dechets enlevés:</label>
+<select name="id_dechet" id="id_dechet" class="form-control " required>
+            <?php 
+            try
+            {
+            // On se connecte à MySQL
+            include('../moteur/dbconfig.php');
+            }
+            catch(Exception $e)
+            {
+            // En cas d'erreur, on affiche un message et on arrête tout
+            die('Erreur : '.$e->getMessage());
+            }
+            // On affiche une liste deroulante des type de collecte visibles
+            $reponse = $bdd->query('SELECT * FROM type_dechets WHERE visible = "oui"');
+            // On affiche chaque entree une à une
+            while ($donnees = $reponse->fetch())
+            {
+            ?>
+
+      <option value = "<?php echo$donnees['id']?>" ><?php echo$donnees['nom']?></option>
+            <?php }
+            $reponse->closeCursor(); // Termine le traitement de la requête
+            ?>
+    </select>
+  </div>
+    <div class="col-md-3"><label for="saisiecommentaire">Déscription:</label> <input type="text" value ="<?php echo $_GET['description']?>" name="description" id="description" class="form-control " required >
+      
     
+    </div>
   <div class="col-md-1"><label for="saisiecouleur">Couleur:</label> <input type="color"        value ="<?php echo "#".$_GET['couleur']?>" name="couleur" id="couleur" class="form-control " required ></div>
   <div class="col-md-1"><br><button name="creer" class="btn btn-default">Creer!</button></div>
 </form>
@@ -47,6 +75,7 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
             <th>Date de creation:</th>
             <th>Nom:</th>
             <th>Description:</th>
+            <th>dechet enlevé:</th>
             <th>Couleur:</th>
             <th>Visible:</th>
             <th>Modifier:</th>
@@ -67,9 +96,26 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
             }
  
             // Si tout va bien, on peut continuer
+
+
+
+
+
  
-            // On recupère tout le contenu de la table affectations
-            $reponse = $bdd->query('SELECT * FROM filieres_sortie');
+            // On recupère toute la liste des filieres de sortie
+            $reponse = $bdd->query('SELECT filieres_sortie.id, 
+                                           filieres_sortie.timestamp, 
+                                           filieres_sortie.nom,
+                                           filieres_sortie.description,
+                                           type_dechets.nom AS id_type_dechet,
+                                           filieres_sortie.couleur,
+                                           filieres_sortie.visible
+
+
+
+                                             FROM filieres_sortie, type_dechets
+
+                                             WHERE filieres_sortie.id_type_dechet = type_dechets.id  ');
  
            // On affiche chaque entree une à une
            while ($donnees = $reponse->fetch())
@@ -81,6 +127,7 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
             <td><?php echo $donnees['timestamp']?></td>
             <td><?php echo $donnees['nom']?></td>
             <td><?php echo $donnees['description']?></td>
+            <td><?php echo $donnees['id_type_dechet']?></td>
             <td bgcolor="<?php echo $donnees['couleur']?>"><?php echo $donnees['couleur']?></td> 
 <td>
 <form action="../moteur/filiere_sortie_visible.php" method="post">
@@ -140,6 +187,7 @@ else // SINON
        </tbody>
         <tfoot>
           <tr>
+            <th></th>
             <th></th>
             <th></th>
             <th></th>
