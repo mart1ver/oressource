@@ -4,7 +4,7 @@
       { include "tete.php" ?>
     <div class="container">
         <h1>Gestions des localités</h1> 
-         <div class="panel-heading">Modifier les données concernant localité n° <?php echo $_POST['id']?> </div>
+         <div class="panel-heading">Modifier les données concernant la localité n° <?php echo $_POST['id']?> </div>
 <?php
 //on obtien la couleur de la localité dans la base
 

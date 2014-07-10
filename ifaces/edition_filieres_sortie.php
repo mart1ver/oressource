@@ -3,9 +3,9 @@
     if (isset($_SESSION['id']) AND (strpos($_SESSION['niveau'], 'g') !== false))
       { include "tete.php" ?>
     <div class="container">
-        <h1>Gestions des entreprises de recyclage et des poubelles</h1> 
-         <div class="panel-heading">Gerez ici la liste de vos  entreprises de recyclage partenaires,anisi que celle de vos poubelles.</div>
-         <p>Permet de diffferencier les sorties dechet au momment de la mise en bilan </p>
+        <h1>Gestions des entreprises de recyclage</h1> 
+         <div class="panel-heading">Gerez ici la liste de vos  entreprises de recyclage.</div>
+         <p>Permet de diffferencier les sorties dechet au momment de la mise en bilan.</p>
 <?php
 if ($_GET['err'] == "") // SI on a pas de message d'erreur
 {
@@ -31,8 +31,8 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
       <div class="panel-body">
         <div class="row">
         	<form action="../moteur/filiere_sortie_post.php" method="post">
-  <div class="col-md-3"><label for="saisienom">Nom:</label> <input type="text"                 value ="<?php echo $_GET['nom']?>" name="nom" id="nom" class="form-control " required autofocus>
-<label>Type de dechets enlevés:</label>
+  <div class="col-md-3"><label for="saisienom">Nom:</label> <input type="text"value ="<?php echo $_GET['nom']?>" name="nom" id="nom" class="form-control " required autofocus>
+<label>Type de dechets enlevé:</label>
 <select name="id_dechet" id="id_dechet" class="form-control " required>
             <?php 
             try
@@ -58,7 +58,7 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
             ?>
     </select>
   </div>
-    <div class="col-md-3"><label for="saisiecommentaire">Déscription:</label> <input type="text" value ="<?php echo $_GET['description']?>" name="description" id="description" class="form-control " required >
+    <div class="col-md-3"><label for="description">Déscription:</label> <input type="text" value ="<?php echo $_GET['description']?>" name="description" id="description" class="form-control " required >
       
     
     </div>
@@ -132,6 +132,7 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
 <td>
 <form action="../moteur/filiere_sortie_visible.php" method="post">
 
+  
   <input type="hidden" name ="id" id="id" value="<?php echo $donnees['id']?>">
   <input type="hidden"name ="visible" id ="visible" value="<?php if ($donnees['visible'] == "oui") 
 {echo "non";}
@@ -165,7 +166,7 @@ else // SINON
 <input type="hidden" name ="nom" id="nom" value="<?php echo $donnees['nom']?>">
 <input type="hidden" name ="description" id="description" value="<?php echo $donnees['description']?>">
 <input type="hidden" name ="couleur" id="couleur" value="<?php echo substr($_POST['couleur'],1)?>">
-
+<input type="hidden" name ="id_type_dechet" id="id_type_dechet" value="<?php echo $donnees['id_type_dechet']?>">
   <button  class="btn btn-warning btn-sm" >modifier</button>
 
 
