@@ -77,7 +77,7 @@
   <td><?php echo $donnees['nom']?></td>
   <td><?php echo $donnees['commentaire']?></td>
   <td bgcolor="<?php echo $donnees['couleur']?>"><?php echo $donnees['couleur']?></td> 
-  <td><a href="<?php echo $donnees['relation_openstreetmap']?>" target="_blank"><p style="text-align:center"><span class="glyphicon glyphicon-camera"></span></p></a></td>
+  <td><a href="<?php echo $donnees['relation_openstreetmap']?>" target="_blank"><p style="text-align:center"><span class="glyphicon glyphicon-link"></span></p></a></td>
   <td>
   <form action="../moteur/localites_visibles.php" method="post"><input type="hidden" name ="id" id="id" value="<?php echo $donnees['id']?>">
   <input type="hidden"name ="visible" id ="visible" value="<?php if ($donnees['visible'] == "oui"){echo "non";}else{echo "oui";}?>">

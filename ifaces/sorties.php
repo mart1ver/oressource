@@ -126,7 +126,7 @@ function tdechet_clear()
         	
           <form>
            <label for="type_sortie">Type de sortie:</label>
-          <select name ="type_sortie" id ="type_sortie" class="form-control " required>
+          <select name ="type_sortie" id ="type_sortie" class="form-control" required>
 
 
 
@@ -180,7 +180,7 @@ function tdechet_clear()
         
           </select>
 <br>
-           <input name ="adh" id ="adh" type="checkbox" value ="oui"><label for="adh">Adhére à l'association</label> 
+           <input name ="adh" id ="adh" type="checkbox" value ="oui"><label for="adh">Adhére à l'association</label><a href="adhesions.php" target="_blank"><span style="float:right;" class="glyphicon glyphicon-pencil"></span></a> 
         </div>  
         <div class="col-md-4" >
           

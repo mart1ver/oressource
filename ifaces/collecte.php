@@ -69,10 +69,10 @@
        </legend>
       </fieldset>     
 <div class="row">
-  <div class="col-md-4 col-md-offset-1" >
+  <div class="col-md-3 col-md-offset-1" >
     <form>
-    <label>Type de collecte:</label>  
-    <select>
+    <label for="id_type_collecte">Type de collecte:</label>  
+    <select name ="id_type_collecte" id ="id_type_collecte" class="form-control">
             <?php 
             try
             {
@@ -97,8 +97,13 @@
             ?>
     </select>
     <br>
-    <label>Localité:</label>  
-    <select>
+    
+    <input name ="adh" id ="adh" type="checkbox" value ="oui"><label for="adh">Adhére à l'association</label> <a href="adhesions.php" target="_blank"><span style="float:right;" class="glyphicon glyphicon-pencil"></span></a>
+  </div> 
+
+<div class="col-md-3" >
+<label for="loc">Localité:</label>  
+    <select name ="loc" id ="loc" class="form-control">
             <?php 
             try
             {
@@ -123,8 +128,9 @@
             ?>
     </select>
     <br>
-    <input type="checkbox" value ="oui"><label>Adhére à l'association</label> 
-  </div>  
+
+</div> 
+
   </div>
 <div class="row">
 <br>
