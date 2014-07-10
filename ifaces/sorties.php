@@ -111,9 +111,9 @@ function tdechet_clear()
         <div class="col-md-5 col-md-offset-1" >
 
  <ul class="nav nav-tabs">
-  <li class="active"><a>Génerales</a></li>
-  <li><a href="sortiesc.php">Conventionées</a></li>
-  <li><a href="sortiesr.php">Recyclage et poubelles</a></li>
+  <li class="active"><a>Dons.</a></li>
+  <li><a href="sortiesc.php">Don aux partenaires.</a></li>
+  <li><a href="sortiesr.php">Recyclage et poubelles.</a></li>
   
 </ul>
     <br>   

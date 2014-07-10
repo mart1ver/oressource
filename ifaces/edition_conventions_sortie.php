@@ -3,9 +3,9 @@
     if (isset($_SESSION['id']) AND (strpos($_SESSION['niveau'], 'g') !== false))
       { include "tete.php" ?>
     <div class="container">
-        <h1>Gestions des types de sorties hors boutique</h1> 
-         <div class="panel-heading">Gerez ici les types de sortie hors boutique.</div>
-         <p>Permet de diffferencier les diffentes destinations des dons (don a un particulier , un associztion, lié à une convention,...) </p>
+        <h1>Gestions des conventions avec les partenaires</h1> 
+         <div class="panel-heading">Gerez ici la liste de vos partenaires de réemploi.</div>
+         <p>Permet de diffferencier les partenaires au momment de la mise en bilan </p>
 <?php
 if ($_GET['err'] == "") // SI on a pas de message d'erreur
 {
@@ -30,7 +30,7 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
 ?>
       <div class="panel-body">
         <div class="row">
-        	<form action="../moteur/types_sortie_post.php" method="post">
+        	<form action="../moteur/convention_sortie_post.php" method="post">
   <div class="col-md-3"><label for="saisienom">Nom:</label> <input type="text"                 value ="<?php echo $_GET['nom']?>" name="nom" id="nom" class="form-control " required autofocus></div>
     <div class="col-md-2"><label for="saisiecommentaire">Déscription:</label> <input type="text" value ="<?php echo $_GET['description']?>" name="description" id="description" class="form-control " required ></div>
     
@@ -69,7 +69,7 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
             // Si tout va bien, on peut continuer
  
             // On recupère tout le contenu de la table affectations
-            $reponse = $bdd->query('SELECT * FROM type_sortie');
+            $reponse = $bdd->query('SELECT * FROM conventions_sorties');
  
            // On affiche chaque entree une à une
            while ($donnees = $reponse->fetch())
@@ -83,7 +83,7 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
             <td><?php echo $donnees['description']?></td>
             <td bgcolor="<?php echo $donnees['couleur']?>"><?php echo $donnees['couleur']?></td> 
 <td>
-<form action="../moteur/types_sortie_visible.php" method="post">
+<form action="../moteur/convention_sortie_visible.php" method="post">
 
   <input type="hidden" name ="id" id="id" value="<?php echo $donnees['id']?>">
   <input type="hidden"name ="visible" id ="visible" value="<?php if ($donnees['visible'] == "oui") 
@@ -112,7 +112,7 @@ else // SINON
 
 <td>
 
-<form action="modification_types_sortie.php" method="post">
+<form action="modification_convention_sortie.php" method="post">
 
 <input type="hidden" name ="id" id="id" value="<?php echo $donnees['id']?>">
 <input type="hidden" name ="nom" id="nom" value="<?php echo $donnees['nom']?>">

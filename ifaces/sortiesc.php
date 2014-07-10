@@ -111,8 +111,8 @@ function tdechet_clear()
         <div class="col-md-5 col-md-offset-1" >
 
  <ul class="nav nav-tabs">
-  <li><a href="sorties.php">Génerales</a></li>
-  <li class="active"><a>Conventionées</a></li>
+  <li><a href="sorties.php">Dons</a></li>
+  <li class="active"><a>Don aux partenaires</a></li>
   <li><a href="sortiesr.php">Recyclage et poubelles</a></li>
   
 </ul>
@@ -144,7 +144,7 @@ function tdechet_clear()
             // Si tout va bien, on peut continuer
  
             // On recupère tout le contenu de la table point de collecte
-            $reponse = $bdd->query('SELECT * FROM type_sortie WHERE visible = "oui"');
+            $reponse = $bdd->query('SELECT * FROM conventions_sorties WHERE visible = "oui"');
  
            // On affiche chaque entree une à une
            while ($donnees = $reponse->fetch())
@@ -158,7 +158,6 @@ function tdechet_clear()
 
 
      
-            <br>
               
             
              
@@ -178,7 +177,7 @@ function tdechet_clear()
         
           </select>
 <br>
-           <input type="checkbox" value ="oui"><label>Adhére à l'association</label> 
+          
         </div>  
         <div class="col-md-4" >
           
