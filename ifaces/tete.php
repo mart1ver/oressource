@@ -169,7 +169,7 @@
         <ul class="dropdown-menu">
           <li><a href="recettes_filieres_sortie.php">Recettes points de sortie</a></li>
           <li><a href="edition_filieres_sortie.php">Entreprises de recyclage</a></li>
-          <li><a href="edition_types_sortie.php">Motifs de dond aux particuliers</a></li>
+          <li><a href="edition_types_sortie.php">Types de sorties hors boutique</a></li>
           <li><a href="edition_conventions_sortie.php">Conventions avec les partenaires</a></li>
           <li><a href="edition_types_poubelles.php">Types de poubelles</a></li>
           <li class="divider"></li>

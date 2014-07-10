@@ -5,7 +5,7 @@
     <div class="container">
         <h1>Gestions des types de sorties hors boutique</h1> 
          <div class="panel-heading">Gerez ici les types de sortie hors boutique.</div>
-         <p>Permet de diffferencier les diffentes destinations des dons (don a un particulier , un associztion, lié à une convention,...) </p>
+         <p>Permet de diffferencier les diffentes destinations des dons (don a un particulier , une association, lié à une convention,...) </p>
 <?php
 if ($_GET['err'] == "") // SI on a pas de message d'erreur
 {
