@@ -112,9 +112,9 @@ function tdechet_clear()
 
  <ul class="nav nav-tabs">
   <li class="active"><a>Dons</a></li>
-  <li><a href="sortiesc.php">Don aux partenaires</a></li>
-  <li><a href="sortiesr.php">Recyclage</a></li>
-  <li><a href="sortiesp.php">Poubelles</a></li>
+  <li><a href="<?php echo  "sortiesc.php?numero=" . $_GET['numero']?>">Don aux partenaires</a></li>
+  <li><a href="<?php echo  "sortiesr.php?numero=" . $_GET['numero']?>">Recyclage</a></li>
+  <li><a href="<?php echo  "sortiesp.php?numero=" . $_GET['numero']?>">Poubelles</a></li>
   
 </ul>
     <br>   

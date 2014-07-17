@@ -111,10 +111,10 @@ function tdechet_clear()
         <div class="col-md-5 col-md-offset-1" >
 
  <ul class="nav nav-tabs">
-  <li><a href="sorties.php">Dons</a></li>
-  <li><a href="sortiesc.php">Don aux partenaires</a></li>
+  <li><a href="<?php echo  "sorties.php?numero=" . $_GET['numero']?>">Dons</a></li>
+  <li><a href="<?php echo  "sortiesc.php?numero=" . $_GET['numero']?>">Don aux partenaires</a></li>
   <li class="active"><a>Recyclage</a></li>
-  <li><a href="sortiesp.php">Poubelles</a></li>
+  <li><a href="<?php echo  "sortiesp.php?numero=" . $_GET['numero']?>">Poubelles</a></li>
 </ul>
     <br>   
 </div>
@@ -255,78 +255,11 @@ function tdechet_clear()
 
         </div> 
          <div class="col-md-2" >
-         	<label>tyes d'objets donnés:</label><br>
-         	 <?php 
-          
-            try
-            {
-            // On se connecte à MySQL
-            include('../moteur/dbconfig.php');
-            }
-            catch(Exception $e)
-            {
-            // En cas d'erreur, on affiche un message et on arrête tout
-            die('Erreur : '.$e->getMessage());
-            }
- 
-            // Si tout va bien, on peut continuer
- 
-            // On recupère tout le contenu de la table point de collecte
-            $reponse = $bdd->query('SELECT * FROM type_dechets WHERE visible = "oui" AND MOD(id,2)=0');
- 
-           // On affiche chaque entree une à une
-           while ($donnees = $reponse->fetch())
-           {
-
-           ?>
-    
-            
-              
-            <button class="btn btn-default btn-sm" onclick="tdechet_write('<?php echo$donnees['nom']?>');" ><?php echo$donnees['nom']?></button> 
-              <br>
-          <br>
-   
-              <?php }
-              $reponse->closeCursor(); // Termine le traitement de la requête
-                ?>
+         	<label>Validez:</label><br>
+           <button class="btn btn-default btn-sm" onclick="tdechet_write('deee');" >deee</button> 
+         	 
          	 </div> 
-          <div class="col-md-2" >
-        <br><br>        
-        <?php 
           
-            try
-            {
-            // On se connecte à MySQL
-            include('../moteur/dbconfig.php');
-            }
-            catch(Exception $e)
-            {
-            // En cas d'erreur, on affiche un message et on arrête tout
-            die('Erreur : '.$e->getMessage());
-            }
- 
-            // Si tout va bien, on peut continuer
- 
-            // On recupère tout le contenu de la table point de collecte
-            $reponse = $bdd->query('SELECT * FROM type_dechets WHERE visible = "oui" AND MOD(id,2)=1');
- 
-           // On affiche chaque entree une à une
-           while ($donnees = $reponse->fetch())
-           {
-
-           ?>
-    
-            
-              
-            <button class="btn btn-default btn-sm" onclick="tdechet_write('<?php echo$donnees['nom']?>');" ><?php echo$donnees['nom']?></button> 
-              <br>
-          <br>
-   
-              <?php }
-              $reponse->closeCursor(); // Termine le traitement de la requête
-                ?>
-
-        </div>
 
 
 <div class="col-md-3" >

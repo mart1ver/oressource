@@ -44,8 +44,8 @@ function tdechet_clear()
  
             // Si tout va bien, on peut continuer
  
-            // On recupère tout le contenu de la table point de collecte
-            $reponse = $bdd->query('SELECT * FROM type_dechets');
+            // On recupère tout le contenu de la table types_poubelles
+            $reponse = $bdd->query('SELECT * FROM types_poubelles');
  
            // On affiche chaque entree une à une
            while ($donnees = $reponse->fetch())
@@ -77,7 +77,7 @@ function tdechet_clear()
  
             // Si tout va bien, on peut continuer
  
-            // On recupère tout le contenu de la table point de collecte
+            // On recupère tout le contenu de la table points_sortie
           
             $req = $bdd->prepare("SELECT * FROM points_sortie WHERE id = :id ");
             $req->execute(array('id' => $_GET['numero']));
@@ -93,7 +93,7 @@ function tdechet_clear()
              
    
                }
-              $reponse->closeCursor(); // Termine le traitement de la requête
+              $req->closeCursor(); // Termine le traitement de la requête
                 ?>
 
 
@@ -111,9 +111,9 @@ function tdechet_clear()
         <div class="col-md-5 col-md-offset-1" >
 
  <ul class="nav nav-tabs">
-  <li><a href="sorties.php">Dons</a></li>
-  <li><a href="sortiesc.php">Don aux partenaires</a></li>
-  <li><a href="sortiesr.php">Recyclage</a></li>
+  <li><a href="<?php echo  "sorties.php?numero=" . $_GET['numero']?>">Dons</a></li>
+  <li><a href="<?php echo  "sortiesc.php?numero=" . $_GET['numero']?>">Don aux partenaires</a></li>
+  <li><a href="<?php echo  "sortiesr.php?numero=" . $_GET['numero']?>">Recyclage</a></li>
   <li class="active"><a>Poubelles</a></li>
 </ul>
     <br>   
@@ -140,7 +140,7 @@ function tdechet_clear()
       	<br>
         <div class="col-md-3 col-md-offset-1" >
         
-<label>bon de sortie hors boutique:</label>
+<label>bon de sortie poubelles:</label>
 
 
 
@@ -161,7 +161,7 @@ function tdechet_clear()
             // Si tout va bien, on peut continuer
  
             // On recupère tout le contenu de la table point de collecte
-            $reponse = $bdd->query('SELECT * FROM type_dechets WHERE visible = "oui"');
+            $reponse = $bdd->query('SELECT * FROM types_poubelles WHERE visible = "oui"');
  
            // On affiche chaque entree une à une
            while ($donnees = $reponse->fetch())
@@ -204,7 +204,7 @@ function tdechet_clear()
 
         </div> 
          <div class="col-md-2" >
-         	<label>tyes d'objets donnés:</label><br>
+         	<label>types de bacs de sortie poubelles:</label><br>
          	 <?php 
           
             try
@@ -221,7 +221,7 @@ function tdechet_clear()
             // Si tout va bien, on peut continuer
  
             // On recupère tout le contenu de la table point de collecte
-            $reponse = $bdd->query('SELECT * FROM type_dechets WHERE visible = "oui" AND MOD(id,2)=0');
+            $reponse = $bdd->query('SELECT * FROM types_poubelles WHERE visible = "oui" AND MOD(id,2)=0');
  
            // On affiche chaque entree une à une
            while ($donnees = $reponse->fetch())
@@ -257,7 +257,7 @@ function tdechet_clear()
             // Si tout va bien, on peut continuer
  
             // On recupère tout le contenu de la table point de collecte
-            $reponse = $bdd->query('SELECT * FROM type_dechets WHERE visible = "oui" AND MOD(id,2)=1');
+            $reponse = $bdd->query('SELECT * FROM types_poubelles WHERE visible = "oui" AND MOD(id,2)=1');
  
            // On affiche chaque entree une à une
            while ($donnees = $reponse->fetch())
