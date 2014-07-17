@@ -3,9 +3,9 @@
 -- http://www.phpmyadmin.net
 --
 -- Client: localhost
--- Généré le : Jeu 10 Juillet 2014 à 21:38
+-- Généré le : Jeu 17 Juillet 2014 à 19:51
 -- Version du serveur: 5.5.34
--- Version de PHP: 5.3.10-1ubuntu3.9
+-- Version de PHP: 5.3.10-1ubuntu3.13
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -381,8 +381,24 @@ CREATE TABLE IF NOT EXISTS `sorties` (
 CREATE TABLE IF NOT EXISTS `types_poubelles` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `nom` text NOT NULL,
+  `description` text NOT NULL,
+  `masse_bac` text NOT NULL,
+  `ultime` text NOT NULL,
+  `couleur` text NOT NULL,
+  `visible` text NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
+
+--
+-- Contenu de la table `types_poubelles`
+--
+
+INSERT INTO `types_poubelles` (`id`, `timestamp`, `nom`, `description`, `masse_bac`, `ultime`, `couleur`, `visible`) VALUES
+(1, '2014-07-17 13:22:03', 'petite poubelle verte', 'tout venant bac 100 litres', '19', 'oui', '#a94a4a', 'oui'),
+(2, '2014-07-17 13:22:06', 'grande poubelle verte', 'grande poubelle verte', '27', 'oui', '#46de12', 'oui'),
+(3, '2014-07-17 15:18:10', 'petite poubelle jaune', 'recyclage de empbalages 100 litres', '19', 'oui', '#000000', 'oui'),
+(4, '2014-07-17 15:24:42', 'grande poubelle jaune', 'a', '19', 'oui', '#000000', 'oui');
 
 -- --------------------------------------------------------
 
