@@ -7,11 +7,6 @@
          <div class="panel-heading">Modifier les données concernant le type de dechets n° <?php echo $_POST['id']?> </div>
 <?php
 //on obtien la couleur de la localité dans la base
-
-
-
-
-
             try
             {
             // On se connecte à MySQL
@@ -67,9 +62,9 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
         	<form action="../moteur/modification_types_dechets_post.php" method="post">
             <input type="hidden" name ="id" id="id" value="<?php echo $_POST['id']?>">
 
-  <div class="col-md-2"><label for="saisienom">Nom:</label> <input type="text"value ="<?php echo $_POST['nom']?>" name="nom" id="nom" class="form-control " required autofocus></div>
-  <div class="col-md-3"><label for="saisieaddresse">Déscription:</label> <input type="text"value ="<?php echo $_POST['description']?>" name="description" id="description" class="form-control " required ></div>
-  <div class="col-md-1"><label for="saisiecouleur">Couleur:</label> <input type="color"value ="<?php echo $couleur ?>"name="couleur" id="couleur" class="form-control " required ></div>
+  <div class="col-md-2"><label for="nom">Nom:</label> <input type="text"value ="<?php echo $_POST['nom']?>" name="nom" id="nom" class="form-control " required autofocus></div>
+  <div class="col-md-3"><label for="addresse">Déscription:</label> <input type="text"value ="<?php echo $_POST['description']?>" name="description" id="description" class="form-control " required ></div>
+  <div class="col-md-1"><label for="couleur">Couleur:</label> <input type="color"value ="<?php echo $couleur ?>"name="couleur" id="couleur" class="form-control " required ></div>
   <div class="col-md-1"><br><button name="creer" class="btn btn-warning">Modifier</button></div>
 </form>
 <br>

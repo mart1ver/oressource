@@ -3,15 +3,10 @@
     if (isset($_SESSION['id']) AND (strpos($_SESSION['niveau'], 'g') !== false))
       { include "tete.php" ?>
     <div class="container">
-        <h1>Gestions des types de collecte</h1> 
-         <div class="panel-heading">Modifier les données concernant le type de collecte n° <?php echo $_POST['id']?> </div>
+        <h1>GGestions des types et des masses des poubelles de la ville utilisées par la structure</h1> 
+         <div class="panel-heading">Modifier les données concernant le type de bac n° <?php echo $_POST['id']?> </div>
 <?php
 //on obtien la couleur de la localité dans la base
-
-
-
-
-
             try
             {
             // On se connecte à MySQL
@@ -26,7 +21,7 @@
             // On recupère tout le contenu de la table point de vente
 
 
-$req = $bdd->prepare("SELECT couleur FROM type_collecte WHERE id = :id ");
+$req = $bdd->prepare("SELECT couleur FROM types_poubelles WHERE id = :id ");
 $req->execute(array('id' => $_POST['id']));
 $donnees = $req->fetch();
 
@@ -64,19 +59,38 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
 
       <div class="panel-body">
         <div class="row">
-        	<form action="../moteur/modification_types_collecte_post.php" method="post">
+          <form action="../moteur/modification_type_poubelles_post.php" method="post">
             <input type="hidden" name ="id" id="id" value="<?php echo $_POST['id']?>">
 
   <div class="col-md-2"><label for="nom">Nom:</label> <input type="text"value ="<?php echo $_POST['nom']?>" name="nom" id="nom" class="form-control " required autofocus></div>
-  <div class="col-md-3"><label for="addresse">Déscription:</label> <input type="text"value ="<?php echo $_POST['description']?>" name="description" id="description" class="form-control " required ></div>
-  <div class="col-md-1"><label for="couleur">Couleur:</label> <input type="color"value ="<?php echo $couleur ?>"name="couleur" id="couleur" class="form-control " required ></div>
-  <div class="col-md-1"><br><button name="creer" class="btn btn-warning">Modifier</button></div>
+  <div class="col-md-3"><label for="description">Déscription:</label> <input type="text"value ="<?php echo $_POST['description']?>" name="description" id="description" class="form-control " required ></div>
+  <div class="col-md-2"><label for="masse_bac">Masse du bac(Kg):</label> <input type="text"value ="<?php echo $_POST['masse_bac']?>" name="masse_bac" id="masse_bac" class="form-control " required ></div>
+ <div class="col-md-2"><label for="ultime">Déchet ultime ?</label><br> <input name ="ultime" id ="ultime" type="checkbox" value ="oui">Oui.</div>
+  <div class="col-md-1"><label for="couleur">Couleur:</label> <input type="color"        value ="<?php echo $couleur?>" name="couleur" id="couleur" class="form-control " required autofocus></div>
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <div class="col-md-1"><br><button name="creer" class="btn btn-warning">Modifier!</button></div>
 </form>
 <br>
-<a href="types_collecte.php">
-<button name="creer" class="btn btn">Anuler</button>
+<a href="edition_types_poubelles.php">
+ <button name="creer" class="btn btn">Anuler</button>
 </a>
-
 </div>
       </div>
      

@@ -1,5 +1,13 @@
-<?php session_start(); ?>
-<?php
+<?php session_start(); 
+//Oressource 2014, formulaire de referencement des filieres de sortie (entreprises de recyclage) en lien avec la structure
+//Simple formulaire de saisie , lise des filieres de sortie deja référencées et possibilité de les cacher à l'utilisateur ou de modifier les données
+//
+//
+//
+//
+//
+//
+//
     if (isset($_SESSION['id']) AND (strpos($_SESSION['niveau'], 'g') !== false))
       { include "tete.php" ?>
     <div class="container">
@@ -31,7 +39,7 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
       <div class="panel-body">
         <div class="row">
         	<form action="../moteur/filiere_sortie_post.php" method="post">
-  <div class="col-md-3"><label for="saisienom">Nom:</label> <input type="text"value ="<?php echo $_GET['nom']?>" name="nom" id="nom" class="form-control " required autofocus>
+  <div class="col-md-3"><label for="nom">Nom:</label> <input type="text"value ="<?php echo $_GET['nom']?>" name="nom" id="nom" class="form-control " required autofocus>
 <label>Type de dechets enlevé:</label>
 <select name="id_dechet" id="id_dechet" class="form-control " required>
             <?php 
@@ -62,7 +70,7 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
       
     
     </div>
-  <div class="col-md-1"><label for="saisiecouleur">Couleur:</label> <input type="color"        value ="<?php echo "#".$_GET['couleur']?>" name="couleur" id="couleur" class="form-control " required ></div>
+  <div class="col-md-1"><label for="couleur">Couleur:</label> <input type="color"        value ="<?php echo "#".$_GET['couleur']?>" name="couleur" id="couleur" class="form-control " required ></div>
   <div class="col-md-1"><br><button name="creer" class="btn btn-default">Creer!</button></div>
 </form>
 </div>

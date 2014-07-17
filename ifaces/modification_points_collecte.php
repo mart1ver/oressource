@@ -67,10 +67,10 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
         	<form action="../moteur/modification_points_collecte_post.php" method="post">
             <input type="hidden" name ="id" id="id" value="<?php echo $_POST['id']?>">
 
-  <div class="col-md-3"><label for="saisienom">Nom:</label> <input type="text"                 value ="<?php echo $_POST['nom']?>" name="nom" id="nom" class="form-control " required autofocus></div>
-  <div class="col-md-3"><label for="saisieaddresse">Addresse:</label> <input type="text"       value ="<?php echo $_POST['adresse']?>" name="adresse" id="adresse" class="form-control " required ></div>
-  <div class="col-md-3"><label for="saisiecommentaire">Commentaire:</label> <input type="text" value ="<?php echo $_POST['commentaire']?>" name="commentaire" id="commentaire" class="form-control " required ></div>
-  <div class="col-md-1"><label for="saisiecouleur">Couleur:</label> <input type="color"        value ="<?php echo $couleur ?>" name="couleur" id="couleur" class="form-control " required ></div>
+  <div class="col-md-3"><label for="nom">Nom:</label> <input type="text"                 value ="<?php echo $_POST['nom']?>" name="nom" id="nom" class="form-control " required autofocus></div>
+  <div class="col-md-3"><label for="addresse">Addresse:</label> <input type="text"       value ="<?php echo $_POST['adresse']?>" name="adresse" id="adresse" class="form-control " required ></div>
+  <div class="col-md-3"><label for="commentaire">Commentaire:</label> <input type="text" value ="<?php echo $_POST['commentaire']?>" name="commentaire" id="commentaire" class="form-control " required ></div>
+  <div class="col-md-1"><label for="couleur">Couleur:</label> <input type="color"        value ="<?php echo $couleur ?>" name="couleur" id="couleur" class="form-control " required ></div>
   <div class="col-md-1"><br><button name="creer" class="btn btn-warning">Modifier!</button></div>
 </form>
 <br>

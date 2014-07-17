@@ -1,5 +1,14 @@
-<?php session_start(); ?>
-<?php include "tete.php";?>
+<?php session_start();
+//Oressource 2014, formulaire de collecte
+//Simple formulaire de saisie des matieres d'ouevres entrantes dans la structure.
+//Doit etre fonctionnel avec un ecran tactille.
+//Du javascript permet l'interactivité du keypad et des boutons centraux avec le bon de collecte 
+//
+//
+//
+//
+//
+include "tete.php";?>
 <script type="text/javascript">
           function number_write(x)
           {
@@ -31,6 +40,7 @@
                       // En cas d'erreur, on affiche un message et on arrête tout
                       die('Erreur : '.$e->getMessage());
                       }
+                      // On obtient toute la table type_dechets de maniere à remetre à zero tout les items du bon d'apport vollontaire
                       $reponse = $bdd->query('SELECT * FROM type_dechets');
                       // On affiche chaque entree une à une
                       while ($donnees = $reponse->fetch())
@@ -213,7 +223,7 @@
             // En cas d'erreur, on affiche un message et on arrête tout
             die('Erreur : '.$e->getMessage());
             }
-            // ON AFFICHE un bouton par type de dechet visible(id pair)
+            // ON AFFICHE un bouton par type de dechet visible(id impair)
             $reponse = $bdd->query('SELECT * FROM type_dechets WHERE visible = "oui" AND MOD(id,2)=1');
             // On affiche chaque entree une à une
             while ($donnees = $reponse->fetch())

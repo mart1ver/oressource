@@ -1,5 +1,4 @@
-<?php session_start(); ?>
-<?php
+<?php session_start(); 
      if (isset($_SESSION['id']) AND (strpos($_SESSION['niveau'], 'g') !== false))
       {  include "tete.php" ?>
     <div class="container">
@@ -36,7 +35,7 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
                         <label for="prenom">Prénom:</label> <input type="text" value ="<?php echo $_POST['prenom']?>" name="prenom" id="prenom" class="form-control " required><br>
                         <label for="mail">Mail:</label> <input type="email" value ="<?php echo $_POST['mail']?>" name="mail" id="mail" class="form-control " required ><br>
                           </div>
-  <div class="col-md-3"><div class="alert alert-info"><label for="niveau">Pérmissions d'accès</label> <br>
+  <div class="col-md-3"><div class="alert alert-info"><label>Pérmissions d'accès</label> <br>
           <input type="checkbox" name="niveaua" id="niveaua" value="a" <?php if((strpos($_POST['niveau'], 'a') !== false)){ echo "checked";} ?> > Adhésions<br>
           <input type="checkbox" name="niveaubi" id="niveaubi" value="bi"<?php if((strpos($_POST['niveau'], 'bi') !== false)){ echo "checked";} ?>> Bilans<br>
           <input type="checkbox" name="niveaug" id="niveaug" value="g"<?php if((strpos($_POST['niveau'], 'g') !== false)){ echo "checked";} ?>> Gestion<br>
