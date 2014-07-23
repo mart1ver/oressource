@@ -19,11 +19,12 @@ include "tete.php";?>
           {
             document.getElementById("number").value = "";
           }
-          function tdechet_write(y)
+          function tdechet_write(y,z)
           {
           if (document.getElementById("number").value > 0) 
           {
              document.getElementById(y).innerText = parseFloat(document.getElementById(y).innerText) + parseFloat(document.getElementById("number").value)  ;
+              document.getElementById(z).value = parseFloat(document.getElementById(z).value) + parseFloat(document.getElementById("number").value)  ;
              document.getElementById("number").value = "";  
           }
           }
@@ -80,7 +81,7 @@ include "tete.php";?>
       </fieldset>     
 <div class="row">
   <div class="col-md-3 col-md-offset-1" >
-    <form>
+    <form action="../moteur/collecte_post.php" method="post">
     <label for="id_type_collecte">Type de collecte:</label>  
     <select name ="id_type_collecte" id ="id_type_collecte" class="form-control" autofocus >
             <?php 
@@ -107,8 +108,8 @@ include "tete.php";?>
             ?>
     </select>
     <br>
-    
-    <input name ="adh" id ="adh" type="checkbox" value ="oui"><label for="adh">Adhére à l'association</label> <a href="adhesions.php"  target="_blank"><span style="float:right;" class="glyphicon glyphicon-pencil"></span></a>
+    <input type="hidden" name ="id_point_collecte" id="id_point_collecte" value="<?php echo $_GET['numero']?>">
+    <input name ="adh" id ="adh" type="checkbox" ><label for="adh">Adhére à l'association</label> <a href="adhesions.php"  target="_blank"><span style="float:right;" class="glyphicon glyphicon-pencil"></span></a>
   </div> 
 
 <div class="col-md-3" >
@@ -168,6 +169,7 @@ include "tete.php";?>
             ?>
     <ul class="list-group">
       <li class="list-group-item">
+        <input type="text" value="0" name ="<?php echo$donnees['id']?>" id="<?php echo$donnees['id']?>" >
         <span class="badge" id="<?php echo$donnees['nom']?>" style="background-color:<?php echo$donnees['couleur']?>">0</span>
             <?php echo$donnees['nom']?>
       </li>
@@ -203,7 +205,7 @@ include "tete.php";?>
            {
 
            ?>
-  <button class="btn btn-default btn-sm" onclick="tdechet_write('<?php echo$donnees['nom']?>');" ><span class="badge" id="cool" style="background-color:<?php echo$donnees['couleur']?>"><?php echo$donnees['nom']?></span>
+  <button class="btn btn-default btn-sm" onclick="tdechet_write('<?php echo$donnees['nom']?>','<?php echo$donnees['id']?>');" ><span class="badge" id="cool" style="background-color:<?php echo$donnees['couleur']?>"><?php echo$donnees['nom']?></span>
  </button> 
   
   <br>
