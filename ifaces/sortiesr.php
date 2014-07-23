@@ -14,15 +14,30 @@ function number_clear()
 {
   document.getElementById("number").value = "";
 }
-function tdechet_write(y)
+function tdechet_add()
 {
-
+var liste = document.getElementById("id_filiere")
 if (document.getElementById("number").value > 0) {
    
 
 
-   document.getElementById(y).innerText = parseFloat(document.getElementById(y).innerText) + parseFloat(document.getElementById("number").value)  ;
+   document.getElementById(liste.value).innerText = parseFloat(document.getElementById(liste.value).innerText) + parseFloat(document.getElementById("number").value)  ;
 document.getElementById("number").value = "";  
+document.getElementById("id_filiere" ).disabled=true;
+}
+
+
+}
+function tdechet_del()
+{
+var liste = document.getElementById("id_filiere")
+if (document.getElementById("number").value > 0) {
+   
+
+
+   document.getElementById(liste.value).innerText = parseFloat(document.getElementById(liste.value).innerText) - parseFloat(document.getElementById("number").value)  ;
+document.getElementById("number").value = "";  
+document.getElementById("id_filiere" ).disabled=true;
 }
 
 
@@ -52,11 +67,12 @@ function tdechet_clear()
            {
 
            ?>
-    document.getElementById('<?php echo$donnees['nom']?>').innerText = "0"  ;
+    document.getElementById('<?php echo$donnees['id']?>').innerText = "0"  ;
 <?php }
 
               $reponse->closeCursor(); // Termine le traitement de la requête
                 ?>  
+                document.getElementById("id_filiere" ).disabled=false;
 }
 </script>
 <div class="panel-body">
@@ -116,7 +132,8 @@ function tdechet_clear()
   <li class="active"><a>Recyclage</a></li>
   <li><a href="<?php echo  "sortiesp.php?numero=" . $_GET['numero']?>">Poubelles</a></li>
 </ul>
-    <br>   
+    <br>  
+    <p>Ajuster la masse permet de soustraire la masse des contenant vides une fois vides...</p> 
 </div>
 </div>          
 <div class="row">
@@ -152,10 +169,8 @@ function tdechet_clear()
 
            ?>
 
-  <option value = "<?php echo$donnees['id']?>" ><?php echo$donnees['nom']?></option>
-  
-
-
+  <option value = "<?php echo$donnees['id_type_dechet']?>" ><?php echo$donnees['nom']?></option>
+ 
 
      
               
@@ -176,6 +191,7 @@ function tdechet_clear()
                     
         
           </select>
+        
          
 <br>
           
@@ -229,7 +245,7 @@ function tdechet_clear()
 <ul class="list-group">
   <li class="list-group-item">
    
-    <span class="badge" id="<?php echo$donnees['nom']?>">0</span>
+    <span class="badge" id="<?php echo$donnees['id']?>">0</span>
     <?php echo$donnees['nom']?>
 
   </li>
@@ -251,14 +267,15 @@ function tdechet_clear()
            
         <br>
 
-
+  
 
         </div> 
-         <div class="col-md-2" >
-         	<label>Validez:</label><br>
-           <button class="btn btn-default btn-sm" onclick="tdechet_write('deee');" >deee</button> 
-         	 
-         	 </div> 
+         <div class="col-md-1" >
+         	<label>Ajustez la masse:</label><br>
+           <button class="btn btn-default " onclick="tdechet_add();" ><span class="glyphicon glyphicon-plus"></span></button> 
+         	 <button class="btn btn-default " onclick="tdechet_del();" ><span class="glyphicon glyphicon-minus"></span></button> 
+           
+           </div> 
           
 
 

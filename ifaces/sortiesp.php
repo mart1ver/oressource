@@ -21,7 +21,7 @@ if (document.getElementById("number").value > 0) {
    
 
 
-   document.getElementById(y).innerText = parseFloat(document.getElementById(y).innerText) + parseFloat(document.getElementById("number").value)  ;
+   document.getElementById(y).innerText = (parseFloat(document.getElementById(y).innerText) + parseFloat(document.getElementById("number").value))-parseFloat(document.getElementById("m"+y).value)  ;
 document.getElementById("number").value = "";  
 }
 
@@ -124,7 +124,7 @@ function tdechet_clear()
         <div class="col-md-4 col-md-offset-1" >
         	
           <form>
-         
+       <p>La masse de chaque bac est automatiquement déduite.</p>  
          
 <br>
           
@@ -230,7 +230,7 @@ function tdechet_clear()
            ?>
     
             
-              
+            <input type="hidden" name ="m<?php echo $donnees['nom']?>" id="m<?php echo $donnees['nom']?>" value="<?php echo $donnees['masse_bac']?>">
             <button class="btn btn-default btn-sm" onclick="tdechet_write('<?php echo$donnees['nom']?>');" ><?php echo$donnees['nom']?></button> 
               <br>
           <br>
