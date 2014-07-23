@@ -27,7 +27,7 @@ if(isset($_POST['adh']))
 
 
 
-
+//insertion des pessés dans la table pesées_collectes
 
 
 
