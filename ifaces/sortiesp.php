@@ -125,7 +125,7 @@ function tdechet_clear()
         	
           <form>
          
-          <label>+poubelles </label> 
+         
 <br>
           
         </div>  

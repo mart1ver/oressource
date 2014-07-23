@@ -82,7 +82,7 @@ include "tete.php";?>
   <div class="col-md-3 col-md-offset-1" >
     <form>
     <label for="id_type_collecte">Type de collecte:</label>  
-    <select name ="id_type_collecte" id ="id_type_collecte" class="form-control">
+    <select name ="id_type_collecte" id ="id_type_collecte" class="form-control" autofocus >
             <?php 
             try
             {

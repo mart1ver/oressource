@@ -125,7 +125,7 @@ function tdechet_clear()
         	
           <form>
          <label for="id_filiere">Nom de l'entrprise de recyclage</label>  
-          <select name ="id_filiere" id ="id_filiere" class="form-control " required>
+          <select name ="id_filiere" id ="id_filiere" class="form-control " autofocus required>
 
 
 <?php 

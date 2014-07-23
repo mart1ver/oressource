@@ -125,7 +125,7 @@ function tdechet_clear()
         	
           <form>
          <label for="id_convention">Nom du partenaire:</label>  
-          <select name ="id_idconvention" id ="id_convention" class="form-control " required>
+          <select name ="id_idconvention" id ="id_convention" class="form-control " autofocus required>
 
 
 <?php 

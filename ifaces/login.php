@@ -29,7 +29,7 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
   <div class="col-md-3 col-md-offset-4"><form action="../moteur/login_post.php" method="post" >
   <div class="form-group"> 
     <label class="sr-only" for="mail">Mail:</label>
-    <input type="email" class="form-control" id="mail" name="mail" placeholder="Mail:">
+    <input type="email" class="form-control" id="mail" name="mail" placeholder="Mail:" autofocus>
   </div>
   <div class="form-group">
     <label class="sr-only" for="pass">Mot de passe:</label>

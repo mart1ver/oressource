@@ -1,5 +1,5 @@
-<?php session_start(); ?>
-<?php include "tete.php" ?>
+<?php session_start(); 
+ include "tete.php" ?>
 <script type="text/javascript">
 function number_write(x)
 {
@@ -126,7 +126,7 @@ function tdechet_clear()
         	
           <form>
            <label for="type_sortie">Type de sortie:</label>
-          <select name ="type_sortie" id ="type_sortie" class="form-control" required>
+          <select name ="type_sortie" id ="type_sortie" class="form-control" required autofocus>
 
 
 
