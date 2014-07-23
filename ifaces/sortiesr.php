@@ -31,7 +31,8 @@ document.getElementById("id_filiere" ).disabled=true;
 function tdechet_del()
 {
 var liste = document.getElementById("id_filiere")
-if (document.getElementById("number").value > 0) {
+if ((document.getElementById("number").value > 0)&&(parseFloat(document.getElementById(liste.value).innerText) > 0))
+ {
    
 
 
