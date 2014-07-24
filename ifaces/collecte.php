@@ -197,8 +197,8 @@ include "tete.php";?>
  
             // Si tout va bien, on peut continuer
  
-            // ON AFFICHE un bouton par type de dechet visible(id pair)
-            $reponse = $bdd->query('SELECT * FROM type_dechets WHERE visible = "oui" AND MOD(id,2)=0');
+            // ON AFFICHE un bouton par type de dechet visible(id impair)
+            $reponse = $bdd->query('SELECT * FROM type_dechets WHERE visible = "oui" AND MOD(id,2)=1');
  
            // On affiche chaque entree une à une
            while ($donnees = $reponse->fetch())
@@ -227,8 +227,8 @@ include "tete.php";?>
             // En cas d'erreur, on affiche un message et on arrête tout
             die('Erreur : '.$e->getMessage());
             }
-            // ON AFFICHE un bouton par type de dechet visible(id impair)
-            $reponse = $bdd->query('SELECT * FROM type_dechets WHERE visible = "oui" AND MOD(id,2)=1');
+            // ON AFFICHE un bouton par type de dechet visible(id pair)
+            $reponse = $bdd->query('SELECT * FROM type_dechets WHERE visible = "oui" AND MOD(id,2)=0');
             // On affiche chaque entree une à une
             while ($donnees = $reponse->fetch())
             {
