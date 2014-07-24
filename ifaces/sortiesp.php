@@ -1,5 +1,17 @@
-<?php session_start(); ?>
-<?php include "tete.php" ?>
+<?php session_start(); 
+ include "tete.php";
+if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 's'.$_GET['numero']) !== false))
+      {
+//Oressource 2014, formulaire de sorties hors boutique
+//Simple formulaire de saisie des matieres d'ouevres sortantes de la structure. (poubelles)
+//Doit etre fonctionnel avec un ecran tactille.
+//Du javascript permet l'interactivité du keypad et des boutons centraux avec le bon de collecte 
+//
+//
+//
+//
+//
+  ?>
 <script type="text/javascript">
 function number_write(x)
 {
@@ -335,4 +347,7 @@ function tdechet_clear()
 <br>
 
 
-      <?php include "pied.php" ?>
+      <?php include "pied.php";  } else
+      { 
+        header('Location:../moteur/destroy.php');
+      }?>
