@@ -25,8 +25,7 @@ if(isset($_POST['adh']))
 
 
 //insertion des pessés dans la table pesées_collectes
-//on determine '$nombrecat' le nombre de categories maxi (soit l'id maximum)
-    
+//on determine '$nombrecat' le nombre de categories maxi (soit l'id maximum)  
             try
             {
             // On se connecte à MySQL
@@ -48,7 +47,7 @@ if(isset($_POST['adh']))
          $i = 1;
 while ($i <= $nombrecat)
 {
-   //on inserre les valeures pour chaque 'i' si elles sonts superieures à 0  
+   //on inserre les valeures pour chaque 'i' ($i = id_type dechet) si elles sonts superieures à 0  
 if ($_POST[$i] > 0) 
 {
 try
@@ -68,5 +67,4 @@ $req->execute(array($_POST[$i],  $id_collecte , $i));
 }
 // Redirection du visiteur vers la page de gestion des affectation
 	header("Location:../ifaces/collecte.php?numero=".$_POST['id_point_collecte']);
-	echo $_POST['id_type_collecte'].$adh.$_POST['loc'].$_POST['id_point_collecte'];
- ?>
+	 ?>

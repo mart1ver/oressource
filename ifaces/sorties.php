@@ -231,7 +231,7 @@ function tdechet_clear()
 <ul class="list-group">
   <li class="list-group-item">
    
-    <span class="badge" id="<?php echo$donnees['nom']?>">0</span>
+    <span class="badge" id="<?php echo$donnees['nom']?>" style="background-color:<?php echo$donnees['couleur']?>">0</span>
     <?php echo$donnees['nom']?>
 
   </li>
@@ -284,7 +284,8 @@ function tdechet_clear()
     
             
               
-            <button class="btn btn-default btn-sm" onclick="tdechet_write('<?php echo$donnees['nom']?>');" ><?php echo$donnees['nom']?></button> 
+            <button class="btn btn-default btn-sm" onclick="tdechet_write('<?php echo$donnees['nom']?>');" ><span class="badge" id="cool" style="background-color:<?php echo$donnees['couleur']?>"><?php echo$donnees['nom']?></span>
+            </button> 
               <br>
           <br>
    
@@ -320,7 +321,8 @@ function tdechet_clear()
     
             
               
-            <button class="btn btn-default btn-sm" onclick="tdechet_write('<?php echo$donnees['nom']?>');" ><?php echo$donnees['nom']?></button> 
+            <button class="btn btn-default btn-sm" onclick="tdechet_write('<?php echo$donnees['nom']?>');" ><span class="badge" id="cool" style="background-color:<?php echo$donnees['couleur']?>"><?php echo$donnees['nom']?></span>
+            </button> 
               <br>
           <br>
    
