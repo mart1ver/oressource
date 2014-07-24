@@ -246,7 +246,7 @@ function tdechet_clear()
 <ul class="list-group">
   <li class="list-group-item">
    
-    <span class="badge" id="<?php echo$donnees['id']?>">0</span>
+    <span class="badge" id="<?php echo$donnees['id']?>"style="background-color:<?php echo$donnees['couleur']?>">0</span>
     <?php echo$donnees['nom']?>
 
   </li>
