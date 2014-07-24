@@ -1,4 +1,8 @@
 <?php session_start();
+include "tete.php";
+ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 'c') !== false))
+      {
+
 //Oressource 2014, formulaire de collecte
 //Simple formulaire de saisie des matieres d'ouevres entrantes dans la structure.
 //Doit etre fonctionnel avec un ecran tactille.
@@ -8,7 +12,7 @@
 //
 //
 //
-include "tete.php";?>
+?>
 <script type="text/javascript">
           function number_write(x)
           {
@@ -101,7 +105,6 @@ include "tete.php";?>
             while ($donnees = $reponse->fetch())
             {
             ?>
-
       <option value = "<?php echo$donnees['id']?>" ><?php echo$donnees['nom']?></option>
             <?php }
             $reponse->closeCursor(); // Termine le traitement de la requête
@@ -111,7 +114,6 @@ include "tete.php";?>
     <input type="hidden" name ="id_point_collecte" id="id_point_collecte" value="<?php echo $_GET['numero']?>">
     <input name ="adh" id ="adh" type="checkbox" ><label for="adh">Adhére à l'association</label> <a href="adhesions.php"  target="_blank"><span style="float:right;" class="glyphicon glyphicon-pencil"></span></a>
   </div> 
-
 <div class="col-md-3" >
 <label for="loc">Localité:</label>  
     <select name ="loc" id ="loc" class="form-control">
@@ -139,9 +141,7 @@ include "tete.php";?>
             ?>
     </select>
     <br>
-
 </div> 
-
   </div>
 <div class="row">
 <br>
@@ -277,4 +277,7 @@ include "tete.php";?>
 </div>
 <br><br>   
 </div>
-      <?php include "pied.php" ?>
+      <?php include "pied.php";  } else
+      { 
+        header('Location:../moteur/destroy.php');
+      }?>

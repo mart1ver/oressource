@@ -14,7 +14,24 @@ catch(Exception $e)
  
 
 
-// Vérification des identifiants
+// extraction du nom de la structure
+
+
+
+
+$req = $bdd->prepare('SELECT nom FROM description_structure');
+$req->execute();
+    
+$resultat = $req->fetch();
+ 
+
+
+
+$_SESSION['structure'] = $resultat['nom'];
+  
+
+$req->closeCursor();
+
 
 
 
@@ -40,6 +57,7 @@ $_SESSION['nom'] = $resultat['nom'];
 $_SESSION['mail'] = $resultat['mail'];
 $_SESSION['systeme'] = "oressource";
 $_SESSION['structure'] = "";
+$req->closeCursor();
     header ('location:../index.php');
 }
 

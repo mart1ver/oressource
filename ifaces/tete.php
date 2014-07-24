@@ -61,8 +61,10 @@
                <?php echo $donnees['nom']; ?> 
               </a>
           </li>
-          <br><?php } ?>
-   <?php }
+          <br>
+          <?php
+           } 
+           }
               $reponse->closeCursor(); // Termine le traitement de la requête
                 ?>  </li> </ul> </li><?php } else{}?>
 </ul>
