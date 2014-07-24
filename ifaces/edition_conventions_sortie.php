@@ -89,7 +89,9 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
             <td><?php echo $donnees['timestamp']?></td>
             <td><?php echo $donnees['nom']?></td>
             <td><?php echo $donnees['description']?></td>
-            <td bgcolor="<?php echo $donnees['couleur']?>"><?php echo $donnees['couleur']?></td> 
+            <td><span class="badge" style="background-color:<?php echo$donnees['couleur']?>"><?php echo$donnees['couleur']?></span></td>
+
+
 <td>
 <form action="../moteur/convention_sortie_visible.php" method="post">
 
