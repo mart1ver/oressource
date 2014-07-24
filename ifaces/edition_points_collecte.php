@@ -73,7 +73,7 @@
       <td><?php echo $donnees['timestamp']?></td>
       <td><?php echo $donnees['nom']?></td>
       <td><?php echo $donnees['adresse']?></td>
-      <td bgcolor="<?php echo $donnees['couleur']?>"><?php echo $donnees['couleur']?></td> 
+      <td><span class="badge" style="background-color:<?php echo$donnees['couleur']?>"><?php echo$donnees['couleur']?></span></td> 
       <td><?php echo $donnees['commentaire']?></td>
       <td>
         <form action="../moteur/collectes_visibles_post.php" method="post">

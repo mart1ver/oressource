@@ -87,7 +87,7 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
             <td><?php echo $donnees['description']?></td>
             <td><?php echo $donnees['masse_bac']?></td>
             <td><?php echo $donnees['ultime']?></td>
-            <td bgcolor="<?php echo $donnees['couleur']?>"><?php echo $donnees['couleur']?></td> 
+            <td><span class="badge" style="background-color:<?php echo$donnees['couleur']?>"><?php echo$donnees['couleur']?></span></td> 
 <td>
 <form action="../moteur/type_poubelles_visible.php" method="post">
 
