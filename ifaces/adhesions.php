@@ -1,3 +1,4 @@
+<?php session_start(); ?>
 <?php include "tete.php" ?>
 <div class="row">
         <div class="col-md-4" >
