@@ -4,7 +4,7 @@
       { include "tete.php" ?>
     <div class="container">
         <h1>GGestions des types et des masses des poubelles de la ville utilisées par la structure</h1> 
-         <div class="panel-heading">Modifier les données concernant le type de bac n° <?php echo $_POST['id']?> </div>
+         <div class="panel-heading">Modifier les données concernant le type de bac n° <?php echo $_POST['id']?>, <?php echo $_POST['nom']?>. </div>
 <?php
 //on obtien la couleur de la localité dans la base
             try
@@ -85,7 +85,7 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
 
   
   
-  <div class="col-md-1"><br><button name="creer" class="btn btn-warning">Modifier!</button></div>
+  <div class="col-md-1"><br><button name="creer" class="btn btn-warning">Modifier</button></div>
 </form>
 <br>
 <a href="edition_types_poubelles.php">

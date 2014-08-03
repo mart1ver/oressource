@@ -4,7 +4,7 @@
       { include "tete.php" ?>
     <div class="container">
         <h1>Gestions des points de vente</h1> 
-         <div class="panel-heading">Modifier les données concernant le point numero <?php echo $_POST['id']?> </div>
+         <div class="panel-heading">Modifier les données concernant le point numero <?php echo $_POST['id']?>, <?php echo $_POST['nom']?>. </div>
 <?php
 //on obtien la couleur de la localité dans la base
 
@@ -65,7 +65,7 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
   <div class="col-md-3"><label for="addresse">Addresse:</label> <input type="text"       value ="<?php echo $_POST['adresse']?>" name="adresse" id="adresse" class="form-control " required ></div>
   <div class="col-md-3"><label for="commentaire">Commentaire:</label> <input type="text" value ="<?php echo $_POST['commentaire']?>" name="commentaire" id="commentaire" class="form-control " required ></div>
   <div class="col-md-1"><label for="couleur">Couleur:</label> <input type="color"        value ="<?php echo $couleur ?>" name="couleur" id="couleur" class="form-control " required ></div>
-  <div class="col-md-1"><br><button name="creer" class="btn btn-warning">Modifier!</button></div>
+  <div class="col-md-1"><br><button name="creer" class="btn btn-warning">Modifier</button></div>
 </form>
 <br>
 <a href="edition_points_vente.php">

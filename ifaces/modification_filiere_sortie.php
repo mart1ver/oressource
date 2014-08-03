@@ -4,7 +4,7 @@
       { include "tete.php" ?>
     <div class="container">
         <h1>Gestions des localités</h1> 
-         <div class="panel-heading">Modifier les données concernant la filiere n° <?php echo $_POST['id']?> </div>
+         <div class="panel-heading">Modifier les données concernant la filiere n° <?php echo $_POST['id']?>, <?php echo $_POST['nom']?>. </div>
 <?php
 //on obtien la couleur de la localité dans la base
 
@@ -108,7 +108,6 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
 
 
 
-<?php echo$_POST['id_type_dechet']?>
 
 
 
@@ -117,16 +116,23 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
 
   </div>
   <div class="col-md-1"><label for="couleur">Couleur:</label> <input type="color"value ="<?php echo $couleur ?>"name="couleur" id="couleur" class="form-control " required ></div>
-  <div class="col-md-1"><br><button name="creer" class="btn btn-warning">Modifier!</button></div>
+  <div class="col-md-1"><br><button name="creer" class="btn btn-warning">Modifier</button></div>
 </form>
-<br>
+<br> 
+
+
+
+
+
 <a href="edition_filieres_sortie.php">
 <button name="creer" class="btn btn">Anuler</button>
 </a>
+
 </div>
       </div>
      
       <br>
+
       <div class="row">
   <div class="col-md-4"></div>
   <div class="col-md-4"><br> </div>
