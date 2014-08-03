@@ -1,6 +1,6 @@
 <?php session_start();
 include "tete.php";
- if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 's'.$_GET['numero']) !== false))
+ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 'c'.$_GET['numero']) !== false))
       {
 //Oressource 2014, formulaire de collecte
 //Simple formulaire de saisie des matieres d'ouevres entrantes dans la structure.
@@ -176,7 +176,8 @@ include "tete.php";
             $reponse->closeCursor(); // Termine le traitement de la requête
             ?>
     </ul>
-  <button class="btn btn-default btn-lg">c'est pesé!</button></form>
+  <button class="btn btn-default btn-lg">c'est pesé!</button>
+</form>
   <button class="btn btn-default btn-lg" onclick="tdechet_clear();" >reset</button>
   <br>
   </div>  
