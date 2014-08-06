@@ -1,13 +1,5 @@
 <?php 
-//on definit $adh en fonction $_POST['adh']
-if(isset($_POST['adh']))
-    {
-    $adh = "oui";
-    }
-  else
-  {
-   $adh = "non";
-  }
+
 // Connexion à la base de données
 		try
 {
@@ -18,8 +10,8 @@ if(isset($_POST['adh']))
         die('Erreur : '.$e->getMessage());
 }
 // Insertion de la collecte (sans les pesées) l'aide d'une requête préparée
-	$req = $bdd->prepare('INSERT INTO sorties (id_type_sortie,  adherent, classe, id_point_sortie) VALUES(?, ?, ?, ?)');
-	$req->execute(array($_POST['type_sortie'],$adh,  "sorties" , $_POST['id_point_sortie']));
+	$req = $bdd->prepare('INSERT INTO sorties (id_convention , classe, id_point_sortie) VALUES(?, ?, ?)');
+	$req->execute(array($_POST['id_convention'], "sortiesc", $_POST['id_point_sortie']));
   $id_sortie = $bdd->lastInsertId();
     $req->closeCursor();
 
@@ -66,5 +58,5 @@ $req->execute(array($_POST[$i],  $id_sortie , $i));
     $i++;
 }
 // Redirection du visiteur vers la page de gestion des affectation
-	header("Location:../ifaces/sorties.php?numero=".$_POST['id_point_sortie']);
+	header("Location:../ifaces/sortiesc.php?numero=".$_POST['id_point_sortie']);
 	 ?>

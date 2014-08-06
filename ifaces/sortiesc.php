@@ -16,29 +16,21 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
 function number_write(x)
 {
   var text_box = document.getElementById("number");
-  
-   
- text_box.value = text_box.value + x;
-  
+  text_box.value = text_box.value + x;
 }
-
 function number_clear()
 {
   document.getElementById("number").value = "";
 }
-function tdechet_write(y)
-{
-
-if (document.getElementById("number").value > 0) {
-   
-
-
-   document.getElementById(y).innerText = parseFloat(document.getElementById(y).innerText) + parseFloat(document.getElementById("number").value)  ;
-document.getElementById("number").value = "";  
-}
-
-
-}
+function tdechet_write(y,z)
+ {
+          if (document.getElementById("number").value > 0) 
+          {
+             document.getElementById(y).innerText = parseFloat(document.getElementById(y).innerText) + parseFloat(document.getElementById("number").value)  ;
+              document.getElementById(z).value = parseFloat(document.getElementById(z).value) + parseFloat(document.getElementById("number").value)  ;
+             document.getElementById("number").value = "";  
+          }
+          }
 function tdechet_clear()
 {
 <?php 
@@ -57,7 +49,7 @@ function tdechet_clear()
             // Si tout va bien, on peut continuer
  
             // On recupère tout le contenu de la table point de collecte
-            $reponse = $bdd->query('SELECT * FROM type_dechets');
+            $reponse = $bdd->query('SELECT * FROM type_dechets WHERE visible = "oui"');
  
            // On affiche chaque entree une à une
            while ($donnees = $reponse->fetch())
@@ -65,6 +57,7 @@ function tdechet_clear()
 
            ?>
     document.getElementById('<?php echo$donnees['nom']?>').innerText = "0"  ;
+    document.getElementById(<?php echo$donnees['id']?>).value = "0" ; 
 <?php }
 
               $reponse->closeCursor(); // Termine le traitement de la requête
@@ -135,9 +128,9 @@ function tdechet_clear()
 	  
         <div class="col-md-3 col-md-offset-1" >
         	
-          <form>
+          <form action="../moteur/sortiesc_post.php" method="post">
          <label for="id_convention">Nom du partenaire:</label>  
-          <select name ="id_idconvention" id ="id_convention" class="form-control " autofocus required>
+          <select name ="id_convention" id ="id_convention" class="form-control " autofocus required>
 
 
 <?php 
@@ -189,7 +182,7 @@ function tdechet_clear()
         
           </select>
 <br>
-          
+          <input type="hidden" name ="id_point_sortie" id="id_point_sortie" value="<?php echo $_GET['numero']?>">
         </div>  
         <div class="col-md-4" >
           
@@ -239,7 +232,7 @@ function tdechet_clear()
 
 <ul class="list-group">
   <li class="list-group-item">
-   
+    <input type="text" value="0" name ="<?php echo$donnees['id']?>" id="<?php echo$donnees['id']?>">
     <span class="badge" id="<?php echo$donnees['nom']?>" style="background-color:<?php echo$donnees['couleur']?>">0</span>
     <?php echo$donnees['nom']?>
 
@@ -293,7 +286,7 @@ function tdechet_clear()
     
             
               
-            <button class="btn btn-default btn-sm" onclick="tdechet_write('<?php echo$donnees['nom']?>');" ><span class="badge" id="cool" style="background-color:<?php echo$donnees['couleur']?>"><?php echo$donnees['nom']?></span>
+            <button class="btn btn-default btn-sm" onclick="tdechet_write('<?php echo$donnees['nom']?>','<?php echo$donnees['id']?>');" ><span class="badge" id="cool" style="background-color:<?php echo$donnees['couleur']?>"><?php echo$donnees['nom']?></span>
             </button> 
               <br>
           <br>
@@ -330,7 +323,7 @@ function tdechet_clear()
     
             
               
-            <button class="btn btn-default btn-sm" onclick="tdechet_write('<?php echo$donnees['nom']?>');" ><span class="badge" id="cool" style="background-color:<?php echo$donnees['couleur']?>"><?php echo$donnees['nom']?></span>
+            <button class="btn btn-default btn-sm" onclick="tdechet_write('<?php echo$donnees['nom']?>','<?php echo$donnees['id']?>');" ><span class="badge" id="cool" style="background-color:<?php echo$donnees['couleur']?>"><?php echo$donnees['nom']?></span>
             </button> 
               <br>
           <br>
