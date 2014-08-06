@@ -34,6 +34,7 @@ if (document.getElementById("number").value > 0) {
 
 
    document.getElementById(liste.value).innerText = parseFloat(document.getElementById(liste.value).innerText) + parseFloat(document.getElementById("number").value)  ;
+   document.getElementById("m"+liste.value).value = parseFloat(document.getElementById("m"+liste.value).value) + parseFloat(document.getElementById("number").value)  ;
 document.getElementById("number").value = "";  
 document.getElementById("id_filiere" ).disabled=true;
 }
@@ -49,6 +50,7 @@ if ((document.getElementById("number").value > 0)&&(parseFloat(document.getEleme
 
 
    document.getElementById(liste.value).innerText = parseFloat(document.getElementById(liste.value).innerText) - parseFloat(document.getElementById("number").value)  ;
+    document.getElementById("m"+liste.value).value = parseFloat(document.getElementById("m"+liste.value).value) - parseFloat(document.getElementById("number").value)  ;
 document.getElementById("number").value = "";  
 document.getElementById("id_filiere" ).disabled=true;
 }
@@ -73,7 +75,7 @@ function tdechet_clear()
             // Si tout va bien, on peut continuer
  
             // On recupère tout le contenu de la table point de collecte
-            $reponse = $bdd->query('SELECT * FROM type_dechets');
+            $reponse = $bdd->query('SELECT * FROM type_dechets WHERE visible = "oui"');
  
            // On affiche chaque entree une à une
            while ($donnees = $reponse->fetch())
@@ -81,6 +83,7 @@ function tdechet_clear()
 
            ?>
     document.getElementById('<?php echo$donnees['id']?>').innerText = "0"  ;
+     document.getElementById("m"+'<?php echo$donnees['id']?>').value = "0" ;
 <?php }
 
               $reponse->closeCursor(); // Termine le traitement de la requête
@@ -153,7 +156,7 @@ function tdechet_clear()
 	  
         <div class="col-md-3 col-md-offset-1" >
         	
-          <form>
+          <form action="../moteur/sortiesr_post.php" method="post">
          <label for="id_filiere">Nom de l'entrprise de recyclage</label>  
           <select name ="id_filiere" id ="id_filiere" class="form-control " autofocus required>
 
@@ -207,7 +210,7 @@ function tdechet_clear()
         
          
 <br>
-          
+          <input type="hidden" name ="id_point_sortie" id="id_point_sortie" value="<?php echo $_GET['numero']?>">
         </div>  
         <div class="col-md-4" >
           
@@ -257,7 +260,7 @@ function tdechet_clear()
 
 <ul class="list-group">
   <li class="list-group-item">
-   
+   <input type="text" value="0" name ="<?php echo "m".$donnees['id']?>" id="<?php echo "m".$donnees['id']?>">
     <span class="badge" id="<?php echo$donnees['id']?>"style="background-color:<?php echo$donnees['couleur']?>">0</span>
     <?php echo$donnees['nom']?>
 
