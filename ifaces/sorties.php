@@ -16,29 +16,21 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
 function number_write(x)
 {
   var text_box = document.getElementById("number");
-  
-   
- text_box.value = text_box.value + x;
-  
+  text_box.value = text_box.value + x;
 }
-
 function number_clear()
 {
   document.getElementById("number").value = "";
 }
-function tdechet_write(y)
-{
-
-if (document.getElementById("number").value > 0) {
-   
-
-
-   document.getElementById(y).innerText = parseFloat(document.getElementById(y).innerText) + parseFloat(document.getElementById("number").value)  ;
-document.getElementById("number").value = "";  
-}
-
-
-}
+function tdechet_write(y,z)
+ {
+          if (document.getElementById("number").value > 0) 
+          {
+             document.getElementById(y).innerText = parseFloat(document.getElementById(y).innerText) + parseFloat(document.getElementById("number").value)  ;
+              document.getElementById(z).value = parseFloat(document.getElementById(z).value) + parseFloat(document.getElementById("number").value)  ;
+             document.getElementById("number").value = "";  
+          }
+          }
 function tdechet_clear()
 {
 <?php 
@@ -57,7 +49,7 @@ function tdechet_clear()
             // Si tout va bien, on peut continuer
  
             // On recupère tout le contenu de la table point de collecte
-            $reponse = $bdd->query('SELECT * FROM type_dechets');
+            $reponse = $bdd->query('SELECT * FROM type_dechets WHERE visible = "oui"');
  
            // On affiche chaque entree une à une
            while ($donnees = $reponse->fetch())
@@ -65,6 +57,7 @@ function tdechet_clear()
 
            ?>
     document.getElementById('<?php echo$donnees['nom']?>').innerText = "0"  ;
+    document.getElementById(<?php echo$donnees['id']?>).value = "0" ; 
 <?php }
 
               $reponse->closeCursor(); // Termine le traitement de la requête
@@ -133,17 +126,11 @@ function tdechet_clear()
 </div>
 </div>          
 <div class="row">
-	  
-        <div class="col-md-3 col-md-offset-1" >
-        	
-          <form>
+	  <div class="col-md-3 col-md-offset-1" >  	
+          <form action="../moteur/sorties_post.php" method="post">
            <label for="type_sortie">Type de sortie:</label>
           <select name ="type_sortie" id ="type_sortie" class="form-control" required autofocus>
-
-
-
-<?php 
-          
+<?php         
             try
             {
             // On se connecte à MySQL
@@ -154,12 +141,9 @@ function tdechet_clear()
             // En cas d'erreur, on affiche un message et on arrête tout
             die('Erreur : '.$e->getMessage());
             }
- 
             // Si tout va bien, on peut continuer
- 
-            // On recupère tout le contenu de la table point de collecte
+            // On recupère tout le contenu de la table type de sortie
             $reponse = $bdd->query('SELECT * FROM type_sortie WHERE visible = "oui"');
- 
            // On affiche chaque entree une à une
            while ($donnees = $reponse->fetch())
            {
@@ -192,7 +176,8 @@ function tdechet_clear()
         
           </select>
 <br>
-           <input name ="adh" id ="adh" type="checkbox" value ="oui"><label for="adh">Adhére à l'association</label><a href="adhesions.php" target="_blank"><span style="float:right;" class="glyphicon glyphicon-pencil"></span></a> 
+<input type="hidden" name ="id_point_sortie" id="id_point_sortie" value="<?php echo $_GET['numero']?>">
+           <input name ="adh" id ="adh" type="checkbox" ><label for="adh">Adhére à l'association</label> <a href="adhesions.php"  target="_blank"><span style="float:right;" class="glyphicon glyphicon-pencil"></span></a>
         </div>  
         <div class="col-md-4" >
           
@@ -242,7 +227,7 @@ function tdechet_clear()
 
 <ul class="list-group">
   <li class="list-group-item">
-   
+    <input type="text" value="0" name ="<?php echo$donnees['id']?>" id="<?php echo$donnees['id']?>">
     <span class="badge" id="<?php echo$donnees['nom']?>" style="background-color:<?php echo$donnees['couleur']?>">0</span>
     <?php echo$donnees['nom']?>
 
@@ -296,7 +281,7 @@ function tdechet_clear()
     
             
               
-            <button class="btn btn-default btn-sm" onclick="tdechet_write('<?php echo$donnees['nom']?>');" ><span class="badge" id="cool" style="background-color:<?php echo$donnees['couleur']?>"><?php echo$donnees['nom']?></span>
+            <button class="btn btn-default btn-sm" onclick="tdechet_write('<?php echo$donnees['nom']?>','<?php echo$donnees['id']?>');" ><span class="badge" id="cool" style="background-color:<?php echo$donnees['couleur']?>"><?php echo$donnees['nom']?></span>
             </button> 
               <br>
           <br>
@@ -333,7 +318,7 @@ function tdechet_clear()
     
             
               
-            <button class="btn btn-default btn-sm" onclick="tdechet_write('<?php echo$donnees['nom']?>');" ><span class="badge" id="cool" style="background-color:<?php echo$donnees['couleur']?>"><?php echo$donnees['nom']?></span>
+            <button class="btn btn-default btn-sm" onclick="tdechet_write('<?php echo$donnees['nom']?>','<?php echo$donnees['id']?>');" ><span class="badge" id="cool" style="background-color:<?php echo$donnees['couleur']?>"><?php echo$donnees['nom']?></span>
             </button> 
               <br>
           <br>
