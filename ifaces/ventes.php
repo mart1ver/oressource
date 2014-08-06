@@ -1,64 +1,5 @@
 <?php session_start(); ?>
 <?php include "tete.php" ?>
-<script type="text/javascript">
-function number_write(x)
-{
-  var text_box = document.getElementById("number");
-  
-   
- text_box.value = text_box.value + x;
-  
-}
-
-function number_clear()
-{
-  document.getElementById("number").value = "";
-}
-function tdechet_write(y)
-{
-
-if (document.getElementById("number").value > 0) {
-   
-
-
-   document.getElementById(y).innerText = parseFloat(document.getElementById(y).innerText) + parseFloat(document.getElementById("number").value)  ;
-document.getElementById("number").value = "";  
-}
-
-
-}
-function tdechet_clear()
-{
-<?php 
-          
-            try
-            {
-            // On se connecte à MySQL
-            include('../moteur/dbconfig.php');
-            }
-            catch(Exception $e)
-            {
-            // En cas d'erreur, on affiche un message et on arrête tout
-            die('Erreur : '.$e->getMessage());
-            }
- 
-            // Si tout va bien, on peut continuer
- 
-            // On recupère tout le contenu de la table point de collecte
-            $reponse = $bdd->query('SELECT * FROM type_dechets');
- 
-           // On affiche chaque entree une à une
-           while ($donnees = $reponse->fetch())
-           {
-
-           ?>
-    document.getElementById('<?php echo$donnees['nom']?>').innerText = "0"  ;
-<?php }
-
-              $reponse->closeCursor(); // Termine le traitement de la requête
-                ?>  
-}
-</script>
 <br><br>
           <fieldset>
        <legend>
@@ -79,7 +20,7 @@ function tdechet_clear()
  
             // On recupère tout le contenu de la table point de collecte
           
-            $req = $bdd->prepare("SELECT * FROM points_collecte WHERE id = :id ");
+            $req = $bdd->prepare("SELECT * FROM points_vente WHERE id = :id ");
             $req->execute(array('id' => $_GET['numero']));
  
            // On affiche chaque entree une à une
@@ -106,126 +47,10 @@ function tdechet_clear()
      
         
       </fieldset>     
-<div class="row">
-        <div class="col-md-4 col-md-offset-1" >
-          <form>
-         <label>Type de collecte:     </label>  
-          <select>
-
-
-<?php 
-          
-            try
-            {
-            // On se connecte à MySQL
-            include('../moteur/dbconfig.php');
-            }
-            catch(Exception $e)
-            {
-            // En cas d'erreur, on affiche un message et on arrête tout
-            die('Erreur : '.$e->getMessage());
-            }
- 
-            // Si tout va bien, on peut continuer
- 
-            // On recupère tout le contenu de la table point de collecte
-            $reponse = $bdd->query('SELECT * FROM type_collecte WHERE visible = "oui"');
- 
-           // On affiche chaque entree une à une
-           while ($donnees = $reponse->fetch())
-           {
-
-           ?>
-
-  <option value = "<?php echo$donnees['id']?>" ><?php echo$donnees['nom']?></option>
-  
-
-
-
-     
-            <br>
-              
-            
-             
-   
-              <?php }
-              $reponse->closeCursor(); // Termine le traitement de la requête
-                ?>
-
-
-
-        
 
 
 
 
-                    
-        
-          </select>
-<br>
-         <label>Localité:     </label>  
-          <select>
-
-
-<?php 
-          
-            try
-            {
-            // On se connecte à MySQL
-            include('../moteur/dbconfig.php');
-            }
-            catch(Exception $e)
-            {
-            // En cas d'erreur, on affiche un message et on arrête tout
-            die('Erreur : '.$e->getMessage());
-            }
- 
-            // Si tout va bien, on peut continuer
- 
-            // On recupère tout le contenu de la table point de collecte
-            $reponse = $bdd->query('SELECT * FROM localites WHERE visible = "oui"');
- 
-           // On affiche chaque entree une à une
-           while ($donnees = $reponse->fetch())
-           {
-
-           ?>
-
-  <option value = "<?php echo$donnees['id']?>" ><?php echo$donnees['nom']?></option>
-  
-
-
-
-     
-            <br>
-              
-            
-             
-   
-              <?php }
-              $reponse->closeCursor(); // Termine le traitement de la requête
-                ?>
-
-
-
-        
-
-
-
-
-                    
-        
-          </select>
-          <br>
-           <input type="checkbox" value ="oui"><label>La personne adhére à l'association</label> 
-        </div>  
-        <div class="col-md-4" >
-          
-         
-         
-        </div>
-        
-      </div>
       <div class="row">
       	<br>
         <div class="col-md-3 col-md-offset-1" >
@@ -271,6 +96,21 @@ function tdechet_clear()
     <span class="badge" id="<?php echo$donnees['nom']?>">0</span>
     <?php echo$donnees['nom']?>
 
+  <li class="list-group-item">
+    <span class="badge">14</span>
+    Cras justo odio
+  </li>
+
+  <li class="list-group-item">
+    <span class="badge">14</span>
+    Cras justo odio
+  </li>
+  <li class="list-group-item">
+    <span class="badge">14</span>
+    Cras justo odio
+  </li>
+
+
   </li>
 
 
@@ -293,8 +133,9 @@ function tdechet_clear()
 
 
         </div>  
-          <div class="col-md-3" >
-        <label>liste des types de dechets collectés </label><br>
+
+          <div class="col-md-2" >
+        <label>Type d'objet:</label><br>
         
         <?php 
           
@@ -312,7 +153,55 @@ function tdechet_clear()
             // Si tout va bien, on peut continuer
  
             // On recupère tout le contenu de la table point de collecte
-            $reponse = $bdd->query('SELECT * FROM type_dechets WHERE visible = "oui"');
+            $reponse = $bdd->query('SELECT * FROM type_dechets WHERE visible = "oui" AND MOD(id,2)=1');
+ 
+           // On affiche chaque entree une à une
+           while ($donnees = $reponse->fetch())
+           {
+
+           ?>
+    
+            <div class="btn-group">
+  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+    <span class="badge" id="cool" style="background-color:<?php echo$donnees['couleur']?>"><?php echo$donnees['nom']?></span>
+  </button>
+  <ul class="dropdown-menu" role="menu">
+    <li><a >de base</a></li>
+    <li class="divider"></li>
+    <li><a>sous objet1</a></li>
+    <li><a>deux</a></li>
+    <li><a>trois</a></li>
+  </ul>
+</div>
+           
+            
+            </button> 
+              <br>
+          <br>
+   
+              <?php }
+              $reponse->closeCursor(); // Termine le traitement de la requête
+                ?>
+           </div> 
+          <div class="col-md-2" >
+        <br><br>        
+        <?php 
+          
+            try
+            {
+            // On se connecte à MySQL
+            include('../moteur/dbconfig.php');
+            }
+            catch(Exception $e)
+            {
+            // En cas d'erreur, on affiche un message et on arrête tout
+            die('Erreur : '.$e->getMessage());
+            }
+ 
+            // Si tout va bien, on peut continuer
+ 
+            // On recupère tout le contenu de la table point de collecte
+            $reponse = $bdd->query('SELECT * FROM type_dechets WHERE visible = "oui" AND MOD(id,2)=0');
  
            // On affiche chaque entree une à une
            while ($donnees = $reponse->fetch())
@@ -322,7 +211,8 @@ function tdechet_clear()
     
             
               
-            <button class="btn btn-default btn-sm" onclick="tdechet_write('<?php echo$donnees['nom']?>');" ><?php echo$donnees['nom']?></button> 
+            <button class="btn btn-default btn-sm" onclick="tdechet_write('<?php echo$donnees['nom']?>','<?php echo$donnees['id']?>');" ><span class="badge" id="cool" style="background-color:<?php echo$donnees['couleur']?>"><?php echo$donnees['nom']?></span>
+            </button> 
               <br>
           <br>
    
