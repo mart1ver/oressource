@@ -15,7 +15,7 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
 <script type="text/javascript">
 function number_write(x)
 {
-  var text_box = document.getElementById("number");
+    var text_box = document.getElementById("number");
   
    
  text_box.value = text_box.value + x;
@@ -24,17 +24,16 @@ function number_write(x)
 
 function number_clear()
 {
-  document.getElementById("number").value = "";
+    document.getElementById("number").value = "";
 }
-function tdechet_write(y)
+function tdechet_write(y,z)
 {
 
-if (document.getElementById("number").value > 0) {
-   
-
-
-   document.getElementById(y).innerText = (parseFloat(document.getElementById(y).innerText) + parseFloat(document.getElementById("number").value))-parseFloat(document.getElementById("m"+y).value)  ;
-document.getElementById("number").value = "";  
+if (document.getElementById("number").value-parseFloat(document.getElementById("m"+y).value)  > 0) 
+{
+    document.getElementById(y).innerText = (parseFloat(document.getElementById(y).innerText) + parseFloat(document.getElementById("number").value))-parseFloat(document.getElementById("m"+y).value)  ;
+     document.getElementById(z).value = parseFloat(document.getElementById(z).value) + parseFloat(document.getElementById("number").value)-parseFloat(document.getElementById("m"+y).value)  ;
+    document.getElementById("number").value = "";  
 }
 
 
@@ -65,6 +64,7 @@ function tdechet_clear()
 
            ?>
     document.getElementById('<?php echo$donnees['nom']?>').innerText = "0"  ;
+    document.getElementById(<?php echo$donnees['id']?>).value = "0" ;
 <?php }
 
               $reponse->closeCursor(); // Termine le traitement de la requête
@@ -135,7 +135,8 @@ function tdechet_clear()
 	  
         <div class="col-md-4 col-md-offset-1" >
         	
-          <form>
+          <form action="../moteur/sortiesp_post.php" method="post">
+              <input type="hidden" name ="id_point_sortie" id="id_point_sortie" value="<?php echo $_GET['numero']?>">
        <p>La masse de chaque bac est automatiquement déduite.</p>  
          
 <br>
@@ -189,7 +190,7 @@ function tdechet_clear()
 
 <ul class="list-group">
   <li class="list-group-item">
-   
+    <input type="text" value="0" name ="<?php echo$donnees['id']?>" id="<?php echo$donnees['id']?>">
     <span class="badge" id="<?php echo$donnees['nom']?>"style="background-color:<?php echo$donnees['couleur']?>">0</span>
     <?php echo$donnees['nom']?>
 
@@ -243,7 +244,7 @@ function tdechet_clear()
     
             
             <input type="hidden" name ="m<?php echo $donnees['nom']?>" id="m<?php echo $donnees['nom']?>" value="<?php echo $donnees['masse_bac']?>">
-            <button class="btn btn-default btn-sm" onclick="tdechet_write('<?php echo$donnees['nom']?>');" ><span class="badge" id="cool" style="background-color:<?php echo$donnees['couleur']?>"><?php echo$donnees['nom']?></span>
+            <button class="btn btn-default btn-sm" onclick="tdechet_write('<?php echo$donnees['nom']?>','<?php echo$donnees['id']?>');" ><span class="badge" id="cool" style="background-color:<?php echo$donnees['couleur']?>"><?php echo$donnees['nom']?></span>
             </button> 
               <br>
           <br>
@@ -280,7 +281,8 @@ function tdechet_clear()
     
             
               
-            <button class="btn btn-default btn-sm" onclick="tdechet_write('<?php echo$donnees['nom']?>');" ><span class="badge" id="cool" style="background-color:<?php echo$donnees['couleur']?>"><?php echo$donnees['nom']?></span>
+            <input type="hidden" name ="m<?php echo $donnees['nom']?>" id="m<?php echo $donnees['nom']?>" value="<?php echo $donnees['masse_bac']?>">
+            <button class="btn btn-default btn-sm" onclick="tdechet_write('<?php echo$donnees['nom']?>','<?php echo$donnees['id']?>');" ><span class="badge" id="cool" style="background-color:<?php echo$donnees['couleur']?>"><?php echo$donnees['nom']?></span>
             </button> 
               <br>
           <br>
