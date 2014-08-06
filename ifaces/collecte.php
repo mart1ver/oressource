@@ -44,12 +44,13 @@ include "tete.php";
                       // En cas d'erreur, on affiche un message et on arrête tout
                       die('Erreur : '.$e->getMessage());
                       }
-                      // On obtient toute la table type_dechets de maniere à remetre à zero tout les items du bon d'apport vollontaire
-                      $reponse = $bdd->query('SELECT * FROM type_dechets');
+                      // On obtient tout les visibles de la table type_dechets de maniere à remetre à zero tout les items du bon d'apport vollontaire
+                      $reponse = $bdd->query('SELECT * FROM type_dechets WHERE visible = "oui"' );
                       // On affiche chaque entree une à une
                       while ($donnees = $reponse->fetch())
                       {?>
-               document.getElementById('<?php echo$donnees['nom']?>').innerText = "0"  ;
+               document.getElementById("<?php echo$donnees['nom']?>").innerText = "0"  ;
+               document.getElementById(<?php echo$donnees['id']?>).value = "0" ; 
                       <?php
                       }
                       $reponse->closeCursor(); // Termine le traitement de la requête
@@ -168,7 +169,7 @@ include "tete.php";
             ?>
     <ul class="list-group">
       <li class="list-group-item">
-        <input type="hidden" value="0" name ="<?php echo$donnees['id']?>" id="<?php echo$donnees['id']?>" >
+        <input type="hidden" value="0" name ="<?php echo$donnees['id']?>" id="<?php echo$donnees['id']?>">
         <span class="badge" id="<?php echo$donnees['nom']?>" style="background-color:<?php echo$donnees['couleur']?>">0</span>
             <?php echo$donnees['nom']?>
       </li>
