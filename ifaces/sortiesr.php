@@ -57,6 +57,19 @@ document.getElementById("id_filiere" ).disabled=true;
 
 
 }
+
+
+
+
+function EnableControl() 
+{
+
+    document.getElementById("id_filiere").removeAttribute('disabled');
+
+}
+
+
+
 function tdechet_clear()
 {
 <?php 
@@ -156,7 +169,7 @@ function tdechet_clear()
 	  
         <div class="col-md-3 col-md-offset-1" >
         	
-          <form action="../moteur/sortiesr_post.php" method="post">
+          <form action="../moteur/sortiesr_post.php" method="post" ONSUBMIT="EnableControl(true)">
          <label for="id_filiere">Nom de l'entrprise de recyclage</label>  
           <select name ="id_filiere" id ="id_filiere" class="form-control " autofocus required>
 

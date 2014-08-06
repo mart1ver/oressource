@@ -40,7 +40,7 @@
 while ($i <= $nombrecat)
 {
    //on inserre les valeures pour chaque 'i' ($i = id_type dechet) si elles sonts superieures à 0  
-if ($_POST[$i] > 0) 
+if ($_POST["m".$i] > 0) 
 {
 try
 {
@@ -52,11 +52,18 @@ catch(Exception $e)
 }
 // Insertion du post à l'aide d'une requête préparée
 $req = $bdd->prepare('INSERT INTO pesees_sorties (masse,  id_sortie, id_type_dechet) VALUES(?, ?, ?)');
-$req->execute(array($_POST[$i],  $id_sortie , $i));
+$req->execute(array($_POST["m".$i],  $id_sortie , $i));
   $req->closeCursor();
 }
     $i++;
 }
 // Redirection du visiteur vers la page de gestion des affectation
-	header("Location:../ifaces/sortiesr.php?numero=".$_POST['id_point_sortie']);
+
+	//header("Location:../ifaces/sortiesr.php?numero=".$_POST['id_point_sortie']);
+    
+    echo "fifi:".$_POST['id_filiere'];
+
+    echo "point:".$_POST['id_point_sortie'];
+    echo "numinsert:".$id_sortie;
+    
 	 ?>
