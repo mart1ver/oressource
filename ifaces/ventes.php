@@ -55,7 +55,7 @@
       	<br>
         <div class="col-md-3 col-md-offset-1" >
         
-<label>bon d'apport:</label>
+<label>Ticket de caisse:</label>
 
 
 
@@ -96,19 +96,48 @@
     <span class="badge" id="<?php echo$donnees['nom']?>"style="background-color:<?php echo$donnees['couleur']?>">0</span>
     <?php echo$donnees['nom']?>
 
-  <li class="list-group-item">
-    <span class="badge"style="background-color:<?php echo$donnees['couleur']?>">0</span>
-    sous objet un
-  </li>
+
+<?php 
+          
+            try
+            {
+            // On se connecte à MySQL
+            include('../moteur/dbconfig.php');
+            }
+            catch(Exception $e)
+            {
+            // En cas d'erreur, on affiche un message et on arrête tout
+            die('Erreur : '.$e->getMessage());
+            }
+ 
+            // Si tout va bien, on peut continuer
+ 
+            // On recupère tout le contenu de la table point de collecte
+           $req = $bdd->prepare("SELECT * FROM grille_objets WHERE id_type_dechet = :id_type_dechet  ");
+$req->execute(array('id_type_dechet' => $donnees['id']));
+
+ $i = 1;
+           // On affiche chaque entree une à une
+           while ($donneesint = $req->fetch())
+           {
+
+           ?>
+
+
 
   <li class="list-group-item">
     <span class="badge"style="background-color:<?php echo$donnees['couleur']?>">0</span>
-    sous objet deux
+    <?php echo$donneesint['nom']?>
   </li>
-  <li class="list-group-item">
-    <span class="badge" style="background-color:<?php echo$donnees['couleur']?>">0</span>
-    sous objet trois
-  </li>
+
+ 
+<?php }
+
+              $req->closeCursor(); // Termine le traitement de la requête
+                ?>
+
+
+
 
   </li>
 
