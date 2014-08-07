@@ -93,23 +93,22 @@
 <ul class="list-group">
   <li class="list-group-item">
    
-    <span class="badge" id="<?php echo$donnees['nom']?>">0</span>
+    <span class="badge" id="<?php echo$donnees['nom']?>"style="background-color:<?php echo$donnees['couleur']?>">0</span>
     <?php echo$donnees['nom']?>
 
   <li class="list-group-item">
-    <span class="badge">14</span>
-    Cras justo odio
+    <span class="badge"style="background-color:<?php echo$donnees['couleur']?>">0</span>
+    sous objet un
   </li>
 
   <li class="list-group-item">
-    <span class="badge">14</span>
-    Cras justo odio
+    <span class="badge"style="background-color:<?php echo$donnees['couleur']?>">0</span>
+    sous objet deux
   </li>
   <li class="list-group-item">
-    <span class="badge">14</span>
-    Cras justo odio
+    <span class="badge" style="background-color:<?php echo$donnees['couleur']?>">0</span>
+    sous objet trois
   </li>
-
 
   </li>
 

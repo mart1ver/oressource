@@ -176,11 +176,11 @@
           <li><a href="edition_types_poubelles.php">Types de poubelles</a></li>
           <li class="divider"></li>
           <li><a href="utilisateurs.php">Utilisateurs</a></li>
-          <li><a href="grilles_prix.php">Grilles de prix</a></li>
+          <li><a href="grilles_prix.php?typo=1">Grilles de prix</a></li>
           <li class="divider"></li>
           <li><a href="types_collecte.php">Types de collectes</a></li>
           <li><a href="types_dechets.php">Types de déchet collectés</a></li>
-          <li><a href="types_objets.php">Types d'objets redistribués</a></li>
+         
           <li class="divider"></li>
           <li><a href="edition_points_collecte.php">Points de collecte</a></li>
           <li><a href="edition_points_sorties.php">Points de sortie hors boutique</a></li>
