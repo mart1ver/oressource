@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Client: localhost
--- Généré le : Jeu 24 Juillet 2014 à 22:52
+-- Généré le : Jeu 07 Août 2014 à 22:29
 -- Version du serveur: 5.5.34
 -- Version de PHP: 5.3.10-1ubuntu3.13
 
@@ -52,7 +52,7 @@ CREATE TABLE IF NOT EXISTS `collectes` (
   `localisation` int(11) NOT NULL,
   `id_point_collecte` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=82 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=99 ;
 
 --
 -- Contenu de la table `collectes`
@@ -67,7 +67,24 @@ INSERT INTO `collectes` (`id`, `timestamp`, `id_type_collecte`, `adherent`, `loc
 (78, '2014-07-24 16:49:11', 1, 'non', 1, 1),
 (79, '2014-07-24 20:26:28', 2, 'non', 2, 1),
 (80, '2014-07-24 20:27:30', 1, 'non', 1, 1),
-(81, '2014-07-24 20:27:59', 1, 'non', 1, 1);
+(81, '2014-07-24 20:27:59', 1, 'non', 1, 1),
+(82, '2014-07-24 21:30:12', 1, 'non', 1, 1),
+(83, '2014-07-24 22:02:28', 1, 'non', 1, 1),
+(84, '2014-07-25 09:15:57', 1, 'non', 1, 1),
+(85, '2014-07-25 13:20:24', 1, 'non', 1, 1),
+(86, '2014-07-25 13:20:34', 1, 'non', 1, 1),
+(87, '2014-07-25 13:20:36', 1, 'non', 1, 1),
+(88, '2014-08-02 23:06:11', 1, 'non', 1, 1),
+(89, '2014-08-03 17:43:09', 1, 'non', 1, 1),
+(90, '2014-08-03 20:04:42', 1, 'non', 1, 1),
+(91, '2014-08-04 21:32:15', 1, 'non', 1, 1),
+(92, '2014-08-06 10:02:44', 1, 'non', 1, 1),
+(93, '2014-08-06 12:10:48', 1, 'non', 1, 1),
+(94, '2014-08-06 12:11:54', 1, 'non', 1, 1),
+(95, '2014-08-06 12:13:30', 1, 'non', 1, 1),
+(96, '2014-08-06 16:47:25', 1, 'non', 1, 1),
+(97, '2014-08-07 11:22:12', 1, 'non', 1, 1),
+(98, '2014-08-07 12:15:23', 2, 'non', 1, 1);
 
 -- --------------------------------------------------------
 
@@ -90,7 +107,7 @@ CREATE TABLE IF NOT EXISTS `conventions_sorties` (
 --
 
 INSERT INTO `conventions_sorties` (`id`, `timestamp`, `nom`, `description`, `couleur`, `visible`) VALUES
-(1, '2014-07-10 13:28:10', 'la maison de la plage', 'mozaiques', '#5260c2', 'oui'),
+(1, '2014-07-10 13:28:10', 'la maison de la plage', 'mozaiques', '#828fe4', 'oui'),
 (2, '2014-07-10 13:29:44', 'action froid', 'maraudes sdf et autres', '#626ac2', 'oui'),
 (3, '2014-07-23 11:48:09', 'dÃ©chetterie ', 'porte des lilas', '#89b029', 'oui');
 
@@ -149,6 +166,48 @@ INSERT INTO `filieres_sortie` (`id`, `timestamp`, `nom`, `id_type_dechet`, `coul
 -- --------------------------------------------------------
 
 --
+-- Structure de la table `grille_objets`
+--
+
+CREATE TABLE IF NOT EXISTS `grille_objets` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `nom` text NOT NULL,
+  `description` text NOT NULL,
+  `id_type_dechet` int(11) NOT NULL,
+  `visible` text NOT NULL,
+  `prix` text NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=21 ;
+
+--
+-- Contenu de la table `grille_objets`
+--
+
+INSERT INTO `grille_objets` (`id`, `timestamp`, `nom`, `description`, `id_type_dechet`, `visible`, `prix`) VALUES
+(1, '2014-08-07 13:49:49', 'chaussettes', 'chaussettes', 3, 'oui', '1'),
+(2, '2014-08-07 14:17:10', 'tv', 'televsion', 1, 'oui', '7'),
+(3, '2014-08-07 14:49:46', 'lecteur vhs ', 'lecteur vhs ', 1, 'oui', '5'),
+(4, '2014-08-07 14:51:28', 'lecteur dvd', 'lecteur dvd ', 1, 'oui', '5'),
+(6, '2014-08-07 14:53:58', 'four micro ondes', 'four', 1, 'oui', '5'),
+(7, '2014-08-07 14:54:49', 'Ã©tagÃ¨re "billy"', 'ikea valeur neuf = ', 2, 'oui', '5'),
+(8, '2014-08-07 14:55:49', 'puzzle', 'puzzle', 4, 'oui', '1.5'),
+(9, '2014-08-07 14:57:03', 'clavier', 'clavier', 5, 'oui', '2'),
+(10, '2014-08-07 14:57:18', 'bol', 'bol', 6, 'oui', '0.5'),
+(11, '2014-08-07 14:58:51', 'assiette', 'assiette', 6, 'oui', '0.25'),
+(12, '2014-08-07 15:02:15', 'bd', 'BD', 7, 'oui', '0'),
+(13, '2014-08-07 15:02:40', 'polars', 'polars', 7, 'oui', '0'),
+(14, '2014-08-07 15:03:14', 'vinyle', 'vinyle', 8, 'oui', '0'),
+(15, '2014-08-07 15:03:28', 'dvd', 'dvd', 8, 'oui', '0'),
+(16, '2014-08-07 15:03:38', 'vhs', 'vhs', 8, 'oui', '0'),
+(17, '2014-08-07 15:03:52', 'K7 audio', 'K7 audio', 8, 'oui', '0'),
+(18, '2014-08-07 15:04:07', 'cadres', 'cadres', 9, 'oui', '1'),
+(19, '2014-08-07 15:04:37', 'bouteille de gaz', 'heuu...', 10, 'oui', '51'),
+(20, '2014-08-07 15:05:21', 'montre swatch hs', 'montre swatch hs', 11, 'oui', '1.25');
+
+-- --------------------------------------------------------
+
+--
 -- Structure de la table `localites`
 --
 
@@ -199,35 +258,68 @@ CREATE TABLE IF NOT EXISTS `objets_en_pret` (
 CREATE TABLE IF NOT EXISTS `pesees_collectes` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `masse` int(11) NOT NULL,
+  `masse` text NOT NULL,
   `id_collecte` int(11) NOT NULL,
   `id_type_dechet` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=19 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=52 ;
 
 --
 -- Contenu de la table `pesees_collectes`
 --
 
 INSERT INTO `pesees_collectes` (`id`, `timestamp`, `masse`, `id_collecte`, `id_type_dechet`) VALUES
-(1, '2014-07-22 15:00:02', 111, 73, 1),
-(2, '2014-07-24 15:00:16', 55, 74, 1),
-(3, '2014-07-24 15:00:16', 66, 74, 2),
-(4, '2014-07-24 15:00:22', 11, 75, 1),
-(5, '2014-07-24 15:35:28', 1, 76, 1),
-(6, '2014-07-24 15:35:28', 111, 76, 2),
-(7, '2014-07-24 15:35:28', 32, 76, 3),
-(8, '2014-07-24 15:35:28', 55, 76, 7),
-(9, '2014-07-24 15:35:28', 8, 76, 11),
-(10, '2014-07-24 15:56:55', 44, 77, 6),
-(11, '2014-07-24 16:49:11', 15, 78, 7),
-(12, '2014-07-24 20:26:28', 24, 79, 1),
-(13, '2014-07-24 20:26:28', 88, 79, 2),
-(14, '2014-07-24 20:26:28', 56, 79, 3),
-(15, '2014-07-24 20:26:28', 45, 79, 7),
-(16, '2014-07-24 20:26:28', 1, 79, 10),
-(17, '2014-07-24 20:27:30', 43, 80, 3),
-(18, '2014-07-24 20:27:59', 11, 81, 1);
+(1, '2014-07-22 15:00:02', '111', 73, 1),
+(2, '2014-07-24 15:00:16', '55', 74, 1),
+(3, '2014-07-24 15:00:16', '66', 74, 2),
+(4, '2014-07-24 15:00:22', '11', 75, 1),
+(5, '2014-07-24 15:35:28', '1', 76, 1),
+(6, '2014-07-24 15:35:28', '111', 76, 2),
+(7, '2014-07-24 15:35:28', '32', 76, 3),
+(8, '2014-07-24 15:35:28', '55', 76, 7),
+(9, '2014-07-24 15:35:28', '8', 76, 11),
+(10, '2014-07-24 15:56:55', '44', 77, 6),
+(11, '2014-07-24 16:49:11', '15', 78, 7),
+(12, '2014-07-24 20:26:28', '24', 79, 1),
+(13, '2014-07-24 20:26:28', '88', 79, 2),
+(14, '2014-07-24 20:26:28', '56', 79, 3),
+(15, '2014-07-24 20:26:28', '45', 79, 7),
+(16, '2014-07-24 20:26:28', '1', 79, 10),
+(17, '2014-07-24 20:27:30', '43', 80, 3),
+(18, '2014-07-24 20:27:59', '11', 81, 1),
+(19, '2014-07-24 22:02:28', '44', 83, 1),
+(20, '2014-07-24 22:02:28', '155', 83, 2),
+(21, '2014-07-24 22:02:28', '5', 83, 11),
+(22, '2014-07-25 09:15:57', '555', 84, 3),
+(23, '2014-07-25 09:15:57', '5', 84, 7),
+(24, '2014-07-25 09:15:57', '8', 84, 8),
+(25, '2014-07-25 13:20:24', '11', 85, 3),
+(26, '2014-07-25 13:20:24', '44', 85, 6),
+(27, '2014-08-02 23:06:11', '111', 88, 6),
+(28, '2014-08-03 17:43:09', '55', 89, 1),
+(29, '2014-08-03 17:43:09', '61', 89, 8),
+(30, '2014-08-03 17:43:09', '7', 89, 11),
+(31, '2014-08-03 20:04:42', '44', 90, 3),
+(32, '2014-08-04 21:32:15', '99', 91, 4),
+(33, '2014-08-04 21:32:15', '8', 91, 6),
+(34, '2014-08-04 21:32:15', '6', 91, 8),
+(35, '2014-08-04 21:32:15', '44', 91, 10),
+(36, '2014-08-06 10:02:44', '1', 92, 1),
+(37, '2014-08-06 10:02:44', '2', 92, 2),
+(38, '2014-08-06 10:02:44', '3', 92, 3),
+(39, '2014-08-06 10:02:44', '4', 92, 4),
+(40, '2014-08-06 10:02:44', '6', 92, 6),
+(41, '2014-08-06 10:02:44', '5', 92, 7),
+(42, '2014-08-06 10:02:44', '8', 92, 8),
+(43, '2014-08-06 10:02:44', '7', 92, 9),
+(44, '2014-08-06 10:02:44', '9', 92, 11),
+(45, '2014-08-06 12:10:48', '3', 93, 1),
+(46, '2014-08-06 12:11:54', '6', 94, 1),
+(47, '2014-08-06 12:13:30', '5.9', 95, 1),
+(48, '2014-08-06 16:47:25', '21', 96, 1),
+(49, '2014-08-07 11:22:12', '11', 97, 1),
+(50, '2014-08-07 12:15:23', '55.8', 98, 3),
+(51, '2014-08-07 12:15:23', '0.9', 98, 7);
 
 -- --------------------------------------------------------
 
@@ -238,11 +330,56 @@ INSERT INTO `pesees_collectes` (`id`, `timestamp`, `masse`, `id_collecte`, `id_t
 CREATE TABLE IF NOT EXISTS `pesees_sorties` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `masse` int(11) NOT NULL,
+  `masse` text NOT NULL,
   `id_sortie` int(11) NOT NULL,
   `id_type_dechet` int(11) NOT NULL,
+  `id_type_poubelle` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=39 ;
+
+--
+-- Contenu de la table `pesees_sorties`
+--
+
+INSERT INTO `pesees_sorties` (`id`, `timestamp`, `masse`, `id_sortie`, `id_type_dechet`, `id_type_poubelle`) VALUES
+(1, '2014-08-06 12:07:08', '19', 1, 1, 0),
+(2, '2014-08-06 12:07:08', '5', 1, 7, 0),
+(3, '2014-08-06 12:08:15', '6', 2, 7, 0),
+(4, '2014-08-06 12:09:26', '6', 3, 6, 0),
+(5, '2014-08-06 12:10:01', '6', 4, 4, 0),
+(6, '2014-08-06 12:15:30', '22', 5, 2, 0),
+(7, '2014-08-06 12:15:30', '55.5', 5, 6, 0),
+(8, '2014-08-06 12:25:30', '11.9', 6, 1, 0),
+(9, '2014-08-06 12:26:27', '11', 7, 1, 0),
+(10, '2014-08-06 12:36:50', '21.9', 0, 1, 0),
+(11, '2014-08-06 12:36:50', '105.35', 0, 2, 0),
+(12, '2014-08-06 12:37:55', '12.9', 0, 1, 0),
+(13, '2014-08-06 12:37:55', '555.8', 0, 2, 0),
+(14, '2014-08-06 12:40:22', '154.8', 0, 2, 0),
+(15, '2014-08-06 12:40:22', '55.9', 0, 3, 0),
+(16, '2014-08-06 12:43:18', '32.45', 0, 2, 0),
+(17, '2014-08-06 12:45:57', '1', 8, 7, 0),
+(18, '2014-08-06 12:46:24', '1', 9, 1, 0),
+(19, '2014-08-06 12:47:50', '1', 10, 1, 0),
+(20, '2014-08-06 13:27:01', '55', 11, 3, 0),
+(21, '2014-08-06 13:33:11', '11', 0, 1, 0),
+(22, '2014-08-06 15:01:33', '21', 12, 4, 0),
+(23, '2014-08-06 15:01:33', '33', 12, 6, 0),
+(24, '2014-08-06 15:30:16', '555', 13, 3, 0),
+(25, '2014-08-06 15:35:05', '178.7', 14, 7, 0),
+(26, '2014-08-06 15:38:26', '56.9', 15, 7, 0),
+(27, '2014-08-06 16:09:47', '84', 16, 2, 0),
+(28, '2014-08-06 16:09:47', '84', 16, 5, 0),
+(29, '2014-08-06 16:12:23', '84', 17, 0, 2),
+(30, '2014-08-06 16:12:23', '79', 17, 0, 6),
+(31, '2014-08-06 16:15:48', '84', 18, 0, 2),
+(32, '2014-08-06 16:15:55', '111', 19, 7, 0),
+(33, '2014-08-06 16:16:02', '555', 20, 6, 0),
+(34, '2014-08-06 16:48:09', '1.9', 22, 1, 0),
+(35, '2014-08-06 21:33:12', '89', 23, 0, 1),
+(36, '2014-08-07 11:26:45', '11', 25, 1, 0),
+(37, '2014-08-07 11:28:08', '270', 26, 3, 0),
+(38, '2014-08-07 11:29:45', '89', 27, 0, 1);
 
 -- --------------------------------------------------------
 
@@ -367,11 +504,48 @@ CREATE TABLE IF NOT EXISTS `recettes_points_sorties` (
 CREATE TABLE IF NOT EXISTS `sorties` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `classe` text NOT NULL,
+  `adherent` text NOT NULL,
   `id_filiere` int(11) NOT NULL,
-  `commentaire` text NOT NULL,
+  `id_convention` int(11) NOT NULL,
+  `id_type_sortie` int(11) NOT NULL,
   `id_point_sortie` int(11) NOT NULL,
+  `commentaire` text NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=28 ;
+
+--
+-- Contenu de la table `sorties`
+--
+
+INSERT INTO `sorties` (`id`, `timestamp`, `classe`, `adherent`, `id_filiere`, `id_convention`, `id_type_sortie`, `id_point_sortie`, `commentaire`) VALUES
+(1, '2014-08-06 12:07:08', 'sorties', 'oui', 0, 0, 2, 1, ''),
+(2, '2014-08-06 12:08:15', 'sorties', 'non', 0, 0, 1, 0, ''),
+(3, '2014-08-06 12:09:26', 'sorties', 'non', 0, 0, 1, 0, ''),
+(4, '2014-08-06 12:10:01', 'sorties', 'non', 0, 0, 1, 0, ''),
+(5, '2014-08-06 12:15:30', 'sorties', 'oui', 0, 0, 3, 1, ''),
+(6, '2014-08-06 12:25:30', 'sorties', 'non', 0, 0, 1, 1, ''),
+(7, '2014-08-06 12:26:27', 'sorties', 'non', 0, 0, 1, 1, ''),
+(8, '2014-08-06 12:45:57', 'sorties', 'oui', 0, 0, 2, 1, ''),
+(9, '2014-08-06 12:46:24', 'sorties', 'oui', 0, 0, 1, 1, ''),
+(10, '2014-08-06 12:47:50', 'sortiesc', '', 0, 3, 0, 1, ''),
+(11, '2014-08-06 13:27:00', 'sortiesc', '', 0, 2, 0, 1, ''),
+(12, '2014-08-06 15:01:33', 'sortiesc', '', 0, 1, 0, 1, ''),
+(13, '2014-08-06 15:30:16', 'sortiesr', '', 3, 0, 0, 1, ''),
+(14, '2014-08-06 15:35:05', 'sortiesr', '', 7, 0, 0, 1, ''),
+(15, '2014-08-06 15:38:26', 'sortiesr', '', 7, 0, 0, 1, ''),
+(16, '2014-08-06 16:09:47', 'sortiesp', '', 0, 0, 0, 0, ''),
+(17, '2014-08-06 16:12:23', 'sortiesp', '', 0, 0, 0, 0, ''),
+(18, '2014-08-06 16:15:47', 'sortiesp', '', 0, 0, 0, 1, ''),
+(19, '2014-08-06 16:15:55', 'sortiesr', '', 7, 0, 0, 1, ''),
+(20, '2014-08-06 16:16:02', 'sortiesc', '', 0, 1, 0, 1, ''),
+(21, '2014-08-06 16:16:08', 'sorties', 'oui', 0, 0, 1, 1, ''),
+(22, '2014-08-06 16:48:09', 'sorties', 'non', 0, 0, 1, 1, ''),
+(23, '2014-08-06 21:33:12', 'sortiesp', '', 0, 0, 0, 1, ''),
+(24, '2014-08-07 11:26:38', 'sorties', 'non', 0, 0, 1, 1, ''),
+(25, '2014-08-07 11:26:45', 'sorties', 'non', 0, 0, 1, 1, ''),
+(26, '2014-08-07 11:28:08', 'sortiesr', '', 3, 0, 0, 1, ''),
+(27, '2014-08-07 11:29:45', 'sortiesp', '', 0, 0, 0, 1, '');
 
 -- --------------------------------------------------------
 
@@ -389,20 +563,21 @@ CREATE TABLE IF NOT EXISTS `types_poubelles` (
   `couleur` text NOT NULL,
   `visible` text NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=8 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=9 ;
 
 --
 -- Contenu de la table `types_poubelles`
 --
 
 INSERT INTO `types_poubelles` (`id`, `timestamp`, `nom`, `description`, `masse_bac`, `ultime`, `couleur`, `visible`) VALUES
-(1, '2014-07-17 13:22:03', 'petite poubelle verte', 'tout venant bac 100 litres', '20', 'oui', '#70f71a', 'oui'),
+(1, '2014-07-17 13:22:03', 'petite poubelle verte', 'tout venant bac 100 litres', '22', 'oui', '#70f71a', 'oui'),
 (2, '2014-07-17 13:22:06', 'grande poubelle verte', 'grande poubelle verte', '27', 'oui', '#46de12', 'oui'),
 (3, '2014-07-17 15:18:10', 'grosse poubelle verte', 'grosse poubelle verte', '32', 'oui', '#50c02d', 'oui'),
-(4, '2014-07-17 15:24:42', 'petite poubelle verte', 'a', '19', 'oui', '#ffec00', 'oui'),
+(4, '2014-07-17 15:24:42', 'petite poubelle jaune', 'a', '19', 'oui', '#ffec00', 'oui'),
 (5, '2014-07-23 11:29:05', 'grande poubelle jaune', 'emballages bac de 200 l', '27', 'oui', '#e2e51d', 'oui'),
 (6, '2014-07-23 11:29:57', 'grosse poubelle jaune', 'Emballages, bac de 400 litres.', '32', 'oui', '#fff10d', 'oui'),
-(7, '2014-07-23 11:30:52', 'petite poubelle blanche', 'verre , bac de 100l', '20', 'oui', '#e4e295', 'oui');
+(7, '2014-07-23 11:30:52', 'petite poubelle blanche', 'verre , bac de 100l', '20', 'oui', '#e4e295', 'oui'),
+(8, '2014-08-04 22:04:50', 'hack', 'fdfd', '22', 'oui', '#ff0000', 'non');
 
 -- --------------------------------------------------------
 
@@ -456,30 +631,13 @@ INSERT INTO `type_dechets` (`id`, `timestamp`, `nom`, `description`, `couleur`, 
 (2, '2014-04-08 18:21:40', 'mobilier', 'mobilier', '#e83c02', 'oui'),
 (3, '2014-04-08 18:22:10', 'textile,accessoires ', 'textile,accessoires la masse de bijoux Ã©tant nÃ©gligeable ', '#ff1c0f', 'oui'),
 (4, '2014-06-22 20:00:31', 'jouets', 'jeux, jouets , comprend aussi les jeux de societÃ©s', '#e80273', 'oui'),
-(5, '2014-06-22 20:34:38', 'informatique', 'ordis, ecrans , claviers , autres pÃ©riphÃ©riques info. DEEE. en fait ... ', '#e902ff', 'non'),
+(5, '2014-06-22 20:34:38', 'informatique', 'ordis, ecrans , claviers , autres pÃ©riphÃ©riques info. DEEE. en fait ... ', '#e902ff', 'oui'),
 (6, '2014-07-02 14:00:33', 'vaisselle', 'vaisselle ,tout Ã©tats touts materiaux', '#a71dff', 'oui'),
 (7, '2014-07-02 22:04:57', 'livres', 'livres magazines journaux etc', '#3a02e8', 'oui'),
 (8, '2014-07-02 22:06:25', 'supports media', 'cd dvd vinyles cassets minidiscs et consors', '#0b28ff', 'oui'),
 (9, '2014-07-02 22:07:24', 'bibelots quincaillerie  ', 'bibelots divers objets dÃ©co ', '#026fe8', 'oui'),
 (10, '2014-07-02 22:08:36', 'autres', 'autres', '#02d4ff', 'oui'),
 (11, '2014-07-10 19:29:38', 'bijoux', 'bijoux en tout genre , pese peut mais trÃ¨s bien valorisÃ©', '#0effc1', 'oui');
-
--- --------------------------------------------------------
-
---
--- Structure de la table `type_objets`
---
-
-CREATE TABLE IF NOT EXISTS `type_objets` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `nom` text NOT NULL,
-  `desciption` text NOT NULL,
-  `couleur` text NOT NULL,
-  `id_type_dechet` int(11) NOT NULL,
-  `visible` text NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -495,16 +653,18 @@ CREATE TABLE IF NOT EXISTS `type_sortie` (
   `couleur` text NOT NULL,
   `visible` text NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
 
 --
 -- Contenu de la table `type_sortie`
 --
 
 INSERT INTO `type_sortie` (`id`, `timestamp`, `nom`, `description`, `couleur`, `visible`) VALUES
-(1, '2014-07-09 12:10:42', 'don Ã  un particulier', 'don d''un objet invendable en boutique', '#9d4a4a', 'oui'),
+(1, '2014-07-09 12:10:42', 'don Ã  un particulier', 'don d''un objet invendable en boutique', '#83a6c3', 'oui'),
 (2, '2014-07-09 12:13:45', 'don Ã  une association', 'don d''objets Ã  une asso. sans convention', '#c6a13d', 'oui'),
-(3, '2014-07-09 12:14:35', 'don Ã  un artiste', 'objets, materiaux donnÃ©s Ã  un artiste', '#bf6b1f', 'oui');
+(3, '2014-07-09 12:14:35', 'don Ã  un artiste', 'objets, materiaux donnÃ©s Ã  un artiste', '#bf6b1f', 'oui'),
+(4, '2014-08-06 16:51:49', 'don Ã  un salariÃ©', 'don Ã  un salariÃ©', '#bb3333', 'oui'),
+(5, '2014-08-06 16:52:10', 'don Ã  un bÃ©nÃ©vole', 'don Ã  un bÃ©nÃ©vole', '#155175', 'oui');
 
 -- --------------------------------------------------------
 
@@ -529,7 +689,7 @@ CREATE TABLE IF NOT EXISTS `utilisateurs` (
 
 INSERT INTO `utilisateurs` (`id`, `timestamp`, `niveau`, `nom`, `prenom`, `mail`, `pass`) VALUES
 (1, '2014-06-25 22:58:07', 'c1c5c6v1v2s1abigmp', 'martin', 'vert', 'mart1ver@gmail.com', '81dc9bdb52d04dc20036dbd8313ed055'),
-(2, '2014-07-24 15:29:20', 'c1v1s1abi', 'dom', 'dominique', 'dom@dom.dom', '81dc9bdb52d04dc20036dbd8313ed055');
+(2, '2014-07-24 15:29:20', 'c1v1s1abig', 'dom', 'dominique', 'dom@dom.dom', '81dc9bdb52d04dc20036dbd8313ed055');
 
 -- --------------------------------------------------------
 
