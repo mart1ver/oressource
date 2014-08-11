@@ -117,14 +117,48 @@
       <span class="badge" id="cool" style="background-color:<?php echo$donnees['couleur']?>"><?php echo$donnees['nom']?></span>
       </button>
       <ul class="dropdown-menu" role="menu">
-      <li><a >de base</a></li>
+      <li><a ><?php echo$donnees['nom']?></a></li>
+
       <li class="divider"></li>
-      <li><a>sous objet1</a></li>
-      <li><a>deux</a></li>
-      <li><a>trois</a></li>
+
+
+  <?php 
+            try
+            {
+            // On se connecte à MySQL
+            include('../moteur/dbconfig.php');
+            }
+            catch(Exception $e)
+            {
+            // En cas d'erreur, on affiche un message et on arrête tout
+            die('Erreur : '.$e->getMessage());
+            }
+             // On recupère tout le contenu de la table point de collecte
+           $req = $bdd->prepare("SELECT * FROM grille_objets WHERE id_type_dechet = :id_type_dechet  ");
+           $req->execute(array('id_type_dechet' => $donnees['id']));
+           $i = 1;
+           // On affiche chaque entree une à une
+           while ($donneesint = $req->fetch())
+           {
+           ?>
+    <li><a><?php echo$donneesint['nom']?></a></li>
+       
+           
+      </li>
+           <?php }
+           $req->closeCursor(); // Termine le traitement de la requête
+           ?>
+
+
+
+
+
+
+
+     
       </ul>
       </div>
-      </button> 
+    
       <br><br>
                 <?php }
                 $reponse->closeCursor(); // Termine le traitement de la requête
@@ -150,8 +184,52 @@
            while ($donnees = $reponse->fetch())
            {
            ?>
-     <button class="btn btn-default btn-sm" onclick="tdechet_write('<?php echo$donnees['nom']?>','<?php echo$donnees['id']?>');" ><span class="badge" id="cool" style="background-color:<?php echo$donnees['couleur']?>"><?php echo$donnees['nom']?></span>
-     </button> 
+     <div class="btn-group">
+      <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+      <span class="badge" id="cool" style="background-color:<?php echo$donnees['couleur']?>"><?php echo$donnees['nom']?></span>
+      </button>
+      <ul class="dropdown-menu" role="menu">
+      <li><a ><?php echo$donnees['nom']?></a></li>
+
+      <li class="divider"></li>
+
+
+  <?php 
+            try
+            {
+            // On se connecte à MySQL
+            include('../moteur/dbconfig.php');
+            }
+            catch(Exception $e)
+            {
+            // En cas d'erreur, on affiche un message et on arrête tout
+            die('Erreur : '.$e->getMessage());
+            }
+             // On recupère tout le contenu de la table point de collecte
+           $req = $bdd->prepare("SELECT * FROM grille_objets WHERE id_type_dechet = :id_type_dechet  ");
+           $req->execute(array('id_type_dechet' => $donnees['id']));
+           $i = 1;
+           // On affiche chaque entree une à une
+           while ($donneesint = $req->fetch())
+           {
+           ?>
+    <li><a><?php echo$donneesint['nom']?></a></li>
+       
+           
+      </li>
+           <?php }
+           $req->closeCursor(); // Termine le traitement de la requête
+           ?>
+
+
+
+
+
+
+
+     
+      </ul>
+      </div>
      <br>
      <br>
              <?php }
