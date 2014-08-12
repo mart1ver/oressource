@@ -133,7 +133,7 @@
             // En cas d'erreur, on affiche un message et on arrête tout
             die('Erreur : '.$e->getMessage());
             }
-             // On recupère tout le contenu de la table point de collecte
+             // On recupère tout le contenu de la table grille_objets
            $req = $bdd->prepare("SELECT * FROM grille_objets WHERE id_type_dechet = :id_type_dechet  ");
            $req->execute(array('id_type_dechet' => $donnees['id']));
            $i = 1;
@@ -142,30 +142,19 @@
            {
            ?>
     <li><a><?php echo$donneesint['nom']?></a></li>
-       
-           
-      </li>
+    </li>
            <?php }
            $req->closeCursor(); // Termine le traitement de la requête
-           ?>
-
-
-
-
-
-
-
-     
-      </ul>
-      </div>
-    
-      <br><br>
+           ?> 
+    </ul>
+    </div>
+    <br><br>
                 <?php }
                 $reponse->closeCursor(); // Termine le traitement de la requête
                 ?>
-      </div> 
-      <div class="col-md-2" >
-      <br><br>        
+    </div> 
+    <div class="col-md-2" >
+    <br><br>        
             <?php 
             try
             {
@@ -179,22 +168,18 @@
             }
            // On recupère tout le contenu de la table type dechet
             $reponse = $bdd->query('SELECT * FROM type_dechets WHERE visible = "oui" AND MOD(id,2)=0');
- 
-           // On affiche chaque entree une à une
+          // On affiche chaque entree une à une
            while ($donnees = $reponse->fetch())
            {
            ?>
-     <div class="btn-group">
-      <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-      <span class="badge" id="cool" style="background-color:<?php echo$donnees['couleur']?>"><?php echo$donnees['nom']?></span>
-      </button>
-      <ul class="dropdown-menu" role="menu">
-      <li><a ><?php echo$donnees['nom']?></a></li>
-
-      <li class="divider"></li>
-
-
-  <?php 
+    <div class="btn-group">
+    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+    <span class="badge" id="cool" style="background-color:<?php echo$donnees['couleur']?>"><?php echo$donnees['nom']?></span>
+    </button>
+    <ul class="dropdown-menu" role="menu">
+    <li><a ><?php echo$donnees['nom']?></a></li>
+    <li class="divider"></li>
+            <?php 
             try
             {
             // On se connecte à MySQL
@@ -205,46 +190,36 @@
             // En cas d'erreur, on affiche un message et on arrête tout
             die('Erreur : '.$e->getMessage());
             }
-             // On recupère tout le contenu de la table point de collecte
-           $req = $bdd->prepare("SELECT * FROM grille_objets WHERE id_type_dechet = :id_type_dechet  ");
-           $req->execute(array('id_type_dechet' => $donnees['id']));
-           $i = 1;
-           // On affiche chaque entree une à une
-           while ($donneesint = $req->fetch())
-           {
-           ?>
+            // On recupère tout le contenu de la table point de collecte
+            $req = $bdd->prepare("SELECT * FROM grille_objets WHERE id_type_dechet = :id_type_dechet  ");
+            $req->execute(array('id_type_dechet' => $donnees['id']));
+            $i = 1;
+            // On affiche chaque entree une à une
+            while ($donneesint = $req->fetch())
+            {
+            ?>
     <li><a><?php echo$donneesint['nom']?></a></li>
-       
-           
-      </li>
-           <?php }
-           $req->closeCursor(); // Termine le traitement de la requête
-           ?>
-
-
-
-
-
-
-
-     
-      </ul>
-      </div>
-     <br>
-     <br>
+    </li>
+            <?php }
+            $req->closeCursor(); // Termine le traitement de la requête
+            ?>
+    </ul>
+    </div>
+    <br>
+    <br>
              <?php }
              $reponse->closeCursor(); // Termine le traitement de la requête
              ?>
-     </div>
-     <div class="col-md-4" >
-     <label>Clavier</label><br>
-     <div class="col-md-3" style="width: 200px;">
-     <div class="row">
-     <div class="input-group">
-     <input type="text" class="form-control" placeholder="Masse" id="number" name="num"  ><span class="input-group-addon">Kg.</span>
-     </div>
-     </div>
-     <br>
+    </div>
+    <div class="col-md-4" >
+    <label>Clavier</label><br>
+    <div class="col-md-3" style="width: 200px;">
+    <div class="row">
+    <div class="input-group">
+    <input type="text" class="form-control" placeholder="Masse" id="number" name="num"  ><span class="input-group-addon">Kg.</span>
+    </div>
+    </div>
+    <br>
     <div class="row">
         <button class="btn btn-default btn-lg" onclick="number_write('1');" data-value="1">1</button>
         <button class="btn btn-default btn-lg" onclick="number_write('2');" data-value="2">2</button>
@@ -269,20 +244,12 @@
     </div>
     </div>
     <br><br><br>
-      <div class="row">
-        
-            
-        </div>  
-        <div class="col-md-4" >
-          
-         
-         
-        </div>
-        <div class="col-md-4" >
-          
-        
-         
-        </div>
-      </div>
-<br>
-      <?php include "pied.php" ?>
+    <div class="row">
+    </div>  
+    <div class="col-md-4" >
+    </div>
+    <div class="col-md-4" >
+    </div>
+    </div>
+    <br>
+            <?php include "pied.php" ?>
