@@ -34,8 +34,14 @@
       </fieldset>     
     <div class="row">
    	<br>
-      <div class="col-md-3 col-md-offset-1" >
-      <label>Ticket de caisse:</label>
+      <div class="col-md-2 col-md-offset-2" style="width: 360px;" >
+     
+
+       <div class="panel panel-info">
+        <div class="panel-heading">
+    <h3 class="panel-title">Ticket de caisse:</h3>
+  </div>
+  <div class="panel-body">
         <?php 
             try
             {
@@ -91,9 +97,65 @@
       <button class="btn btn-default btn-lg">c'est pesé!</button></form>
       <button class="btn btn-default btn-lg" onclick="tdechet_clear();" >reset</button>
       <br>
+      </div>
+      </div>
       </div>  
-      <div class="col-md-2" >
+      
+   
+    <div class="col-md-3" style="width: 200px;">
+ 
+      <div class="panel panel-info">
+        <div class="panel-heading">
+    <h3 class="panel-title">Objet:</h3>
+  </div>
+  <div class="panel-body">
+      Quantité: <input type="text" class="form-control" placeholder="Qantité" id="quantite" name="quantite"> Prix: <input type="text" class="form-control" placeholder="€" id="prix" name="prix">
+  
+
+
+      <br>
+   
+    <div class="col-md-3" style="width: 200px;">
+    <div class="row">
+    
+    </div>
+    <br>
+    <div class="row">
+        <button class="btn btn-default btn-lg" onclick="number_write('1');" data-value="1">1</button>
+        <button class="btn btn-default btn-lg" onclick="number_write('2');" data-value="2">2</button>
+        <button class="btn btn-default btn-lg" onclick="number_write('3');" data-value="3">3</button>
+    </div>
+    <div class="row">
+        <button class="btn btn-default btn-lg" onclick="number_write('4');" data-value="4">4</button>
+        <button class="btn btn-default btn-lg" onclick="number_write('5');" data-value="5">5</button>
+        <button class="btn btn-default btn-lg" onclick="number_write('6');" data-value="6">6</button>
+    </div>
+    <div class="row">
+        <button class="btn btn-default btn-lg" onclick="number_write('7');" data-value="7">7</button>
+        <button class="btn btn-default btn-lg" onclick="number_write('8');" data-value="8">8</button>
+        <button class="btn btn-default btn-lg" onclick="number_write('9');" data-value="9">9</button>
+    </div>
+    <div class="row">
+        <button class="btn btn-default btn-lg" onclick="number_clear();" data-value="C">C</button>
+        <button class="btn btn-default btn-lg" onclick="number_write('0');" data-value="0">0</button>
+        <button class="btn btn-default btn-lg" onclick="number_write('.');" data-value=",">,</button>
+    </div>
+    </div>
+
+
+  </div>
+  </div>
+
+
+
+    </div>
+
+ 
+<div class="col-md-2" style="width: 200px;">
+
       <label>Type d'objet:</label><br>
+
+
             <?php 
             try
             {
@@ -153,7 +215,8 @@
                 $reponse->closeCursor(); // Termine le traitement de la requête
                 ?>
     </div> 
-    <div class="col-md-2" >
+
+ <div class="col-md-2" style="width: 200px;" >
     <br><br>        
             <?php 
             try
@@ -211,45 +274,11 @@
              $reponse->closeCursor(); // Termine le traitement de la requête
              ?>
     </div>
-    <div class="col-md-4" >
-    <label>Clavier</label><br>
-    <div class="col-md-3" style="width: 200px;">
-    <div class="row">
-    <div class="input-group">
-    <input type="text" class="form-control" placeholder="Masse" id="number" name="num"  ><span class="input-group-addon">Kg.</span>
-    </div>
-    </div>
-    <br>
-    <div class="row">
-        <button class="btn btn-default btn-lg" onclick="number_write('1');" data-value="1">1</button>
-        <button class="btn btn-default btn-lg" onclick="number_write('2');" data-value="2">2</button>
-        <button class="btn btn-default btn-lg" onclick="number_write('3');" data-value="3">3</button>
-    </div>
-    <div class="row">
-        <button class="btn btn-default btn-lg" onclick="number_write('4');" data-value="4">4</button>
-        <button class="btn btn-default btn-lg" onclick="number_write('5');" data-value="5">5</button>
-        <button class="btn btn-default btn-lg" onclick="number_write('6');" data-value="6">6</button>
-    </div>
-    <div class="row">
-        <button class="btn btn-default btn-lg" onclick="number_write('7');" data-value="7">7</button>
-        <button class="btn btn-default btn-lg" onclick="number_write('8');" data-value="8">8</button>
-        <button class="btn btn-default btn-lg" onclick="number_write('9');" data-value="9">9</button>
-    </div>
-    <div class="row">
-        <button class="btn btn-default btn-lg" onclick="number_clear();" data-value="C">C</button>
-        <button class="btn btn-default btn-lg" onclick="number_write('0');" data-value="0">0</button>
-        <button class="btn btn-default btn-lg" onclick="number_write('.');" data-value=",">,</button>
-    </div>
-    </div>
-    </div>
+
     </div>
     <br><br><br>
-    <div class="row">
-    </div>  
-    <div class="col-md-4" >
+     
     </div>
-    <div class="col-md-4" >
-    </div>
-    </div>
+   
     <br>
             <?php include "pied.php" ?>
