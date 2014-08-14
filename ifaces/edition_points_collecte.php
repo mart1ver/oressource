@@ -28,11 +28,12 @@
   <div class="panel-body">
     <div class="row">
      	<form action="../moteur/edition_points_collecte_post.php" method="post">
-      <div class="col-md-3"><label for="nom">Nom:</label> <input type="text" value ="<?php echo $_GET['nom']?>" name="nom" id="nom" class="form-control " required autofocus></div>
-      <div class="col-md-3"><label for="adresse">Addresse:</label> <input type="text" value ="<?php echo $_GET['adresse']?>" name="adresse" id="adresse" class="form-control " required ></div>
-      <div class="col-md-2"><label for="commentaire">Commentaire:</label> <input type="text" value ="<?php echo $_GET['commentaire']?>" name="commentaire" id="commentaire" class="form-control " required ></div>
-      <div class="col-md-1"><label for="couleur">Couleur:</label> <input type="color"        value ="<?php if(isset($_GET['couleur']))echo "#".$_GET['couleur']?>" name="couleur" id="couleur" class="form-control " required ></div>
-      <div class="col-md-1"><br><button name="creer" class="btn btn-default">Creer!</button></div>
+      <div class="col-md-2"><label for="nom">Nom:</label><br><br><input type="text" value ="<?php echo $_GET['nom']?>" name="nom" id="nom" class="form-control " required autofocus></div>
+      <div class="col-md-3"><label for="adresse">Addresse:</label><br><br><input type="text" value ="<?php echo $_GET['adresse']?>" name="adresse" id="adresse" class="form-control " required ></div>
+      <div class="col-md-2"><label for="commentaire">Commentaire:</label><br><br><input type="text" value ="<?php echo $_GET['commentaire']?>" name="commentaire" id="commentaire" class="form-control " required ></div>
+       <div class="col-md-2"><label for="pesee_max">Masse maxi. d'une pesée:</label> <input type="text" value ="<?php echo $_GET['pesee_max']?>" name="pesee_max" id="pesee_max" class="form-control " required ></div>
+      <div class="col-md-1"><label for="couleur">Couleur:</label><br><br><input type="color"        value ="<?php if(isset($_GET['couleur']))echo "#".$_GET['couleur']?>" name="couleur" id="couleur" class="form-control " required ></div>
+      <div class="col-md-1"><br><br><button name="creer" class="btn btn-default">Creer!</button></div>
       </form>
     </div>
   </div>
@@ -46,6 +47,7 @@
         <th>adresse</th>
         <th>couleur</th>
         <th>commentaire</th>
+        <th>Pesée maxi.</th>
         <th>visible</th>
         <th>modifier</th>
      </tr>
@@ -75,6 +77,7 @@
       <td><?php echo $donnees['adresse']?></td>
       <td><span class="badge" style="background-color:<?php echo$donnees['couleur']?>"><?php echo$donnees['couleur']?></span></td> 
       <td><?php echo $donnees['commentaire']?></td>
+      <td><?php echo $donnees['pesee_max']?></td>
       <td>
         <form action="../moteur/collectes_visibles_post.php" method="post">
           <input type="hidden" name ="id" id="id" value="<?php echo $donnees['id']?>">
@@ -101,6 +104,7 @@
             <input type="hidden" name ="nom" id="nom" value="<?php echo $donnees['nom']?>">
             <input type="hidden" name ="adresse" id="adresse" value="<?php echo $donnees['adresse']?>">
             <input type="hidden" name ="commentaire" id="commentaire" value="<?php echo $donnees['commentaire']?>">
+            <input type="hidden" name ="pesee_max" id="pesee_max" value="<?php echo $donnees['pesee_max']?>">
             <input type="hidden" name ="couleur" id="couleur" value="<?php echo substr($_POST['couleur'],1)?>">
             <button  class="btn btn-warning btn-sm " >modifier</button>
           </form>
@@ -112,6 +116,7 @@
   </tbody>
     <tfoot>
      <tr>
+        <th></th>
         <th></th>
         <th></th>
         <th></th>
