@@ -6,6 +6,7 @@
         <h1>Gestions des points de collecte</h1> 
          <div class="panel-heading">Modifier les données concernant le point numero <?php echo $_POST['id']?>, <?php echo $_POST['nom']?>. </div>
 <?php
+//POST ou GET ?
 if (isset($_POST['id']) !== false)
 {
 $id = $_POST['id'];
