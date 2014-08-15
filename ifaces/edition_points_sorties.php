@@ -30,7 +30,7 @@
       <div class="col-md-3"><label for="nom">Nom:</label><br><br><input type="text"                 value ="<?php echo $_GET['nom']?>" name="nom" id="nom" class="form-control " required autofocus></div>
       <div class="col-md-3"><label for="addresse">Addresse:</label><br><br><input type="text"       value ="<?php echo $_GET['adresse']?>" name="adresse" id="adresse" class="form-control " required ></div>
       <div class="col-md-2"><label for="commentaire">Commentaire:</label><br><br><input type="text" value ="<?php echo $_GET['commentaire']?>" name="commentaire" id="commentaire" class="form-control " required ></div>
-      <div class="col-md-2"><label for="pesee_max">Masse maxi. d'une pesée:</label> <input type="text" value ="<?php echo $_GET['pesee_max']?>" name="pesee_max" id="pesee_max" class="form-control " required ></div>
+      <div class="col-md-2"><label for="pesee_max">Masse maxi. d'une pesée (Kg):</label> <input type="text" value ="<?php echo $_GET['pesee_max']?>" name="pesee_max" id="pesee_max" class="form-control " required ></div>
       <div class="col-md-1"><label for="couleur">Couleur:</label><br><br><input type="color"        value ="<?php if(isset($_GET['couleur']))echo "#".$_GET['couleur']?>" name="couleur" id="couleur" class="form-control " required ></div>
       <div class="col-md-1"><br><br><button name="creer" class="btn btn-default">Creer!</button></div>
     </form>

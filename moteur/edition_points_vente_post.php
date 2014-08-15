@@ -21,7 +21,7 @@ $req->closeCursor(); // Termine le traitement de la requête
 if ($donnees['SUM(id)'] > 0) // SI le titre existe
 
 {
-header("Location:../ifaces/edition_points_vente.php?err=Un point de vente porte deja le meme nom!&nom=".$_POST['nom']."&adresse=".$_POST['adresse']."&commentaire=".$_POST['commentaire']."&couleur=".substr($_POST['couleur'],1));
+header("Location:../ifaces/edition_points_vente.php?err=Un point de vente porte deja le meme nom!&nom=".$_POST['nom']."&adresse=".$_POST['adresse']."&surface=".$_POST['surface']."&commentaire=".$_POST['commentaire']."&couleur=".substr($_POST['couleur'],1));
 $req->closeCursor(); // Termine le traitement de la requête
 }
 
@@ -44,8 +44,8 @@ catch(Exception $e)
 // mot de passe crypté md5 
 
 // Insertion du post à l'aide d'une requête préparée
-$req = $bdd->prepare('INSERT INTO points_vente (nom, adresse, couleur, commentaire, visible) VALUES(?, ?, ?, ?, ?)');
-$req->execute(array($_POST['nom'], $_POST['adresse'] , $_POST['couleur'] , $_POST['commentaire'], "oui"));
+$req = $bdd->prepare('INSERT INTO points_vente (nom, adresse, couleur, commentaire, surface_vente, visible) VALUES(?, ?, ?, ?, ?, ?)');
+$req->execute(array($_POST['nom'], $_POST['adresse'] , $_POST['couleur'] , $_POST['commentaire'], $_POST['surface'], "oui"));
   $req->closeCursor();
 
 // Redirection du visiteur vers la page de gestion des affectation
