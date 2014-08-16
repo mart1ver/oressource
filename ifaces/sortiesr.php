@@ -11,6 +11,26 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
 //
 //
 //
+        //on obtien la masse maximum suporté par la balance à ce point de sortie dans la variable $pesee_max
+  try
+            {
+            // On se connecte à MySQL
+            include('../moteur/dbconfig.php');
+            }
+            catch(Exception $e)
+            {
+            // En cas d'erreur, on affiche un message et on arrête tout
+            die('Erreur : '.$e->getMessage());
+            }
+            //on obtient le nom du point de collecte designé par $GET['numero']
+            $req = $bdd->prepare("SELECT pesee_max FROM points_collecte WHERE id = :id ");
+            $req->execute(array('id' => $_GET['numero']));
+            // On affiche chaque entree une à une
+            while ($donnees = $req->fetch())
+            {
+            $pesee_max = $donnees['pesee_max'];
+            }
+            $reponse->closeCursor(); // Termine le traitement de la requête        
   ?>
 <script type="text/javascript">
 function number_write(x)
@@ -29,7 +49,7 @@ function number_clear()
 function tdechet_add()
 {
 var liste = document.getElementById("id_filiere")
-if (document.getElementById("number").value > 0) {
+if (document.getElementById("number").value > 0 && document.getElementById("number").value < <?php echo $pesee_max;?>) {
    
 
 
