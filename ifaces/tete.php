@@ -179,7 +179,10 @@
           <li class="divider"></li>
           <li><a href="types_collecte.php">Types de collectes</a></li>
           <li><a href="types_dechets.php">Types de déchet collectés</a></li>
-         
+          <li class="divider"></li>
+          <li><a href="verif_collecte.php">Corriger les collectes</a></li>
+          <li><a href="verif_sorties.php">Corriger les sorties hors boutique</a></li>
+          <li><a href="verif_vente.php">corriger les ventes</a></li>
           <li class="divider"></li>
           <li><a href="edition_points_collecte.php">Points de collecte</a></li>
           <li><a href="edition_points_sorties.php">Points de sortie hors boutique</a></li>

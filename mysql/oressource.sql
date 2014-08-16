@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Client: localhost
--- Généré le : Jeu 07 Août 2014 à 22:29
+-- Généré le : Sam 16 Août 2014 à 12:30
 -- Version du serveur: 5.5.34
 -- Version de PHP: 5.3.10-1ubuntu3.13
 
@@ -52,7 +52,7 @@ CREATE TABLE IF NOT EXISTS `collectes` (
   `localisation` int(11) NOT NULL,
   `id_point_collecte` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=99 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=102 ;
 
 --
 -- Contenu de la table `collectes`
@@ -84,7 +84,10 @@ INSERT INTO `collectes` (`id`, `timestamp`, `id_type_collecte`, `adherent`, `loc
 (95, '2014-08-06 12:13:30', 1, 'non', 1, 1),
 (96, '2014-08-06 16:47:25', 1, 'non', 1, 1),
 (97, '2014-08-07 11:22:12', 1, 'non', 1, 1),
-(98, '2014-08-07 12:15:23', 2, 'non', 1, 1);
+(98, '2014-08-07 12:15:23', 2, 'non', 1, 1),
+(99, '2014-08-08 11:34:18', 1, 'non', 1, 1),
+(100, '2014-08-12 12:51:37', 1, 'non', 1, 1),
+(101, '2014-08-16 09:56:59', 1, 'non', 1, 1);
 
 -- --------------------------------------------------------
 
@@ -178,7 +181,7 @@ CREATE TABLE IF NOT EXISTS `grille_objets` (
   `visible` text NOT NULL,
   `prix` text NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=21 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=22 ;
 
 --
 -- Contenu de la table `grille_objets`
@@ -203,7 +206,8 @@ INSERT INTO `grille_objets` (`id`, `timestamp`, `nom`, `description`, `id_type_d
 (17, '2014-08-07 15:03:52', 'K7 audio', 'K7 audio', 8, 'oui', '0'),
 (18, '2014-08-07 15:04:07', 'cadres', 'cadres', 9, 'oui', '1'),
 (19, '2014-08-07 15:04:37', 'bouteille de gaz', 'heuu...', 10, 'oui', '51'),
-(20, '2014-08-07 15:05:21', 'montre swatch hs', 'montre swatch hs', 11, 'oui', '1.25');
+(20, '2014-08-07 15:05:21', 'montre swatch hs', 'montre swatch hs', 11, 'oui', '1.25'),
+(21, '2014-08-12 13:17:05', 'chaise pliante', 'chaise pliante', 2, 'oui', '5');
 
 -- --------------------------------------------------------
 
@@ -258,68 +262,77 @@ CREATE TABLE IF NOT EXISTS `objets_en_pret` (
 CREATE TABLE IF NOT EXISTS `pesees_collectes` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `masse` text NOT NULL,
+  `masse` decimal(4,3) NOT NULL,
   `id_collecte` int(11) NOT NULL,
   `id_type_dechet` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=52 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=61 ;
 
 --
 -- Contenu de la table `pesees_collectes`
 --
 
 INSERT INTO `pesees_collectes` (`id`, `timestamp`, `masse`, `id_collecte`, `id_type_dechet`) VALUES
-(1, '2014-07-22 15:00:02', '111', 73, 1),
-(2, '2014-07-24 15:00:16', '55', 74, 1),
-(3, '2014-07-24 15:00:16', '66', 74, 2),
-(4, '2014-07-24 15:00:22', '11', 75, 1),
-(5, '2014-07-24 15:35:28', '1', 76, 1),
-(6, '2014-07-24 15:35:28', '111', 76, 2),
-(7, '2014-07-24 15:35:28', '32', 76, 3),
-(8, '2014-07-24 15:35:28', '55', 76, 7),
-(9, '2014-07-24 15:35:28', '8', 76, 11),
-(10, '2014-07-24 15:56:55', '44', 77, 6),
-(11, '2014-07-24 16:49:11', '15', 78, 7),
-(12, '2014-07-24 20:26:28', '24', 79, 1),
-(13, '2014-07-24 20:26:28', '88', 79, 2),
-(14, '2014-07-24 20:26:28', '56', 79, 3),
-(15, '2014-07-24 20:26:28', '45', 79, 7),
-(16, '2014-07-24 20:26:28', '1', 79, 10),
-(17, '2014-07-24 20:27:30', '43', 80, 3),
-(18, '2014-07-24 20:27:59', '11', 81, 1),
-(19, '2014-07-24 22:02:28', '44', 83, 1),
-(20, '2014-07-24 22:02:28', '155', 83, 2),
-(21, '2014-07-24 22:02:28', '5', 83, 11),
-(22, '2014-07-25 09:15:57', '555', 84, 3),
-(23, '2014-07-25 09:15:57', '5', 84, 7),
-(24, '2014-07-25 09:15:57', '8', 84, 8),
-(25, '2014-07-25 13:20:24', '11', 85, 3),
-(26, '2014-07-25 13:20:24', '44', 85, 6),
-(27, '2014-08-02 23:06:11', '111', 88, 6),
-(28, '2014-08-03 17:43:09', '55', 89, 1),
-(29, '2014-08-03 17:43:09', '61', 89, 8),
-(30, '2014-08-03 17:43:09', '7', 89, 11),
-(31, '2014-08-03 20:04:42', '44', 90, 3),
-(32, '2014-08-04 21:32:15', '99', 91, 4),
-(33, '2014-08-04 21:32:15', '8', 91, 6),
-(34, '2014-08-04 21:32:15', '6', 91, 8),
-(35, '2014-08-04 21:32:15', '44', 91, 10),
-(36, '2014-08-06 10:02:44', '1', 92, 1),
-(37, '2014-08-06 10:02:44', '2', 92, 2),
-(38, '2014-08-06 10:02:44', '3', 92, 3),
-(39, '2014-08-06 10:02:44', '4', 92, 4),
-(40, '2014-08-06 10:02:44', '6', 92, 6),
-(41, '2014-08-06 10:02:44', '5', 92, 7),
-(42, '2014-08-06 10:02:44', '8', 92, 8),
-(43, '2014-08-06 10:02:44', '7', 92, 9),
-(44, '2014-08-06 10:02:44', '9', 92, 11),
-(45, '2014-08-06 12:10:48', '3', 93, 1),
-(46, '2014-08-06 12:11:54', '6', 94, 1),
-(47, '2014-08-06 12:13:30', '5.9', 95, 1),
-(48, '2014-08-06 16:47:25', '21', 96, 1),
-(49, '2014-08-07 11:22:12', '11', 97, 1),
-(50, '2014-08-07 12:15:23', '55.8', 98, 3),
-(51, '2014-08-07 12:15:23', '0.9', 98, 7);
+(1, '2014-07-22 15:00:02', 9.999, 73, 1),
+(2, '2014-07-24 15:00:16', 9.999, 74, 1),
+(3, '2014-07-24 15:00:16', 9.999, 74, 2),
+(4, '2014-07-24 15:00:22', 9.999, 75, 1),
+(5, '2014-07-24 15:35:28', 1.000, 76, 1),
+(6, '2014-07-24 15:35:28', 9.999, 76, 2),
+(7, '2014-07-24 15:35:28', 9.999, 76, 3),
+(8, '2014-07-24 15:35:28', 9.999, 76, 7),
+(9, '2014-07-24 15:35:28', 8.000, 76, 11),
+(10, '2014-07-24 15:56:55', 9.999, 77, 6),
+(11, '2014-07-24 16:49:11', 9.999, 78, 7),
+(12, '2014-07-24 20:26:28', 9.999, 79, 1),
+(13, '2014-07-24 20:26:28', 9.999, 79, 2),
+(14, '2014-07-24 20:26:28', 9.999, 79, 3),
+(15, '2014-07-24 20:26:28', 9.999, 79, 7),
+(16, '2014-07-24 20:26:28', 1.000, 79, 10),
+(17, '2014-07-24 20:27:30', 9.999, 80, 3),
+(18, '2014-07-24 20:27:59', 9.999, 81, 1),
+(19, '2014-07-24 22:02:28', 9.999, 83, 1),
+(20, '2014-07-24 22:02:28', 9.999, 83, 2),
+(21, '2014-07-24 22:02:28', 5.000, 83, 11),
+(22, '2014-07-25 09:15:57', 9.999, 84, 3),
+(23, '2014-07-25 09:15:57', 5.000, 84, 7),
+(24, '2014-07-25 09:15:57', 8.000, 84, 8),
+(25, '2014-07-25 13:20:24', 9.999, 85, 3),
+(26, '2014-07-25 13:20:24', 9.999, 85, 6),
+(27, '2014-08-02 23:06:11', 9.999, 88, 6),
+(28, '2014-08-03 17:43:09', 9.999, 89, 1),
+(29, '2014-08-03 17:43:09', 9.999, 89, 8),
+(30, '2014-08-03 17:43:09', 7.000, 89, 11),
+(31, '2014-08-03 20:04:42', 9.999, 90, 3),
+(32, '2014-08-04 21:32:15', 9.999, 91, 4),
+(33, '2014-08-04 21:32:15', 8.000, 91, 6),
+(34, '2014-08-04 21:32:15', 6.000, 91, 8),
+(35, '2014-08-04 21:32:15', 9.999, 91, 10),
+(36, '2014-08-06 10:02:44', 1.000, 92, 1),
+(37, '2014-08-06 10:02:44', 2.000, 92, 2),
+(38, '2014-08-06 10:02:44', 3.000, 92, 3),
+(39, '2014-08-06 10:02:44', 4.000, 92, 4),
+(40, '2014-08-06 10:02:44', 6.000, 92, 6),
+(41, '2014-08-06 10:02:44', 5.000, 92, 7),
+(42, '2014-08-06 10:02:44', 8.000, 92, 8),
+(43, '2014-08-06 10:02:44', 7.000, 92, 9),
+(44, '2014-08-06 10:02:44', 9.000, 92, 11),
+(45, '2014-08-06 12:10:48', 3.000, 93, 1),
+(46, '2014-08-06 12:11:54', 6.000, 94, 1),
+(47, '2014-08-06 12:13:30', 6.000, 95, 1),
+(48, '2014-08-06 16:47:25', 9.999, 96, 1),
+(49, '2014-08-07 11:22:12', 9.999, 97, 1),
+(50, '2014-08-07 12:15:23', 9.999, 98, 3),
+(51, '2014-08-07 12:15:23', 1.000, 98, 7),
+(52, '2014-08-08 11:34:18', 9.999, 99, 1),
+(53, '2014-08-08 11:34:18', 9.999, 99, 2),
+(54, '2014-08-08 11:34:18', 1.000, 99, 4),
+(55, '2014-08-12 12:51:37', 9.999, 100, 2),
+(56, '2014-08-12 12:51:37', 1.000, 100, 4),
+(57, '2014-08-16 09:56:59', 9.999, 101, 2),
+(58, '2014-08-16 09:56:59', 5.000, 101, 3),
+(59, '2014-08-16 09:56:59', 9.999, 101, 4),
+(60, '2014-08-16 09:56:59', 9.000, 101, 8);
 
 -- --------------------------------------------------------
 
@@ -335,7 +348,7 @@ CREATE TABLE IF NOT EXISTS `pesees_sorties` (
   `id_type_dechet` int(11) NOT NULL,
   `id_type_poubelle` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=39 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=42 ;
 
 --
 -- Contenu de la table `pesees_sorties`
@@ -379,7 +392,10 @@ INSERT INTO `pesees_sorties` (`id`, `timestamp`, `masse`, `id_sortie`, `id_type_
 (35, '2014-08-06 21:33:12', '89', 23, 0, 1),
 (36, '2014-08-07 11:26:45', '11', 25, 1, 0),
 (37, '2014-08-07 11:28:08', '270', 26, 3, 0),
-(38, '2014-08-07 11:29:45', '89', 27, 0, 1);
+(38, '2014-08-07 11:29:45', '89', 27, 0, 1),
+(39, '2014-08-08 11:36:50', '340', 28, 3, 0),
+(40, '2014-08-08 11:38:55', '178', 29, 0, 1),
+(41, '2014-08-08 11:38:55', '79', 29, 0, 3);
 
 -- --------------------------------------------------------
 
@@ -394,6 +410,7 @@ CREATE TABLE IF NOT EXISTS `points_collecte` (
   `adresse` text NOT NULL,
   `couleur` text NOT NULL,
   `commentaire` text NOT NULL,
+  `pesee_max` text NOT NULL,
   `visible` text NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
@@ -402,10 +419,10 @@ CREATE TABLE IF NOT EXISTS `points_collecte` (
 -- Contenu de la table `points_collecte`
 --
 
-INSERT INTO `points_collecte` (`id`, `timestamp`, `nom`, `adresse`, `couleur`, `commentaire`, `visible`) VALUES
-(1, '2014-04-08 18:06:36', 'Point de collecte en boutique ', '125 rue du chemin vert', '#d13232', 'point de collecte de la roro', 'oui'),
-(2, '2014-06-12 13:01:52', 'point de collecte itinerant', 'pas d''adresse fixe!', '#4773a3', 'camion 30 mÃ¨tres cube avec balance! ', 'non'),
-(3, '2014-06-12 14:14:31', 'point de collecte en dechetterie', 'porte des lilas', '#c4b13a', 'oui!', 'non');
+INSERT INTO `points_collecte` (`id`, `timestamp`, `nom`, `adresse`, `couleur`, `commentaire`, `pesee_max`, `visible`) VALUES
+(1, '2014-04-08 18:06:36', 'Point de collecte en boutique ', '125 rue du chemin vert', '#d13232', 'point de collecte de la roro', '700', 'oui'),
+(2, '2014-06-12 13:01:52', 'point de collecte itinerant', 'pas d''adresse fixe!', '#4773a3', 'camion 30 mÃ¨tres cube avec balance! ', '700', 'non'),
+(3, '2014-06-12 14:14:31', 'point de collecte en dechetterie', 'porte des lilas', '#c4b13a', 'oui!', '700', 'non');
 
 -- --------------------------------------------------------
 
@@ -420,6 +437,7 @@ CREATE TABLE IF NOT EXISTS `points_sortie` (
   `adresse` text NOT NULL,
   `couleur` text NOT NULL,
   `commentaire` text NOT NULL,
+  `pesee_max` text NOT NULL,
   `visible` text NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
@@ -428,8 +446,8 @@ CREATE TABLE IF NOT EXISTS `points_sortie` (
 -- Contenu de la table `points_sortie`
 --
 
-INSERT INTO `points_sortie` (`id`, `timestamp`, `nom`, `adresse`, `couleur`, `commentaire`, `visible`) VALUES
-(1, '2014-04-08 18:19:28', 'Sorties hors boutique', '125 rue du chemin vert', '#aa1d7c', 'point de sortie hors boutique principale de la ressourcerie de la petite rockette', 'oui');
+INSERT INTO `points_sortie` (`id`, `timestamp`, `nom`, `adresse`, `couleur`, `commentaire`, `pesee_max`, `visible`) VALUES
+(1, '2014-04-08 18:19:28', 'Sorties hors boutique', '125 rue du chemin vert', '#aa1d7c', 'point de sortie hors boutique principale de la ressourcerie de la petite rockette', '700', 'oui');
 
 -- --------------------------------------------------------
 
@@ -444,6 +462,7 @@ CREATE TABLE IF NOT EXISTS `points_vente` (
   `adresse` text NOT NULL,
   `couleur` text NOT NULL,
   `commentaire` text NOT NULL,
+  `surface_vente` text NOT NULL,
   `visible` text NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
@@ -452,9 +471,9 @@ CREATE TABLE IF NOT EXISTS `points_vente` (
 -- Contenu de la table `points_vente`
 --
 
-INSERT INTO `points_vente` (`id`, `timestamp`, `nom`, `adresse`, `couleur`, `commentaire`, `visible`) VALUES
-(1, '2014-04-08 18:17:25', 'Boutique de La Petite Rockette', '125 rue du chemin vert', '#a4e06e', 'la caisse principale de la ressourcerie de la petite rockette              ', 'oui'),
-(2, '2014-07-10 17:08:03', 'La toute petite rockette', 'rue de la folie mericourt ', '#509a64', 'vente de vÃªtements et accessoires de mode femme et enfants ', 'oui');
+INSERT INTO `points_vente` (`id`, `timestamp`, `nom`, `adresse`, `couleur`, `commentaire`, `surface_vente`, `visible`) VALUES
+(1, '2014-04-08 18:17:25', 'Boutique de La Petite Rockette', '125 rue du chemin vert', '#a4e06e', 'la caisse principale de la ressourcerie de la petite rockette              ', '280', 'oui'),
+(2, '2014-07-10 17:08:03', 'La toute petite rockette', 'rue de la folie mericourt ', '#509a64', 'vente de vÃªtements et accessoires de mode femme et enfants ', '27', 'oui');
 
 -- --------------------------------------------------------
 
@@ -512,7 +531,7 @@ CREATE TABLE IF NOT EXISTS `sorties` (
   `id_point_sortie` int(11) NOT NULL,
   `commentaire` text NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=28 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=30 ;
 
 --
 -- Contenu de la table `sorties`
@@ -545,7 +564,9 @@ INSERT INTO `sorties` (`id`, `timestamp`, `classe`, `adherent`, `id_filiere`, `i
 (24, '2014-08-07 11:26:38', 'sorties', 'non', 0, 0, 1, 1, ''),
 (25, '2014-08-07 11:26:45', 'sorties', 'non', 0, 0, 1, 1, ''),
 (26, '2014-08-07 11:28:08', 'sortiesr', '', 3, 0, 0, 1, ''),
-(27, '2014-08-07 11:29:45', 'sortiesp', '', 0, 0, 0, 1, '');
+(27, '2014-08-07 11:29:45', 'sortiesp', '', 0, 0, 0, 1, ''),
+(28, '2014-08-08 11:36:50', 'sortiesr', '', 3, 0, 0, 1, ''),
+(29, '2014-08-08 11:38:55', 'sortiesp', '', 0, 0, 0, 1, '');
 
 -- --------------------------------------------------------
 
@@ -631,7 +652,7 @@ INSERT INTO `type_dechets` (`id`, `timestamp`, `nom`, `description`, `couleur`, 
 (2, '2014-04-08 18:21:40', 'mobilier', 'mobilier', '#e83c02', 'oui'),
 (3, '2014-04-08 18:22:10', 'textile,accessoires ', 'textile,accessoires la masse de bijoux Ã©tant nÃ©gligeable ', '#ff1c0f', 'oui'),
 (4, '2014-06-22 20:00:31', 'jouets', 'jeux, jouets , comprend aussi les jeux de societÃ©s', '#e80273', 'oui'),
-(5, '2014-06-22 20:34:38', 'informatique', 'ordis, ecrans , claviers , autres pÃ©riphÃ©riques info. DEEE. en fait ... ', '#e902ff', 'oui'),
+(5, '2014-06-22 20:34:38', 'informatique', 'ordis, ecrans , claviers , autres pÃ©riphÃ©riques info. DEEE. en fait ... ', '#e902ff', 'non'),
 (6, '2014-07-02 14:00:33', 'vaisselle', 'vaisselle ,tout Ã©tats touts materiaux', '#a71dff', 'oui'),
 (7, '2014-07-02 22:04:57', 'livres', 'livres magazines journaux etc', '#3a02e8', 'oui'),
 (8, '2014-07-02 22:06:25', 'supports media', 'cd dvd vinyles cassets minidiscs et consors', '#0b28ff', 'oui'),
@@ -688,7 +709,7 @@ CREATE TABLE IF NOT EXISTS `utilisateurs` (
 --
 
 INSERT INTO `utilisateurs` (`id`, `timestamp`, `niveau`, `nom`, `prenom`, `mail`, `pass`) VALUES
-(1, '2014-06-25 22:58:07', 'c1c5c6v1v2s1abigmp', 'martin', 'vert', 'mart1ver@gmail.com', '81dc9bdb52d04dc20036dbd8313ed055'),
+(1, '2014-06-25 22:58:07', 'c1c2c3v1v2s1abigmp', 'martin', 'vert', 'mart1ver@gmail.com', '81dc9bdb52d04dc20036dbd8313ed055'),
 (2, '2014-07-24 15:29:20', 'c1v1s1abig', 'dom', 'dominique', 'dom@dom.dom', '81dc9bdb52d04dc20036dbd8313ed055');
 
 -- --------------------------------------------------------
