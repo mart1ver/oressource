@@ -61,12 +61,11 @@
                <?php echo $donnees['nom']; ?> 
               </a>
           </li>
-          <br>
-          <?php
-           } 
-           }
+          <br><?php } ?>
+   
+              <?php }
               $reponse->closeCursor(); // Termine le traitement de la requête
-                ?>  </li> </ul> </li><?php } else{}?>
+               ?>  </li> </ul> </li><?php } else{}?>
 </ul>
 <ul class="nav navbar-nav">
 <?php 
