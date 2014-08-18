@@ -1,4 +1,28 @@
 <?php session_start(); ?>
+
+<script type="text/javascript">
+function ajout() {
+    
+             document.getElementById('liste').innerHTML += '<li class="list-group-item"><span class="badge">'+document.getElementById('prix').value+'</span>'+document.getElementById('quantite').value+'*'+document.getElementById('nom_objet0').value+'</li>';                                     
+
+    document.getElementById('nom_objet').innerHTML = "<label>Objet:</label>";
+    document.getElementById('quantite').value = "";
+    document.getElementById('prix').value = "";
+    document.getElementById('id_type_objet').value = "";
+    document.getElementById('id_objet').value = "";
+    document.getElementById('nom_objet0').value = "";
+}
+function edite(nom,prix,id_type_objet,id_objet) {
+    document.getElementById('nom_objet').innerHTML = "<label>"+nom+"</label>";
+    document.getElementById('quantite').value = "1";
+    document.getElementById('prix').value = parseFloat(prix);
+    document.getElementById('id_type_objet').value = parseFloat(id_type_objet);
+    document.getElementById('id_objet').value = parseFloat(id_objet);
+    document.getElementById('nom_objet0').value = nom;
+
+}
+</script>
+
 <?php include "tete.php" ?>
 <br><br>
       <fieldset>
@@ -7,7 +31,7 @@
           
             try
             {
-            // On se connecte à MySQL
+            // On se connecte à MySQL document.getElementById('liste').innerHTML += "<li class="list-group-item"><span class="badge">"+parseFloat(document.getElementById('quantite').value*document.getElementById('prix').value)+"</span>"+document.getElementById('quantite').value+"*"+document.getElementById('nom_objet0').value+"</li>";
             include('../moteur/dbconfig.php');
             }
             catch(Exception $e)
@@ -42,61 +66,19 @@
     <h3 class="panel-title">Ticket de caisse:</h3>
   </div>
   <div class="panel-body">
-        <?php 
-            try
-            {
-            // On se connecte à MySQL
-            include('../moteur/dbconfig.php');
-            }
-            catch(Exception $e)
-            {
-            // En cas d'erreur, on affiche un message et on arrête tout
-            die('Erreur : '.$e->getMessage());
-            }
-            // On recupère tout le contenu de la table point de collecte
-            $reponse = $bdd->query('SELECT * FROM type_dechets WHERE visible = "oui"');
-            // On affiche chaque entree une à une
-            while ($donnees = $reponse->fetch())
-            {
-        ?>
-      <ul class="list-group">
-      <li class="list-group-item">
-      <span class="badge" id="<?php echo$donnees['nom']?>"style="background-color:<?php echo$donnees['couleur']?>">0</span>
-        <?php echo$donnees['nom']?>
-        <?php 
-            try
-            {
-            // On se connecte à MySQL
-            include('../moteur/dbconfig.php');
-            }
-            catch(Exception $e)
-            {
-            // En cas d'erreur, on affiche un message et on arrête tout
-            die('Erreur : '.$e->getMessage());
-            }
-             // On recupère tout le contenu de la table point de collecte
-           $req = $bdd->prepare("SELECT * FROM grille_objets WHERE id_type_dechet = :id_type_dechet  ");
-           $req->execute(array('id_type_dechet' => $donnees['id']));
-           $i = 1;
-           // On affiche chaque entree une à une
-           while ($donneesint = $req->fetch())
-           {
-           ?>
-      <li class="list-group-item">
-        <span class="badge"style="background-color:<?php echo$donnees['couleur']?>">0</span>
-           <?php echo$donneesint['nom']?>
-      </li>
-           <?php }
-           $req->closeCursor(); // Termine le traitement de la requête
-           ?>
-      </li>
-           <?php }
-           $reponse->closeCursor(); // Termine le traitement de la requête
-           ?>
-      </ul>
-      <button class="btn btn-default btn-lg">c'est pesé!</button></form>
-      <button class="btn btn-default btn-lg" onclick="tdechet_clear();" >reset</button>
-      <br>
+     
+
+<ul id="liste" class="list-group">
+   <li class="list-group-item">nom de la structure<br>adresse et siret<br>numero de la vente,date</li>
+  
+</ul>
+ 
+
+
+
+
+
+
       </div>
       </div>
       </div>  
@@ -106,15 +88,19 @@
  
       <div class="panel panel-info">
         <div class="panel-heading">
-    <h3 class="panel-title">Objet:</h3>
+    <h3 class="panel-title"id="nom_objet"><label>Objet:</label></h3>
   </div>
-  <div class="panel-body">
-      Quantité: <input type="text" class="form-control" placeholder="Qantité" id="quantite" name="quantite"> Prix: <input type="text" class="form-control" placeholder="€" id="prix" name="prix">
-  
+  <div class="panel-body"> 
+      Quantité: <input type="text" class="form-control" placeholder="Qantité" id="quantite" name="quantite"> Prix unitaire: <input type="text" class="form-control" placeholder="€" id="prix" name="prix">
+<input type="text" class="form-control" placeholder="id type objet" id="id_type_objet" name="id_type_objet">
+<input type="text" class="form-control" placeholder="id objet" id="id_objet" name="id_objet">   
+<input type="text" class="form-control" placeholder="nom objet" id="nom_objet0" name="nom_objet0">   
 
 
       <br>
-   
+    <button type="button" class="btn btn-default" onclick="ajout();">
+    Ajout!
+    </button>
     <div class="col-md-3" style="width: 200px;">
     <div class="row">
     
@@ -179,8 +165,7 @@
       <span class="badge" id="cool" style="background-color:<?php echo$donnees['couleur']?>"><?php echo$donnees['nom']?></span>
       </button>
       <ul class="dropdown-menu" role="menu">
-      <li><a ><?php echo$donnees['nom']?></a></li>
-
+      <li><a href="javascript:edite('<?php echo$donnees['nom']?>','0','<?php echo$donnees['id']?>','0')" ><?php echo$donnees['nom']?></a></li>
       <li class="divider"></li>
 
 
@@ -196,14 +181,14 @@
             die('Erreur : '.$e->getMessage());
             }
              // On recupère tout le contenu de la table grille_objets
-           $req = $bdd->prepare("SELECT * FROM grille_objets WHERE id_type_dechet = :id_type_dechet  ");
+           $req = $bdd->prepare('SELECT * FROM grille_objets WHERE id_type_dechet = :id_type_dechet AND visible = "oui"   ');
            $req->execute(array('id_type_dechet' => $donnees['id']));
            $i = 1;
            // On affiche chaque entree une à une
            while ($donneesint = $req->fetch())
            {
            ?>
-    <li><a><?php echo$donneesint['nom']?></a></li>
+    <li><a href="javascript:edite('<?php echo$donneesint['nom']?>','<?php echo$donneesint['prix']?>','<?php echo$donnees['id']?>','<?php echo$donneesint['id']?>')"><?php echo$donneesint['nom']?></a></li>
     </li>
            <?php }
            $req->closeCursor(); // Termine le traitement de la requête
@@ -240,7 +225,7 @@
     <span class="badge" id="cool" style="background-color:<?php echo$donnees['couleur']?>"><?php echo$donnees['nom']?></span>
     </button>
     <ul class="dropdown-menu" role="menu">
-    <li><a ><?php echo$donnees['nom']?></a></li>
+    <li><a href="javascript:edite(<?php echo$donnees['nom']?>)" ><?php echo$donnees['nom']?></a></li>
     <li class="divider"></li>
             <?php 
             try
@@ -254,14 +239,14 @@
             die('Erreur : '.$e->getMessage());
             }
             // On recupère tout le contenu de la table point de collecte
-            $req = $bdd->prepare("SELECT * FROM grille_objets WHERE id_type_dechet = :id_type_dechet  ");
+            $req = $bdd->prepare('SELECT * FROM grille_objets WHERE id_type_dechet = :id_type_dechet AND visible = "oui" ');
             $req->execute(array('id_type_dechet' => $donnees['id']));
             $i = 1;
             // On affiche chaque entree une à une
             while ($donneesint = $req->fetch())
             {
             ?>
-    <li><a><?php echo$donneesint['nom']?></a></li>
+    <li><a href="javascript:edite(<?php echo$donnees['nom']?>)"><?php echo$donneesint['nom']?></a></li>
     </li>
             <?php }
             $req->closeCursor(); // Termine le traitement de la requête
