@@ -118,7 +118,7 @@ function edite(nom,prix,id_type_objet,id_objet) {
       </fieldset>     
     <div class="row">
    	<br>
-      <div class="col-md-2 col-md-offset-2" style="width: 320px;" >
+      <div class="col-md-2 col-md-offset-2" style="width: 330px;" >
      
 
        <div class="panel panel-info">
@@ -129,7 +129,7 @@ function edite(nom,prix,id_type_objet,id_objet) {
   </div>
   <div class="panel-body">
      
-
+<form action="../moteur/vente_post.php" method="post">
 <ul id="liste" class="list-group">
    <li class="list-group-item">Vente: <?php echo $_GET['numero']?>#<?php echo $numero_vente?>, date: <?php echo date("d-m-Y") ?><br><?php echo $nom_pv;?><br><?php echo $adresse_pv;?>,<br>siret: <?php echo$_SESSION['siret'];?></li>
   
@@ -137,10 +137,21 @@ function edite(nom,prix,id_type_objet,id_objet) {
  <ul class="list-group" id="total">
   
 </ul>
+<input name ="adh" id ="adh" type="checkbox" ><label for="adh">Adhére à l'association</label> <a href="adhesions.php"  target="_blank"><span style="float:right;" class="glyphicon glyphicon-pencil"></span></a>
 <br>
 <input type="hidden"  id="nlignes" name="nlignes">
 <input type="hidden"  id="narticles" name="narticles">
 <input type="hidden"  id="ptot" name="ptot">
+<input type="text"  id="comm" name="comm">
+<input type="hidden" name ="id_point_vente" id="id_point_vente" value="<?php echo $_GET['numero']?>">
+    
+ <ul id="boutons" class="list-group">
+        <button class="btn btn-default btn-lg">Encaisser</button></form>
+        <button class="btn btn-default btn-lg" onclick="number_write('2');" data-value="2" align="center"><span class="glyphicon glyphicon-print"></span></button>
+        <button class="btn btn-default btn-lg" onclick="number_write('3');" data-value="3">Anuler</button>
+  </ul>
+
+
       </div>
       </div>
       </div>  
@@ -160,9 +171,12 @@ function edite(nom,prix,id_type_objet,id_objet) {
 
 
       <br>
-    <button type="button" class="btn btn-default" onclick="ajout();">
+     
+
+    <button type="button" class="btn btn-default btn-lg" onclick="ajout();">
     Ajout!
     </button>
+
     <div class="col-md-3" style="width: 200px;">
     <div class="row">
     
