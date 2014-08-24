@@ -77,15 +77,26 @@ function edite(nom,prix,id_type_objet,id_objet) {
       <legend>
         <?php 
           // on determine le numero de la vente
+        try
+            {
+            // On se connecte à MySQL 
+            include('../moteur/dbconfig.php');
+            }
+            catch(Exception $e)
+            {
+            // En cas d'erreur, on affiche un message et on arrête tout
+            die('Erreur : '.$e->getMessage());
+            }
+ 
          $req = $bdd->prepare("SELECT max(id) FROM ventes WHERE id_point_vente = :id ");
             $req->execute(array('id' => $_GET['numero']));
  
            // On affiche chaque entree une à une
            while ($donnees = $req->fetch())
            {
-            $numero_vente = $donnees['id'] + 1;
+            $numero_vente = $donnees['max(id)'] + 1;
            }
-              $reponse->closeCursor(); // Termine le traitement de la requête
+              $req->closeCursor(); // Termine le traitement de la requête
             //on affiche le nom du point de vente
             try
             {
@@ -112,7 +123,7 @@ function edite(nom,prix,id_type_objet,id_objet) {
             $nom_pv = $donnees['nom'];
             $adresse_pv = $donnees['adresse'];
            }
-              $reponse->closeCursor(); // Termine le traitement de la requête
+              $req->closeCursor(); // Termine le traitement de la requête
         ?>
       </legend>   
       </fieldset>     
@@ -148,7 +159,7 @@ function edite(nom,prix,id_type_objet,id_objet) {
  <ul id="boutons" class="list-group">
         <button class="btn btn-default btn-lg">Encaisser</button></form>
         <button class="btn btn-default btn-lg" onclick="number_write('2');" data-value="2" align="center"><span class="glyphicon glyphicon-print"></span></button>
-        <button class="btn btn-default btn-lg" onclick="number_write('3');" data-value="3">Anuler</button>
+        <button class="btn btn-default btn-lg" OnClick="javascript:window.location.reload()">Anuler</button>
   </ul>
 
 
