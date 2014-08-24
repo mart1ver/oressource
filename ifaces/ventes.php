@@ -2,8 +2,53 @@
 
 <script type="text/javascript">
 function ajout() {
-    
-             document.getElementById('liste').innerHTML += '<li class="list-group-item"><span class="badge">'+(parseFloat(document.getElementById('prix').value)*parseFloat(document.getElementById('quantite').value)).toFixed(2)+'€'+'</span>'+document.getElementById('quantite').value+'*'+document.getElementById('nom_objet0').value+'</li>';                                     
+     if (isNaN((parseFloat(document.getElementById('prix').value)*parseFloat(document.getElementById('quantite').value)).toFixed(2)) ) 
+          { 
+          }
+          else{
+
+if (isNaN(parseInt(document.getElementById('nlignes').value)) ) 
+          { 
+          document.getElementById('nlignes').value = 1;
+          } 
+          else
+          {
+
+          document.getElementById('nlignes').value=parseInt(document.getElementById('nlignes').value)+ 1; 
+          }
+if (isNaN(parseInt(document.getElementById('narticles').value)) ) 
+          { 
+          document.getElementById('narticles').value = document.getElementById('quantite').value;
+          } 
+          else
+          {
+
+          document.getElementById('narticles').value=parseInt(document.getElementById('narticles').value)+parseInt(document.getElementById('quantite').value); 
+          }          
+
+if (isNaN(parseInt(document.getElementById('ptot').value)) ) 
+          { 
+          document.getElementById('ptot').value = document.getElementById('prix').value;
+          } 
+          else
+          {
+
+          document.getElementById('ptot').value=parseFloat(document.getElementById('ptot').value)+parseFloat(document.getElementById('prix').value); 
+          }          
+
+             document.getElementById('liste').innerHTML += '<li class="list-group-item"><span class="badge">'+(parseFloat(document.getElementById('prix').value)*parseFloat(document.getElementById('quantite').value)).toFixed(2)+'€'+'</span>'
+             +document.getElementById('quantite').value+'*'+document.getElementById('nom_objet0').value
+             +'<input type="hidden"  id="tid_type_objet'+parseInt(document.getElementById('nlignes').value)+'" name="tid_type_objet'+parseInt(document.getElementById('nlignes').value)+'"value="'+document.getElementById('id_type_objet').value+'">'
+             +'<input type="hidden"  id="tid_objet'+parseInt(document.getElementById('nlignes').value)+'" name="tid_objet'+parseInt(document.getElementById('nlignes').value)+'"value="'+document.getElementById('id_objet').value+'">'
+             +'<input type="hidden"  id="tquantite'+parseInt(document.getElementById('nlignes').value)+'" name="tquantite'+parseInt(document.getElementById('nlignes').value)+'"value="'+document.getElementById('quantite').value+'">'
+             +'<input type="hidden"  id="tprix'+parseInt(document.getElementById('nlignes').value)+'" name="tprix'+parseInt(document.getElementById('nlignes').value)+'"value="'+document.getElementById('prix').value+'"></li>';  
+                                                
+               document.getElementById('total').innerHTML = '<li class="list-group-item">Soit : '+document.getElementById('narticles').value+' article(s) pour : <span class="badge" style="float:right;">'+document.getElementById('ptot').value+'€</span></li>';
+               document.getElementById('recaptotal').innerHTML = document.getElementById('ptot').value+'€';
+
+           
+
+           
 
     document.getElementById('nom_objet').innerHTML = "<label>Objet:</label>";
     document.getElementById('quantite').value = "";
@@ -11,7 +56,10 @@ function ajout() {
     document.getElementById('id_type_objet').value = "";
     document.getElementById('id_objet').value = "";
     document.getElementById('nom_objet0').value = "";
+    }
+
 }
+
 function edite(nom,prix,id_type_objet,id_objet) {
     document.getElementById('nom_objet').innerHTML = "<label>"+nom+"</label>";
     document.getElementById('quantite').value = "1";
@@ -70,12 +118,14 @@ function edite(nom,prix,id_type_objet,id_objet) {
       </fieldset>     
     <div class="row">
    	<br>
-      <div class="col-md-2 col-md-offset-2" style="width: 360px;" >
+      <div class="col-md-2 col-md-offset-2" style="width: 320px;" >
      
 
        <div class="panel panel-info">
         <div class="panel-heading">
-    <h3 class="panel-title">Ticket de caisse:</h3>
+    <label class="panel-title">Ticket de caisse:</label>
+    <span class ="badge" id="recaptotal"  style="float:right;">0€
+    </span>
   </div>
   <div class="panel-body">
      
@@ -84,13 +134,13 @@ function edite(nom,prix,id_type_objet,id_objet) {
    <li class="list-group-item">Vente: <?php echo $_GET['numero']?>#<?php echo $numero_vente?>, date: <?php echo date("d-m-Y") ?><br><?php echo $nom_pv;?><br><?php echo $adresse_pv;?>,<br>siret: <?php echo$_SESSION['siret'];?></li>
   
 </ul>
- 
-
-
-
-
-
-
+ <ul class="list-group" id="total">
+  
+</ul>
+<br>
+<input type="hidden"  id="nlignes" name="nlignes">
+<input type="hidden"  id="narticles" name="narticles">
+<input type="hidden"  id="ptot" name="ptot">
       </div>
       </div>
       </div>  
