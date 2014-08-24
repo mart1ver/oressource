@@ -19,7 +19,7 @@ catch(Exception $e)
 
 
 
-$req = $bdd->prepare('SELECT nom FROM description_structure');
+$req = $bdd->prepare('SELECT * FROM description_structure');
 $req->execute();
     
 $resultat = $req->fetch();
@@ -28,6 +28,9 @@ $resultat = $req->fetch();
 
 
 $_SESSION['structure'] = $resultat['nom'];
+$_SESSION['siret'] = $resultat['siret'];
+$_SESSION['adresse'] = $resultat['adresse'];
+  
   
 
 $req->closeCursor();
@@ -56,7 +59,7 @@ $_SESSION['niveau'] = $resultat['niveau'];
 $_SESSION['nom'] = $resultat['nom'];
 $_SESSION['mail'] = $resultat['mail'];
 $_SESSION['systeme'] = "oressource";
-$_SESSION['structure'] = "";
+
 $req->closeCursor();
     header ('location:../index.php');
 }

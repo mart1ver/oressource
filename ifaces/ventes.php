@@ -3,7 +3,7 @@
 <script type="text/javascript">
 function ajout() {
     
-             document.getElementById('liste').innerHTML += '<li class="list-group-item"><span class="badge">'+document.getElementById('prix').value+'</span>'+document.getElementById('quantite').value+'*'+document.getElementById('nom_objet0').value+'</li>';                                     
+             document.getElementById('liste').innerHTML += '<li class="list-group-item"><span class="badge">'+(parseFloat(document.getElementById('prix').value)*parseFloat(document.getElementById('quantite').value)).toFixed(2)+'€'+'</span>'+document.getElementById('quantite').value+'*'+document.getElementById('nom_objet0').value+'</li>';                                     
 
     document.getElementById('nom_objet').innerHTML = "<label>Objet:</label>";
     document.getElementById('quantite').value = "";
@@ -28,10 +28,20 @@ function edite(nom,prix,id_type_objet,id_objet) {
       <fieldset>
       <legend>
         <?php 
-          
+          // on determine le numero de la vente
+         $req = $bdd->prepare("SELECT max(id) FROM ventes WHERE id_point_vente = :id ");
+            $req->execute(array('id' => $_GET['numero']));
+ 
+           // On affiche chaque entree une à une
+           while ($donnees = $req->fetch())
+           {
+            $numero_vente = $donnees['id'] + 1;
+           }
+              $reponse->closeCursor(); // Termine le traitement de la requête
+            //on affiche le nom du point de vente
             try
             {
-            // On se connecte à MySQL document.getElementById('liste').innerHTML += "<li class="list-group-item"><span class="badge">"+parseFloat(document.getElementById('quantite').value*document.getElementById('prix').value)+"</span>"+document.getElementById('quantite').value+"*"+document.getElementById('nom_objet0').value+"</li>";
+            // On se connecte à MySQL 
             include('../moteur/dbconfig.php');
             }
             catch(Exception $e)
@@ -51,6 +61,8 @@ function edite(nom,prix,id_type_objet,id_objet) {
            while ($donnees = $req->fetch())
            {
             echo$donnees['nom'];
+            $nom_pv = $donnees['nom'];
+            $adresse_pv = $donnees['adresse'];
            }
               $reponse->closeCursor(); // Termine le traitement de la requête
         ?>
@@ -69,7 +81,7 @@ function edite(nom,prix,id_type_objet,id_objet) {
      
 
 <ul id="liste" class="list-group">
-   <li class="list-group-item">nom de la structure<br>adresse et siret<br>numero de la vente,date</li>
+   <li class="list-group-item">Vente: <?php echo $_GET['numero']?>#<?php echo $numero_vente?>, date: <?php echo date("d-m-Y") ?><br><?php echo $nom_pv;?><br><?php echo $adresse_pv;?>,<br>siret: <?php echo$_SESSION['siret'];?></li>
   
 </ul>
  
@@ -92,9 +104,9 @@ function edite(nom,prix,id_type_objet,id_objet) {
   </div>
   <div class="panel-body"> 
       Quantité: <input type="text" class="form-control" placeholder="Qantité" id="quantite" name="quantite"> Prix unitaire: <input type="text" class="form-control" placeholder="€" id="prix" name="prix">
-<input type="text" class="form-control" placeholder="id type objet" id="id_type_objet" name="id_type_objet">
-<input type="text" class="form-control" placeholder="id objet" id="id_objet" name="id_objet">   
-<input type="text" class="form-control" placeholder="nom objet" id="nom_objet0" name="nom_objet0">   
+<input type="hidden" class="form-control" placeholder="id type objet" id="id_type_objet" name="id_type_objet">
+<input type="hidden" class="form-control" placeholder="id objet" id="id_objet" name="id_objet">   
+<input type="hidden" class="form-control" placeholder="nom objet" id="nom_objet0" name="nom_objet0">   
 
 
       <br>
@@ -225,7 +237,7 @@ function edite(nom,prix,id_type_objet,id_objet) {
     <span class="badge" id="cool" style="background-color:<?php echo$donnees['couleur']?>"><?php echo$donnees['nom']?></span>
     </button>
     <ul class="dropdown-menu" role="menu">
-    <li><a href="javascript:edite(<?php echo$donnees['nom']?>)" ><?php echo$donnees['nom']?></a></li>
+    <li><a href="javascript:edite('<?php echo$donnees['nom']?>','0','<?php echo$donnees['id']?>','0')" ><?php echo$donnees['nom']?></a></li>
     <li class="divider"></li>
             <?php 
             try
@@ -246,7 +258,7 @@ function edite(nom,prix,id_type_objet,id_objet) {
             while ($donneesint = $req->fetch())
             {
             ?>
-    <li><a href="javascript:edite(<?php echo$donnees['nom']?>)"><?php echo$donneesint['nom']?></a></li>
+    <li><a href="javascript:edite('<?php echo$donneesint['nom']?>','<?php echo$donneesint['prix']?>','<?php echo$donnees['id']?>','<?php echo$donneesint['id']?>')"><?php echo$donneesint['nom']?></a></li>
     </li>
             <?php }
             $req->closeCursor(); // Termine le traitement de la requête
