@@ -294,7 +294,7 @@ if (isNaN(parseInt(document.getElementById('ptot').value)) )
           else
           {
 
-          document.getElementById('ptot').value=parseFloat(document.getElementById('ptot').value)+(document.getElementById('prix').value*document.getElementById('quantite').value); 
+          document.getElementById('ptot').value=parseFloat(document.getElementById('ptot').value).toFixed(2)+(document.getElementById('prix').value*document.getElementById('quantite').value).toFixed(2); 
           }          
 
              document.getElementById('liste').innerHTML += '<li class="list-group-item"><span class="badge">'+(parseFloat(document.getElementById('prix').value)*parseFloat(document.getElementById('quantite').value)).toFixed(2)+'€'+'</span>'
@@ -304,8 +304,8 @@ if (isNaN(parseInt(document.getElementById('ptot').value)) )
              +'<input type="hidden"  id="tquantite'+parseInt(document.getElementById('nlignes').value)+'" name="tquantite'+parseInt(document.getElementById('nlignes').value)+'"value="'+document.getElementById('quantite').value+'">'
              +'<input type="hidden"  id="tprix'+parseInt(document.getElementById('nlignes').value)+'" name="tprix'+parseInt(document.getElementById('nlignes').value)+'"value="'+document.getElementById('prix').value+'"></li>';  
                                                 
-               document.getElementById('total').innerHTML = '<li class="list-group-item">Soit : '+document.getElementById('narticles').value+' article(s) pour : <span class="badge" style="float:right;">'+document.getElementById('ptot').value+'€</span></li>';
-               document.getElementById('recaptotal').innerHTML = document.getElementById('ptot').value+'€';
+               document.getElementById('total').innerHTML = '<li class="list-group-item">Soit : '+document.getElementById('narticles').value+' article(s) pour : <span class="badge" style="float:right;">'+parseFloat(document.getElementById('ptot').value).toFixed(2)+'€</span></li>';
+               document.getElementById('recaptotal').innerHTML = parseFloat(document.getElementById('ptot').value).toFixed(2)+'€';
 
            
 
