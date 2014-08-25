@@ -289,12 +289,12 @@ if (isNaN(parseInt(document.getElementById('narticles').value)) )
 
 if (isNaN(parseInt(document.getElementById('ptot').value)) ) 
           { 
-          document.getElementById('ptot').value = document.getElementById('prix').value;
+          document.getElementById('ptot').value = document.getElementById('prix').value*document.getElementById('quantite').value;
           } 
           else
           {
 
-          document.getElementById('ptot').value=parseFloat(document.getElementById('ptot').value)+parseFloat(document.getElementById('prix').value); 
+          document.getElementById('ptot').value=parseFloat(document.getElementById('ptot').value)+(document.getElementById('prix').value*document.getElementById('quantite').value); 
           }          
 
              document.getElementById('liste').innerHTML += '<li class="list-group-item"><span class="badge">'+(parseFloat(document.getElementById('prix').value)*parseFloat(document.getElementById('quantite').value)).toFixed(2)+'€'+'</span>'
