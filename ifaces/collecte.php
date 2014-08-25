@@ -1,7 +1,7 @@
 <?php session_start();
-include "tete.php";
+
  if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 'c'.$_GET['numero']) !== false))
-      {
+      {include "tete.php";
 //Oressource 2014, formulaire de collecte
 //Simple formulaire de saisie des matieres d'ouevres entrantes dans la structure.
 //Doit etre fonctionnel avec un ecran tactille.
