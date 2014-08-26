@@ -235,18 +235,16 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
     <br>
             <?php include "pied.php" ; ?> 
 <script type="text/javascript">
-function markActiveLink(e) {   
+function markActiveLink(e) 
+{   
     id_active = (e.id);
-
-
-
 }
 function number_write(x)
          {
           var curElement = document.activeElement;
             var text_box = document.getElementById('quantite');
             text_box.value = text_box.value + x;
-          
+        
           }
           
 
@@ -267,14 +265,12 @@ function ajout() {
           { 
           }
           else{
-
 if (isNaN(parseInt(document.getElementById('nlignes').value)) ) 
           { 
           document.getElementById('nlignes').value = 1;
           } 
           else
           {
-
           document.getElementById('nlignes').value=parseInt(document.getElementById('nlignes').value)+ 1; 
           }
 if (isNaN(parseInt(document.getElementById('narticles').value)) ) 
@@ -283,44 +279,33 @@ if (isNaN(parseInt(document.getElementById('narticles').value)) )
           } 
           else
           {
-
           document.getElementById('narticles').value=parseInt(document.getElementById('narticles').value)+parseInt(document.getElementById('quantite').value); 
           }          
-
 if (isNaN(parseInt(document.getElementById('ptot').value)) ) 
           { 
           document.getElementById('ptot').value = document.getElementById('prix').value*document.getElementById('quantite').value;
           } 
           else
           {
-
-          document.getElementById('ptot').value=parseFloat(document.getElementById('ptot').value).toFixed(2)+(document.getElementById('prix').value*document.getElementById('quantite').value).toFixed(2); 
+          document.getElementById('ptot').value=parseFloat(document.getElementById('ptot').value)+parseFloat(document.getElementById('prix').value*document.getElementById('quantite').value); 
           }          
 
-             document.getElementById('liste').innerHTML += '<li class="list-group-item"><span class="badge">'+(parseFloat(document.getElementById('prix').value)*parseFloat(document.getElementById('quantite').value)).toFixed(2)+'€'+'</span>'
+             document.getElementById('liste').innerHTML += '<li class="list-group-item"><span class="badge">'+parseFloat(parseFloat(document.getElementById('prix').value)*parseFloat(document.getElementById('quantite').value)).toFixed(2)+'€'+'</span>'
              +document.getElementById('quantite').value+'*'+document.getElementById('nom_objet0').value
              +'<input type="hidden"  id="tid_type_objet'+parseInt(document.getElementById('nlignes').value)+'" name="tid_type_objet'+parseInt(document.getElementById('nlignes').value)+'"value="'+document.getElementById('id_type_objet').value+'">'
              +'<input type="hidden"  id="tid_objet'+parseInt(document.getElementById('nlignes').value)+'" name="tid_objet'+parseInt(document.getElementById('nlignes').value)+'"value="'+document.getElementById('id_objet').value+'">'
              +'<input type="hidden"  id="tquantite'+parseInt(document.getElementById('nlignes').value)+'" name="tquantite'+parseInt(document.getElementById('nlignes').value)+'"value="'+document.getElementById('quantite').value+'">'
-             +'<input type="hidden"  id="tprix'+parseInt(document.getElementById('nlignes').value)+'" name="tprix'+parseInt(document.getElementById('nlignes').value)+'"value="'+document.getElementById('prix').value+'"></li>';  
-                                                
+             +'<input type="hidden"  id="tprix'+parseInt(document.getElementById('nlignes').value)+'" name="tprix'+parseInt(document.getElementById('nlignes').value)+'"value="'+document.getElementById('prix').value+'"></li>';                                               
                document.getElementById('total').innerHTML = '<li class="list-group-item">Soit : '+document.getElementById('narticles').value+' article(s) pour : <span class="badge" style="float:right;">'+parseFloat(document.getElementById('ptot').value).toFixed(2)+'€</span></li>';
                document.getElementById('recaptotal').innerHTML = parseFloat(document.getElementById('ptot').value).toFixed(2)+'€';
-
-           
-
-           
-
-    document.getElementById('nom_objet').innerHTML = "<label>Objet:</label>";
-    document.getElementById('quantite').value = "";
-    document.getElementById('prix').value = "";
-    document.getElementById('id_type_objet').value = "";
-    document.getElementById('id_objet').value = "";
-    document.getElementById('nom_objet0').value = "";
-    }
-
-}
-
+               document.getElementById('nom_objet').innerHTML = "<label>Objet:</label>";
+               document.getElementById('quantite').value = "";
+               document.getElementById('prix').value = "";
+               document.getElementById('id_type_objet').value = "";
+               document.getElementById('id_objet').value = "";
+               document.getElementById('nom_objet0').value = "";
+               }
+                  }
 function edite(nom,prix,id_type_objet,id_objet) {
     document.getElementById('nom_objet').innerHTML = "<label>"+nom+"</label>";
     document.getElementById('quantite').value = "1";
