@@ -1,10 +1,5 @@
 <?php session_start(); ?>
-<script>
-function submitform()
-{
-  document.formdate.submit();
-}
-</script>
+
 <?php
     if (isset($_SESSION['id']) AND (strpos($_SESSION['niveau'], 'g') !== false))
       {  include "tete.php" ?>
@@ -125,24 +120,73 @@ GROUP BY nom'
             // On recupère toute la liste des filieres de sortie
             //   $reponse = $bdd->query('SELECT * FROM grille_objets');
           
-$req = $bdd->prepare("SELECT * 
-                       FROM collectes 
-                       WHERE id_point_collecte = :id_point_collecte AND DATE(timestamp) = :tdate ");
+$req = $bdd->prepare('SELECT collectes.id,collectes.timestamp ,type_collecte.nom, collectes.adherent, localites.nom localisation
+                       FROM collectes ,type_collecte, localites
+                       WHERE type_collecte.id = collectes.id_type_collecte AND localites.id = collectes.localisation  AND collectes.id_point_collecte = :id_point_collecte AND DATE(collectes.timestamp) = :tdate ');
 $req->execute(array('id_point_collecte' => $_GET['numero'], 'tdate' => $_GET['date']));
 
- $i = 1;
+
            // On affiche chaque entree une à une
            while ($donnees = $req->fetch())
            {
 
            ?>
             <tr> 
-            <td><?php echo $i;$i++;?></td>
+            <td><?php echo $donnees['id']?></td>
             <td><?php echo $donnees['timestamp']?></td>
-            <td><?php echo $donnees['id_type_collecte']?></td>
+            <td><?php echo $donnees['nom']?></td>
             <td><?php echo $donnees['adherent']?></td>
             <td><?php echo $donnees['localisation']?></td>
-           <td> masse</td> 
+           <td> 
+
+ <?php 
+            try
+            {
+            // On se connecte à MySQL
+            include('../moteur/dbconfig.php');
+            }
+            catch(Exception $e)
+            {
+            // En cas d'erreur, on affiche un message et on arrête tout
+            die('Erreur : '.$e->getMessage());
+            }
+ 
+            // Si tout va bien, on peut continuer
+/*
+'SELECT type_dechets.couleur,type_dechets.nom, sum(pesees_collectes.masse) somme 
+FROM type_dechets,pesees_collectes 
+WHERE type_dechets.id = pesees_collectes.id_type_dechet AND DATE(pesees_collectes.timestamp) = CURDATE()
+GROUP BY nom'
+*/
+
+
+ 
+            // On recupère toute la liste des filieres de sortie
+            //   $reponse = $bdd->query('SELECT * FROM grille_objets');
+          
+$req2 = $bdd->prepare('SELECT SUM(pesees_collectes.masse) masse
+                       FROM pesees_collectes
+                       WHERE  pesees_collectes.id_collecte = :id_collecte ');
+$req2->execute(array('id_collecte' => $donnees['id']));
+
+
+           // On affiche chaque entree une à une
+           while ($donnees2 = $req2->fetch())
+           { ?>
+
+
+
+<?php echo $donnees2['masse']?>
+
+
+         <?php }
+            
+                ?>
+
+
+
+
+           </td> 
 
 
 
@@ -150,12 +194,12 @@ $req->execute(array('id_point_collecte' => $_GET['numero'], 'tdate' => $_GET['da
 
 <td>
 
-<form action="modification_objet.php" method="post">
-<input type="hidden" name ="typo" id="typo" value="<?php echo $_GET['typo']?>">
+<form action="modification_verification_collecte.php" method="post">
+
 <input type="hidden" name ="id" id="id" value="<?php echo $donnees['id']?>">
 <input type="hidden" name ="nom" id="nom" value="<?php echo $donnees['nom']?>">
-<input type="hidden" name ="description" id="description" value="<?php echo $donnees['description']?>">
-<input type="hidden" name ="prix" id="prix" value="<?php echo $donnees['prix']?>">
+<input type="hidden" name ="localisation" id="localisation" value="<?php echo $donnees['localisation']?>">
+
   <button  class="btn btn-warning btn-sm" >modifier</button>
 
 
@@ -173,6 +217,7 @@ $req->execute(array('id_point_collecte' => $_GET['numero'], 'tdate' => $_GET['da
           </tr>
            <?php }
               $req->closeCursor(); // Termine le traitement de la requête
+                $req2->closeCursor(); // Termine le traitement de la requête2
                 ?>
        </tbody>
         <tfoot>
