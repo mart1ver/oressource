@@ -4,7 +4,7 @@
     if (isset($_SESSION['id']) AND (strpos($_SESSION['niveau'], 'g') !== false))
       {  include "tete.php" ?>
    <div class="container">
-        <h1>modifier la collecte numero <?php echo $_POST['id']?></h1> 
+        <h1>modifier la collecte numero <?php echo $_GET['ncollecte']?></h1> 
         <?php
 if ($_GET['err'] == "") // SI on a pas de message d'erreur
 {
@@ -36,16 +36,18 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
 
 
 <div class="row">
-        	<form action="../moteur/modification_verification_collecte_post.php" method="post">
-            <input type="hidden" name ="id" id="id" value="<?php echo $_POST['id']?>">
+   
+        	<form action="../moteur/modification_verification_collecte_post.php?ncollecte=<?php echo $_GET['ncollecte']?>" method="post">
+            <input type="hidden" name ="id" id="id" value="<?php echo $_GET['ncollecte']?>">
 
-  
-  
-  <div class="col-md-3">
+  <input type="hidden" name ="date" id="date" value="<?php echo $_POST['date']?>">
+    <input type="hidden" name ="npoint" id="npoint" value="<?php echo $_POST['npoint']?>">
 
 
 
-<label>Type de collecte:</label>
+<div class="col-md-3">
+
+<label for="id_type_collecte">Type de collecte:</label>
 <select name="id_type_collecte" id="id_type_collecte" class="form-control " required>
             <?php 
             try
@@ -63,7 +65,7 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
             // On affiche chaque entree une à une
             while ($donnees = $reponse->fetch())
             {
-              if ($_POST['nom'] == $donnees['nom']) // SI on a pas de message d'erreur
+              if ($_POST['nom'] == $donnees['nom'])  // SI on a pas de message d'erreur
 {
   ?>
     <option value = "<?php echo$donnees['id']?>" selected ><?php echo$donnees['nom']?></option>
@@ -76,7 +78,11 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
             $reponse->closeCursor(); // Termine le traitement de la requête
             ?>
     </select>
-    <label>Localisation:</label>
+      
+  </div>
+  <div class="col-md-3">
+
+    <label for="id_localite">Localisation:</label>
 <select name="id_localite" id="id_localite" class="form-control " required>
             <?php 
             try
@@ -108,16 +114,18 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
             ?>
     </select>
   
-
+ </div>
+  <div class="col-md-3">
   
-  
-  <div class="col-md-1"><br><button name="creer" class="btn btn-warning">Modifier</button></div>
+  <br>
+<button name="creer" class="btn btn-warning">Modifier</button>
+</div>
 </form>
 </div>
-</div>
+
+
 
 </div>
-
 <h1>Pesées incluses dans cette collecte</h1> 
   <!-- Table -->
       <table class="table">
@@ -161,10 +169,10 @@ SELECT pesees_collectes.id ,pesees_collectes.timestamp  ,type_dechets.nom  , pes
             // On recupère toute la liste des filieres de sortie
             //   $reponse = $bdd->query('SELECT * FROM grille_objets');
           
-$req = $bdd->prepare('SELECT pesees_collectes.id ,pesees_collectes.timestamp  ,type_dechets.nom  , pesees_collectes.masse
+$req = $bdd->prepare('SELECT pesees_collectes.id ,pesees_collectes.timestamp  ,type_dechets.nom  , pesees_collectes.masse ,type_dechets.couleur
                        FROM pesees_collectes ,type_dechets
                        WHERE type_dechets.id = pesees_collectes.id_type_dechet AND pesees_collectes.id_collecte = :id_collecte');
-$req->execute(array('id_collecte' => $_POST['id']));
+$req->execute(array('id_collecte' => $_GET['ncollecte']));
 
 
            // On affiche chaque entree une à une
@@ -175,7 +183,7 @@ $req->execute(array('id_collecte' => $_POST['id']));
             <tr> 
             <td><?php echo $donnees['id']?></td>
             <td><?php echo $donnees['timestamp']?></td>
-            <td><?php echo $donnees['nom']?></td>
+            <td><span class="badge" id="cool" style="background-color:<?php echo$donnees['couleur']?>"><?php echo$donnees['nom']?></span></td>
             <td><?php echo $donnees['masse']?></td>
            
 
@@ -184,9 +192,14 @@ $req->execute(array('id_collecte' => $_POST['id']));
 
 <td>
 
-<form action="modification_verification_collecte.php" method="post">
+<form action="modification_verification_pesee.php" method="post">
 
 <input type="hidden" name ="id" id="id" value="<?php echo $donnees['id']?>">
+<input type="hidden" name ="nomtypo" id="nomtypo" value="<?php echo $donnees['nom']?>">
+<input type="hidden" name ="ncollecte" id="ncollecte" value="<?php echo $_GET['ncollecte']?>">
+<input type="hidden" name ="masse" id="masse" value="<?php echo $donnees['masse']?>">
+<input type="hidden" name ="date" id="date" value="<?php echo $_POST['date']?>">
+<input type="hidden" name ="npoint" id="npoint" value="<?php echo $_POST['npoint']?>">
 
   <button  class="btn btn-warning btn-sm" >modifier</button>
 

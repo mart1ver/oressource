@@ -194,12 +194,13 @@ $req2->execute(array('id_collecte' => $donnees['id']));
 
 <td>
 
-<form action="modification_verification_collecte.php" method="post">
+<form action="modification_verification_collecte.php?ncollecte=<?php echo $donnees['id']?>" method="post">
 
 <input type="hidden" name ="id" id="id" value="<?php echo $donnees['id']?>">
 <input type="hidden" name ="nom" id="nom" value="<?php echo $donnees['nom']?>">
 <input type="hidden" name ="localisation" id="localisation" value="<?php echo $donnees['localisation']?>">
-
+<input type="hidden" name ="date" id="date" value="<?php echo $_GET['date']?>">
+<input type="hidden" name ="npoint" id="npoint" value="<?php echo $_GET['numero']?>">
   <button  class="btn btn-warning btn-sm" >modifier</button>
 
 
