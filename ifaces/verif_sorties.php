@@ -435,7 +435,7 @@ GROUP BY nom'
             // On recupère toute la liste des filieres de sortie
             //   $reponse = $bdd->query('SELECT * FROM grille_objets');
           
-$req = $bdd->prepare('SELECT sorties.id,sorties.timestamp ,filieres_sortie.nom,sorties.adherent 
+$req = $bdd->prepare('SELECT sorties.id,sorties.timestamp ,filieres_sortie.nom 
                        FROM sorties ,filieres_sortie
                        WHERE filieres_sortie.id = sorties.id_filiere  AND sorties.id_point_sortie = :id_point_sortie AND DATE(sorties.timestamp) = :tdate ');
 $req->execute(array('id_point_sortie' => $_GET['numero'], 'tdate' => $_GET['date']));
@@ -450,7 +450,7 @@ $req->execute(array('id_point_sortie' => $_GET['numero'], 'tdate' => $_GET['date
             <td><?php echo $donnees['id']?></td>
             <td><?php echo $donnees['timestamp']?></td>
             <td><?php echo $donnees['nom']?></td>
-            <td><?php echo $donnees['adherent']?></td>
+            <td>pas adh dispo</td>
             <td>loca</td>
            <td> 
 
