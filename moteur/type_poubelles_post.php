@@ -1,7 +1,7 @@
 <?php 
 
 
- if($_POST['ultime'] = "oui")
+ if(isset($_POST['ultime']) )
     {
     $ultime = "oui";
     }

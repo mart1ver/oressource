@@ -65,7 +65,12 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
   <div class="col-md-2"><label for="nom">Nom:</label> <input type="text"value ="<?php echo $_POST['nom']?>" name="nom" id="nom" class="form-control " required autofocus></div>
   <div class="col-md-3"><label for="description">Déscription:</label> <input type="text"value ="<?php echo $_POST['description']?>" name="description" id="description" class="form-control " required ></div>
   <div class="col-md-2"><label for="masse_bac">Masse du bac(Kg):</label> <input type="text"value ="<?php echo $_POST['masse_bac']?>" name="masse_bac" id="masse_bac" class="form-control " required ></div>
- <div class="col-md-2"><label for="ultime">Déchet ultime ?</label><br> <input name ="ultime" id ="ultime" type="checkbox" value ="oui">Oui.</div>
+ <div class="col-md-2"><label for="ultime">Déchet ultime ? </label><br> <input name ="ultime" id ="ultime" type="checkbox" value ="oui" <?php
+
+if ($_POST['ultime'] == "oui")
+    {
+    echo "checked";
+    }else{} ?> >Oui.</div>
   <div class="col-md-1"><label for="couleur">Couleur:</label> <input type="color"        value ="<?php echo $couleur?>" name="couleur" id="couleur" class="form-control " required autofocus></div>
 
 
