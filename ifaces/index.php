@@ -10,11 +10,10 @@
 
 
     <!-- Main jumbotron for a primary marketing message or call to action -->
-    <div class="jumbotron">
+    <div class="page-header">
       <div class="container">
         <h1>Bienvenue sur Oressource</h1>
         <p>L'outil libre de quantification et de mise en bilan pour ressourceries</p>
-        <p><a class="btn btn-primary btn-sm" role="button">Plus d'infos. &raquo;</a></p>
       </div>
     </div>
 

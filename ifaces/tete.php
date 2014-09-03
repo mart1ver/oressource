@@ -143,11 +143,7 @@
               $reponse->closeCursor(); // Termine le traitement de la requête
                ?>  </li> </ul> </li><?php } else{}?>
 </ul>
-<?php if(strpos($_SESSION['niveau'], 'p') !== false)
-          { ?>
-<li><a href="prets.php">Prêts</a></li>
-          <?php }
-              else{}?>
+
 <?php if(strpos($_SESSION['niveau'], 'a') !== false)
           { ?>
 <li><a href="adhesions.php">Adhésion</a></li>
@@ -198,7 +194,7 @@
                  else{}?>
 <?php }
     else{ }?>
-<li><a href="aide.php">Aide</a></li>
+
 </ul>
 </div><!--/.navbar-collapse -->
       </div>
