@@ -1,0 +1,39 @@
+<html>
+<head>
+<title>often.htm</title>
+<script type="text/javascript">
+var what;
+function fokus(that) {
+what = that;
+}
+function often(that) {
+if (what == null) return;
+if (that.value == "c"){what.value = "";}
+else{
+what.value = what.value + that.value;
+}
+}
+</script>
+</head>
+<body>
+<form>
+<input type="reset" value="Reset">
+<br><textarea name="a1" id="a1" cols="40" rows="3"
+onfocus="fokus(this)"></textarea>
+<br><textarea name="a2" id="a2" cols="40" rows="3"
+onfocus="fokus(this)"></textarea>
+<br><textarea name="a3" id="a3" cols="40" rows="3"
+onfocus="fokus(this)"></textarea>
+<br><input type="button" value="1"
+onclick="often(this)">
+<br><input type="button" value="2"
+onclick="often(this)">
+<br><input type="button" value="3"
+onclick="often(this)">
+<br><input type="button" value="."
+onclick="often(this)">
+<br><input type="button" value="c"
+onclick="often(this)">
+</form>
+</body>
+</html>
