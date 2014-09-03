@@ -60,7 +60,7 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
       </fieldset>     
     <div class="row">
    	<br>
-      <div class="col-md-2 col-md-offset-2" style="width: 320px;" >
+      <div class="col-md-2 col-md-offset-2" style="width: 330px;" >
      
 
        <div class="panel panel-info">
@@ -106,7 +106,7 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
     <h3 class="panel-title"id="nom_objet"><label>Objet:</label></h3>
   </div>
   <div class="panel-body"> 
-      Quantité: <input type="text" class="form-control" placeholder="Qantité" id="quantite" name="quantite" onclick="number_write('Q');" > Prix unitaire: <input type="text" class="form-control" placeholder="€" id="prix" name="prix" onclick="number_write('P');">
+      Quantité: <input type="text" class="form-control" placeholder="Qantité" id="quantite" name="quantite" onfocus="fokus(this)" > Prix unitaire: <input type="text" class="form-control" placeholder="€" id="prix" name="prix" onfocus="fokus(this)">
 <input type="hidden"  id="id_type_objet" name="id_type_objet">
 <input type="hidden"  id="id_objet" name="id_objet">   
 <input type="hidden"  id="nom_objet0" name="nom_objet0">   
@@ -125,24 +125,24 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
     </div>
     <br>
     <div class="row">
-        <button class="btn btn-default btn-lg" onclick="number_write('1');" data-value="1" style="margin-top:8px;">1</button>
-        <button class="btn btn-default btn-lg" onclick="number_write('2');" data-value="2"style="margin-left:8px; margin-top:8px;">2</button>
-        <button class="btn btn-default btn-lg" onclick="number_write('3');" data-value="3"style="margin-left:8px; margin-top:8px;">3</button>
+        <button class="btn btn-default btn-lg" value="1" onclick="often(this);" style="margin-top:8px;">1</button>
+        <button class="btn btn-default btn-lg" value="2" onclick="often(this);" style="margin-left:8px; margin-top:8px;">2</button>
+        <button class="btn btn-default btn-lg" value="3" onclick="often(this);" style="margin-left:8px; margin-top:8px;">3</button>
     </div>
     <div class="row">
-        <button class="btn btn-default btn-lg" onclick="number_write('4');" data-value="4"style="margin-top:8px;">4</button>
-        <button class="btn btn-default btn-lg" onclick="number_write('5');" data-value="5"style="margin-left:8px; margin-top:8px;">5</button>
-        <button class="btn btn-default btn-lg" onclick="number_write('6');" data-value="6"style="margin-left:8px; margin-top:8px;">6</button>
+        <button class="btn btn-default btn-lg" value="4" onclick="often(this);" style="margin-top:8px;">4</button>
+        <button class="btn btn-default btn-lg" value="5" onclick="often(this);" style="margin-left:8px; margin-top:8px;">5</button>
+        <button class="btn btn-default btn-lg" value="6" onclick="often(this);" style="margin-left:8px; margin-top:8px;">6</button>
     </div>
     <div class="row">
-        <button class="btn btn-default btn-lg" onclick="number_write('7');" data-value="7"style="margin-top:8px;">7</button>
-        <button class="btn btn-default btn-lg" onclick="number_write('8');" data-value="8"style="margin-left:8px; margin-top:8px;">8</button>
-        <button class="btn btn-default btn-lg" onclick="number_write('9');" data-value="9"style="margin-left:8px; margin-top:8px;">9</button>
+        <button class="btn btn-default btn-lg" value="7" onclick="often(this);" style="margin-top:8px;">7</button>
+        <button class="btn btn-default btn-lg" value="8" onclick="often(this);" style="margin-left:8px; margin-top:8px;">8</button>
+        <button class="btn btn-default btn-lg" value="9" onclick="often(this);" style="margin-left:8px; margin-top:8px;">9</button>
     </div>
     <div class="row">
-        <button class="btn btn-default btn-lg" onclick="number_write('c');" data-value="C"style="margin-top:8px;">C</button>
-        <button class="btn btn-default btn-lg" onclick="number_write('0');" data-value="0"style="margin-left:8px; margin-top:8px;">0</button>
-        <button class="btn btn-default btn-lg" onclick="number_write('.');" data-value=","style="margin-left:8px; margin-top:8px;">,</button>
+        <button class="btn btn-default btn-lg" value="c" onclick="often(this);" style="margin-top:8px;">C</button>
+        <button class="btn btn-default btn-lg" value="0" onclick="often(this);" style="margin-left:8px; margin-top:8px;">0</button>
+        <button class="btn btn-default btn-lg" value="." onclick="often(this);" style="margin-left:8px; margin-top:8px;">,</button>
     </div>
     </div>
 
@@ -236,47 +236,36 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
             <?php include "pied.php" ; ?> 
 <script type="text/javascript">
 
-function number_write(x)
-     {    
-        var curElement = "quantite"
-if (x=='c')
-{document.getElementById(curElement).value = "";}
-   else{ 
+var what;
 
-if (x=='Q')
-{curElement = "quantite"}
-   else{ 
-if (x=='P')
-{curElement = "prix"}
-   else{ 
-        
-            var text_box = document.getElementById(curElement);
-            text_box.value = text_box.value + x;
-        }
-          }
-          }
+function fokus(that) {
+what = that;
+}
 
 
-
-          }
-
-
-
-
-
-
-
-          function number_clear()
-          {
-            document.getElementById('quantite').value = "";
-
-          }
-
-function ajout() {
-     if (isNaN((parseFloat(document.getElementById('prix').value)*parseFloat(document.getElementById('quantite').value)).toFixed(2)) ) 
+function often(that) {
+if (isNaN(parseInt(document.getElementById('id_type_objet').value)) ) 
           { 
           }
           else{
+
+if (what == null) {document.getElementById('quantite').value ="" ; what = document.getElementById('quantite');}
+if (that.value == "c"){what.value = "";}
+else{
+what.value = what.value + that.value;
+}
+
+}
+
+}
+
+function ajout() {
+     if (isNaN((parseFloat(document.getElementById('prix').value)*parseFloat(document.getElementById('quantite').value)).toFixed(2)) ) 
+         {} 
+          else
+          {
+
+         
 if (isNaN(parseInt(document.getElementById('nlignes').value)) ) 
           { 
           document.getElementById('nlignes').value = 1;
