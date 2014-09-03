@@ -124,6 +124,28 @@ function tdechet_clear()
                 document.getElementById("id_filiere" ).disabled=false;
 }
 </script>
+<?php
+if ($_GET['err'] == "") // SI on a pas de message d'erreur
+{
+   echo'';
+}
+
+else // SINON 
+{
+  echo'<div class="alert alert-danger">'.$_GET['err'].'</div>';
+}
+
+
+if ($_GET['msg'] == "") // SI on a pas de message positif
+{
+   echo '';
+}
+
+else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
+{
+  echo'<div class="alert alert-success alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'.$_GET['msg'].'</div>';
+}
+?>
 <div class="panel-body">
           <fieldset>
        <legend>
@@ -311,8 +333,10 @@ function tdechet_clear()
                 ?>
 
 </ul>
-  <button class="btn btn-default btn-lg">c'est pesé!</button></form>
-            <button class="btn btn-default btn-lg" onclick="tdechet_clear();" >reset</button>
+ <button class="btn btn-primary btn-lg">c'est pesé!</button></form>
+  <button class="btn btn-primary btn-lg"  align="center"><span class="glyphicon glyphicon-print"></span></button>
+        <button class="btn btn-warning btn-lg" onclick="tdechet_clear();"><span class="glyphicon glyphicon-refresh"></button>
+
            
         <br>
 

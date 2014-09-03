@@ -4,6 +4,28 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
 
 
 <div class="panel-body">
+  <?php
+if ($_GET['err'] == "") // SI on a pas de message d'erreur
+{
+   echo'';
+}
+
+else // SINON 
+{
+  echo'<div class="alert alert-danger">'.$_GET['err'].'</div>';
+}
+
+
+if ($_GET['msg'] == "") // SI on a pas de message positif
+{
+   echo '';
+}
+
+else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
+{
+  echo'<div class="alert alert-success alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'.$_GET['msg'].'</div>';
+}
+?>
       <fieldset>
       <legend>
         <?php 
@@ -88,9 +110,9 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
 <input type="hidden" name ="id_point_vente" id="id_point_vente" value="<?php echo $_GET['numero']?>">
     </form>
  <ul id="boutons" class="list-group">
-        <button class="btn btn-default btn-lg" onclick="encaisse();">Encaisser</button>
-        <button class="btn btn-default btn-lg" onclick="number_write('2');" data-value="2" align="center"><span class="glyphicon glyphicon-print"></span></button>
-        <button class="btn btn-default btn-lg" onClick="javascript:window.location.reload()"><span class="glyphicon glyphicon-refresh"></button>
+        <button class="btn btn-primary btn-lg" onclick="encaisse();">Encaisser</button>
+        <button class="btn btn-primary btn-lg"  align="center"><span class="glyphicon glyphicon-print"></span></button>
+        <button class="btn btn-warning btn-lg" onClick="javascript:window.location.reload()"><span class="glyphicon glyphicon-refresh"></button>
   </ul>
 
 
