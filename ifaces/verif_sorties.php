@@ -87,7 +87,7 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
             <th>Momment de creation:</th>
             <th>type de collecte:</th>
             <th>Adhérent?:</th>
-            <th>Localisation:</th>
+            
             <th>Masse totale</th>
             
             <th>Modifier:</th>
@@ -120,9 +120,9 @@ GROUP BY nom'
             // On recupère toute la liste des filieres de sortie
             //   $reponse = $bdd->query('SELECT * FROM grille_objets');
           
-$req = $bdd->prepare('SELECT sorties.id,sorties.timestamp ,type_sortie.nom,sorties.adherent 
+$req = $bdd->prepare('SELECT sorties.id,sorties.timestamp ,type_sortie.nom,sorties.adherent ,sorties.classe classe
                        FROM sorties ,type_sortie
-                       WHERE type_sortie.id = sorties.id_type_sortie  AND sorties.id_point_sortie = :id_point_sortie AND DATE(sorties.timestamp) = :tdate ');
+                       WHERE type_sortie.id = sorties.id_type_sortie  AND sorties.id_point_sortie = :id_point_sortie AND DATE(sorties.timestamp) = :tdate AND classe = "sorties" ');
 $req->execute(array('id_point_sortie' => $_GET['numero'], 'tdate' => $_GET['date']));
 
 
@@ -136,7 +136,7 @@ $req->execute(array('id_point_sortie' => $_GET['numero'], 'tdate' => $_GET['date
             <td><?php echo $donnees['timestamp']?></td>
             <td><?php echo $donnees['nom']?></td>
             <td><?php echo $donnees['adherent']?></td>
-            <td>loca</td>
+            
            <td> 
 
  <?php 
@@ -198,7 +198,6 @@ $req2->execute(array('id_sortie' => $donnees['id']));
 
 <input type="hidden" name ="id" id="id" value="<?php echo $donnees['id']?>">
 <input type="hidden" name ="nom" id="nom" value="<?php echo $donnees['nom']?>">
-<input type="hidden" name ="localisation" id="localisation" value="<?php echo $donnees['localisation']?>">
 <input type="hidden" name ="date" id="date" value="<?php echo $_GET['date']?>">
 <input type="hidden" name ="npoint" id="npoint" value="<?php echo $_GET['numero']?>">
   <button  class="btn btn-warning btn-sm" >modifier</button>
@@ -225,7 +224,7 @@ $req2->execute(array('id_sortie' => $donnees['id']));
           <tr>
             <th></th>
             <th></th>
-            <th></th>
+          
             <th></th>
             
             <th></th>
@@ -242,9 +241,8 @@ $req2->execute(array('id_sortie' => $donnees['id']));
           <tr>
             <th>#</th>
             <th>Momment de creation:</th>
-            <th>type de collecte:</th>
-            <th>Adhérent?:</th>
-            <th>Localisation:</th>
+            <th>Nom du partenaire:</th>
+            
             <th>Masse totale</th>
             
             <th>Modifier:</th>
@@ -292,8 +290,7 @@ $req->execute(array('id_point_sortie' => $_GET['numero'], 'tdate' => $_GET['date
             <td><?php echo $donnees['id']?></td>
             <td><?php echo $donnees['timestamp']?></td>
             <td><?php echo $donnees['nom']?></td>
-            <td><?php echo $donnees['adherent']?></td>
-            <td>loca</td>
+            
            <td> 
 
  <?php 
@@ -355,7 +352,6 @@ $req2->execute(array('id_sortie' => $donnees['id']));
 
 <input type="hidden" name ="id" id="id" value="<?php echo $donnees['id']?>">
 <input type="hidden" name ="nom" id="nom" value="<?php echo $donnees['nom']?>">
-<input type="hidden" name ="localisation" id="localisation" value="<?php echo $donnees['localisation']?>">
 <input type="hidden" name ="date" id="date" value="<?php echo $_GET['date']?>">
 <input type="hidden" name ="npoint" id="npoint" value="<?php echo $_GET['numero']?>">
   <button  class="btn btn-warning btn-sm" >modifier</button>
@@ -381,8 +377,7 @@ $req2->execute(array('id_sortie' => $donnees['id']));
         <tfoot>
           <tr>
             <th></th>
-            <th></th>
-            <th></th>
+            
             <th></th>
             
             <th></th>
@@ -400,9 +395,7 @@ $req2->execute(array('id_sortie' => $donnees['id']));
           <tr>
             <th>#</th>
             <th>Momment de creation:</th>
-            <th>type de collecte:</th>
-            <th>Adhérent?:</th>
-            <th>Localisation:</th>
+            <th>Nom de l'entreprise:</th>
             <th>Masse totale</th>
             
             <th>Modifier:</th>
@@ -450,8 +443,7 @@ $req->execute(array('id_point_sortie' => $_GET['numero'], 'tdate' => $_GET['date
             <td><?php echo $donnees['id']?></td>
             <td><?php echo $donnees['timestamp']?></td>
             <td><?php echo $donnees['nom']?></td>
-            <td>pas adh dispo</td>
-            <td>loca</td>
+           
            <td> 
 
  <?php 
@@ -513,7 +505,6 @@ $req2->execute(array('id_sortie' => $donnees['id']));
 
 <input type="hidden" name ="id" id="id" value="<?php echo $donnees['id']?>">
 <input type="hidden" name ="nom" id="nom" value="<?php echo $donnees['nom']?>">
-<input type="hidden" name ="localisation" id="localisation" value="<?php echo $donnees['localisation']?>">
 <input type="hidden" name ="date" id="date" value="<?php echo $_GET['date']?>">
 <input type="hidden" name ="npoint" id="npoint" value="<?php echo $_GET['numero']?>">
   <button  class="btn btn-warning btn-sm" >modifier</button>
@@ -540,8 +531,7 @@ $req2->execute(array('id_sortie' => $donnees['id']));
           <tr>
             <th></th>
             <th></th>
-            <th></th>
-            <th></th>
+           
             
             <th></th>
             <th></th>

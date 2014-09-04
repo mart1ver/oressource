@@ -240,7 +240,7 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
 
            ?>
 
-  <option value = "<?php echo$donnees['id_type_dechet']?>" ><?php echo$donnees['nom']?></option>
+  <option value = "<?php echo$donnees['id']?>" ><?php echo$donnees['nom']?></option>
  
 
      

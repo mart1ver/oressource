@@ -8,6 +8,11 @@ if(isset($_POST['adh']))
   {
    $adh = "non";
   }
+
+
+    
+    if ($_POST['najout'] > 0) 
+{
 // Connexion à la base de données
 		try
 {
@@ -23,7 +28,7 @@ if(isset($_POST['adh']))
   $id_collecte = $bdd->lastInsertId();
     $req->closeCursor();
 
-
+}
 //insertion des pessés dans la table pesées_collectes
 //on determine '$nombrecat' le nombre de categories maxi (soit l'id maximum)  
             try

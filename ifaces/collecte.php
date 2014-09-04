@@ -51,6 +51,7 @@
              document.getElementById(y).innerText = parseFloat(document.getElementById(y).innerText) + parseFloat(document.getElementById("number").value)  ;
               document.getElementById(z).value = parseFloat(document.getElementById(z).value) + parseFloat(document.getElementById("number").value)  ;
              document.getElementById("number").value = "";  
+             document.getElementById("najout").value = parseInt(document.getElementById("najout").value)+1;
           }
           }
           function tdechet_clear()
@@ -101,9 +102,10 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
   echo'<div class="alert alert-success alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'.$_GET['msg'].'</div>';
 }
 ?>
-<div class="panel-body">
-      <fieldset>
+<br>
+     
        <legend>
+        <blockquote>
         <?php 
             try
             {
@@ -125,8 +127,11 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
             }
             $reponse->closeCursor(); // Termine le traitement de la requête
         ?>
+      </blockquote>
        </legend>
-      </fieldset>     
+       
+      
+
 <div class="row">
   <div class="col-md-3 col-md-offset-1" >
     <form action="../moteur/collecte_post.php" method="post">
@@ -154,10 +159,8 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
             $reponse->closeCursor(); // Termine le traitement de la requête
             ?>
     </select>
-    <br>
-    <input type="hidden" name ="id_point_collecte" id="id_point_collecte" value="<?php echo $_GET['numero']?>">
-    <input name ="adh" id ="adh" type="checkbox" ><label for="adh">Adhére à l'association</label> <a href="adhesions.php"  target="_blank"><span style="float:right;" class="glyphicon glyphicon-pencil"></span></a>
-  </div> 
+  </div>
+   
 <div class="col-md-3" >
 <label for="loc">Localité:</label>  
     <select name ="loc" id ="loc" class="form-control">
@@ -184,9 +187,16 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
             $reponse->closeCursor(); // Termine le traitement de la requête
             ?>
     </select>
-    <br>
-</div> 
+    
+</div>
+<br> 
+ <div class="col-md-3 " >
+   <br>
+    <input type="hidden" name ="id_point_collecte" id="id_point_collecte" value="<?php echo $_GET['numero']?>">
+    <input name ="adh" id ="adh" type="checkbox" ><label for="adh">Adhére à l'association</label> <a href="adhesions.php"  target="_blank"><span style="float:right;" class="glyphicon glyphicon-pencil"></span></a>
+  </div> 
   </div>
+
 <div class="row">
 <br>
   <div class="col-md-3 col-md-offset-1" >
@@ -214,6 +224,7 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
     <ul class="list-group">
       <li class="list-group-item">
         <input type="hidden" value="0" name ="<?php echo$donnees['id']?>" id="<?php echo$donnees['id']?>">
+        
         <span class="badge" id="<?php echo$donnees['nom']?>" style="background-color:<?php echo$donnees['couleur']?>">0</span>
             <?php echo$donnees['nom']?>
       </li>
@@ -221,6 +232,7 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
             $reponse->closeCursor(); // Termine le traitement de la requête
             ?>
     </ul>
+    <input type="hidden" value="0" name ="najout" id="najout">
   <button class="btn btn-primary btn-lg">c'est pesé!</button>
 </form>
 <button class="btn btn-primary btn-lg"  align="center"><span class="glyphicon glyphicon-print"></span></button>
@@ -289,7 +301,9 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
             ?>
 
   </div>
+  
   <div class="col-md-3" >
+
   <label>Clavier</label><br>
     <div class="col-md-3" style="width: 200px;">
       <div class="row">
@@ -318,13 +332,19 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
       <button class="btn btn-default btn-lg" onclick="number_write('0');" data-value="0">0</button>
       <button class="btn btn-default btn-lg" onclick="number_write('.');" data-value=",">,</button>
     </div>
-
-    </div>
+</div>
+ 
+  </div>
   </div>
 </div>
 <br><br>   
-</div>
-      <?php include "pied.php";  } else
+
+
+      <?php include "pied.php";?> 
+
+
+
+       <?php } else
       { 
         header('Location:../moteur/destroy.php');
       }?>
