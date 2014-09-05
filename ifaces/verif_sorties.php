@@ -1,6 +1,7 @@
 <?php session_start(); ?>
 
 <?php
+//formulaire permetant la correction de sorties
     if (isset($_SESSION['id']) AND (strpos($_SESSION['niveau'], 'g') !== false))
       {  include "tete.php" ?>
    <div class="container">
@@ -120,7 +121,7 @@ GROUP BY nom'
             // On recupère toute la liste des filieres de sortie
             //   $reponse = $bdd->query('SELECT * FROM grille_objets');
           
-$req = $bdd->prepare('SELECT sorties.id,sorties.timestamp ,type_sortie.nom,sorties.adherent ,sorties.classe classe
+$req = $bdd->prepare('SELECT sorties.id,sorties.timestamp ,type_sortie.nom,sorties.adherent ,sorties.classe classe 
                        FROM sorties ,type_sortie
                        WHERE type_sortie.id = sorties.id_type_sortie  AND sorties.id_point_sortie = :id_point_sortie AND DATE(sorties.timestamp) = :tdate AND classe = "sorties" ');
 $req->execute(array('id_point_sortie' => $_GET['numero'], 'tdate' => $_GET['date']));
@@ -275,9 +276,9 @@ GROUP BY nom'
             // On recupère toute la liste des filieres de sortie
             //   $reponse = $bdd->query('SELECT * FROM grille_objets');
           
-$req = $bdd->prepare('SELECT sorties.id,sorties.timestamp ,conventions_sorties.nom,sorties.adherent 
+$req = $bdd->prepare('SELECT sorties.id,sorties.timestamp ,conventions_sorties.nom,sorties.adherent , sorties.classe classe
                        FROM sorties ,conventions_sorties
-                       WHERE conventions_sorties.id = sorties.id_convention  AND sorties.id_point_sortie = :id_point_sortie AND DATE(sorties.timestamp) = :tdate ');
+                       WHERE conventions_sorties.id = sorties.id_convention  AND sorties.id_point_sortie = :id_point_sortie AND DATE(sorties.timestamp) = :tdate AND classe = "sortiesc" ');
 $req->execute(array('id_point_sortie' => $_GET['numero'], 'tdate' => $_GET['date']));
 
 
