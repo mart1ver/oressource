@@ -30,6 +30,7 @@ $resultat = $req->fetch();
 $_SESSION['structure'] = $resultat['nom'];
 $_SESSION['siret'] = $resultat['siret'];
 $_SESSION['adresse'] = $resultat['adresse'];
+$_SESSION['texte_adhesion'] = $resultat['texte_adhesion'];
   
   
 

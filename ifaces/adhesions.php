@@ -7,7 +7,7 @@
           
           <p class="text-center"><h1>Formulaire d'adhésion</h1> 
            </p> 
-          <p class="text-center"><b>L'adhésion à la ressourcerie formalise avant tout votre soutien aux valeurs écologiques et sociales défendues par l'association. (Et peut, par ailleurs, s'avérer utile pour être tenu informé par courriel des diverses activités, ponctuelles ou ordinaires, développées la ressourcerie.) Adhérer est donc surtout un geste politique, militant, d'engagement actif dans la lutte contre l'absurdité consumériste et sa normalisation du gaspillage!!</b>
+          <p ><b><?php echo $_SESSION['texte_adhesion'] ?></b>
         </p>
         </div>
       </div>
