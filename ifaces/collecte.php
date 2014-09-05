@@ -3,16 +3,16 @@
  if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 'c'.$_GET['numero']) !== false))
       {include "tete.php";
 //Oressource 2014, formulaire de collecte
-//Simple formulaire de saisie des matieres d'ouevres entrantes dans la structure.
-//Doit etre fonctionnel avec un ecran tactille.
-//Du javascript permet l'interactivité du keypad et des boutons centraux avec le bon de collecte 
+//Simple formulaire de saisie des types et quantités de matériel entrant dans la structure.
+//Pensé pour être fonctionnel sur ecran tactile.
+//Du javascript permet l'interactivité du keypad et des boutons centraux avec le bon de collecte. 
 //
 //
 //
 //
 //
 
-//on obtien la masse maximum suporté par la balance à ce point de collecte dans la variable $pesee_max
+//on obtient la masse maximum suportée par la balance de ce point de collecte dans la variable $pesee_max
   try
             {
             // On se connecte à MySQL
@@ -26,7 +26,7 @@
             //on obtient le nom du point de collecte designé par $GET['numero']
             $req = $bdd->prepare("SELECT pesee_max FROM points_collecte WHERE id = :id ");
             $req->execute(array('id' => $_GET['numero']));
-            // On affiche chaque entree une à une
+            // On affiche chaque entrée une à une
             while ($donnees = $req->fetch())
             {
             $pesee_max = $donnees['pesee_max'];
@@ -67,9 +67,9 @@
                       // En cas d'erreur, on affiche un message et on arrête tout
                       die('Erreur : '.$e->getMessage());
                       }
-                      // On obtient tout les visibles de la table type_dechets de maniere à remetre à zero tout les items du bon d'apport vollontaire
+                      // On obtient tous les visibles de la table type_dechets de manière à remettre à zéro tout les items du bon d'apport volontaire
                       $reponse = $bdd->query('SELECT * FROM type_dechets WHERE visible = "oui"' );
-                      // On affiche chaque entree une à une
+                      // On affiche chaque entrée une à une
                       while ($donnees = $reponse->fetch())
                       {?>
                document.getElementById("<?php echo$donnees['nom']?>").innerText = "0"  ;
@@ -120,7 +120,7 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
             //on obtient le nom du point de collecte designé par $GET['numero']
             $req = $bdd->prepare("SELECT * FROM points_collecte WHERE id = :id ");
             $req->execute(array('id' => $_GET['numero']));
-            // On affiche chaque entree une à une
+            // On affiche chaque entrée une à une
             while ($donnees = $req->fetch())
             {
             echo$donnees['nom'];
@@ -148,9 +148,9 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
             // En cas d'erreur, on affiche un message et on arrête tout
             die('Erreur : '.$e->getMessage());
             }
-            // On affiche une liste deroulante des type de collecte visibles
+            // On affiche une liste déroulante des types de collecte visibles
             $reponse = $bdd->query('SELECT * FROM type_collecte WHERE visible = "oui"');
-            // On affiche chaque entree une à une
+            // On affiche chaque entrée une à une
             while ($donnees = $reponse->fetch())
             {
             ?>
@@ -175,9 +175,9 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
             // En cas d'erreur, on affiche un message et on arrête tout
             die('Erreur : '.$e->getMessage());
             }
-            // On affiche une liste deroulante des localités visibles
+            // On affiche une liste déroulante des localités visibles
             $reponse = $bdd->query('SELECT * FROM localites WHERE visible = "oui"');
-            // On affiche chaque entree une à une
+            // On affiche chaque entrée une à une
             while ($donnees = $reponse->fetch())
             {
             ?>
@@ -200,7 +200,7 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
 <div class="row">
 <br>
   <div class="col-md-3 col-md-offset-1" >
-  <label>bon d'apport:</label>
+  <label>Bon d'apport:</label>
             <?php 
             try
             {
@@ -215,9 +215,9 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
  
             // Si tout va bien, on peut continuer
  
-            // on affiche le bon de sortie hors boutique (à zero) correspondant aux types de dechets visibles
+            // on affiche le bon de sortie hors boutique (à zéro) correspondant aux types de déchets visibles
             $reponse = $bdd->query('SELECT * FROM type_dechets WHERE visible = "oui"');
-            // On affiche chaque entree une à une
+            // On affiche chaque entrée une à une
             while ($donnees = $reponse->fetch())
             {
             ?>
@@ -233,7 +233,7 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
             ?>
     </ul>
     <input type="hidden" value="0" name ="najout" id="najout">
-  <button class="btn btn-primary btn-lg">c'est pesé!</button>
+  <button class="btn btn-primary btn-lg">C'EST PESÉ!</button>
 </form>
 <button class="btn btn-primary btn-lg"  align="center"><span class="glyphicon glyphicon-print"></span></button>
         <button class="btn btn-warning btn-lg" onclick="tdechet_clear();"><span class="glyphicon glyphicon-refresh"></button>
@@ -256,10 +256,10 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
  
             // Si tout va bien, on peut continuer
  
-            // ON AFFICHE un bouton par type de dechet visible(id impair)
+            // ON AFFICHE un bouton par type de déchet visible(id impair)
             $reponse = $bdd->query('SELECT * FROM type_dechets WHERE visible = "oui" AND MOD(id,2)=1');
  
-           // On affiche chaque entree une à une
+           // On affiche chaque entrée une à une
            while ($donnees = $reponse->fetch())
            {
 
@@ -286,9 +286,9 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
             // En cas d'erreur, on affiche un message et on arrête tout
             die('Erreur : '.$e->getMessage());
             }
-            // ON AFFICHE un bouton par type de dechet visible(id pair)
+            // ON AFFICHE un bouton par type de déchet visible(id pair)
             $reponse = $bdd->query('SELECT * FROM type_dechets WHERE visible = "oui" AND MOD(id,2)=0');
-            // On affiche chaque entree une à une
+            // On affiche chaque entrée une à une
             while ($donnees = $reponse->fetch())
             {
             ?>
