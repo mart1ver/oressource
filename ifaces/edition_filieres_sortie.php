@@ -1,6 +1,6 @@
 <?php session_start(); 
-//Oressource 2014, formulaire de referencement des filieres de sortie (entreprises de recyclage) en lien avec la structure
-//Simple formulaire de saisie , lise des filieres de sortie deja référencées et possibilité de les cacher à l'utilisateur ou de modifier les données
+//Oressource 2014, formulaire de référencement des filières de sortie (entreprises de recyclage, associations, etc) en lien avec la structure
+//Simple formulaire de saisie qui permet de lister des filières de sortie déjà référencées et s'accompagne de la possibilité de les cacher à l'utilisateur ou d'en modifier les données
 //
 //
 //
@@ -11,9 +11,10 @@
     if (isset($_SESSION['id']) AND (strpos($_SESSION['niveau'], 'g') !== false))
       { include "tete.php" ?>
     <div class="container">
-        <h1>Gestions des entreprises de recyclage</h1> 
-         <div class="panel-heading">Gerez ici la liste de vos  entreprises de recyclage.</div>
-         <p>Permet de diffferencier les sorties dechet au momment de la mise en bilan.</p>
+        <h1>Gestion des partenaires de recyclage</h1> 
+         <div class="panel-heading">Gérez ici la liste de ceux de vos partenaires qui traitent vos sorties destinées au recyclage.</div>
+         <p>Cette option permet notamment de différencier les "sorties recyclage" des "sorties ré-emploi" au moment de la mise en bilan.</p>
+
 <?php
 if ($_GET['err'] == "") // SI on a pas de message d'erreur
 {
@@ -40,7 +41,7 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
         <div class="row">
         	<form action="../moteur/filiere_sortie_post.php" method="post">
   <div class="col-md-3"><label for="nom">Nom:</label> <input type="text"value ="<?php echo $_GET['nom']?>" name="nom" id="nom" class="form-control " required autofocus>
-<label>Type de dechets enlevé:</label>
+<label>Type de déchets enlevés:</label>
 <select name="id_dechet" id="id_dechet" class="form-control " required>
             <?php 
             try
@@ -53,9 +54,9 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
             // En cas d'erreur, on affiche un message et on arrête tout
             die('Erreur : '.$e->getMessage());
             }
-            // On affiche une liste deroulante des type de collecte visibles
+            // On affiche une liste déroulante des type de collecte visibles
             $reponse = $bdd->query('SELECT * FROM type_dechets WHERE visible = "oui"');
-            // On affiche chaque entree une à une
+            // On affiche chaque entrée une à une
             while ($donnees = $reponse->fetch())
             {
             ?>
@@ -65,13 +66,13 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
             $reponse->closeCursor(); // Termine le traitement de la requête
             ?>
     </select>
-  </div>
-    <div class="col-md-3"><label for="description">Déscription:</label> <input type="text" value ="<?php echo $_GET['description']?>" name="description" id="description" class="form-control " required >
+  </div>!!
+    <div class="col-md-3"><label for="description">Description:</label> <input type="text" value ="<?php echo $_GET['description']?>" name="description" id="description" class="form-control " required >
       
     
     </div>
   <div class="col-md-1"><label for="couleur">Couleur:</label> <input type="color"        value ="<?php echo "#".$_GET['couleur']?>" name="couleur" id="couleur" class="form-control " required ></div>
-  <div class="col-md-1"><br><button name="creer" class="btn btn-default">Creer!</button></div>
+  <div class="col-md-1"><br><button name="creer" class="btn btn-default">Créer!</button></div>
 </form>
 </div>
       </div>
@@ -80,10 +81,10 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
         <thead>
           <tr>
             <th>#</th>
-            <th>Date de creation:</th>
+            <th>Date de création:</th>
             <th>Nom:</th>
             <th>Description:</th>
-            <th>dechet enlevé:</th>
+            <th>Type de déchets enlevés:</th>
             <th>Couleur:</th>
             <th>Visible:</th>
             <th>Modifier:</th>
@@ -110,7 +111,7 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
 
 
  
-            // On recupère toute la liste des filieres de sortie
+            // On reccupère toute la liste des filières de sortie
             $reponse = $bdd->query('SELECT filieres_sortie.id, 
                                            filieres_sortie.timestamp, 
                                            filieres_sortie.nom,
@@ -125,7 +126,7 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
 
                                              WHERE filieres_sortie.id_type_dechet = type_dechets.id  ');
  
-           // On affiche chaque entree une à une
+           // On affiche chaque entrée une à une
            while ($donnees = $reponse->fetch())
            {
 

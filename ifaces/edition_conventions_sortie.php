@@ -1,6 +1,6 @@
 <?php session_start(); 
-//Oressource 2014, formulaire de referencement des conventions avec les partenaires de la structure
-//Simple formulaire de saisie , lise des conventions deja référencées et possibilité de les cacher à l'utilisateur ou de modifier les données
+//Oressource 2014, formulaire de référencement des conventions avec les partenaires de la structure
+//Simple formulaire de saisie , liste des conventions déjà référencées et possibilité de les cacher à l'utilisateur ou de modifier les données
 //
 //
 //
@@ -11,9 +11,9 @@
     if (isset($_SESSION['id']) AND (strpos($_SESSION['niveau'], 'g') !== false))
       { include "tete.php" ?>
     <div class="container">
-        <h1>Gestions des conventions avec les partenaires</h1> 
+        <h1>Gestion des conventions avec les partenaires</h1> 
          <div class="panel-heading">Gerez ici la liste de vos partenaires de réemploi.</div>
-         <p>Permet de diffferencier les partenaires au momment de la mise en bilan </p>
+         <p>Permet de différencier les partenaires au momment de la mise en bilan </p>
 <?php
 if ($_GET['err'] == "") // SI on a pas de message d'erreur
 {
