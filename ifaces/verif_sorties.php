@@ -113,8 +113,9 @@ if($donnees['nid'] > 0){ $req->closeCursor();
 
 
             ?>
-            
-<h3>Dons simples:</h3> 
+            <div class="panel panel-info">
+  <div class="panel-heading"><h3 class="panel-title">Dons simples:</h3> </div>
+  <div class="panel-body">
   <!-- Table -->
       <table class="table">
         <thead>
@@ -234,20 +235,11 @@ $req2->execute(array('id_sortie' => $donnees['id']));
                 $req2->closeCursor(); // Termine le traitement de la requête2
                 ?>
        </tbody>
-        <tfoot>
-          <tr>
-            <th></th>
-            <th></th>
-          
-            <th></th>
-            
-            <th></th>
-            <th></th>
-            <th></th>
-            
-          </tfoot>
+       
         
       </table>
+      </div>
+</div>
       <?php
     }
 }
@@ -287,7 +279,10 @@ if($donnees['nid'] > 0){ $req->closeCursor();
 
 
             ?>
-<h3>Sorties conventionées:</h3> 
+            <div class="panel panel-info">
+  <div class="panel-heading"><h3 class="panel-title">Sorties conventionées:</h3> </div>
+  <div class="panel-body">
+
   <!-- Table -->
       <table class="table">
         <thead>
@@ -404,19 +399,11 @@ $req2->execute(array('id_sortie' => $donnees['id']));
                 $req2->closeCursor(); // Termine le traitement de la requête2
                 ?>
        </tbody>
-        <tfoot>
-          <tr>
-            <th></th>
-            
-            <th></th>
-            
-            <th></th>
-            <th></th>
-            <th></th>
-            
-          </tfoot>
+        
         
       </table>
+       </div>
+</div>
       <?php
     }
 }
@@ -457,7 +444,10 @@ if($donnees['nid'] > 0){ $req->closeCursor();
 
 
             ?>
-<h3>Sorties recyclage:</h3> 
+             <div class="panel panel-info">
+  <div class="panel-heading"><h3 class="panel-title">Sorties recyclage:</h3> </div>
+  <div class="panel-body">
+
   <!-- Table -->
       <table class="table">
         <thead>
@@ -574,19 +564,10 @@ $req2->execute(array('id_sortie' => $donnees['id']));
                 $req2->closeCursor(); // Termine le traitement de la requête2
                 ?>
        </tbody>
-        <tfoot>
-          <tr>
-            <th></th>
-            <th></th>
-           
-            
-            <th></th>
-            <th></th>
-            <th></th>
-            
-          </tfoot>
+        
         
       </table>
+      </div></div>
       <?php
     }
 }
@@ -626,7 +607,10 @@ if($donnees['nid'] > 0){ $req->closeCursor();
 
 
             ?>
-<h3>Sorties Poubelles:</h3> 
+            <div class="panel panel-info">
+  <div class="panel-heading"><h3 class="panel-title">Sorties Poubelles:</h3> </div>
+  <div class="panel-body">
+ 
   <!-- Table -->
       <table class="table">
         <thead>
@@ -744,19 +728,10 @@ $req2->execute(array('id_sortie' => $donnees['id']));
                 $req2->closeCursor(); // Termine le traitement de la requête2
                 ?>
        </tbody>
-        <tfoot>
-          <tr>
-            <th></th>
-            <th></th>
-           
-            
-            
-            <th></th>
-            <th></th>
-            
-          </tfoot>
+        
         
       </table>
+    </div></div>
 <?php
     }
 }
