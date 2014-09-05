@@ -12,8 +12,8 @@
     <!-- Main jumbotron for a primary marketing message or call to action -->
     <div class="page-header">
       <div class="container">
-        <h1>Bienvenue sur Oressource</h1>
-        <p>L'outil libre de quantification et de mise en bilan pour ressourceries</p>
+        <h1>Bienvenue à bord d'Oressource <?php echo $_SESSION['nom']?> </h1>
+        <p>L'outil libre de quantification et de mise en bilan dédié aux structures du ré-emploi</p>
       </div>
     </div>
 
@@ -21,19 +21,19 @@
       <!-- Example row of columns -->
       <div class="row">
         <div class="col-md-4">
-          <h2>collecté ajourdhui:</h2>
+          <h2>Collecté aujourd'hui:</h2>
           <p><div id="graphj" style="height: 180px;"></div></p>
-          <p><a class="btn btn-default" href="#" role="button">Details &raquo;</a></p>
+          <p><a class="btn btn-default" href="#" role="button">Détails &raquo;</a></p>
         </div>
         <div class="col-md-4">
-          <h2>collecté ce mois:</h2>
+          <h2>Collecté ce mois-ci:</h2>
           <p><div id="graphm" style="height: 180px;"></div></p>
-          <p><a class="btn btn-default" href="#" role="button">Details &raquo;</a></p>
+          <p><a class="btn btn-default" href="#" role="button">Détails &raquo;</a></p>
        </div>
         <div class="col-md-4">
-          <h2>collecté cette année:</h2>
+          <h2>Collecté cette année:</h2>
           <p><div id="grapha" style="height: 180px;"></div></p>
-          <p><a class="btn btn-default" href="#" role="button">Details &raquo;</a></p>
+          <p><a class="btn btn-default" href="#" role="button">Détails &raquo;</a></p>
         </div>
       </div>
       <hr>
