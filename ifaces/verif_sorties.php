@@ -78,7 +78,42 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
 </div>
 
 </div>
+<?php
+try
+            {
+            // On se connecte à MySQL
+            include('../moteur/dbconfig.php');
+            }
+            catch(Exception $e)
+            {
+            // En cas d'erreur, on affiche un message et on arrête tout
+            die('Erreur : '.$e->getMessage());
+            }
+ 
+            // Si tout va bien, on peut continuer
 
+
+ 
+            // On recupère toute la liste des filieres de sortie
+            //   $reponse = $bdd->query('SELECT * FROM grille_objets');
+          
+$req = $bdd->prepare('SELECT COUNT(id) nid
+                        FROM `sorties` 
+                       WHERE sorties.id_point_sortie = :id_point_sortie AND DATE(sorties.timestamp) = :tdate AND classe = "sorties" ');
+$req->execute(array('id_point_sortie' => $_GET['numero'], 'tdate' => $_GET['date']));
+
+
+           // On affiche chaque entree une à une
+           while ($donnees = $req->fetch())
+           { 
+if($donnees['nid'] > 0){ $req->closeCursor(); 
+
+
+
+
+
+            ?>
+            
 <h3>Dons simples:</h3> 
   <!-- Table -->
       <table class="table">
@@ -109,17 +144,6 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
             }
  
             // Si tout va bien, on peut continuer
-/*
-'SELECT type_dechets.couleur,type_dechets.nom, sum(pesees_collectes.masse) somme 
-FROM type_dechets,pesees_collectes 
-WHERE type_dechets.id = pesees_collectes.id_type_dechet AND DATE(pesees_collectes.timestamp) = CURDATE()
-GROUP BY nom'
-*/
-
-
- 
-            // On recupère toute la liste des filieres de sortie
-            //   $reponse = $bdd->query('SELECT * FROM grille_objets');
           
 $req = $bdd->prepare('SELECT sorties.id,sorties.timestamp ,type_sortie.nom,sorties.adherent ,sorties.classe classe 
                        FROM sorties ,type_sortie
@@ -152,18 +176,7 @@ $req->execute(array('id_point_sortie' => $_GET['numero'], 'tdate' => $_GET['date
             die('Erreur : '.$e->getMessage());
             }
  
-            // Si tout va bien, on peut continuer
-/*
-'SELECT type_dechets.couleur,type_dechets.nom, sum(pesees_collectes.masse) somme 
-FROM type_dechets,pesees_collectes 
-WHERE type_dechets.id = pesees_collectes.id_type_dechet AND DATE(pesees_collectes.timestamp) = CURDATE()
-GROUP BY nom'
-*/
-
-
- 
-            // On recupère toute la liste des filieres de sortie
-            //   $reponse = $bdd->query('SELECT * FROM grille_objets');
+           
           
 $req2 = $bdd->prepare('SELECT SUM(pesees_sorties.masse) masse
                        FROM pesees_sorties
@@ -235,6 +248,45 @@ $req2->execute(array('id_sortie' => $donnees['id']));
           </tfoot>
         
       </table>
+      <?php
+    }
+}
+?>
+<?php
+try
+            {
+            // On se connecte à MySQL
+            include('../moteur/dbconfig.php');
+            }
+            catch(Exception $e)
+            {
+            // En cas d'erreur, on affiche un message et on arrête tout
+            die('Erreur : '.$e->getMessage());
+            }
+ 
+            // Si tout va bien, on peut continuer
+
+
+ 
+            // On recupère toute la liste des filieres de sortie
+            //   $reponse = $bdd->query('SELECT * FROM grille_objets');
+          
+$req = $bdd->prepare('SELECT COUNT(id) nid
+                        FROM `sorties` 
+                       WHERE sorties.id_point_sortie = :id_point_sortie AND DATE(sorties.timestamp) = :tdate AND classe = "sortiesc" ');
+$req->execute(array('id_point_sortie' => $_GET['numero'], 'tdate' => $_GET['date']));
+
+
+           // On affiche chaque entree une à une
+           while ($donnees = $req->fetch())
+           { 
+if($donnees['nid'] > 0){ $req->closeCursor(); 
+
+
+
+
+
+            ?>
 <h3>Sorties conventionées:</h3> 
   <!-- Table -->
       <table class="table">
@@ -263,18 +315,6 @@ $req2->execute(array('id_sortie' => $donnees['id']));
             die('Erreur : '.$e->getMessage());
             }
  
-            // Si tout va bien, on peut continuer
-/*
-'SELECT type_dechets.couleur,type_dechets.nom, sum(pesees_collectes.masse) somme 
-FROM type_dechets,pesees_collectes 
-WHERE type_dechets.id = pesees_collectes.id_type_dechet AND DATE(pesees_collectes.timestamp) = CURDATE()
-GROUP BY nom'
-*/
-
-
- 
-            // On recupère toute la liste des filieres de sortie
-            //   $reponse = $bdd->query('SELECT * FROM grille_objets');
           
 $req = $bdd->prepare('SELECT sorties.id,sorties.timestamp ,conventions_sorties.nom,sorties.adherent , sorties.classe classe
                        FROM sorties ,conventions_sorties
@@ -306,18 +346,7 @@ $req->execute(array('id_point_sortie' => $_GET['numero'], 'tdate' => $_GET['date
             die('Erreur : '.$e->getMessage());
             }
  
-            // Si tout va bien, on peut continuer
-/*
-'SELECT type_dechets.couleur,type_dechets.nom, sum(pesees_collectes.masse) somme 
-FROM type_dechets,pesees_collectes 
-WHERE type_dechets.id = pesees_collectes.id_type_dechet AND DATE(pesees_collectes.timestamp) = CURDATE()
-GROUP BY nom'
-*/
-
-
- 
-            // On recupère toute la liste des filieres de sortie
-            //   $reponse = $bdd->query('SELECT * FROM grille_objets');
+           
           
 $req2 = $bdd->prepare('SELECT SUM(pesees_sorties.masse) masse
                        FROM pesees_sorties
@@ -388,7 +417,46 @@ $req2->execute(array('id_sortie' => $donnees['id']));
           </tfoot>
         
       </table>
+      <?php
+    }
+}
+?>
 
+<?php
+try
+            {
+            // On se connecte à MySQL
+            include('../moteur/dbconfig.php');
+            }
+            catch(Exception $e)
+            {
+            // En cas d'erreur, on affiche un message et on arrête tout
+            die('Erreur : '.$e->getMessage());
+            }
+ 
+            // Si tout va bien, on peut continuer
+
+
+ 
+            // On recupère toute la liste des filieres de sortie
+            //   $reponse = $bdd->query('SELECT * FROM grille_objets');
+          
+$req = $bdd->prepare('SELECT COUNT(id) nid
+                        FROM `sorties` 
+                       WHERE sorties.id_point_sortie = :id_point_sortie AND DATE(sorties.timestamp) = :tdate AND classe = "sortiesr" ');
+$req->execute(array('id_point_sortie' => $_GET['numero'], 'tdate' => $_GET['date']));
+
+
+           // On affiche chaque entree une à une
+           while ($donnees = $req->fetch())
+           { 
+if($donnees['nid'] > 0){ $req->closeCursor(); 
+
+
+
+
+
+            ?>
 <h3>Sorties recyclage:</h3> 
   <!-- Table -->
       <table class="table">
@@ -416,22 +484,11 @@ $req2->execute(array('id_sortie' => $donnees['id']));
             die('Erreur : '.$e->getMessage());
             }
  
-            // Si tout va bien, on peut continuer
-/*
-'SELECT type_dechets.couleur,type_dechets.nom, sum(pesees_collectes.masse) somme 
-FROM type_dechets,pesees_collectes 
-WHERE type_dechets.id = pesees_collectes.id_type_dechet AND DATE(pesees_collectes.timestamp) = CURDATE()
-GROUP BY nom'
-*/
-
-
- 
-            // On recupère toute la liste des filieres de sortie
-            //   $reponse = $bdd->query('SELECT * FROM grille_objets');
+           
           
-$req = $bdd->prepare('SELECT sorties.id,sorties.timestamp ,filieres_sortie.nom 
+$req = $bdd->prepare('SELECT sorties.id,sorties.timestamp ,filieres_sortie.nom , sorties.classe classe
                        FROM sorties ,filieres_sortie
-                       WHERE filieres_sortie.id = sorties.id_filiere  AND sorties.id_point_sortie = :id_point_sortie AND DATE(sorties.timestamp) = :tdate ');
+                       WHERE filieres_sortie.id = sorties.id_filiere  AND sorties.id_point_sortie = :id_point_sortie AND DATE(sorties.timestamp) = :tdate AND classe = "sortiesr"');
 $req->execute(array('id_point_sortie' => $_GET['numero'], 'tdate' => $_GET['date']));
 
 
@@ -459,18 +516,7 @@ $req->execute(array('id_point_sortie' => $_GET['numero'], 'tdate' => $_GET['date
             die('Erreur : '.$e->getMessage());
             }
  
-            // Si tout va bien, on peut continuer
-/*
-'SELECT type_dechets.couleur,type_dechets.nom, sum(pesees_collectes.masse) somme 
-FROM type_dechets,pesees_collectes 
-WHERE type_dechets.id = pesees_collectes.id_type_dechet AND DATE(pesees_collectes.timestamp) = CURDATE()
-GROUP BY nom'
-*/
-
-
- 
-            // On recupère toute la liste des filieres de sortie
-            //   $reponse = $bdd->query('SELECT * FROM grille_objets');
+            
           
 $req2 = $bdd->prepare('SELECT SUM(pesees_sorties.masse) masse
                        FROM pesees_sorties
@@ -541,6 +587,45 @@ $req2->execute(array('id_sortie' => $donnees['id']));
           </tfoot>
         
       </table>
+      <?php
+    }
+}
+?>
+<?php
+try
+            {
+            // On se connecte à MySQL
+            include('../moteur/dbconfig.php');
+            }
+            catch(Exception $e)
+            {
+            // En cas d'erreur, on affiche un message et on arrête tout
+            die('Erreur : '.$e->getMessage());
+            }
+ 
+            // Si tout va bien, on peut continuer
+
+
+ 
+            // On recupère toute la liste des filieres de sortie
+            //   $reponse = $bdd->query('SELECT * FROM grille_objets');
+          
+$req = $bdd->prepare('SELECT COUNT(id) nid
+                        FROM `sorties` 
+                       WHERE sorties.id_point_sortie = :id_point_sortie AND DATE(sorties.timestamp) = :tdate AND classe = "sortiesp" ');
+$req->execute(array('id_point_sortie' => $_GET['numero'], 'tdate' => $_GET['date']));
+
+
+           // On affiche chaque entree une à une
+           while ($donnees = $req->fetch())
+           { 
+if($donnees['nid'] > 0){ $req->closeCursor(); 
+
+
+
+
+
+            ?>
 <h3>Sorties Poubelles:</h3> 
   <!-- Table -->
       <table class="table">
@@ -548,9 +633,8 @@ $req2->execute(array('id_sortie' => $donnees['id']));
           <tr>
             <th>#</th>
             <th>Momment de creation:</th>
-            <th>type de collecte:</th>
-            <th>Adhérent?:</th>
-            <th>Localisation:</th>
+   
+            
             <th>Masse totale</th>
             
             <th>Modifier:</th>
@@ -570,22 +654,11 @@ $req2->execute(array('id_sortie' => $donnees['id']));
             die('Erreur : '.$e->getMessage());
             }
  
-            // Si tout va bien, on peut continuer
-/*
-'SELECT type_dechets.couleur,type_dechets.nom, sum(pesees_collectes.masse) somme 
-FROM type_dechets,pesees_collectes 
-WHERE type_dechets.id = pesees_collectes.id_type_dechet AND DATE(pesees_collectes.timestamp) = CURDATE()
-GROUP BY nom'
-*/
-
-
- 
-            // On recupère toute la liste des filieres de sortie
-            //   $reponse = $bdd->query('SELECT * FROM grille_objets');
+            
           
-$req = $bdd->prepare('SELECT sorties.id,sorties.timestamp ,types_poubelles.nom,sorties.adherent 
-                       FROM sorties ,types_poubelles
-                       WHERE types_poubelles.id = sorties.id_filiere  AND sorties.id_point_sortie = :id_point_sortie AND DATE(sorties.timestamp) = :tdate ');
+$req = $bdd->prepare('SELECT sorties.id,sorties.timestamp , sorties.classe classe
+                       FROM sorties 
+                       WHERE sorties.id_point_sortie = :id_point_sortie AND DATE(sorties.timestamp) = :tdate AND classe = "sortiesp" ');
 $req->execute(array('id_point_sortie' => $_GET['numero'], 'tdate' => $_GET['date']));
 
 
@@ -597,9 +670,8 @@ $req->execute(array('id_point_sortie' => $_GET['numero'], 'tdate' => $_GET['date
             <tr> 
             <td><?php echo $donnees['id']?></td>
             <td><?php echo $donnees['timestamp']?></td>
-            <td><?php echo $donnees['nom']?></td>
-            <td><?php echo $donnees['adherent']?></td>
-            <td>loca</td>
+            
+            
            <td> 
 
  <?php 
@@ -614,18 +686,7 @@ $req->execute(array('id_point_sortie' => $_GET['numero'], 'tdate' => $_GET['date
             die('Erreur : '.$e->getMessage());
             }
  
-            // Si tout va bien, on peut continuer
-/*
-'SELECT type_dechets.couleur,type_dechets.nom, sum(pesees_collectes.masse) somme 
-FROM type_dechets,pesees_collectes 
-WHERE type_dechets.id = pesees_collectes.id_type_dechet AND DATE(pesees_collectes.timestamp) = CURDATE()
-GROUP BY nom'
-*/
-
-
- 
-            // On recupère toute la liste des filieres de sortie
-            //   $reponse = $bdd->query('SELECT * FROM grille_objets');
+           
           
 $req2 = $bdd->prepare('SELECT SUM(pesees_sorties.masse) masse
                        FROM pesees_sorties
@@ -661,7 +722,6 @@ $req2->execute(array('id_sortie' => $donnees['id']));
 
 <input type="hidden" name ="id" id="id" value="<?php echo $donnees['id']?>">
 <input type="hidden" name ="nom" id="nom" value="<?php echo $donnees['nom']?>">
-<input type="hidden" name ="localisation" id="localisation" value="<?php echo $donnees['localisation']?>">
 <input type="hidden" name ="date" id="date" value="<?php echo $_GET['date']?>">
 <input type="hidden" name ="npoint" id="npoint" value="<?php echo $_GET['numero']?>">
   <button  class="btn btn-warning btn-sm" >modifier</button>
@@ -688,17 +748,19 @@ $req2->execute(array('id_sortie' => $donnees['id']));
           <tr>
             <th></th>
             <th></th>
-            <th></th>
-            <th></th>
+           
             
-            <th></th>
+            
             <th></th>
             <th></th>
             
           </tfoot>
         
       </table>
-
+<?php
+    }
+}
+?>
 
 
 
