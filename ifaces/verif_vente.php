@@ -85,10 +85,10 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
           <tr>
             <th>#</th>
             <th>Momment de creation:</th>
-            <th>type de collecte:</th>
+            <th>commentaire:</th>
             <th>Adhérent?:</th>
-            <th>Localisation:</th>
-            <th>Masse totale</th>
+            <th>Somme</th>
+            <th>nombre d'objets</th>
             
             <th>Modifier:</th>
             
