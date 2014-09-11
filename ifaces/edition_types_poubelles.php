@@ -3,9 +3,9 @@
     if (isset($_SESSION['id']) AND (strpos($_SESSION['niveau'], 'g') !== false))
       { include "tete.php" ?>
     <div class="container">
-        <h1>Gestions des types et des masses des poubelles de la ville utilisées par la structure</h1> 
-         <div class="panel-heading">Gerez ici la liste de vos bacs poubelles.</div>
-         <p>Permet de disscerner les poubelles desitnées au recyclage de celles qui serront dediés à un enfouissement ou incineration </p>
+        <h1>Gestion de la typologie et de la masse des différentes poubelles mises à disposition de la structure par la ville</h1> 
+         <div class="panel-heading">Gérez ici la liste de vos bacs à déchets.</div>
+         <p>Cet outil vous permet notamment de discerner les bacs de matières recyclables de ceux dont le contenu est destiné à un enfouissement ou une incinération.</p>
 <?php
 if ($_GET['err'] == "") // SI on a pas de message d'erreur
 {
@@ -33,11 +33,11 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
         <div class="row">
         	<form action="../moteur/type_poubelles_post.php" method="post">
   <div class="col-md-3"><label for="nom">Nom:</label> <input type="text"                 value ="<?php echo $_GET['nom']?>" name="nom" id="nom" class="form-control " required autofocus></div>
-    <div class="col-md-2"><label for="description">Déscription:</label> <input type="text" value ="<?php echo $_GET['description']?>" name="description" id="description" class="form-control " required ></div>
+    <div class="col-md-2"><label for="description">Description:</label> <input type="text" value ="<?php echo $_GET['description']?>" name="description" id="description" class="form-control " required ></div>
     <div class="col-md-2"><label for="masse_bac">Masse du bac:</label> <input type="text" value ="<?php echo $_GET['masse_bac']?>" name="masse_bac" id="masse_bac" class="form-control " required ></div>
     <div class="col-md-2"><label for="ultime">Déchet ultime ?</label><br> <input name ="ultime" id ="ultime" type="checkbox" value ="oui">Oui.</div>
   <div class="col-md-1"><label for="couleur">Couleur:</label> <input type="color"        value ="<?php echo "#".$_GET['couleur']?>" name="couleur" id="couleur" class="form-control " required ></div>
-  <div class="col-md-1"><br><button name="creer" class="btn btn-default">Creer!</button></div>
+  <div class="col-md-1"><br><button name="creer" class="btn btn-default">Créer!</button></div>
 </form>
 </div>
       </div>
@@ -46,11 +46,11 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
         <thead>
           <tr>
             <th>#</th>
-            <th>Date de creation:</th>
+            <th>Date de création:</th>
             <th>Nom:</th>
             <th>Description:</th>
             <th>Masse du bac:</th>
-            <th>Déchet ultime?:</th>
+            <th>Déchet ultime?</th>
             <th>Couleur:</th>
             <th>Visible:</th>
             <th>Modifier:</th>
@@ -75,7 +75,7 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
             // On recupère tout le contenu de la table affectations
             $reponse = $bdd->query('SELECT * FROM types_poubelles');
  
-           // On affiche chaque entree une à une
+           // On affiche chaque entrée une à une
            while ($donnees = $reponse->fetch())
            {
 

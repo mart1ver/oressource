@@ -3,8 +3,8 @@
     if (isset($_SESSION['id']) AND (strpos($_SESSION['niveau'], 'g') !== false))
       { include "tete.php" ?>
     <div class="container">
-        <h1>Gestions des points de vente</h1> 
-         <div class="panel-heading">Gerez ici les points de vente.</div>
+        <h1>Gestion des points de vente</h1> 
+         <div class="panel-heading">Gérez ici les points de vente.</div>
 <?php
 if ($_GET['err'] == "") // SI on a pas de message d'erreur
 {
@@ -49,14 +49,14 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
         <thead>
           <tr>
             <th>#</th>
-            <th>date de creation</th>
-            <th>Nom</th>
-            <th>adresse</th>
-            <th>couleur</th>
-            <th>commentaire</th>
-            <th>Surface de vente (m²)</th>
+            <th>Date de création:</th>
+            <th>Nom:</th>
+            <th>Adresse:</th>
+            <th>Couleur:</th>
+            <th>commentaire:</th>
+            <th>Surface de vente (m²):</th>
             <th>visible</th>
-            <th>modifier</th>
+            <th>Modifier</th>
             
           </tr>
         </thead>
@@ -147,7 +147,7 @@ else // SINON
 <input type="hidden" name ="surface" id="surface" value="<?php echo $donnees['surface_vente']?>">
 <input type="hidden" name ="couleur" id="couleur" value="<?php echo substr($_POST['couleur'],1)?>">
 
-  <button  class="btn btn-warning btn-sm " >modifier</button>
+  <button  class="btn btn-warning btn-sm " >Modifier!</button>
 
 
 </form>

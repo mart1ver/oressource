@@ -4,8 +4,8 @@
                         { include "tete.php";
                         ?>
 <div class="container">
-<h1>Gestions des points de sortie hors boutique</h1> 
-  <div class="panel-heading">Gerez ici les points de sortie hors boutique.</div>
+<h1>Gestion des points de sortie hors boutique</h1> 
+  <div class="panel-heading">Gérez ici les points de sortie hors boutique.</div>
                         <?php
                         if ($_GET['err'] == "") // SI on a pas de message d'erreur
                         {
@@ -40,14 +40,14 @@
   <thead>
     <tr>
       <th>#</th>
-      <th>date de creation</th>
-      <th>Nom</th>
-      <th>adresse</th>
-      <th>couleur</th>
-      <th>commentaire</th>
-      <th>Pesée maxi.</th>
+      <th>Date de creation:</th>
+      <th>Nom:</th>
+      <th>Adresse:</th>
+      <th>Couleur:</th>
+      <th>Commentaire:</th>
+      <th>Pesée maximum:</th>
       <th>visible</th>
-      <th>modifier</th>
+      <th>Modifier</th>
     </tr>
    </thead>
    <tbody>

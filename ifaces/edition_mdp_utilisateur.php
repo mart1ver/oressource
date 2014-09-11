@@ -4,10 +4,10 @@
                     { 
                     include "tete.php" ?>
 <div class="container">
-<h1>Edition du profil utilisateur n°:</h1> 
+<h1>Édition du profil utilisateur n°:</h1> 
 <ul class="nav nav-tabs">
-  <li><a href="edition_utilisateur.php">Profil</a></li>
-  <li class="active" ><a>Mot de passe</a></li>
+  <li><a href="edition_utilisateur.php">Profil:</a></li>
+  <li class="active" ><a>Mot de passe:</a></li>
 </ul>
 <br>     
                     <?php
@@ -32,10 +32,10 @@
   <div class="row">
   <form action="../moteur/edition_mdp_utilisateur_post.php" method="post">
     <div class="col-md-2">
-      <label for="pass1">Mot de passe</label> 
+      <label for="pass1">Mot de passe:</label> 
       <input type="password"  name="pass1" id="pass1" class="form-control" required >
       <br>
-      <label for="pass2">Repetez le mot de passe</label> <input type="password"  name="pass2" id="pass2" class="form-control" required >
+      <label for="pass2">Répétez le mot de passe:</label> <input type="password"  name="pass2" id="pass2" class="form-control" required >
     </div>
   <div class="col-md-3"></div>
   <div class="col-md-3"></div>
