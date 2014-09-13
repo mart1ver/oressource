@@ -37,7 +37,7 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
 
 <div class="row">
    
-          <form action="../moteur/modification_verification_sorties_post.php?nsortie=<?php echo $_GET['ncollecte']?>" method="post">
+          <form action="../moteur/modification_verification_sorties_post.php?nsortie=<?php echo $_GET['nsortie']?>" method="post">
             <input type="hidden" name ="id" id="id" value="<?php echo $_GET['nsortie']?>">
 
   <input type="hidden" name ="date" id="date" value="<?php echo $_POST['date']?>">

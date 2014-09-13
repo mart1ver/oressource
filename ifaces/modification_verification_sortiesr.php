@@ -47,7 +47,7 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
 
 <div class="col-md-3">
 
-<label for="id_type_collecte">Type de sortie:</label>
+<label for="id_type_collecte">Nom de l'entreprise de recyclage:</label>
 <select name="id_type_sortie" id="id_type_sortie" class="form-control " required>
             <?php 
             try
@@ -61,7 +61,7 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
             die('Erreur : '.$e->getMessage());
             }
             // On affiche une liste deroulante des type de sortie visibles
-            $reponse = $bdd->query('SELECT * FROM type_sortie WHERE visible = "oui"');
+            $reponse = $bdd->query('SELECT * FROM filieres_sortie WHERE visible = "oui"');
             // On affiche chaque entree une à une
             while ($donnees = $reponse->fetch())
             {
@@ -92,7 +92,7 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
 
 
 </div>
-<h1>Pesées incluses dans cette sortie simple</h1> 
+<h1>Pesées incluses dans cette sortie</h1> 
   <!-- Table -->
       <table class="table">
         <thead>
@@ -158,7 +158,7 @@ $req->execute(array('id_sortie' => $_GET['nsortie']));
 
 <td>
 
-<form action="modification_verification_pesee_sorties.php" method="post">
+<form action="modification_verification_pesee_sortiesc.php" method="post">
 
 <input type="hidden" name ="id" id="id" value="<?php echo $donnees['id']?>">
 <input type="hidden" name ="nomtypo" id="nomtypo" value="<?php echo $donnees['nom']?>">
