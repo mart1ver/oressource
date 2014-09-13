@@ -209,7 +209,7 @@ $req2->execute(array('id_sortie' => $donnees['id']));
 
 <td>
 
-<form action="modification_verification_sortie.php?nsortie=<?php echo $donnees['id']?>" method="post">
+<form action="modification_verification_sorties.php?nsortie=<?php echo $donnees['id']?>" method="post">
 
 <input type="hidden" name ="id" id="id" value="<?php echo $donnees['id']?>">
 <input type="hidden" name ="nom" id="nom" value="<?php echo $donnees['nom']?>">
@@ -241,7 +241,8 @@ $req2->execute(array('id_sortie' => $donnees['id']));
       </div>
 </div>
       <?php
-    }
+    } else{echo 'Pas de dons sur cette periode<br><br>';
+    $req->closeCursor(); }
 }
 ?>
 <?php
@@ -373,7 +374,7 @@ $req2->execute(array('id_sortie' => $donnees['id']));
 
 <td>
 
-<form action="modification_verification_sortie.php?nsortie=<?php echo $donnees['id']?>" method="post">
+<form action="modification_verification_sortiesc.php?nsortie=<?php echo $donnees['id']?>" method="post">
 
 <input type="hidden" name ="id" id="id" value="<?php echo $donnees['id']?>">
 <input type="hidden" name ="nom" id="nom" value="<?php echo $donnees['nom']?>">
@@ -405,10 +406,10 @@ $req2->execute(array('id_sortie' => $donnees['id']));
        </div>
 </div>
       <?php
-    }
+    } else{echo 'Pas de sorties en direction des partenaires sur cette periode<br><br>';
+    $req->closeCursor(); }
 }
 ?>
-
 <?php
 try
             {
@@ -538,7 +539,7 @@ $req2->execute(array('id_sortie' => $donnees['id']));
 
 <td>
 
-<form action="modification_verification_sortie.php?nsortie=<?php echo $donnees['id']?>" method="post">
+<form action="modification_verification_sortiesr.php?nsortie=<?php echo $donnees['id']?>" method="post">
 
 <input type="hidden" name ="id" id="id" value="<?php echo $donnees['id']?>">
 <input type="hidden" name ="nom" id="nom" value="<?php echo $donnees['nom']?>">
@@ -569,7 +570,8 @@ $req2->execute(array('id_sortie' => $donnees['id']));
       </table>
       </div></div>
       <?php
-    }
+    } else{echo 'Pas de sorties recyclage sur cette periode<br><br>';
+    $req->closeCursor(); }
 }
 ?>
 <?php
@@ -702,7 +704,7 @@ $req2->execute(array('id_sortie' => $donnees['id']));
 
 <td>
 
-<form action="modification_verification_sortie.php?nsortie=<?php echo $donnees['id']?>" method="post">
+<form action="modification_verification_sortiesp.php?nsortie=<?php echo $donnees['id']?>" method="post">
 
 <input type="hidden" name ="id" id="id" value="<?php echo $donnees['id']?>">
 <input type="hidden" name ="nom" id="nom" value="<?php echo $donnees['nom']?>">
@@ -733,7 +735,8 @@ $req2->execute(array('id_sortie' => $donnees['id']));
       </table>
     </div></div>
 <?php
-    }
+    } else{echo 'Pas de poubelles evacuées sur cette periode<br><br>';
+    $req->closeCursor(); }
 }
 ?>
 

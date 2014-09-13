@@ -78,6 +78,42 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
 
 </div>
 
+<?php
+try
+            {
+            // On se connecte à MySQL
+            include('../moteur/dbconfig.php');
+            }
+            catch(Exception $e)
+            {
+            // En cas d'erreur, on affiche un message et on arrête tout
+            die('Erreur : '.$e->getMessage());
+            }
+ 
+            // Si tout va bien, on peut continuer
+
+
+ 
+            // On recupère toute la liste des filieres de sortie
+            //   $reponse = $bdd->query('SELECT * FROM grille_objets');
+          
+$req = $bdd->prepare('SELECT COUNT(id) nid
+                        FROM `collectes` 
+                       WHERE collectes.id_point_collecte = :id_point_collecte AND DATE(collectes.timestamp) = :tdate ');
+$req->execute(array('id_point_collecte' => $_GET['numero'], 'tdate' => $_GET['date']));
+
+
+           // On affiche chaque entree une à une
+           while ($donnees = $req->fetch())
+           { 
+if($donnees['nid'] > 0){ $req->closeCursor(); 
+
+
+
+
+
+            ?>
+
 
   <!-- Table -->
       <table class="table">
@@ -236,6 +272,11 @@ $req2->execute(array('id_collecte' => $donnees['id']));
         
       </table>
 
+<?php
+    } else{echo 'Pas de correspondance trouvée pour cette periode<br><br>';
+    $req->closeCursor(); }
+}
+?>
 
 
 
