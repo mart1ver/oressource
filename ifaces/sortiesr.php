@@ -48,10 +48,17 @@ function number_clear()
 }
 function tdechet_add()
 {
+
+
+
 var liste = document.getElementById("id_filiere")
+
+
+
 if (document.getElementById("number").value > 0 && document.getElementById("number").value < <?php echo $pesee_max;?>) {
    
 
+document.getElementById("appel").value = document.getElementById('1').innerText ;
 
    document.getElementById(liste.value).innerText = parseFloat(document.getElementById(liste.value).innerText) + parseFloat(document.getElementById("number").value)  ;
    document.getElementById("m"+liste.value).value = parseFloat(document.getElementById("m"+liste.value).value) + parseFloat(document.getElementById("number").value)  ;
@@ -107,7 +114,7 @@ function tdechet_clear()
  
             // Si tout va bien, on peut continuer
  
-            // On recupère tout le contenu de la table point de collecte
+            // On recupère tout le contenu de la table type dechets
             $reponse = $bdd->query('SELECT * FROM type_dechets WHERE visible = "oui"');
  
            // On affiche chaque entree une à une
@@ -240,7 +247,7 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
 
            ?>
 
-  <option value = "<?php echo$donnees['id']?>" ><?php echo$donnees['nom']?></option>
+  <option value = "<?php echo$donnees['id_type_dechet']?>" ><?php echo$donnees['nom']?></option>
  
 
      
@@ -257,7 +264,7 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
         
 
 
-
+<input type="text" id="appel" name="appel"  >
 
                     
         
@@ -298,7 +305,7 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
  
             // Si tout va bien, on peut continuer
  
-            // On recupère tout le contenu de la table point de collecte
+            // On recupère tout le contenu de la table type dechets
             $reponse = $bdd->query('SELECT * FROM type_dechets WHERE visible = "oui"');
  
            // On affiche chaque entree une à une
@@ -315,7 +322,7 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
 
 <ul class="list-group">
   <li class="list-group-item">
-   <input type="hidden" value="0" name ="<?php echo "m".$donnees['id']?>" id="<?php echo "m".$donnees['id']?>">
+   <input type="text" value="0" name ="<?php echo "m".$donnees['id']?>" id="<?php echo "m".$donnees['id']?>">
     <span class="badge" id="<?php echo$donnees['id']?>"style="background-color:<?php echo$donnees['couleur']?>">0</span>
     <?php echo$donnees['nom']?>
 

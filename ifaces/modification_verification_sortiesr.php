@@ -99,7 +99,7 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
           <tr>
             <th>#</th>
             <th>Momment de creation:</th>
-            <th>Type de dechet:</th>
+           
             <th>Masse:</th>
             <th>Modifier:</th>
             
@@ -149,7 +149,7 @@ $req->execute(array('id_sortie' => $_GET['nsortie']));
             <tr> 
             <td><?php echo $donnees['id']?></td>
             <td><?php echo $donnees['timestamp']?></td>
-            <td><span class="badge" id="cool" style="background-color:<?php echo$donnees['couleur']?>"><?php echo$donnees['nom']?></span></td>
+           
             <td><?php echo $donnees['masse']?></td>
            
 
@@ -161,7 +161,6 @@ $req->execute(array('id_sortie' => $_GET['nsortie']));
 <form action="modification_verification_pesee_sortiesc.php" method="post">
 
 <input type="hidden" name ="id" id="id" value="<?php echo $donnees['id']?>">
-<input type="hidden" name ="nomtypo" id="nomtypo" value="<?php echo $donnees['nom']?>">
 <input type="hidden" name ="ncollecte" id="ncollecte" value="<?php echo $_GET['ncollecte']?>">
 <input type="hidden" name ="masse" id="masse" value="<?php echo $donnees['masse']?>">
 <input type="hidden" name ="date" id="date" value="<?php echo $_POST['date']?>">
@@ -191,7 +190,7 @@ $req->execute(array('id_sortie' => $_GET['nsortie']));
           <tr>
             <th></th>
            
-            <th></th>
+           
             
             <th></th>
             <th></th>
