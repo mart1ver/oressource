@@ -58,7 +58,7 @@ var liste = document.getElementById("id_filiere")
 if (document.getElementById("number").value > 0 && document.getElementById("number").value < <?php echo $pesee_max;?>) {
    
 
-document.getElementById("appel").value = document.getElementById('1').innerText ;
+document.getElementById("appel").value =  ;
 
    document.getElementById(liste.value).innerText = parseFloat(document.getElementById(liste.value).innerText) + parseFloat(document.getElementById("number").value)  ;
    document.getElementById("m"+liste.value).value = parseFloat(document.getElementById("m"+liste.value).value) + parseFloat(document.getElementById("number").value)  ;
@@ -211,7 +211,7 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
   <li><a href="<?php echo  "sortiesp.php?numero=" . $_GET['numero']?>">Poubelles</a></li>
 </ul>
     <br>  
-    <p>Ajuster la masse permet de soustraire la masse des contenant vides une fois vides...</p> 
+    <p>Ajuster la masse permet de soustraire la masse des contenant vides une fois vides...  ATTENTION JE DECONE!!!</p> 
 </div>
 </div>          
 <div class="row">

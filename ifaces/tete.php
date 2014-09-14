@@ -7,12 +7,23 @@
     <meta name="author" content="">
     <link rel="shortcut icon" href="../images/favicon.ico">
     <title>Oressource</title>
+
+
 <!-- Bootstrap core CSS -->
     <link href="../css/bootstrap.min.css" rel="stylesheet">
 <!-- Custom styles for this template -->
     <link href="../css/oressource.css" rel="stylesheet">
     <link rel="stylesheet" href="../js/morris.js/morris.css">
+   
+
+
+
+      
+
+
   </head>
+
+
   <body>
 <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
       <div class="container">
@@ -144,16 +155,7 @@
                ?>  </li> </ul> </li><?php } else{}?>
 </ul>
 
-<?php if(strpos($_SESSION['niveau'], 'a') !== false)
-          { ?>
-<li><a href="adhesions.php">Adhésion</a></li>
-<?php }
-              else{}?>
-                 <?php if(strpos($_SESSION['niveau'], 'm') !== false)
-          { ?>
-<li><a href="mailling.php">Mailing</a></li>
-<?php }
-                 else{}?>
+
 <?php if(strpos($_SESSION['niveau'], 'bi') !== false)
           { ?>
 <li><a href="bilans.php">Bilans</a></li>
