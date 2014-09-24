@@ -1,4 +1,5 @@
 
+<?php session_start();?>
 <?php include "tete.php";?>
 
    <head>
@@ -14,9 +15,9 @@
  
 
       <div class="container">
-         <div class="span12">
+         
 
-          <h1>Usage Examples</h1>
+          <h1>Bilans</h1>
 
           <hr />
 
@@ -41,15 +42,15 @@
 
                   var cb = function(start, end, label) {
                     console.log(start.toISOString(), end.toISOString(), label);
-                    $('#reportrange span').html(start.format('DD, MM, YYYY') + ' - ' + end.format('DD, MM, YYYY'));
+                    $('#reportrange span').html(start.format('DD, MMMM, YYYY') + ' - ' + end.format('DD, MMMM, YYYY'));
                     //alert("Callback has fired: [" + start.format('MMMM D, YYYY') + " to " + end.format('MMMM D, YYYY') + ", label = " + label + "]");
                   }
 
                   var optionSet1 = {
-                    startDate: moment().subtract(29, 'days'),
+                    startDate: moment(),
                     endDate: moment(),
-                    minDate: '01/01/2012',
-                    maxDate: '12/31/2014',
+                    minDate: '01/01/2010',
+                    maxDate: '12/31/2020',
                     dateLimit: { days: 60 },
                     showDropdowns: true,
                     showWeekNumbers: true,
@@ -77,14 +78,14 @@
                         toLabel: 'Au',
                         customRangeLabel: 'Custom',
                         daysOfWeek: ['Lu', 'Ma', 'Me', 'Je', 'Ve', 'Sa','Di'],
-                        monthNames: ['Janvier', 'Fevrier', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Aout', 'Septembre', 'Octobere', 'Novembre', 'Decembre'],
+                        monthNames: ['Janvier', 'Fevrier', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Aout', 'Septembre', 'Octobre', 'Novembre', 'Decembre'],
                         firstDay: 1
                     }
                   };
 
                   
 
-                  $('#reportrange span').html(moment().subtract(29, 'days').format('D, MMMM ,YYYY') + ' - ' + moment().format('D, MMMM,YYYY'));
+                  $('#reportrange span').html(moment().format('D, MMMM ,YYYY') + ' - ' + moment().format('D, MMMM,YYYY'));
 
                   $('#reportrange').daterangepicker(optionSet1, cb);
 
@@ -120,6 +121,6 @@
           
 
 
-         </div>
+  
       </div>
-<?php// include "pied.php";?>
+<?php include "pied_bilan.php";?>
