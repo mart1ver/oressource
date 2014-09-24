@@ -137,7 +137,14 @@
   <?php
 
 // on affiche la periode visée
+  if($_GET['date1'] == $_GET['date2']){
+    echo" le ".$_GET['date1'];
+
+  }
+  else
+  {
   echo" du ".$_GET['date1']." au ".$_GET['date2']." :";  
+}
 //on convertit les deux dates en un format compatible avec la bdd
 
 $txt1  = $_GET['date1'];

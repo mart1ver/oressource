@@ -302,38 +302,47 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
 
   </div>
   
-  <div class="col-md-3" >
+  <div class="col-md-3" style="width: 220px;" >
 
-  <label>Clavier</label><br>
-    <div class="col-md-3" style="width: 200px;">
+
+  <div class="panel panel-info">
+        
+  <div class="panel-body"> 
+   
       <div class="row">
         <div class="input-group">
-        <input type="text" class="form-control" placeholder="Masse" id="number" name="num"  ><span class="input-group-addon">Kg.</span>
+        <input type="text" class="form-control" placeholder="Masse" id="number" name="num" style="width: 170px; margin-left:8px; " >
         </div>
       </div>
       <br>
     <div class="row">
-      <button class="btn btn-default btn-lg" onclick="number_write('1');" data-value="1">1</button>
-      <button class="btn btn-default btn-lg" onclick="number_write('2');" data-value="2">2</button>
-      <button class="btn btn-default btn-lg" onclick="number_write('3');" data-value="3">3</button>
+      <button class="btn btn-default btn-lg" onclick="number_write('1');" data-value="1" style="margin-left:8px; margin-top:8px;">1</button>
+      <button class="btn btn-default btn-lg" onclick="number_write('2');" data-value="2" style="margin-left:8px; margin-top:8px;">2</button>
+      <button class="btn btn-default btn-lg" onclick="number_write('3');" data-value="3" style="margin-left:8px; margin-top:8px;">3</button>
     </div>
     <div class="row">
-      <button class="btn btn-default btn-lg" onclick="number_write('4');" data-value="4">4</button>
-      <button class="btn btn-default btn-lg" onclick="number_write('5');" data-value="5">5</button>
-      <button class="btn btn-default btn-lg" onclick="number_write('6');" data-value="6">6</button>
+      <button class="btn btn-default btn-lg" onclick="number_write('4');" data-value="4" style="margin-left:8px; margin-top:8px;">4</button>
+      <button class="btn btn-default btn-lg" onclick="number_write('5');" data-value="5" style="margin-left:8px; margin-top:8px;">5</button>
+      <button class="btn btn-default btn-lg" onclick="number_write('6');" data-value="6" style="margin-left:8px; margin-top:8px;">6</button>
     </div>
     <div class="row">
-      <button class="btn btn-default btn-lg" onclick="number_write('7');" data-value="7">7</button>
-      <button class="btn btn-default btn-lg" onclick="number_write('8');" data-value="8">8</button>
-      <button class="btn btn-default btn-lg" onclick="number_write('9');" data-value="9">9</button>
+      <button class="btn btn-default btn-lg" onclick="number_write('7');" data-value="7" style="margin-left:8px; margin-top:8px;">7</button>
+      <button class="btn btn-default btn-lg" onclick="number_write('8');" data-value="8" style="margin-left:8px; margin-top:8px;">8</button>
+      <button class="btn btn-default btn-lg" onclick="number_write('9');" data-value="9" style="margin-left:8px; margin-top:8px;">9</button>
     </div>
     <div class="row">
-      <button class="btn btn-default btn-lg" onclick="number_clear();" data-value="C">C</button>
-      <button class="btn btn-default btn-lg" onclick="number_write('0');" data-value="0">0</button>
-      <button class="btn btn-default btn-lg" onclick="number_write('.');" data-value=",">,</button>
+      <button class="btn btn-default btn-lg" onclick="number_clear();" data-value="C" style="margin-left:8px; margin-top:8px;">C</button>
+      <button class="btn btn-default btn-lg" onclick="number_write('0');" data-value="0" style="margin-left:8px; margin-top:8px;">0</button>
+      <button class="btn btn-default btn-lg" onclick="number_write('.');" data-value="," style="margin-left:8px; margin-top:8px;">,</button>
     </div>
-</div>
+
  
+
+</div>
+</div>
+
+
+
   </div>
   </div>
 </div>
