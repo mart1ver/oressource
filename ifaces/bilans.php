@@ -37,7 +37,7 @@
             
 
                <div id="reportrange" class="pull-left" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc">
-                  <i class="glyphicon glyphicon-calendar"></i>
+                  <i class="fa fa-calendar"></i>
                   <span></span> <b class="caret"></b>
                </div>
 
@@ -129,7 +129,163 @@
   
       </div>
       <hr />
-<?php echo $_GET['date1'] ?>
+
+
+
+<div class="row">
+   <div class="col-md-3 col-md-offset-1" >
+  <?php
+
+// on affiche la periode visée
+  echo" du ".$_GET['date1']." au ".$_GET['date2']." :";  
+//on convertit les deux dates en un format compatible avec la bdd
+
+$txt1  = $_GET['date1'];
+$date1ft = DateTime::createFromFormat('d-m-Y', $txt1);
+$time_debut = $date1ft->format('Y-m-d');
+$time_debut = $time_debut." 00:00:00";
+
+$txt2  = $_GET['date2'];
+$date2ft = DateTime::createFromFormat('d-m-Y', $txt2);
+$time_fin = $date2ft->format('Y-m-d');
+$time_fin = $time_fin." 23:59:59";
+
+
+
+  ?>
+  <br>
+
+
+
+
+  
+          Masse totale collecté:  
+          <?php
+// on determine la masse totale collècté sur cete periode
+
+
+            try
+            {
+            // On se connecte à MySQL
+            include('../moteur/dbconfig.php');
+            }
+            catch(Exception $e)
+            {
+            // En cas d'erreur, on affiche un message et on arrête tout
+            die('Erreur : '.$e->getMessage());
+            }
+ 
+            // Si tout va bien, on peut continuer
+            /*
+SELECT SUM(masse),timestamp FROM pesees_collectes WHERE  `timestamp`BETWEEN '2014-09-18 00:00:00' AND '2014-09-24 23:59:59'
+            */
+ $req = $bdd->prepare("SELECT SUM(masse),timestamp FROM pesees_collectes WHERE  `timestamp` BETWEEN :du AND :au ");//SELECT `titre_affectation` FROM affectations WHERE titre_affectation = "conssomables" LIMIT 1
+$req->execute(array('du' => $time_debut,'au' => $time_fin ));
+$donnees = $req->fetch();
+     
+echo $donnees['SUM(masse)'];
+
+$req->closeCursor(); // Termine le traitement de la requête
+
+
+
+  ?>
 <br>
-<?php echo $_GET['date2'] ?>
+
+         
+
+
+
+
+
+          Nombre de ventes:
+           <?php
+// on determine le nombre de ventes sur cete periode au total
+
+
+            try
+            {
+            // On se connecte à MySQL
+            include('../moteur/dbconfig.php');
+            }
+            catch(Exception $e)
+            {
+            // En cas d'erreur, on affiche un message et on arrête tout
+            die('Erreur : '.$e->getMessage());
+            }
+ 
+            // Si tout va bien, on peut continuer
+            /*
+SELECT SUM(masse),timestamp FROM pesees_collectes WHERE  `timestamp`BETWEEN '2014-09-18 00:00:00' AND '2014-09-24 23:59:59'
+            */
+ $req = $bdd->prepare("SELECT COUNT(id),timestamp FROM ventes WHERE  `timestamp` BETWEEN :du AND :au ");//SELECT `titre_affectation` FROM affectations WHERE titre_affectation = "conssomables" LIMIT 1
+$req->execute(array('du' => $time_debut,'au' => $time_fin ));
+$donnees = $req->fetch();
+     
+echo $donnees['COUNT(id)'];
+
+$req->closeCursor(); // Termine le traitement de la requête
+
+
+
+  ?>
+<br>
+
+         
+
+
+
+
+
+          Masse évacuée hors boutique:
+           <?php
+// on determine la masse totale évacuée hors boutique sur cete periode
+
+
+            try
+            {
+            // On se connecte à MySQL
+            include('../moteur/dbconfig.php');
+            }
+            catch(Exception $e)
+            {
+            // En cas d'erreur, on affiche un message et on arrête tout
+            die('Erreur : '.$e->getMessage());
+            }
+ 
+            // Si tout va bien, on peut continuer
+            /*
+SELECT SUM(masse),timestamp FROM pesees_collectes WHERE  `timestamp`BETWEEN '2014-09-18 00:00:00' AND '2014-09-24 23:59:59'
+            */
+ $req = $bdd->prepare("SELECT SUM(masse),timestamp FROM pesees_sorties WHERE  `timestamp` BETWEEN :du AND :au ");//SELECT `titre_affectation` FROM affectations WHERE titre_affectation = "conssomables" LIMIT 1
+$req->execute(array('du' => $time_debut,'au' => $time_fin ));
+$donnees = $req->fetch();
+     
+echo $donnees['SUM(masse)'];
+
+$req->closeCursor(); // Termine le traitement de la requête
+
+
+
+  ?>
+
+          <br>
+       
+</div>
+        </div>
+
+ 
+
+
+
+
+
+
+
+
+
+
+   
+
+
 <?php include "pied_bilan.php";?>
