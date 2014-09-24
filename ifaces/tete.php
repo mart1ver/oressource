@@ -13,7 +13,7 @@
     <link href="../css/bootstrap.min.css" rel="stylesheet">
 <!-- Custom styles for this template -->
     <link href="../css/oressource.css" rel="stylesheet">
-    <link rel="stylesheet" href="../js/morris.js/morris.css">
+    <link rel="stylesheet" href="../js/morris/morris.css">
    
 
 

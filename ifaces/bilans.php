@@ -5,7 +5,8 @@
    <head>
       
       <link href="../css/bootstrap.min.css" rel="stylesheet">
-      <link href="../css/font-awesome.min.css" rel="stylesheet">
+      
+      <link href="../fonts/font-awesome/css/font-awesome.min.css" rel="stylesheet">
       <link rel="stylesheet" type="text/css" media="all" href="../css/daterangepicker-bs3.css" />
       <script type="text/javascript" src="../js/jquery-2.0.3.min.js"></script>
       <script type="text/javascript" src="../js/bootstrap.min.js"></script>
@@ -17,12 +18,15 @@
       <div class="container">
          
 
-          <h1>Bilans</h1>
+          
+<div class"row">
+  <div class="col-md-3 " >
+<h1>Bilan global</h1>
 
-          <hr />
-
-            
-
+         
+  </div>
+   <div class="col-md-4 col-md-offset-5" ><br>
+<label for="reportrange">choisisez la periode a inspecter:</label><br>
 
            
 
@@ -32,7 +36,7 @@
 
             
 
-               <div id="reportrange" class="pull-right" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc">
+               <div id="reportrange" class="pull-left" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc">
                   <i class="glyphicon glyphicon-calendar"></i>
                   <span></span> <b class="caret"></b>
                </div>
@@ -76,7 +80,7 @@
                         cancelLabel: 'Anuler',
                         fromLabel: 'Du',
                         toLabel: 'Au',
-                        customRangeLabel: 'Custom',
+                        customRangeLabel: 'Période libre',
                         daysOfWeek: ['Lu', 'Ma', 'Me', 'Je', 'Ve', 'Sa','Di'],
                         monthNames: ['Janvier', 'Fevrier', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Aout', 'Septembre', 'Octobre', 'Novembre', 'Decembre'],
                         firstDay: 1
@@ -95,8 +99,9 @@
                     console.log("apply event fired, start/end dates are " 
                       + picker.startDate.format('DD MM, YYYY') 
                       + " to " 
-                      + picker.endDate.format('DD MM, YYYY')
+                      + picker.endDate.format('DD MM, YYYY')                      
                     ); 
+                    window.location.href = "bilans.php?date1="+picker.startDate.format('DD-MM-YYYY')+"&date2="+picker.endDate.format('DD-MM-YYYY');
                   });
                   $('#reportrange').on('cancel.daterangepicker', function(ev, picker) { console.log("cancel event fired"); });
 
@@ -117,10 +122,14 @@
 
             
 
+</div>
+      </div>    
 
-          
-
-
+ 
   
       </div>
+      <hr />
+<?php echo $_GET['date1'] ?>
+<br>
+<?php echo $_GET['date2'] ?>
 <?php include "pied_bilan.php";?>
