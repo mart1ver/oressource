@@ -88,7 +88,7 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
   <div class="col-md-1"><br><button name="creer" class="btn btn-warning">Modifier</button></div>
 </form>
 <br>
-<a href="edition_types_poubelles.php">
+<a href="edition_types_contenants.php">
  <button name="creer" class="btn btn">Anuler</button>
 </a>
 </div>
