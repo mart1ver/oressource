@@ -132,19 +132,11 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
        
       
 
-<div class="row">
-  <div class="col-md-3 col-md-offset-1" >
- 
-  </div>
-   
 
-<br> 
-
-  </div>
 
 <div class="row">
 <br>
-  <div class="col-md-3 col-md-offset-1" >
+  <div class="col-md-3 col-md-offset-2" >
 
 <div class="panel panel-info">
         <div class="panel-heading">
@@ -286,9 +278,22 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
   <div class="panel-body"> 
    
       <div class="row">
-        <div class="input-group">
-        <input type="text" class="form-control" placeholder="Masse" id="number" name="num" style="width: 170px; margin-left:8px; " >
-        </div>
+      
+
+   <div class="input-group">
+      <input type="text" class="form-control" placeholder="Masse" id="number" name="num" style=" margin-left:8px; " >
+      <div class="input-group-btn">
+        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" style=" margin-right:8px; " > <span class="glyphicon glyphicon-minus"></span> <span class="caret"</span></button>
+        <ul class="dropdown-menu dropdown-menu-right" role="menu">
+          <li><a href="#">roll</a></li>
+          <li><a href="#">chariot</a></li>
+          <li><a href="#">caisse</a></li>
+                  </ul>
+      </div><!-- /btn-group -->
+    </div><!-- /input-group -->
+
+
+
       </div>
       <br>
     <div class="row">
