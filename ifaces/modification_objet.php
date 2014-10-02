@@ -36,8 +36,8 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
       <div class="panel-body">
         <div class="row">
         	<form action="../moteur/modification_objet_post.php" method="post">
-            <input type="text" name ="id" id="id" value="<?php echo $_POST['id']?>">
-            <input type="text" name ="typo" id="typo" value="<?php echo $_POST['typo']?>">
+            <input type="hidden" name ="id" id="id" value="<?php echo $_POST['id']?>">
+            <input type="hidden" name ="typo" id="typo" value="<?php echo $_POST['typo']?>">
 
   <div class="col-md-2"><label for="nom">Nom:</label> <input type="text"value ="<?php echo $_POST['nom']?>" name="nom" id="nom" class="form-control " required autofocus></div>
   <div class="col-md-3"><label for="description">Déscription:</label> <input type="text"value ="<?php echo $_POST['description']?>" name="description" id="description" class="form-control " required ></div>
