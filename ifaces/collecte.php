@@ -154,10 +154,7 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
     <h3 class="panel-title"><label>Bon d'apport:</label></h3>
   </div>
   <div class="panel-body"> 
-
-
-  
-            <?php 
+<?php 
             try
             {
             // On se connecte à MySQL
@@ -198,10 +195,9 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
 
 
 </div> 
+</div>
 
 
-
-    </div>
      </div> 
      <div class="col-md-2" >
 <div class="panel panel-info">
