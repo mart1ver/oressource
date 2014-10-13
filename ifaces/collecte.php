@@ -35,6 +35,16 @@
 
 ?>
 <script type="text/javascript">
+function submanut(x)
+          {
+            if ((document.getElementById("number").value - x) > 0 )
+            {
+            var text_box = document.getElementById("number");
+            text_box.value = text_box.value - x;
+          }
+          }
+
+
           function number_write(x)
           {
             var text_box = document.getElementById("number");
@@ -284,10 +294,42 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
       <input type="text" class="form-control" placeholder="Masse" id="number" name="num" style=" margin-left:8px; " >
       <div class="input-group-btn">
         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" style=" margin-right:8px; " > <span class="glyphicon glyphicon-minus"></span> <span class="caret"</span></button>
+        
+
+
         <ul class="dropdown-menu dropdown-menu-right" role="menu">
-          <li><a href="#">roll</a></li>
-          <li><a href="#">chariot</a></li>
-          <li><a href="#">caisse</a></li>
+        
+  <?php 
+            try
+            {
+            // On se connecte à MySQL
+            include('../moteur/dbconfig.php');
+            }
+            catch(Exception $e)
+            {
+            // En cas d'erreur, on affiche un message et on arrête tout
+            die('Erreur : '.$e->getMessage());
+            }
+            // On affiche une liste déroulante des localités visibles
+            $reponse = $bdd->query('SELECT * FROM type_contenants WHERE visible = "oui"');
+            // On affiche chaque entrée une à une
+            while ($donnees = $reponse->fetch())
+            {
+            ?>
+      <li><a href="#"  onClick="submanut('<?php echo$donnees['masse']?>');"><?php echo$donnees['nom']?></a></li>
+     
+           
+            <?php }
+            $reponse->closeCursor(); // Termine le traitement de la requête
+            ?>
+
+
+          
+                
+
+
+
+
                   </ul>
       </div><!-- /btn-group -->
     </div><!-- /input-group -->
