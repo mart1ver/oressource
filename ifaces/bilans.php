@@ -142,17 +142,17 @@
 
 
 <div class="row">
-   <div class="col-md-3 col-md-offset-1" >
-  <?php
+   <div class="col-md-8 col-md-offset-1" >
+  <span class="label label-success"> Survol global de la structure <?php
 
 // on affiche la periode visée
   if($_GET['date1'] == $_GET['date2']){
-    echo'<span class="label label-success"> le '.$_GET['date1']."</span>";
+    echo' le '.$_GET['date1'];
 
   }
   else
   {
-  echo' <span class="label label-success"> du '.$_GET['date1']." au ".$_GET['date2']." :</span>";  
+  echo' du '.$_GET['date1']." au ".$_GET['date2']." :";  
 }
 //on convertit les deux dates en un format compatible avec la bdd
 
@@ -169,12 +169,44 @@ $time_fin = $time_fin." 23:59:59";
 
 
   ?>
+  </span>
   <br>
 
 
 
+<br>
+  , nombre de point de vente : <?php
+// on determine le nombre de points de collecte
 
-  
+
+            try
+            {
+            // On se connecte à MySQL
+            include('../moteur/dbconfig.php');
+            }
+            catch(Exception $e)
+            {
+            // En cas d'erreur, on affiche un message et on arrête tout
+            die('Erreur : '.$e->getMessage());
+            }
+ 
+            // Si tout va bien, on peut continuer
+            /*
+SELECT SUM(masse),timestamp FROM pesees_collectes WHERE  `timestamp`BETWEEN '2014-09-18 00:00:00' AND '2014-09-24 23:59:59'
+            */
+ $req = $bdd->prepare("SELECT COUNT(id) FROM points_vente WHERE  `timestamp` < :au ");//SELECT `titre_affectation` FROM affectations WHERE titre_affectation = "conssomables" LIMIT 1
+$req->execute(array('au' => $time_fin ));
+$donnees = $req->fetch();
+     
+echo $donnees['COUNT(id)'];
+
+$req->closeCursor(); // Termine le traitement de la requête
+
+
+
+  ?>
+<br>
+  <span class="label label-info">
           Masse totale collecté:  
           <?php
 // on determine la masse totale collècté sur cete periode
@@ -199,20 +231,51 @@ SELECT SUM(masse),timestamp FROM pesees_collectes WHERE  `timestamp`BETWEEN '201
 $req->execute(array('du' => $time_debut,'au' => $time_fin ));
 $donnees = $req->fetch();
      
-echo $donnees['SUM(masse)'];
+echo $donnees['SUM(masse)'].' Kg.';
 
 $req->closeCursor(); // Termine le traitement de la requête
 
 
 
-  ?>
+  ?> , sur <?php
+// on determine le nombre de points de collecte
+
+
+            try
+            {
+            // On se connecte à MySQL
+            include('../moteur/dbconfig.php');
+            }
+            catch(Exception $e)
+            {
+            // En cas d'erreur, on affiche un message et on arrête tout
+            die('Erreur : '.$e->getMessage());
+            }
+ 
+            // Si tout va bien, on peut continuer
+            /*
+
+            */
+ $req = $bdd->prepare("SELECT COUNT(id) FROM points_collecte WHERE  `timestamp` < :au ");//SELECT `titre_affectation` FROM affectations WHERE titre_affectation = "conssomables" LIMIT 1
+$req->execute(array('au' => $time_fin ));
+$donnees = $req->fetch();
+     
+echo $donnees['COUNT(id)'];
+
+$req->closeCursor(); // Termine le traitement de la requête
+
+
+
+  ?> Point(s) de collecte.</span>
+<br>
+repartition par type d'objets collecté
 <br>
 
          
 
 
 
-
+<span class="label label-info">
 
           Nombre de ventes:
            <?php
@@ -244,13 +307,43 @@ $req->closeCursor(); // Termine le traitement de la requête
 
 
 
-  ?>
+  ?> , sur <?php
+// on determine le nombre de points de collecte
+
+
+            try
+            {
+            // On se connecte à MySQL
+            include('../moteur/dbconfig.php');
+            }
+            catch(Exception $e)
+            {
+            // En cas d'erreur, on affiche un message et on arrête tout
+            die('Erreur : '.$e->getMessage());
+            }
+ 
+            // Si tout va bien, on peut continuer
+            /*
+SELECT SUM(masse),timestamp FROM pesees_collectes WHERE  `timestamp`BETWEEN '2014-09-18 00:00:00' AND '2014-09-24 23:59:59'
+            */
+ $req = $bdd->prepare("SELECT COUNT(id) FROM points_sortie WHERE  `timestamp` < :au ");//SELECT `titre_affectation` FROM affectations WHERE titre_affectation = "conssomables" LIMIT 1
+$req->execute(array('au' => $time_fin ));
+$donnees = $req->fetch();
+     
+echo $donnees['COUNT(id)'];
+
+$req->closeCursor(); // Termine le traitement de la requête
+
+
+
+  ?>point(s) de sortie.</span>
 <br>
 
-         
+ repartition par type 
+<br>        
 
 
-
+<span class="label label-info">
 
 
           Masse évacuée hors boutique:
@@ -283,9 +376,10 @@ $req->closeCursor(); // Termine le traitement de la requête
 
 
 
-  ?>
-
-          <br>
+  ?> 
+</span><br>
+repartition par classe
+          <br><br>
        
 </div>
         </div>
