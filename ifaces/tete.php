@@ -158,7 +158,7 @@
 
 <?php if(strpos($_SESSION['niveau'], 'bi') !== false)
           { ?>
-<li><a href="bilans.php">Bilans</a></li>
+<li><a href=" bilans.php?date1=<?php echo date("d-m-Y")?>&date2=<?php echo date("d-m-Y")?>">Bilans</a></li>
 <?php }
               else{}?>
 <?php if(strpos($_SESSION['niveau'], 'g') !== false)

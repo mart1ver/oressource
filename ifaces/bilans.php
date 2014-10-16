@@ -20,12 +20,10 @@
 
           
 <div class"row">
-  <div class="col-md-3 " >
+  <div class="col-md-11 " >
 <h1>Bilan global</h1>
 
-         
-  </div>
-   <div class="col-md-4 col-md-offset-5" ><br>
+   <div class="col-md-4 col-md-offset-8" >
 <label for="reportrange">choisisez la periode a inspecter:</label><br>
 
            
@@ -81,7 +79,7 @@
                         fromLabel: 'Du',
                         toLabel: 'Au',
                         customRangeLabel: 'Période libre',
-                        daysOfWeek: ['Lu', 'Ma', 'Me', 'Je', 'Ve', 'Sa','Di'],
+                        daysOfWeek: ['Di','Lu', 'Ma', 'Me', 'Je', 'Ve', 'Sa'],
                         monthNames: ['Janvier', 'Fevrier', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Aout', 'Septembre', 'Octobre', 'Novembre', 'Decembre'],
                         firstDay: 1
                     }
@@ -123,6 +121,17 @@
             
 
 </div>
+<ul class="nav nav-tabs">
+  <li class="active"><a>bilan global</a></li>
+  <li><a href="<?php echo  "bilanc.php?numero=" . $_GET['numero']?>">Collectes</a></li>
+  <li><a href="<?php echo  "bilans.php?numero=" . $_GET['numero']?>">Sorties hors boutique</a></li>
+  <li><a href="<?php echo  "bilanv.php?numero=" . $_GET['numero']?>">Ventes</a></li>
+  
+</ul>
+      
+         
+  </div>
+
       </div>    
 
  
@@ -138,12 +147,12 @@
 
 // on affiche la periode visée
   if($_GET['date1'] == $_GET['date2']){
-    echo" le ".$_GET['date1'];
+    echo'<span class="label label-success"> le '.$_GET['date1']."</span>";
 
   }
   else
   {
-  echo" du ".$_GET['date1']." au ".$_GET['date2']." :";  
+  echo' <span class="label label-success"> du '.$_GET['date1']." au ".$_GET['date2']." :</span>";  
 }
 //on convertit les deux dates en un format compatible avec la bdd
 
