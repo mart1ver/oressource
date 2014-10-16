@@ -12,7 +12,7 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
 //
 //
 
-//on obtien la masse maximum suporté par la balance à ce point de sortie dans la variable $pesee_max
+//on obtient la masse maximum suportée par la balance à ce point de sortie dans la variable $pesee_max
   try
             {
             // On se connecte à MySQL
@@ -320,7 +320,7 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
           </select>
 <br>
 <input type="hidden" name ="id_point_sortie" id="id_point_sortie" value="<?php echo $_GET['numero']?>">
-           <input name ="adh" id ="adh" type="checkbox" ><label for="adh">Adhére à l'association</label> <a href="adhesions.php"  target="_blank"><span style="float:right;" class="glyphicon glyphicon-pencil"></span></a>
+           <input name ="adh" id ="adh" type="checkbox" ><label for="adh">Adhérent de l'association</label> <a href="adhesions.php"  target="_blank"><span style="float:right;" class="glyphicon glyphicon-pencil"></span></a>
 
 </div>
 </div>

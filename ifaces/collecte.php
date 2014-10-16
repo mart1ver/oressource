@@ -407,8 +407,18 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
 
 
     </div>
-    <br><br><br>
-     
+    <br>
+     <div class="panel panel-info">
+        <div class="panel-heading">
+    <h3 class="panel-title"><label>Type d'objet:</label></h3>
+  </div>
+  <div class="panel-body"> 
+
+commentaire et contenants deduits
+
+</div>
+</div>
+
     </div>
 
   
