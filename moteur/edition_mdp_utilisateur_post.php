@@ -1,7 +1,50 @@
 <?php
-//martin vert
-// Connexion à la base de données
-try
+//on va jouer avec les sessions
+session_start();
+//on obtien le pass en db (md5) dans $bddpass
+ 
+           
+
+
+            try
+            {
+            // On se connecte à MySQL
+            include('../moteur/dbconfig.php');
+            }
+            catch(Exception $e)
+            {
+            // En cas d'erreur, on affiche un message et on arrête tout
+            die('Erreur : '.$e->getMessage());
+            }
+ 
+            // Si tout va bien, on peut continuer
+            /*
+SELECT SUM(masse),timestamp FROM pesees_collectes WHERE  `timestamp`BETWEEN '2014-09-18 00:00:00' AND '2014-09-24 23:59:59'
+            */
+ $req = $bdd->prepare("SELECT pass FROM utilisateurs WHERE  id = :id ");//SELECT `titre_affectation` FROM affectations WHERE titre_affectation = "conssomables" LIMIT 1
+$req->execute(array('id' => $_SESSION['id'] ));
+$donnees = $req->fetch();
+     
+$bddpass = $donnees['pass'];
+
+$req->closeCursor(); // Termine le traitement de la requête
+
+
+
+
+
+
+// si passold = pass en bdd 
+
+if (md5($_POST['passold']) == $bddpass)
+{
+
+// et si pass = pass1 
+if ($_POST['pass1'] == $_POST['pass2'])
+{
+
+// inscription du nouveau mot de passe en bdd
+	try
 {
 include('dbconfig.php');
 }
@@ -9,16 +52,31 @@ catch(Exception $e)
 {
         die('Erreur : '.$e->getMessage());
 }
+ 
+// Insertion du post à l'aide d'une requête préparée
+// mot de passe crypté md5 
 
-// si pass = pass1 
-if ($_POST['pass1'] = $_POST['pass2'])
-{
+// Insertion du post à l'aide d'une requête préparée
+$req = $bdd->prepare('UPDATE utilisateurs SET pass = :pass WHERE id = :id');
+$req->execute(array('pass' => md5($_POST['pass1']),'id' => $_SESSION['id']));
 
-header('Location: ../ifaces/utilisateurs.php?msg=Mot de passe modifié avec succes, utilisateur'.$_POST['mail'] );	
+  $req->closeCursor();
+
+
+
+
+
+
+header('Location: ../ifaces/edition_mdp_utilisateur.php?msg=Mot de passe modifié avec succes, utilisateur: '.$_SESSION['nom']." mail: ".$_SESSION['nom']);	
 }
 else
 {
-$req->closeCursor(); // Termine le traitement de la requête puis redirige vers la page utilisateurs.php avec message d'erreur
+
 header( "Location: ../ifaces/edition_mdp_utilisateur.php?err=Veuillez inscrire deux mots de passe semblables");
+}
+}
+else
+{
+header( "Location: ../ifaces/edition_mdp_utilisateur.php?err=Mauvais mot de passe actuel");
 }
 ?>
