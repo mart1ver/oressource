@@ -202,13 +202,14 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
       </fieldset>   
 <div class="row">
     
-        <div class="col-md-5 col-md-offset-1" >
+        <div class="col-md-7 col-md-offset-1" >
 
  <ul class="nav nav-tabs">
   <li><a href="<?php echo  "sorties.php?numero=" . $_GET['numero']?>">Dons</a></li>
   <li><a href="<?php echo  "sortiesc.php?numero=" . $_GET['numero']?>">Don aux partenaires</a></li>
   <li class="active"><a>Recyclage</a></li>
   <li><a href="<?php echo  "sortiesp.php?numero=" . $_GET['numero']?>">Poubelles</a></li>
+    <li><a href="<?php echo  "sortiesd.php?numero=" . $_GET['numero']?>">Decheterie</a></li>
 </ul>
     <br>  
     <p>Ajuster la masse permet de soustraire la masse des contenant vides une fois vides...  ATTENTION JE DECONE!!!</p> 

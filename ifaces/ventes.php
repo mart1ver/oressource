@@ -141,6 +141,7 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
     Ajout!
     </button>
 
+
     <div class="col-md-3" style="width: 200px;">
     <div class="row">
     
@@ -248,7 +249,11 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
 
 
     </div>
-    <br><br><br>
+    <br>
+    <button type="button" class="btn btn-danger btn-lg" onclick="ajout();">
+    Remboursement
+    </button>
+    <br><br>
      
     </div>
   </div>

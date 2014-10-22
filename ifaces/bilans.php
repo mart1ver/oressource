@@ -87,7 +87,7 @@
 
                   
 
-                  $('#reportrange span').html(moment().format('D, MMMM ,YYYY') + ' - ' + moment().format('D, MMMM,YYYY'));
+                  $('#reportrange span').html(moment().format('D, MMMM, YYYY') + ' - ' + moment().format('D, MMMM, YYYY'));
 
                   $('#reportrange').daterangepicker(optionSet1, cb);
 
@@ -175,36 +175,7 @@ $time_fin = $time_fin." 23:59:59";
 
 
 <br>
-  , nombre de point de vente : <?php
-// on determine le nombre de points de collecte
-
-
-            try
-            {
-            // On se connecte à MySQL
-            include('../moteur/dbconfig.php');
-            }
-            catch(Exception $e)
-            {
-            // En cas d'erreur, on affiche un message et on arrête tout
-            die('Erreur : '.$e->getMessage());
-            }
  
-            // Si tout va bien, on peut continuer
-            /*
-SELECT SUM(masse),timestamp FROM pesees_collectes WHERE  `timestamp`BETWEEN '2014-09-18 00:00:00' AND '2014-09-24 23:59:59'
-            */
- $req = $bdd->prepare("SELECT COUNT(id) FROM points_vente WHERE  `timestamp` < :au ");//SELECT `titre_affectation` FROM affectations WHERE titre_affectation = "conssomables" LIMIT 1
-$req->execute(array('au' => $time_fin ));
-$donnees = $req->fetch();
-     
-echo $donnees['COUNT(id)'];
-
-$req->closeCursor(); // Termine le traitement de la requête
-
-
-
-  ?>
 <br>
   <span class="label label-info">
           Masse totale collecté:  
@@ -268,7 +239,11 @@ $req->closeCursor(); // Termine le traitement de la requête
 
   ?> Point(s) de collecte.</span>
 <br>
-repartition par type d'objets collecté
+repartition par type d'objets collecté:
+
+
+
+
 <br>
 
          
@@ -326,7 +301,7 @@ $req->closeCursor(); // Termine le traitement de la requête
             /*
 SELECT SUM(masse),timestamp FROM pesees_collectes WHERE  `timestamp`BETWEEN '2014-09-18 00:00:00' AND '2014-09-24 23:59:59'
             */
- $req = $bdd->prepare("SELECT COUNT(id) FROM points_sortie WHERE  `timestamp` < :au ");//SELECT `titre_affectation` FROM affectations WHERE titre_affectation = "conssomables" LIMIT 1
+ $req = $bdd->prepare("SELECT COUNT(id) FROM points_vente WHERE  `timestamp` < :au ");//SELECT `titre_affectation` FROM affectations WHERE titre_affectation = "conssomables" LIMIT 1
 $req->execute(array('au' => $time_fin ));
 $donnees = $req->fetch();
      
@@ -336,7 +311,7 @@ $req->closeCursor(); // Termine le traitement de la requête
 
 
 
-  ?>point(s) de sortie.</span>
+  ?> point(s) de vente.</span>
 <br>
 
  repartition par type 
@@ -376,7 +351,36 @@ $req->closeCursor(); // Termine le traitement de la requête
 
 
 
-  ?> 
+  ?>  , sur <?php
+// on determine le nombre de points de collecte
+
+
+            try
+            {
+            // On se connecte à MySQL
+            include('../moteur/dbconfig.php');
+            }
+            catch(Exception $e)
+            {
+            // En cas d'erreur, on affiche un message et on arrête tout
+            die('Erreur : '.$e->getMessage());
+            }
+ 
+            // Si tout va bien, on peut continuer
+            /*
+SELECT SUM(masse),timestamp FROM pesees_collectes WHERE  `timestamp`BETWEEN '2014-09-18 00:00:00' AND '2014-09-24 23:59:59'
+            */
+ $req = $bdd->prepare("SELECT COUNT(id) FROM points_sortie WHERE  `timestamp` < :au ");//SELECT `titre_affectation` FROM affectations WHERE titre_affectation = "conssomables" LIMIT 1
+$req->execute(array('au' => $time_fin ));
+$donnees = $req->fetch();
+     
+echo $donnees['COUNT(id)'];
+
+$req->closeCursor(); // Termine le traitement de la requête
+
+
+
+  ?> point(s) de sortie.
 </span><br>
 repartition par classe
           <br><br>
@@ -385,9 +389,6 @@ repartition par classe
         </div>
 
  
-
-
-
 
 
 
