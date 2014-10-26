@@ -34,8 +34,8 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
   <div class="col-md-2"><label for="nom">Nom:</label> <input type="text" value ="<?php echo $_POST['nom']?>" name="nom" id="nom" class="form-control " required autofocus><br>
                         <label for="prenom">Prénom:</label> <input type="text" value ="<?php echo $_POST['prenom']?>" name="prenom" id="prenom" class="form-control " required><br>
                         <label for="mail">Mail:</label> <input type="email" value ="<?php echo $_POST['mail']?>" name="mail" id="mail" class="form-control " required ><br>
-<a href="edition_mdp_admin.php">
-<button name="creer" class="btn btn btn-danger">Changer le mot de passe</button>
+<a href="edition_mdp_admin.php?id=<?php echo $_POST['id']?>&mail=<?php echo $_POST['mail']?>">
+<button name="creer" type="button" class="btn btn btn-danger">Changer le mot de passe</button>
 </a>
 
                           </div>

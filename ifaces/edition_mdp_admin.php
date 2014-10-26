@@ -4,8 +4,8 @@
                     { 
                     include "tete.php" ?>
 <div class="container">
-<h1>Édition de votre mot de passe:</h1> 
-<p>Votre E-mail est: <?php echo $_SESSION['mail'] ?>, il vous est demandé au login.</p>
+<h1>Édition du mot de passe de l'ultisateur n°:<?php echo $_GET['id']?>, <?php echo $_GET['mail']?></h1> 
+<p>L'identifiant de cet utilisateur est son adresse E-mail: <?php echo $_GET['mail']?>, elle lui est est demandé à la connexion à Oressource..</p>
 <br>     
                     <?php
                     if ($_GET['err'] == "") // SI on a pas de message d'erreur
@@ -27,15 +27,15 @@
                     ?>
 <div class="panel-body">
   <div class="row">
-  <form action="../moteur/edition_mdp_utilisateur_post.php" method="post">
+  <form action="../moteur/edition_mdp_admin_post.php" method="post">
     <div class="col-md-3 col-md-offset-2">
 <div class="panel panel-default">
   <div class="panel-body">
 
 
       
-      <label for="passold">Mot de passe actuel:</label> 
-      <input type="password"  name="passold" id="passold" class="form-control" required >
+      
+      <input type="hidden"  name="id" id="id"  value="<?php echo $_GET['id']?>">
       <br>
       <label for="pass1">Nouveau mot de passe:</label> 
       <input type="password"  name="pass1" id="pass1" class="form-control" required >
