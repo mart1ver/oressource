@@ -34,6 +34,10 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
   <div class="col-md-2"><label for="nom">Nom:</label> <input type="text" value ="<?php echo $_POST['nom']?>" name="nom" id="nom" class="form-control " required autofocus><br>
                         <label for="prenom">Prénom:</label> <input type="text" value ="<?php echo $_POST['prenom']?>" name="prenom" id="prenom" class="form-control " required><br>
                         <label for="mail">Mail:</label> <input type="email" value ="<?php echo $_POST['mail']?>" name="mail" id="mail" class="form-control " required ><br>
+<a href="edition_mdp_admin.php">
+<button name="creer" class="btn btn btn-danger">Changer le mot de passe</button>
+</a>
+
                           </div>
   <div class="col-md-3"><div class="alert alert-info"><label>Pérmissions d'accès</label> <br>
           <input type="checkbox" name="niveaua" id="niveaua" value="a" <?php if((strpos($_POST['niveau'], 'a') !== false)){ echo "checked";} ?> > Adhésions<br>

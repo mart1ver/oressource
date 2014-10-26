@@ -28,7 +28,12 @@
 <div class="panel-body">
   <div class="row">
   <form action="../moteur/edition_mdp_utilisateur_post.php" method="post">
-    <div class="col-md-2">
+    <div class="col-md-3 col-md-offset-2">
+<div class="panel panel-default">
+  <div class="panel-body">
+
+
+      
       <label for="passold">Mot de passe actuel:</label> 
       <input type="password"  name="passold" id="passold=" class="form-control" required >
       <br>
@@ -36,17 +41,17 @@
       <input type="password"  name="pass1" id="pass1" class="form-control" required >
       <br>
       <label for="pass2">Répétez le nouveau mot de passe:</label> <input type="password"  name="pass2" id="pass2" class="form-control" required >
-    </div>
-  <div class="col-md-3"></div>
-  <div class="col-md-3"></div>
-  <div class="col-md-4"><br></div>
-  </div>
-  <div class="row">
-    <div class="col-md-3 col-md-offset-3">
       <br>
-      <button name="creer" class="btn btn-default">Modifier!</button>
-    </div>
+      <button name="creer" class="btn btn-warning">Modifier!</button>
+
+
   </div>
+</div>
+
+    </div>
+  
+  </div>
+  
   </div>
   </div>
                     <?php include "pied.php" ?>

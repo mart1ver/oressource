@@ -31,8 +31,13 @@ $req->closeCursor(); // Termine le traitement de la requête
 
 
 
-
-
+// si le mot de passe actuel == le nouveau mot de passe == la verif , message fun
+if ($_POST['pass1'] == $_POST['pass2'] AND $_POST['pass2'] == $_POST['passold'])
+{
+	header('Location: ../ifaces/edition_mdp_utilisateur.php?msg='.$_SESSION['nom'].', vous venez de tenter de modifier votre mot de passe par le même mot de passe, à quoi bon? Par faute de sens dans cette operation administrative, oressource ne procedera à aucun changement.');	
+}
+else
+{
 
 // si passold = pass en bdd 
 
@@ -67,7 +72,7 @@ $req->execute(array('pass' => md5($_POST['pass1']),'id' => $_SESSION['id']));
 
 
 
-header('Location: ../ifaces/edition_mdp_utilisateur.php?msg=Mot de passe modifié avec succes, utilisateur: '.$_SESSION['nom']." mail: ".$_SESSION['nom']);	
+header('Location: ../ifaces/edition_mdp_utilisateur.php?msg=Mot de passe modifié avec succes, utilisateur: '.$_SESSION['nom']." mail: ".$_SESSION['mail']);	
 }
 else
 {
@@ -78,5 +83,6 @@ header( "Location: ../ifaces/edition_mdp_utilisateur.php?err=Veuillez inscrire d
 else
 {
 header( "Location: ../ifaces/edition_mdp_utilisateur.php?err=Mauvais mot de passe actuel");
+}
 }
 ?>
