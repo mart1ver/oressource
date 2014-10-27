@@ -41,12 +41,19 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
                         <label>Mot de passe</label> <input type="password"  name="pass1" id="pass1" class="form-control" required ><br>
                                                        Repetez le mot de passe</label> <input type="password"  name="pass2" id="pass2" class="form-control" required >
   </div>
-  <div class="col-md-3"><div class="alert alert-info"><label for="niveau">Permissions d'acces</label> <br>
-          <input type="checkbox" name="niveaua" id="niveaua" value="a"> Adhesions<br>
-          <input type="checkbox" name="niveaubi" id="niveaubi" value="bi">Bilans<br>
-          <input type="checkbox" name="niveaug" id="niveaug" value="g"> gestion<br>
-          <input type="checkbox" name="niveaum" id="niveaum" value="m"> Mails des adherents<br>
-          <input type="checkbox" name="niveaup" id="niveaup" value="p"> Prets<br><br></div>
+  <div class="col-md-4"><div class="alert alert-info"><label for="niveau">Permissions d'acces</label> <br>
+          
+          <input type="checkbox" name="niveaubi" id="niveaubi" value="bi"><label for="niveaubi">Bilans</label><br>
+          
+          <input type="checkbox" name="niveaug" id="niveaug" value="g"> <label for="niveaug">Gestion quotidienne</label><br>
+          <input type="checkbox" name="niveauh" id="niveauh" value="h"> <label for="niveauh">Recettes points de sortie et verif. formulaires</label><br>
+          <input type="checkbox" name="niveaul" id="niveaul" value="l"> <label for="niveaul">Utilisateurs</label><br>
+          <input type="checkbox" name="niveauj" id="niveauj" value="j"> <label for="niveauj">Recycleurs et convention partenaires</label><br>
+          <input type="checkbox" name="niveauk" id="niveauk" value="k"> <label for="niveauk">Configuration de Oressource</label><br>
+
+          <input type="checkbox" name="niveaua" id="niveaua" value="a"> <label for="niveaua">Adhesions</label><br>
+          <input type="checkbox" name="niveaum" id="niveaum" value="m"> <label for="niveaum">Mails des adherents</label><br>
+          <input type="checkbox" name="niveaup" id="niveaup" value="p"> <label for="niveaup">Prets</label><br><br></div>
   </div>
 <div class="col-md-3"><div class="alert alert-info"><label for="niveauc">Points de collecte:</label><br>
 <?php 

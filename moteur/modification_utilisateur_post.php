@@ -22,10 +22,10 @@ else
 {
 $req->closeCursor(); // Termine le traitement de la requête 
 }
-// si pass = pass1 
 
-	 //recuperation des autorisations simples (adh,bilans,gestion,mailing,prets) concatenés dans la variable $niveau 
-     $niveau = $_POST['niveaua'].$_POST['niveaubi'].$_POST['niveaug'].$_POST['niveaum'].$_POST['niveaup'];  
+
+   //recuperation des autorisations simples (adh,bilans,g,h,l,j,k,mailing,prets) concatenés dans la variable $niveau 
+     $niveau = $_POST['niveaua'].$_POST['niveaubi'].$_POST['niveaug'].$_POST['niveauh'].$_POST['niveaul'].$_POST['niveauj'].$_POST['niveauk'].$_POST['niveaum'].$_POST['niveaup'];  
 	 //recuperation des eventuelles autorisations liées au points de collectes à concatener avec la variable $niveau (c1,c2,c3...)
      $niveaucollecte = "";
 try

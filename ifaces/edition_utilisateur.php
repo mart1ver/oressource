@@ -39,12 +39,21 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
 </a>
 
                           </div>
-  <div class="col-md-3"><div class="alert alert-info"><label>Pérmissions d'accès</label> <br>
-          <input type="checkbox" name="niveaua" id="niveaua" value="a" <?php if((strpos($_POST['niveau'], 'a') !== false)){ echo "checked";} ?> > Adhésions<br>
-          <input type="checkbox" name="niveaubi" id="niveaubi" value="bi"<?php if((strpos($_POST['niveau'], 'bi') !== false)){ echo "checked";} ?>> Bilans<br>
-          <input type="checkbox" name="niveaug" id="niveaug" value="g"<?php if((strpos($_POST['niveau'], 'g') !== false)){ echo "checked";} ?>> Gestion<br>
-          <input type="checkbox" name="niveaum" id="niveaum" value="m"<?php if((strpos($_POST['niveau'], 'm') !== false)){ echo "checked";} ?>> Mails des adhérents<br>
-          <input type="checkbox" name="niveaup" id="niveaup" value="p"<?php if((strpos($_POST['niveau'], 'p') !== false)){ echo "checked";} ?>> Prèts<br><br></div>
+  <div class="col-md-4"><div class="alert alert-info"><label>Pérmissions d'accès</label> <br>
+          
+          <input type="checkbox" name="niveaubi" id="niveaubi" value="bi"<?php if((strpos($_POST['niveau'], 'bi') !== false)){ echo "checked";} ?>> <label for="niveaubi">Bilans</label><br>
+
+          <input type="checkbox" name="niveaug" id="niveaug" value="g"<?php if((strpos($_POST['niveau'], 'g') !== false)){ echo "checked";} ?>> <label for="niveaug">Gestion quotidienne</label><br>
+          <input type="checkbox" name="niveauh" id="niveauh" value="h"<?php if((strpos($_POST['niveau'], 'h') !== false)){ echo "checked";} ?>> <label for="niveauh">Recettes points de sortie et verif. formulaires</label><br>
+          <input type="checkbox" name="niveaul" id="niveaul" value="l"<?php if((strpos($_POST['niveau'], 'l') !== false)){ echo "checked";} ?>> <label for="niveaul">Utilisateurs</label><br>
+          <input type="checkbox" name="niveauj" id="niveauj" value="j"<?php if((strpos($_POST['niveau'], 'j') !== false)){ echo "checked";} ?>> <label for="niveauj">Recycleurs et convention partenaires</label><br>
+          <input type="checkbox" name="niveauk" id="niveauk" value="k"<?php if((strpos($_POST['niveau'], 'k') !== false)){ echo "checked";} ?>> <label for="niveauk">Configuration de Oressource</label><br>
+
+
+          <input type="checkbox" name="niveaua" id="niveaua" value="a" <?php if((strpos($_POST['niveau'], 'a') !== false)){ echo "checked";} ?> > <label for="niveaua">Adhésions</label><br>
+          <input type="checkbox" name="niveaum" id="niveaum" value="m"<?php if((strpos($_POST['niveau'], 'm') !== false)){ echo "checked";} ?>> <label for="niveaum">Mails des adhérents</label><br>
+          <input type="checkbox" name="niveaup" id="niveaup" value="p"<?php if((strpos($_POST['niveau'], 'p') !== false)){ echo "checked";} ?>> <label for="niveaup">Prèts</label><br><br></div>
+          
   <input type="hidden" name ="id" id="id" value="<?php echo $_POST['id']?>">
   </div>
 <div class="col-md-3"><div class="alert alert-info"><label for="niveauc">Points de collecte:</label><br>
