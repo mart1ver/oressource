@@ -4,10 +4,31 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
 
 
 <div class="panel-body">
+  <?php
+if ($_GET['err'] == "") // SI on a pas de message d'erreur
+{
+   echo'';
+}
 
+else // SINON 
+{
+  echo'<div class="alert alert-danger">'.$_GET['err'].'</div>';
+}
+
+
+if ($_GET['msg'] == "") // SI on a pas de message positif
+{
+   echo '';
+}
+
+else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
+{
+  echo'<div class="alert alert-success alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'.$_GET['msg'].'</div>';
+}
+?>
       <fieldset>
       <legend>
-        <?php 
+             <?php 
           // on determine le numero de la vente
         try
             {
@@ -57,47 +78,24 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
            }
               $req->closeCursor(); // Termine le traitement de la requête
         ?>
-      </legend> 
-        <?php
-if ($_GET['err'] == "") // SI on a pas de message d'erreur
-{
-   echo'';
-}
-
-else // SINON 
-{
-  echo'<div class="alert alert-danger">'.$_GET['err'].'</div>';
-}
-
-
-if ($_GET['msg'] == "") // SI on a pas de message positif
-{
-   echo '';
-}
-
-else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
-{
-  echo'<div class="alert alert-success alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'.$_GET['msg'].'</div>';
-}
-?>  
+      </legend>   
       </fieldset>     
     <div class="row">
-
    	<br>
       <div class="col-md-2 col-md-offset-2" style="width: 330px;" >
      
 
-       <div class="panel panel-info">
+       <div class="panel panel-danger">
         <div class="panel-heading">
-    <label class="panel-title">Ticket de caisse:</label>
+    <label class="panel-title">Remboursement:</label>
     <span class ="badge" id="recaptotal"  style="float:right;">0€
     </span>
   </div>
   <div class="panel-body">
      
-<form action="../moteur/vente_post.php" id="formulaire" method="post">
+<form action="../moteur/remboursement_post.php" id="formulaire" method="post">
 <ul id="liste" class="list-group">
-   <li class="list-group-item">Vente: <?php echo $_GET['numero']?>#<?php echo $numero_vente?>, date: <?php echo date("d-m-Y") ?><br><?php echo $nom_pv;?><br><?php echo $adresse_pv;?>,<br>siret: <?php echo$_SESSION['siret'];?></li>
+   <li class="list-group-item">Reference: <?php echo $_GET['numero']?>#<?php echo $numero_vente?>, date: <?php echo date("d-m-Y") ?><br><?php echo $nom_pv;?><br><?php echo $adresse_pv;?>,<br>siret: <?php echo$_SESSION['siret'];?></li>
   
 </ul>
  <ul class="list-group" id="total">
@@ -112,8 +110,8 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
 <input type="hidden" name ="id_point_vente" id="id_point_vente" value="<?php echo $_GET['numero']?>">
     </form>
  <ul id="boutons" class="list-group">
-        <button class="btn btn-primary btn-lg" onclick="encaisse();">Encaisser</button>
-        <button class="btn btn-primary btn-lg" type="button"   align="center"><span class="glyphicon glyphicon-print"></span></button>
+        <button class="btn btn-danger btn-lg" onclick="encaisse();">Rembourser!</button>
+        <button class="btn btn-danger btn-lg" type="button"  align="center"><span class="glyphicon glyphicon-print"></span></button>
         <button class="btn btn-warning btn-lg" onClick="javascript:window.location.reload()"><span class="glyphicon glyphicon-refresh"></button>
   </ul>
 
@@ -125,7 +123,7 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
    
     <div class="col-md-3" style="width: 220px;">
  
-      <div class="panel panel-info">
+      <div class="panel panel-danger">
         <div class="panel-heading">
     <h3 class="panel-title"id="nom_objet"><label>Objet:</label></h3>
   </div>
@@ -181,7 +179,7 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
 
  
 <div class="col-md-3" >
-<div class="panel panel-info">
+<div class="panel panel-danger">
         <div class="panel-heading">
     <h3 class="panel-title"><label>Type d'objet:</label></h3>
   </div>
@@ -252,12 +250,12 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
 
     </div>
     <br>
-    <a href="remboursement.php?numero=<?php echo $_GET['numero']?>&nom=<?php echo $_GET['nom']?>&adresse=<?php echo $_GET['adresse']?>"> 
-    <button type="button"  class="btn btn-danger pull-right" >
-    Remboursement
+    <a href="ventes.php?numero=<?php echo $_GET['numero']?>&nom=<?php echo $_GET['nom']?>&adresse=<?php echo $_GET['adresse']?>"> 
+    <button type="button"  class="btn btn-default pull-right" >
+    Retour aux ventes
     </button>
     <a>
-    <br><br>
+       <br><br>
      
     </div>
   </div>
@@ -350,6 +348,7 @@ function edite(nom,prix,id_type_objet,id_objet) {
 function encaisse() {
   if (parseInt(document.getElementById('nlignes').value) >= 1) 
           { 
+            
           document.getElementById("formulaire").submit();
           }
                     }
