@@ -1,6 +1,6 @@
 <?php session_start(); ?>
 <?php
-    if (isset($_SESSION['id']) AND (strpos($_SESSION['niveau'], 'g') !== false))
+   if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 'g') !== false))
       { include "tete.php" ?>
     <div class="container">
         <h1>Gestion de la typologie et de la masse des différentes poubelles mises à disposition de la structure par la ville</h1> 
@@ -174,5 +174,5 @@ else // SINON
 <?php include "pied.php" ?>
 <?php }
     else
-    header('Location: ../') ;
+ header('Location: ../moteur/destroy.php') ;
 ?>

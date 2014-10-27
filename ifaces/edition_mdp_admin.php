@@ -1,6 +1,6 @@
                     <?php session_start(); ?>
                     <?php
-                    if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource")
+                    if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource"AND (strpos($_SESSION['niveau'], 'l') !== false))
                     { 
                     include "tete.php" ?>
 <div class="container">
@@ -57,7 +57,7 @@
                     <?php include "pied.php" ?>
                     <?php }
                         else
-                        header('Location: ../') ;
+                         header('Location: ../moteur/destroy.php') ;
                     ?>
        
       

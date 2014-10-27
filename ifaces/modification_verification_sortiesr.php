@@ -1,7 +1,7 @@
 <?php session_start(); ?>
 
 <?php
-    if (isset($_SESSION['id']) AND (strpos($_SESSION['niveau'], 'g') !== false))
+ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 'h') !== false))
       {  include "tete.php" ?>
    <div class="container">
         <h1>Modifier la sortie numero <?php echo $_GET['nsortie']?></h1> 
@@ -208,7 +208,7 @@ $req->execute(array('id_sortie' => $_GET['nsortie']));
 <?php include "pied.php" ?>
 <?php }
     else
-    header('Location: ../') ;
+   header('Location: ../moteur/destroy.php') ;
 ?>
        
       

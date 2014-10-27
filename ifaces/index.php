@@ -256,6 +256,6 @@ GROUP BY nom');
 <?php include "pied.php" ?>
 <?php }
     else{
-     include "login.php"; }?>
+     header('Location: login.php') ; }?>
 
 

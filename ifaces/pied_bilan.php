@@ -10,6 +10,7 @@
        <?php
       }
     else{ 
+      header('Location: ../moteur/destroy.php') ;
 }?>
 </p>
 </footer> 

@@ -1,6 +1,6 @@
 <?php session_start(); ?>
 <?php
-    if (isset($_SESSION['id']) AND (strpos($_SESSION['niveau'], 'g') !== false))
+    if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 'k') !== false))
       { include "tete.php" ?>
     <div class="container">
         <h1>Gestions des points de collecte</h1> 
@@ -103,5 +103,5 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
 <?php include "pied.php" ?>
 <?php }
     else
-    header('Location: ../') ;
+    header('Location: ../moteur/destroy.php') ;
 ?>

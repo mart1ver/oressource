@@ -1,5 +1,6 @@
-<?php session_start(); ?>
-<?php include "tete.php" ?>
+<?php session_start(); 
+if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 'a') !== false))
+      { include "tete.php" ?>
 <div class="row">
         <div class="col-md-4" >
         </div>  
@@ -35,3 +36,7 @@
         </div>
       </div>
       <?php include "pied.php" ?>
+      <?php }
+    else
+    header('Location: ../moteur/destroy.php') ;
+?>

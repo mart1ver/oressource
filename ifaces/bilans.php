@@ -1,6 +1,7 @@
 
-<?php session_start();?>
-<?php include "tete.php";?>
+<?php session_start();
+if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 'bi') !== false))
+      { include "tete.php";?>
 
    <head>
       
@@ -400,3 +401,7 @@ repartition par classe
 
 
 <?php include "pied_bilan.php";?>
+<?php }
+    else
+    header('Location: ../moteur/destroy.php') ;
+?>
