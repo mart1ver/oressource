@@ -463,6 +463,15 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
 
 
     </div>
+    <br>
+    <div class="panel panel-info">
+       
+  <div class="panel-body"> 
+
+ <input type="text" class="form-control" name="commentaire" id="commentaire" placeholder="Commentaire">
+
+</div>
+</div>
   </div>
         </div>
 

@@ -64,6 +64,15 @@ function submanut(x)
              document.getElementById("najout").value = parseInt(document.getElementById("najout").value)+1;
           }
           }
+
+function encaisse() {
+  if (parseInt(document.getElementById('najout').value) >= 1) 
+          { 
+            document.getElementById('comm').value = document.getElementById('commentaire').value
+          document.getElementById("formulaire").submit();
+          }
+                    }
+
           function tdechet_clear()
           {
                       <?php 
@@ -150,7 +159,7 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
 
 <div class="panel panel-info">
         <div class="panel-heading">
-          <form action="../moteur/collecte_post.php" method="post">
+          <form action="../moteur/collecte_post.php" method="post" id="formulaire">
     <h3 class="panel-title"><label>Bon d'apport:</label></h3>
   </div>
   <div class="panel-body"> 
@@ -186,7 +195,8 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
             ?>
     </ul>
     <input type="hidden" value="0" name ="najout" id="najout">
-  <button class="btn btn-primary btn-lg">C'EST PESÉ!</button>
+    <input type="hidden" id="comm" name="comm"><br>
+  <button class="btn btn-primary btn-lg" onclick="encaisse();">C'EST PESÉ!</button>
 
 <button class="btn btn-primary btn-lg"  align="center"><span class="glyphicon glyphicon-print"></span></button>
         <button class="btn btn-warning btn-lg" onclick="tdechet_clear();"><span class="glyphicon glyphicon-refresh"></button>
@@ -409,12 +419,10 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
     </div>
     <br>
      <div class="panel panel-info">
-        <div class="panel-heading">
-    <h3 class="panel-title"><label>Type d'objet:</label></h3>
-  </div>
+       
   <div class="panel-body"> 
 
-commentaire et contenants deduits
+ <input type="text" class="form-control" name="commentaire" id="commentaire" placeholder="Commentaire">
 
 </div>
 </div>

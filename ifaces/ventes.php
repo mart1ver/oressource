@@ -102,7 +102,7 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
 </ul>
  <ul class="list-group" id="total">
 </ul>
-<input type="text" class="form-control" placeholder="commentaire" id="comm" name="comm"><br>
+<input type="hidden" id="comm" name="comm"><br>
 <input name ="adh" id ="adh" type="checkbox" ><label for="adh">Adhére à l'association</label> <a href="adhesions.php"  target="_blank"><span style="float:right;" class="glyphicon glyphicon-pencil"></span></a>
 <br>
 <input type="hidden"  id="nlignes" name="nlignes">
@@ -252,6 +252,15 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
 
     </div>
     <br>
+    <div class="panel panel-info">
+       
+  <div class="panel-body"> 
+
+ <input type="text" class="form-control" name="commentaire" id="commentaire" placeholder="Commentaire">
+
+</div>
+</div>
+<br>
     <a href="remboursement.php?numero=<?php echo $_GET['numero']?>&nom=<?php echo $_GET['nom']?>&adresse=<?php echo $_GET['adresse']?>"> 
     <button type="button"  class="btn btn-danger pull-right" >
     Remboursement
@@ -350,6 +359,7 @@ function edite(nom,prix,id_type_objet,id_objet) {
 function encaisse() {
   if (parseInt(document.getElementById('nlignes').value) >= 1) 
           { 
+            document.getElementById('comm').value = document.getElementById('commentaire').value
           document.getElementById("formulaire").submit();
           }
                     }
