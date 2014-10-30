@@ -123,10 +123,10 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
 
 </div>
 <ul class="nav nav-tabs">
-  <li class="active"><a>bilan global</a></li>
-  <li><a href="<?php echo  "bilanc.php?date1=" . $_GET['date1'].'&date2='.$_GET['date2']?>">Collectes</a></li>
+  <li ><a href="<?php echo  "bilans.php?date1=" . $_GET['date1'].'&date2='.$_GET['date2']?>">bilan global</a></li>
+  <li><a href="<?php echo  "bilanc.php?date1=" . $_GET['date1'].'&date2='.$_GET['date2']?>" >Collectes</a></li>
   <li><a href="<?php echo  "bilanhb.php?date1=" . $_GET['date1'].'&date2='.$_GET['date2']?>">Sorties hors boutique</a></li>
-  <li><a href="<?php echo  "bilanv.php?date1=" . $_GET['date1'].'&date2='.$_GET['date2']?>">Ventes</a></li>
+  <li class="active"><a>Ventes</a></li>
   
 </ul>
       
