@@ -385,7 +385,10 @@ $req->closeCursor(); // Termine le traitement de la requête
 </span><br>
 repartition par classe
           <br><br>
-       
+       <br>
+       <a href="../moteur/export_bilans.php">
+        <button type="button" class="btn btn-default btn-xs">exporter ces données (.csv) </button>
+      </a>
 </div>
         </div>
 
