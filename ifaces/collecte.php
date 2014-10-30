@@ -73,6 +73,20 @@ function encaisse() {
           }
                     }
 
+
+ function printdiv(divID)
+    {
+      var headstr = "<html><head><title></title></head><body><small><?php echo $_SESSION['structure'] ?><br><?php echo $_SESSION['adresse'] ?><br><label>Bon d'apport:</label><br>type d'apport";
+      var footstr = "<br>Masse totale :</body></small>";
+      var newstr = document.all.item(divID).innerHTML;
+      var oldstr = document.body.innerHTML;
+      document.body.innerHTML = headstr+newstr+footstr;
+      window.print();
+      document.body.innerHTML = oldstr;
+      return false;
+    }
+
+
           function tdechet_clear()
           {
                       <?php 
@@ -156,13 +170,13 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
 <div class="row">
 <br>
   <div class="col-md-3 col-md-offset-2" >
-
-<div class="panel panel-info">
+<!--startprint-->
+<div class="panel panel-info" >
         <div class="panel-heading">
           <form action="../moteur/collecte_post.php" method="post" id="formulaire">
     <h3 class="panel-title"><label>Bon d'apport:</label></h3>
   </div>
-  <div class="panel-body"> 
+  <div class="panel-body" id="divID"> 
 <?php 
             try
             {
@@ -183,7 +197,7 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
             while ($donnees = $reponse->fetch())
             {
             ?>
-    <ul class="list-group">
+    <ul class="list-group" >
       <li class="list-group-item">
         <input type="hidden" value="0" name ="<?php echo$donnees['id']?>" id="<?php echo$donnees['id']?>">
         
@@ -195,19 +209,25 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
             ?>
     </ul>
     <input type="hidden" value="0" name ="najout" id="najout">
-    <input type="hidden" id="comm" name="comm"><br>
-  <button class="btn btn-primary btn-lg" onclick="encaisse();">C'EST PESÉ!</button>
-
-<button class="btn btn-primary btn-lg"  align="center"><span class="glyphicon glyphicon-print"></span></button>
-        <button class="btn btn-warning btn-lg" onclick="tdechet_clear();"><span class="glyphicon glyphicon-refresh"></button>
-
-  <br>
+    <input type="hidden" id="comm" name="comm">
+  
+  
 
 
 </div> 
 </div>
+<!--endprint-->
+ <div class="panel panel-info">
+       
+  <div class="panel-body"> 
 
+ <button class="btn btn-primary btn-lg" onclick="encaisse();">C'EST PESÉ!</button>
 
+<button class="btn btn-primary btn-lg"  align="center"  onclick="printdiv('divID');" value=" Print " ><span class="glyphicon glyphicon-print"></span></button>
+        <button class="btn btn-warning btn-lg" onclick="tdechet_clear();"><span class="glyphicon glyphicon-refresh"></button>
+
+</div>
+</div>
      </div> 
      <div class="col-md-2" >
 <div class="panel panel-info">
