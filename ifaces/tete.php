@@ -176,7 +176,6 @@ if(strpos($_SESSION['niveau'], 'bi') !== false)
 <?php } ?>
 <?php if(strpos($_SESSION['niveau'], 'h') !== false)//gestion verif
           { ?>
-          <li><a href="recettes_filieres_sortie.php">Recettes points de sortie</a></li>
           <li><a href="verif_collecte.php?numero=1&date=<?php echo date("Y-m-d")?>">Verifier les collectes</a></li>
           <li><a href="verif_sorties.php?numero=1&date=<?php echo date("Y-m-d")?>">Verifier les sorties hors boutique</a></li>
           <li><a href="verif_vente.php?numero=1&date=<?php echo date("Y-m-d")?>">Verifier les ventes</a></li>

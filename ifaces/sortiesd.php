@@ -179,7 +179,7 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
 	  
         <div class="col-md-3 col-md-offset-1" >
         	
-          <form action="../moteur/sortiesc_post.php" method="post">
+          <form action="../moteur/sortiesd_post.php" method="post">
         
           <input type="hidden" name ="id_point_sortie" id="id_point_sortie" value="<?php echo $_GET['numero']?>">
         </div>  
