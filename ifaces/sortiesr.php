@@ -219,8 +219,7 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
   <li><a href="<?php echo  "sortiesp.php?numero=" . $_GET['numero']?>">Poubelles</a></li>
     <li><a href="<?php echo  "sortiesd.php?numero=" . $_GET['numero']?>">Decheterie</a></li>
 </ul>
-    <br>  
-    <p>Ajuster la masse permet de soustraire la masse des contenant vides une fois vides... </p> 
+    
 </div>
 </div>          
 <div class="row">
@@ -228,64 +227,14 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
         <div class="col-md-3 col-md-offset-1" >
         	
           <form action="../moteur/sortiesr_post.php" method="post" ONSUBMIT="EnableControl(true)">
-         <label for="id_filiere">Nom de l'entrprise de recyclage</label>  
-          <select name ="sel_filiere" id ="sel_filiere" class="form-control " autofocus required>
-
-
-<?php 
-          
-            try
-            {
-            // On se connecte à MySQL
-            include('../moteur/dbconfig.php');
-            }
-            catch(Exception $e)
-            {
-            // En cas d'erreur, on affiche un message et on arrête tout
-            die('Erreur : '.$e->getMessage());
-            }
- 
-            // Si tout va bien, on peut continuer
- 
-            // On recupère tout le contenu de la table point de collecte
-            $reponse = $bdd->query('SELECT filieres_sortie.id ,filieres_sortie.nom , filieres_sortie.id_type_dechet, type_dechets.nom AS type_dechet
-
-FROM filieres_sortie , type_dechets
-
-WHERE filieres_sortie.visible = "oui" AND filieres_sortie.id_type_dechet = type_dechets.id');
- 
-           // On affiche chaque entree une à une
-           while ($donnees = $reponse->fetch())
-           {
-
-           ?>
-
-  <option value = "<?php echo$donnees['id']?>|<?php echo$donnees['id_type_dechet']?>|<?php echo$donnees['type_dechet']?>" ><?php echo$donnees['nom']?></option>
- 
-
-     
-              
-            
-             
-   
-              <?php }
-              $reponse->closeCursor(); // Termine le traitement de la requête
-                ?>
-
-
-
         
-
+        
+         
+<br>
 <input type="hidden" id="id_filiere" name="id_filiere">
 <input type="hidden" id="id_type_dechet" name="id_type_dechet">
 <input type="hidden" id="type_dechet" name="type_dechet">
 
-                    
-        
-          </select>
-        
-         
-<br>
           <input type="hidden" name ="id_point_sortie" id="id_point_sortie" value="<?php echo $_GET['numero']?>">
         </div>  
         <div class="col-md-4" >
@@ -298,8 +247,12 @@ WHERE filieres_sortie.visible = "oui" AND filieres_sortie.id_type_dechet = type_
       <div class="row">
       	<br>
         <div class="col-md-3 col-md-offset-1" >
-        
-<label>bon de sortie hors boutique:</label>
+           <div class="panel panel-info">
+        <div class="panel-heading">           
+    <h3 class="panel-title"><label>bon de sortie hors boutique:</label></h3>
+  </div>
+  <div class="panel-body"> 
+
 
 
 
@@ -361,21 +314,75 @@ WHERE filieres_sortie.visible = "oui" AND filieres_sortie.id_type_dechet = type_
            
         <br>
 
-  
+  </div> 
+</div>
 
         </div> 
-         <div class="col-md-1" >
-         	<label>Ajustez la masse:</label><br>
-           <button class="btn btn-default " onclick="tdechet_add();" ><span class="glyphicon glyphicon-plus"></span></button> 
-
+         <div class="col-md-3" >
+           <div class="panel panel-info">
+        <div class="panel-heading">
+    <h3 class="panel-title"><label for="id_filiere">Nom de l'entrprise de recyclage</label></h3>
+  </div>
+  <div class="panel-body"> 
            
-           </div> 
+
+          <select name ="sel_filiere" id ="sel_filiere" class="form-control " autofocus required>
+
+
+<?php 
           
+            try
+            {
+            // On se connecte à MySQL
+            include('../moteur/dbconfig.php');
+            }
+            catch(Exception $e)
+            {
+            // En cas d'erreur, on affiche un message et on arrête tout
+            die('Erreur : '.$e->getMessage());
+            }
+ 
+            // Si tout va bien, on peut continuer
+ 
+            // On recupère tout le contenu de la table point de collecte
+            $reponse = $bdd->query('SELECT filieres_sortie.id ,filieres_sortie.nom , filieres_sortie.id_type_dechet, type_dechets.nom AS type_dechet
+
+FROM filieres_sortie , type_dechets
+
+WHERE filieres_sortie.visible = "oui" AND filieres_sortie.id_type_dechet = type_dechets.id');
+ 
+           // On affiche chaque entree une à une
+           while ($donnees = $reponse->fetch())
+           {
+
+           ?>
+
+  <option value = "<?php echo$donnees['id']?>|<?php echo$donnees['id_type_dechet']?>|<?php echo$donnees['type_dechet']?>" ><?php echo$donnees['nom']?></option>
+ 
+
+     
+              
+            
+             
+   
+              <?php }
+              $reponse->closeCursor(); // Termine le traitement de la requête
+                ?>
 
 
-<div class="col-md-3" >
-          <label>Clavier</label><br>
-       <div class="col-md-3" style="width: 220px;" >
+
+        
+
+                    
+        
+          </select>
+        </div>
+      </div>
+      <br>
+
+
+
+  <div class="col-md-3" style="width: 220px;" >
 
 
   <div class="panel panel-info">
@@ -462,6 +469,27 @@ WHERE filieres_sortie.visible = "oui" AND filieres_sortie.id_type_dechet = type_
 
 
   </div>
+
+         	
+
+           
+           </div> 
+          
+
+
+<div class="col-md-2"  style="width: 200px;" >
+        
+        <div class="panel panel-info">
+        <div class="panel-heading">
+    <h3 class="panel-title"><label>Ajouter la pesée</label></h3>
+  </div>
+  <div class="panel-body" style:"text-align:center"> 
+
+  
+           <button class="btn btn-default " onclick="tdechet_add();" style="width:130px;height:130px;" ><span class="glyphicon glyphicon-plus"></span></button> 
+
+</div>
+</div>
         </div>
 
 
