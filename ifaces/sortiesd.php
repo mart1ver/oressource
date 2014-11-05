@@ -3,7 +3,7 @@
 if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 's'.$_GET['numero']) !== false))
       {
 //Oressource 2014, formulaire de sorties hors boutique
-//Simple formulaire de saisie des matieres d'ouevres sortantes de la structure. (poubelles)
+//Simple formulaire de saisie des matieres d'ouevres sortantes de la structure. (structures partenaires, conventiionnées)
 //Doit etre fonctionnel avec un ecran tactille.
 //Du javascript permet l'interactivité du keypad et des boutons centraux avec le bon de collecte 
 //
@@ -33,31 +33,32 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
             $reponse->closeCursor(); // Termine le traitement de la requête        
   ?>
 <script type="text/javascript">
+function submanut(x)
+          {
+            if ((document.getElementById("number").value - x) > 0 )
+            {
+            var text_box = document.getElementById("number");
+            text_box.value = text_box.value - x;
+          }
+          }
 function number_write(x)
 {
-    var text_box = document.getElementById("number");
-  
-   
- text_box.value = text_box.value + x;
-  
+  var text_box = document.getElementById("number");
+  text_box.value = text_box.value + x;
 }
-
 function number_clear()
 {
-    document.getElementById("number").value = "";
+  document.getElementById("number").value = "";
 }
 function tdechet_write(y,z)
-{
-
-if (document.getElementById("number").value-parseFloat(document.getElementById("m"+y).value)  > 0 && document.getElementById("number").value < <?php echo $pesee_max;?>) 
-{
-    document.getElementById(y).innerText = (parseFloat(document.getElementById(y).innerText) + parseFloat(document.getElementById("number").value))-parseFloat(document.getElementById("m"+y).value)  ;
-     document.getElementById(z).value = parseFloat(document.getElementById(z).value) + parseFloat(document.getElementById("number").value)-parseFloat(document.getElementById("m"+y).value)  ;
-    document.getElementById("number").value = "";  
-}
-
-
-}
+ {
+          if (document.getElementById("number").value > 0 && document.getElementById("number").value < <?php echo $pesee_max;?>) 
+          {
+             document.getElementById(y).innerText = parseFloat(document.getElementById(y).innerText) + parseFloat(document.getElementById("number").value)  ;
+              document.getElementById(z).value = parseFloat(document.getElementById(z).value) + parseFloat(document.getElementById("number").value)  ;
+             document.getElementById("number").value = "";  
+          }
+          }
 function tdechet_clear()
 {
 <?php 
@@ -75,8 +76,8 @@ function tdechet_clear()
  
             // Si tout va bien, on peut continuer
  
-            // On recupère tout le contenu de la table types_poubelles
-            $reponse = $bdd->query('SELECT * FROM types_poubelles');
+            // On recupère tout le contenu de la table point de collecte
+            $reponse = $bdd->query('SELECT * FROM type_dechets WHERE visible = "oui"');
  
            // On affiche chaque entree une à une
            while ($donnees = $reponse->fetch())
@@ -84,7 +85,7 @@ function tdechet_clear()
 
            ?>
     document.getElementById('<?php echo$donnees['nom']?>').innerText = "0"  ;
-    document.getElementById(<?php echo$donnees['id']?>).value = "0" ;
+    document.getElementById(<?php echo$donnees['id']?>).value = "0" ; 
 <?php }
 
               $reponse->closeCursor(); // Termine le traitement de la requête
@@ -131,7 +132,7 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
  
             // Si tout va bien, on peut continuer
  
-            // On recupère tout le contenu de la table points_sortie
+            // On recupère tout le contenu de la table point de collecte
           
             $req = $bdd->prepare("SELECT * FROM points_sortie WHERE id = :id ");
             $req->execute(array('id' => $_GET['numero']));
@@ -147,7 +148,7 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
              
    
                }
-              $req->closeCursor(); // Termine le traitement de la requête
+              $reponse->closeCursor(); // Termine le traitement de la requête
                 ?>
 
 
@@ -166,24 +167,21 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
 
  <ul class="nav nav-tabs">
   <li><a href="<?php echo  "sorties.php?numero=" . $_GET['numero']?>">Dons</a></li>
-  <li><a href="<?php echo  "sortiesc.php?numero=" . $_GET['numero']?>">Don aux partenaires</a></li>
+  <li><a href="<?php echo  "sortiesd.php?numero=" . $_GET['numero']?>">Don aux partenaires</a></li>
   <li><a href="<?php echo  "sortiesr.php?numero=" . $_GET['numero']?>">Recyclage</a></li>
-  <li class="active"><a>Poubelles</a></li>
-  <li><a href="<?php echo  "sortiesd.php?numero=" . $_GET['numero']?>">Decheterie</a></li>
+  <li><a href="<?php echo  "sortiesp.php?numero=" . $_GET['numero']?>">Poubelles</a></li>
+  <li class="active"><a>Decheterie</a></li>
 </ul>
     <br>   
 </div>
 </div>          
 <div class="row">
 	  
-        <div class="col-md-4 col-md-offset-1" >
+        <div class="col-md-3 col-md-offset-1" >
         	
-          <form action="../moteur/sortiesp_post.php" method="post">
-              <input type="hidden" name ="id_point_sortie" id="id_point_sortie" value="<?php echo $_GET['numero']?>">
-       
-         
-<br>
-          
+          <form action="../moteur/sortiesc_post.php" method="post">
+        
+          <input type="hidden" name ="id_point_sortie" id="id_point_sortie" value="<?php echo $_GET['numero']?>">
         </div>  
         <div class="col-md-4" >
           
@@ -195,11 +193,15 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
       <div class="row">
       	<br>
         <div class="col-md-3 col-md-offset-1" >
-      <div class="panel panel-info">
-        <div class="panel-heading">           
-    <h3 class="panel-title"><label>bon de sortie poubelles:</label></h3>
+        
+
+
+<div class="panel panel-info">
+        <div class="panel-heading">
+    <h3 class="panel-title"><label>bon de sortie dechetterie:</label></h3>
   </div>
-  <div class="panel-body">    
+  <div class="panel-body"> 
+
 
 
 
@@ -221,7 +223,7 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
             // Si tout va bien, on peut continuer
  
             // On recupère tout le contenu de la table point de collecte
-            $reponse = $bdd->query('SELECT * FROM types_poubelles WHERE visible = "oui"');
+            $reponse = $bdd->query('SELECT * FROM type_dechets WHERE visible = "oui"');
  
            // On affiche chaque entree une à une
            while ($donnees = $reponse->fetch())
@@ -238,7 +240,7 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
 <ul class="list-group">
   <li class="list-group-item">
     <input type="hidden" value="0" name ="<?php echo$donnees['id']?>" id="<?php echo$donnees['id']?>">
-    <span class="badge" id="<?php echo$donnees['nom']?>"style="background-color:<?php echo$donnees['couleur']?>">0</span>
+    <span class="badge" id="<?php echo$donnees['nom']?>" style="background-color:<?php echo$donnees['couleur']?>">0</span>
     <?php echo$donnees['nom']?>
 
   </li>
@@ -266,10 +268,10 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
 
 
         </div> 
-         <div class="col-md-2">
-          <p>La masse de chaque bac est automatiquement déduite.</p>  
-         <br>
-         <br>
+         <div class="col-md-2" >
+           
+
+<br><br>
 
    <div class="col-md-3" style="width: 220px;" >
 
@@ -282,8 +284,47 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
       
 
    <div class="input-group">
-      <input type="text" class="form-control" placeholder="Masse" id="number" name="num" style=" margin-left:8px; " size="12">
-      
+      <input type="text" class="form-control" placeholder="Masse" id="number" name="num" style=" margin-left:8px; " >
+      <div class="input-group-btn">
+        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" style=" margin-right:8px; " > <span class="glyphicon glyphicon-minus"></span> <span class="caret"</span></button>
+        
+
+
+        <ul class="dropdown-menu dropdown-menu-right" role="menu">
+        
+  <?php 
+            try
+            {
+            // On se connecte à MySQL
+            include('../moteur/dbconfig.php');
+            }
+            catch(Exception $e)
+            {
+            // En cas d'erreur, on affiche un message et on arrête tout
+            die('Erreur : '.$e->getMessage());
+            }
+            // On affiche une liste déroulante des localités visibles
+            $reponse = $bdd->query('SELECT * FROM type_contenants WHERE visible = "oui"');
+            // On affiche chaque entrée une à une
+            while ($donnees = $reponse->fetch())
+            {
+            ?>
+      <li><a href="#"  onClick="submanut('<?php echo$donnees['masse']?>');"><?php echo$donnees['nom']?></a></li>
+     
+           
+            <?php }
+            $reponse->closeCursor(); // Termine le traitement de la requête
+            ?>
+
+
+          
+                
+
+
+
+
+                  </ul>
+      </div><!-- /btn-group -->
     </div><!-- /input-group -->
 
 
@@ -319,24 +360,24 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
 
 
   </div>
-
+ 
          	 </div> 
+         
+
+
+<div class="col-md-3" >
+          
+
+<div class="row" >
+<div class="panel panel-info">
+        <div class="panel-heading">
+    <h3 class="panel-title"><label>Type d'objet:</label></h3>
+  </div>
+  <div class="panel-body"> 
       
 
 
-<div class="col-md-2" >
-
-
-
- <div class="panel panel-info">
-        <div class="panel-heading">           
-    <h3 class="panel-title"><label>types de bacs de sortie poubelles:</label></h3>
-  </div>
-  <div class="panel-body">    
-
-          
-           <?php 
-          
+            <?php 
             try
             {
             // On se connecte à MySQL
@@ -347,31 +388,28 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
             // En cas d'erreur, on affiche un message et on arrête tout
             die('Erreur : '.$e->getMessage());
             }
- 
-            // Si tout va bien, on peut continuer
- 
             // On recupère tout le contenu de la table point de collecte
-            $reponse = $bdd->query('SELECT * FROM types_poubelles WHERE visible = "oui" ');
+            $reponse = $bdd->query('SELECT * FROM type_dechets WHERE visible = "oui"');
  
            // On affiche chaque entree une à une
            while ($donnees = $reponse->fetch())
            {
-
            ?>
-    
-            
-            <input type="hidden" name ="m<?php echo $donnees['nom']?>" id="m<?php echo $donnees['nom']?>" value="<?php echo $donnees['masse_bac']?>">
-            <button class="btn btn-default btn-sm" onclick="tdechet_write('<?php echo$donnees['nom']?>','<?php echo$donnees['id']?>');" ><span class="badge" id="cool" style="background-color:<?php echo$donnees['couleur']?>"><?php echo$donnees['nom']?></span>
-            </button> 
-           <br><br>
+      <div class="btn-group">
+      <button class="btn btn-default" style="margin-left:8px; margin-top:16px;" onclick="tdechet_write('<?php echo$donnees['nom']?>','<?php echo$donnees['id']?>');" ><span class="badge" id="cool" style="background-color:<?php echo$donnees['couleur']?>"><?php echo$donnees['nom']?></span>
+ </button>
+      
+    </div>
    
-              <?php }
-              $reponse->closeCursor(); // Termine le traitement de la requête
+                <?php }
+                $reponse->closeCursor(); // Termine le traitement de la requête
                 ?>
+    </div> 
 
-              </div>
-              </div>
 
+
+    </div>
+  </div>
 
 
         </div>
