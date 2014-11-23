@@ -193,18 +193,20 @@ if(strpos($_SESSION['niveau'], 'bi') !== false)
           <li><a href="edition_conventions_sortie.php">Conventions avec les partenaires</a></li>
              <li class="divider"></li>
 <?php } ?> 
-<?php if(strpos($_SESSION['niveau'], 'k') !== false)//recycleur et conventions de sortie
+<?php if(strpos($_SESSION['niveau'], 'k') !== false)//configuration de oressource
           { ?>
 
           <li><a href="edition_types_sortie.php">Types de sorties hors boutique</a></li>
           <li><a href="types_collecte.php">Types de collectes</a></li>
           <li class="divider"></li>
-          <li><a href="types_dechets.php">Types de déchet collectés</a></li>       
+          <li><a href="types_dechets.php">Types d'objets collectés</a></li>
+          <li><a href="types_dechets_evac.php">Types de déchets evacués</a></li>       
           <li class="divider"></li>
           <li><a href="edition_points_collecte.php">Points de collecte</a></li>
           <li><a href="edition_points_sorties.php">Points de sortie hors boutique</a></li>
           <li><a href="edition_points_vente.php">Points de vente</a></li>
           <li class="divider"></li>
+          <li><a href="moyens_paiment.php">Moyens de paiment</a></li>
           <li><a href="edition_localites.php">Localités</a></li>
           <li><a href="edition_description.php">Déscription de la structure</a></li>
 <?php } ?>
