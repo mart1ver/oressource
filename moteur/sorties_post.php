@@ -18,8 +18,8 @@ if(isset($_POST['adh']))
         die('Erreur : '.$e->getMessage());
 }
 // Insertion de la collecte (sans les pesées) l'aide d'une requête préparée
-	$req = $bdd->prepare('INSERT INTO sorties (id_type_sortie,  adherent, classe, id_point_sortie) VALUES(?, ?, ?, ?)');
-	$req->execute(array($_POST['type_sortie'],$adh,  "sorties" , $_POST['id_point_sortie']));
+	$req = $bdd->prepare('INSERT INTO sorties (id_type_sortie,  adherent, classe, id_point_sortie, commentaire) VALUES(?, ?, ?, ?, ?)');
+	$req->execute(array($_POST['type_sortie'],$adh,  "sorties" , $_POST['id_point_sortie'], $_POST['commentaire']));
   $id_sortie = $bdd->lastInsertId();
     $req->closeCursor();
 

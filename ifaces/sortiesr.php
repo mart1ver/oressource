@@ -125,7 +125,10 @@ function tdechet_clear()
 }
 
 
-
+function recocom()
+{
+  document.getElementById("commentaire").value = document.getElementById("commentaireini").value;
+}
 
 function submanut(x)
           {
@@ -213,11 +216,11 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
         <div class="col-md-7 col-md-offset-1" >
 
  <ul class="nav nav-tabs">
-  <li><a href="<?php echo  "sorties.php?numero=" . $_GET['numero']?>">Dons</a></li>
+  <li><a href="<?php echo  "sortiesp.php?numero=" . $_GET['numero']?>">Poubelles</a></li>
   <li><a href="<?php echo  "sortiesc.php?numero=" . $_GET['numero']?>">Don aux partenaires</a></li>
   <li class="active"><a>Recyclage</a></li>
-  <li><a href="<?php echo  "sortiesp.php?numero=" . $_GET['numero']?>">Poubelles</a></li>
-    <li><a href="<?php echo  "sortiesd.php?numero=" . $_GET['numero']?>">Decheterie</a></li>
+  <li><a href="<?php echo  "sorties.php?numero=" . $_GET['numero']?>">Dons</a></li>
+  <li><a href="<?php echo  "sortiesd.php?numero=" . $_GET['numero']?>">Decheterie</a></li>
 </ul>
     
 </div>
@@ -234,6 +237,7 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
 <input type="hidden" id="id_filiere" name="id_filiere">
 <input type="hidden" id="id_type_dechet" name="id_type_dechet">
 <input type="hidden" id="type_dechet" name="type_dechet">
+<input type="hidden" name="commentaire" id="commentaire" >
 
           <input type="hidden" name ="id_point_sortie" id="id_point_sortie" value="<?php echo $_GET['numero']?>">
         </div>  
@@ -376,12 +380,14 @@ WHERE filieres_sortie.visible = "oui" AND filieres_sortie.id_type_dechet = type_
                     
         
           </select>
-        </div>
-      </div>
-      <br>
+    <br>   
 
+  <input type="text" class="form-control" name="commentaireini" id="commentaireini" placeholder="Commentaire" onchange="recocom()">
 
+</div>
+</div>
 
+<br>
   <div class="col-md-3" style="width: 220px;" >
 
 
@@ -490,6 +496,8 @@ WHERE filieres_sortie.visible = "oui" AND filieres_sortie.id_type_dechet = type_
 
 </div>
 </div>
+
+
         </div>
 
 

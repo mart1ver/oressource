@@ -106,7 +106,7 @@
       if(strpos($_SESSION['niveau'], 's'.$donnees['id']) !== false AND $donnees['visible'] == "oui")
           { ?>
           <li>
-              <a href="<?php echo  "sorties.php?numero=" . $donnees['id']. "&nom=" . $donnees['nom']. "&adresse=".$donnees['adresse']; ?>">
+              <a href="<?php echo  "sortiesc.php?numero=" . $donnees['id']. "&nom=" . $donnees['nom']. "&adresse=".$donnees['adresse']; ?>">
                <?php echo $donnees['nom']; ?> 
               </a>
           </li>

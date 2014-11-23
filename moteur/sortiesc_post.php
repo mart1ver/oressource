@@ -10,8 +10,8 @@
         die('Erreur : '.$e->getMessage());
 }
 // Insertion de la collecte (sans les pesées) l'aide d'une requête préparée
-	$req = $bdd->prepare('INSERT INTO sorties (id_convention, classe, id_point_sortie) VALUES(?, ?, ?)');
-	$req->execute(array($_POST['id_convention'], "sortiesc", $_POST['id_point_sortie']));
+	$req = $bdd->prepare('INSERT INTO sorties (id_convention, classe, id_point_sortie, commentaire) VALUES(?, ?, ?, ?)');
+	$req->execute(array($_POST['id_convention'], "sortiesc", $_POST['id_point_sortie'], $_POST['commentaire']));
   $id_sortie = $bdd->lastInsertId();
     $req->closeCursor();
 

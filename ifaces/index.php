@@ -26,12 +26,12 @@
           <p><a class="btn btn-default" href="#" role="button">Détails &raquo;</a></p>
         </div>
         <div class="col-md-4">
-          <h2>Collecté ce mois-ci:</h2>
+          <h2>Vendu aujourd'hui:*</h2>
           <p><div id="graphm" style="height: 180px;"></div></p>
           <p><a class="btn btn-default" href="#" role="button">Détails &raquo;</a></p>
        </div>
         <div class="col-md-4">
-          <h2>Collecté cette année:</h2>
+          <h2>Evacué aujourd'hui:*</h2>
           <p><div id="grapha" style="height: 180px;"></div></p>
           <p><a class="btn btn-default" href="#" role="button">Détails &raquo;</a></p>
         </div>

@@ -166,11 +166,11 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
         <div class="col-md-7 col-md-offset-1" >
 
  <ul class="nav nav-tabs">
-  <li><a href="<?php echo  "sorties.php?numero=" . $_GET['numero']?>">Dons</a></li>
+  <li><a href="<?php echo  "sortiesp.php?numero=" . $_GET['numero']?>">Poubelles</a></li>
   <li class="active"><a>Don aux partenaires</a></li>
   <li><a href="<?php echo  "sortiesr.php?numero=" . $_GET['numero']?>">Recyclage</a></li>
-  <li><a href="<?php echo  "sortiesp.php?numero=" . $_GET['numero']?>">Poubelles</a></li>
-    <li><a href="<?php echo  "sortiesd.php?numero=" . $_GET['numero']?>">Decheterie</a></li>
+  <li><a href="<?php echo  "sorties.php?numero=" . $_GET['numero']?>">Dons</a></li>
+  <li><a href="<?php echo  "sortiesd.php?numero=" . $_GET['numero']?>">Decheterie</a></li>
 </ul>
     <br>   
 </div>
@@ -327,11 +327,16 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
         
           </select>
 
+<br>
+
+
+ <input type="text" class="form-control" name="commentaire" id="commentaire" placeholder="Commentaire">
+</form>
 
 </div>
 </div>
-</form>
-<br><br>
+
+<br>
 
    <div class="col-md-3" style="width: 220px;" >
 

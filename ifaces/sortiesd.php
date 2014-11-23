@@ -50,6 +50,12 @@ function number_clear()
 {
   document.getElementById("number").value = "";
 }
+
+
+function recocom()
+{
+  document.getElementById("commentaire").value = document.getElementById("commentaireini").value;
+}
 function tdechet_write(y,z)
  {
           if (document.getElementById("number").value > 0 && document.getElementById("number").value < <?php echo $pesee_max;?>) 
@@ -166,10 +172,10 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
         <div class="col-md-7 col-md-offset-1" >
 
  <ul class="nav nav-tabs">
-  <li><a href="<?php echo  "sorties.php?numero=" . $_GET['numero']?>">Dons</a></li>
-  <li><a href="<?php echo  "sortiesd.php?numero=" . $_GET['numero']?>">Don aux partenaires</a></li>
-  <li><a href="<?php echo  "sortiesr.php?numero=" . $_GET['numero']?>">Recyclage</a></li>
   <li><a href="<?php echo  "sortiesp.php?numero=" . $_GET['numero']?>">Poubelles</a></li>
+  <li><a href="<?php echo  "sortiesc.php?numero=" . $_GET['numero']?>">Don aux partenaires</a></li>
+  <li><a href="<?php echo  "sortiesr.php?numero=" . $_GET['numero']?>">Recyclage</a></li>
+  <li><a href="<?php echo  "sorties.php?numero=" . $_GET['numero']?>">Dons</a></li>
   <li class="active"><a>Decheterie</a></li>
 </ul>
     <br>   
@@ -182,6 +188,7 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
           <form action="../moteur/sortiesd_post.php" method="post">
         
           <input type="hidden" name ="id_point_sortie" id="id_point_sortie" value="<?php echo $_GET['numero']?>">
+          <input type="hidden" name="commentaire" id="commentaire" >
         </div>  
         <div class="col-md-4" >
           
@@ -409,6 +416,14 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
 
 
     </div>
+    <div class="panel panel-info">
+       
+  <div class="panel-body"> 
+
+ <input type="text" class="form-control" name="commentaireini" id="commentaireini" placeholder="Commentaire" onchange="recocom()">
+
+</div>
+</div>
   </div>
 
 
