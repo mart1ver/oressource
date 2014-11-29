@@ -17,10 +17,10 @@
       </div>
     </div>
 
-    <div class="container">
+    <div class="container" id="actualise">
       <!-- Example row of columns -->
       <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-4" >
           <h2>Collecté aujourd'hui:</h2>
           <p><div id="graphj" style="height: 180px;"></div></p>
           <p><a class="btn btn-default" href="#" role="button">Détails &raquo;</a></p>
@@ -248,12 +248,29 @@ GROUP BY nom');
     ],
     formatter: function (x) { return x + " Kg."}
     });
+var temps_reload = 240
+for (var i = 1; i <= temps_reload; i++) {
+    var tick = function(i) {
+        return function() {
+            
+            if (i == temps_reload) {
+              window.location.reload();
+   
+}
+        }
+
+    };
+    setTimeout(tick(i), 500 * i);
+
+}
+
 </script>
   
 
 
 
 <?php include "pied.php" ?>
+
 <?php }
     else{
      header('Location: login.php') ; }?>

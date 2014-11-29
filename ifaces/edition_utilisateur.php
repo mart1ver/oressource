@@ -1,6 +1,9 @@
 <?php session_start(); 
      if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 'l') !== false))
       {  include "tete.php" ?>
+
+
+
     <div class="container">
         <h1>Edition du profil utilisateur n°:<?php echo $_POST['id']?>, <?php echo $_POST['mail']?></h1> 
          
@@ -167,6 +170,7 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
   
 
 <?php include "pied.php" ?>
+
 <?php }
     else
     header('Location: ../moteur/destroy.php') ;
