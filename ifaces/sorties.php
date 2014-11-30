@@ -34,6 +34,24 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
             $reponse->closeCursor(); // Termine le traitement de la requête        
   ?>
 <script type="text/javascript">
+function encaisse() {
+  if (parseInt(document.getElementById('najout').value) >= 1) 
+          { 
+         
+          document.getElementById("formulaire").submit();
+          }
+        }
+function printdiv(divID)
+    {
+      var headstr = "<html><head><title></title></head><body><small><?php echo $_SESSION['structure'] ?><br><?php echo $_SESSION['adresse'] ?><br><label>Bon de sortie hors boutique.</label><br>type d'apport";
+      var footstr = "<br>Masse totale :</body></small>";
+      var newstr = document.all.item(divID).innerHTML;
+      var oldstr = document.body.innerHTML;
+      document.body.innerHTML = headstr+newstr+footstr;
+      window.print();
+      document.body.innerHTML = oldstr;
+      return false;
+    }
 function submanut(x)
           {
             if ((document.getElementById("number").value - x) > 0 )
@@ -58,6 +76,7 @@ function tdechet_write(y,z)
              document.getElementById(y).innerText = parseFloat(document.getElementById(y).innerText) + parseFloat(document.getElementById("number").value)  ;
               document.getElementById(z).value = parseFloat(document.getElementById(z).value) + parseFloat(document.getElementById("number").value)  ;
              document.getElementById("number").value = "";  
+              document.getElementById("najout").value = parseInt(document.getElementById("najout").value)+1;
           }
           }
 function tdechet_clear()
@@ -179,7 +198,7 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
 </div>          
 <div class="row">
 	  <div class="col-md-3 col-md-offset-1" >  	
-          <form action="../moteur/sorties_post.php" method="post">
+          <form action="../moteur/sorties_post.php" method="post" id="formulaire">
           
         </div>  
         <div class="col-md-4" >
@@ -197,8 +216,8 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
           <form action="../moteur/collecte_post.php" method="post">
     <h3 class="panel-title"><label>bon de sortie hors boutique:</label></h3>
   </div>
-  <div class="panel-body"> 
-        
+  <div class="panel-body" id="divID"> 
+
 
 
 
@@ -237,6 +256,7 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
 <ul class="list-group">
   <li class="list-group-item">
     <input type="hidden" value="0" name ="<?php echo$donnees['id']?>" id="<?php echo$donnees['id']?>">
+     <input type="hidden" value="0" name ="najout" id="najout">
     <span class="badge" id="<?php echo$donnees['nom']?>" style="background-color:<?php echo$donnees['couleur']?>">0</span>
     <?php echo$donnees['nom']?>
 
@@ -253,11 +273,58 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
               $reponse->closeCursor(); // Termine le traitement de la requête
                 ?>
 
-</ul>
-  <button class="btn btn-primary btn-lg">c'est pesé!</button>
-  <button class="btn btn-primary btn-lg"  align="center"><span class="glyphicon glyphicon-print"></span></button>
-        <button class="btn btn-warning btn-lg" onclick="tdechet_clear();"><span class="glyphicon glyphicon-refresh"></button>
 
+                <?php 
+          
+            try
+            {
+            // On se connecte à MySQL
+            include('../moteur/dbconfig.php');
+            }
+            catch(Exception $e)
+            {
+            // En cas d'erreur, on affiche un message et on arrête tout
+            die('Erreur : '.$e->getMessage());
+            }
+ 
+            // Si tout va bien, on peut continuer
+ 
+            // On recupère tout le contenu de la table point de collecte
+            $reponse = $bdd->query('SELECT * FROM type_dechets_evac WHERE visible = "oui"');
+ 
+           // On affiche chaque entree une à une
+           while ($donnees = $reponse->fetch())
+           {
+
+           ?>
+    
+            
+
+
+
+
+
+
+  <li class="list-group-item">
+    <input type="hidden" value="0" name ="<?php echo "d".$donnees['id']?>" id="<?php echo "d".$donnees['id']?>">
+    <span class="badge" id="<?php echo "d".$donnees['nom']?>" style="background-color:<?php echo$donnees['couleur']?>">0</span>
+    <?php echo$donnees['nom']?>
+
+  </li>
+
+
+
+
+
+
+   
+              <?php }
+
+              $reponse->closeCursor(); // Termine le traitement de la requête
+                ?>
+
+</ul>
+  
             
            
         <br>
@@ -420,7 +487,7 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
 
 
 <div class="col-md-3" >
-         
+          
 
 <div class="row" >
 <div class="panel panel-info">
@@ -463,9 +530,54 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
 
 
     </div>
-    <br>
-  
   </div>
+
+<div class="row" >
+<div class="panel panel-info">
+        <div class="panel-heading">
+    <h3 class="panel-title"><label>Materiaux et dechets:</label></h3>
+  </div>
+  <div class="panel-body"> 
+      
+
+
+            <?php 
+            try
+            {
+            // On se connecte à MySQL
+            include('../moteur/dbconfig.php');
+            }
+            catch(Exception $e)
+            {
+            // En cas d'erreur, on affiche un message et on arrête tout
+            die('Erreur : '.$e->getMessage());
+            }
+            // On recupère tout le contenu de la table point de collecte
+            $reponse = $bdd->query('SELECT * FROM type_dechets_evac WHERE visible = "oui"');
+ 
+           // On affiche chaque entree une à une
+           while ($donnees = $reponse->fetch())
+           {
+           ?>
+      <div class="btn-group">
+      <button class="btn btn-default" style="margin-left:8px; margin-top:16px;" onclick="tdechet_write('<?php echo"d".$donnees['nom']?>','<?php echo "d".$donnees['id']?>');" ><span class="badge" id="cool" style="background-color:<?php echo$donnees['couleur']?>"><?php echo$donnees['nom']?></span>
+ </button>
+      
+    </div>
+   
+                <?php }
+                $reponse->closeCursor(); // Termine le traitement de la requête
+                ?>
+    </div> 
+
+
+
+    </div>
+  </div>
+<button class="btn btn-primary btn-lg" onclick="encaisse();">C'EST PESÉ!</button>
+
+<button class="btn btn-primary btn-lg"  align="center"  onclick="printdiv('divID');" value=" Print " ><span class="glyphicon glyphicon-print"></span></button>
+        <button class="btn btn-warning btn-lg" onclick="tdechet_clear();"><span class="glyphicon glyphicon-refresh"></button>
         </div>
 
 

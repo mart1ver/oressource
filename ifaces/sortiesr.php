@@ -47,13 +47,18 @@ function printdiv(divID)
 
 function number_write(x)
 {
-   document.getElementById("najout").value = parseInt(document.getElementById("najout").value)+1;
+
   var text_box = document.getElementById("number");
   
    
  text_box.value = text_box.value + x;
   
 }
+
+
+
+
+
 
 
 function number_clear()
@@ -67,6 +72,7 @@ function tdechet_add()
 {
    if (document.getElementById("number").value > 0 && document.getElementById("number").value < <?php echo $pesee_max;?>) 
           {
+             document.getElementById("najout").value = parseInt(document.getElementById("najout").value)+1;
 var ref = document.getElementById("sel_filiere").value;
  tabref = ref.split('|')
 
@@ -399,7 +405,7 @@ WHERE filieres_sortie.visible = "oui" AND filieres_sortie.id_type_dechet_evac = 
     <br>   
 
   <input type="text" class="form-control" name="commentaireini" id="commentaireini" placeholder="Commentaire" onchange="recocom()">
-
+</form>
 </div>
 </div>
 
@@ -523,7 +529,7 @@ WHERE filieres_sortie.visible = "oui" AND filieres_sortie.id_type_dechet_evac = 
 
 
 
-<button class="btn btn-primary btn-lg"  onclick="encaisse();">c'est pesé!</button></form>
+<button class="btn btn-primary btn-lg"  onclick="encaisse();">c'est pesé!</button>
 <button class="btn btn-primary btn-lg"  align="center"  onclick="printdiv('divID');" value=" Print " ><span class="glyphicon glyphicon-print"></span></button>
         <button class="btn btn-warning btn-lg" onclick="tdechet_clear();"><span class="glyphicon glyphicon-refresh"></button>
       </div>

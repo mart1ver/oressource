@@ -33,6 +33,24 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
             $reponse->closeCursor(); // Termine le traitement de la requête        
   ?>
 <script type="text/javascript">
+function encaisse() {
+  if (parseInt(document.getElementById('najout').value) >= 1) 
+          { 
+         
+          document.getElementById("formulaire").submit();
+          }
+        }
+function printdiv(divID)
+    {
+      var headstr = "<html><head><title></title></head><body><small><?php echo $_SESSION['structure'] ?><br><?php echo $_SESSION['adresse'] ?><br><label>Bon de sortie hors boutique.</label><br>type d'apport";
+      var footstr = "<br>Masse totale :</body></small>";
+      var newstr = document.all.item(divID).innerHTML;
+      var oldstr = document.body.innerHTML;
+      document.body.innerHTML = headstr+newstr+footstr;
+      window.print();
+      document.body.innerHTML = oldstr;
+      return false;
+    }
 function number_write(x)
 {
     var text_box = document.getElementById("number");
@@ -51,6 +69,7 @@ function tdechet_write(y,z)
 
 if (document.getElementById("number").value-parseFloat(document.getElementById("m"+y).value)  > 0 && document.getElementById("number").value < <?php echo $pesee_max;?>) 
 {
+  document.getElementById("najout").value = parseInt(document.getElementById("najout").value)+1;
     document.getElementById(y).innerText = (parseFloat(document.getElementById(y).innerText) + parseFloat(document.getElementById("number").value))-parseFloat(document.getElementById("m"+y).value)  ;
      document.getElementById(z).value = parseFloat(document.getElementById(z).value) + parseFloat(document.getElementById("number").value)-parseFloat(document.getElementById("m"+y).value)  ;
     document.getElementById("number").value = "";  
@@ -171,15 +190,16 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
   <li><a href="<?php echo  "sorties.php?numero=" . $_GET['numero']?>">Dons</a></li> 
   <li><a href="<?php echo  "sortiesd.php?numero=" . $_GET['numero']?>">Decheterie</a></li>
 </ul>
-    <br>   
+    
 </div>
 </div>          
 <div class="row">
 	  
         <div class="col-md-4 col-md-offset-1" >
         	
-          <form action="../moteur/sortiesp_post.php" method="post">
+          <form action="../moteur/sortiesp_post.php" method="post" id="formulaire">
               <input type="hidden" name ="id_point_sortie" id="id_point_sortie" value="<?php echo $_GET['numero']?>">
+               <input type="hidden" value="0" name ="najout" id="najout">
        
          
 <br>
@@ -199,7 +219,7 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
         <div class="panel-heading">           
     <h3 class="panel-title"><label>bon de sortie poubelles:</label></h3>
   </div>
-  <div class="panel-body">    
+  <div class="panel-body" id="divID">    
 
 
 
@@ -254,10 +274,8 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
               $reponse->closeCursor(); // Termine le traitement de la requête
                 ?>
 
-</ul>
- <button class="btn btn-primary btn-lg">c'est pesé!</button></form>
-  <button class="btn btn-primary btn-lg"  align="center"><span class="glyphicon glyphicon-print"></span></button>
-        <button class="btn btn-warning btn-lg" onclick="tdechet_clear();"><span class="glyphicon glyphicon-refresh"></button>
+</ul></form>
+ 
 
            
         <br>
@@ -324,7 +342,7 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
       
 
 
-<div class="col-md-2" >
+<div class="col-md-3" >
 
 
 
@@ -361,9 +379,9 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
     
             
             <input type="hidden" name ="m<?php echo $donnees['nom']?>" id="m<?php echo $donnees['nom']?>" value="<?php echo $donnees['masse_bac']?>">
-            <button class="btn btn-default btn-sm" onclick="tdechet_write('<?php echo$donnees['nom']?>','<?php echo$donnees['id']?>');" ><span class="badge" id="cool" style="background-color:<?php echo$donnees['couleur']?>"><?php echo$donnees['nom']?></span>
+            <button class="btn btn-default btn-sm" style="margin-left:8px; margin-top:16px;" onclick="tdechet_write('<?php echo$donnees['nom']?>','<?php echo$donnees['id']?>');" ><span class="badge" id="cool" style="background-color:<?php echo$donnees['couleur']?>"><?php echo$donnees['nom']?></span>
             </button> 
-           <br><br>
+          
    
               <?php }
               $reponse->closeCursor(); // Termine le traitement de la requête
@@ -371,7 +389,18 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
 
               </div>
               </div>
+<div class="row">
+  <br>&nbsp;&nbsp;&nbsp;&nbsp;
 
+
+
+
+
+
+<button class="btn btn-primary btn-lg"  onclick="encaisse();">c'est pesé!</button>
+<button class="btn btn-primary btn-lg"  align="center"  onclick="printdiv('divID');" value=" Print " ><span class="glyphicon glyphicon-print"></span></button>
+        <button class="btn btn-warning btn-lg" onclick="tdechet_clear();"><span class="glyphicon glyphicon-refresh"></button>
+      </div>
 
 
         </div>
