@@ -26,7 +26,7 @@
 <?php 
 if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 'bi') !== false))
       { ?>
-          <p><a class="btn btn-default" href="#" role="button">Détails &raquo;</a></p>
+          <p><a href=" bilanc.php?date1=<?php echo date("d-m-Y")?>&date2=<?php echo date("d-m-Y")?>" class="btn btn-default"  role="button">Détails &raquo;</a></p>
 <?php } ?>
 
         </div>
@@ -36,7 +36,7 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
 <?php
           if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 'bi') !== false))
       { ?>
-          <p><a class="btn btn-default" href="#" role="button">Détails &raquo;</a></p>
+          <p><a class="btn btn-default" href=" bilanhb.php?date1=<?php echo date("d-m-Y")?>&date2=<?php echo date("d-m-Y")?>" role="button">Détails &raquo;</a></p>
           <?php } ?>
        </div>
         <div class="col-md-4">
@@ -45,7 +45,7 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
           <?php
 if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 'bi') !== false))
       { ?>
-          <p><a class="btn btn-default" href="#" role="button">Détails &raquo;</a></p>
+          <p><a class="btn btn-default" href=" bilanv.php?date1=<?php echo date("d-m-Y")?>&date2=<?php echo date("d-m-Y")?>" role="button">Détails &raquo;</a></p>
           <?php } ?>
         </div>
       </div>

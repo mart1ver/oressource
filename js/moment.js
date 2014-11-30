@@ -795,7 +795,7 @@
             }
         },
 
-        _months : 'Janvier_Fevrier_Mars_Avril_Mai_Juin_Juillet_Aout_Septembre_Octobre_Novembre_Decembre'.split('_'),
+        _months : 'Janvier_Fevrier_Mars_Avril_Mai_Juin_Juillet_Aout_Sept._Oct._Nov._Dec.'.split('_'),
         months : function (m) {
             return this._months[m.month()];
         },
