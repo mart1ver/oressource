@@ -255,6 +255,66 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
     <div class="panel panel-info">
        
   <div class="panel-body"> 
+<label>Moyen de paiement:</label>
+<br>
+
+
+
+
+<div class="btn-group" data-toggle="buttons">
+
+ <?php 
+            try
+            {
+            // On se connecte à MySQL
+            include('../moteur/dbconfig.php');
+            }
+            catch(Exception $e)
+            {
+            // En cas d'erreur, on affiche un message et on arrête tout
+            die('Erreur : '.$e->getMessage());
+            }
+            // On recupère tout le contenu de la table point de collecte
+            $reponse = $bdd->query('SELECT * FROM moyens_paiement WHERE visible = "oui"');
+ 
+           // On affiche chaque entree une à une
+           while ($donnees = $reponse->fetch())
+           {
+           ?>
+      
+      
+
+<label class="btn btn-primary active">
+    <input type="radio" name="paiement" id="paiement<?php echo$donnees['id']?>" autocomplete="off" value="<?php echo$donnees['id']?>"> <?php echo$donnees['nom']?>
+  </label>
+
+
+   
+   
+                <?php }
+                $reponse->closeCursor(); // Termine le traitement de la requête
+                ?>
+
+
+
+
+
+
+
+
+  
+  
+
+
+</div>
+
+
+
+
+
+
+<br><br>
+
 
  <input type="text" class="form-control" name="commentaire" id="commentaire" placeholder="Commentaire">
 
