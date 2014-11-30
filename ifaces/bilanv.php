@@ -177,75 +177,7 @@ $time_fin = $time_fin." 23:59:59";
 
 <br>
  
-<br>
-  <span class="label label-info">
-          Masse totale collecté:  
-          <?php
-// on determine la masse totale collècté sur cete periode
 
-
-            try
-            {
-            // On se connecte à MySQL
-            include('../moteur/dbconfig.php');
-            }
-            catch(Exception $e)
-            {
-            // En cas d'erreur, on affiche un message et on arrête tout
-            die('Erreur : '.$e->getMessage());
-            }
- 
-            // Si tout va bien, on peut continuer
-            /*
-SELECT SUM(masse),timestamp FROM pesees_collectes WHERE  `timestamp`BETWEEN '2014-09-18 00:00:00' AND '2014-09-24 23:59:59'
-            */
- $req = $bdd->prepare("SELECT SUM(masse),timestamp FROM pesees_collectes WHERE  `timestamp` BETWEEN :du AND :au ");//SELECT `titre_affectation` FROM affectations WHERE titre_affectation = "conssomables" LIMIT 1
-$req->execute(array('du' => $time_debut,'au' => $time_fin ));
-$donnees = $req->fetch();
-     
-echo $donnees['SUM(masse)'].' Kg.';
-
-$req->closeCursor(); // Termine le traitement de la requête
-
-
-
-  ?> , sur <?php
-// on determine le nombre de points de collecte
-
-
-            try
-            {
-            // On se connecte à MySQL
-            include('../moteur/dbconfig.php');
-            }
-            catch(Exception $e)
-            {
-            // En cas d'erreur, on affiche un message et on arrête tout
-            die('Erreur : '.$e->getMessage());
-            }
- 
-            // Si tout va bien, on peut continuer
-            /*
-
-            */
- $req = $bdd->prepare("SELECT COUNT(id) FROM points_collecte WHERE  `timestamp` < :au ");//SELECT `titre_affectation` FROM affectations WHERE titre_affectation = "conssomables" LIMIT 1
-$req->execute(array('au' => $time_fin ));
-$donnees = $req->fetch();
-     
-echo $donnees['COUNT(id)'];
-
-$req->closeCursor(); // Termine le traitement de la requête
-
-
-
-  ?> Point(s) de collecte.</span>
-<br>
-repartition par type d'objets collecté:
-
-
-
-
-<br>
 
          
 
@@ -316,75 +248,7 @@ $req->closeCursor(); // Termine le traitement de la requête
 <br>
 
  repartition par type 
-<br>        
 
-
-<span class="label label-info">
-
-
-          Masse évacuée hors boutique:
-           <?php
-// on determine la masse totale évacuée hors boutique sur cete periode
-
-
-            try
-            {
-            // On se connecte à MySQL
-            include('../moteur/dbconfig.php');
-            }
-            catch(Exception $e)
-            {
-            // En cas d'erreur, on affiche un message et on arrête tout
-            die('Erreur : '.$e->getMessage());
-            }
- 
-            // Si tout va bien, on peut continuer
-            /*
-SELECT SUM(masse),timestamp FROM pesees_collectes WHERE  `timestamp`BETWEEN '2014-09-18 00:00:00' AND '2014-09-24 23:59:59'
-            */
- $req = $bdd->prepare("SELECT SUM(masse),timestamp FROM pesees_sorties WHERE  `timestamp` BETWEEN :du AND :au ");//SELECT `titre_affectation` FROM affectations WHERE titre_affectation = "conssomables" LIMIT 1
-$req->execute(array('du' => $time_debut,'au' => $time_fin ));
-$donnees = $req->fetch();
-     
-echo $donnees['SUM(masse)'];
-
-$req->closeCursor(); // Termine le traitement de la requête
-
-
-
-  ?>  , sur <?php
-// on determine le nombre de points de collecte
-
-
-            try
-            {
-            // On se connecte à MySQL
-            include('../moteur/dbconfig.php');
-            }
-            catch(Exception $e)
-            {
-            // En cas d'erreur, on affiche un message et on arrête tout
-            die('Erreur : '.$e->getMessage());
-            }
- 
-            // Si tout va bien, on peut continuer
-            /*
-SELECT SUM(masse),timestamp FROM pesees_collectes WHERE  `timestamp`BETWEEN '2014-09-18 00:00:00' AND '2014-09-24 23:59:59'
-            */
- $req = $bdd->prepare("SELECT COUNT(id) FROM points_sortie WHERE  `timestamp` < :au ");//SELECT `titre_affectation` FROM affectations WHERE titre_affectation = "conssomables" LIMIT 1
-$req->execute(array('au' => $time_fin ));
-$donnees = $req->fetch();
-     
-echo $donnees['COUNT(id)'];
-
-$req->closeCursor(); // Termine le traitement de la requête
-
-
-
-  ?> point(s) de sortie.
-</span><br>
-repartition par classe
-          <br><br>
        
 </div>
         </div>
@@ -394,6 +258,76 @@ repartition par classe
 
 
 
+recap total des ventes pour la boutique 1 !
+quantite dELECTROMENAGER /INFORMATIQUE, totale vendue:  3740 
+chiffre degage :  20336.98
+prix moyen: 5.4376951871658 
+quantite de MOBILIER totale vendue: 3057
+chiffre degage :  24489.55
+prix moyen: 8.0109748119071
+quantite de TEXTILES /ACCESSOIRES/BIJOUX totale vendue: 68335
+chiffre degage :  130985.850
+prix moyen: 1.9168193458696
+quantite de VAISSELLE totale vendue:  24332
+chiffre degage :  25540.21
+prix moyen: 1.0496551865856
+quantite de LIVRES totale vendue: 35906
+chiffre degage :  24754.11
+prix moyen: 0.68941430401604
+quantite de SUPPORTS MEDIA totale vendue: 13079
+chiffre degage :  8360.57
+prix moyen: 0.6392361801361
+quantite de JOUETS totale vendue: 8414
+chiffre degage :  14696.63
+prix moyen: 1.7466876634181
+quantite de BIBELOTS/QUINCAILLERIE totale vendue: 19777
+chiffre degage :  37166.85
+prix moyen: 1.8792966577337
+quantite dobjets inclassables totale vendue:  2024
+chiffre degage :  5283.30
+prix moyen: 2.6103260869565 
+
+nombre total dobjets vendus:  178664 
+chiffre total degage: 291614.05 
+prix moyen total dun objet: 1.6321925513814 
+nombre total de ventes: 54665 
+nombre dobjet par vente en moyenne:
+3.2683435470594 
+prix moyen dun panier:
+5.3345659928656 
+
+<div class="bs-example">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>First Name</th>
+          <th>Last Name</th>
+          <th>Username</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td>Mark</td>
+          <td>Otto</td>
+          <td>@mdo</td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td>Jacob</td>
+          <td>Thornton</td>
+          <td>@fat</td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td>Larry</td>
+          <td>the Bird</td>
+          <td>@twitter</td>
+        </tr>
+      </tbody>
+    </table>
+  </div><!-- /example -->
 
 
 

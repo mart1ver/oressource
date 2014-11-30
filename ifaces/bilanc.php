@@ -179,6 +179,8 @@ $time_fin = $time_fin." 23:59:59";
  
 <br>
   <span class="label label-info">
+    Nombre de collectes totales<br>
+    repartition par type<br>
           Masse totale collecté:  
           <?php
 // on determine la masse totale collècté sur cete periode
@@ -243,6 +245,24 @@ $req->closeCursor(); // Termine le traitement de la requête
 repartition par type d'objets collecté:
 
 
+recap total des collectes pour le point de collecte1 ! 
+quantite de d3e, totale collectee (Kg): 47097.404
+quantite de MOBILIER totale collectee (Kg): 41553.182
+quantite de TEXTILES /ACCESSOIRES/BIJOUX totale collectee (Kg): 85565.690
+quantite de VAISSELLE totale collectee (Kg):  21940.472
+quantite de LIVRES totale collectee (Kg): 50049.933
+quantite de SUPPORTS MEDIA totale collectee (Kg): 7089.983
+quantite de JOUETS totale collectee (Kg): 8863.181
+quantite de BIBELOTS/QUINCAILLERIE totale collectee (Kg): 34791.045
+quantite dobjets inclassables totale collectee (Kg):  9229.745
+
+masse totale dobjets collectee (Kg) 306180.635 
+dont collecte a domicile  79730.295 
+nombre total de pesees: 21989 
+masse moyenne d'une pesee:
+13.92426372277 
+
+
 
 
 <br>
@@ -251,139 +271,7 @@ repartition par type d'objets collecté:
 
 
 
-<span class="label label-info">
 
-          Nombre de ventes:
-           <?php
-// on determine le nombre de ventes sur cete periode au total
-
-
-            try
-            {
-            // On se connecte à MySQL
-            include('../moteur/dbconfig.php');
-            }
-            catch(Exception $e)
-            {
-            // En cas d'erreur, on affiche un message et on arrête tout
-            die('Erreur : '.$e->getMessage());
-            }
- 
-            // Si tout va bien, on peut continuer
-            /*
-SELECT SUM(masse),timestamp FROM pesees_collectes WHERE  `timestamp`BETWEEN '2014-09-18 00:00:00' AND '2014-09-24 23:59:59'
-            */
- $req = $bdd->prepare("SELECT COUNT(id),timestamp FROM ventes WHERE  `timestamp` BETWEEN :du AND :au ");//SELECT `titre_affectation` FROM affectations WHERE titre_affectation = "conssomables" LIMIT 1
-$req->execute(array('du' => $time_debut,'au' => $time_fin ));
-$donnees = $req->fetch();
-     
-echo $donnees['COUNT(id)'];
-
-$req->closeCursor(); // Termine le traitement de la requête
-
-
-
-  ?> , sur <?php
-// on determine le nombre de points de collecte
-
-
-            try
-            {
-            // On se connecte à MySQL
-            include('../moteur/dbconfig.php');
-            }
-            catch(Exception $e)
-            {
-            // En cas d'erreur, on affiche un message et on arrête tout
-            die('Erreur : '.$e->getMessage());
-            }
- 
-            // Si tout va bien, on peut continuer
-            /*
-SELECT SUM(masse),timestamp FROM pesees_collectes WHERE  `timestamp`BETWEEN '2014-09-18 00:00:00' AND '2014-09-24 23:59:59'
-            */
- $req = $bdd->prepare("SELECT COUNT(id) FROM points_vente WHERE  `timestamp` < :au ");//SELECT `titre_affectation` FROM affectations WHERE titre_affectation = "conssomables" LIMIT 1
-$req->execute(array('au' => $time_fin ));
-$donnees = $req->fetch();
-     
-echo $donnees['COUNT(id)'];
-
-$req->closeCursor(); // Termine le traitement de la requête
-
-
-
-  ?> point(s) de vente.</span>
-<br>
-
- repartition par type 
-<br>        
-
-
-<span class="label label-info">
-
-
-          Masse évacuée hors boutique:
-           <?php
-// on determine la masse totale évacuée hors boutique sur cete periode
-
-
-            try
-            {
-            // On se connecte à MySQL
-            include('../moteur/dbconfig.php');
-            }
-            catch(Exception $e)
-            {
-            // En cas d'erreur, on affiche un message et on arrête tout
-            die('Erreur : '.$e->getMessage());
-            }
- 
-            // Si tout va bien, on peut continuer
-            /*
-SELECT SUM(masse),timestamp FROM pesees_collectes WHERE  `timestamp`BETWEEN '2014-09-18 00:00:00' AND '2014-09-24 23:59:59'
-            */
- $req = $bdd->prepare("SELECT SUM(masse),timestamp FROM pesees_sorties WHERE  `timestamp` BETWEEN :du AND :au ");//SELECT `titre_affectation` FROM affectations WHERE titre_affectation = "conssomables" LIMIT 1
-$req->execute(array('du' => $time_debut,'au' => $time_fin ));
-$donnees = $req->fetch();
-     
-echo $donnees['SUM(masse)'];
-
-$req->closeCursor(); // Termine le traitement de la requête
-
-
-
-  ?>  , sur <?php
-// on determine le nombre de points de collecte
-
-
-            try
-            {
-            // On se connecte à MySQL
-            include('../moteur/dbconfig.php');
-            }
-            catch(Exception $e)
-            {
-            // En cas d'erreur, on affiche un message et on arrête tout
-            die('Erreur : '.$e->getMessage());
-            }
- 
-            // Si tout va bien, on peut continuer
-            /*
-SELECT SUM(masse),timestamp FROM pesees_collectes WHERE  `timestamp`BETWEEN '2014-09-18 00:00:00' AND '2014-09-24 23:59:59'
-            */
- $req = $bdd->prepare("SELECT COUNT(id) FROM points_sortie WHERE  `timestamp` < :au ");//SELECT `titre_affectation` FROM affectations WHERE titre_affectation = "conssomables" LIMIT 1
-$req->execute(array('au' => $time_fin ));
-$donnees = $req->fetch();
-     
-echo $donnees['COUNT(id)'];
-
-$req->closeCursor(); // Termine le traitement de la requête
-
-
-
-  ?> point(s) de sortie.
-</span><br>
-repartition par classe
           <br><br>
        
 </div>

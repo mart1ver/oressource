@@ -384,6 +384,7 @@ $req->closeCursor(); // Termine le traitement de la requête
   ?> point(s) de sortie.
 </span><br>
 repartition par classe
+graphique collecte vs evac 
           <br><br>
        <br>
        <a href="../moteur/export_bilans.php">
