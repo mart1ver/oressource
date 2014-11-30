@@ -87,11 +87,11 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
             die('Erreur : '.$e->getMessage());
             }
             // On affiche une liste deroulante des type de collecte visibles
-            $reponse = $bdd->query('SELECT * FROM type_dechets WHERE visible = "oui"');
+            $reponse = $bdd->query('SELECT * FROM type_dechets_evac WHERE visible = "oui"');
             // On affiche chaque entree une à une
             while ($donnees = $reponse->fetch())
             {
-              if ($_POST['id_type_dechet'] == $donnees['nom']) // SI on a pas de message d'erreur
+              if ($_POST['id_type_dechet_evac'] == $donnees['nom']) // SI on a pas de message d'erreur
 {
   ?>
     <option value = "<?php echo$donnees['id']?>" selected ><?php echo$donnees['nom']?></option>

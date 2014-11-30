@@ -29,7 +29,7 @@
             die('Erreur : '.$e->getMessage());
             }
             // On ecrit le nombre de categories maxi dans la varialble $nombrecat 
-            $reponse = $bdd->query('SELECT MAX(id) AS nombrecat FROM type_dechets');
+            $reponse = $bdd->query('SELECT MAX(id) AS nombrecat FROM type_dechets_evac');
             // On affiche chaque entree une à une
             while ($donnees = $reponse->fetch())
             {      
@@ -51,7 +51,7 @@ catch(Exception $e)
         die('Erreur : '.$e->getMessage());
 }
 // Insertion du post à l'aide d'une requête préparée
-$req = $bdd->prepare('INSERT INTO pesees_sorties (masse,  id_sortie, id_type_dechet) VALUES(?, ?, ?)');
+$req = $bdd->prepare('INSERT INTO pesees_sorties (masse,  id_sortie, id_type_dechet_evac) VALUES(?, ?, ?)');
 $req->execute(array($_POST["m".$i],  $id_sortie , $i));
   $req->closeCursor();
 }

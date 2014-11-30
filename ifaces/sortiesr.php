@@ -33,9 +33,21 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
             $reponse->closeCursor(); // Termine le traitement de la requête        
   ?>
 <script type="text/javascript">
+function printdiv(divID)
+    {
+      var headstr = "<html><head><title></title></head><body><small><?php echo $_SESSION['structure'] ?><br><?php echo $_SESSION['adresse'] ?><br><label>Bon de sortie hors boutique.</label><br>type d'apport";
+      var footstr = "<br>Masse totale :</body></small>";
+      var newstr = document.all.item(divID).innerHTML;
+      var oldstr = document.body.innerHTML;
+      document.body.innerHTML = headstr+newstr+footstr;
+      window.print();
+      document.body.innerHTML = oldstr;
+      return false;
+    }
 
 function number_write(x)
 {
+   document.getElementById("najout").value = parseInt(document.getElementById("najout").value)+1;
   var text_box = document.getElementById("number");
   
    
@@ -85,7 +97,13 @@ var ref = document.getElementById("sel_filiere").value;
 
 }
 }
-
+function encaisse() {
+  if (parseInt(document.getElementById('najout').value) >= 1) 
+          { 
+         
+          document.getElementById("formulaire").submit();
+          }
+        }
 function tdechet_clear()
 {
   document.getElementById("id_filiere").value = ""
@@ -109,7 +127,7 @@ function tdechet_clear()
             // Si tout va bien, on peut continuer
  
             // On recupère tout le contenu de la table point de collecte
-            $reponse = $bdd->query('SELECT * FROM type_dechets WHERE visible = "oui"');
+            $reponse = $bdd->query('SELECT * FROM type_dechets_evac WHERE visible = "oui"');
  
            // On affiche chaque entree une à une
            while ($donnees = $reponse->fetch())
@@ -229,7 +247,7 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
 	  
         <div class="col-md-3 col-md-offset-1" >
         	
-          <form action="../moteur/sortiesr_post.php" method="post" ONSUBMIT="EnableControl(true)">
+          <form action="../moteur/sortiesr_post.php" method="post" ONSUBMIT="EnableControl(true)" id="formulaire">
         
         
          
@@ -238,7 +256,7 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
 <input type="hidden" id="id_type_dechet" name="id_type_dechet">
 <input type="hidden" id="type_dechet" name="type_dechet">
 <input type="hidden" name="commentaire" id="commentaire" >
-
+ <input type="hidden" value="0" name ="najout" id="najout">
           <input type="hidden" name ="id_point_sortie" id="id_point_sortie" value="<?php echo $_GET['numero']?>">
         </div>  
         <div class="col-md-4" >
@@ -255,7 +273,7 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
         <div class="panel-heading">           
     <h3 class="panel-title"><label>bon de sortie hors boutique:</label></h3>
   </div>
-  <div class="panel-body"> 
+  <div class="panel-body" id="divID"> 
 
 
 
@@ -277,7 +295,7 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
             // Si tout va bien, on peut continuer
  
             // On recupère tout le contenu de la table type dechets
-            $reponse = $bdd->query('SELECT * FROM type_dechets WHERE visible = "oui"');
+            $reponse = $bdd->query('SELECT * FROM type_dechets_evac WHERE visible = "oui"');
  
            // On affiche chaque entree une à une
            while ($donnees = $reponse->fetch())
@@ -311,9 +329,7 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
                 ?>
 
 </ul>
- <button class="btn btn-primary btn-lg">c'est pesé!</button></form>
-  <button class="btn btn-primary btn-lg"  align="center"><span class="glyphicon glyphicon-print"></span></button>
-        <button class="btn btn-warning btn-lg" onclick="tdechet_clear();"><span class="glyphicon glyphicon-refresh"></button>
+
 
            
         <br>
@@ -349,11 +365,11 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
             // Si tout va bien, on peut continuer
  
             // On recupère tout le contenu de la table point de collecte
-            $reponse = $bdd->query('SELECT filieres_sortie.id ,filieres_sortie.nom , filieres_sortie.id_type_dechet, type_dechets.nom AS type_dechet
+            $reponse = $bdd->query('SELECT filieres_sortie.id ,filieres_sortie.nom , filieres_sortie.id_type_dechet_evac, type_dechets_evac.nom AS type_dechet
 
-FROM filieres_sortie , type_dechets
+FROM filieres_sortie , type_dechets_evac
 
-WHERE filieres_sortie.visible = "oui" AND filieres_sortie.id_type_dechet = type_dechets.id');
+WHERE filieres_sortie.visible = "oui" AND filieres_sortie.id_type_dechet_evac = type_dechets_evac.id');
  
            // On affiche chaque entree une à une
            while ($donnees = $reponse->fetch())
@@ -361,7 +377,7 @@ WHERE filieres_sortie.visible = "oui" AND filieres_sortie.id_type_dechet = type_
 
            ?>
 
-  <option value = "<?php echo$donnees['id']?>|<?php echo$donnees['id_type_dechet']?>|<?php echo$donnees['type_dechet']?>" ><?php echo$donnees['nom']?></option>
+  <option value = "<?php echo$donnees['id']?>|<?php echo$donnees['id_type_dechet_evac']?>|<?php echo$donnees['type_dechet']?>" ><?php echo$donnees['nom']?></option>
  
 
      
@@ -483,7 +499,7 @@ WHERE filieres_sortie.visible = "oui" AND filieres_sortie.id_type_dechet = type_
           
 
 
-<div class="col-md-2"  style="width: 200px;" >
+<div class="col-md-2"  style="width: 320px;" >
         
         <div class="panel panel-info">
         <div class="panel-heading">
@@ -492,17 +508,31 @@ WHERE filieres_sortie.visible = "oui" AND filieres_sortie.id_type_dechet = type_
   <div class="panel-body" style:"text-align:center"> 
 
   
-           <button class="btn btn-default " onclick="tdechet_add();" style="width:130px;height:130px;" ><span class="glyphicon glyphicon-plus"></span></button> 
+           <button class="btn btn-default " onclick="tdechet_add();" style="width:260px;height:130px;" ><span class="glyphicon glyphicon-plus"></span></button> 
 
 </div>
 </div>
 
 
-        </div>
+        
+<div class="row">
+  <br>&nbsp;&nbsp;&nbsp;&nbsp;
 
+
+
+
+
+
+<button class="btn btn-primary btn-lg"  onclick="encaisse();">c'est pesé!</button></form>
+<button class="btn btn-primary btn-lg"  align="center"  onclick="printdiv('divID');" value=" Print " ><span class="glyphicon glyphicon-print"></span></button>
+        <button class="btn btn-warning btn-lg" onclick="tdechet_clear();"><span class="glyphicon glyphicon-refresh"></button>
+      </div>
+
+</div>
 
       </div>
-      <br><br><br>
+
+      <br><br>
       
        
       </div>
