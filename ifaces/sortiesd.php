@@ -284,10 +284,8 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
                 ?>
 
 </ul>
- <button class="btn btn-primary btn-lg">c'est pesé!</button></form>
-  <button class="btn btn-primary btn-lg"  align="center"><span class="glyphicon glyphicon-print"></span></button>
-        <button class="btn btn-warning btn-lg" onclick="tdechet_clear();"><span class="glyphicon glyphicon-refresh"></button>
-
+ </form>
+ 
            
         <br>
 </div>
