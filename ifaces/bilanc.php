@@ -205,16 +205,13 @@ $time_fin = $time_fin." 23:59:59";
 
   <br>
 
+<div class="row">
+  <div class="col-md-6">        
 
 
-<br>
- 
-<br>
-  <span class="label label-info">
-    Nombre de collectes totales<br>
-    repartition par type<br>
-          Masse totale collecté:  
-          <?php
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Masse collectée: <?php
 // on determine la masse totale collècté sur cete periode
 
 
@@ -233,17 +230,125 @@ $time_fin = $time_fin." 23:59:59";
             /*
 SELECT SUM(masse),timestamp FROM pesees_collectes WHERE  `timestamp`BETWEEN '2014-09-18 00:00:00' AND '2014-09-24 23:59:59'
             */
- $req = $bdd->prepare("SELECT SUM(masse),timestamp FROM pesees_collectes WHERE  `timestamp` BETWEEN :du AND :au ");//SELECT `titre_affectation` FROM affectations WHERE titre_affectation = "conssomables" LIMIT 1
+ $req = $bdd->prepare("SELECT SUM(pesees_collectes.masse),pesees_collectes.timestamp  FROM pesees_collectes  WHERE  `pesees_collectes.timestamp` BETWEEN :du AND :au  ");
 $req->execute(array('du' => $time_debut,'au' => $time_fin ));
 $donnees = $req->fetch();
      
-echo $donnees['SUM(masse)'].' Kg.';
+echo $donnees['SUM(pesees_collectes.masse)'].' Kgs.';
 
 $req->closeCursor(); // Termine le traitement de la requête
 
 
 
-  ?> , sur <?php
+  ?></h3>
+  </div>
+  <div class="panel-body">
+    
+<table class="table table-condensed table-striped table table-bordered table-hover" style="border-collapse:collapse;">
+    <thead>
+        <tr>
+            <th>Type de collecte</th>
+            <th>Masse collecté</th>
+            <th>%</th>
+            
+        </tr>
+    </thead>
+    <tbody>
+        <tr data-toggle="collapse" data-target=".demo1" class="active">
+            <td>a dom</td>
+            <td>125</td>
+            <td>58</td>
+            
+        </tr>
+      
+        
+        <tr class="collapse demo1">
+            <td class="hiddenRow">
+               deee
+            </td >
+            <td class="hiddenRow">
+                100kgs
+            </td>
+            <td class="hiddenRow">
+                75%
+            </td>
+            
+        </tr>
+
+
+        <tr class="collapse demo1">
+            <td class="hiddenRow">
+                textile
+            </td >
+            <td class="hiddenRow">
+                25kgs
+            </td>
+            <td class="hiddenRow">
+                25%
+            </td>
+            
+        </tr>
+ <tr data-toggle="collapse" data-target=".demo2" class="active">
+            <td>apport vol.</td>
+            <td>125</td>
+            <td>58</td>
+            
+        </tr>
+      
+        
+        <tr class="collapse demo2">
+            <td class="hiddenRow">
+               mobilier
+            </td>
+            <td class="hiddenRow">
+                100kgs
+            </td>
+            <td class="hiddenRow">
+                75%
+            </td>
+            
+        </tr>
+
+
+        <tr class="collapse demo2">
+            <td class="hiddenRow">
+                autres
+            </td>
+            <td class="hiddenRow">
+                25kgs
+            </td>
+            <td class="hiddenRow">
+                25%
+            </td>
+            
+        </tr>
+
+      
+    </tbody>
+</table>
+
+
+
+
+
+
+  </div>
+</div>
+
+
+  </div>
+  <div class="col-md-2">.col-md-2</div>
+  <div class="col-md-4">.col-md-4</div>
+</div>
+
+<br>
+ 
+<br>
+  <span class="label label-info">
+    Nombre de collectes totales<br>
+    repartition par type<br>
+          Masse totale collecté:  
+          , sur <?php
 // on determine le nombre de points de collecte
 
 
