@@ -138,13 +138,13 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
  
   
       </div>
-      <hr />
+      
 
 
 
 <div class="row">
    <div class="col-md-8 col-md-offset-1" >
-  <span class="label label-success"> Survol global de la structure <?php
+  <h2> Bilan des collectes de la structure <?php
 
 // on affiche la periode visée
   if($_GET['date1'] == $_GET['date2']){
@@ -170,7 +170,39 @@ $time_fin = $time_fin." 23:59:59";
 
 
   ?>
-  </span>
+  </h2>
+  <ul class="nav nav-tabs">
+ 
+
+ <?php 
+          //on affiche un onglet par type d'objet
+            try
+            {
+            // On se connecte à MySQL
+            include('../moteur/dbconfig.php');
+            }
+            catch(Exception $e)
+            {
+            // En cas d'erreur, on affiche un message et on arrête tout
+            die('Erreur : '.$e->getMessage());
+            }
+ 
+            // Si tout va bien, on peut continuer
+ 
+            // On recupère tout le contenu des visibles de la table type_dechets
+            $reponse = $bdd->query('SELECT * FROM points_collecte');
+ 
+           // On affiche chaque entree une à une
+           while ($donnees = $reponse->fetch())
+           {
+           ?> 
+            <li<?php if ($_GET['numero'] == $donnees['id']){ echo ' class="active"';}?>><a href="<?php echo  "bilanc.php?numero=" . $donnees['id']."&date1=" . $_GET['date1']."&date2=" . $_GET['date2']?>"><?php echo$donnees['nom']?></a></li>
+           <?php }
+              $reponse->closeCursor(); // Termine le traitement de la requête
+           ?>
+           <li<?php if ($_GET['numero'] == 0){ echo ' class="active"';}?>><a href="<?php echo  "bilanc.php?numero=0" ."&date1=" . $_GET['date1']."&date2=" . $_GET['date2']?>">Tout les points</a></li>
+       </ul>
+
   <br>
 
 

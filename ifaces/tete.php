@@ -159,7 +159,7 @@
 <?php 
 if(strpos($_SESSION['niveau'], 'bi') !== false)
 { ?>
-<li><a href=" bilans.php?date1=<?php echo date("d-m-Y")?>&date2=<?php echo date("d-m-Y")?>">Bilans</a></li>
+<li><a href=" bilans.php?date1=<?php echo date("d-m-Y")?>&date2=<?php echo date("d-m-Y")?>&numero=0">Bilans</a></li>
 <?php }
               else{}?>
 <?php if(strpos($_SESSION['niveau'], 'g') !== false OR strpos($_SESSION['niveau'], 'h') !== false OR strpos($_SESSION['niveau'], 'l') !== false OR strpos($_SESSION['niveau'], 'j') !== false OR strpos($_SESSION['niveau'], 'k') !== false)
