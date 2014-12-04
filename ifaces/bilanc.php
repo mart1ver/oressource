@@ -9,7 +9,9 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
       
       <link href="../fonts/font-awesome/css/font-awesome.min.css" rel="stylesheet">
       <link rel="stylesheet" type="text/css" media="all" href="../css/daterangepicker-bs3.css" />
+
       <script type="text/javascript" src="../js/jquery-2.0.3.min.js"></script>
+      
       <script type="text/javascript" src="../js/bootstrap.min.js"></script>
       <script type="text/javascript" src="../js/moment.js"></script>
       <script type="text/javascript" src="../js/daterangepicker.js"></script>
@@ -26,19 +28,12 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
 
    <div class="col-md-4 col-md-offset-8" >
 <label for="reportrange">choisisez la periode a inspecter:</label><br>
-
-           
-
-                      
-
-            
-
-            
-
-               <div id="reportrange" class="pull-left" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc">
+<div id="reportrange" class="pull-left" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc">
                   <i class="fa fa-calendar"></i>
                   <span></span> <b class="caret"></b>
                </div>
+
+
 
                <script type="text/javascript">
                $(document).ready(function() {
@@ -118,6 +113,12 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
 
                });
                </script>
+
+
+
+<script src="../js/raphael.js"></script>
+      <script src="../js/morris/morris.js"></script>
+
 
             
 
@@ -240,7 +241,37 @@ $req->closeCursor(); // Termine le traitement de la requête
 
 
 
-  ?></h3>
+  ?>
+  , sur <?php
+// on determine le nombre de points de collecte
+
+
+            try
+            {
+            // On se connecte à MySQL
+            include('../moteur/dbconfig.php');
+            }
+            catch(Exception $e)
+            {
+            // En cas d'erreur, on affiche un message et on arrête tout
+            die('Erreur : '.$e->getMessage());
+            }
+ 
+            // Si tout va bien, on peut continuer
+            /*
+
+            */
+ $req = $bdd->prepare("SELECT COUNT(id) FROM points_collecte WHERE  `timestamp` < :au ");//SELECT `titre_affectation` FROM affectations WHERE titre_affectation = "conssomables" LIMIT 1
+$req->execute(array('au' => $time_fin ));
+$donnees = $req->fetch();
+     
+echo $donnees['COUNT(id)'];
+
+$req->closeCursor(); // Termine le traitement de la requête
+
+
+
+  ?> Point(s) de collecte.</h3>
   </div>
   <div class="panel-body">
     
@@ -249,6 +280,170 @@ $req->closeCursor(); // Termine le traitement de la requête
         <tr>
             <th>Type de collecte</th>
             <th>Masse collecté</th>
+            <th>%</th>
+            
+        </tr>
+    </thead>
+    <tbody>
+        <tr data-toggle="collapse" data-target=".parmasse1" class="active">
+            <td>a dom</td>
+            <td>125</td>
+            <td>58</td>
+            
+        </tr>
+      
+        
+        <tr class="collapse parmasse1">
+            <td class="hiddenRow">
+               deee
+            </td >
+            <td class="hiddenRow">
+                100kgs
+            </td>
+            <td class="hiddenRow">
+                75%
+            </td>
+            
+        </tr>
+
+
+        <tr class="collapse parmasse1">
+            <td class="hiddenRow">
+                textile
+            </td >
+            <td class="hiddenRow">
+                25kgs
+            </td>
+            <td class="hiddenRow">
+                25%
+            </td>
+            
+        </tr>
+ <tr data-toggle="collapse" data-target=".parmasse2" class="active">
+            <td>apport vol.</td>
+            <td>125</td>
+            <td>58</td>
+            
+        </tr>
+      
+        
+        <tr class="collapse parmasse2">
+            <td class="hiddenRow">
+               mobilier
+            </td>
+            <td class="hiddenRow">
+                100kgs
+            </td>
+            <td class="hiddenRow">
+                75%
+            </td>
+            
+        </tr>
+
+
+        <tr class="collapse parmasse2">
+            <td class="hiddenRow">
+                autres
+            </td>
+            <td class="hiddenRow">
+                25kgs
+            </td>
+            <td class="hiddenRow">
+                25%
+            </td>
+            
+        </tr>
+
+      
+    </tbody>
+</table>
+
+
+
+
+<br>
+
+
+          <p><div id="graphmasse" style="height: 180px;"></div></p>
+
+
+  </div>
+</div>
+
+
+  </div>
+  <div class="col-md-6">
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Nombre de collectes: <?php
+// on determine la masse totale collècté sur cete periode
+
+
+            try
+            {
+            // On se connecte à MySQL
+            include('../moteur/dbconfig.php');
+            }
+            catch(Exception $e)
+            {
+            // En cas d'erreur, on affiche un message et on arrête tout
+            die('Erreur : '.$e->getMessage());
+            }
+ 
+            // Si tout va bien, on peut continuer
+            /*
+SELECT SUM(masse),timestamp FROM pesees_collectes WHERE  `timestamp`BETWEEN '2014-09-18 00:00:00' AND '2014-09-24 23:59:59'
+            */
+ $req = $bdd->prepare("SELECT SUM(pesees_collectes.masse),pesees_collectes.timestamp  FROM pesees_collectes  WHERE  `pesees_collectes.timestamp` BETWEEN :du AND :au  ");
+$req->execute(array('du' => $time_debut,'au' => $time_fin ));
+$donnees = $req->fetch();
+     
+echo $donnees['SUM(pesees_collectes.masse)'].' Kgs.';
+
+$req->closeCursor(); // Termine le traitement de la requête
+
+
+
+  ?>
+  , sur <?php
+// on determine le nombre de points de collecte
+
+
+            try
+            {
+            // On se connecte à MySQL
+            include('../moteur/dbconfig.php');
+            }
+            catch(Exception $e)
+            {
+            // En cas d'erreur, on affiche un message et on arrête tout
+            die('Erreur : '.$e->getMessage());
+            }
+ 
+            // Si tout va bien, on peut continuer
+            /*
+
+            */
+ $req = $bdd->prepare("SELECT COUNT(id) FROM points_collecte WHERE  `timestamp` < :au ");//SELECT `titre_affectation` FROM affectations WHERE titre_affectation = "conssomables" LIMIT 1
+$req->execute(array('au' => $time_fin ));
+$donnees = $req->fetch();
+     
+echo $donnees['COUNT(id)'];
+
+$req->closeCursor(); // Termine le traitement de la requête
+
+
+
+  ?> Point(s) de collecte.</h3>
+  </div>
+  <div class="panel-body">
+    
+<table class="table table-condensed table-striped table table-bordered table-hover" style="border-collapse:collapse;">
+    <thead>
+        <tr>
+            <th>Type de collecte</th>
+            <th>Nombre de collectes</th>
             <th>%</th>
             
         </tr>
@@ -327,31 +522,10 @@ $req->closeCursor(); // Termine le traitement de la requête
     </tbody>
 </table>
 
-
-
-
-
-
-  </div>
-</div>
-
-
-  </div>
-  <div class="col-md-2">.col-md-2</div>
-  <div class="col-md-4">.col-md-4</div>
-</div>
-
-<br>
- 
-<br>
-  <span class="label label-info">
-    Nombre de collectes totales<br>
-    repartition par type<br>
-          Masse totale collecté:  
-          , sur <?php
-// on determine le nombre de points de collecte
-
-
+<script>       Morris.Donut({
+    element: 'graphmasse',
+    data: [
+<?php 
             try
             {
             // On se connecte à MySQL
@@ -364,52 +538,70 @@ $req->closeCursor(); // Termine le traitement de la requête
             }
  
             // Si tout va bien, on peut continuer
-            /*
+ 
+            // On recupère tout le contenu de la table affectations
+            $reponse = $bdd->query('SELECT type_dechets.couleur,type_dechets.nom, sum(vendus.quantite ) somme FROM type_dechets,vendus WHERE type_dechets.id = vendus.id_type_dechet AND DATE(vendus.timestamp) = CURDATE()
+GROUP BY nom');
+ 
+           // On affiche chaque entree une à une
+           while ($donnees = $reponse->fetch())
+           {
 
-            */
- $req = $bdd->prepare("SELECT COUNT(id) FROM points_collecte WHERE  `timestamp` < :au ");//SELECT `titre_affectation` FROM affectations WHERE titre_affectation = "conssomables" LIMIT 1
-$req->execute(array('au' => $time_fin ));
-$donnees = $req->fetch();
-     
-echo $donnees['COUNT(id)'];
-
-$req->closeCursor(); // Termine le traitement de la requête
+            echo "{value:".$donnees['somme'].", label:'".$donnees['nom']."'},";
 
 
+             }
+              $reponse->closeCursor(); // Termine le traitement de la requête
+                ?>
+],
+    backgroundColor: '#ccc',
+    labelColor: '#060',
+    colors: [
+<?php 
+            try
+            {
+            // On se connecte à MySQL
+            include('../moteur/dbconfig.php');
+            }
+            catch(Exception $e)
+            {
+            // En cas d'erreur, on affiche un message et on arrête tout
+            die('Erreur : '.$e->getMessage());
+            }
+ 
+            // Si tout va bien, on peut continuer
+ 
+            // On recupère tout le contenu de la table affectations
+            $reponse = $bdd->query('SELECT type_dechets.couleur,type_dechets.nom, sum(vendus.quantite ) somme FROM type_dechets,vendus WHERE type_dechets.id = vendus.id_type_dechet AND DATE(vendus.timestamp) = CURDATE()
+GROUP BY nom');
+ 
+           // On affiche chaque entree une à une
+           while ($donnees = $reponse->fetch())
+           {
 
-  ?> Point(s) de collecte.</span>
+            echo "'".$donnees['couleur']."'".",";
+
+
+             }
+              $reponse->closeCursor(); // Termine le traitement de la requête
+                ?>
+    ],
+    formatter: function (x) { return x + " pcs."}
+    });
+</script>
+
+
+
+
+  </div>
+</div>
+  </div>
+  
+</div>
+
 <br>
-repartition par type d'objets collecté:
+ 
 
-
-recap total des collectes pour le point de collecte1 ! 
-quantite de d3e, totale collectee (Kg): 47097.404
-quantite de MOBILIER totale collectee (Kg): 41553.182
-quantite de TEXTILES /ACCESSOIRES/BIJOUX totale collectee (Kg): 85565.690
-quantite de VAISSELLE totale collectee (Kg):  21940.472
-quantite de LIVRES totale collectee (Kg): 50049.933
-quantite de SUPPORTS MEDIA totale collectee (Kg): 7089.983
-quantite de JOUETS totale collectee (Kg): 8863.181
-quantite de BIBELOTS/QUINCAILLERIE totale collectee (Kg): 34791.045
-quantite dobjets inclassables totale collectee (Kg):  9229.745
-
-masse totale dobjets collectee (Kg) 306180.635 
-dont collecte a domicile  79730.295 
-nombre total de pesees: 21989 
-masse moyenne d'une pesee:
-13.92426372277 
-
-
-
-
-<br>
-
-         
-
-
-
-
-          <br><br>
        
 </div>
         </div>
