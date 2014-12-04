@@ -217,17 +217,7 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
 </div> 
 </div>
 <!--endprint-->
- <div class="panel panel-info">
-       
-  <div class="panel-body"> 
 
- <button class="btn btn-primary btn-lg" onclick="encaisse();">C'EST PESÉ!</button>
-
-<button class="btn btn-primary btn-lg"  align="center"  onclick="printdiv('divID');" value=" Print " ><span class="glyphicon glyphicon-print"></span></button>
-        <button class="btn btn-warning btn-lg" onclick="tdechet_clear();"><span class="glyphicon glyphicon-refresh"></button>
-
-</div>
-</div>
      </div> 
      <div class="col-md-2" >
 <div class="panel panel-info">
@@ -298,8 +288,7 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
 <br>
 
 <input type="hidden" name ="id_point_collecte" id="id_point_collecte" value="<?php echo $_GET['numero']?>">
-    <input name ="adh" id ="adh" type="checkbox" ><label for="adh">Adhére à l'association</label> <a href="adhesions.php"  target="_blank"><span style="float:right;" class="glyphicon glyphicon-pencil"></span></a>
-
+    
 </div>
 </div>
 
@@ -445,8 +434,12 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
  <input type="text" class="form-control" name="commentaire" id="commentaire" placeholder="Commentaire">
 
 </div>
-</div>
 
+</div>
+<button class="btn btn-primary btn-lg" onclick="encaisse();">C'EST PESÉ!</button>
+
+<button class="btn btn-primary btn-lg"  align="center"  onclick="printdiv('divID');" value=" Print " ><span class="glyphicon glyphicon-print"></span></button>
+        <button class="btn btn-warning btn-lg" onclick="tdechet_clear();"><span class="glyphicon glyphicon-refresh"></button>
     </div>
 
   

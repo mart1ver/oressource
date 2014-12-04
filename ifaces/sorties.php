@@ -386,10 +386,10 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
                     
         
           </select>
-<br>
+
 <input type="hidden" name ="id_point_sortie" id="id_point_sortie" value="<?php echo $_GET['numero']?>">
 <input type="text" class="form-control" name="commentaire" id="commentaire" placeholder="Commentaire"><br>
-<input name ="adh" id ="adh" type="checkbox" ><label for="adh">Adhérent de l'association</label> <a href="adhesions.php"  target="_blank"><span style="float:right;" class="glyphicon glyphicon-pencil"></span></a>
+
 </div>
 </div>
 

@@ -93,7 +93,7 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
     <span class ="badge" id="recaptotal"  style="float:right;">0€
     </span>
   </div>
-  <div class="panel-body">
+  <div class="panel-body" id="divID">
      
 <form action="../moteur/vente_post.php" id="formulaire" method="post">
 <ul id="liste" class="list-group">
@@ -103,20 +103,14 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
  <ul class="list-group" id="total">
 </ul>
 <input type="hidden" id="comm" name="comm"><br>
-<input name ="adh" id ="adh" type="checkbox" ><label for="adh">Adhére à l'association</label> <a href="adhesions.php"  target="_blank"><span style="float:right;" class="glyphicon glyphicon-pencil"></span></a>
-<br>
+<input type="hidden" id="moyen" name="moyen" value="1"><br>
 <input type="hidden"  id="nlignes" name="nlignes">
 <input type="hidden"  id="narticles" name="narticles">
 <input type="hidden"  id="ptot" name="ptot">
 
 <input type="hidden" name ="id_point_vente" id="id_point_vente" value="<?php echo $_GET['numero']?>">
     </form>
- <ul id="boutons" class="list-group">
-        <button class="btn btn-primary btn-lg" onclick="encaisse();">Encaisser</button>
-        <button class="btn btn-primary btn-lg" type="button"   align="center"><span class="glyphicon glyphicon-print"></span></button>
-        <button class="btn btn-warning btn-lg" onClick="javascript:window.location.reload()"><span class="glyphicon glyphicon-refresh"></button>
-  </ul>
-
+ 
 
       </div>
       </div>
@@ -280,18 +274,34 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
            // On affiche chaque entree une à une
            while ($donnees = $reponse->fetch())
            {
+            if ($donnees['id'] == 1){
            ?>
       
       
 
-<label class="btn btn-primary active">
-    <input type="radio" name="paiement" id="paiement<?php echo$donnees['id']?>" autocomplete="off" value="<?php echo$donnees['id']?>"> <?php echo$donnees['nom']?>
+<label class="btn btn-primary active " onclick="moyens('<?php echo$donnees['id']?>');">
+    <input type="radio" name="paiement" id="paiement" autocomplete="off" value="<?php echo$donnees['id']?>" checked > <?php echo$donnees['nom']?>
   </label>
 
 
    
    
-                <?php }
+                <?php 
+}else{
+?>
+
+
+
+<label class="btn btn-primary " onclick="moyens('<?php echo$donnees['id']?>');">
+    <input type="radio" name="paiement" id="paiement" autocomplete="off" value="<?php echo$donnees['id']?>" > <?php echo$donnees['nom']?>
+  </label>
+
+
+
+<?php
+}
+
+              }
                 $reponse->closeCursor(); // Termine le traitement de la requête
                 ?>
 
@@ -321,11 +331,18 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
 </div>
 </div>
 <br>
+<ul id="boutons" class="list-group">
+        <button class="btn btn-primary btn-lg" onclick="encaisse();">Encaisser</button>
+        <button class="btn btn-primary btn-lg" type="button"   align="center" onclick="printdiv('divID');" value=" Print "><span class="glyphicon glyphicon-print"></span></button>
+        <button class="btn btn-warning btn-lg" onclick="javascript:window.location.reload()"><span class="glyphicon glyphicon-refresh"></button>
+  
+<br><br>
     <a href="remboursement.php?numero=<?php echo $_GET['numero']?>&nom=<?php echo $_GET['nom']?>&adresse=<?php echo $_GET['adresse']?>"> 
     <button type="button"  class="btn btn-danger pull-right" >
     Remboursement
     </button>
-    <a>
+    </a>
+    </ul>
     <br><br>
      
     </div>
@@ -342,6 +359,9 @@ function fokus(that) {
 what = that;
 }
 
+function moyens(moy) {
+ document.getElementById('moyen').value = moy;
+}
 
 function often(that) {
 if (isNaN(parseInt(document.getElementById('id_type_objet').value)) ) 
@@ -358,7 +378,17 @@ what.value = what.value + that.value;
 }
 
 }
-
+function printdiv(divID)
+    {
+      var headstr = "<html><head><title></title></head><body><small><?php echo $_SESSION['structure'] ?><br><?php echo $_SESSION['adresse'] ?><br><label>Bon d'apport:</label><br>type d'apport";
+      var footstr = "<br>Masse totale :</body></small>";
+      var newstr = document.all.item(divID).innerHTML;
+      var oldstr = document.body.innerHTML;
+      document.body.innerHTML = headstr+newstr+footstr;
+      window.print();
+      document.body.innerHTML = oldstr;
+      return false;
+    }
 function ajout() {
      if (isNaN((parseFloat(document.getElementById('prix').value)*parseFloat(document.getElementById('quantite').value)).toFixed(2)) ) 
          {} 
@@ -420,6 +450,7 @@ function encaisse() {
   if (parseInt(document.getElementById('nlignes').value) >= 1) 
           { 
             document.getElementById('comm').value = document.getElementById('commentaire').value
+            
           document.getElementById("formulaire").submit();
           }
                     }
