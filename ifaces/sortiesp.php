@@ -217,7 +217,7 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
         <div class="col-md-3 col-md-offset-1" >
       <div class="panel panel-info">
         <div class="panel-heading">           
-    <h3 class="panel-title"><label>bon de sortie poubelles:</label></h3>
+    <h3 class="panel-title"><label>Bon de sortie poubelles:</label></h3>
   </div>
   <div class="panel-body" id="divID">    
 
@@ -348,7 +348,7 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
 
  <div class="panel panel-info">
         <div class="panel-heading">           
-    <h3 class="panel-title"><label>types de bacs de sortie poubelles:</label></h3>
+    <h3 class="panel-title"><label>Types de bacs de sortie poubelles:</label></h3>
   </div>
   <div class="panel-body">    
 
@@ -397,7 +397,7 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
 
 
 
-<button class="btn btn-primary btn-lg"  onclick="encaisse();">c'est pesé!</button>
+<button class="btn btn-primary btn-lg"  onclick="encaisse();">C'est pesé!</button>
 <button class="btn btn-primary btn-lg"  align="center"  onclick="printdiv('divID');" value=" Print " ><span class="glyphicon glyphicon-print"></span></button>
         <button class="btn btn-warning btn-lg" onclick="tdechet_clear();"><span class="glyphicon glyphicon-refresh"></button>
       </div>

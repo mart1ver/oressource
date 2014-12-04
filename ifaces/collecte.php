@@ -436,7 +436,7 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
 </div>
 
 </div>
-<button class="btn btn-primary btn-lg" onclick="encaisse();">C'EST PESÉ!</button>
+<button class="btn btn-primary btn-lg" onclick="encaisse();">C'est pesé!</button>
 
 <button class="btn btn-primary btn-lg"  align="center"  onclick="printdiv('divID');" value=" Print " ><span class="glyphicon glyphicon-print"></span></button>
         <button class="btn btn-warning btn-lg" onclick="tdechet_clear();"><span class="glyphicon glyphicon-refresh"></button>
