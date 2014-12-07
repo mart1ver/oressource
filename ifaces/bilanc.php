@@ -240,7 +240,7 @@ $req = $bdd->prepare("SELECT SUM(pesees_collectes.masse)AS total   FROM pesees_c
 $req->execute(array('du' => $time_debut,'au' => $time_fin ));
 $donnees = $req->fetch();
 $mtotcolo = $donnees['total'];
-echo $donnees['total']."Kgs.";
+echo $donnees['total']." Kgs.";
             
               $reponse->closeCursor(); // Termine le traitement de la requête
                
@@ -353,7 +353,7 @@ GROUP BY id_type_collecte');
            
             ?>
       
-            <tr data-toggle="collapse" data-target=".parmasse<?php echo $donnees['id']?>" class="active">
+            <tr data-toggle="collapse" data-target=".parmasse<?php echo $donnees['id']?>" >
             <td><?php echo $donnees['nom'] ?></td>
             <td><?php echo $donnees['somme'] ?></td>
             <td><?php echo  round($donnees['somme']*100/$mtotcolo, 2)   ; ?></td>
@@ -362,19 +362,84 @@ GROUP BY id_type_collecte');
       
      
 
- <tr class="collapse parmasse<?php echo $donnees['id']?>">
+ 
+
+  <?php 
+            try
+            {
+            // On se connecte à MySQL
+            include('../moteur/dbconfig.php');
+            }
+            catch(Exception $e)
+            {
+            // En cas d'erreur, on affiche un message et on arrête tout
+            die('Erreur : '.$e->getMessage());
+            }
+ 
+            // Si tout va bien, on peut continuer
+ 
+            // On recupère tout le contenu de la table affectations
+
+
+
+
+
+
+
+            $reponse2 = $bdd->prepare('SELECT type_dechets.couleur,type_dechets.nom, sum(pesees_collectes.masse) somme
+
+ FROM type_dechets,pesees_collectes ,type_collecte , collectes
+
+WHERE
+pesees_collectes.timestamp BETWEEN :du AND :au 
+AND type_dechets.id = pesees_collectes.id_type_dechet 
+AND type_collecte.id =  collectes.id_type_collecte AND pesees_collectes.id_collecte = collectes.id
+AND type_collecte.id = :id_type_collecte
+GROUP BY nom
+ORDER BY somme DESC');
+  
+
+
+
+
+ $reponse2->execute(array('du' => $time_debut,'au' => $time_fin ,'id_type_collecte' => $donnees['id'] ));
+           // On affiche chaque entree une à une
+           while ($donnees2 = $reponse2->fetch())
+           {
+
+           
+            ?>
+
+
+
+ <tr class="collapse parmasse<?php echo $donnees['id']?> active">
+    
             <td class="hiddenRow">
-               deee
+              <?php echo $donnees2['nom'] ?>
             </td >
             <td class="hiddenRow">
-                100kgs
+                <?php echo $donnees2['somme']." Kgs." ?>
             </td>
             <td class="hiddenRow">
-                75%
+                <?php echo  round($donnees2['somme']*100/$donnees['somme'], 2)." %"  ; ?>
             </td>
             
-        </tr>
+        
 
+
+
+
+
+
+
+
+
+        </tr>
+ <?php
+
+             }
+              $reponse2->closeCursor(); // Termine le traitement de la requête
+                ?>
 
         
 
