@@ -8,7 +8,7 @@
 //
 //
 //
-    if (isset($_SESSION['id']) AND (strpos($_SESSION['niveau'], 'g') !== false))
+    if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 'j') !== false))
       { include "tete.php" ?>
     <div class="container">
         <h1>Gestion des partenaires de recyclage</h1> 
@@ -55,7 +55,7 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
             die('Erreur : '.$e->getMessage());
             }
             // On affiche une liste déroulante des type de collecte visibles
-            $reponse = $bdd->query('SELECT * FROM type_dechets WHERE visible = "oui"');
+            $reponse = $bdd->query('SELECT * FROM type_dechets_evac WHERE visible = "oui"');
             // On affiche chaque entrée une à une
             while ($donnees = $reponse->fetch())
             {
@@ -116,15 +116,15 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
                                            filieres_sortie.timestamp, 
                                            filieres_sortie.nom,
                                            filieres_sortie.description,
-                                           type_dechets.nom AS id_type_dechet,
+                                           type_dechets_evac.nom AS id_type_dechet_evac,
                                            filieres_sortie.couleur,
                                            filieres_sortie.visible
 
 
 
-                                             FROM filieres_sortie, type_dechets
+                                             FROM filieres_sortie, type_dechets_evac
 
-                                             WHERE filieres_sortie.id_type_dechet = type_dechets.id  ');
+                                             WHERE filieres_sortie.id_type_dechet_evac = type_dechets_evac.id  ');
  
            // On affiche chaque entrée une à une
            while ($donnees = $reponse->fetch())
@@ -136,7 +136,7 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
             <td><?php echo $donnees['timestamp']?></td>
             <td><?php echo $donnees['nom']?></td>
             <td><?php echo $donnees['description']?></td>
-            <td><?php echo $donnees['id_type_dechet']?></td>
+            <td><?php echo $donnees['id_type_dechet_evac']?></td>
            <td><span class="badge" style="background-color:<?php echo$donnees['couleur']?>"><?php echo$donnees['couleur']?></span></td> 
 <td>
 <form action="../moteur/filiere_sortie_visible.php" method="post">
@@ -175,7 +175,7 @@ else // SINON
 <input type="hidden" name ="nom" id="nom" value="<?php echo $donnees['nom']?>">
 <input type="hidden" name ="description" id="description" value="<?php echo $donnees['description']?>">
 <input type="hidden" name ="couleur" id="couleur" value="<?php echo substr($_POST['couleur'],1)?>">
-<input type="hidden" name ="id_type_dechet" id="id_type_dechet" value="<?php echo $donnees['id_type_dechet']?>">
+<input type="hidden" name ="id_type_dechet_evac" id="id_type_dechet" value="<?php echo $donnees['id_type_dechet']?>">
   <button  class="btn btn-warning btn-sm" >modifier</button>
 
 
@@ -222,5 +222,5 @@ else // SINON
 <?php include "pied.php" ?>
 <?php }
     else
-    header('Location: ../') ;
+  header('Location: ../moteur/destroy.php') ;
 ?>

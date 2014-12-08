@@ -7,12 +7,23 @@
     <meta name="author" content="">
     <link rel="shortcut icon" href="../images/favicon.ico">
     <title>Oressource</title>
+
+
 <!-- Bootstrap core CSS -->
     <link href="../css/bootstrap.min.css" rel="stylesheet">
 <!-- Custom styles for this template -->
     <link href="../css/oressource.css" rel="stylesheet">
-    <link rel="stylesheet" href="../js/morris.js/morris.css">
+    <link rel="stylesheet" href="../js/morris/morris.css">
+   
+
+
+
+      
+
+
   </head>
+
+
   <body>
 <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
       <div class="container">
@@ -95,7 +106,7 @@
       if(strpos($_SESSION['niveau'], 's'.$donnees['id']) !== false AND $donnees['visible'] == "oui")
           { ?>
           <li>
-              <a href="<?php echo  "sorties.php?numero=" . $donnees['id']. "&nom=" . $donnees['nom']. "&adresse=".$donnees['adresse']; ?>">
+              <a href="<?php echo  "sortiesc.php?numero=" . $donnees['id']. "&nom=" . $donnees['nom']. "&adresse=".$donnees['adresse']; ?>">
                <?php echo $donnees['nom']; ?> 
               </a>
           </li>
@@ -144,54 +155,78 @@
                ?>  </li> </ul> </li><?php } else{}?>
 </ul>
 
-<?php if(strpos($_SESSION['niveau'], 'a') !== false)
-          { ?>
-<li><a href="adhesions.php">Adhésion</a></li>
+
+<?php 
+if(strpos($_SESSION['niveau'], 'bi') !== false)
+{ ?>
+<li><a href=" bilans.php?date1=<?php echo date("d-m-Y")?>&date2=<?php echo date("d-m-Y")?>&numero=0">Bilans</a></li>
 <?php }
               else{}?>
-                 <?php if(strpos($_SESSION['niveau'], 'm') !== false)
-          { ?>
-<li><a href="mailling.php">Mailing</a></li>
-<?php }
-                 else{}?>
-<?php if(strpos($_SESSION['niveau'], 'bi') !== false)
-          { ?>
-<li><a href="bilans.php">Bilans</a></li>
-<?php }
-              else{}?>
-<?php if(strpos($_SESSION['niveau'], 'g') !== false)
+<?php if(strpos($_SESSION['niveau'], 'g') !== false OR strpos($_SESSION['niveau'], 'h') !== false OR strpos($_SESSION['niveau'], 'l') !== false OR strpos($_SESSION['niveau'], 'j') !== false OR strpos($_SESSION['niveau'], 'k') !== false)
           { ?>
 <li class="dropdown">
         <a href="#" class="dropdown-toggle" data-toggle="dropdown">Gestion<b class="caret"></b></a>
         <ul class="dropdown-menu">
-          <li><a href="recettes_filieres_sortie.php">Recettes points de sortie</a></li>
-          <li><a href="edition_filieres_sortie.php">Entreprises de recyclage</a></li>
-          <li><a href="edition_types_sortie.php">Types de sorties hors boutique</a></li>
-          <li><a href="edition_conventions_sortie.php">Conventions avec les partenaires</a></li>
+<?php if(strpos($_SESSION['niveau'], 'g') !== false)//grilles de prix et masse des bacs(gestion quotidienne)
+          { ?>
+          <li><a href="grilles_prix.php?typo=1">Grilles de prix</a></li>
+          <li><a href="edition_types_contenants.php">Bacs et chariots</a></li>
           <li><a href="edition_types_poubelles.php">Types de poubelles</a></li>
           <li class="divider"></li>
-          <li><a href="utilisateurs.php">Utilisateurs</a></li>
-          <li><a href="grilles_prix.php?typo=1">Grilles de prix</a></li>
-          <li class="divider"></li>
-          <li><a href="types_collecte.php">Types de collectes</a></li>
-          <li><a href="types_dechets.php">Types de déchet collectés</a></li>
-          <li class="divider"></li>
+<?php } ?>
+<?php if(strpos($_SESSION['niveau'], 'h') !== false)//gestion verif
+          { ?>
           <li><a href="verif_collecte.php?numero=1&date=<?php echo date("Y-m-d")?>">Verifier les collectes</a></li>
           <li><a href="verif_sorties.php?numero=1&date=<?php echo date("Y-m-d")?>">Verifier les sorties hors boutique</a></li>
           <li><a href="verif_vente.php?numero=1&date=<?php echo date("Y-m-d")?>">Verifier les ventes</a></li>
+          <li class="divider"></li>
+<?php } ?>
+<?php if(strpos($_SESSION['niveau'], 'l') !== false)//utilisateurs
+          { ?>
+         <li><a href="utilisateurs.php">Utilisateurs</a></li>
+         <li class="divider"></li>
+<?php } ?> 
+<?php if(strpos($_SESSION['niveau'], 'j') !== false)//recycleur et conventions de sortie
+          { ?>
+         
+          <li><a href="edition_filieres_sortie.php">Entreprises de recyclage</a></li>
+          <li><a href="edition_conventions_sortie.php">Conventions avec les partenaires</a></li>
+             <li class="divider"></li>
+<?php } ?> 
+<?php if(strpos($_SESSION['niveau'], 'k') !== false)//configuration de oressource
+          { ?>
+
+          <li><a href="edition_types_sortie.php">Types de sorties hors boutique</a></li>
+          <li><a href="types_collecte.php">Types de collectes</a></li>
+          <li class="divider"></li>
+          <li><a href="types_dechets.php">Types d'objets collectés</a></li>
+          <li><a href="types_dechets_evac.php">Types de déchets evacués</a></li>       
           <li class="divider"></li>
           <li><a href="edition_points_collecte.php">Points de collecte</a></li>
           <li><a href="edition_points_sorties.php">Points de sortie hors boutique</a></li>
           <li><a href="edition_points_vente.php">Points de vente</a></li>
           <li class="divider"></li>
+          <li><a href="moyens_paiment.php">Moyens de paiment</a></li>
           <li><a href="edition_localites.php">Localités</a></li>
           <li><a href="edition_description.php">Déscription de la structure</a></li>
+<?php } ?>
+          
           
       </ul>
       </li>
       <?php }
               
                  else{}?>
+
+
+      <li class="dropdown">   
+      <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-user"></span><b class="caret"></b></a>
+        <ul class="dropdown-menu">
+        <li><a href="edition_mdp_utilisateur.php">Mot de passe</a></li>
+        <li><a href="../moteur/destroy.php">Déconnection</a></li>
+
+        </ul>  
+      </li>        
 <?php }
     else{ }?>
 

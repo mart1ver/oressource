@@ -8,7 +8,7 @@
 //
 //
 //
-            if (isset($_SESSION['id']) AND (strpos($_SESSION['niveau'], 'g') !== false))
+            if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 'k') !== false))
             { 
             include "tete.php" 
             ?>
@@ -63,8 +63,15 @@
       <div class="col-md-3 col-md-offset-2"><label for="localite">Localité:</label> <input type="text" value ="<?php echo $donnees['id_localite']; ?>" name="localite" id="localite" class="form-control " required > 
         <br>
         <label for="mail">Mail principal:</label> <input type="email" name="mail" id="mail" class="form-control " value = "<?php echo $donnees['mail']; ?>" required > 
+        <br>
+ <label for="atva">Activer la TVA à la vente:</label> <input name ="atva" id ="atva" type="checkbox" value = "oui" <?php if((strpos($donnees['tva_active'], 'oui') !== false)){ echo "checked";} ?> >
+<br>
+<label for="ttva">Taux en vigueur:</label> <input type="text" value ="<?php echo $donnees['taux_tva']; ?>" name="ttva" id="ttva" class="form-control " required >
+<br>
       </div>
-      <div class="col-md-2"><label for="siret">Numéro de siret:</label> <input type="text" value ="<?php echo $donnees['siret']; ?>" name="siret" id="siret" class="form-control " required ></div>
+      <div class="col-md-2"><label for="siret">Numéro de siret:</label> <input type="text" value ="<?php echo $donnees['siret']; ?>" name="siret" id="siret" class="form-control " required >
+
+      </div>
       <div class="col-md-4"><label for="description">Présentation générale de la strucure:</label> <textarea name="description" id="description" rows="10" cols="50" required><?php echo $donnees['description']; ?></textarea> </div>
     </div>
     <div class="row">
@@ -83,5 +90,5 @@
               <?php include "pied.php" ?>
               <?php }
               else
-              header('Location: ../') ;
+       header('Location: ../moteur/destroy.php') ;
               ?>

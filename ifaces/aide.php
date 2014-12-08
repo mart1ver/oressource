@@ -1,6 +1,6 @@
 <?php session_start(); ?>
 <?php
-    if (isset($_SESSION['id']) AND (strpos($_SESSION['niveau'], 'bi') !== false))
+    if (isset($_SESSION['id']) )
       {  include "tete.php" ?>
    
         <h1>need help? call me!</h1>
@@ -11,7 +11,7 @@
 <?php include "pied.php" ?>
 <?php }
     else
-    header('Location: ../') ;
+    header('Location: ../moteur/destroy.php') ;
 ?>
        
       

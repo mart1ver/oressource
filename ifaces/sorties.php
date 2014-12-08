@@ -12,7 +12,7 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
 //
 //
 
-//on obtien la masse maximum suporté par la balance à ce point de sortie dans la variable $pesee_max
+//on obtient la masse maximum suportée par la balance à ce point de sortie dans la variable $pesee_max
   try
             {
             // On se connecte à MySQL
@@ -34,6 +34,32 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
             $reponse->closeCursor(); // Termine le traitement de la requête        
   ?>
 <script type="text/javascript">
+function encaisse() {
+  if (parseInt(document.getElementById('najout').value) >= 1) 
+          { 
+         
+          document.getElementById("formulaire").submit();
+          }
+        }
+function printdiv(divID)
+    {
+      var headstr = "<html><head><title></title></head><body><small><?php echo $_SESSION['structure'] ?><br><?php echo $_SESSION['adresse'] ?><br><label>Bon de sortie hors boutique.</label><br>type d'apport";
+      var footstr = "<br>Masse totale :</body></small>";
+      var newstr = document.all.item(divID).innerHTML;
+      var oldstr = document.body.innerHTML;
+      document.body.innerHTML = headstr+newstr+footstr;
+      window.print();
+      document.body.innerHTML = oldstr;
+      return false;
+    }
+function submanut(x)
+          {
+            if ((document.getElementById("number").value - x) > 0 )
+            {
+            var text_box = document.getElementById("number");
+            text_box.value = text_box.value - x;
+          }
+          }
 function number_write(x)
 {
   var text_box = document.getElementById("number");
@@ -50,6 +76,7 @@ function tdechet_write(y,z)
              document.getElementById(y).innerText = parseFloat(document.getElementById(y).innerText) + parseFloat(document.getElementById("number").value)  ;
               document.getElementById(z).value = parseFloat(document.getElementById(z).value) + parseFloat(document.getElementById("number").value)  ;
              document.getElementById("number").value = "";  
+              document.getElementById("najout").value = parseInt(document.getElementById("najout").value)+1;
           }
           }
 function tdechet_clear()
@@ -156,13 +183,14 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
       </fieldset>   
 <div class="row">
     
-        <div class="col-md-5 col-md-offset-1" >
+        <div class="col-md-7 col-md-offset-1" >
 
  <ul class="nav nav-tabs">
-  <li class="active"><a>Dons</a></li>
+  <li><a href="<?php echo  "sortiesp.php?numero=" . $_GET['numero']?>">Poubelles</a></li>
   <li><a href="<?php echo  "sortiesc.php?numero=" . $_GET['numero']?>">Don aux partenaires</a></li>
   <li><a href="<?php echo  "sortiesr.php?numero=" . $_GET['numero']?>">Recyclage</a></li>
-  <li><a href="<?php echo  "sortiesp.php?numero=" . $_GET['numero']?>">Poubelles</a></li>
+  <li class="active"><a>Dons</a></li>
+  <li><a href="<?php echo  "sortiesd.php?numero=" . $_GET['numero']?>">Decheterie</a></li>
   
 </ul>
     <br>   
@@ -170,8 +198,148 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
 </div>          
 <div class="row">
 	  <div class="col-md-3 col-md-offset-1" >  	
-          <form action="../moteur/sorties_post.php" method="post">
-           <label for="type_sortie">Type de sortie:</label>
+          <form action="../moteur/sorties_post.php" method="post" id="formulaire">
+          
+        </div>  
+        <div class="col-md-4" >
+          
+         
+         
+        </div>
+        
+      </div>
+      <div class="row">
+      	<br>
+        <div class="col-md-3 col-md-offset-1" >
+          <div class="panel panel-info">
+        <div class="panel-heading">
+          <form action="../moteur/collecte_post.php" method="post">
+    <h3 class="panel-title"><label>Bon de sortie hors boutique:</label></h3>
+  </div>
+  <div class="panel-body" id="divID"> 
+
+
+
+
+
+
+<?php 
+          
+            try
+            {
+            // On se connecte à MySQL
+            include('../moteur/dbconfig.php');
+            }
+            catch(Exception $e)
+            {
+            // En cas d'erreur, on affiche un message et on arrête tout
+            die('Erreur : '.$e->getMessage());
+            }
+ 
+            // Si tout va bien, on peut continuer
+ 
+            // On recupère tout le contenu de la table point de collecte
+            $reponse = $bdd->query('SELECT * FROM type_dechets WHERE visible = "oui"');
+ 
+           // On affiche chaque entree une à une
+           while ($donnees = $reponse->fetch())
+           {
+
+           ?>
+    
+            
+
+
+
+
+
+<ul class="list-group">
+  <li class="list-group-item">
+    <input type="hidden" value="0" name ="<?php echo$donnees['id']?>" id="<?php echo$donnees['id']?>">
+     <input type="hidden" value="0" name ="najout" id="najout">
+    <span class="badge" id="<?php echo$donnees['nom']?>" style="background-color:<?php echo$donnees['couleur']?>">0</span>
+    <?php echo$donnees['nom']?>
+
+  </li>
+
+
+
+
+
+
+   
+              <?php }
+
+              $reponse->closeCursor(); // Termine le traitement de la requête
+                ?>
+
+
+                <?php 
+          
+            try
+            {
+            // On se connecte à MySQL
+            include('../moteur/dbconfig.php');
+            }
+            catch(Exception $e)
+            {
+            // En cas d'erreur, on affiche un message et on arrête tout
+            die('Erreur : '.$e->getMessage());
+            }
+ 
+            // Si tout va bien, on peut continuer
+ 
+            // On recupère tout le contenu de la table point de collecte
+            $reponse = $bdd->query('SELECT * FROM type_dechets_evac WHERE visible = "oui"');
+ 
+           // On affiche chaque entree une à une
+           while ($donnees = $reponse->fetch())
+           {
+
+           ?>
+    
+            
+
+
+
+
+
+
+  <li class="list-group-item">
+    <input type="hidden" value="0" name ="<?php echo "d".$donnees['id']?>" id="<?php echo "d".$donnees['id']?>">
+    <span class="badge" id="<?php echo "d".$donnees['nom']?>" style="background-color:<?php echo$donnees['couleur']?>">0</span>
+    <?php echo$donnees['nom']?>
+
+  </li>
+
+
+
+
+
+
+   
+              <?php }
+
+              $reponse->closeCursor(); // Termine le traitement de la requête
+                ?>
+
+</ul>
+  
+            
+           
+        <br>
+
+</div> 
+</div>
+
+        </div> 
+         <div class="col-md-3" >
+<div class="panel panel-info">
+        <div class="panel-heading">
+     <h3 class="panel-title"><label>Informations :</label></h3>
+  </div>
+  <div class="panel-body"> 
+ <label for="type_sortie">Type de sortie:</label>
           <select name ="type_sortie" id ="type_sortie" class="form-control" required autofocus>
 <?php         
             try
@@ -218,28 +386,35 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
                     
         
           </select>
-<br>
+
 <input type="hidden" name ="id_point_sortie" id="id_point_sortie" value="<?php echo $_GET['numero']?>">
-           <input name ="adh" id ="adh" type="checkbox" ><label for="adh">Adhére à l'association</label> <a href="adhesions.php"  target="_blank"><span style="float:right;" class="glyphicon glyphicon-pencil"></span></a>
-        </div>  
-        <div class="col-md-4" >
-          
-         
-         
-        </div>
+<input type="text" class="form-control" name="commentaire" id="commentaire" placeholder="Commentaire"><br>
+
+</div>
+</div>
+
+          </form>
+         	<br><br>
+          <div class="col-md-3" style="width: 220px;" >
+
+
+  <div class="panel panel-info">
         
-      </div>
+  <div class="panel-body"> 
+   
       <div class="row">
-      	<br>
-        <div class="col-md-3 col-md-offset-1" >
+      
+
+   <div class="input-group">
+      <input type="text" class="form-control" placeholder="Masse" id="number" name="num" style=" margin-left:8px; " >
+      <div class="input-group-btn">
+        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" style=" margin-right:8px; " > <span class="glyphicon glyphicon-minus"></span> <span class="caret"</span></button>
         
-<label>bon de sortie hors boutique:</label>
 
 
-
-
-<?php 
-          
+        <ul class="dropdown-menu dropdown-menu-right" role="menu">
+        
+  <?php 
             try
             {
             // On se connecte à MySQL
@@ -250,162 +425,159 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
             // En cas d'erreur, on affiche un message et on arrête tout
             die('Erreur : '.$e->getMessage());
             }
+            // On affiche une liste déroulante des localités visibles
+            $reponse = $bdd->query('SELECT * FROM type_contenants WHERE visible = "oui"');
+            // On affiche chaque entrée une à une
+            while ($donnees = $reponse->fetch())
+            {
+            ?>
+      <li><a href="#"  onClick="submanut('<?php echo$donnees['masse']?>');"><?php echo$donnees['nom']?></a></li>
+     
+           
+            <?php }
+            $reponse->closeCursor(); // Termine le traitement de la requête
+            ?>
+
+
+          
+                
+
+
+
+
+                  </ul>
+      </div><!-- /btn-group -->
+    </div><!-- /input-group -->
+
+
+
+      </div>
+      <br>
+    <div class="row">
+      <button class="btn btn-default btn-lg" onclick="number_write('1');" data-value="1" style="margin-left:8px; margin-top:8px;">1</button>
+      <button class="btn btn-default btn-lg" onclick="number_write('2');" data-value="2" style="margin-left:8px; margin-top:8px;">2</button>
+      <button class="btn btn-default btn-lg" onclick="number_write('3');" data-value="3" style="margin-left:8px; margin-top:8px;">3</button>
+    </div>
+    <div class="row">
+      <button class="btn btn-default btn-lg" onclick="number_write('4');" data-value="4" style="margin-left:8px; margin-top:8px;">4</button>
+      <button class="btn btn-default btn-lg" onclick="number_write('5');" data-value="5" style="margin-left:8px; margin-top:8px;">5</button>
+      <button class="btn btn-default btn-lg" onclick="number_write('6');" data-value="6" style="margin-left:8px; margin-top:8px;">6</button>
+    </div>
+    <div class="row">
+      <button class="btn btn-default btn-lg" onclick="number_write('7');" data-value="7" style="margin-left:8px; margin-top:8px;">7</button>
+      <button class="btn btn-default btn-lg" onclick="number_write('8');" data-value="8" style="margin-left:8px; margin-top:8px;">8</button>
+      <button class="btn btn-default btn-lg" onclick="number_write('9');" data-value="9" style="margin-left:8px; margin-top:8px;">9</button>
+    </div>
+    <div class="row">
+      <button class="btn btn-default btn-lg" onclick="number_clear();" data-value="C" style="margin-left:8px; margin-top:8px;">C</button>
+      <button class="btn btn-default btn-lg" onclick="number_write('0');" data-value="0" style="margin-left:8px; margin-top:8px;">0</button>
+      <button class="btn btn-default btn-lg" onclick="number_write('.');" data-value="," style="margin-left:8px; margin-top:8px;">,</button>
+    </div>
+
  
-            // Si tout va bien, on peut continuer
- 
+
+</div>
+</div>
+
+
+
+  </div>
+         	 </div> 
+         
+
+
+<div class="col-md-3" >
+          
+
+<div class="row" >
+<div class="panel panel-info">
+        <div class="panel-heading">
+    <h3 class="panel-title"><label>Type d'objet:</label></h3>
+  </div>
+  <div class="panel-body"> 
+      
+
+
+            <?php 
+            try
+            {
+            // On se connecte à MySQL
+            include('../moteur/dbconfig.php');
+            }
+            catch(Exception $e)
+            {
+            // En cas d'erreur, on affiche un message et on arrête tout
+            die('Erreur : '.$e->getMessage());
+            }
             // On recupère tout le contenu de la table point de collecte
             $reponse = $bdd->query('SELECT * FROM type_dechets WHERE visible = "oui"');
  
            // On affiche chaque entree une à une
            while ($donnees = $reponse->fetch())
            {
-
            ?>
-    
-            
-
-
-
-
-
-<ul class="list-group">
-  <li class="list-group-item">
-    <input type="hidden" value="0" name ="<?php echo$donnees['id']?>" id="<?php echo$donnees['id']?>">
-    <span class="badge" id="<?php echo$donnees['nom']?>" style="background-color:<?php echo$donnees['couleur']?>">0</span>
-    <?php echo$donnees['nom']?>
-
-  </li>
-
-
-
-
-
-
+      <div class="btn-group">
+      <button class="btn btn-default" style="margin-left:8px; margin-top:16px;" onclick="tdechet_write('<?php echo$donnees['nom']?>','<?php echo$donnees['id']?>');" ><span class="badge" id="cool" style="background-color:<?php echo$donnees['couleur']?>"><?php echo$donnees['nom']?></span>
+ </button>
+      
+    </div>
    
-              <?php }
-
-              $reponse->closeCursor(); // Termine le traitement de la requête
+                <?php }
+                $reponse->closeCursor(); // Termine le traitement de la requête
                 ?>
+    </div> 
 
-</ul>
-  <button class="btn btn-primary btn-lg">c'est pesé!</button></form>
-  <button class="btn btn-primary btn-lg"  align="center"><span class="glyphicon glyphicon-print"></span></button>
+
+
+    </div>
+  </div>
+
+<div class="row" >
+<div class="panel panel-info">
+        <div class="panel-heading">
+    <h3 class="panel-title"><label>Materiaux et dechets:</label></h3>
+  </div>
+  <div class="panel-body"> 
+      
+
+
+            <?php 
+            try
+            {
+            // On se connecte à MySQL
+            include('../moteur/dbconfig.php');
+            }
+            catch(Exception $e)
+            {
+            // En cas d'erreur, on affiche un message et on arrête tout
+            die('Erreur : '.$e->getMessage());
+            }
+            // On recupère tout le contenu de la table point de collecte
+            $reponse = $bdd->query('SELECT * FROM type_dechets_evac WHERE visible = "oui"');
+ 
+           // On affiche chaque entree une à une
+           while ($donnees = $reponse->fetch())
+           {
+           ?>
+      <div class="btn-group">
+      <button class="btn btn-default" style="margin-left:8px; margin-top:16px;" onclick="tdechet_write('<?php echo"d".$donnees['nom']?>','<?php echo "d".$donnees['id']?>');" ><span class="badge" id="cool" style="background-color:<?php echo$donnees['couleur']?>"><?php echo$donnees['nom']?></span>
+ </button>
+      
+    </div>
+   
+                <?php }
+                $reponse->closeCursor(); // Termine le traitement de la requête
+                ?>
+    </div> 
+
+
+
+    </div>
+  </div>
+<button class="btn btn-primary btn-lg" onclick="encaisse();">C'est pesé!</button>
+
+<button class="btn btn-primary btn-lg"  align="center"  onclick="printdiv('divID');" value=" Print " ><span class="glyphicon glyphicon-print"></span></button>
         <button class="btn btn-warning btn-lg" onclick="tdechet_clear();"><span class="glyphicon glyphicon-refresh"></button>
-
-            
-           
-        <br>
-
-
-
-        </div> 
-         <div class="col-md-2" >
-         	<label>tyes d'objets donnés:</label><br>
-         	 <?php 
-          
-            try
-            {
-            // On se connecte à MySQL
-            include('../moteur/dbconfig.php');
-            }
-            catch(Exception $e)
-            {
-            // En cas d'erreur, on affiche un message et on arrête tout
-            die('Erreur : '.$e->getMessage());
-            }
- 
-            // Si tout va bien, on peut continuer
- 
-            // On recupère tout le contenu de la table point de collecte
-            $reponse = $bdd->query('SELECT * FROM type_dechets WHERE visible = "oui" AND MOD(id,2)=1');
- 
-           // On affiche chaque entree une à une
-           while ($donnees = $reponse->fetch())
-           {
-
-           ?>
-    
-            
-              
-            <button class="btn btn-default btn-sm" onclick="tdechet_write('<?php echo$donnees['nom']?>','<?php echo$donnees['id']?>');" ><span class="badge" id="cool" style="background-color:<?php echo$donnees['couleur']?>"><?php echo$donnees['nom']?></span>
-            </button> 
-              <br>
-          <br>
-   
-              <?php }
-              $reponse->closeCursor(); // Termine le traitement de la requête
-                ?>
-         	 </div> 
-          <div class="col-md-2" >
-        <br><br>        
-        <?php 
-          
-            try
-            {
-            // On se connecte à MySQL
-            include('../moteur/dbconfig.php');
-            }
-            catch(Exception $e)
-            {
-            // En cas d'erreur, on affiche un message et on arrête tout
-            die('Erreur : '.$e->getMessage());
-            }
- 
-            // Si tout va bien, on peut continuer
- 
-            // On recupère tout le contenu de la table point de collecte
-            $reponse = $bdd->query('SELECT * FROM type_dechets WHERE visible = "oui" AND MOD(id,2)=0');
- 
-           // On affiche chaque entree une à une
-           while ($donnees = $reponse->fetch())
-           {
-
-           ?>
-    
-            
-              
-            <button class="btn btn-default btn-sm" onclick="tdechet_write('<?php echo$donnees['nom']?>','<?php echo$donnees['id']?>');" ><span class="badge" id="cool" style="background-color:<?php echo$donnees['couleur']?>"><?php echo$donnees['nom']?></span>
-            </button> 
-              <br>
-          <br>
-   
-              <?php }
-              $reponse->closeCursor(); // Termine le traitement de la requête
-                ?>
-
-        </div>
-
-
-<div class="col-md-3" >
-          <label>Clavier</label><br>
-    <div class="col-md-3" style="width: 200px;">
-    	<div class="row">
-    	<div class="input-group">
-  
-  <input type="text" class="form-control" placeholder="Masse" id="number" name="num"  ><span class="input-group-addon">Kg.</span>
-</div>
-</div><br>
-        <div class="row">
-            <button class="btn btn-default btn-lg" onclick="number_write('1');" data-value="1">1</button>
-            <button class="btn btn-default btn-lg" onclick="number_write('2');" data-value="2">2</button>
-            <button class="btn btn-default btn-lg" onclick="number_write('3');" data-value="3">3</button>
-        </div>
-        <div class="row">
-            <button class="btn btn-default btn-lg" onclick="number_write('4');" data-value="4">4</button>
-            <button class="btn btn-default btn-lg" onclick="number_write('5');" data-value="5">5</button>
-            <button class="btn btn-default btn-lg" onclick="number_write('6');" data-value="6">6</button>
-        </div>
-        <div class="row">
-            <button class="btn btn-default btn-lg" onclick="number_write('7');" data-value="7">7</button>
-            <button class="btn btn-default btn-lg" onclick="number_write('8');" data-value="8">8</button>
-            <button class="btn btn-default btn-lg" onclick="number_write('9');" data-value="9">9</button>
-        </div>
-        <div class="row">
-            <button class="btn btn-default btn-lg" onclick="number_clear();" data-value="C">C</button>
-            <button class="btn btn-default btn-lg" onclick="number_write('0');" data-value="0">0</button>
-            <button class="btn btn-default btn-lg" onclick="number_write('.');" data-value=",">,</button>
-        </div>
-</div>
         </div>
 
 

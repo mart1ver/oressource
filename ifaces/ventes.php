@@ -4,28 +4,7 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
 
 
 <div class="panel-body">
-  <?php
-if ($_GET['err'] == "") // SI on a pas de message d'erreur
-{
-   echo'';
-}
 
-else // SINON 
-{
-  echo'<div class="alert alert-danger">'.$_GET['err'].'</div>';
-}
-
-
-if ($_GET['msg'] == "") // SI on a pas de message positif
-{
-   echo '';
-}
-
-else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
-{
-  echo'<div class="alert alert-success alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'.$_GET['msg'].'</div>';
-}
-?>
       <fieldset>
       <legend>
         <?php 
@@ -78,9 +57,32 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
            }
               $req->closeCursor(); // Termine le traitement de la requête
         ?>
-      </legend>   
+      </legend> 
+        <?php
+if ($_GET['err'] == "") // SI on a pas de message d'erreur
+{
+   echo'';
+}
+
+else // SINON 
+{
+  echo'<div class="alert alert-danger">'.$_GET['err'].'</div>';
+}
+
+
+if ($_GET['msg'] == "") // SI on a pas de message positif
+{
+   echo '';
+}
+
+else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
+{
+  echo'<div class="alert alert-success alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'.$_GET['msg'].'</div>';
+}
+?>  
       </fieldset>     
     <div class="row">
+
    	<br>
       <div class="col-md-2 col-md-offset-2" style="width: 330px;" >
      
@@ -91,7 +93,7 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
     <span class ="badge" id="recaptotal"  style="float:right;">0€
     </span>
   </div>
-  <div class="panel-body">
+  <div class="panel-body" id="divID">
      
 <form action="../moteur/vente_post.php" id="formulaire" method="post">
 <ul id="liste" class="list-group">
@@ -100,21 +102,15 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
 </ul>
  <ul class="list-group" id="total">
 </ul>
-<input type="text" class="form-control" placeholder="commentaire" id="comm" name="comm"><br>
-<input name ="adh" id ="adh" type="checkbox" ><label for="adh">Adhére à l'association</label> <a href="adhesions.php"  target="_blank"><span style="float:right;" class="glyphicon glyphicon-pencil"></span></a>
-<br>
+<input type="hidden" id="comm" name="comm"><br>
+<input type="hidden" id="moyen" name="moyen" value="1"><br>
 <input type="hidden"  id="nlignes" name="nlignes">
 <input type="hidden"  id="narticles" name="narticles">
 <input type="hidden"  id="ptot" name="ptot">
 
 <input type="hidden" name ="id_point_vente" id="id_point_vente" value="<?php echo $_GET['numero']?>">
     </form>
- <ul id="boutons" class="list-group">
-        <button class="btn btn-primary btn-lg" onclick="encaisse();">Encaisser</button>
-        <button class="btn btn-primary btn-lg"  align="center"><span class="glyphicon glyphicon-print"></span></button>
-        <button class="btn btn-warning btn-lg" onClick="javascript:window.location.reload()"><span class="glyphicon glyphicon-refresh"></button>
-  </ul>
-
+ 
 
       </div>
       </div>
@@ -140,6 +136,7 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
     <button type="button" class="btn btn-default btn-lg" onclick="ajout();">
     Ajout!
     </button>
+
 
     <div class="col-md-3" style="width: 200px;">
     <div class="row">
@@ -248,7 +245,105 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
 
 
     </div>
-    <br><br><br>
+    <br>
+    <div class="panel panel-info">
+       
+  <div class="panel-body"> 
+<label>Moyen de paiement:</label>
+<br>
+
+
+
+
+<div class="btn-group" data-toggle="buttons">
+
+ <?php 
+            try
+            {
+            // On se connecte à MySQL
+            include('../moteur/dbconfig.php');
+            }
+            catch(Exception $e)
+            {
+            // En cas d'erreur, on affiche un message et on arrête tout
+            die('Erreur : '.$e->getMessage());
+            }
+            // On recupère tout le contenu de la table point de collecte
+            $reponse = $bdd->query('SELECT * FROM moyens_paiement WHERE visible = "oui"');
+ 
+           // On affiche chaque entree une à une
+           while ($donnees = $reponse->fetch())
+           {
+            if ($donnees['id'] == 1){
+           ?>
+      
+      
+
+<label class="btn btn-primary active " onclick="moyens('<?php echo$donnees['id']?>');">
+    <input type="radio" name="paiement" id="paiement" autocomplete="off" value="<?php echo$donnees['id']?>" checked > <?php echo$donnees['nom']?>
+  </label>
+
+
+   
+   
+                <?php 
+}else{
+?>
+
+
+
+<label class="btn btn-primary " onclick="moyens('<?php echo$donnees['id']?>');">
+    <input type="radio" name="paiement" id="paiement" autocomplete="off" value="<?php echo$donnees['id']?>" > <?php echo$donnees['nom']?>
+  </label>
+
+
+
+<?php
+}
+
+              }
+                $reponse->closeCursor(); // Termine le traitement de la requête
+                ?>
+
+
+
+
+
+
+
+
+  
+  
+
+
+</div>
+
+
+
+
+
+
+<br><br>
+
+
+ <input type="text" class="form-control" name="commentaire" id="commentaire" placeholder="Commentaire">
+
+</div>
+</div>
+<br>
+<ul id="boutons" class="list-group">
+        <button class="btn btn-primary btn-lg" onclick="encaisse();">Encaisser</button>
+        <button class="btn btn-primary btn-lg" type="button"   align="center" onclick="printdiv('divID');" value=" Print "><span class="glyphicon glyphicon-print"></span></button>
+        <button class="btn btn-warning btn-lg" onclick="javascript:window.location.reload()"><span class="glyphicon glyphicon-refresh"></button>
+  
+<br><br>
+    <a href="remboursement.php?numero=<?php echo $_GET['numero']?>&nom=<?php echo $_GET['nom']?>&adresse=<?php echo $_GET['adresse']?>"> 
+    <button type="button"  class="btn btn-danger pull-right" >
+    Remboursement
+    </button>
+    </a>
+    </ul>
+    <br><br>
      
     </div>
   </div>
@@ -264,6 +359,9 @@ function fokus(that) {
 what = that;
 }
 
+function moyens(moy) {
+ document.getElementById('moyen').value = moy;
+}
 
 function often(that) {
 if (isNaN(parseInt(document.getElementById('id_type_objet').value)) ) 
@@ -280,7 +378,17 @@ what.value = what.value + that.value;
 }
 
 }
-
+function printdiv(divID)
+    {
+      var headstr = "<html><head><title></title></head><body><small><?php echo $_SESSION['structure'] ?><br><?php echo $_SESSION['adresse'] ?><br><label>Bon d'apport:</label><br>type d'apport";
+      var footstr = "<br>Masse totale :</body></small>";
+      var newstr = document.all.item(divID).innerHTML;
+      var oldstr = document.body.innerHTML;
+      document.body.innerHTML = headstr+newstr+footstr;
+      window.print();
+      document.body.innerHTML = oldstr;
+      return false;
+    }
 function ajout() {
      if (isNaN((parseFloat(document.getElementById('prix').value)*parseFloat(document.getElementById('quantite').value)).toFixed(2)) ) 
          {} 
@@ -341,6 +449,8 @@ function edite(nom,prix,id_type_objet,id_objet) {
 function encaisse() {
   if (parseInt(document.getElementById('nlignes').value) >= 1) 
           { 
+            document.getElementById('comm').value = document.getElementById('commentaire').value
+            
           document.getElementById("formulaire").submit();
           }
                     }

@@ -17,23 +17,36 @@
       </div>
     </div>
 
-    <div class="container">
+    <div class="container" id="actualise">
       <!-- Example row of columns -->
       <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-4" >
           <h2>Collecté aujourd'hui:</h2>
           <p><div id="graphj" style="height: 180px;"></div></p>
-          <p><a class="btn btn-default" href="#" role="button">Détails &raquo;</a></p>
+<?php 
+if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 'bi') !== false))
+      { ?>
+          <p><a href=" bilanc.php?date1=<?php echo date("d-m-Y")?>&date2=<?php echo date("d-m-Y")?>&numero=0" class="btn btn-default"  role="button">Détails &raquo;</a></p>
+<?php } ?>
+
         </div>
         <div class="col-md-4">
-          <h2>Collecté ce mois-ci:</h2>
-          <p><div id="graphm" style="height: 180px;"></div></p>
-          <p><a class="btn btn-default" href="#" role="button">Détails &raquo;</a></p>
+          <h2>Evacué aujourd'hui:</h2>
+          <p><div id="grapha" style="height: 180px;"></div></p>
+<?php
+          if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 'bi') !== false))
+      { ?>
+          <p><a class="btn btn-default" href=" bilanhb.php?date1=<?php echo date("d-m-Y")?>&date2=<?php echo date("d-m-Y")?>" role="button">Détails &raquo;</a></p>
+          <?php } ?>
        </div>
         <div class="col-md-4">
-          <h2>Collecté cette année:</h2>
-          <p><div id="grapha" style="height: 180px;"></div></p>
-          <p><a class="btn btn-default" href="#" role="button">Détails &raquo;</a></p>
+          <h2>Vendu aujourd'hui:</h2>
+          <p><div id="graphm" style="height: 180px;"></div></p>
+          <?php
+if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 'bi') !== false))
+      { ?>
+          <p><a class="btn btn-default" href=" bilanv.php?date1=<?php echo date("d-m-Y")?>&date2=<?php echo date("d-m-Y")?>" role="button">Détails &raquo;</a></p>
+          <?php } ?>
         </div>
       </div>
       <hr>
@@ -132,7 +145,7 @@ GROUP BY nom');
             // Si tout va bien, on peut continuer
  
             // On recupère tout le contenu de la table affectations
-            $reponse = $bdd->query('SELECT type_dechets.couleur,type_dechets.nom, sum(pesees_collectes.masse) somme FROM type_dechets,pesees_collectes WHERE type_dechets.id = pesees_collectes.id_type_dechet AND MONTH(pesees_collectes.timestamp) = MONTH(CURDATE())
+            $reponse = $bdd->query('SELECT type_dechets.couleur,type_dechets.nom, sum(vendus.quantite ) somme FROM type_dechets,vendus WHERE type_dechets.id = vendus.id_type_dechet AND DATE(vendus.timestamp) = CURDATE()
 GROUP BY nom');
  
            // On affiche chaque entree une à une
@@ -164,7 +177,7 @@ GROUP BY nom');
             // Si tout va bien, on peut continuer
  
             // On recupère tout le contenu de la table affectations
-            $reponse = $bdd->query('SELECT type_dechets.couleur,type_dechets.nom, sum(pesees_collectes.masse) somme FROM type_dechets,pesees_collectes WHERE type_dechets.id = pesees_collectes.id_type_dechet AND MONTH(pesees_collectes.timestamp) = MONTH(CURDATE())
+            $reponse = $bdd->query('SELECT type_dechets.couleur,type_dechets.nom, sum(vendus.quantite ) somme FROM type_dechets,vendus WHERE type_dechets.id = vendus.id_type_dechet AND DATE(vendus.timestamp) = CURDATE()
 GROUP BY nom');
  
            // On affiche chaque entree une à une
@@ -178,7 +191,7 @@ GROUP BY nom');
               $reponse->closeCursor(); // Termine le traitement de la requête
                 ?>
     ],
-    formatter: function (x) { return x + " Kg."}
+    formatter: function (x) { return x + " pcs."}
     });
 </script>
 
@@ -200,7 +213,22 @@ GROUP BY nom');
             // Si tout va bien, on peut continuer
  
             // On recupère tout le contenu de la table affectations
-            $reponse = $bdd->query('SELECT type_dechets.couleur,type_dechets.nom, sum(pesees_collectes.masse) somme FROM type_dechets,pesees_collectes WHERE type_dechets.id = pesees_collectes.id_type_dechet AND YEAR(pesees_collectes.timestamp) = YEAR(CURDATE())
+            $reponse = $bdd->query('SELECT type_dechets.couleur,type_dechets.nom, sum(pesees_sorties.masse) somme 
+FROM type_dechets,pesees_sorties 
+WHERE type_dechets.id = pesees_sorties.id_type_dechet 
+AND DATE(pesees_sorties.timestamp) = CURDATE()
+GROUP BY nom
+UNION
+SELECT types_poubelles.couleur,types_poubelles.nom, sum(pesees_sorties.masse) somme 
+FROM types_poubelles,pesees_sorties 
+WHERE types_poubelles.id = pesees_sorties.id_type_poubelle 
+AND DATE(pesees_sorties.timestamp) = CURDATE()
+GROUP BY nom
+UNION
+SELECT type_dechets_evac.couleur,type_dechets_evac.nom, sum(pesees_sorties.masse) somme 
+FROM type_dechets_evac ,pesees_sorties 
+WHERE type_dechets_evac.id=pesees_sorties.id_type_dechet_evac 
+AND DATE(pesees_sorties.timestamp) = CURDATE()
 GROUP BY nom');
  
            // On affiche chaque entree une à une
@@ -232,7 +260,22 @@ GROUP BY nom');
             // Si tout va bien, on peut continuer
  
             // On recupère tout le contenu de la table affectations
-            $reponse = $bdd->query('SELECT type_dechets.couleur,type_dechets.nom, sum(pesees_collectes.masse) somme FROM type_dechets,pesees_collectes WHERE type_dechets.id = pesees_collectes.id_type_dechet AND YEAR(pesees_collectes.timestamp) = YEAR(CURDATE())
+            $reponse = $bdd->query('SELECT type_dechets.couleur,type_dechets.nom, sum(pesees_sorties.masse) somme 
+FROM type_dechets,pesees_sorties 
+WHERE type_dechets.id = pesees_sorties.id_type_dechet 
+AND DATE(pesees_sorties.timestamp) = CURDATE()
+GROUP BY nom
+UNION
+SELECT types_poubelles.couleur,types_poubelles.nom, sum(pesees_sorties.masse) somme 
+FROM types_poubelles,pesees_sorties 
+WHERE types_poubelles.id = pesees_sorties.id_type_poubelle 
+AND DATE(pesees_sorties.timestamp) = CURDATE()
+GROUP BY nom
+UNION
+SELECT type_dechets_evac.couleur,type_dechets_evac.nom, sum(pesees_sorties.masse) somme 
+FROM type_dechets_evac ,pesees_sorties 
+WHERE type_dechets_evac.id=pesees_sorties.id_type_dechet_evac 
+AND DATE(pesees_sorties.timestamp) = CURDATE()
 GROUP BY nom');
  
            // On affiche chaque entree une à une
@@ -248,14 +291,31 @@ GROUP BY nom');
     ],
     formatter: function (x) { return x + " Kg."}
     });
+var temps_reload = 240
+for (var i = 1; i <= temps_reload; i++) {
+    var tick = function(i) {
+        return function() {
+            
+            if (i == temps_reload) {
+              window.location.reload();
+   
+}
+        }
+
+    };
+    setTimeout(tick(i), 500 * i);
+
+}
+
 </script>
   
 
 
 
 <?php include "pied.php" ?>
+
 <?php }
     else{
-     include "login.php"; }?>
+     header('Location: login.php') ; }?>
 
 

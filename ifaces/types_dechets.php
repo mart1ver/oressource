@@ -1,10 +1,10 @@
 <?php session_start(); ?>
 <?php
-    if (isset($_SESSION['id']) AND (strpos($_SESSION['niveau'], 'g') !== false))
+  if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 'k') !== false))
       { include "tete.php" ?>
     <div class="container">
-        <h1>Gestions des types de dechets</h1> 
-         <div class="panel-heading">Gerez ici les types de dechets.</div>
+        <h1>Gestions des types d'objets collectés</h1> 
+         <div class="panel-heading">Gerez ici les types d'objets collectés par la structure.</div>
          <p>Permet de creer son propre jeu de sept famille (ou plus) des objets collectés</p>
 <?php
 if ($_GET['err'] == "") // SI on a pas de message d'erreur
@@ -168,6 +168,6 @@ else // SINON
    
 <?php include "pied.php" ?>
 <?php }
-    else
-    header('Location: ../') ;
+    else{
+    header('Location: ../moteur/destroy.php') ;}
 ?>

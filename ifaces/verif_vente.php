@@ -1,7 +1,7 @@
 <?php session_start(); ?>
 
 <?php
-    if (isset($_SESSION['id']) AND (strpos($_SESSION['niveau'], 'g') !== false))
+ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 'h') !== false))
       {  include "tete.php" ?>
    <div class="container">
         <h1>verification des ventes</h1> 
@@ -244,7 +244,7 @@ $req2->execute(array('id_collecte' => $donnees['id']));
 <?php include "pied.php" ?>
 <?php }
     else
-    header('Location: ../') ;
+header('Location: ../moteur/destroy.php') ;
 ?>
        
       
