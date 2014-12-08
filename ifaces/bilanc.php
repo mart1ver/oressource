@@ -538,14 +538,19 @@ ORDER BY somme DESC');
 
 
   </div>
+ 
+
+
   <div class="col-md-6">
 
 <div class="panel panel-default">
-  <div class="panel-heading">
-    <h3 class="panel-title">Nombre de collectes: <?php
-// on determine la masse totale collècté sur cete periode
+  <div class="panel-heading">par localité
+    <h3 class="panel-title">Masse collectée: <?php
+// on determine la masse totale collècté sur cete periode (pour tout les points)
 
 
+           
+if ($_GET['numero'] == 0) {
             try
             {
             // On se connecte à MySQL
@@ -556,28 +561,55 @@ ORDER BY somme DESC');
             // En cas d'erreur, on affiche un message et on arrête tout
             die('Erreur : '.$e->getMessage());
             }
- 
             // Si tout va bien, on peut continuer
-            /*
-SELECT SUM(masse),timestamp FROM pesees_collectes WHERE  `timestamp`BETWEEN '2014-09-18 00:00:00' AND '2014-09-24 23:59:59'
-            */
- $req = $bdd->prepare("SELECT SUM(pesees_collectes.masse),pesees_collectes.timestamp  FROM pesees_collectes  WHERE  `pesees_collectes.timestamp` BETWEEN :du AND :au  ");
+            // On recupère tout le contenu de la table point de vente
+
+
+$req = $bdd->prepare("SELECT SUM(pesees_collectes.masse)AS total   FROM pesees_collectes  WHERE  DATE(pesees_collectes.timestamp) BETWEEN :du AND :au  ");
 $req->execute(array('du' => $time_debut,'au' => $time_fin ));
 $donnees = $req->fetch();
-     
-echo $donnees['SUM(pesees_collectes.masse)'].' Kgs.';
+$mtotcolo = $donnees['total'];
+echo $donnees['total']." Kgs.";
+            
+              $reponse->closeCursor(); // Termine le traitement de la requête
+               
+}
+else //si on observe un point en particulier
+{
 
-$req->closeCursor(); // Termine le traitement de la requête
+try
+            {
+            // On se connecte à MySQL
+            include('../moteur/dbconfig.php');
+            }
+            catch(Exception $e)
+            {
+            // En cas d'erreur, on affiche un message et on arrête tout
+            die('Erreur : '.$e->getMessage());
+            }
+            // Si tout va bien, on peut continuer
+            // On recupère tout le contenu de la table point de vente
+
+
+$req = $bdd->prepare("SELECT SUM(pesees_collectes.masse)AS total  
+FROM pesees_collectes ,collectes
+WHERE pesees_collectes.id_collecte = collectes.id 
+AND pesees_collectes.timestamp BETWEEN :du AND :au  AND collectes.id_point_collecte = :numero ");
 
 
 
+$req->execute(array('du' => $time_debut,'au' => $time_fin,'numero' => $_GET['numero'] ));
+$donnees = $req->fetch();
+$mtotcolo = $donnees['total'];
+echo $donnees['total']." Kgs.";
+            
+              $reponse->closeCursor(); // Termine le traitement de la requête
+
+}
 if ($_GET['numero'] == 0) {
+
+
   ?>
-
-
-
-
-
   , sur <?php
 // on determine le nombre de points de collecte
 
@@ -597,7 +629,7 @@ if ($_GET['numero'] == 0) {
             /*
 
             */
- $req = $bdd->prepare("SELECT COUNT(id) FROM points_collecte WHERE  `timestamp` < :au ");//SELECT `titre_affectation` FROM affectations WHERE titre_affectation = "conssomables" LIMIT 1
+ $req = $bdd->prepare("SELECT COUNT(id) FROM points_collecte");//SELECT `titre_affectation` FROM affectations WHERE titre_affectation = "conssomables" LIMIT 1
 $req->execute(array('au' => $time_fin ));
 $donnees = $req->fetch();
      
@@ -610,8 +642,6 @@ $req->closeCursor(); // Termine le traitement de la requête
   ?> Point(s) de collecte.
 
 <?php } ?>
-
-
 </h3>
   </div>
   <div class="panel-body">
@@ -619,87 +649,230 @@ $req->closeCursor(); // Termine le traitement de la requête
 <table class="table table-condensed table-striped table table-bordered table-hover" style="border-collapse:collapse;">
     <thead>
         <tr>
-            <th>Type de collecte</th>
-            <th>Nombre de collectes</th>
+            <th  style="width:300px">Localité</th>
+            <th>Nbr.de collectes</th>
+            <th>Masse collecté</th>
+
             <th>%</th>
             
         </tr>
     </thead>
     <tbody>
-        <tr data-toggle="collapse" data-target=".demo1" class="active">
-            <td>a dom</td>
-            <td>125</td>
-            <td>58</td>
-            
+       
+
+
+        <?php
+        if ($_GET['numero'] == 0) {
+
+// on determine les masses totales collèctés sur cete periode(pour tout les points)
+            try
+            {
+            // On se connecte à MySQL
+            include('../moteur/dbconfig.php');
+            }
+            catch(Exception $e)
+            {
+            // En cas d'erreur, on affiche un message et on arrête tout
+            die('Erreur : '.$e->getMessage());
+            }
+ 
+            // Si tout va bien, on peut continuer
+ 
+            // On recupère tout le contenu de la table affectations
+
+            $reponse = $bdd->prepare('SELECT 
+localites.nom,SUM(`pesees_collectes`.`masse`) somme,pesees_collectes.timestamp,localites.id,COUNT(collectes.id) ncol
+FROM 
+pesees_collectes,collectes,localites
+
+WHERE
+  pesees_collectes.timestamp BETWEEN :du AND :au AND
+localites.id =  collectes.localisation AND pesees_collectes.id_collecte = collectes.id
+GROUP BY id_type_collecte');
+ $reponse->execute(array('du' => $time_debut,'au' => $time_fin ));
+           // On affiche chaque entree une à une
+           while ($donnees = $reponse->fetch())
+           {
+            ?>
+            <tr data-toggle="collapse" data-target=".parloc<?php echo $donnees['id']?>" >
+            <td><?php echo $donnees['nom'] ?></td>
+            <td><?php echo $donnees['ncol'] ?></td>
+            <td><?php echo $donnees['somme'] ?></td>
+            <td><?php echo  round($donnees['somme']*100/$mtotcolo, 2)   ; ?></td>      
         </tr>
-      
+
+      <?php 
+            try
+            {
+            // On se connecte à MySQL
+            include('../moteur/dbconfig.php');
+            }
+            catch(Exception $e)
+            {
+            // En cas d'erreur, on affiche un message et on arrête tout
+            die('Erreur : '.$e->getMessage());
+            }
+ 
+            // Si tout va bien, on peut continuer
+ 
+            // On recupère tout le contenu de la table affectations
+            $reponse2 = $bdd->prepare('SELECT localites.couleur,type_dechets.nom, sum(pesees_collectes.masse) somme
+ FROM type_dechets,pesees_collectes ,localites , collectes
+WHERE
+pesees_collectes.timestamp BETWEEN :du AND :au 
+AND type_dechets.id = pesees_collectes.id_type_dechet 
+AND localites.id =  collectes.localisation AND pesees_collectes.id_collecte = collectes.id
+AND localites.id = :id_loc
+GROUP BY nom
+ORDER BY somme DESC');
+  $reponse2->execute(array('du' => $time_debut,'au' => $time_fin ,'id_loc' => $donnees['id'] ));
+           // On affiche chaque entree une à une
+           while ($donnees2 = $reponse2->fetch())
+           {        
+            ?>
+
+    <tr class="collapse parloc<?php echo $donnees['id']?> " >
+            <td  >
+              <?php echo $donnees2['nom'] ?>
+            </td >
+            <td >
+                <?php echo $donnees2['somme']." Kgs." ?>
+            </td>
+            <td >
+                <?php echo  round($donnees2['somme']*100/$donnees['somme'], 2)." %"  ; ?>
+            </td>
+          </tr>
         
-        <tr class="collapse demo1">
+ <?php
+             }
+              $reponse2->closeCursor(); // Termine le traitement de la requête
+                ?>
+               
+      <?php
+           }
+              $reponse->closeCursor(); // Termine le traitement de la requête
+               }else
+
+               {
+
+
+
+// on determine les masses totales collèctés sur cete periode(pour un point donné)
+            try
+            {
+            // On se connecte à MySQL
+            include('../moteur/dbconfig.php');
+            }
+            catch(Exception $e)
+            {
+            // En cas d'erreur, on affiche un message et on arrête tout
+            die('Erreur : '.$e->getMessage());
+            }
+ 
+            // Si tout va bien, on peut continuer
+ 
+            // On recupère tout le contenu de la table affectations
+
+            $reponse = $bdd->prepare('SELECT 
+type_collecte.nom,SUM(`pesees_collectes`.`masse`) somme,pesees_collectes.timestamp,type_collecte.id,COUNT(collectes.id) ncol
+FROM 
+pesees_collectes,collectes,type_collecte
+
+WHERE
+  pesees_collectes.timestamp BETWEEN :du AND :au AND
+type_collecte.id =  collectes.id_type_collecte AND pesees_collectes.id_collecte = collectes.id
+AND collectes.id_point_collecte = :numero
+GROUP BY id_type_collecte');
+ $reponse->execute(array('du' => $time_debut,'au' => $time_fin,'numero' => $_GET['numero']  ));
+           // On affiche chaque entree une à une
+           while ($donnees = $reponse->fetch())
+           {
+            ?>
+            <tr data-toggle="collapse" data-target=".parloc<?php echo $donnees['id']?>" >
+            <td><?php echo $donnees['nom'] ?></td>
+             <td><?php echo $donnees['ncol'] ?></td>
+            <td><?php echo $donnees['somme'] ?></td>
+            <td><?php echo  round($donnees['somme']*100/$mtotcolo, 2)   ; ?></td>      
+        </tr>
+      <?php 
+            try
+            {
+            // On se connecte à MySQL
+            include('../moteur/dbconfig.php');
+            }
+            catch(Exception $e)
+            {
+            // En cas d'erreur, on affiche un message et on arrête tout
+            die('Erreur : '.$e->getMessage());
+            }
+ 
+            // Si tout va bien, on peut continuer
+ 
+            // On recupère tout le contenu de la table affectations
+            $reponse2 = $bdd->prepare('SELECT type_dechets.couleur,type_dechets.nom, sum(pesees_collectes.masse) somme
+ FROM type_dechets,pesees_collectes ,type_collecte , collectes
+WHERE
+pesees_collectes.timestamp BETWEEN :du AND :au 
+AND type_dechets.id = pesees_collectes.id_type_dechet 
+AND type_collecte.id =  collectes.id_type_collecte AND pesees_collectes.id_collecte = collectes.id
+AND type_collecte.id = :id_type_collecte AND collectes.id_point_collecte = :numero
+GROUP BY nom
+ORDER BY somme DESC');
+  $reponse2->execute(array('du' => $time_debut,'au' => $time_fin,'numero' => $_GET['numero'] ,'id_type_collecte' => $donnees['id'] ));
+           // On affiche chaque entree une à une
+           while ($donnees2 = $reponse2->fetch())
+           {        
+            ?>
+ <tr class="collapse parloc<?php echo $donnees['id']?> active">
+    
             <td class="hiddenRow">
-               deee
+              <?php echo $donnees2['nom'] ?>
             </td >
             <td class="hiddenRow">
-                100kgs
+                <?php echo $donnees2['somme']." Kgs." ?>
             </td>
             <td class="hiddenRow">
-                75%
+                <?php echo  round($donnees2['somme']*100/$donnees['somme'], 2)." %"  ; ?>
             </td>
-            
         </tr>
+ <?php
+             }
+              $reponse2->closeCursor(); // Termine le traitement de la requête
+                ?>
+      <?php
+           }
+              $reponse->closeCursor(); // Termine le traitement de la requête
 
-
-        <tr class="collapse demo1">
-            <td class="hiddenRow">
-                textile
-            </td >
-            <td class="hiddenRow">
-                25kgs
-            </td>
-            <td class="hiddenRow">
-                25%
-            </td>
-            
-        </tr>
- <tr data-toggle="collapse" data-target=".demo2" class="active">
-            <td>apport vol.</td>
-            <td>125</td>
-            <td>58</td>
-            
-        </tr>
-      
-        
-        <tr class="collapse demo2">
-            <td class="hiddenRow">
-               mobilier
-            </td>
-            <td class="hiddenRow">
-                100kgs
-            </td>
-            <td class="hiddenRow">
-                75%
-            </td>
-            
-        </tr>
-
-
-        <tr class="collapse demo2">
-            <td class="hiddenRow">
-                autres
-            </td>
-            <td class="hiddenRow">
-                25kgs
-            </td>
-            <td class="hiddenRow">
-                25%
-            </td>
-            
-        </tr>
+               } ?>
 
       
+
+
+
+
+
+
+
+
     </tbody>
 </table>
 
-<script>       Morris.Donut({
+
+
+
+<br>
+
+
+          <p><div id="graphmasse" style="height: 180px;"></div></p>
+
+
+  </div>
+</div>
+
+  </div>
+ 
+
+ <script>       Morris.Donut({
     element: 'graphmasse',
    
 data: [
@@ -848,15 +1021,7 @@ GROUP BY nom');
 
 
 <?php } ?>
-
-
-
-
-
-  </div>
-</div>
-  </div>
-  
+ 
 </div>
 
 <br>
