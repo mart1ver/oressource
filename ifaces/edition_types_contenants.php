@@ -1,5 +1,4 @@
-<?php session_start(); ?>
-<?php
+<?php session_start();
     if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 'g') !== false))
       { include "tete.php" ?>
     <div class="container">

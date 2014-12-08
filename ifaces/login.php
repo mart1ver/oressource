@@ -20,6 +20,7 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
   echo'<div class="alert alert-success alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'.$_GET['msg'].'</div>';
 }
 ?>
+<br>
         <h1>Veuillez vous identifier:</h1>
 <br>
 <br>
