@@ -55,7 +55,7 @@
   
   </div>
   </div>
-                    <?php include "pied.php" 
+                    <?php include "pied.php"; 
 }
 else
 { header('Location: ../moteur/destroy.php') ;}

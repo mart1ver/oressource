@@ -1,8 +1,10 @@
-            <?php session_start(); 
+ <?php session_start(); 
 
 //Vérification des autorisations de l'utilisateur et des variables de session requisent pour l'affichage de cette page: 
             if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 'k') !== false))
+
             {include "tete.php"
+
 //Oressource 2014, formulaire de description de la structure
 //Simple formulaire de saisie renseignant les informations fondamentales identifiant la  structure 
             ?>
@@ -81,7 +83,7 @@
 </div>
 <?php }
    $reponse->closeCursor(); // Termine le traitement de la requête
-include "pied.php" 
+include "pied.php"; 
 }
 else
       { header('Location: ../moteur/destroy.php') ;}

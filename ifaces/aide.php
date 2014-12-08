@@ -8,8 +8,8 @@
          
 
 
-<?php include "pied.php" ?>
-<?php }
+<?php include "pied.php"; 
+}
     else
    { header('Location: ../moteur/destroy.php') ; }
 ?>

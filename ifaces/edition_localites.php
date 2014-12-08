@@ -133,7 +133,7 @@
 </div>
 </div>
 </div><!-- /.container -->
-            <?php include "pied.php" 
+            <?php include "pied.php"; 
 }
 else
 { header('Location: ../moteur/destroy.php') ;}

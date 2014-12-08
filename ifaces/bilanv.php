@@ -1,5 +1,6 @@
 
 <?php session_start();
+
 //Vérification des autorisations de l'utilisateur et des variables de session requisent pour l'affichage de cette page:
 if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 'bi') !== false))
       { include "tete.php";?>
@@ -296,13 +297,6 @@ nombre dobjet par vente en moyenne:
 3.2683435470594 
 prix moyen dun panier:
 5.3345659928656 
-
-
-
-
-
-   
-
 
 <?php include "pied_bilan.php"; 
 }
