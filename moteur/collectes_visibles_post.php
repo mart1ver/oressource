@@ -1,4 +1,7 @@
-<?php
+ <?php session_start();
+//Vérification des autorisations de l'utilisateur et des variables de session requisent pour l'utilisation de cette fonction:
+                    if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 'k') !== false))
+                    {
 //martin vert
 // Connexion à la base de données
 		try
@@ -15,4 +18,7 @@
     $req->closeCursor();
 // Redirection du visiteur vers la page de gestion des affectation
 header('Location:../ifaces/edition_points_collecte.php');
+}
+else
+{header('Location: ../moteur/destroy.php') ;}
 ?>

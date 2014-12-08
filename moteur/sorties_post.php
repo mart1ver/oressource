@@ -1,4 +1,7 @@
-<?php 
+<?php session_start();
+//Vérification des autorisations de l'utilisateur et des variables de session requisent pour l'utilisation de cette fonction:
+if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 's'.$_GET['numero']) !== false))
+{
 //on definit $adh en fonction $_POST['adh']
 if(isset($_POST['adh']))
     {
@@ -111,4 +114,7 @@ $req->execute(array($_POST["d".$i],  $id_sortie , $i));
 
 // Redirection du visiteur vers la page de gestion des affectation
 	header("Location:../ifaces/sorties.php?numero=".$_POST['id_point_sortie']);
+}
+else
+{header('Location:../moteur/destroy.php');}
 	 ?>

@@ -1,5 +1,5 @@
 <?php session_start();
-
+//Vérification des autorisations de l'utilisateur et des variables de session requisent pour l'utilisation de cette page:
  if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 'c'.$_GET['numero']) !== false))
       {include "tete.php";
 //Oressource 2014, formulaire de collecte

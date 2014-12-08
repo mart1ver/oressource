@@ -1,7 +1,8 @@
-<?php session_start(); 
- include "tete.php";
+<?php session_start();
+//Vérification des autorisations de l'utilisateur et des variables de session requisent pour l'utilisation de cette page: 
 if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 's'.$_GET['numero']) !== false))
-      {
+      {include "tete.php";
+
 //Oressource 2014, formulaire de sorties hors boutique
 //Simple formulaire de saisie des matieres d'ouevres sortantes de la structure. (Dons)
 //Doit etre fonctionnel avec un ecran tactille.
