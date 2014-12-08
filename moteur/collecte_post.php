@@ -1,4 +1,8 @@
-<?php 
+<?php session_start();
+
+ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 'c'.$_GET['numero']) !== false))
+{
+
 //on definit $adh en fonction $_POST['adh']
 if(isset($_POST['adh']))
     {
@@ -72,4 +76,9 @@ $req->execute(array($_POST[$i],  $id_collecte , $i));
 }
 // Redirection du visiteur vers la page de gestion des affectation
 	header("Location:../ifaces/collecte.php?numero=".$_POST['id_point_collecte']);
-	 ?>
+}
+else { 
+header('Location:../moteur/destroy.php');
+     }
+?>
+
