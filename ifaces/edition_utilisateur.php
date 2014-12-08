@@ -47,7 +47,7 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
           <input type="checkbox" name="niveaubi" id="niveaubi" value="bi"<?php if((strpos($_POST['niveau'], 'bi') !== false)){ echo "checked";} ?>> <label for="niveaubi">Bilans</label><br>
 
           <input type="checkbox" name="niveaug" id="niveaug" value="g"<?php if((strpos($_POST['niveau'], 'g') !== false)){ echo "checked";} ?>> <label for="niveaug">Gestion quotidienne</label><br>
-          <input type="checkbox" name="niveauh" id="niveauh" value="h"<?php if((strpos($_POST['niveau'], 'h') !== false)){ echo "checked";} ?>> <label for="niveauh">Recettes points de sortie et verif. formulaires</label><br>
+          <input type="checkbox" name="niveauh" id="niveauh" value="h"<?php if((strpos($_POST['niveau'], 'h') !== false)){ echo "checked";} ?>> <label for="niveauh">Verif. formulaires</label><br>
           <input type="checkbox" name="niveaul" id="niveaul" value="l"<?php if((strpos($_POST['niveau'], 'l') !== false)){ echo "checked";} ?>> <label for="niveaul">Utilisateurs</label><br>
           <input type="checkbox" name="niveauj" id="niveauj" value="j"<?php if((strpos($_POST['niveau'], 'j') !== false)){ echo "checked";} ?>> <label for="niveauj">Recycleurs et convention partenaires</label><br>
           <input type="checkbox" name="niveauk" id="niveauk" value="k"<?php if((strpos($_POST['niveau'], 'k') !== false)){ echo "checked";} ?>> <label for="niveauk">Configuration de Oressource</label><br>

@@ -240,7 +240,7 @@ $donnees = $req->fetch();
 $mtotcolo = $donnees['total'];
 echo $donnees['total']." Kgs.";
             
-              $reponse->closeCursor(); // Termine le traitement de la requête
+              $req->closeCursor(); // Termine le traitement de la requête
                
 }
 else //si on observe un point en particulier
@@ -272,7 +272,7 @@ $donnees = $req->fetch();
 $mtotcolo = $donnees['total'];
 echo $donnees['total']." Kgs.";
             
-              $reponse->closeCursor(); // Termine le traitement de la requête
+              $req->closeCursor(); // Termine le traitement de la requête
 
 }
 if ($_GET['numero'] == 0) {
@@ -573,7 +573,7 @@ $donnees = $req->fetch();
 $mtotcolo = $donnees['total'];
 echo $donnees['total']." Kgs.";
             
-              $reponse->closeCursor(); // Termine le traitement de la requête
+              $req->closeCursor(); // Termine le traitement de la requête
                
 }
 else //si on observe un point en particulier
@@ -605,7 +605,7 @@ $donnees = $req->fetch();
 $mtotcolo = $donnees['total'];
 echo $donnees['total']." Kgs.";
             
-              $reponse->closeCursor(); // Termine le traitement de la requête
+              $req->closeCursor(); // Termine le traitement de la requête
 
 }
 if ($_GET['numero'] == 0) {
@@ -683,14 +683,14 @@ $req->closeCursor(); // Termine le traitement de la requête
             // On recupère tout le contenu de la table affectations
 
             $reponse = $bdd->prepare('SELECT 
-localites.nom,SUM(`pesees_collectes`.`masse`) somme,pesees_collectes.timestamp,localites.id,COUNT(collectes.id) ncol
+localites.nom,SUM(`pesees_collectes`.`masse`) somme,pesees_collectes.timestamp,localites.id id,COUNT(collectes.id) ncol
 FROM 
 pesees_collectes,collectes,localites
 
 WHERE
   pesees_collectes.timestamp BETWEEN :du AND :au AND
 localites.id =  collectes.localisation AND pesees_collectes.id_collecte = collectes.id
-GROUP BY id_type_collecte');
+GROUP BY id');
  $reponse->execute(array('du' => $time_debut,'au' => $time_fin ));
            // On affiche chaque entree une à une
            while ($donnees = $reponse->fetch())
