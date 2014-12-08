@@ -2,8 +2,7 @@
 
 //Vérification des autorisations de l'utilisateur et des variables de session requisent pour l'affichage de cette page: 
                     if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 'l') !== false))
-                    { 
-                    include "tete.php" ?>
+                    {include "tete.php" ?>
 <div class="container">
 <h1>Édition du mot de passe de l'ultisateur n°:<?php echo $_GET['id']?>, <?php echo $_GET['mail']?></h1> 
 <p>L'identifiant de cet utilisateur est son adresse E-mail: <?php echo $_GET['mail']?>, elle lui est est demandé à la connexion à Oressource..</p>
@@ -55,8 +54,7 @@
   
   </div>
   </div>
-
-                    <?php include "pied.php" ;
+<?php include "pied.php" ;
 }
 else
 { header('Location: ../moteur/destroy.php') ;}

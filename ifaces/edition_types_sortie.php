@@ -1,4 +1,6 @@
 <?php session_start(); 
+
+//Vérification des autorisations de l'utilisateur et des variables de session requisent pour l'affichage de cette page:
     if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 'k') !== false))
       { include "tete.php" ?>
     <div class="container">
@@ -159,8 +161,10 @@ else // SINON
   </div>
     </div><!-- /.container -->
    
-<?php include "pied.php" ?>
-<?php }
+<?php include "pied.php";
+}
     else
+{
     header('Location: ../moteur/destroy.php') ;
+}
 ?>

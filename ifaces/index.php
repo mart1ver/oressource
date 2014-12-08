@@ -1,8 +1,9 @@
 
 
 
-<?php session_start(); ?>
-<?php
+<?php session_start(); 
+
+//Vérification des autorisations de l'utilisateur et des variables de session requisent pour l'affichage de cette page:
     if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource")
       { include "tete.php" ?>
 
@@ -312,10 +313,12 @@ for (var i = 1; i <= temps_reload; i++) {
 
 
 
-<?php include "pied.php" ?>
-
-<?php }
-    else{
-     header('Location: login.php') ; }?>
+<?php include "pied.php";
+}
+    else
+{
+     header('Location: login.php') ; 
+}
+?>
 
 
