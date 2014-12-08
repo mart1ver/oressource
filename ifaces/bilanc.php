@@ -1,5 +1,6 @@
 
 <?php session_start();
+//Vérification des autorisations de l'utilisateur et des variables de session requisent pour l'affichage de cette page:
 if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 'bi') !== false))
       { include "tete.php";?>
 
@@ -1042,8 +1043,8 @@ GROUP BY nom');
    
 
 
-<?php include "pied_bilan.php";?>
-<?php }
+<?php include "pied_bilan.php";
+}
     else
-    header('Location: ../moteur/destroy.php') ;
+    {header('Location: ../moteur/destroy.php') ;}
 ?>

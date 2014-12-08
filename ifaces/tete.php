@@ -39,7 +39,7 @@
         <div class="navbar-collapse collapse  navbar-right">
  <ul class="nav navbar-nav">
   <?php
-//Vérification des autorisations de l'utilisateur et des variables de session requisent pour l'utilisation de cette page:
+//Vérification des autorisations de l'utilisateur et des variables de session requisent pour l'affichage de cette page:
     if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource")
       { ?> 
 <ul class="nav navbar-nav">
