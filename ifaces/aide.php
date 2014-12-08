@@ -1,5 +1,5 @@
-<?php session_start(); ?>
-<?php
+<?php session_start();
+//Vérification du renseignement de la variable de session 'id':
     if (isset($_SESSION['id']) )
       {  include "tete.php" ?>
    
@@ -11,7 +11,7 @@
 <?php include "pied.php" ?>
 <?php }
     else
-    header('Location: ../moteur/destroy.php') ;
+   { header('Location: ../moteur/destroy.php') ; }
 ?>
        
       

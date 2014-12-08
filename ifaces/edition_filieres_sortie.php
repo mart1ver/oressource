@@ -1,15 +1,11 @@
-<?php session_start(); 
+<?php session_start();
+ 
+//Vérification des autorisations de l'utilisateur et des variables de session requisent pour l'affichage de cette page: 
+    if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 'j') !== false))
+      { include "tete.php"
 //Oressource 2014, formulaire de référencement des filières de sortie (entreprises de recyclage, associations, etc) en lien avec la structure
 //Simple formulaire de saisie qui permet de lister des filières de sortie déjà référencées et s'accompagne de la possibilité de les cacher à l'utilisateur ou d'en modifier les données
-//
-//
-//
-//
-//
-//
-//
-    if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 'j') !== false))
-      { include "tete.php" ?>
+?>
     <div class="container">
         <h1>Gestion des partenaires de recyclage</h1> 
          <div class="panel-heading">Gérez ici la liste de ceux de vos partenaires qui traitent vos sorties destinées au recyclage.</div>
@@ -219,8 +215,8 @@ else // SINON
   </div>
     </div><!-- /.container -->
    
-<?php include "pied.php" ?>
-<?php }
+<?php include "pied.php" 
+}
     else
-  header('Location: ../moteur/destroy.php') ;
+  {header('Location: ../moteur/destroy.php') ;}
 ?>

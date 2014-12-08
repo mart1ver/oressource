@@ -1,15 +1,14 @@
 <?php session_start(); 
+
+//Vérification des autorisations de l'utilisateur et des variables de session requisent pour l'affichage de cette page: 
+    if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 'j') !== false))
+      
+{ include "tete.php" 
 //Oressource 2014, formulaire de référencement des conventions avec les partenaires de la structure
 //Simple formulaire de saisie , liste des conventions déjà référencées et possibilité de les cacher à l'utilisateur ou de modifier les données
 //
-//
-//
-//
-//
-//
-//
-    if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 'j') !== false))
-      { include "tete.php" ?>
+?>
+
     <div class="container">
         <h1>Gestion des conventions avec les partenaires</h1> 
          <div class="panel-heading">Gerez ici la liste de vos partenaires de réemploi.</div>
@@ -171,8 +170,8 @@ else // SINON
   </div>
     </div><!-- /.container -->
    
-<?php include "pied.php" ?>
-<?php }
+<?php include "pied.php" 
+}
     else
-    header('Location: ../moteur/destroy.php') ;
+    {header('Location: ../moteur/destroy.php') ;}
 ?>

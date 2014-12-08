@@ -1,17 +1,12 @@
             <?php session_start(); 
-//Oressource 2014, formulaire de description de la structure
-//Simple formulaire de saisie renseignant les informations de base au sujet de la  structure
-//
-//
-//
-//
-//
-//
-//
+
+//Vérification des autorisations de l'utilisateur et des variables de session requisent pour l'affichage de cette page: 
             if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 'k') !== false))
-            { 
-            include "tete.php" 
+            {include "tete.php"
+//Oressource 2014, formulaire de description de la structure
+//Simple formulaire de saisie renseignant les informations fondamentales identifiant la  structure 
             ?>
+
 <div class="container">
 <h1>Description de la structure</h1> 
   <div class="panel-heading"> 
@@ -84,11 +79,10 @@
     </div>
   </div>
 </div>
-              <?php }
-              $reponse->closeCursor(); // Termine le traitement de la requête
-              ?>
-              <?php include "pied.php" ?>
-              <?php }
-              else
-       header('Location: ../moteur/destroy.php') ;
-              ?>
+<?php }
+   $reponse->closeCursor(); // Termine le traitement de la requête
+include "pied.php" 
+}
+else
+      { header('Location: ../moteur/destroy.php') ;}
+?>
