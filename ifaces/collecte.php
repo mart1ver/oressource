@@ -66,7 +66,7 @@ function submanut(x)
           }
 
 function encaisse() {
-  if (parseInt(document.getElementById('najout').value) >= 1) 
+  if (parseInt(document.getElementById('najout').value) >= 1 && document.getElementById("id_type_collecte").value > 0 && document.getElementById("loc").value > 0) 
           { 
             document.getElementById('comm').value = document.getElementById('commentaire').value
           document.getElementById("formulaire").submit();
@@ -232,7 +232,7 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
     <label for="id_type_collecte">Type de collecte:</label>  
     <select name ="id_type_collecte" id ="id_type_collecte" class="form-control"  STYLE=" 
      font-size : 12pt" autofocus required>
-       <option value="" selected="selected"></option> 
+       <option value="0" selected="selected"></option> 
 
             <?php 
             try
@@ -260,7 +260,7 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
 <label for="loc">Localité:</label>  
     <select name ="loc" id ="loc" class="form-control" STYLE=" 
      font-size : 12pt" required>
-       <option value="" selected="selected"></option>
+       <option value="0" selected="selected"></option>
             <?php 
             try
             {
