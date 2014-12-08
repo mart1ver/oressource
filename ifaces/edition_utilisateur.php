@@ -2,7 +2,7 @@
      if (isset($_SESSION['id']) AND (strpos($_SESSION['niveau'], 'g') !== false))
       {  include "tete.php" ?>
     <div class="container">
-        <h1>Edition du profil utilisateur n°:<?php echo $_POST['id']?>, <?php echo $_POST['mail']?></h1> 
+        <h1>Édition du profil utilisateur n°:<?php echo $_POST['id']?>, <?php echo $_POST['mail']?></h1> 
          
          
     <br>     
@@ -141,9 +141,9 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
   
 
 </div>
-<div class="row"><div class="col-md-3 col-md-offset-3"><br><button name="modifier" class="btn btn-warning">Modifier!</button></form>
+<div class="row"><div class="col-md-3 col-md-offset-3"><br><button name="modifier" class="btn btn-warning">MODIFIER!</button></form>
 <a href="edition_utilisateurs.php">
-<button name="creer" class="btn btn">Anuler</button>
+<button name="creer" class="btn btn">Annuler</button>
 </a>
 
 

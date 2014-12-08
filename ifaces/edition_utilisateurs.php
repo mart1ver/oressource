@@ -4,10 +4,10 @@
       {  include "tete.php" ?>
       
     <div class="container">
-        <h1>Gestions des utilisateurs</h1> 
+        <h1>Gestion des utilisateurs</h1> 
          <ul class="nav nav-tabs">
   <li ><a href="utilisateurs.php">Inscription</a></li>
-  <li class="active"><a>Edition</a></li>
+  <li class="active"><a>Édition</a></li>
   
 </ul>
     <br>     
@@ -47,11 +47,11 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
         <thead>
           <tr>
             <th>#</th>
-            <th>nom</th>
-            <th>prenom</th>
-            <th>mail</th>
-             <th>éditer</th>
-            <th>supprimer</th>
+            <th>Nom</th>
+            <th>Prenom</th>
+            <th>Mail</th>
+             <th>Éditer</th>
+            <th>Supprimer!</th>
             
           </tr>
         </thead>
@@ -110,7 +110,7 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
 
 
 
-   <button  class="btn btn-warning btn-sm ">Editer! 
+   <button  class="btn btn-warning btn-sm ">ÉDITER! 
   </button>
 </form>
 </td>
@@ -137,7 +137,7 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
 
 
 
-   <button  class="btn btn-danger btn-sm ">Suprimer! 
+   <button  class="btn btn-danger btn-sm ">SUPRIMER! 
   </button>
 </form>
 </td>

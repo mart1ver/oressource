@@ -3,7 +3,7 @@
     if (isset($_SESSION['id']) AND (strpos($_SESSION['niveau'], 'g') !== false))
       {  include "tete.php" ?>
    <div class="container">
-        <h1>grilles de prix</h1> 
+        <h1>Grilles de prix</h1> 
         <?php
 if ($_GET['err'] == "") // SI on a pas de message d'erreur
 {
@@ -68,7 +68,7 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
   <div class="col-md-3"><label for="nom">Nom:</label> <input type="text"value ="<?php echo $_GET['nom']?>" name="nom" id="nom" class="form-control " required autofocus>
 
   </div>
-    <div class="col-md-3"><label for="description">Déscription:</label> <input type="text" value ="<?php echo $_GET['description']?>" name="description" id="description" class="form-control " required >
+    <div class="col-md-3"><label for="description">Description:</label> <input type="text" value ="<?php echo $_GET['description']?>" name="description" id="description" class="form-control " required >
       
     
     </div>
@@ -77,7 +77,7 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
      <input type="hidden" value ="<?php echo $_GET['typo']?>" name="typo" id="typo" class="form-control "  >
     </div>
 
-    <div class="col-md-1"><br><button name="creer" class="btn btn-default">Creer!</button></div>
+    <div class="col-md-1"><br><button name="creer" class="btn btn-default">CRÉER!</button></div>
 </form>
 </div>
 
