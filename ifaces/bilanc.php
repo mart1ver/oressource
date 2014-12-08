@@ -316,8 +316,10 @@ $req->closeCursor(); // Termine le traitement de la requête
 <table class="table table-condensed table-striped table table-bordered table-hover" style="border-collapse:collapse;">
     <thead>
         <tr>
-            <th>Type de collecte</th>
+            <th  style="width:300px">Type de collecte</th>
+            <th>Nbr.de collectes</th>
             <th>Masse collecté</th>
+
             <th>%</th>
             
         </tr>
@@ -346,7 +348,7 @@ $req->closeCursor(); // Termine le traitement de la requête
             // On recupère tout le contenu de la table affectations
 
             $reponse = $bdd->prepare('SELECT 
-type_collecte.nom,SUM(`pesees_collectes`.`masse`) somme,pesees_collectes.timestamp,type_collecte.id
+type_collecte.nom,SUM(`pesees_collectes`.`masse`) somme,pesees_collectes.timestamp,type_collecte.id,COUNT(collectes.id) ncol
 FROM 
 pesees_collectes,collectes,type_collecte
 
@@ -361,9 +363,11 @@ GROUP BY id_type_collecte');
             ?>
             <tr data-toggle="collapse" data-target=".parmasse<?php echo $donnees['id']?>" >
             <td><?php echo $donnees['nom'] ?></td>
+            <td><?php echo $donnees['ncol'] ?></td>
             <td><?php echo $donnees['somme'] ?></td>
             <td><?php echo  round($donnees['somme']*100/$mtotcolo, 2)   ; ?></td>      
         </tr>
+
       <?php 
             try
             {
@@ -393,22 +397,24 @@ ORDER BY somme DESC');
            while ($donnees2 = $reponse2->fetch())
            {        
             ?>
- <tr class="collapse parmasse<?php echo $donnees['id']?> active">
-    
-            <td class="hiddenRow">
+
+    <tr class="collapse parmasse<?php echo $donnees['id']?> " >
+            <td  >
               <?php echo $donnees2['nom'] ?>
             </td >
-            <td class="hiddenRow">
+            <td >
                 <?php echo $donnees2['somme']." Kgs." ?>
             </td>
-            <td class="hiddenRow">
+            <td >
                 <?php echo  round($donnees2['somme']*100/$donnees['somme'], 2)." %"  ; ?>
             </td>
-        </tr>
+          </tr>
+        
  <?php
              }
               $reponse2->closeCursor(); // Termine le traitement de la requête
                 ?>
+               
       <?php
            }
               $reponse->closeCursor(); // Termine le traitement de la requête
@@ -435,7 +441,7 @@ ORDER BY somme DESC');
             // On recupère tout le contenu de la table affectations
 
             $reponse = $bdd->prepare('SELECT 
-type_collecte.nom,SUM(`pesees_collectes`.`masse`) somme,pesees_collectes.timestamp,type_collecte.id
+type_collecte.nom,SUM(`pesees_collectes`.`masse`) somme,pesees_collectes.timestamp,type_collecte.id,COUNT(collectes.id) ncol
 FROM 
 pesees_collectes,collectes,type_collecte
 
@@ -451,6 +457,7 @@ GROUP BY id_type_collecte');
             ?>
             <tr data-toggle="collapse" data-target=".parmasse<?php echo $donnees['id']?>" >
             <td><?php echo $donnees['nom'] ?></td>
+             <td><?php echo $donnees['ncol'] ?></td>
             <td><?php echo $donnees['somme'] ?></td>
             <td><?php echo  round($donnees['somme']*100/$mtotcolo, 2)   ; ?></td>      
         </tr>
