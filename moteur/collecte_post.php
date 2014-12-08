@@ -27,8 +27,8 @@ if(isset($_POST['adh']))
         die('Erreur : '.$e->getMessage());
 }
 // Insertion de la collecte (sans les pesées) l'aide d'une requête préparée
-	$req = $bdd->prepare('INSERT INTO collectes (id_type_collecte,  adherent, localisation, id_point_collecte, commentaire) VALUES(?, ?, ?, ?, ?)');
-	$req->execute(array($_POST['id_type_collecte'],$adh,  $_POST['loc'] , $_POST['id_point_collecte'] , $_POST['comm']));
+	$req = $bdd->prepare('INSERT INTO collectes (id_type_collecte,  adherent, localisation, id_point_collecte, commentaire, id_createur) VALUES(?, ?, ?, ?, ?, ?)');
+	$req->execute(array($_POST['id_type_collecte'],$adh,  $_POST['loc'] , $_POST['id_point_collecte'] , $_POST['comm'] , $_SESSION['id']));
   $id_collecte = $bdd->lastInsertId();
     $req->closeCursor();
 
@@ -68,8 +68,8 @@ catch(Exception $e)
         die('Erreur : '.$e->getMessage());
 }
 // Insertion du post à l'aide d'une requête préparée
-$req = $bdd->prepare('INSERT INTO pesees_collectes (masse,  id_collecte, id_type_dechet) VALUES(?, ?, ?)');
-$req->execute(array($_POST[$i],  $id_collecte , $i));
+$req = $bdd->prepare('INSERT INTO pesees_collectes (masse,  id_collecte, id_type_dechet,id_createur) VALUES(?,?, ?, ?)');
+$req->execute(array($_POST[$i],  $id_collecte , $i , $_SESSION['id']));
   $req->closeCursor();
 }
     $i++;

@@ -1,5 +1,17 @@
 <?php session_start(); ?>
+<head>
+      
+      <link href="../css/bootstrap.min.css" rel="stylesheet">
+      
+      <link href="../fonts/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+      <link rel="stylesheet" type="text/css" media="all" href="../css/daterangepicker-bs3.css" />
 
+      <script type="text/javascript" src="../js/jquery-2.0.3.min.js"></script>
+      
+      <script type="text/javascript" src="../js/bootstrap.min.js"></script>
+      <script type="text/javascript" src="../js/moment.js"></script>
+      <script type="text/javascript" src="../js/daterangepicker.js"></script>
+   </head>
 <?php
    if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 'h') !== false))
       {  include "tete.php" ?>
@@ -65,17 +77,119 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
 
 
 <div class="row">
-        	<form id='formdate' action="../moteur/verif_collecte_date_post.php" method="post">
-  <div class="col-md-3"><label for="date">Date:</label> <input type="date"value ="<?php echo $_GET['date']?>" name="date" id="date" class="form-control "  autofocus>
+  <label for="reportrange">choisisez la periode a inspecter:</label><br>
+<div id="reportrange" class="pull-left" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc">
+                  <i class="fa fa-calendar"></i>
+                  <span></span> <b class="caret"></b>
+               </div>
 
-  </div>
-    
-    <br>
-<input type="hidden" name ="point" id="point" value="<?php echo $_GET['numero']?>">
-    <div class="col-md-1"><button name="creer" class="btn btn-default">Go!</button></div>
-</form>
+
+
+               <script type="text/javascript">
+               $(document).ready(function() {
+
+                  var cb = function(start, end, label) {
+                    console.log(start.toISOString(), end.toISOString(), label);
+                    $('#reportrange span').html(start.format('DD, MMMM, YYYY') + ' - ' + end.format('DD, MMMM, YYYY'));
+                    //alert("Callback has fired: [" + start.format('MMMM D, YYYY') + " to " + end.format('MMMM D, YYYY') + ", label = " + label + "]");
+                  }
+
+                  var optionSet1 = {
+                    startDate: moment(),
+                    endDate: moment(),
+                    minDate: '01/01/2010',
+                    maxDate: '12/31/2020',
+                    dateLimit: { days: 60 },
+                    showDropdowns: true,
+                    showWeekNumbers: true,
+                    timePicker: false,
+                    timePickerIncrement: 1,
+                    timePicker12Hour: true,
+                    ranges: {
+                       "Aujoud'hui": [moment(), moment()],
+                       'hier': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                       '7 derniers jours': [moment().subtract(6, 'days'), moment()],
+                       '30 derniers jours': [moment().subtract(29, 'days'), moment()],
+                       'Ce mois': [moment().startOf('month'), moment().endOf('month')],
+                       'Le mois deriner': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+                    },
+                    opens: 'left',
+                    buttonClasses: ['btn btn-default'],
+                    applyClass: 'btn-small btn-primary',
+                    cancelClass: 'btn-small',
+                    format: 'DD/MM/YYYY',
+                    separator: ' to ',
+                    locale: {
+                        applyLabel: 'Appliquer',
+                        cancelLabel: 'Anuler',
+                        fromLabel: 'Du',
+                        toLabel: 'Au',
+                        customRangeLabel: 'Période libre',
+                        daysOfWeek: ['Di','Lu', 'Ma', 'Me', 'Je', 'Ve', 'Sa'],
+                        monthNames: ['Janvier', 'Fevrier', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Aout', 'Septembre', 'Octobre', 'Novembre', 'Decembre'],
+                        firstDay: 1
+                    }
+                  };
+
+                  
+
+                  $('#reportrange span').html(moment().format('D, MMMM, YYYY') + ' - ' + moment().format('D, MMMM, YYYY'));
+
+                  $('#reportrange').daterangepicker(optionSet1, cb);
+
+                  $('#reportrange').on('show.daterangepicker', function() { console.log("show event fired"); });
+                  $('#reportrange').on('hide.daterangepicker', function() { console.log("hide event fired"); });
+                  $('#reportrange').on('apply.daterangepicker', function(ev, picker) { 
+                    console.log("apply event fired, start/end dates are " 
+                      + picker.startDate.format('DD MM, YYYY') 
+                      + " to " 
+                      + picker.endDate.format('DD MM, YYYY')                      
+                    ); 
+                    window.location.href = "verif_collecte.php?date1="+picker.startDate.format('DD-MM-YYYY')+"&date2="+picker.endDate.format('DD-MM-YYYY')+"&numero="+"<?php echo $_GET['numero']?>";
+                  });
+                  $('#reportrange').on('cancel.daterangepicker', function(ev, picker) { console.log("cancel event fired"); });
+
+                  $('#options1').click(function() {
+                    $('#reportrange').data('daterangepicker').setOptions(optionSet1, cb);
+                  });
+
+                  $('#options2').click(function() {
+                    $('#reportrange').data('daterangepicker').setOptions(optionSet2, cb);
+                  });
+
+                  $('#destroy').click(function() {
+                    $('#reportrange').data('daterangepicker').remove();
+                  });
+
+               });
+               </script>
+        	
 </div>
+<?php
+// on affiche la periode visée
+  if($_GET['date1'] == $_GET['date2']){
+    echo' le '.$_GET['date1'];
 
+  }
+  else
+  {
+  echo' du '.$_GET['date1']." au ".$_GET['date2']." :";  
+}
+//on convertit les deux dates en un format compatible avec la bdd
+
+$txt1  = $_GET['date1'];
+$date1ft = DateTime::createFromFormat('d-m-Y', $txt1);
+$time_debut = $date1ft->format('Y-m-d');
+$time_debut = $time_debut." 00:00:00";
+
+$txt2  = $_GET['date2'];
+$date2ft = DateTime::createFromFormat('d-m-Y', $txt2);
+$time_fin = $date2ft->format('Y-m-d');
+$time_fin = $time_fin." 23:59:59";
+
+
+
+  ?>
 </div>
 
 <?php
@@ -99,8 +213,8 @@ try
           
 $req = $bdd->prepare('SELECT COUNT(id) nid
                         FROM `collectes` 
-                       WHERE collectes.id_point_collecte = :id_point_collecte AND DATE(collectes.timestamp) = :tdate ');
-$req->execute(array('id_point_collecte' => $_GET['numero'], 'tdate' => $_GET['date']));
+                       WHERE collectes.id_point_collecte = :id_point_collecte AND DATE(collectes.timestamp) BETWEEN :du AND :au   ');
+$req->execute(array('id_point_collecte' => $_GET['numero'], 'du' => $time_debut,'au' => $time_fin));
 
 
            // On affiche chaque entree une à une
@@ -158,8 +272,8 @@ GROUP BY nom'
           
 $req = $bdd->prepare('SELECT collectes.id,collectes.timestamp ,type_collecte.nom, collectes.adherent, localites.nom localisation
                        FROM collectes ,type_collecte, localites
-                       WHERE type_collecte.id = collectes.id_type_collecte AND localites.id = collectes.localisation  AND collectes.id_point_collecte = :id_point_collecte AND DATE(collectes.timestamp) = :tdate ');
-$req->execute(array('id_point_collecte' => $_GET['numero'], 'tdate' => $_GET['date']));
+                       WHERE type_collecte.id = collectes.id_type_collecte AND localites.id = collectes.localisation  AND collectes.id_point_collecte = :id_point_collecte AND DATE(collectes.timestamp) BETWEEN :du AND :au  ');
+$req->execute(array('id_point_collecte' => $_GET['numero'], 'du' => $time_debut,'au' => $time_fin));
 
 
            // On affiche chaque entree une à une
@@ -282,7 +396,7 @@ $req2->execute(array('id_collecte' => $donnees['id']));
 
 
   </div><!-- /.container -->
-<?php include "pied.php" ?>
+<?php include "pied_bilan.php" ?>
 <?php }
     else
    header('Location: ../moteur/destroy.php') ;
