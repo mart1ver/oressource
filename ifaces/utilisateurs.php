@@ -46,7 +46,7 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
           <input type="checkbox" name="niveaubi" id="niveaubi" value="bi"><label for="niveaubi">Bilans</label><br>
           
           <input type="checkbox" name="niveaug" id="niveaug" value="g"> <label for="niveaug">Gestion quotidienne</label><br>
-          <input type="checkbox" name="niveauh" id="niveauh" value="h"> <label for="niveauh">Recettes points de sortie et verif. formulaires</label><br>
+          <input type="checkbox" name="niveauh" id="niveauh" value="h"> <label for="niveauh">Verif. formulaires</label><br>
           <input type="checkbox" name="niveaul" id="niveaul" value="l"> <label for="niveaul">Utilisateurs</label><br>
           <input type="checkbox" name="niveauj" id="niveauj" value="j"> <label for="niveauj">Recycleurs et convention partenaires</label><br>
           <input type="checkbox" name="niveauk" id="niveauk" value="k"> <label for="niveauk">Configuration de Oressource</label><br>

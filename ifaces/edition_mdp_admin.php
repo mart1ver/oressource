@@ -1,7 +1,7 @@
                     <?php session_start();
 
 //Vérification des autorisations de l'utilisateur et des variables de session requisent pour l'affichage de cette page: 
-                    if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource"AND (strpos($_SESSION['niveau'], 'l') !== false))
+                    if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 'l') !== false))
                     { 
                     include "tete.php" ?>
 <div class="container">
@@ -55,7 +55,7 @@
   
   </div>
   </div>
-                    <?php include "pied.php" 
+                    <?php include "pied.php" ;
 }
 else
 { header('Location: ../moteur/destroy.php') ;}

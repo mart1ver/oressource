@@ -58,7 +58,9 @@
                     <?php include "pied.php"
 }
 else
-{header('Location: ../moteur/destroy.php') ;}
+{
+  header('Location: ../moteur/destroy.php') ;
+}
 ?>
        
       
