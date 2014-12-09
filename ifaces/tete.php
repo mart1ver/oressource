@@ -14,12 +14,6 @@
 <!-- Custom styles for this template -->
     <link href="../css/oressource.css" rel="stylesheet">
     <link rel="stylesheet" href="../js/morris/morris.css">
-   
-
-
-
-      
-
 
   </head>
 
@@ -39,7 +33,7 @@
         <div class="navbar-collapse collapse  navbar-right">
  <ul class="nav navbar-nav">
   <?php
-//Vérification des autorisations de l'utilisateur et des variables de session requisent pour l'affichage de cette page:
+//session_start(); déjà inclu dans chacun des fichiers appelant ce fichier
     if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource")
       { ?> 
 <ul class="nav navbar-nav">

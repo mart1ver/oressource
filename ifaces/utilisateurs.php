@@ -1,12 +1,13 @@
-<?php session_start(); ?>
-<?php
+<?php session_start(); 
+
+//Vérification des autorisations de l'utilisateur et des variables de session requises pour l'affichage de cette page:
 if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 'l') !== false))
       {  include "tete.php" ?>
     <div class="container">
-        <h1>Gestions des utilisateurs</h1> 
+        <h1>Gestion des utilisateurs</h1> 
          <ul class="nav nav-tabs">
   <li class="active"><a>Inscription</a></li>
-  <li><a href="edition_utilisateurs.php">Edition</a></li>
+  <li><a href="edition_utilisateurs.php">Édition</a></li>
   
 </ul>
     <br>     
@@ -39,9 +40,9 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
                         <label for="prenom">Prénom:</label> <input type="text" value ="<?php echo $_GET['prenom']?>" name="prenom" id="prenom" class="form-control " required><br>
                         <label for="mail">Mail:</label> <input type="email" value ="<?php echo $_GET['mail']?>" name="mail" id="mail" class="form-control " required ><br>
                         <label>Mot de passe</label> <input type="password"  name="pass1" id="pass1" class="form-control" required ><br>
-                                                       Repetez le mot de passe</label> <input type="password"  name="pass2" id="pass2" class="form-control" required >
+                                                       RÉpetez le mot de passe</label> <input type="password"  name="pass2" id="pass2" class="form-control" required >
   </div>
-  <div class="col-md-4"><div class="alert alert-info"><label for="niveau">Permissions d'acces</label> <br>
+  <div class="col-md-4"><div class="alert alert-info"><label for="niveau">Permissions d'accès</label> <br>
           
           <input type="checkbox" name="niveaubi" id="niveaubi" value="bi"><label for="niveaubi">Bilans</label><br>
           
@@ -150,7 +151,7 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
   
 
 </div>
-<div class="row"><div class="col-md-3 col-md-offset-3"><br><button name="creer" class="btn btn-default">Creer!</button></div></div>
+<div class="row"><div class="col-md-3 col-md-offset-3"><br><button name="creer" class="btn btn-default">Créer!</button></div></div>
       </div>
      
       
@@ -158,10 +159,12 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
   
   
 
-<?php include "pied.php" ?>
-<?php }
+<?php include "pied.php";
+}
     else
+{    
     header('Location: ../moteur/destroy.php') ;
+}
 ?>
        
       

@@ -1,6 +1,6 @@
 <?php session_start(); 
 
-//Vérification des autorisations de l'utilisateur et des variables de session requisent pour l'affichage de cette page:
+//Vérification des autorisations de l'utilisateur et des variables de session requises pour l'utilisation de cette fonction:
  if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 'j') !== false))
 
 //martin vert
@@ -11,7 +11,7 @@ include('dbconfig.php');
 }
 catch(Exception $e)
 {
-        die('Erreur : '.$e->getMessage());
+die('Erreur : '.$e->getMessage());
 }
  
 // Insertion du post à l'aide d'une requête préparée
@@ -21,7 +21,7 @@ catch(Exception $e)
 $req = $bdd->prepare('UPDATE conventions_sorties SET nom = :nom,  description = :description, couleur = :couleur  WHERE id = :id');
 $req->execute(array('nom' => $_POST['nom'],'description' => $_POST['description'],'couleur' => $_POST['couleur'],'id' => $_POST['id']));
 
-  $req->closeCursor();
+$req->closeCursor();
 
 
 // Redirection du visiteur vers la page de gestion des points de collecte

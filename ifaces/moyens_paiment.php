@@ -1,11 +1,12 @@
-<?php session_start(); ?>
-<?php
+<?php session_start(); 
+
+//Vérification des autorisations de l'utilisateur et des variables de session requises pour l'affichage de cette page:
   if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 'k') !== false))
       { include "tete.php" ?>
     <div class="container">
-        <h1>Gestions des moyens de paiement en caisse</h1> 
-         <div class="panel-heading">Gerez ici les moyens de paiements disponible aux points de vente.</div>
-         <p>Permet de definir les differents moyens de paiement disponibles aux points de vente.</p>
+        <h1>Gestion des moyens de paiement en caisse</h1> 
+         <div class="panel-heading">Gérez ici les moyens de paiement disponibles aux différents points de vente</div>
+         <p>Permet de définir les différents moyens de paiement disponibles aux différents points de vente.</p>
 <?php
 if ($_GET['err'] == "") // SI on a pas de message d'erreur
 {
@@ -37,10 +38,10 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
         <div class="row">
         	<form action="../moteur/moyens_paiement_post.php" method="post">
   <div class="col-md-3"><label for="nom">Nom:</label> <input type="text"                 value ="<?php echo $_GET['nom']?>" name="nom" id="nom" class="form-control " required autofocus></div>
-    <div class="col-md-2"><label for="commentaire">Déscription:</label> <input type="text" value ="<?php echo $_GET['description']?>" name="description" id="description" class="form-control " required ></div>
+    <div class="col-md-2"><label for="commentaire">Description:</label> <input type="text" value ="<?php echo $_GET['description']?>" name="description" id="description" class="form-control " required ></div>
     
   <div class="col-md-1"><label for="couleur">Couleur:</label> <input type="color"        value ="<?php echo "#".$_GET['couleur']?>" name="couleur" id="couleur" class="form-control " required ></div>
-  <div class="col-md-1"><br><button name="creer" class="btn btn-default">Creer!</button></div>
+  <div class="col-md-1"><br><button name="creer" class="btn btn-default">Créer!</button></div>
 </form>
 </div>
       </div>
@@ -49,7 +50,7 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
         <thead>
           <tr>
             <th>#</th>
-            <th>Date de creation:</th>
+            <th>Date de création:</th>
             <th>Nom:</th>
             <th>Description:</th>
             <th>Couleur:</th>
@@ -124,7 +125,7 @@ else // SINON
 <input type="hidden" name ="description" id="description" value="<?php echo $donnees['description']?>">
 <input type="hidden" name ="couleur" id="couleur" value="<?php echo substr($_POST['couleur'],1)?>">
 
-  <button  class="btn btn-warning btn-sm" >modifier</button>
+  <button  class="btn btn-warning btn-sm" >Modifier</button>
 
 
 </form>
@@ -166,8 +167,10 @@ else // SINON
   </div>
     </div><!-- /.container -->
    
-<?php include "pied.php" ?>
-<?php }
-    else{
-    header('Location: ../moteur/destroy.php') ;}
+<?php include "pied.php"; 
+}
+    else
+{
+    header('Location: ../moteur/destroy.php') ;
+}
 ?>

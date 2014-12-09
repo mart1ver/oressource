@@ -1,10 +1,10 @@
-<?php session_start(); ?>
+<?php session_start();
 
-<?php
+//Vérification des autorisations de l'utilisateur et des variables de session requises pour l'affichage de cette page:
  if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 'h') !== false))
       {  include "tete.php" ?>
    <div class="container">
-        <h1>Modifier la sortie numero <?php echo $_GET['nsortie']?></h1> 
+        <h1>Modifier la sortie n° <?php echo $_GET['nsortie']?></h1> 
         <?php
 if ($_GET['err'] == "") // SI on a pas de message d'erreur
 {
@@ -98,7 +98,7 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
         <thead>
           <tr>
             <th>#</th>
-            <th>Momment de creation:</th>
+            <th>Date de creation:</th>
            
             <th>Masse:</th>
             <th>Modifier:</th>
@@ -166,7 +166,7 @@ $req->execute(array('id_sortie' => $_GET['nsortie']));
 <input type="hidden" name ="date" id="date" value="<?php echo $_POST['date']?>">
 <input type="hidden" name ="npoint" id="npoint" value="<?php echo $_POST['npoint']?>">
 
-  <button  class="btn btn-warning btn-sm" >modifier</button>
+  <button  class="btn btn-warning btn-sm" >Modifier</button>
 
 
 </form>
@@ -205,10 +205,12 @@ $req->execute(array('id_sortie' => $_GET['nsortie']));
 
 
   </div><!-- /.container -->
-<?php include "pied.php" ?>
-<?php }
+<?php include "pied.php"; 
+}
     else
+{
    header('Location: ../moteur/destroy.php') ;
+}
 ?>
        
       

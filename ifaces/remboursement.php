@@ -1,4 +1,6 @@
 <?php session_start(); 
+
+//Vérification des autorisations de l'utilisateur et des variables de session requises pour l'affichage de cette page:
 if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 'v'.$_GET['numero']) !== false))
       {include "tete.php";?>
 
@@ -95,7 +97,7 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
      
 <form action="../moteur/remboursement_post.php" id="formulaire" method="post">
 <ul id="liste" class="list-group">
-   <li class="list-group-item">Reference: <?php echo $_GET['numero']?>#<?php echo $numero_vente?>, date: <?php echo date("d-m-Y") ?><br><?php echo $nom_pv;?><br><?php echo $adresse_pv;?>,<br>siret: <?php echo$_SESSION['siret'];?></li>
+   <li class="list-group-item">Réference: <?php echo $_GET['numero']?>#<?php echo $numero_vente?>, date: <?php echo date("d-m-Y") ?><br><?php echo $nom_pv;?><br><?php echo $adresse_pv;?>,<br>siret: <?php echo$_SESSION['siret'];?></li>
   
 </ul>
  <ul class="list-group" id="total">
@@ -354,8 +356,10 @@ function encaisse() {
                     }
 </script>
 
-            <?php } else
+            <?php 
+} 
+else
       { 
         header('Location:../moteur/destroy.php');
-      }?>
-
+      }
+?>

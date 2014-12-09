@@ -1,10 +1,10 @@
-<?php session_start(); ?>
+<?php session_start();
 
-<?php
+//Vérification des autorisations de l'utilisateur et des variables de session requises pour l'affichage de cette page:
    if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 'h') !== false))
       {  include "tete.php" ?>
    <div class="container">
-        <h1>modifier la collecte numero <?php echo $_GET['ncollecte']?></h1> 
+        <h1>Modifier la collecte n° <?php echo $_GET['ncollecte']?></h1> 
         <?php
 if ($_GET['err'] == "") // SI on a pas de message d'erreur
 {
@@ -132,10 +132,10 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
         <thead>
           <tr>
             <th>#</th>
-            <th>Momment de creation:</th>
-            <th>Type de dechet:</th>
+            <th>Date de création:</th>
+            <th>Type de déchet:</th>
             <th>Masse:</th>
-            <th>Modifier:</th>
+            <th>Modifier</th>
             
           </tr>
         </thead>
@@ -201,7 +201,7 @@ $req->execute(array('id_collecte' => $_GET['ncollecte']));
 <input type="hidden" name ="date" id="date" value="<?php echo $_POST['date']?>">
 <input type="hidden" name ="npoint" id="npoint" value="<?php echo $_POST['npoint']?>">
 
-  <button  class="btn btn-warning btn-sm" >modifier</button>
+  <button  class="btn btn-warning btn-sm" >Modifier</button>
 
 
 </form>
@@ -209,12 +209,6 @@ $req->execute(array('id_collecte' => $_GET['ncollecte']));
 
 
 </td>
-
-
-
-
-
-
           </tr>
            <?php }
               $req->closeCursor(); // Termine le traitement de la requête
@@ -240,10 +234,13 @@ $req->execute(array('id_collecte' => $_GET['ncollecte']));
 
 
   </div><!-- /.container -->
-<?php include "pied.php" ?>
-<?php }
+
+<?php include "pied.php";
+ }
     else
+}
    header('Location: ../moteur/destroy.php') ;
+}
 ?>
        
       

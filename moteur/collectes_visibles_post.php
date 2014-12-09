@@ -1,5 +1,5 @@
  <?php session_start();
-//Vérification des autorisations de l'utilisateur et des variables de session requisent pour l'utilisation de cette fonction:
+//Vérification des autorisations de l'utilisateur et des variables de session requises pour l'utilisation de cette fonction:
 if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 'k') !== false))
                     {
 //martin vert

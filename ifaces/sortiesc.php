@@ -1,7 +1,8 @@
-<?php session_start(); 
- include "tete.php";
+<?php session_start();
+
+//Vérification des autorisations de l'utilisateur et des variables de session requises pour l'affichage de cette page: 
 if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 's'.$_GET['numero']) !== false))
-      {
+      {include "tete.php";
 //Oressource 2014, formulaire de sorties hors boutique
 //Simple formulaire de saisie des matieres d'ouevres sortantes de la structure. (structures partenaires, conventiionnées)
 //Doit etre fonctionnel avec un ecran tactille.
@@ -11,7 +12,7 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
 //
 //
 //
-        //on obtien la masse maximum suporté par la balance à ce point de sortie dans la variable $pesee_max
+        //on obtient la masse maximum suporté par la balance à ce point de sortie dans la variable $pesee_max
   try
             {
             // On se connecte à MySQL
@@ -219,11 +220,11 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
         <div class="col-md-7 col-md-offset-1" >
 
  <ul class="nav nav-tabs">
-  <li><a href="<?php echo  "sortiesp.php?numero=" . $_GET['numero']?>">Poubelles</a></li>
+  <li><a href="<?php echo  "sortiesp.php?numero=" . $_GET['numero']?>">Poubelle</a></li>
   <li class="active"><a>Don aux partenaires</a></li>
   <li><a href="<?php echo  "sortiesr.php?numero=" . $_GET['numero']?>">Recyclage</a></li>
-  <li><a href="<?php echo  "sorties.php?numero=" . $_GET['numero']?>">Dons</a></li>
-  <li><a href="<?php echo  "sortiesd.php?numero=" . $_GET['numero']?>">Decheterie</a></li>
+  <li><a href="<?php echo  "sorties.php?numero=" . $_GET['numero']?>">Don</a></li>
+  <li><a href="<?php echo  "sortiesd.php?numero=" . $_GET['numero']?>">Déchèterie</a></li>
 </ul>
     <br>   
 </div>
@@ -581,7 +582,7 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
 <div class="row" >
 <div class="panel panel-info">
         <div class="panel-heading">
-    <h3 class="panel-title"><label>Materiaux et dechets:</label></h3>
+    <h3 class="panel-title"><label>Matériaux et déchets:</label></h3>
   </div>
   <div class="panel-body"> 
       
@@ -635,7 +636,10 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
 <br>
 
 
-      <?php include "pied.php";  } else
-      { 
+<?php include "pied.php";  
+} 
+else
+{ 
         header('Location:../moteur/destroy.php');
-      }?>
+}
+?>

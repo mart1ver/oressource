@@ -1,10 +1,10 @@
-<?php session_start(); ?>
+<?php session_start(); 
 
-<?php
+//Vérification des autorisations de l'utilisateur et des variables de session requises pour l'affichage de cette page:
   if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 'h') !== false))
       {  include "tete.php" ?>
    <div class="container">
-        <h1>modifier la pesée numero <?php echo $_POST['id']?> appartenant à la collecte <?php echo $_POST['ncollecte']?> </h1> 
+        <h1>Modifier la pesée n° <?php echo $_POST['id']?> appartenant à la collecte <?php echo $_POST['ncollecte']?> </h1> 
         <?php
 if ($_GET['err'] == "") // SI on a pas de message d'erreur
 {
@@ -105,10 +105,12 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
 
 
   </div><!-- /.container -->
-<?php include "pied.php" ?>
-<?php }
+<?php include "pied.php"; 
+}
     else
+{
     header('Location: ../moteur/destroy.php') ;
+}
 ?>
        
       

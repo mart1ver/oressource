@@ -1,12 +1,13 @@
-<?php session_start(); ?>
-<?php
+<?php session_start(); 
+
+//Vérification des autorisations de l'utilisateur et des variables de session requisent pour l'affichage de cette page:
     if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 'j') !== false))
       { include "tete.php" ?>
     <div class="container">
         <h1>Gestions des localités</h1> 
          <div class="panel-heading">Modifier les données concernant la filiere n° <?php echo $_POST['id']?>, <?php echo $_POST['nom']?>. </div>
 <?php
-//on obtien la couleur de la localité dans la base
+//on obtient la couleur de la localité dans la base
 
 
 
@@ -142,8 +143,10 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
   </div>
     </div><!-- /.container -->
    
-<?php include "pied.php" ?>
-<?php }
-    else
+<?php include "pied.php";
+}
+else
+{
    header('Location: ../moteur/destroy.php') ;
+}
 ?>

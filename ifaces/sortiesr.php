@@ -1,7 +1,8 @@
 <?php session_start(); 
- include "tete.php";
+ 
+//Vérification des autorisations de l'utilisateur et des variables de session requises pour l'affichage de cette page:
 if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 's'.$_GET['numero']) !== false))
-      {
+      {include "tete.php";
 //Oressource 2014, formulaire de sorties hors boutique
 //Simple formulaire de saisie des matieres d'ouevres sortantes de la structure. (entreprise de recyclage)
 //Doit etre fonctionnel avec un ecran tactille.
@@ -240,11 +241,11 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
         <div class="col-md-7 col-md-offset-1" >
 
  <ul class="nav nav-tabs">
-  <li><a href="<?php echo  "sortiesp.php?numero=" . $_GET['numero']?>">Poubelles</a></li>
+  <li><a href="<?php echo  "sortiesp.php?numero=" . $_GET['numero']?>">Poubelle</a></li>
   <li><a href="<?php echo  "sortiesc.php?numero=" . $_GET['numero']?>">Don aux partenaires</a></li>
   <li class="active"><a>Recyclage</a></li>
-  <li><a href="<?php echo  "sorties.php?numero=" . $_GET['numero']?>">Dons</a></li>
-  <li><a href="<?php echo  "sortiesd.php?numero=" . $_GET['numero']?>">Decheterie</a></li>
+  <li><a href="<?php echo  "sorties.php?numero=" . $_GET['numero']?>">Don</a></li>
+  <li><a href="<?php echo  "sortiesd.php?numero=" . $_GET['numero']?>">Déchetterie</a></li>
 </ul>
     
 </div>
@@ -545,7 +546,9 @@ WHERE filieres_sortie.visible = "oui" AND filieres_sortie.id_type_dechet_evac = 
 <br>
 
 
-      <?php include "pied.php";  } else
+      <?php include "pied.php";  
+} else
       { 
         header('Location:../moteur/destroy.php');
-      }?>
+      }
+?>

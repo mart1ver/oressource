@@ -1,10 +1,11 @@
-<?php session_start(); ?>
-<?php
+<?php session_start(); 
+
+//Vérification des autorisations de l'utilisateur et des variables de session requises pour l'affichage de cette page:
     if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 'k') !== false))
       { include "tete.php" ?>
     <div class="container">
-        <h1>Gestions des points de vente</h1> 
-         <div class="panel-heading">Modifier les données concernant le point numero <?php echo $_POST['id']?>, <?php echo $_POST['nom']?>. </div>
+        <h1>Gestion des points de vente</h1> 
+         <div class="panel-heading">Modifier les données concernant le point de vente n° <?php echo $_POST['id']?>, <?php echo $_POST['nom']?>. </div>
 <?php
 //POST ou GET ?
 if (isset($_POST['id']) !== false)
@@ -15,7 +16,7 @@ else
 {
 $id = $_GET['id'];
 }
-//on obtien la couleur de la localité dans la base
+//on obtient la couleur de la localité dans la base
 
 
 
@@ -72,7 +73,7 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
             <input type="hidden" name ="id" id="id" value="<?php echo $id?>">
 
   <div class="col-md-3"><label for="nom">Nom:</label><br><br> <input type="text"                 value ="<?php echo $_POST['nom'].$_GET['nom']?>" name="nom" id="nom" class="form-control " required autofocus></div>
-  <div class="col-md-2"><label for="addresse">Addresse:</label><br><br> <input type="text"       value ="<?php echo $_POST['adresse'].$_GET['adresse']?>" name="adresse" id="adresse" class="form-control " required ></div>
+  <div class="col-md-2"><label for="addresse">Adresse:</label><br><br> <input type="text"       value ="<?php echo $_POST['adresse'].$_GET['adresse']?>" name="adresse" id="adresse" class="form-control " required ></div>
   <div class="col-md-2"><label for="commentaire">Commentaire:</label><br><br> <input type="text" value ="<?php echo $_POST['commentaire'].$_GET['commentaire']?>" name="commentaire" id="commentaire" class="form-control " required ></div>
    <div class="col-md-1"><label for="surface">Surface de vente (m²):</label> <input type="text" value ="<?php echo $_POST['pesee_max'].$_GET['pesee_max']?>" name="surface" id="surface" class="form-control " required ></div>
   <div class="col-md-1"><label for="couleur">Couleur:</label><br><br> <input type="color"        value ="<?php echo $couleur ?>" name="couleur" id="couleur" class="form-control " required ></div>
@@ -80,7 +81,7 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
 </form>
 <br><br>
 <a href="edition_points_vente.php">
-<button name="creer" class="btn btn">Anuler</button>
+<button name="creer" class="btn btn">Annuler</button>
 </a>
 </div>
       </div>
@@ -95,8 +96,10 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
   </div>
     </div><!-- /.container -->
    
-<?php include "pied.php" ?>
-<?php }
+<?php include "pied.php";
+}
     else
+{
     header('Location: ../moteur/destroy.php') ;
+}
 ?>
