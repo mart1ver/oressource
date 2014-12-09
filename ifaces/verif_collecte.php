@@ -3,7 +3,7 @@
       
       <link href="../css/bootstrap.min.css" rel="stylesheet">
       
-      <link href="../fonts/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+      
       <link rel="stylesheet" type="text/css" media="all" href="../css/daterangepicker-bs3.css" />
 
       <script type="text/javascript" src="../js/jquery-2.0.3.min.js"></script>
@@ -15,7 +15,7 @@
 <?php
    if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 'h') !== false))
       {  include "tete.php" ?>
-   <div class="container">
+   <div class="container" style="width:1300px">
         <h1>verification des collectes</h1> 
         <?php
 if ($_GET['err'] == "") // SI on a pas de message d'erreur
@@ -65,7 +65,7 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
            while ($donnees = $reponse->fetch())
            {
            ?> 
-            <li<?php if ($_GET['numero'] == $donnees['id']){ echo ' class="active"';}?>><a href="<?php echo  "verif_collecte.php?numero=" . $donnees['id']."&date=" . $_GET['date']?>"><?php echo$donnees['nom']?></a></li>
+            <li<?php if ($_GET['numero'] == $donnees['id']){ echo ' class="active"';}?>><a href="<?php echo  "verif_collecte.php?numero=" . $donnees['id']."&date1=" . $_GET['date1']."&date2=" . $_GET['date2']?>"><?php echo$donnees['nom']?></a></li>
            <?php }
               $reponse->closeCursor(); // Termine le traitement de la requête
            ?>
@@ -77,12 +77,13 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
 
 
 <div class="row">
+  <div class="col-md-3 col-md-offset-9" >
   <label for="reportrange">choisisez la periode a inspecter:</label><br>
 <div id="reportrange" class="pull-left" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc">
                   <i class="fa fa-calendar"></i>
                   <span></span> <b class="caret"></b>
                </div>
-
+</div>
 
 
                <script type="text/javascript">
@@ -164,7 +165,7 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
                });
                </script>
         	
-</div>
+ </div>
 <?php
 // on affiche la periode visée
   if($_GET['date1'] == $_GET['date2']){
@@ -190,6 +191,7 @@ $time_fin = $time_fin." 23:59:59";
 
 
   ?>
+ 
 </div>
 
 <?php
@@ -234,14 +236,15 @@ if($donnees['nid'] > 0){ $req->closeCursor();
         <thead>
           <tr>
             <th>#</th>
-            <th>Momment de creation:</th>
-            <th>type de collecte:</th>
+            <th>Momment de création:</th>
+            <th>Type de collecte:</th>
             <th>Adhérent?:</th>
             <th>Localisation:</th>
             <th>Masse totale</th>
-            
+            <th>Auteur de la ligne:</th>
             <th>Modifier:</th>
-            
+            <th>Modifié par:</th>
+            <th>Le:</th>
           </tr>
         </thead>
         <tbody>
@@ -270,9 +273,14 @@ GROUP BY nom'
             // On recupère toute la liste des filieres de sortie
             //   $reponse = $bdd->query('SELECT * FROM grille_objets');
           
-$req = $bdd->prepare('SELECT collectes.id,collectes.timestamp ,type_collecte.nom, collectes.adherent, localites.nom localisation
-                       FROM collectes ,type_collecte, localites
-                       WHERE type_collecte.id = collectes.id_type_collecte AND localites.id = collectes.localisation  AND collectes.id_point_collecte = :id_point_collecte AND DATE(collectes.timestamp) BETWEEN :du AND :au  ');
+$req = $bdd->prepare('SELECT collectes.id,collectes.timestamp ,type_collecte.nom, collectes.adherent, localites.nom localisation, utilisateurs.mail mail , collectes.last_hero_timestamp lht
+                       FROM collectes ,type_collecte, localites,utilisateurs
+                       WHERE type_collecte.id = collectes.id_type_collecte
+                       
+                        AND utilisateurs.id = collectes.id_createur
+                        AND localites.id = collectes.localisation  
+                        AND collectes.id_point_collecte = :id_point_collecte 
+                        AND DATE(collectes.timestamp) BETWEEN :du AND :au  ');
 $req->execute(array('id_point_collecte' => $_GET['numero'], 'du' => $time_debut,'au' => $time_fin));
 
 
@@ -282,12 +290,12 @@ $req->execute(array('id_point_collecte' => $_GET['numero'], 'du' => $time_debut,
 
            ?>
             <tr> 
-            <td><?php echo $donnees['id']?></td>
-            <td><?php echo $donnees['timestamp']?></td>
-            <td><?php echo $donnees['nom']?></td>
-            <td><?php echo $donnees['adherent']?></td>
-            <td><?php echo $donnees['localisation']?></td>
-           <td> 
+            <td <td style="height:20px"><?php echo $donnees['id']?></td>
+            <td style="height:20px"><?php echo $donnees['timestamp']?></td>
+            <td style="height:20px"><?php echo $donnees['nom']?></td>
+            <td style="height:20px"><?php echo $donnees['adherent']?></td>
+            <td style="height:20px"><?php echo $donnees['localisation']?></td>
+            <td style="height:20px"> 
 
  <?php 
             try
@@ -302,18 +310,6 @@ $req->execute(array('id_point_collecte' => $_GET['numero'], 'du' => $time_debut,
             }
  
             // Si tout va bien, on peut continuer
-/*
-'SELECT type_dechets.couleur,type_dechets.nom, sum(pesees_collectes.masse) somme 
-FROM type_dechets,pesees_collectes 
-WHERE type_dechets.id = pesees_collectes.id_type_dechet AND DATE(pesees_collectes.timestamp) = CURDATE()
-GROUP BY nom'
-*/
-
-
- 
-            // On recupère toute la liste des filieres de sortie
-            //   $reponse = $bdd->query('SELECT * FROM grille_objets');
-          
 $req2 = $bdd->prepare('SELECT SUM(pesees_collectes.masse) masse
                        FROM pesees_collectes
                        WHERE  pesees_collectes.id_collecte = :id_collecte ');
@@ -340,7 +336,7 @@ $req2->execute(array('id_collecte' => $donnees['id']));
 
 
 
-
+<td><?php echo $donnees['mail']?></td> 
 
 <td>
 
@@ -349,7 +345,8 @@ $req2->execute(array('id_collecte' => $donnees['id']));
 <input type="hidden" name ="id" id="id" value="<?php echo $donnees['id']?>">
 <input type="hidden" name ="nom" id="nom" value="<?php echo $donnees['nom']?>">
 <input type="hidden" name ="localisation" id="localisation" value="<?php echo $donnees['localisation']?>">
-<input type="hidden" name ="date" id="date" value="<?php echo $_GET['date']?>">
+<input type="hidden" name ="date1" id="date1" value="<?php echo $_GET['date1']?>">
+<input type="hidden" name ="date2" id="date2" value="<?php echo $_GET['date2']?>">
 <input type="hidden" name ="npoint" id="npoint" value="<?php echo $_GET['numero']?>">
   <button  class="btn btn-warning btn-sm" >modifier</button>
 
@@ -360,7 +357,43 @@ $req2->execute(array('id_collecte' => $donnees['id']));
 
 </td>
 
+<td>
 
+<?php 
+            try
+            {
+            // On se connecte à MySQL
+            include('../moteur/dbconfig.php');
+            }
+            catch(Exception $e)
+            {
+            // En cas d'erreur, on affiche un message et on arrête tout
+            die('Erreur : '.$e->getMessage());
+            }
+ 
+            // Si tout va bien, on peut continuer
+$req3 = $bdd->prepare('SELECT utilisateurs.mail mail
+                       FROM utilisateurs, collectes
+                       WHERE  collectes.id = :id_collecte 
+                       AND utilisateurs.id = collectes.id_last_hero');
+$req3->execute(array('id_collecte' => $donnees['id']));
+
+
+           // On affiche chaque entree une à une
+           while ($donnees3 = $req3->fetch())
+           { ?>
+
+
+
+<?php echo $donnees3['mail']?>
+
+
+         <?php }
+            $req3->closeCursor(); // Termine le traitement de la requête 3
+                ?>
+
+</td> 
+<td><?php if ($donnees['lht'] !== '0000-00-00 00:00:00'){echo $donnees['lht'];}?></td> 
 
 
 
