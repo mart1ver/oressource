@@ -40,7 +40,8 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
         	<form action="../moteur/modification_verification_collecte_post.php?ncollecte=<?php echo $_GET['ncollecte']?>" method="post">
             <input type="hidden" name ="id" id="id" value="<?php echo $_GET['ncollecte']?>">
 
-  <input type="hidden" name ="date" id="date" value="<?php echo $_POST['date']?>">
+  <input type="hidden" name ="date1" id="date1" value="<?php echo $_POST['date1']?>">
+  <input type="hidden" name ="date2" id="date2" value="<?php echo $_POST['date2']?>">
     <input type="hidden" name ="npoint" id="npoint" value="<?php echo $_POST['npoint']?>">
 
 
@@ -135,7 +136,12 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
             <th>Date de création:</th>
             <th>Type de déchet:</th>
             <th>Masse:</th>
-            <th>Modifier</th>
+
+            <th>Auteur de la ligne:</th>
+            <th>Modifier:</th>
+            <th>Modifié par:</th>
+            <th>Le:</th>
+
             
           </tr>
         </thead>
@@ -169,9 +175,14 @@ SELECT pesees_collectes.id ,pesees_collectes.timestamp  ,type_dechets.nom  , pes
             // On recupère toute la liste des filieres de sortie
             //   $reponse = $bdd->query('SELECT * FROM grille_objets');
           
-$req = $bdd->prepare('SELECT pesees_collectes.id ,pesees_collectes.timestamp  ,type_dechets.nom  , pesees_collectes.masse ,type_dechets.couleur
-                       FROM pesees_collectes ,type_dechets
-                       WHERE type_dechets.id = pesees_collectes.id_type_dechet AND pesees_collectes.id_collecte = :id_collecte');
+$req = $bdd->prepare('SELECT pesees_collectes.id ,pesees_collectes.timestamp  ,type_dechets.nom  , pesees_collectes.masse ,type_dechets.couleur , utilisateurs.mail mail , pesees_collectes.last_hero_timestamp lht
+                      
+
+ FROM pesees_collectes ,type_dechets ,utilisateurs,collectes
+                       WHERE type_dechets.id = pesees_collectes.id_type_dechet 
+                       AND utilisateurs.id = pesees_collectes.id_createur
+                       AND pesees_collectes.id_collecte = :id_collecte
+GROUP BY nom');
 $req->execute(array('id_collecte' => $_GET['ncollecte']));
 
 
@@ -188,7 +199,7 @@ $req->execute(array('id_collecte' => $_GET['ncollecte']));
            
 
 
-
+<td><?php echo $donnees['mail']?></td>
 
 <td>
 
@@ -198,7 +209,8 @@ $req->execute(array('id_collecte' => $_GET['ncollecte']));
 <input type="hidden" name ="nomtypo" id="nomtypo" value="<?php echo $donnees['nom']?>">
 <input type="hidden" name ="ncollecte" id="ncollecte" value="<?php echo $_GET['ncollecte']?>">
 <input type="hidden" name ="masse" id="masse" value="<?php echo $donnees['masse']?>">
-<input type="hidden" name ="date" id="date" value="<?php echo $_POST['date']?>">
+<input type="hidden" name ="date1" id="date1" value="<?php echo $_POST['date1']?>">
+<input type="hidden" name ="date2" id="date2" value="<?php echo $_POST['date2']?>">
 <input type="hidden" name ="npoint" id="npoint" value="<?php echo $_POST['npoint']?>">
 
   <button  class="btn btn-warning btn-sm" >Modifier</button>
@@ -209,6 +221,47 @@ $req->execute(array('id_collecte' => $_GET['ncollecte']));
 
 
 </td>
+<<<<<<< HEAD
+=======
+
+
+
+<td><?php 
+            try
+            {
+            // On se connecte à MySQL
+            include('../moteur/dbconfig.php');
+            }
+            catch(Exception $e)
+            {
+            // En cas d'erreur, on affiche un message et on arrête tout
+            die('Erreur : '.$e->getMessage());
+            }
+ 
+            // Si tout va bien, on peut continuer
+$req3 = $bdd->prepare('SELECT utilisateurs.mail mail
+                       FROM utilisateurs, pesees_collectes
+                       WHERE  pesees_collectes.id = :id_collecte 
+                       AND utilisateurs.id = pesees_collectes.id_last_hero');
+$req3->execute(array('id_collecte' => $donnees['id']));
+
+
+           // On affiche chaque entree une à une
+           while ($donnees3 = $req3->fetch())
+           { ?>
+
+
+
+<?php echo $donnees3['mail']?>
+
+
+         <?php }
+            $req3->closeCursor(); // Termine le traitement de la requête 3
+                ?></td>
+<td><?php if ($donnees['lht'] !== '0000-00-00 00:00:00'){echo $donnees['lht'];}?></td>
+
+
+>>>>>>> 9d9cb7851e6066383a45a0f4416f8e6e2c7e5ea6
           </tr>
            <?php }
               $req->closeCursor(); // Termine le traitement de la requête
