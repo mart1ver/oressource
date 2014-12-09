@@ -651,7 +651,71 @@ $req3->execute(array('id_sortie' => $donnees['id']));
 
 </form>
 
+<td><?php 
+            try
+            {
+            // On se connecte à MySQL
+            include('../moteur/dbconfig.php');
+            }
+            catch(Exception $e)
+            {
+            // En cas d'erreur, on affiche un message et on arrête tout
+            die('Erreur : '.$e->getMessage());
+            }
+ 
+           
+          
+$req5 = $bdd->prepare('SELECT utilisateurs.mail mail
+                       FROM sorties, utilisateurs
+                       WHERE  sorties.id = :id_sortie
+                       AND  utilisateurs.id = sorties.id_last_hero
+                       ');
+$req5->execute(array('id_sortie' => $donnees['id']));
 
+
+           // On affiche chaque entree une à une
+           while ($donnees5 = $req5->fetch())
+           { ?>
+
+
+
+<?php echo $donnees5['mail'];?>
+
+         <?php }
+            
+                ?></td>
+<td><?php 
+            try
+            {
+            // On se connecte à MySQL
+            include('../moteur/dbconfig.php');
+            }
+            catch(Exception $e)
+            {
+            // En cas d'erreur, on affiche un message et on arrête tout
+            die('Erreur : '.$e->getMessage());
+            }
+ 
+           
+          
+$req4 = $bdd->prepare('SELECT sorties.last_hero_timestamp lht
+                       FROM sorties
+                       WHERE  sorties.id = :id_sortie
+                       ');
+$req4->execute(array('id_sortie' => $donnees['id']));
+
+
+           // On affiche chaque entree une à une
+           while ($donnees4 = $req4->fetch())
+           { ?>
+
+
+
+<?php if ($donnees4['lht'] !== '0000-00-00 00:00:00'){echo $donnees4['lht'];}?>
+
+         <?php }
+            
+                ?></td>
 
 </td>
 
@@ -664,6 +728,9 @@ $req3->execute(array('id_sortie' => $donnees['id']));
            <?php }
               $req->closeCursor(); // Termine le traitement de la requête
                 $req2->closeCursor(); // Termine le traitement de la requête2
+                $req3->closeCursor(); // Termine le traitement de la requête3
+                $req4->closeCursor(); // Termine le traitement de la requête4
+                $req5->closeCursor(); // Termine le traitement de la requête4
                 ?>
        </tbody>
         
@@ -853,7 +920,71 @@ $req3->execute(array('id_sortie' => $donnees['id']));
 
 </form>
 
+<td><?php 
+            try
+            {
+            // On se connecte à MySQL
+            include('../moteur/dbconfig.php');
+            }
+            catch(Exception $e)
+            {
+            // En cas d'erreur, on affiche un message et on arrête tout
+            die('Erreur : '.$e->getMessage());
+            }
+ 
+           
+          
+$req5 = $bdd->prepare('SELECT utilisateurs.mail mail
+                       FROM sorties, utilisateurs
+                       WHERE  sorties.id = :id_sortie
+                       AND  utilisateurs.id = sorties.id_last_hero
+                       ');
+$req5->execute(array('id_sortie' => $donnees['id']));
 
+
+           // On affiche chaque entree une à une
+           while ($donnees5 = $req5->fetch())
+           { ?>
+
+
+
+<?php echo $donnees5['mail'];?>
+
+         <?php }
+            
+                ?></td>
+<td><?php 
+            try
+            {
+            // On se connecte à MySQL
+            include('../moteur/dbconfig.php');
+            }
+            catch(Exception $e)
+            {
+            // En cas d'erreur, on affiche un message et on arrête tout
+            die('Erreur : '.$e->getMessage());
+            }
+ 
+           
+          
+$req4 = $bdd->prepare('SELECT sorties.last_hero_timestamp lht
+                       FROM sorties
+                       WHERE  sorties.id = :id_sortie
+                       ');
+$req4->execute(array('id_sortie' => $donnees['id']));
+
+
+           // On affiche chaque entree une à une
+           while ($donnees4 = $req4->fetch())
+           { ?>
+
+
+
+<?php if ($donnees4['lht'] !== '0000-00-00 00:00:00'){echo $donnees4['lht'];}?>
+
+         <?php }
+            
+                ?></td>
 
 </td>
 
@@ -866,6 +997,9 @@ $req3->execute(array('id_sortie' => $donnees['id']));
            <?php }
               $req->closeCursor(); // Termine le traitement de la requête
                 $req2->closeCursor(); // Termine le traitement de la requête2
+                $req3->closeCursor(); // Termine le traitement de la requête3
+                $req4->closeCursor(); // Termine le traitement de la requête4
+                $req5->closeCursor(); // Termine le traitement de la requête4
                 ?>
        </tbody>
         
@@ -1055,7 +1189,71 @@ $req3->execute(array('id_sortie' => $donnees['id']));
 
 </form>
 
+<td><?php 
+            try
+            {
+            // On se connecte à MySQL
+            include('../moteur/dbconfig.php');
+            }
+            catch(Exception $e)
+            {
+            // En cas d'erreur, on affiche un message et on arrête tout
+            die('Erreur : '.$e->getMessage());
+            }
+ 
+           
+          
+$req5 = $bdd->prepare('SELECT utilisateurs.mail mail
+                       FROM sorties, utilisateurs
+                       WHERE  sorties.id = :id_sortie
+                       AND  utilisateurs.id = sorties.id_last_hero
+                       ');
+$req5->execute(array('id_sortie' => $donnees['id']));
 
+
+           // On affiche chaque entree une à une
+           while ($donnees5 = $req5->fetch())
+           { ?>
+
+
+
+<?php echo $donnees5['mail'];?>
+
+         <?php }
+            
+                ?></td>
+<td><?php 
+            try
+            {
+            // On se connecte à MySQL
+            include('../moteur/dbconfig.php');
+            }
+            catch(Exception $e)
+            {
+            // En cas d'erreur, on affiche un message et on arrête tout
+            die('Erreur : '.$e->getMessage());
+            }
+ 
+           
+          
+$req4 = $bdd->prepare('SELECT sorties.last_hero_timestamp lht
+                       FROM sorties
+                       WHERE  sorties.id = :id_sortie
+                       ');
+$req4->execute(array('id_sortie' => $donnees['id']));
+
+
+           // On affiche chaque entree une à une
+           while ($donnees4 = $req4->fetch())
+           { ?>
+
+
+
+<?php if ($donnees4['lht'] !== '0000-00-00 00:00:00'){echo $donnees4['lht'];}?>
+
+         <?php }
+            
+                ?></td>
 
 </td>
 
@@ -1068,6 +1266,9 @@ $req3->execute(array('id_sortie' => $donnees['id']));
            <?php }
               $req->closeCursor(); // Termine le traitement de la requête
                 $req2->closeCursor(); // Termine le traitement de la requête2
+                $req3->closeCursor(); // Termine le traitement de la requête3
+                $req4->closeCursor(); // Termine le traitement de la requête4
+                $req5->closeCursor(); // Termine le traitement de la requête4
                 ?>
        </tbody>
         
