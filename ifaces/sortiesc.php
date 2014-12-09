@@ -224,7 +224,7 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
   <li class="active"><a>Don aux partenaires</a></li>
   <li><a href="<?php echo  "sortiesr.php?numero=" . $_GET['numero']?>">Recyclage</a></li>
   <li><a href="<?php echo  "sorties.php?numero=" . $_GET['numero']?>">Don</a></li>
-  <li><a href="<?php echo  "sortiesd.php?numero=" . $_GET['numero']?>">Déchèterie</a></li>
+  <li><a href="<?php echo  "sortiesd.php?numero=" . $_GET['numero']?>">Déchetterie</a></li>
 </ul>
     <br>   
 </div>

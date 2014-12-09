@@ -1,4 +1,5 @@
 <?php session_start();
+
 //Vérification des autorisations de l'utilisateur et des variables de session requises pour l'affichage de cette page: 
 if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 's'.$_GET['numero']) !== false))
       {include "tete.php";
@@ -187,11 +188,11 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
         <div class="col-md-7 col-md-offset-1" >
 
  <ul class="nav nav-tabs">
-  <li><a href="<?php echo  "sortiesp.php?numero=" . $_GET['numero']?>">Poubelles</a></li>
+  <li><a href="<?php echo  "sortiesp.php?numero=" . $_GET['numero']?>">Poubelle</a></li>
   <li><a href="<?php echo  "sortiesc.php?numero=" . $_GET['numero']?>">Don aux partenaires</a></li>
   <li><a href="<?php echo  "sortiesr.php?numero=" . $_GET['numero']?>">Recyclage</a></li>
-  <li class="active"><a>Dons</a></li>
-  <li><a href="<?php echo  "sortiesd.php?numero=" . $_GET['numero']?>">Decheterie</a></li>
+  <li class="active"><a>Don</a></li>
+  <li><a href="<?php echo  "sortiesd.php?numero=" . $_GET['numero']?>">Déchetterie</a></li>
   
 </ul>
     <br>   
@@ -340,7 +341,7 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
      <h3 class="panel-title"><label>Informations :</label></h3>
   </div>
   <div class="panel-body"> 
- <label for="type_sortie">Type de sortie:</label>
+ <label for="type_sortie">Types de sortie:</label>
           <select name ="type_sortie" id ="type_sortie" class="form-control" required autofocus>
 <?php         
             try
@@ -493,7 +494,7 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
 <div class="row" >
 <div class="panel panel-info">
         <div class="panel-heading">
-    <h3 class="panel-title"><label>Type d'objet:</label></h3>
+    <h3 class="panel-title"><label>Types d'objet:</label></h3>
   </div>
   <div class="panel-body"> 
       
