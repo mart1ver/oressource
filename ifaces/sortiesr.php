@@ -348,7 +348,7 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
          <div class="col-md-3" >
            <div class="panel panel-info">
         <div class="panel-heading">
-    <h3 class="panel-title"><label for="id_filiere">Nom de l'entrprise de recyclage</label></h3>
+    <h3 class="panel-title"><label for="id_filiere">Nom de l'entreprise de recyclage</label></h3>
   </div>
   <div class="panel-body"> 
            
