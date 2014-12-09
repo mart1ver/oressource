@@ -390,6 +390,7 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
           </select>
 
 <input type="hidden" name ="id_point_sortie" id="id_point_sortie" value="<?php echo $_GET['numero']?>">
+<br>
 <input type="text" class="form-control" name="commentaire" id="commentaire" placeholder="Commentaire"><br>
 
 </div>
@@ -537,7 +538,7 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
 <div class="row" >
 <div class="panel panel-info">
         <div class="panel-heading">
-    <h3 class="panel-title"><label>Materiaux et dechets:</label></h3>
+    <h3 class="panel-title"><label>Materiaux et déchets:</label></h3>
   </div>
   <div class="panel-body"> 
       
