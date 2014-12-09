@@ -171,9 +171,9 @@ if(strpos($_SESSION['niveau'], 'bi') !== false)
 <?php } ?>
 <?php if(strpos($_SESSION['niveau'], 'h') !== false)//gestion verif
           { ?>
-          <li><a href="verif_collecte.php?numero=1&date1=<?php echo date("d-m-Y")?>&date2=<?php echo date("d-m-Y")?>&numero=1">Verifier les collectes</a></li>
-          <li><a href="verif_sorties.php?numero=1&date=<?php echo date("Y-m-d")?>">Verifier les sorties hors boutique</a></li>
-          <li><a href="verif_vente.php?numero=1&date=<?php echo date("Y-m-d")?>">Verifier les ventes</a></li>
+          <li><a href="verif_collecte.php?date1=<?php echo date("d-m-Y")?>&date2=<?php echo date("d-m-Y")?>&numero=1">Verifier les collectes</a></li>
+          <li><a href="verif_sorties.php?date1=<?php echo date("d-m-Y")?>&date2=<?php echo date("d-m-Y")?>&numero=1">Verifier les sorties hors boutique</a></li>
+          <li><a href="verif_vente.php?date1=<?php echo date("d-m-Y")?>&date2=<?php echo date("d-m-Y")?>&numero=1">Verifier les ventes</a></li>
           <li class="divider"></li>
 <?php } ?>
 <?php if(strpos($_SESSION['niveau'], 'l') !== false)//utilisateurs

@@ -221,8 +221,7 @@ $req->execute(array('id_collecte' => $_GET['ncollecte']));
 
 
 </td>
-<<<<<<< HEAD
-=======
+
 
 
 
@@ -258,10 +257,12 @@ $req3->execute(array('id_collecte' => $donnees['id']));
          <?php }
             $req3->closeCursor(); // Termine le traitement de la requête 3
                 ?></td>
+
+
 <td><?php if ($donnees['lht'] !== '0000-00-00 00:00:00'){echo $donnees['lht'];}?></td>
 
 
->>>>>>> 9d9cb7851e6066383a45a0f4416f8e6e2c7e5ea6
+
           </tr>
            <?php }
               $req->closeCursor(); // Termine le traitement de la requête
@@ -291,7 +292,7 @@ $req3->execute(array('id_collecte' => $donnees['id']));
 <?php include "pied.php";
  }
     else
-}
+{
    header('Location: ../moteur/destroy.php') ;
 }
 ?>

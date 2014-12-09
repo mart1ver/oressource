@@ -375,7 +375,8 @@ $req3->execute(array('id_sortie' => $donnees['id']));
 
 <input type="hidden" name ="id" id="id" value="<?php echo $donnees['id']?>">
 <input type="hidden" name ="nom" id="nom" value="<?php echo $donnees['nom']?>">
-<input type="hidden" name ="date" id="date" value="<?php echo $_GET['date']?>">
+<input type="hidden" name ="date1" id="date1" value="<?php echo $_GET['date1']?>">
+<input type="hidden" name ="date2" id="date2" value="<?php echo $_GET['date2']?>">
 <input type="hidden" name ="npoint" id="npoint" value="<?php echo $_GET['numero']?>">
   <button  class="btn btn-warning btn-sm" >Modifier</button>
 
@@ -644,7 +645,8 @@ $req3->execute(array('id_sortie' => $donnees['id']));
 
 <input type="hidden" name ="id" id="id" value="<?php echo $donnees['id']?>">
 <input type="hidden" name ="nom" id="nom" value="<?php echo $donnees['nom']?>">
-<input type="hidden" name ="date" id="date" value="<?php echo $_GET['date']?>">
+<input type="hidden" name ="date1" id="date1" value="<?php echo $_GET['date1']?>">
+<input type="hidden" name ="date2" id="date2" value="<?php echo $_GET['date2']?>">
 <input type="hidden" name ="npoint" id="npoint" value="<?php echo $_GET['numero']?>">
   <button  class="btn btn-warning btn-sm" >Modifier</button>
 
@@ -913,7 +915,8 @@ $req3->execute(array('id_sortie' => $donnees['id']));
 
 <input type="hidden" name ="id" id="id" value="<?php echo $donnees['id']?>">
 <input type="hidden" name ="nom" id="nom" value="<?php echo $donnees['nom']?>">
-<input type="hidden" name ="date" id="date" value="<?php echo $_GET['date']?>">
+<input type="hidden" name ="date1" id="date1" value="<?php echo $_GET['date1']?>">
+<input type="hidden" name ="date2" id="date2" value="<?php echo $_GET['date2']?>">
 <input type="hidden" name ="npoint" id="npoint" value="<?php echo $_GET['numero']?>">
   <button  class="btn btn-warning btn-sm" >Modifier</button>
 
@@ -1182,12 +1185,14 @@ $req3->execute(array('id_sortie' => $donnees['id']));
 
 <input type="hidden" name ="id" id="id" value="<?php echo $donnees['id']?>">
 <input type="hidden" name ="nom" id="nom" value="<?php echo $donnees['nom']?>">
-<input type="hidden" name ="date" id="date" value="<?php echo $_GET['date']?>">
+<input type="hidden" name ="date1" id="date1" value="<?php echo $_GET['date1']?>">
+<input type="hidden" name ="date2" id="date2" value="<?php echo $_GET['date2']?>">
 <input type="hidden" name ="npoint" id="npoint" value="<?php echo $_GET['numero']?>">
   <button  class="btn btn-warning btn-sm" >Modifier</button>
 
 
 </form>
+</td>
 
 <td><?php 
             try
@@ -1255,7 +1260,7 @@ $req4->execute(array('id_sortie' => $donnees['id']));
             
                 ?></td>
 
-</td>
+
 
 
 
