@@ -1,4 +1,4 @@
-<?php 
+<?php session_start();
 
 // Connexion à la base de données
 		try
@@ -10,8 +10,8 @@
         die('Erreur : '.$e->getMessage());
 }
 // Insertion de la collecte (sans les pesées) l'aide d'une requête préparée
-	$req = $bdd->prepare('INSERT INTO sorties (id_filiere , classe, id_point_sortie, commentaire) VALUES(?, ?, ?, ?)');
-	$req->execute(array($_POST['id_filiere'], "sortiesr", $_POST['id_point_sortie'], $_POST['commentaire']));
+	$req = $bdd->prepare('INSERT INTO sorties (id_filiere , classe, id_point_sortie, commentaire, id_createur) VALUES(?,?, ?, ?, ?)');
+	$req->execute(array($_POST['id_filiere'], "sortiesr", $_POST['id_point_sortie'], $_POST['commentaire'], $_SESSION['id']));
   $id_sortie = $bdd->lastInsertId();
     $req->closeCursor();
 
@@ -51,8 +51,8 @@ catch(Exception $e)
         die('Erreur : '.$e->getMessage());
 }
 // Insertion du post à l'aide d'une requête préparée
-$req = $bdd->prepare('INSERT INTO pesees_sorties (masse,  id_sortie, id_type_dechet_evac) VALUES(?, ?, ?)');
-$req->execute(array($_POST["m".$i],  $id_sortie , $i));
+$req = $bdd->prepare('INSERT INTO pesees_sorties (masse,  id_sortie, id_type_dechet_evac, id_createur) VALUES(?,?, ?, ?)');
+$req->execute(array($_POST["m".$i],  $id_sortie , $i, $_SESSION['id']));
   $req->closeCursor();
 }
     $i++;

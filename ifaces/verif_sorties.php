@@ -88,7 +88,7 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
   <div class="col-md-3 col-md-offset-9" >
   <label for="reportrange">Choisisez la periode a inspecter:</label><br>
 <div id="reportrange" class="pull-left" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc">
-                  <i class="fa fa-calendar"></i>
+                  <i class="glyphicon glyphicon-calendar"> </i>
                   <span></span> <b class="caret"></b>
                </div>
 </div>
@@ -252,7 +252,10 @@ if($donnees['nid'] > 0){ $req->closeCursor();
             
             <th>Masse totale</th>
             
+             <th>Auteur de la ligne:</th>
             <th>Modifier:</th>
+            <th>Modifié par:</th>
+            <th>Le:</th>
             
           </tr>
         </thead>
@@ -329,7 +332,41 @@ $req2->execute(array('id_sortie' => $donnees['id']));
            </td> 
 
 
+<td>
+ <?php 
+            try
+            {
+            // On se connecte à MySQL
+            include('../moteur/dbconfig.php');
+            }
+            catch(Exception $e)
+            {
+            // En cas d'erreur, on affiche un message et on arrête tout
+            die('Erreur : '.$e->getMessage());
+            }
+ 
+           
+          
+$req3 = $bdd->prepare('SELECT utilisateurs.mail mail
+                       FROM utilisateurs ,sorties
+                       WHERE  sorties.id = :id_sortie
+                       AND  utilisateurs.id = sorties.id_createur');
+$req3->execute(array('id_sortie' => $donnees['id']));
 
+
+           // On affiche chaque entree une à une
+           while ($donnees3 = $req3->fetch())
+           { ?>
+
+
+
+<?php echo $donnees3['mail']?>
+
+
+         <?php }
+            
+                ?>
+</td>
 
 
 <td>
@@ -349,7 +386,71 @@ $req2->execute(array('id_sortie' => $donnees['id']));
 
 </td>
 
+<td><?php 
+            try
+            {
+            // On se connecte à MySQL
+            include('../moteur/dbconfig.php');
+            }
+            catch(Exception $e)
+            {
+            // En cas d'erreur, on affiche un message et on arrête tout
+            die('Erreur : '.$e->getMessage());
+            }
+ 
+           
+          
+$req5 = $bdd->prepare('SELECT utilisateurs.mail mail
+                       FROM sorties, utilisateurs
+                       WHERE  sorties.id = :id_sortie
+                       AND  utilisateurs.id = sorties.id_last_hero
+                       ');
+$req5->execute(array('id_sortie' => $donnees['id']));
 
+
+           // On affiche chaque entree une à une
+           while ($donnees5 = $req5->fetch())
+           { ?>
+
+
+
+<?php echo $donnees5['mail'];?>
+
+         <?php }
+            
+                ?></td>
+<td><?php 
+            try
+            {
+            // On se connecte à MySQL
+            include('../moteur/dbconfig.php');
+            }
+            catch(Exception $e)
+            {
+            // En cas d'erreur, on affiche un message et on arrête tout
+            die('Erreur : '.$e->getMessage());
+            }
+ 
+           
+          
+$req4 = $bdd->prepare('SELECT sorties.last_hero_timestamp lht
+                       FROM sorties
+                       WHERE  sorties.id = :id_sortie
+                       ');
+$req4->execute(array('id_sortie' => $donnees['id']));
+
+
+           // On affiche chaque entree une à une
+           while ($donnees4 = $req4->fetch())
+           { ?>
+
+
+
+<?php if ($donnees4['lht'] !== '0000-00-00 00:00:00'){echo $donnees4['lht'];}?>
+
+         <?php }
+            
+                ?></td>
 
 
 
@@ -358,6 +459,9 @@ $req2->execute(array('id_sortie' => $donnees['id']));
            <?php }
               $req->closeCursor(); // Termine le traitement de la requête
                 $req2->closeCursor(); // Termine le traitement de la requête2
+                $req3->closeCursor(); // Termine le traitement de la requête3
+                $req4->closeCursor(); // Termine le traitement de la requête4
+                $req5->closeCursor(); // Termine le traitement de la requête4
                 ?>
        </tbody>
        
@@ -419,7 +523,10 @@ if($donnees['nid'] > 0){ $req->closeCursor();
             
             <th>Masse totale</th>
             
+             <th>Auteur de la ligne:</th>
             <th>Modifier:</th>
+            <th>Modifié par:</th>
+            <th>Le:</th>
             
           </tr>
         </thead>
@@ -495,7 +602,41 @@ $req2->execute(array('id_sortie' => $donnees['id']));
 
 
 
+<td>
+ <?php 
+            try
+            {
+            // On se connecte à MySQL
+            include('../moteur/dbconfig.php');
+            }
+            catch(Exception $e)
+            {
+            // En cas d'erreur, on affiche un message et on arrête tout
+            die('Erreur : '.$e->getMessage());
+            }
+ 
+           
+          
+$req3 = $bdd->prepare('SELECT utilisateurs.mail mail
+                       FROM utilisateurs ,sorties
+                       WHERE  sorties.id = :id_sortie
+                       AND  utilisateurs.id = sorties.id_createur');
+$req3->execute(array('id_sortie' => $donnees['id']));
 
+
+           // On affiche chaque entree une à une
+           while ($donnees3 = $req3->fetch())
+           { ?>
+
+
+
+<?php echo $donnees3['mail']?>
+
+
+         <?php }
+            
+                ?>
+</td>
 
 <td>
 
@@ -583,7 +724,10 @@ if($donnees['nid'] > 0){ $req->closeCursor();
             <th>Nom de l'entreprise:</th>
             <th>Masse totale</th>
             
+             <th>Auteur de la ligne:</th>
             <th>Modifier:</th>
+            <th>Modifié par:</th>
+            <th>Le:</th>
             
           </tr>
         </thead>
@@ -659,7 +803,41 @@ $req2->execute(array('id_sortie' => $donnees['id']));
            </td> 
 
 
+<td>
+ <?php 
+            try
+            {
+            // On se connecte à MySQL
+            include('../moteur/dbconfig.php');
+            }
+            catch(Exception $e)
+            {
+            // En cas d'erreur, on affiche un message et on arrête tout
+            die('Erreur : '.$e->getMessage());
+            }
+ 
+           
+          
+$req3 = $bdd->prepare('SELECT utilisateurs.mail mail
+                       FROM utilisateurs ,sorties
+                       WHERE  sorties.id = :id_sortie
+                       AND  utilisateurs.id = sorties.id_createur');
+$req3->execute(array('id_sortie' => $donnees['id']));
 
+
+           // On affiche chaque entree une à une
+           while ($donnees3 = $req3->fetch())
+           { ?>
+
+
+
+<?php echo $donnees3['mail']?>
+
+
+         <?php }
+            
+                ?>
+</td>
 
 
 <td>
@@ -748,7 +926,10 @@ if($donnees['nid'] > 0){ $req->closeCursor();
             
             <th>Masse totale</th>
             
+             <th>Auteur de la ligne:</th>
             <th>Modifier:</th>
+            <th>Modifié par:</th>
+            <th>Le:</th>
             
           </tr>
         </thead>
@@ -824,7 +1005,41 @@ $req2->execute(array('id_sortie' => $donnees['id']));
            </td> 
 
 
+<td>
+ <?php 
+            try
+            {
+            // On se connecte à MySQL
+            include('../moteur/dbconfig.php');
+            }
+            catch(Exception $e)
+            {
+            // En cas d'erreur, on affiche un message et on arrête tout
+            die('Erreur : '.$e->getMessage());
+            }
+ 
+           
+          
+$req3 = $bdd->prepare('SELECT utilisateurs.mail mail
+                       FROM utilisateurs ,sorties
+                       WHERE  sorties.id = :id_sortie
+                       AND  utilisateurs.id = sorties.id_createur');
+$req3->execute(array('id_sortie' => $donnees['id']));
 
+
+           // On affiche chaque entree une à une
+           while ($donnees3 = $req3->fetch())
+           { ?>
+
+
+
+<?php echo $donnees3['mail']?>
+
+
+         <?php }
+            
+                ?>
+</td>
 
 
 <td>
