@@ -13,10 +13,12 @@
       <script type="text/javascript" src="../js/daterangepicker.js"></script>
    </head>
 <?php
+
+//Vérification des autorisations de l'utilisateur et des variables de session requises pour l'affichage de cette page:
    if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 'h') !== false))
       {  include "tete.php" ?>
    <div class="container" style="width:1300px">
-        <h1>verification des collectes</h1> 
+        <h1>Vérification des collectes</h1> 
         <?php
 if ($_GET['err'] == "") // SI on a pas de message d'erreur
 {
@@ -78,7 +80,7 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
 
 <div class="row">
   <div class="col-md-3 col-md-offset-9" >
-  <label for="reportrange">choisisez la periode a inspecter:</label><br>
+  <label for="reportrange">Choisisez la periode a inspecter:</label><br>
 <div id="reportrange" class="pull-left" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc">
                   <i class="fa fa-calendar"></i>
                   <span></span> <b class="caret"></b>
@@ -236,7 +238,7 @@ if($donnees['nid'] > 0){ $req->closeCursor();
         <thead>
           <tr>
             <th>#</th>
-            <th>Momment de création:</th>
+            <th>Date de création:</th>
             <th>Type de collecte:</th>
             <th>Adhérent?:</th>
             <th>Localisation:</th>
@@ -348,7 +350,7 @@ $req2->execute(array('id_collecte' => $donnees['id']));
 <input type="hidden" name ="date1" id="date1" value="<?php echo $_GET['date1']?>">
 <input type="hidden" name ="date2" id="date2" value="<?php echo $_GET['date2']?>">
 <input type="hidden" name ="npoint" id="npoint" value="<?php echo $_GET['numero']?>">
-  <button  class="btn btn-warning btn-sm" >modifier</button>
+  <button  class="btn btn-warning btn-sm" >Modifier</button>
 
 
 </form>
@@ -429,10 +431,12 @@ $req3->execute(array('id_collecte' => $donnees['id']));
 
 
   </div><!-- /.container -->
-<?php include "pied_bilan.php" ?>
-<?php }
+<?php include "pied_bilan.php";
+}
     else
-   header('Location: ../moteur/destroy.php') ;
+{   
+header('Location: ../moteur/destroy.php') ;
+}
 ?>
        
       

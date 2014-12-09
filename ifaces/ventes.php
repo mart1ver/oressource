@@ -1,4 +1,6 @@
 <?php session_start(); 
+
+//Vérification des autorisations de l'utilisateur et des variables de session requises pour l'affichage de cette page:
 if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 'v'.$_GET['numero']) !== false))
       {include "tete.php";?>
 
@@ -23,7 +25,7 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
          $req = $bdd->prepare("SELECT max(id) FROM ventes WHERE id_point_vente = :id ");
             $req->execute(array('id' => $_GET['numero']));
  
-           // On affiche chaque entree une à une
+           // On affiche chaque entrée une à une
            while ($donnees = $req->fetch())
            {
             $numero_vente = $donnees['max(id)'] + 1;
@@ -48,7 +50,7 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
             $req = $bdd->prepare("SELECT * FROM points_vente WHERE id = :id ");
             $req->execute(array('id' => $_GET['numero']));
  
-           // On affiche chaque entree une à une
+           // On affiche chaque entrée une à une
            while ($donnees = $req->fetch())
            {
             echo$donnees['nom'];
@@ -456,8 +458,11 @@ function encaisse() {
                     }
 </script>
 
-            <?php } else
+            <?php 
+} 
+else
       { 
         header('Location:../moteur/destroy.php');
-      }?>
+      }
+?>
 

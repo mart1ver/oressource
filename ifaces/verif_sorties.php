@@ -1,11 +1,14 @@
-<?php session_start(); ?>
+<?php session_start();
 
-<?php
-//formulaire permetant la correction de sorties
+//Vérification des autorisations de l'utilisateur et des variables de session requises pour l'affichage de cette page:
  if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 'h') !== false))
-      {  include "tete.php" ?>
+      {  include "tete.php" 
+//formulaire permettant la correction de sorties
+?>
+
+
    <div class="container">
-        <h1>verification des sorties hors boutique</h1> 
+        <h1>Vérification des sorties hors boutique</h1> 
         <?php
 if ($_GET['err'] == "") // SI on a pas de message d'erreur
 {
@@ -121,7 +124,7 @@ if($donnees['nid'] > 0){ $req->closeCursor();
         <thead>
           <tr>
             <th>#</th>
-            <th>Momment de creation:</th>
+            <th>Date de création:</th>
             <th>type de collecte:</th>
             <th>Adhérent?:</th>
             
@@ -215,7 +218,7 @@ $req2->execute(array('id_sortie' => $donnees['id']));
 <input type="hidden" name ="nom" id="nom" value="<?php echo $donnees['nom']?>">
 <input type="hidden" name ="date" id="date" value="<?php echo $_GET['date']?>">
 <input type="hidden" name ="npoint" id="npoint" value="<?php echo $_GET['numero']?>">
-  <button  class="btn btn-warning btn-sm" >modifier</button>
+  <button  class="btn btn-warning btn-sm" >Modifier</button>
 
 
 </form>
@@ -289,7 +292,7 @@ if($donnees['nid'] > 0){ $req->closeCursor();
         <thead>
           <tr>
             <th>#</th>
-            <th>Momment de creation:</th>
+            <th>Date de création:</th>
             <th>Nom du partenaire:</th>
             
             <th>Masse totale</th>
@@ -380,7 +383,7 @@ $req2->execute(array('id_sortie' => $donnees['id']));
 <input type="hidden" name ="nom" id="nom" value="<?php echo $donnees['nom']?>">
 <input type="hidden" name ="date" id="date" value="<?php echo $_GET['date']?>">
 <input type="hidden" name ="npoint" id="npoint" value="<?php echo $_GET['numero']?>">
-  <button  class="btn btn-warning btn-sm" >modifier</button>
+  <button  class="btn btn-warning btn-sm" >Modifier</button>
 
 
 </form>
@@ -454,7 +457,7 @@ if($donnees['nid'] > 0){ $req->closeCursor();
         <thead>
           <tr>
             <th>#</th>
-            <th>Momment de creation:</th>
+            <th>Date de création:</th>
             <th>Nom de l'entreprise:</th>
             <th>Masse totale</th>
             
@@ -545,7 +548,7 @@ $req2->execute(array('id_sortie' => $donnees['id']));
 <input type="hidden" name ="nom" id="nom" value="<?php echo $donnees['nom']?>">
 <input type="hidden" name ="date" id="date" value="<?php echo $_GET['date']?>">
 <input type="hidden" name ="npoint" id="npoint" value="<?php echo $_GET['numero']?>">
-  <button  class="btn btn-warning btn-sm" >modifier</button>
+  <button  class="btn btn-warning btn-sm" >Modifier</button>
 
 
 </form>
@@ -618,7 +621,7 @@ if($donnees['nid'] > 0){ $req->closeCursor();
         <thead>
           <tr>
             <th>#</th>
-            <th>Momment de creation:</th>
+            <th>Date de création:</th>
    
             
             <th>Masse totale</th>
@@ -710,7 +713,7 @@ $req2->execute(array('id_sortie' => $donnees['id']));
 <input type="hidden" name ="nom" id="nom" value="<?php echo $donnees['nom']?>">
 <input type="hidden" name ="date" id="date" value="<?php echo $_GET['date']?>">
 <input type="hidden" name ="npoint" id="npoint" value="<?php echo $_GET['numero']?>">
-  <button  class="btn btn-warning btn-sm" >modifier</button>
+  <button  class="btn btn-warning btn-sm" >Modifier</button>
 
 
 </form>
@@ -743,10 +746,12 @@ $req2->execute(array('id_sortie' => $donnees['id']));
 
 
   </div><!-- /.container -->
-<?php include "pied.php" ?>
-<?php }
+<?php include "pied.php";
+ }
     else
+{
    header('Location: ../moteur/destroy.php') ;
+}
 ?>
        
       
