@@ -447,7 +447,7 @@ $req4->execute(array('id_sortie' => $donnees['id']));
 
 
 
-<?php if ($donnees4['lht'] !== '0000-00-00 00:00:00'){echo $donnees4['lht'];}?>
+<?php if ($donnees4['lht'] !== '0000-00-00 00:00:00'){echo $donnees4['lht'];}else{?>jamais<?php}?>
 
          <?php }
             
