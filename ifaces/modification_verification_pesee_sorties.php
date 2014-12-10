@@ -47,8 +47,9 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
 
 
 
-
-  
+<?php
+   if (isset($_POST['nomtypo']))
+      { ?>
   <div class="col-md-3">
   <label for="id_type_dechet">Type d'objet:</label>
 <select name="id_type_dechet" id="id_type_dechet" class="form-control " required>
@@ -84,6 +85,10 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
 
 
 </div>
+
+<?php }else { ?>
+
+
   <div class="col-md-3">
   <label for="id_type_dechet">Dechets et materiaux:</label>
 <select name="id_type_dechet_evac" id="id_type_dechet_evac" class="form-control " required>
@@ -118,6 +123,7 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
     </select>
   
 </div>
+<?php }?>
 <div class="col-md-3">
 
     <label for="masse">Masse:</label>

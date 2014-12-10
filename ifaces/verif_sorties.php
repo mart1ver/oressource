@@ -989,8 +989,6 @@ $req4->execute(array('id_sortie' => $donnees['id']));
             
                 ?></td>
 
-</td>
-
 
 
 
