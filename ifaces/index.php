@@ -3,9 +3,10 @@
 
 <?php session_start(); 
 
-//Vérification des autorisations de l'utilisateur et des variables de session requisent pour l'affichage de cette page:
-    if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource")
-      { include "tete.php" ?>
+//Vérification du renseignement du champ "id" (dans le tableau $_SESSION) et du fait que la variable "système" de ce même tableau a bien la valeur "oressource" avant d'afficher quoique ce soit:    
+if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource")
+      
+{ include "tete.php" ?>
 
 
 
@@ -25,6 +26,7 @@
           <h2>Collecté aujourd'hui:</h2>
           <p><div id="graphj" style="height: 180px;"></div></p>
 <?php 
+//Vérification des autorisations de l'utilisateur et des variables de session requises pour l'affichage des bilans de collecte en première page:
 if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 'bi') !== false))
       { ?>
           <p><a href=" bilanc.php?date1=<?php echo date("d-m-Y")?>&date2=<?php echo date("d-m-Y")?>&numero=0" class="btn btn-default"  role="button">Détails &raquo;</a></p>
@@ -35,6 +37,7 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
           <h2>Evacué aujourd'hui:</h2>
           <p><div id="grapha" style="height: 180px;"></div></p>
 <?php
+//Vérification des autorisations de l'utilisateur et des variables de session requises pour l'affichage des bilans de sortie hors boutique en première page:
           if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 'bi') !== false))
       { ?>
           <p><a class="btn btn-default" href=" bilanhb.php?date1=<?php echo date("d-m-Y")?>&date2=<?php echo date("d-m-Y")?>" role="button">Détails &raquo;</a></p>
@@ -44,6 +47,7 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
           <h2>Vendu aujourd'hui:</h2>
           <p><div id="graphm" style="height: 180px;"></div></p>
           <?php
+//Vérification des autorisations de l'utilisateur et des variables de session requises pour l'affichage des bilans de vente en première page:
 if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 'bi') !== false))
       { ?>
           <p><a class="btn btn-default" href=" bilanv.php?date1=<?php echo date("d-m-Y")?>&date2=<?php echo date("d-m-Y")?>" role="button">Détails &raquo;</a></p>

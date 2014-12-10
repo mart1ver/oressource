@@ -1,6 +1,6 @@
 <?php session_start();
  
-//Vérification des autorisations de l'utilisateur et des variables de session requisent pour l'affichage de cette page: 
+//Vérification des autorisations de l'utilisateur et des variables de session requises pour l'affichage de cette page: 
     if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 'j') !== false))
       { include "tete.php"
 //Oressource 2014, formulaire de référencement des filières de sortie (entreprises de recyclage, associations, etc) en lien avec la structure
@@ -9,7 +9,7 @@
     <div class="container">
         <h1>Gestion des partenaires de recyclage</h1> 
          <div class="panel-heading">Gérez ici la liste de ceux de vos partenaires qui traitent vos sorties destinées au recyclage.</div>
-         <p>Cette option permet notamment de différencier les "sorties recyclage" des "sorties ré-emploi" au moment de la mise en bilan.</p>
+         <p>Permet notamment de différencier les "sorties recyclage" des "sorties ré-emploi" au moment de la mise en bilan.</p>
 
 <?php
 if ($_GET['err'] == "") // SI on a pas de message d'erreur
@@ -172,7 +172,7 @@ else // SINON
 <input type="hidden" name ="description" id="description" value="<?php echo $donnees['description']?>">
 <input type="hidden" name ="couleur" id="couleur" value="<?php echo substr($_POST['couleur'],1)?>">
 <input type="hidden" name ="id_type_dechet_evac" id="id_type_dechet" value="<?php echo $donnees['id_type_dechet']?>">
-  <button  class="btn btn-warning btn-sm" >modifier</button>
+  <button  class="btn btn-warning btn-sm" >Modifier!</button>
 
 
 </form>
@@ -218,5 +218,7 @@ else // SINON
 <?php include "pied.php"; 
 }
     else
-  {header('Location: ../moteur/destroy.php') ;}
+  {
+header('Location: ../moteur/destroy.php') ;
+}
 ?>

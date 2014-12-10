@@ -142,7 +142,7 @@ $req->execute(array('id_type_dechet' => $_GET['typo']));
 
    <input type="hidden" name ="typo" id="typo" value="<?php echo $_GET['typo']?>">
   <input type="hidden" name ="id" id="id" value="<?php echo $donnees['id']?>">
-  <button  class="btn btn-danger btn-sm " >supprimer</button></form></td> 
+  <button  class="btn btn-danger btn-sm " >Supprimer</button></form></td> 
 <td>
 <form action="../moteur/objet_visible.php" method="post">
 
@@ -180,7 +180,7 @@ else // SINON
 <input type="hidden" name ="nom" id="nom" value="<?php echo $donnees['nom']?>">
 <input type="hidden" name ="description" id="description" value="<?php echo $donnees['description']?>">
 <input type="hidden" name ="prix" id="prix" value="<?php echo $donnees['prix']?>">
-  <button  class="btn btn-warning btn-sm" >modifier</button>
+  <button  class="btn btn-warning btn-sm" >Modifier</button>
 
 
 </form>

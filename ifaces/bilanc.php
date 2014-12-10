@@ -1,7 +1,7 @@
 
 <?php session_start();
 
-//Vérification des autorisations de l'utilisateur et des variables de session requisent pour l'affichage de cette page:
+//Vérification des autorisations de l'utilisateur et des variables de session requises pour l'affichage de cette page:
 if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 'bi') !== false))
       { include "tete.php";?>
 
@@ -29,7 +29,7 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
 <h1>Bilan global</h1>
 
    <div class="col-md-4 col-md-offset-8" >
-<label for="reportrange">choisisez la periode a inspecter:</label><br>
+<label for="reportrange">Choisisez la periode a inspecter:</label><br>
 <div id="reportrange" class="pull-left" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc">
                   <i class="fa fa-calendar"></i>
                   <span></span> <b class="caret"></b>
@@ -126,7 +126,7 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
 
 </div>
 <ul class="nav nav-tabs">
-  <li ><a href="<?php echo  "bilans.php?date1=" . $_GET['date1'].'&date2='.$_GET['date2']?>">bilan global</a></li>
+  <li ><a href="<?php echo  "bilans.php?date1=" . $_GET['date1'].'&date2='.$_GET['date2']?>">Bilan global</a></li>
   <li class="active"><a >Collectes</a></li>
   <li><a href="<?php echo  "bilanhb.php?date1=" . $_GET['date1'].'&date2='.$_GET['date2']?>">Sorties hors boutique</a></li>
   <li><a href="<?php echo  "bilanv.php?date1=" . $_GET['date1'].'&date2='.$_GET['date2']?>">Ventes</a></li>
@@ -215,7 +215,7 @@ $time_fin = $time_fin." 23:59:59";
 <div class="panel panel-default">
   <div class="panel-heading">
     <h3 class="panel-title">Masse collectée: <?php
-// on determine la masse totale collècté sur cete periode (pour tout les points)
+// on determine la masse totale collecté sur cette periode (pour tous les points)
 
 
            
@@ -320,7 +320,7 @@ $req->closeCursor(); // Termine le traitement de la requête
         <tr>
             <th  style="width:300px">Type de collecte</th>
             <th>Nbr.de collectes</th>
-            <th>Masse collecté</th>
+            <th>Masse collectée</th>
 
             <th>%</th>
             
@@ -546,7 +546,7 @@ ORDER BY somme DESC');
   <div class="col-md-6">
 
 <div class="panel panel-default">
-  <div class="panel-heading">par localité
+  <div class="panel-heading">Par localité
     <h3 class="panel-title">Masse collectée: <?php
 // on determine la masse totale collècté sur cete periode (pour tout les points)
 

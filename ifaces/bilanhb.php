@@ -27,7 +27,7 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
 <h1>Bilan global</h1>
 
    <div class="col-md-4 col-md-offset-8" >
-<label for="reportrange">choisisez la periode a inspecter:</label><br>
+<label for="reportrange">Choisisez la periode a inspecter:</label><br>
 
            
 

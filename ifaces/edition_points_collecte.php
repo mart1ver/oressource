@@ -1,13 +1,13 @@
                     <?php session_start();
 
-//Vérification des autorisations de l'utilisateur et des variables de session requisent pour l'affichage de cette page:
+//Vérification des autorisations de l'utilisateur et des variables de session requises pour l'affichage de cette page:
                     if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 'k') !== false))
                     {
                     include "tete.php";
                     ?>
 <div class="container">
-<h1>Gestions des points de collecte</h1> 
-  <div class="panel-heading">Gerez ici les points de collecte.</div>
+<h1>Gestion des points de collecte</h1> 
+  <div class="panel-heading">Gerez ici les différents points de collecte.</div>
                     <?php
                     if ($_GET['err'] == "") // SI on a pas de message d'erreur
                     {
@@ -30,7 +30,7 @@
     <div class="row">
      	<form action="../moteur/edition_points_collecte_post.php" method="post">
       <div class="col-md-2"><label for="nom">Nom:</label><br><br><input type="text" value ="<?php echo $_GET['nom']?>" name="nom" id="nom" class="form-control " required autofocus></div>
-      <div class="col-md-3"><label for="adresse">Addresse:</label><br><br><input type="text" value ="<?php echo $_GET['adresse']?>" name="adresse" id="adresse" class="form-control " required ></div>
+      <div class="col-md-3"><label for="adresse">Adresse:</label><br><br><input type="text" value ="<?php echo $_GET['adresse']?>" name="adresse" id="adresse" class="form-control " required ></div>
       <div class="col-md-2"><label for="commentaire">Commentaire:</label><br><br> <input type="text" value ="<?php echo $_GET['commentaire']?>" name="commentaire" id="commentaire" class="form-control " required ></div>
        <div class="col-md-2"><label for="pesee_max">Masse maxi. d'une pesée (Kg):</label> <input type="text" value ="<?php echo $_GET['pesee_max']?>" name="pesee_max" id="pesee_max" class="form-control " required ></div>
       <div class="col-md-1"><label for="couleur">Couleur:</label><br><br><input type="color"        value ="<?php if(isset($_GET['couleur']))echo "#".$_GET['couleur']?>" name="couleur" id="couleur" class="form-control " required ></div>
@@ -43,14 +43,14 @@
     <thead>
       <tr>
         <th>#</th>
-        <th>date de creation</th>
+        <th>Date de création</th>
         <th>Nom</th>
-        <th>adresse</th>
-        <th>couleur</th>
-        <th>commentaire</th>
+        <th>Adresse</th>
+        <th>Couleur</th>
+        <th>Commentaire</th>
         <th>Pesée maxi.</th>
-        <th>visible</th>
-        <th>modifier</th>
+        <th>Visible</th>
+        <th>Modifier</th>
      </tr>
     </thead>
   <tbody>
