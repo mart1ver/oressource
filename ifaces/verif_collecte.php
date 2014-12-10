@@ -244,7 +244,7 @@ if($donnees['nid'] > 0){ $req->closeCursor();
             <th>Localisation:</th>
             <th>Masse totale</th>
             <th>Auteur de la ligne:</th>
-            <th>Modifier:</th>
+            <th></th>
             <th>Modifié par:</th>
             <th>Le:</th>
           </tr>
@@ -416,7 +416,9 @@ $req3->execute(array('id_collecte' => $donnees['id']));
             <th></th>
             <th></th>
             <th></th>
-            
+            <th></th>
+            <th></th>
+            <th></th>
           </tfoot>
         
       </table>

@@ -48,7 +48,7 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
 
 <div class="col-md-3">
 
-<label for="id_type_collecte">Type de sortie:</label>
+<label for="id_type_sortie">Type de sortie:</label>
 <select name="id_type_sortie" id="id_type_sortie" class="form-control " required>
             <?php 
             try

@@ -37,7 +37,7 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
 
 <div class="row">
    
-          <form action="../moteur/modification_verification_sorties_post.php?nsortie=<?php echo $_GET['nsortie']?>" method="post">
+          <form action="../moteur/modification_verification_sortiesc_post.php?nsortie=<?php echo $_GET['nsortie']?>" method="post">
             <input type="hidden" name ="id" id="id" value="<?php echo $_GET['nsortie']?>">
 
   <input type="hidden" name ="date1" id="date1" value="<?php echo $_POST['date1']?>">
@@ -48,8 +48,8 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
 
 <div class="col-md-3">
 
-<label for="id_type_collecte">Nom du partenaire:</label>
-<select name="id_type_sortie" id="id_type_sortie" class="form-control " required>
+<label for="id_convention">Nom du partenaire:</label>
+<select name="id_convention" id="id_convention" class="form-control " required>
             <?php 
             try
             {
@@ -200,7 +200,7 @@ $req3->execute(array('id_sortie' => $_GET['nsortie']));
 
 <td>
 
-<form action="modification_verification_pesee_sortiesr.php" method="post">
+<form action="modification_verification_pesee_sortiesc.php" method="post">
 
 <input type="hidden" name ="id" id="id" value="<?php echo $donnees['id']?>">
 <input type="hidden" name ="nomtypo" id="nomtypo" value="<?php echo $donnees['nom']?>">

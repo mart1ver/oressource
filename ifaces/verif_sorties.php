@@ -253,7 +253,7 @@ if($donnees['nid'] > 0){ $req->closeCursor();
             <th>Masse totale</th>
             
              <th>Auteur de la ligne:</th>
-            <th>Modifier:</th>
+            <th></th>
             <th>Modifié par:</th>
             <th>Le:</th>
             
@@ -1283,6 +1283,284 @@ $req4->execute(array('id_sortie' => $donnees['id']));
     $req->closeCursor(); }
 }
 ?>
+
+
+<?php
+try
+            {
+            // On se connecte à MySQL
+            include('../moteur/dbconfig.php');
+            }
+            catch(Exception $e)
+            {
+            // En cas d'erreur, on affiche un message et on arrête tout
+            die('Erreur : '.$e->getMessage());
+            }
+ 
+            // Si tout va bien, on peut continuer
+
+
+ 
+            // On recupère toute la liste des filieres de sortie
+            //   $reponse = $bdd->query('SELECT * FROM grille_objets');
+          
+$req = $bdd->prepare('SELECT COUNT(id) nid
+                        FROM `sorties` 
+                       WHERE sorties.id_point_sortie = :id_point_sortie AND DATE(sorties.timestamp) BETWEEN :du AND :au AND classe = "sortiesc" ');
+$req->execute(array('id_point_sortie' => $_GET['numero'], 'du' => $time_debut,'au' => $time_fin));
+
+
+           // On affiche chaque entree une à une
+           while ($donnees = $req->fetch())
+           { 
+if($donnees['nid'] > 0){ $req->closeCursor(); 
+
+
+
+
+
+            ?>
+            <div class="panel panel-info">
+  <div class="panel-heading"><h3 class="panel-title">Sorties déchetterie:</h3> </div>
+  <div class="panel-body">
+
+  <!-- Table -->
+      <table class="table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Date de création:</th>
+            
+            
+            <th>Masse totale</th>
+            
+             <th>Auteur de la ligne:</th>
+            <th>Modifier:</th>
+            <th>Modifié par:</th>
+            <th>Le:</th>
+            
+          </tr>
+        </thead>
+        <tbody>
+        <?php 
+            try
+            {
+            // On se connecte à MySQL
+            include('../moteur/dbconfig.php');
+            }
+            catch(Exception $e)
+            {
+            // En cas d'erreur, on affiche un message et on arrête tout
+            die('Erreur : '.$e->getMessage());
+            }
+ 
+          
+$req = $bdd->prepare('SELECT sorties.id,sorties.timestamp ,sorties.adherent , sorties.classe classe
+                       FROM sorties ,conventions_sorties
+                       WHERE  sorties.id_point_sortie = :id_point_sortie AND DATE(sorties.timestamp) BETWEEN :du AND :au AND classe = "sortiesd" 
+                       GROUP BY id
+                       ');
+$req->execute(array('id_point_sortie' => $_GET['numero'], 'du' => $time_debut,'au' => $time_fin));
+
+
+           // On affiche chaque entree une à une
+           while ($donnees = $req->fetch())
+           {
+
+           ?>
+            <tr> 
+            <td><?php echo $donnees['id']?></td>
+            <td><?php echo $donnees['timestamp']?></td>
+           
+            
+           <td> 
+
+ <?php 
+            try
+            {
+            // On se connecte à MySQL
+            include('../moteur/dbconfig.php');
+            }
+            catch(Exception $e)
+            {
+            // En cas d'erreur, on affiche un message et on arrête tout
+            die('Erreur : '.$e->getMessage());
+            }
+ 
+           
+          
+$req2 = $bdd->prepare('SELECT SUM(pesees_sorties.masse) masse
+                       FROM pesees_sorties
+                       WHERE  pesees_sorties.id_sortie = :id_sortie ');
+$req2->execute(array('id_sortie' => $donnees['id']));
+
+
+           // On affiche chaque entree une à une
+           while ($donnees2 = $req2->fetch())
+           { ?>
+
+
+
+<?php echo $donnees2['masse']?>
+
+
+         <?php }
+            
+                ?>
+
+
+
+
+           </td> 
+
+
+
+<td>
+ <?php 
+            try
+            {
+            // On se connecte à MySQL
+            include('../moteur/dbconfig.php');
+            }
+            catch(Exception $e)
+            {
+            // En cas d'erreur, on affiche un message et on arrête tout
+            die('Erreur : '.$e->getMessage());
+            }
+ 
+           
+          
+$req3 = $bdd->prepare('SELECT utilisateurs.mail mail
+                       FROM utilisateurs ,sorties
+                       WHERE  sorties.id = :id_sortie
+                       AND  utilisateurs.id = sorties.id_createur');
+$req3->execute(array('id_sortie' => $donnees['id']));
+
+
+           // On affiche chaque entree une à une
+           while ($donnees3 = $req3->fetch())
+           { ?>
+
+
+
+<?php echo $donnees3['mail']?>
+
+
+         <?php }
+            
+                ?>
+</td>
+
+<td>
+
+<form action="modification_verification_sortiesd.php?nsortie=<?php echo $donnees['id']?>" method="post">
+
+<input type="hidden" name ="id" id="id" value="<?php echo $donnees['id']?>">
+<input type="hidden" name ="nom" id="nom" value="<?php echo $donnees['nom']?>">
+<input type="hidden" name ="date1" id="date1" value="<?php echo $_GET['date1']?>">
+<input type="hidden" name ="date2" id="date2" value="<?php echo $_GET['date2']?>">
+<input type="hidden" name ="npoint" id="npoint" value="<?php echo $_GET['numero']?>">
+  <button  class="btn btn-warning btn-sm" >Modifier</button>
+
+
+</form>
+
+<td><?php 
+            try
+            {
+            // On se connecte à MySQL
+            include('../moteur/dbconfig.php');
+            }
+            catch(Exception $e)
+            {
+            // En cas d'erreur, on affiche un message et on arrête tout
+            die('Erreur : '.$e->getMessage());
+            }
+ 
+           
+          
+$req5 = $bdd->prepare('SELECT utilisateurs.mail mail
+                       FROM sorties, utilisateurs
+                       WHERE  sorties.id = :id_sortie
+                       AND  utilisateurs.id = sorties.id_last_hero
+                       ');
+$req5->execute(array('id_sortie' => $donnees['id']));
+
+
+           // On affiche chaque entree une à une
+           while ($donnees5 = $req5->fetch())
+           { ?>
+
+
+
+<?php echo $donnees5['mail'];?>
+
+         <?php }
+            
+                ?></td>
+<td><?php 
+            try
+            {
+            // On se connecte à MySQL
+            include('../moteur/dbconfig.php');
+            }
+            catch(Exception $e)
+            {
+            // En cas d'erreur, on affiche un message et on arrête tout
+            die('Erreur : '.$e->getMessage());
+            }
+ 
+           
+          
+$req4 = $bdd->prepare('SELECT sorties.last_hero_timestamp lht
+                       FROM sorties
+                       WHERE  sorties.id = :id_sortie
+                       ');
+$req4->execute(array('id_sortie' => $donnees['id']));
+
+
+           // On affiche chaque entree une à une
+           while ($donnees4 = $req4->fetch())
+           { ?>
+
+
+
+<?php if ($donnees4['lht'] !== '0000-00-00 00:00:00'){echo $donnees4['lht'];}?>
+
+         <?php }
+            
+                ?></td>
+
+</td>
+
+
+
+
+
+
+          </tr>
+           <?php }
+              $req->closeCursor(); // Termine le traitement de la requête
+                $req2->closeCursor(); // Termine le traitement de la requête2
+                $req3->closeCursor(); // Termine le traitement de la requête3
+                $req4->closeCursor(); // Termine le traitement de la requête4
+                $req5->closeCursor(); // Termine le traitement de la requête4
+                ?>
+       </tbody>
+        
+        
+      </table>
+       </div>
+</div>
+      <?php
+    } else{echo 'Pas de sorties en direction des partenaires sur cette periode<br><br>';
+    $req->closeCursor(); }
+}
+?>
+
+
+
+
 
 
 
