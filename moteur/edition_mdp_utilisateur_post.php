@@ -4,8 +4,7 @@
  if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource")
 {
 
-//on va jouer avec les sessions
-session_start();
+
 //on obtien le pass en db (md5) dans $bddpass
  
            
