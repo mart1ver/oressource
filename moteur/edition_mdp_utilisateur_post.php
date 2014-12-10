@@ -1,4 +1,9 @@
-<?php
+<?php session_start();
+
+//Vérification des autorisations de l'utilisateur et des variables de session requises pour l'utilisation de cette requête:
+ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource")
+{
+
 //on va jouer avec les sessions
 session_start();
 //on obtien le pass en db (md5) dans $bddpass
@@ -85,4 +90,10 @@ else
 header( "Location: ../ifaces/edition_mdp_utilisateur.php?err=Mauvais mot de passe actuel");
 }
 }
+
+}
+else { 
+header('Location:../moteur/destroy.php');
+     }
 ?>
+
