@@ -1,5 +1,6 @@
 <?php session_start();
-//Vérification des autorisations de l'utilisateur et des variables de session requises pour l'utilisation de cette fonction:
+
+//Vérification des autorisations de l'utilisateur et des variables de session requises pour l'utilisation de cette requête:
  if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 'c'.$_GET['numero']) !== false))
 {
 

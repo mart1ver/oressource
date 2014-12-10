@@ -1,4 +1,8 @@
-<?php
+<?php session_start();
+
+//Vérification des autorisations de l'utilisateur et des variables de session requises pour l'utilisation de cette requête:
+ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 'j'.$_GET['numero']) !== false))
+{
 //martin vert
 // Connexion à la base de données
 try
@@ -38,4 +42,9 @@ $req->execute(array('visible' => $_POST['visible'],'id' => $_POST['id']));
 
 // Redirection du visiteur vers la page de gestion des affectation
 header('Location:../ifaces/edition_conventions_sortie.php');
+}
+else
+{
+header('Location:../moteur/destroy.php');
+}
 ?>
