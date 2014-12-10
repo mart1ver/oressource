@@ -4,9 +4,9 @@
     if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 'g') !== false))
       { include "tete.php" ?>
     <div class="container">
-        <h1>Gestion des types de bacs et de moyens de manutention. </h1> 
-         <div class="panel-heading">Renseignez ici la la masse de vos moyens de manutention .</div>
-         <p>Cet outil vous permet notamment de renseigner la masse de vos bacs, chariots, diables et autres, de maniere à la soustraire au momment de vos pesées.</p>
+        <h1>Gestion de la typologie des bacs et des outils de manutention. </h1> 
+         <div class="panel-heading">Renseignez ici la la masse de vos bacs et outils de manutention .</div>
+         <p>Cet outil vous permet notamment d'indiquer le poids de vos bacs, chariots, diables, etc. de manière à pouvoir le soustraire automatiquement à la pesée.</p>
 <?php
 if ($_GET['err'] == "") // SI on a pas de message d'erreur
 {
@@ -124,7 +124,7 @@ else // SINON
 <input type="hidden" name ="masse_bac" id="masse_bac" value="<?php echo $donnees['masse']?>">
 <input type="hidden" name ="couleur" id="couleur" value="<?php echo substr($_POST['couleur'],1)?>">
 
-  <button  class="btn btn-warning btn-sm" >modifier</button>
+  <button  class="btn btn-warning btn-sm" >Modifier!</button>
 
 
 </form>

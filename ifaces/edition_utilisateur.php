@@ -44,7 +44,7 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
 </a>
 
                           </div>
-  <div class="col-md-4"><div class="alert alert-info"><label>Pérmissions d'accès</label> <br>
+  <div class="col-md-4"><div class="alert alert-info"><label>Permissions d'accès</label> <br>
           
           <input type="checkbox" name="niveaubi" id="niveaubi" value="bi"<?php if((strpos($_POST['niveau'], 'bi') !== false)){ echo "checked";} ?>> <label for="niveaubi">Bilans</label><br>
 

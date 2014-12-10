@@ -1,4 +1,9 @@
-<?php
+<?php session_start();
+
+//Vérification des autorisations de l'utilisateur et des variables de session requises pour l'utilisation de cette requête:
+ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 'l'.$_GET['numero']) !== false))
+{
+
 //on va jouer avec les sessions
 session_start();
 
@@ -45,6 +50,9 @@ else
 
 header( "Location: ../ifaces/edition_mdp_admin.php?err=Veuillez inscrire deux mots de passe semblables");
 }
-
-
+}
+else { 
+header('Location:../moteur/destroy.php');
+     }
 ?>
+

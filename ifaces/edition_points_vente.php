@@ -5,7 +5,7 @@
       { include "tete.php" ?>
     <div class="container">
         <h1>Gestion des points de vente</h1> 
-         <div class="panel-heading">Gérez ici les points de vente.</div>
+         <div class="panel-heading">Gérez ici les différents points de vente.</div>
 <?php
 if ($_GET['err'] == "") // SI on a pas de message d'erreur
 {
@@ -29,19 +29,15 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
 }
 ?>
 
-
-
-
-
       <div class="panel-body">
         <div class="row">
           <form action="../moteur/edition_points_vente_post.php" method="post">
   <div class="col-md-2"><label for="nom">Nom:</label><br><input type="text" value ="<?php echo $_GET['nom']?>" name="nom" id="nom" class="form-control " required autofocus></div>
-      <div class="col-md-3"><label for="adresse">Addresse:</label><br><input type="text" value ="<?php echo $_GET['adresse']?>" name="adresse" id="adresse" class="form-control " required ></div>
+      <div class="col-md-3"><label for="adresse">Adresse:</label><br><input type="text" value ="<?php echo $_GET['adresse']?>" name="adresse" id="adresse" class="form-control " required ></div>
       <div class="col-md-2"><label for="commentaire">Commentaire:</label><br><input type="text" value ="<?php echo $_GET['commentaire']?>" name="commentaire" id="commentaire" class="form-control " required ></div>
        <div class="col-md-2"><label for="surface">Surface de vente (m²):</label> <input type="text" value ="<?php echo $_GET['surface']?>" name="surface" id="surface" class="form-control " required ></div>
       <div class="col-md-1"><label for="couleur">Couleur:</label><br><input type="color"        value ="<?php if(isset($_GET['couleur']))echo "#".$_GET['couleur']?>" name="couleur" id="couleur" class="form-control " required ></div>
-      <div class="col-md-1"><br><button name="creer" class="btn btn-default">Creer!</button></div>
+      <div class="col-md-1"><br><button name="creer" class="btn btn-default">Créer!</button></div>
 </form>
 </div>
       </div>
@@ -54,9 +50,9 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
             <th>Nom:</th>
             <th>Adresse:</th>
             <th>Couleur:</th>
-            <th>commentaire:</th>
+            <th>Commentaire:</th>
             <th>Surface de vente (m²):</th>
-            <th>visible</th>
+            <th>Visible</th>
             <th>Modifier</th>
             
           </tr>

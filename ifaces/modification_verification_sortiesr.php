@@ -37,7 +37,7 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
 
 <div class="row">
    
-          <form action="../moteur/modification_verification_sorties_post.php?nsortie=<?php echo $_GET['nsortie']?>" method="post">
+          <form action="../moteur/modification_verification_sortiesr_post.php?nsortie=<?php echo $_GET['nsortie']?>" method="post">
             <input type="hidden" name ="id" id="id" value="<?php echo $_GET['nsortie']?>">
 
 <input type="hidden" name ="date1" id="date1" value="<?php echo $_POST['date1']?>">
@@ -48,8 +48,8 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
 
 <div class="col-md-3">
 
-<label for="id_type_collecte">Nom de l'entreprise de recyclage:</label>
-<select name="id_type_sortie" id="id_type_sortie" class="form-control " required>
+<label for="id_filiere">Nom de l'entreprise de recyclage:</label>
+<select name="id_filiere" id="id_filiere" class="form-control " required>
             <?php 
             try
             {
@@ -136,9 +136,9 @@ SELECT pesees_collectes.id ,pesees_collectes.timestamp  ,type_dechets.nom  , pes
             // On recupère toute la liste des filieres de sortie
             //   $reponse = $bdd->query('SELECT * FROM grille_objets');
           
-$req = $bdd->prepare('SELECT pesees_sorties.id ,pesees_sorties.timestamp  ,type_dechets.nom  , pesees_sorties.masse ,type_dechets.couleur
-                       FROM pesees_sorties ,type_dechets
-                       WHERE type_dechets.id = pesees_sorties.id_type_dechet AND pesees_sorties.id_sortie = :id_sortie');
+$req = $bdd->prepare('SELECT pesees_sorties.id ,pesees_sorties.timestamp  ,type_dechets_evac.nom  , pesees_sorties.masse ,type_dechets_evac.couleur
+                       FROM pesees_sorties ,type_dechets_evac
+                       WHERE type_dechets_evac.id = pesees_sorties.id_type_dechet_evac AND pesees_sorties.id_sortie = :id_sortie');
 $req->execute(array('id_sortie' => $_GET['nsortie']));
 
 
@@ -159,7 +159,7 @@ $req->execute(array('id_sortie' => $_GET['nsortie']));
 
 <td>
 
-<form action="modification_verification_pesee_sortiesc.php" method="post">
+<form action="modification_verification_pesee_sortiesr.php" method="post">
 
 <input type="hidden" name ="id" id="id" value="<?php echo $donnees['id']?>">
 <input type="hidden" name ="ncollecte" id="ncollecte" value="<?php echo $_GET['ncollecte']?>">

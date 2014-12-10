@@ -128,7 +128,7 @@ else // SINON
 <input type="hidden" name ="ultime" id="ultime" value="<?php echo $donnees['ultime']?>">
 <input type="hidden" name ="couleur" id="couleur" value="<?php echo substr($_POST['couleur'],1)?>">
 
-  <button  class="btn btn-warning btn-sm" >modifier</button>
+  <button  class="btn btn-warning btn-sm" >Modifier!</button>
 
 
 </form>

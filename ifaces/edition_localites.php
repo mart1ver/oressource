@@ -1,13 +1,13 @@
                 <?php session_start(); 
 
-//Vérification des autorisations de l'utilisateur et des variables de session requisent pour l'affichage de cette page: 
+//Vérification des autorisations de l'utilisateur et des variables de session requises pour l'affichage de cette page: 
                 if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 'k') !== false))
                 { 
                 include "tete.php" ?>
 <div class="container">
-<h1>Gestions des localités</h1> 
-  <div class="panel-heading">Gerez ici les localités.</div>
-  <p>Les localités sonts renseigées au momment de la collecte elles permettent d'estimmer la rayonnance géographique de la structure </p>
+<h1>Gestion des localités de collecte</h1> 
+  <div class="panel-heading">Définissez ici les localité d'origine possibles pour les matériaux entrant.</div>
+  <p>Ces localités sont renseignées au momment de la collecte et permettent d'estimer l'impact territorial de la structure </p>
                 <?php
                 if ($_GET['err'] == "") // SI on a pas de message d'erreur
                 {
@@ -37,7 +37,7 @@
     <div class="col-md-2"><label for="commentaire">Commentaire:</label> <input type="text" value ="<?php echo $_GET['commentaire']?>" name="commentaire" id="commentaire" class="form-control " required ></div>
     <div class="col-md-3"><label for="lien">Lien externe:</label> <input type="url" value ="<?php echo $_GET['lien']?>" name="lien" id="lien" class="form-control " required ></div>
     <div class="col-md-1"><label for="couleur">Couleur:</label> <input type="color"        value ="<?php echo "#".$_GET['couleur']?>" name="couleur" id="couleur" class="form-control " required ></div>
-    <div class="col-md-1"><br><button name="creer" class="btn btn-default">Creer!</button></div>
+    <div class="col-md-1"><br><button name="creer" class="btn btn-default">Créer!</button></div>
   </form>
   </div>
 </div>
@@ -46,7 +46,7 @@
 <thead>
   <tr>
     <th>#</th>
-    <th>Date de creation:</th>
+    <th>Date de création:</th>
     <th>Nom:</th>
     <th>Commentaire:</th>
     <th>Couleur:</th>
@@ -104,7 +104,7 @@
       <input type="hidden" name ="lien" id="lien" value="<?php echo $donnees['relation_openstreetmap']?>">
       <input type="hidden" name ="commentaire" id="commentaire" value="<?php echo $donnees['commentaire']?>">
       <input type="hidden" name ="couleur" id="couleur" value="<?php echo substr($_POST['couleur'],1)?>">
-      <button  class="btn btn-warning btn-sm" >modifier</button>
+      <button  class="btn btn-warning btn-sm" >Modifier!</button>
     </form>
   </td>
 </tr>
