@@ -25,8 +25,8 @@ $req->execute();
 $resultat = $req->fetch();
  
 
-
-
+$_SESSION['tva_active'] = $resultat['tva_active'];
+$_SESSION['taux_tva'] = $resultat['taux_tva'];
 $_SESSION['structure'] = $resultat['nom'];
 $_SESSION['siret'] = $resultat['siret'];
 $_SESSION['adresse'] = $resultat['adresse'];
