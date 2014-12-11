@@ -339,12 +339,21 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
         <button class="btn btn-warning btn-lg" onclick="javascript:window.location.reload()"><span class="glyphicon glyphicon-refresh"></button>
   
 <br><br>
+    
+
+<?php /*
     <a href="remboursement.php?numero=<?php echo $_GET['numero']?>&nom=<?php echo $_GET['nom']?>&adresse=<?php echo $_GET['adresse']?>"> 
-    <button type="button"  class="btn btn-danger pull-right" >
+
+    */ ?>
+    <button type="button"  class="btn btn-danger pull-right" onclick="rembou();" >
     Remboursement
     </button>
-    </a>
+   
+
+
+
     </ul>
+
     <br><br>
      
     </div>
@@ -354,6 +363,42 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
     <br>
             <?php include "pied.php" ; ?> 
 <script type="text/javascript">
+function rembou() {
+  var code_soumis = prompt('Veuillez renseigner le code de remboursement','rr');
+var codi = <?php 
+            try
+            {
+            // On se connecte à MySQL
+            include('../moteur/dbconfig.php');
+            }
+            catch(Exception $e)
+            {
+            // En cas d'erreur, on affiche un message et on arrête tout
+            die('Erreur : '.$e->getMessage());
+            }
+            // On recupère tout le contenu de la table point de collecte
+            $reponse = $bdd->query('SELECT cr FROM `description_structure`');
+ 
+           // On affiche chaque entree une à une
+           while ($donnees = $reponse->fetch())
+           {
+          echo $donnees['cr'];
+}
+
+                $reponse->closeCursor(); // Termine le traitement de la requête
+                ?>
+
+
+
+
+
+
+
+ if (code_soumis == codi) {
+         window.location = "remboursement.php?numero=<?php echo $_GET['numero']?>&nom=<?php echo $_GET['nom']?>&adresse=<?php echo $_GET['adresse']?>";
+       }else{
+       alert("Code de remboursement non valide!");}
+}
 
 var what;
 

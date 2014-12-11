@@ -65,15 +65,17 @@
 <br>
 <label for="ttva">Taux en vigueur:</label> <input type="text" value ="<?php echo $donnees['taux_tva']; ?>" name="ttva" id="ttva" class="form-control " required >
 <br>
+<label for="cr">Code de remboursement à la caisse:</label> <input type="text" value ="<?php echo $donnees['cr']; ?>" name="cr" id="cr" class="form-control " required > 
+<br>
       </div>
+       <div class="row">
+      
       <div class="col-md-2"><label for="siret">Numéro de siret:</label> <input type="text" value ="<?php echo $donnees['siret']; ?>" name="siret" id="siret" class="form-control " required >
 
       </div>
       <div class="col-md-4"><label for="description">Présentation générale de la strucure:</label> <textarea name="description" id="description" rows="10" cols="50" required><?php echo $donnees['description']; ?></textarea> </div>
     </div>
-    <div class="row">
-      <div class="col-md-4 col-md-offset-2"><label for="description">Texte de présentation dédié aux adhésions</label> <textarea name="texte_adhesion" id="texte_adhesion" rows="10" cols="50" required><?php echo $donnees['texte_adhesion']; ?></textarea> </div>
-    </div>
+   
     <div class="row">
       <div class="col-md-1 col-md-offset-6"><br><button name="creer" class="btn btn-default">Enregistrer</button></div>
     </div>

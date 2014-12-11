@@ -23,6 +23,9 @@ catch(Exception $e)
 // Insertion du post à l'aide d'une requête préparée
 $req = $bdd->prepare('UPDATE collectes SET id_type_collecte = :id_type_collecte, localisation = :localisation, id_last_hero = :id_last_hero, last_hero_timestamp = NOW() 
 	WHERE id = :id');
+
+
+
 $req->execute(array('id_type_collecte' => $_POST['id_type_collecte'],'localisation' => $_POST['id_localite'],'id' => $_POST['id'],'id_last_hero' => $_SESSION['id']));
 
   $req->closeCursor();
