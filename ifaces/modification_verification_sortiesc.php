@@ -93,7 +93,7 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
 
 
 </div>
-<h1>Pesées incluses dans ce don</h1> 
+<h1>Pesées incluses dans cette sortie partenaire:</h1> 
   <!-- Table -->
       <table class="table">
         <thead>

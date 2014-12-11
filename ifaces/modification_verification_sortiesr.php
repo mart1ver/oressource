@@ -164,7 +164,8 @@ $req->execute(array('id_sortie' => $_GET['nsortie']));
 <input type="hidden" name ="id" id="id" value="<?php echo $donnees['id']?>">
 <input type="hidden" name ="ncollecte" id="ncollecte" value="<?php echo $_GET['ncollecte']?>">
 <input type="hidden" name ="masse" id="masse" value="<?php echo $donnees['masse']?>">
-<input type="hidden" name ="date" id="date" value="<?php echo $_POST['date']?>">
+<input type="hidden" name ="date1" id="date1" value="<?php echo $_POST['date1']?>">
+<input type="hidden" name ="date2" id="date2" value="<?php echo $_POST['date2']?>">
 <input type="hidden" name ="npoint" id="npoint" value="<?php echo $_POST['npoint']?>">
 
   <button  class="btn btn-warning btn-sm" >Modifier</button>
