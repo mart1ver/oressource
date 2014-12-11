@@ -38,7 +38,7 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
 <div class="row">
    
         	<form action="../moteur/modification_verification_pesee_sortiesr_post.php" method="post">
-            <input type="hidden" name ="nsortie" id="ncnsortie" value="<?php echo $_POST['nsortie']?>">
+            <input type="hidden" name ="nsortie" id="nsortie" value="<?php echo $_POST['nsortie']?>">
             <input type="hidden" name ="id" id="id" value="<?php echo $_POST['id']?>">
             <input type="hidden" name ="masse" id="masse" value="<?php echo $_POST['masse']?>">
   <input type="hidden" name ="date1" id="date1" value="<?php echo $_POST['date1']?>">
@@ -47,83 +47,7 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
 
 
 
-<?php
-   if (isset($_POST['nomtypo']))
-      { ?>
-  <div class="col-md-3">
-  <label for="id_type_dechet">Type d'objet:</label>
-<select name="id_type_dechet" id="id_type_dechet" class="form-control " required>
-            <?php 
-            try
-            {
-            // On se connecte à MySQL
-            include('../moteur/dbconfig.php');
-            }
-            catch(Exception $e)
-            {
-            // En cas d'erreur, on affiche un message et on arrête tout
-            die('Erreur : '.$e->getMessage());
-            }
-            // On affiche une liste deroulante des type de collecte visibles
-            $reponse = $bdd->query('SELECT * FROM type_dechets');
-            // On affiche chaque entree une à une
-            while ($donnees = $reponse->fetch())
-            {
-              if ($_POST['nomtypo'] == $donnees['nom'])  // SI on a pas de message d'erreur
-{
-  ?>
-    <option value = "<?php echo$donnees['id']?>" selected ><?php echo$donnees['nom']?></option>
-<?php
-} else {
-            ?>
 
-      <option value = "<?php echo$donnees['id']?>" ><?php echo$donnees['nom']?></option>
-            <?php }}
-            $reponse->closeCursor(); // Termine le traitement de la requête
-            ?>
-    </select>
-
-
-</div>
-
-<?php }else { ?>
-
-
-  <div class="col-md-3">
-  <label for="id_type_dechet_evac">Dechets et materiaux:</label>
-<select name="id_type_dechet_evac" id="id_type_dechet_evac" class="form-control " required>
-            <?php 
-            try
-            {
-            // On se connecte à MySQL
-            include('../moteur/dbconfig.php');
-            }
-            catch(Exception $e)
-            {
-            // En cas d'erreur, on affiche un message et on arrête tout
-            die('Erreur : '.$e->getMessage());
-            }
-            // On affiche une liste deroulante des type de collecte visibles
-            $reponse = $bdd->query('SELECT * FROM type_dechets_evac ');
-            // On affiche chaque entree une à une
-            while ($donnees = $reponse->fetch())
-            {
-              if ($_POST['nomtypo_evac'] == $donnees['nom'])  // SI on a pas de message d'erreur
-{
-  ?>
-    <option value = "<?php echo$donnees['id']?>" selected ><?php echo$donnees['nom']?></option>
-<?php
-} else {
-            ?>
-
-      <option value = "<?php echo$donnees['id']?>" ><?php echo$donnees['nom']?></option>
-            <?php }}
-            $reponse->closeCursor(); // Termine le traitement de la requête
-            ?>
-    </select>
-  
-</div>
-<?php }?>
 <div class="col-md-3">
 
     <label for="masse">Masse:</label>
