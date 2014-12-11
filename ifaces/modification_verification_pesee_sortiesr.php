@@ -17,7 +17,7 @@ else // SINON
 }
 
 
-if ($_GET['msg'] == "") // SI on a pas de message positif
+  if ($_GET['msg'] == "") // SI on a pas de message positif
 {
    echo '';
 }
