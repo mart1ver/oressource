@@ -1,4 +1,7 @@
-<?php 
+<?php session_start();
+//Vérification des autorisations de l'utilisateur et des variables de session requises pour l'utilisation de cette requête:
+ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 'v'.$_GET['numero']) !== false))
+{
 //on definit $adh en fonction $_POST['adh']
 if(isset($_POST['adh']))
     {
@@ -18,8 +21,8 @@ if(isset($_POST['adh']))
         die('Erreur : '.$e->getMessage());
 }
 // Insertion de la collecte (sans les pesées) l'aide d'une requête préparée
-	$req = $bdd->prepare('INSERT INTO ventes (adherent, commentaire, id_point_vente, id_moyen_paiement) VALUES(?, ?, ?, ?)');
-	$req->execute(array($adh,  $_POST['comm'] , $_POST['id_point_vente'], $_POST['moyen']));
+	$req = $bdd->prepare('INSERT INTO ventes (adherent, commentaire, id_point_vente, id_moyen_paiement, id_createur) VALUES(?, ?, ?, ?, ?)');
+	$req->execute(array($adh,  $_POST['comm'] , $_POST['id_point_vente'], $_POST['moyen'], $_SESSION['id']));
   $id_vente = $bdd->lastInsertId();
     $req->closeCursor();
 
@@ -45,8 +48,8 @@ $tid_type_objet = 'tid_type_objet'.$i;
 $tid_objet ='tid_objet'.$i;
 $tquantite = 'tquantite'.$i;
 $tprix = 'tprix'.$i;
-$req = $bdd->prepare('INSERT INTO vendus (id_vente,  id_type_dechet, id_objet, quantite, prix) VALUES(?, ?, ?, ?, ?)');
-$req->execute(array($id_vente ,  $_POST[$tid_type_objet] ,  $_POST[$tid_objet] ,  $_POST[$tquantite], $_POST[$tprix]));
+$req = $bdd->prepare('INSERT INTO vendus (id_vente,  id_type_dechet, id_objet, quantite, prix, id_createur) VALUES(?,?, ?, ?, ?, ?)');
+$req->execute(array($id_vente ,  $_POST[$tid_type_objet] ,  $_POST[$tid_objet] ,  $_POST[$tquantite], $_POST[$tprix], $_SESSION['id']));
   $req->closeCursor();
 
     $i++;
@@ -54,4 +57,8 @@ $req->execute(array($id_vente ,  $_POST[$tid_type_objet] ,  $_POST[$tid_objet] ,
 // Redirection du visiteur vers la page de gestion des affectation
 	header("Location:../ifaces/ventes.php?numero=".$_POST['id_point_vente']);
 
-	 ?>
+	}
+else { 
+header('Location:../moteur/destroy.php');
+     }
+?>
