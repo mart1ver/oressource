@@ -127,7 +127,7 @@ $req->execute(array('id_vente' => $_GET['nvente']));
 <td><form action="modification_verification_objet.php" method="post">
 
 <input type="hidden" name ="id" id="id" value="<?php echo $donnees['id']?>">
-<input type="hidden" name ="nvente" id="ncollecte" value="<?php echo $_GET['nvente']?>">
+<input type="hidden" name ="nvente" id="nvente" value="<?php echo $_GET['nvente']?>">
 <input type="hidden" name ="date1" id="date1" value="<?php echo $_POST['date1']?>">
 <input type="hidden" name ="date2" id="date2" value="<?php echo $_POST['date2']?>">
 <input type="hidden" name ="npoint" id="npoint" value="<?php echo $_POST['npoint']?>">
