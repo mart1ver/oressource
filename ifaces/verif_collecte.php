@@ -403,7 +403,7 @@ $req3->execute(array('id_collecte' => $donnees['id']));
           </tr>
            <?php }
               $req->closeCursor(); // Termine le traitement de la requête
-                $req2->closeCursor(); // Termine le traitement de la requête2
+              $req2->closeCursor(); // Termine le traitement de la requête2
                 ?>
        </tbody>
         <tfoot>
