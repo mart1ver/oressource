@@ -247,10 +247,9 @@ GROUP BY nom'
             // On recupère toute la liste des filieres de sortie
             //   $reponse = $bdd->query('SELECT * FROM grille_objets');
           
-$req = $bdd->prepare('SELECT ventes.id,ventes.timestamp ,moyens_paiement.nom moyen, moyens_paiement.couleur coul, ventes.commentaire, SUM(vendus.prix) ,SUM(vendus.remboursement)
-                       FROM ventes ,moyens_paiement ,vendus
+$req = $bdd->prepare('SELECT ventes.id,ventes.timestamp ,moyens_paiement.nom moyen, moyens_paiement.couleur coul, ventes.commentaire
+                       FROM ventes ,moyens_paiement 
                        WHERE ventes.id_point_vente = :id_point_vente 
-                       AND vendus.id_vente = ventes.id
                        AND ventes.id_moyen_paiement = moyens_paiement.id
                        AND DATE(ventes.timestamp) BETWEEN :du AND :au ');
 $req->execute(array('id_point_vente' => $_GET['numero'], 'du' => $time_debut,'au' => $time_fin));
@@ -264,9 +263,107 @@ $req->execute(array('id_point_vente' => $_GET['numero'], 'du' => $time_debut,'au
             <tr> 
             <td><?php echo $donnees['id']?></td>
             <td><?php echo $donnees['timestamp']?></td>
-            <td><?php if ($donnees['prix'] > 0 ){echo $donnees['prix'];} ?></td>
-            <td><?php if ($donnees['remboursement'] > 0 ){echo $donnees['remboursement'];} ?></td>
-            <td></td>
+
+
+            <td> <?php 
+            try
+            {
+            // On se connecte à MySQL
+            include('../moteur/dbconfig.php');
+            }
+            catch(Exception $e)
+            {
+            // En cas d'erreur, on affiche un message et on arrête tout
+            die('Erreur : '.$e->getMessage());
+            }
+ 
+            // Si tout va bien, on peut continuer
+$req2 = $bdd->prepare('SELECT SUM(vendus.prix*vendus.quantite) pto
+                       FROM vendus
+                       WHERE  vendus.id_vente = :id_vente 
+                       ');
+$req2->execute(array('id_vente' => $donnees['id']));
+
+
+           // On affiche chaque entree une à une
+           while ($donnees2 = $req2->fetch())
+           { ?>
+
+
+
+<?php if ( $donnees2['pto'] > 0){echo $donnees2['pto'];}?>
+
+
+         <?php }
+            
+                ?></td>
+            <td><?php 
+            try
+            {
+            // On se connecte à MySQL
+            include('../moteur/dbconfig.php');
+            }
+            catch(Exception $e)
+            {
+            // En cas d'erreur, on affiche un message et on arrête tout
+            die('Erreur : '.$e->getMessage());
+            }
+ 
+            // Si tout va bien, on peut continuer
+$req3 = $bdd->prepare('SELECT SUM(vendus.remboursement*vendus.quantite) pto
+                       FROM vendus
+                       WHERE  vendus.id_vente = :id_vente 
+                       ');
+$req3->execute(array('id_vente' => $donnees['id']));
+
+
+           // On affiche chaque entree une à une
+           while ($donnees3 = $req3->fetch())
+           { ?>
+
+
+
+<?php if ( $donnees3['pto'] > 0){echo $donnees3['pto'];}?>
+
+
+         <?php }
+            
+                ?></td>
+            <td><?php 
+            try
+            {
+            // On se connecte à MySQL
+            include('../moteur/dbconfig.php');
+            }
+            catch(Exception $e)
+            {
+            // En cas d'erreur, on affiche un message et on arrête tout
+            die('Erreur : '.$e->getMessage());
+            }
+ 
+            // Si tout va bien, on peut continuer
+$req4 = $bdd->prepare('SELECT SUM(vendus.quantite) pto
+                       FROM vendus
+                       WHERE  vendus.id_vente = :id_vente 
+                       ');
+$req4->execute(array('id_vente' => $donnees['id']));
+
+
+           // On affiche chaque entree une à une
+           while ($donnees4 = $req4->fetch())
+           { ?>
+
+
+
+<?php if ( $donnees4['pto'] > 0){echo $donnees4['pto'];}?>
+
+
+         <?php }
+            
+                ?></td>
+
+
+
             <td> <span class="badge" style="background-color:<?php echo$donnees['coul']?>"><?php echo $donnees['moyen']?></span></td>
             <td><?php echo $donnees['commentaire']?></td>
             <td></td> 
@@ -281,8 +378,10 @@ $req->execute(array('id_point_vente' => $_GET['numero'], 'du' => $time_debut,'au
 
           </tr>
            <?php }
-              $req->closeCursor(); // Termine le traitement de la requête
-               
+                $req->closeCursor(); // Termine le traitement de la requête
+                $req2->closeCursor(); // Termine le traitement de la requête2
+                $req3->closeCursor(); // Termine le traitement de la requête2
+                $req4->closeCursor(); // Termine le traitement de la requête2
                 ?>
        </tbody>
         <tfoot>
