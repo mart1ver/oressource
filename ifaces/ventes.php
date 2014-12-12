@@ -427,15 +427,24 @@ what.value = what.value + that.value;
 }
 function printdiv(divID)
     {
-      var headstr = "<html><head><title></title></head><body><small><?php echo $_SESSION['structure'] ?><br><?php echo $_SESSION['adresse'] ?><br><label>Bon d'apport:</label><br>type d'apport";
+
+if (parseInt(document.getElementById('nlignes').value) >= 1) 
+          { 
+            
+      
+
+
+      var headstr = "<html><head><title></title></head><body><small>";
 
       
  <?php if ($_SESSION['tva_active'] == 'oui'){?>
-var footstr = "<?php echo $_SESSION['taux_tva'] ?></body></small>";
+  var prixtot =  parseFloat(document.getElementById('ptot').value).toFixed(2);
+  var prixht = parseFloat(prixtot).toFixed(2) / ( 1+parseFloat(<?php echo $_SESSION['taux_tva'] ?>).toFixed(2)/100 );
+  var ptva = parseFloat(prixtot).toFixed(2)-parseFloat(prixht).toFixed(2)
+var footstr = "TVA à <?php echo $_SESSION['taux_tva'] ?>%"+" Prix H.T. ="+parseFloat(prixht).toFixed(2)+"€ TVA="+parseFloat(ptva).toFixed(2)+"€";
 <?php
   }else{?>
-var footstr = "Association non assujettie à la TVA.
-TVA non applicable, article 293 B du code général des impôts.";
+var footstr = "Association non assujettie à la TVA.</body></small> ";
   <?php } ?>
 
 
@@ -446,9 +455,14 @@ TVA non applicable, article 293 B du code général des impôts.";
       window.print();
       document.body.innerHTML = oldstr;
       return false;
+document.getElementById('comm').value = document.getElementById('commentaire').value
+            
+          document.getElementById("formulaire").submit();
+          }
+
     }
 
-    
+
 function ajout() {
      if (isNaN((parseFloat(document.getElementById('prix').value)*parseFloat(document.getElementById('quantite').value)).toFixed(2)) ) 
          {} 
