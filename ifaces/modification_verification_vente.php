@@ -197,14 +197,7 @@ $req3->execute(array('id_vendu' => $donnees['id']));
 
            // On affiche chaque entree une à une
            while ($donnees3 = $req3->fetch())
-           { ?>
-
-
-
-<?php if ($donnees['lht'] !== '0000-00-00 00:00:00'){echo $donnees3['lht'];}?>
-
-
-         <?php }
+           {  if ($donnees3['lht'] !== '0000-00-00 00:00:00'){echo $donnees3['lht'];} }
             $req3->closeCursor(); // Termine le traitement de la requête 3
                 ?></td>
 
