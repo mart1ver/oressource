@@ -43,7 +43,7 @@ function encaisse() {
         }
 function printdiv(divID)
     {
-      var headstr = "<html><head><title></title></head><body><small><?php echo $_SESSION['structure'] ?><br><?php echo $_SESSION['adresse'] ?>";
+      var headstr = "<html><head><title></title></head><body><small><?php echo $_SESSION['structure'] ?><br><?php echo $_SESSION['adresse'] ?><br><label>Bon de sorties hors boutique</label><br>";
       var footstr = "<br>Masse totale :</body></small>";
       var newstr = document.all.item(divID).innerHTML;
       var oldstr = document.body.innerHTML;
