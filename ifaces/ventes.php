@@ -428,7 +428,18 @@ what.value = what.value + that.value;
 function printdiv(divID)
     {
       var headstr = "<html><head><title></title></head><body><small><?php echo $_SESSION['structure'] ?><br><?php echo $_SESSION['adresse'] ?><br><label>Bon d'apport:</label><br>type d'apport";
-      var footstr = "<br>Masse totale :</body></small>";
+
+      
+ <?php if ($_SESSION['tva_active'] == 'oui'){?>
+var footstr = "<?php echo $_SESSION['taux_tva'] ?></body></small>";
+<?php
+  }else{?>
+var footstr = "Association non assujettie à la TVA.
+TVA non applicable, article 293 B du code général des impôts.";
+  <?php } ?>
+
+
+
       var newstr = document.all.item(divID).innerHTML;
       var oldstr = document.body.innerHTML;
       document.body.innerHTML = headstr+newstr+footstr;
@@ -436,6 +447,8 @@ function printdiv(divID)
       document.body.innerHTML = oldstr;
       return false;
     }
+
+    
 function ajout() {
      if (isNaN((parseFloat(document.getElementById('prix').value)*parseFloat(document.getElementById('quantite').value)).toFixed(2)) ) 
          {} 
