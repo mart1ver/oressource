@@ -36,6 +36,8 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
 <script type="text/javascript">
 function printdiv(divID)
     {
+       if (parseInt(document.getElementById('najout').value) >= 1) 
+          { 
       var headstr = "<html><head><title></title></head><body><small><?php echo $_SESSION['structure'] ?><br><?php echo $_SESSION['adresse'] ?><br><label>Bon de sorties hors boutique</label><br>";
       var footstr = "<br>Masse totale :</body></small>";
       var newstr = document.all.item(divID).innerHTML;
@@ -44,6 +46,10 @@ function printdiv(divID)
       window.print();
       document.body.innerHTML = oldstr;
       return false;
+       document.getElementById('comm').value = document.getElementById('commentaire').value
+            
+          document.getElementById("formulaire").submit();
+          }
     }
 
 function number_write(x)
