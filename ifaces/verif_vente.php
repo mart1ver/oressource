@@ -247,9 +247,10 @@ GROUP BY nom'
             // On recupère toute la liste des filieres de sortie
             //   $reponse = $bdd->query('SELECT * FROM grille_objets');
           
-$req = $bdd->prepare('SELECT ventes.id,ventes.timestamp ,moyens_paiement.nom moyen, ventes.commentaire
-                       FROM ventes ,moyens_paiement
+$req = $bdd->prepare('SELECT ventes.id,ventes.timestamp ,moyens_paiement.nom moyen, moyens_paiement.couleur coul, ventes.commentaire, SUM(vendus.prix) ,SUM(vendus.remboursement)
+                       FROM ventes ,moyens_paiement ,vendus
                        WHERE ventes.id_point_vente = :id_point_vente 
+                       AND vendus.id_vente = ventes.id
                        AND ventes.id_moyen_paiement = moyens_paiement.id
                        AND DATE(ventes.timestamp) BETWEEN :du AND :au ');
 $req->execute(array('id_point_vente' => $_GET['numero'], 'du' => $time_debut,'au' => $time_fin));
@@ -263,10 +264,10 @@ $req->execute(array('id_point_vente' => $_GET['numero'], 'du' => $time_debut,'au
             <tr> 
             <td><?php echo $donnees['id']?></td>
             <td><?php echo $donnees['timestamp']?></td>
+            <td><?php if ($donnees['prix'] > 0 ){echo $donnees['prix'];} ?></td>
+            <td><?php if ($donnees['remboursement'] > 0 ){echo $donnees['remboursement'];} ?></td>
             <td></td>
-            <td></td>
-            <td></td>
-            <td><?php echo $donnees['moyen']?></td>
+            <td> <span class="badge" style="background-color:<?php echo$donnees['coul']?>"><?php echo $donnees['moyen']?></span></td>
             <td><?php echo $donnees['commentaire']?></td>
             <td></td> 
             <td></td>
