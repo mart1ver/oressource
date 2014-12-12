@@ -209,15 +209,15 @@ $time_fin = $time_fin." 23:59:59";
           <tr>
             <th>#</th>
             <th>Momment de creation:</th>
-            <th>Encaissé</th>
-            <th>Remboursé</th>
+            <th>Crédit</th>
+            <th>Débit</th>
             <th>nombre d'objets</th>
             <th>moyen de paiement</th>
             <th>commentaire:</th>
             <th>Auteur de la ligne:</th>
             <th></th>
             <th>Modifié par:</th>
-            <th>Le:</th>
+            <th style="width:100px">Le:</th>
             
           </tr>
         </thead>
@@ -247,7 +247,7 @@ GROUP BY nom'
             // On recupère toute la liste des filieres de sortie
             //   $reponse = $bdd->query('SELECT * FROM grille_objets');
           
-$req = $bdd->prepare('SELECT ventes.id,ventes.timestamp ,moyens_paiement.nom moyen, moyens_paiement.couleur coul, ventes.commentaire
+$req = $bdd->prepare('SELECT ventes.id,ventes.timestamp ,moyens_paiement.nom moyen, moyens_paiement.couleur coul, ventes.commentaire ,ventes.last_hero_timestamp lht 
                        FROM ventes ,moyens_paiement 
                        WHERE ventes.id_point_vente = :id_point_vente 
                        AND ventes.id_moyen_paiement = moyens_paiement.id
@@ -365,11 +365,84 @@ $req4->execute(array('id_vente' => $donnees['id']));
 
 
             <td> <span class="badge" style="background-color:<?php echo$donnees['coul']?>"><?php echo $donnees['moyen']?></span></td>
-            <td><?php echo $donnees['commentaire']?></td>
-            <td></td> 
-            <td></td>
-            <td></td>
-            <td></td>
+            <td style="width:100px"><?php echo $donnees['commentaire']?></td>
+            <td><?php 
+            try
+            {
+            // On se connecte à MySQL
+            include('../moteur/dbconfig.php');
+            }
+            catch(Exception $e)
+            {
+            // En cas d'erreur, on affiche un message et on arrête tout
+            die('Erreur : '.$e->getMessage());
+            }
+ 
+            // Si tout va bien, on peut continuer
+$req5 = $bdd->prepare('SELECT utilisateurs.mail mail
+                       FROM utilisateurs, ventes
+                       WHERE  ventes.id = :id_vente 
+                       AND utilisateurs.id = ventes.id_createur');
+$req5->execute(array('id_vente' => $donnees['id']));
+
+
+           // On affiche chaque entree une à une
+           while ($donnees5 = $req5->fetch())
+           { ?>
+
+
+
+<?php echo $donnees5['mail']?>
+
+
+         <?php }
+           
+                ?></td> 
+            <td><form action="modification_verification_vente.php?nvente=<?php echo $donnees['id']?>" method="post">
+
+<input type="hidden" name ="id" id="id" value="<?php echo $donnees['id']?>">
+<input type="hidden" name ="date1" id="date1" value="<?php echo $_GET['date1']?>">
+<input type="hidden" name ="date2" id="date2" value="<?php echo $_GET['date2']?>">
+<input type="hidden" name ="npoint" id="npoint" value="<?php echo $_GET['numero']?>">
+  <button  class="btn btn-warning btn-sm" >Modifier</button>
+
+
+</form>
+            </td>
+            <td><?php 
+            try
+            {
+            // On se connecte à MySQL
+            include('../moteur/dbconfig.php');
+            }
+            catch(Exception $e)
+            {
+            // En cas d'erreur, on affiche un message et on arrête tout
+            die('Erreur : '.$e->getMessage());
+            }
+ 
+            // Si tout va bien, on peut continuer
+$req5 = $bdd->prepare('SELECT utilisateurs.mail mail
+                       FROM utilisateurs, ventes 
+                       WHERE  ventes.id = :id_vente 
+                       AND utilisateurs.id = ventes.id_last_hero');
+$req5->execute(array('id_vente' => $donnees['id']));
+
+
+           // On affiche chaque entree une à une
+           while ($donnees5 = $req5->fetch())
+           { ?>
+
+
+
+<?php echo $donnees5['mail']?>
+
+
+         <?php }
+           
+                ?></td>
+
+            <td><?php if ($donnees['lht'] !== '0000-00-00 00:00:00'){echo $donnees['lht'];}?></td>
 
 
 
@@ -380,9 +453,9 @@ $req4->execute(array('id_vente' => $donnees['id']));
            <?php }
                 $req->closeCursor(); // Termine le traitement de la requête
                 $req2->closeCursor(); // Termine le traitement de la requête2
-                $req3->closeCursor(); // Termine le traitement de la requête2
-                $req4->closeCursor(); // Termine le traitement de la requête2
-                ?>
+                $req3->closeCursor(); // Termine le traitement de la requête3
+                $req4->closeCursor(); // Termine le traitement de la requête4
+                $req5->closeCursor(); // Termine le traitement de la requête 5                ?>
        </tbody>
         <tfoot>
           <tr>
