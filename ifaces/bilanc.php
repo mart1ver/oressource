@@ -97,7 +97,7 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
                       + " to " 
                       + picker.endDate.format('DD MM, YYYY')                      
                     ); 
-                    window.location.href = "bilanc.php?date1="+picker.startDate.format('DD-MM-YYYY')+"&date2="+picker.endDate.format('DD-MM-YYYY');
+                    window.location.href = "bilanc.php?date1="+picker.startDate.format('DD-MM-YYYY')+"&date2="+picker.endDate.format('DD-MM-YYYY')+"&numero=<?php echo $_GET['numero'] ?>";
                   });
                   $('#reportrange').on('cancel.daterangepicker', function(ev, picker) { console.log("cancel event fired"); });
 
@@ -147,32 +147,7 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
 
 <div class="row">
    <div class="col-md-8 col-md-offset-1" >
-  <h2> Bilan des collectes de la structure <?php
-
-// on affiche la periode visée
-  if($_GET['date1'] == $_GET['date2']){
-    echo' le '.$_GET['date1'];
-
-  }
-  else
-  {
-  echo' du '.$_GET['date1']." au ".$_GET['date2']." :";  
-}
-//on convertit les deux dates en un format compatible avec la bdd
-
-$txt1  = $_GET['date1'];
-$date1ft = DateTime::createFromFormat('d-m-Y', $txt1);
-$time_debut = $date1ft->format('Y-m-d');
-$time_debut = $time_debut." 00:00:00";
-
-$txt2  = $_GET['date2'];
-$date2ft = DateTime::createFromFormat('d-m-Y', $txt2);
-$time_fin = $date2ft->format('Y-m-d');
-$time_fin = $time_fin." 23:59:59";
-
-
-
-  ?>
+  <h2> Bilan des collectes de la structure 
   </h2>
   <ul class="nav nav-tabs">
  
@@ -209,12 +184,34 @@ $time_fin = $time_fin." 23:59:59";
   <br>
 
 <div class="row">
-  <div class="col-md-6">        
+  <h2>
+    <?php
+
+// on affiche la periode visée
+  if($_GET['date1'] == $_GET['date2']){
+    echo' Le '.$_GET['date1']." ,";
+
+  }
+  else
+  {
+  echo' Du '.$_GET['date1']." au ".$_GET['date2']." ,";  
+}
+//on convertit les deux dates en un format compatible avec la bdd
+
+$txt1  = $_GET['date1'];
+$date1ft = DateTime::createFromFormat('d-m-Y', $txt1);
+$time_debut = $date1ft->format('Y-m-d');
+$time_debut = $time_debut." 00:00:00";
+
+$txt2  = $_GET['date2'];
+$date2ft = DateTime::createFromFormat('d-m-Y', $txt2);
+$time_fin = $date2ft->format('Y-m-d');
+$time_fin = $time_fin." 23:59:59";
 
 
-<div class="panel panel-default">
-  <div class="panel-heading">
-    <h3 class="panel-title">Masse collectée: <?php
+
+  ?>
+  masse collecté: <?php
 // on determine la masse totale collecté sur cette periode (pour tous les points)
 
 
@@ -310,7 +307,13 @@ $req->closeCursor(); // Termine le traitement de la requête
 
   ?> Point(s) de collecte.
 
-<?php } ?>
+<?php } ?></h2>
+  <div class="col-md-6">        
+
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Répartition par type de collecte
 </h3>
   </div>
   <div class="panel-body">
@@ -538,7 +541,14 @@ ORDER BY somme DESC');
           <div  id="graph2masse" style="height: 180px;"></div>
           
           
-       
+       <br>
+<a href="<?php echo  "../moteur/export_bilanc_partype.php?numero=". $_GET['numero']."&date1=" . $_GET['date1']."&date2=" . $_GET['date2']?>">
+
+
+
+      
+        <button type="button" class="btn btn-default btn-xs">exporter ces données (.csv) </button>
+      </a>
 </div>
   </div>
 
@@ -551,104 +561,8 @@ ORDER BY somme DESC');
   <div class="col-md-6">
 
 <div class="panel panel-default">
-  <div class="panel-heading">Par localité
-    <h3 class="panel-title">Masse collectée: <?php
-// on determine la masse totale collècté sur cete periode (pour tout les points)
-
-
-           
-if ($_GET['numero'] == 0) {
-            try
-            {
-            // On se connecte à MySQL
-            include('../moteur/dbconfig.php');
-            }
-            catch(Exception $e)
-            {
-            // En cas d'erreur, on affiche un message et on arrête tout
-            die('Erreur : '.$e->getMessage());
-            }
-            // Si tout va bien, on peut continuer
-            // On recupère tout le contenu de la table point de vente
-
-
-$req = $bdd->prepare("SELECT SUM(pesees_collectes.masse)AS total   FROM pesees_collectes  WHERE  DATE(pesees_collectes.timestamp) BETWEEN :du AND :au  ");
-$req->execute(array('du' => $time_debut,'au' => $time_fin ));
-$donnees = $req->fetch();
-$mtotcolo = $donnees['total'];
-echo $donnees['total']." Kgs.";
-            
-              $req->closeCursor(); // Termine le traitement de la requête
-               
-}
-else //si on observe un point en particulier
-{
-
-try
-            {
-            // On se connecte à MySQL
-            include('../moteur/dbconfig.php');
-            }
-            catch(Exception $e)
-            {
-            // En cas d'erreur, on affiche un message et on arrête tout
-            die('Erreur : '.$e->getMessage());
-            }
-            // Si tout va bien, on peut continuer
-            // On recupère tout le contenu de la table point de vente
-
-
-$req = $bdd->prepare("SELECT SUM(pesees_collectes.masse)AS total  
-FROM pesees_collectes ,collectes
-WHERE pesees_collectes.id_collecte = collectes.id 
-AND pesees_collectes.timestamp BETWEEN :du AND :au  AND collectes.id_point_collecte = :numero ");
-
-
-
-$req->execute(array('du' => $time_debut,'au' => $time_fin,'numero' => $_GET['numero'] ));
-$donnees = $req->fetch();
-$mtotcolo = $donnees['total'];
-echo $donnees['total']." Kgs.";
-            
-              $req->closeCursor(); // Termine le traitement de la requête
-
-}
-if ($_GET['numero'] == 0) {
-
-
-  ?>
-  , sur <?php
-// on determine le nombre de points de collecte
-
-
-            try
-            {
-            // On se connecte à MySQL
-            include('../moteur/dbconfig.php');
-            }
-            catch(Exception $e)
-            {
-            // En cas d'erreur, on affiche un message et on arrête tout
-            die('Erreur : '.$e->getMessage());
-            }
- 
-            // Si tout va bien, on peut continuer
-            /*
-
-            */
- $req = $bdd->prepare("SELECT COUNT(id) FROM points_collecte");//SELECT `titre_affectation` FROM affectations WHERE titre_affectation = "conssomables" LIMIT 1
-$req->execute(array('au' => $time_fin ));
-$donnees = $req->fetch();
-     
-echo $donnees['COUNT(id)'];
-
-$req->closeCursor(); // Termine le traitement de la requête
-
-
-
-  ?> Point(s) de collecte.
-
-<?php } ?>
+  <div class="panel-heading">
+    <h3 class="panel-title">Répartition par localités
 </h3>
   </div>
   <div class="panel-body">
@@ -874,7 +788,10 @@ ORDER BY somme DESC');
 <br>
 <div id="graph2loca" style="height: 180px;"></div>          
 
-
+<br>
+       <a href="<?php echo  "../moteur/export_bilanc_parloca.php?numero=". $_GET['numero']."&date1=" . $_GET['date1']."&date2=" . $_GET['date2']?>">
+        <button type="button" class="btn btn-default btn-xs">exporter ces données (.csv) </button>
+      </a>
   </div>
 </div>
 
