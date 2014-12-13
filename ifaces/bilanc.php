@@ -688,7 +688,7 @@ $req->closeCursor(); // Termine le traitement de la requête
             // On recupère tout le contenu de la table affectations
 
             $reponse = $bdd->prepare('SELECT 
-localites.nom,SUM(`pesees_collectes`.`masse`) somme,pesees_collectes.timestamp,localites.id id,COUNT(distinct collectes.id) ncol
+localites.nom,SUM(pesees_collectes.masse) somme,pesees_collectes.timestamp,localites.id id,COUNT(distinct collectes.id) ncol
 FROM 
 pesees_collectes,collectes,localites
 
@@ -789,7 +789,7 @@ WHERE
   pesees_collectes.timestamp BETWEEN :du AND :au AND
 localites.id =  collectes.localisation AND pesees_collectes.id_collecte = collectes.id
 AND collectes.id_point_collecte = :numero
-GROUP BY nom
+GROUP BY id
 ');
  $reponse->execute(array('du' => $time_debut,'au' => $time_fin,'numero' => $_GET['numero']  ));
            // On affiche chaque entree une à une
@@ -1197,7 +1197,7 @@ if ($_GET['numero'] == 0) {
             // Si tout va bien, on peut continuer
  
             // On recupère tout les masses collectés pour chaque type
-            $reponse = $bdd->prepare('SELECT localites.couleur,localites.nom, sum(pesees_collectes.masse) somme 
+            $reponse = $bdd->prepare('SELECT localites.couleur,localites.nom, sum(distinct pesees_collectes.masse) somme 
               FROM type_dechets,pesees_collectes,collectes,localites WHERE localites.id = collectes.localisation AND pesees_collectes.id_collecte = collectes.id AND pesees_collectes.timestamp BETWEEN :du AND :au
 GROUP BY nom');
  $reponse->execute(array('du' => $time_debut,'au' => $time_fin ));
@@ -1230,7 +1230,7 @@ GROUP BY nom');
             // Si tout va bien, on peut continuer
  
             // On recupère les couleurs de chaque type
-            $reponse = $bdd->prepare('SELECT type_dechets.couleur,type_dechets.nom, sum(pesees_collectes.masse) somme 
+            $reponse = $bdd->prepare('SELECT localites.couleur,localites.nom, sum(distinct pesees_collectes.masse) somme 
               FROM type_dechets,pesees_collectes,collectes,localites WHERE localites.id = collectes.localisation AND pesees_collectes.id_collecte = collectes.id AND pesees_collectes.timestamp BETWEEN :du AND :au
 GROUP BY nom');
   $reponse->execute(array('du' => $time_debut,'au' => $time_fin ));
@@ -1267,9 +1267,9 @@ else {
             // Si tout va bien, on peut continuer
  
             // On recupère tout le contenu de la table affectations
-            $reponse = $bdd->prepare('SELECT type_dechets.couleur,type_dechets.nom, sum(pesees_collectes.masse) somme 
-              FROM type_dechets,pesees_collectes,collectes 
-              WHERE type_dechets.id = pesees_collectes.id_type_dechet AND pesees_collectes.timestamp BETWEEN :du AND :au 
+            $reponse = $bdd->prepare('SELECT localites.couleur,localites.nom, sum(pesees_collectes.masse) somme 
+              FROM localites,pesees_collectes,collectes 
+              WHERE localites.id = collectes.localisation AND pesees_collectes.timestamp BETWEEN :du AND :au 
               AND pesees_collectes.id_collecte = collectes.id AND collectes.id_point_collecte = :numero
 GROUP BY nom');
  $reponse->execute(array('du' => $time_debut,'au' => $time_fin,'numero' => $_GET['numero'] ));
@@ -1302,9 +1302,9 @@ GROUP BY nom');
             // Si tout va bien, on peut continuer
  
             // On recupère tout le contenu de la table affectations
-            $reponse = $bdd->prepare('SELECT type_dechets.couleur,type_dechets.nom, sum(pesees_collectes.masse) somme 
-              FROM type_dechets,pesees_collectes,collectes 
-              WHERE type_dechets.id = pesees_collectes.id_type_dechet AND pesees_collectes.timestamp BETWEEN :du AND :au 
+            $reponse = $bdd->prepare('SELECT localites.couleur,localites.nom, sum(pesees_collectes.masse) somme 
+              FROM localites,pesees_collectes,collectes 
+              WHERE localites.id = collectes.localisation AND pesees_collectes.timestamp BETWEEN :du AND :au 
               AND pesees_collectes.id_collecte = collectes.id AND collectes.id_point_collecte = :numero
 GROUP BY nom');
  $reponse->execute(array('du' => $time_debut,'au' => $time_fin,'numero' => $_GET['numero'] ));
