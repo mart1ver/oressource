@@ -313,7 +313,7 @@ $req->closeCursor(); // Termine le traitement de la requête
 
 <div class="panel panel-default">
   <div class="panel-heading">
-    <h3 class="panel-title">Répartition par type de collecte
+    <h3 class="panel-title">Répartition par classe de sorties
 </h3>
   </div>
   <div class="panel-body">
@@ -321,7 +321,7 @@ $req->closeCursor(); // Termine le traitement de la requête
 <table class="table table-condensed table-striped table table-bordered table-hover" style="border-collapse:collapse;">
     <thead>
         <tr>
-            <th  style="width:300px">Type de collecte</th>
+            <th  style="width:300px">classe:</th>
             <th>Nbr.de collectes</th>
             <th>Masse collectée</th>
 
@@ -353,21 +353,20 @@ $req->closeCursor(); // Termine le traitement de la requête
             // On recupère tout le contenu de la table affectations
 
             $reponse = $bdd->prepare('SELECT 
-type_collecte.nom,SUM(`pesees_collectes`.`masse`) somme,pesees_collectes.timestamp,type_collecte.id,COUNT(distinct collectes.id) ncol
+SUM(pesees_sorties.masse) somme,pesees_sorties.timestamp,sorties.classe,COUNT(distinct sorties.id) ncol
 FROM 
-pesees_collectes,collectes,type_collecte
+pesees_sorties,sorties
 
 WHERE
-  pesees_collectes.timestamp BETWEEN :du AND :au AND
-type_collecte.id =  collectes.id_type_collecte AND pesees_collectes.id_collecte = collectes.id
-GROUP BY id_type_collecte');
+  pesees_sorties.timestamp BETWEEN :du AND :au  AND pesees_sorties.id_sortie = sorties.id
+GROUP BY classe');
  $reponse->execute(array('du' => $time_debut,'au' => $time_fin ));
            // On affiche chaque entree une à une
            while ($donnees = $reponse->fetch())
            {
             ?>
-            <tr data-toggle="collapse" data-target=".parmasse<?php echo $donnees['id']?>" >
-            <td><?php echo $donnees['nom'] ?></td>
+            <tr data-toggle="collapse" data-target=".parmasse<?php echo $donnees['classe']?>" >
+            <td><?php echo $donnees['classe'] ?></td>
             <td><?php echo $donnees['ncol'] ?></td>
             <td><?php echo $donnees['somme'] ?></td>
             <td><?php echo  round($donnees['somme']*100/$mtotcolo, 2)   ; ?></td>      
@@ -388,22 +387,33 @@ GROUP BY id_type_collecte');
             // Si tout va bien, on peut continuer
  
             // On recupère tout le contenu de la table affectations
-            $reponse2 = $bdd->prepare('SELECT type_dechets.couleur,type_dechets.nom, sum(pesees_collectes.masse) somme
- FROM type_dechets,pesees_collectes ,type_collecte , collectes
+            $reponse2 = $bdd->prepare('SELECT 
+type_dechets.couleur,
+type_dechets.nom,
+type_dechets_evac.couleur,
+type_dechets_evac.nom nom_evac,
+sum(pesees_sorties.masse) somme
+
+FROM type_dechets_evac, type_dechets, pesees_sorties , sorties
+
 WHERE
-pesees_collectes.timestamp BETWEEN :du AND :au 
-AND type_dechets.id = pesees_collectes.id_type_dechet 
-AND type_collecte.id =  collectes.id_type_collecte AND pesees_collectes.id_collecte = collectes.id
-AND type_collecte.id = :id_type_collecte
-GROUP BY nom
-ORDER BY somme DESC');
-  $reponse2->execute(array('du' => $time_debut,'au' => $time_fin ,'id_type_collecte' => $donnees['id'] ));
+pesees_sorties.timestamp BETWEEN :du AND :au 
+
+AND 
+pesees_sorties.id = sorties.id  
+AND 
+type_dechets.id = pesees_sorties.id_type_dechet 
+AND 
+type_dechets_evac.id = pesees_sorties.id_type_dechet_evac 
+AND sorties.classe = :classe
+GROUP BY nom');
+  $reponse2->execute(array('du' => $time_debut,'au' => $time_fin ,'classe' => $donnees['classe'] ));
            // On affiche chaque entree une à une
            while ($donnees2 = $reponse2->fetch())
            {        
             ?>
 
-    <tr class="collapse parmasse<?php echo $donnees['id']?> " >
+    <tr class="collapse parmasse<?php echo $donnees['classe']?> " >
             <td  >
               <?php echo $donnees2['nom'] ?>
             </td >
@@ -460,7 +470,7 @@ GROUP BY id_type_collecte');
            while ($donnees = $reponse->fetch())
            {
             ?>
-            <tr data-toggle="collapse" data-target=".parmasse<?php echo $donnees['id']?>" >
+            <tr data-toggle="collapse" data-target=".parmasse<?php echo $donnees['classe']?>" >
             <td><?php echo $donnees['nom'] ?></td>
              <td><?php echo $donnees['ncol'] ?></td>
             <td><?php echo $donnees['somme'] ?></td>
