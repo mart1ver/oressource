@@ -114,9 +114,10 @@ function encaisse() {
       document.body.innerHTML = headstr+newstr+footstr;
       window.print();
       document.body.innerHTML = oldstr;
-      return false;
-      document.getElementById('comm').value = document.getElementById('commentaire').value
+      document.getElementById('comm').value = document.getElementById('commentaire').value;
           document.getElementById("formulaire").submit();
+      return false;
+      
           }
 
     }

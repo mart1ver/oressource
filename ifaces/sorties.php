@@ -47,11 +47,50 @@ function printdiv(divID)
     {
       if (parseInt(document.getElementById('najout').value) >= 1) 
           { 
-         
+         var mtot =<?php 
+                      try
+                      {
+                      // On se connecte à MySQL
+                      include('../moteur/dbconfig.php');
+                      }
+                      catch(Exception $e)
+                      {
+                      // En cas d'erreur, on affiche un message et on arrête tout
+                      die('Erreur : '.$e->getMessage());
+                      }
+                      // On obtient tous les visibles de la table type_dechets de manière à cacluler mtot...
+                      $reponse = $bdd->query('SELECT * FROM type_dechets WHERE visible = "oui"' );
+                      // On affiche chaque entrée une à une
+                      while ($donnees = $reponse->fetch())
+                      {
+                        ?> parseFloat(document.getElementById('<?php echo$donnees['id']?>').value) + <?php
+                      }
+                      $reponse->closeCursor(); // Termine le traitement de la requête
+                      ?><?php 
+                      try
+                      {
+                      // On se connecte à MySQL
+                      include('../moteur/dbconfig.php');
+                      }
+                      catch(Exception $e)
+                      {
+                      // En cas d'erreur, on affiche un message et on arrête tout
+                      die('Erreur : '.$e->getMessage());
+                      }
+                      // On obtient tous les visibles de la table type_dechets de manière à cacluler mtot...
+                      $reponse = $bdd->query('SELECT * FROM type_dechets_evac WHERE visible = "oui"' );
+                      // On affiche chaque entrée une à une
+                      while ($donnees = $reponse->fetch())
+                      {
+                        ?> parseFloat(document.getElementById('d<?php echo$donnees['id']?>').value) + <?php
+                      }
+                      $reponse->closeCursor(); // Termine le traitement de la requête
+                      ?>0; 
+
           
         
       var headstr = "<html><head><title></title></head><body><small><?php echo $_SESSION['structure'] ?><br><?php echo $_SESSION['adresse'] ?><br><label>Bon de sortie hors boutique.</label><br>";
-      var footstr = "<br>Masse totale :</body></small>";
+       var footstr = "<br>Masse totale : "+mtot+" Kgs.</body></small>";
       var newstr = document.all.item(divID).innerHTML;
       var oldstr = document.body.innerHTML;
       document.body.innerHTML = headstr+newstr+footstr;
