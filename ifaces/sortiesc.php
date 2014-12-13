@@ -88,17 +88,16 @@ var mtot =<?php
 
 
 
-      var headstr = "<html><head><title></title></head><body><small><?php echo $_SESSION['structure'] ?><br><?php echo $_SESSION['adresse'] ?><br><label>Bon de sorties hors boutique</label><br>";
+      var headstr = "<html><head><title></title></head><body><small><?php echo $_SESSION['structure'] ?><br><?php echo $_SESSION['adresse'] ?><br><label>Bon de sorties au partenaires</label><br>";
       var footstr = "<br>Masse totale : "+mtot+" Kgs.</body></small>";
       var newstr = document.all.item(divID).innerHTML;
       var oldstr = document.body.innerHTML;
+      document.getElementById("formulaire").submit();
       document.body.innerHTML = headstr+newstr+footstr;
       window.print();
       document.body.innerHTML = oldstr;
       return false;
-       document.getElementById('comm').value = document.getElementById('commentaire').value
-            
-          document.getElementById("formulaire").submit();
+      
           }
     }
 
