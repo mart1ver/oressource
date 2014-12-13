@@ -48,43 +48,15 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
 
 <div class="col-md-3">
 
-<label for="id_type_dechet">Type de dechet:</label>
-<select name="id_type_dechet" id="id_type_dechet" class="form-control " required>
-            <?php 
-            try
-            {
-            // On se connecte à MySQL
-            include('../moteur/dbconfig.php');
-            }
-            catch(Exception $e)
-            {
-            // En cas d'erreur, on affiche un message et on arrête tout
-            die('Erreur : '.$e->getMessage());
-            }
-            // On affiche une liste deroulante des type de collecte visibles
-            $reponse = $bdd->query('SELECT * FROM type_dechets WHERE visible = "oui"');
-            // On affiche chaque entree une à une
-            while ($donnees = $reponse->fetch())
-            {
-              if ($_POST['nomtypo'] == $donnees['nom'])  // SI on a pas de message d'erreur
-{
-  ?>
-    <option value = "<?php echo$donnees['id']?>" selected ><?php echo$donnees['nom']?></option>
-<?php
-} else {
-            ?>
+<label for="Quantite">Quantité:</label>
+<br><input type="text"       value ="<?php echo $_POST['quantite']?>" name="Quantite" id="Quantite" class="form-control " required >
 
-      <option value = "<?php echo$donnees['id']?>" ><?php echo$donnees['nom']?></option>
-            <?php }}
-            $reponse->closeCursor(); // Termine le traitement de la requête
-            ?>
-    </select>
       
   </div>
   <div class="col-md-3">
 
-    <label for="masse">Masse:</label>
-<br><input type="text"       value ="<?php echo $_POST['masse']?>" name="masse" id="masse" class="form-control " required >
+    <label for="prix">Prix:</label>
+<br><input type="text"       value ="<?php echo $_POST['prix']?>" name="prix" id="prix" class="form-control " required >
   
  </div>
   <div class="col-md-3">

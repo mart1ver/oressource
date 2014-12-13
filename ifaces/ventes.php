@@ -364,7 +364,7 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
             <?php include "pied.php" ; ?> 
 <script type="text/javascript">
 function rembou() {
-  var code_soumis = prompt('Veuillez renseigner le code de remboursement','rr');
+  var code_soumis = prompt('Veuillez renseigner le code de remboursement');
 var codi = <?php 
             try
             {

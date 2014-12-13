@@ -291,7 +291,9 @@ $req2->execute(array('id_vente' => $donnees['id']));
 
 
 
-<?php if ( $donnees2['pto'] > 0){echo $donnees2['pto'];}?>
+<?php if ( $donnees2['pto'] > 0){echo $donnees2['pto'];
+$rembo = 'non';
+}?>
 
 
          <?php }
@@ -323,7 +325,9 @@ $req3->execute(array('id_vente' => $donnees['id']));
 
 
 
-<?php if ( $donnees3['pto'] > 0){echo $donnees3['pto'];}?>
+<?php if ( $donnees3['pto'] > 0){echo $donnees3['pto'];
+$rembo = 'oui';
+}?>
 
 
          <?php }
@@ -398,7 +402,15 @@ $req5->execute(array('id_vente' => $donnees['id']));
          <?php }
            
                 ?></td> 
-            <td><form action="modification_verification_vente.php?nvente=<?php echo $donnees['id']?>" method="post">
+            <td>
+
+
+<?php echo $donnees3['pto'];
+echo $donnees4['pto'];
+
+ if ( $rembo == 'non'){?>
+
+              <form action="modification_verification_vente.php?nvente=<?php echo $donnees['id']?>" method="post">
 
 <input type="hidden" name ="id" id="id" value="<?php echo $donnees['id']?>">
 <input type="hidden" name ="date1" id="date1" value="<?php echo $_GET['date1']?>">
@@ -408,6 +420,24 @@ $req5->execute(array('id_vente' => $donnees['id']));
 
 
 </form>
+
+
+<?php } if (  $rembo == 'oui'){?>
+
+              <form action="modification_verification_remboursement.php?nvente=<?php echo $donnees['id']?>" method="post">
+
+<input type="hidden" name ="id" id="id" value="<?php echo $donnees['id']?>">
+<input type="hidden" name ="date1" id="date1" value="<?php echo $_GET['date1']?>">
+<input type="hidden" name ="date2" id="date2" value="<?php echo $_GET['date2']?>">
+<input type="hidden" name ="npoint" id="npoint" value="<?php echo $_GET['numero']?>">
+  <button  class="btn btn-warning btn-sm" >Modifier</button>
+
+
+</form>
+
+
+<?php } ?>
+
             </td>
             <td><?php 
             try

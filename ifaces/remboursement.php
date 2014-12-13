@@ -103,7 +103,7 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
  <ul class="list-group" id="total">
 </ul>
 <input type="text" class="form-control" placeholder="commentaire" id="comm" name="comm"><br>
-<input name ="adh" id ="adh" type="checkbox" ><label for="adh">Adhére à l'association</label> <a href="adhesions.php"  target="_blank"><span style="float:right;" class="glyphicon glyphicon-pencil"></span></a>
+
 <br>
 <input type="hidden"  id="nlignes" name="nlignes">
 <input type="hidden"  id="narticles" name="narticles">

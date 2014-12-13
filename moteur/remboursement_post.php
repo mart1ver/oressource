@@ -23,8 +23,8 @@ if(isset($_POST['adh']))
         die('Erreur : '.$e->getMessage());
 }
 // Insertion de la collecte (sans les pesées) l'aide d'une requête préparée
-	$req = $bdd->prepare('INSERT INTO ventes (adherent, commentaire, id_point_vente) VALUES(?, ?, ?)');
-	$req->execute(array($adh,  $_POST['comm'] , $_POST['id_point_vente']));
+	$req = $bdd->prepare('INSERT INTO ventes (adherent, commentaire, id_point_vente,id_moyen_paiement, id_createur) VALUES(?,?, ?, ? ,?)');
+	$req->execute(array($adh,  $_POST['comm'] , $_POST['id_point_vente'],1, $_SESSION['id']));
   $id_vente = $bdd->lastInsertId();
     $req->closeCursor();
 
@@ -50,8 +50,8 @@ $tid_type_objet = 'tid_type_objet'.$i;
 $tid_objet ='tid_objet'.$i;
 $tquantite = 'tquantite'.$i;
 $tprix = 'tprix'.$i;
-$req = $bdd->prepare('INSERT INTO vendus (id_vente,  id_type_dechet, id_objet, quantite, remboursement) VALUES(?, ?, ?, ?, ?)');
-$req->execute(array($id_vente ,  $_POST[$tid_type_objet] ,  $_POST[$tid_objet] ,  $_POST[$tquantite], $_POST[$tprix]));
+$req = $bdd->prepare('INSERT INTO vendus (id_vente,  id_type_dechet, id_objet, quantite, remboursement, id_createur) VALUES(?, ?, ?, ?, ?, ?)');
+$req->execute(array($id_vente ,  $_POST[$tid_type_objet] ,  $_POST[$tid_objet] ,  $_POST[$tquantite], $_POST[$tprix], $_SESSION['id']));
   $req->closeCursor();
 
     $i++;
