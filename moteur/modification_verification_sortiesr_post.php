@@ -1,7 +1,7 @@
 <?php session_start();
 
 //Vérification des autorisations de l'utilisateur et des variables de session requises pour l'utilisation de cette requête:
- if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 'h'.$_GET['numero']) !== false))
+ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 'h') !== false))
 { 
  
 //martin vert
