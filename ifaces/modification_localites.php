@@ -70,7 +70,7 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
 
   <div class="col-md-2"><label for="nom">Nom:</label> <input type="text"value ="<?php echo $_POST['nom']?>" name="nom" id="nom" class="form-control " required autofocus></div>
   <div class="col-md-3"><label for="addresse">commentaire:</label> <input type="text"value ="<?php echo $_POST['commentaire']?>" name="commentaire" id="commentaire" class="form-control " required ></div>
-  <div class="col-md-3"><label for="commentaire">Lien externe:</label> <input type="url" value ="<?php echo $_POST['lien']?>" name="lien" id="lien" class="form-control " required ></div>
+  <div class="col-md-3"><label for="commentaire">Lien externe:</label> <input type="url" value ="<?php echo $_POST['lien']?>" name="lien" id="lien" class="form-control "  ></div>
   <div class="col-md-1"><label for="couleur">Couleur:</label> <input type="color"value ="<?php echo $couleur ?>"name="couleur" id="couleur" class="form-control " required ></div>
   <div class="col-md-1"><br><button name="creer" class="btn btn-warning">Modifier!</button></div>
 </form>
