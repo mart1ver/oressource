@@ -276,7 +276,7 @@ $xls_output .= $donnees2['nom']."\t".$donnees2['somme']."\t"."\n";
 
  
 header("Content-type: application/vnd.ms-excel");
-header("Content-disposition: attachment; filename=type-dechets_" . date("Ymd").".xls");
+header("Content-disposition: attachment; filename=collectes_par_types_objet_" . date("Ymd").".xls");
 print $xls_output;
 exit;
 }

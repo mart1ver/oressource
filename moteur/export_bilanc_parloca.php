@@ -110,9 +110,9 @@ AND localites.id =  collectes.localisation AND pesees_collectes.id_collecte = co
 AND localites.id = :id_loc
 GROUP BY nom
 ORDER BY somme DESC');
-  $reponse2->execute(array('du' => $time_debut,'au' => $time_fin ,'id_type_collecte' => $donnees['id'] ));
+  $reponse2->execute(array('du' => $time_debut,'au' => $time_fin ,'id_loc' => $donnees['id'] ));
            // On affiche chaque entree une à une
-$xls_output .= "objets collectés pour ce type de collecte:"."\t"."masse collecté:"."\t";
+$xls_output .= "objets collectés pour cette localité:"."\t"."masse collecté:"."\t";
 $xls_output .= "\n\r";
 
            while ($donnees2 = $reponse2->fetch())
@@ -140,7 +140,7 @@ $xls_output .= " pour le point numero:  ".$_GET['numero']."\t";
 $xls_output .= "\n\r";
 $xls_output .= "\n\r";
 $xls_output .= "\n\r";
-$xls_output .= "type de collecte:"."\t"."masse collecté:"."\t"."nombre de collectes:"."\t";
+$xls_output .= "localité:"."\t"."masse collecté:"."\t"."nombre de collectes:"."\t";
 $xls_output .= "\n\r";
 
 // on determine les masses totales collèctés sur cete periode(pour un point donné)
@@ -211,7 +211,7 @@ AND type_collecte.id = :id_type_collecte AND collectes.id_point_collecte = :nume
 GROUP BY nom
 ORDER BY somme DESC');
   $reponse2->execute(array('du' => $time_debut,'au' => $time_fin,'numero' => $_GET['numero'] ,'id_type_collecte' => $donnees['id'] ));
-  $xls_output .= "objets collectés pour ce type de collecte:"."\t"."masse collecté:"."\t";
+  $xls_output .= "objets collectés pour cette localité:"."\t"."masse collecté:"."\t";
 $xls_output .= "\n\r";
            // On affiche chaque entree une à une
            while ($donnees2 = $reponse2->fetch())
@@ -276,7 +276,7 @@ $xls_output .= $donnees2['nom']."\t".$donnees2['somme']."\t"."\n";
 
  
 header("Content-type: application/vnd.ms-excel");
-header("Content-disposition: attachment; filename=type-dechets_" . date("Ymd").".xls");
+header("Content-disposition: attachment; filename=collectes_par_localites_" . date("Ymd").".xls");
 print $xls_output;
 exit;
 }
