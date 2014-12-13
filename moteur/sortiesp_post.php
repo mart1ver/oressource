@@ -1,5 +1,9 @@
 <?php session_start();
 
+//Vérification des autorisations de l'utilisateur et des variables de session requises pour l'utilisation de cette requête:
+ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 's'.$_GET['numero']) !== false))
+{ 
+
 // Connexion à la base de données
 		try
 {
@@ -59,4 +63,10 @@ $req->execute(array($_POST[$i],  $id_sortie , $i, $_SESSION['id']));
 }
 // Redirection du visiteur vers la page de gestion des affectation
 	header("Location:../ifaces/sortiesp.php?numero=".$_POST['id_point_sortie']);
-	 ?>
+
+}
+else { 
+header('Location:../moteur/destroy.php');
+     }
+?>
+

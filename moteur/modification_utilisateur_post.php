@@ -1,4 +1,9 @@
-<?php
+<?php session_start();
+
+//Vérification des autorisations de l'utilisateur et des variables de session requises pour l'utilisation de cette requête:
+ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 'l'.$_GET['numero']) !== false))
+{ 
+
 //martin vert
 // Connexion à la base de données
 try
@@ -103,5 +108,8 @@ $req->execute(array('nom' => $_POST['nom'],'prenom' => $_POST['prenom'],'mail' =
 // Redirection du visiteur vers la page des inscriptions avec message positif 
 header('Location: ../ifaces/edition_utilisateurs.php?msg=Utilisateur modifié avec succes!');	
 
-
+}
+else { 
+header('Location:../moteur/destroy.php');
+     }
 ?>

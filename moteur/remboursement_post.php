@@ -1,4 +1,9 @@
-<?php 
+<?php session_start();
+
+//Vérification des autorisations de l'utilisateur et des variables de session requises pour l'utilisation de cette requête:
+ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 'v'.$_GET['numero']) !== false))
+{ 
+
 //on definit $adh en fonction $_POST['adh']
 if(isset($_POST['adh']))
     {
@@ -54,4 +59,9 @@ $req->execute(array($id_vente ,  $_POST[$tid_type_objet] ,  $_POST[$tid_objet] ,
 // Redirection du visiteur vers la page de gestion des affectation
 	header("Location:../ifaces/ventes.php?msg=Remboursement effectué &numero=".$_POST['id_point_vente']);
 
-	 ?>
+}
+else { 
+header('Location:../moteur/destroy.php');
+     }
+?>
+

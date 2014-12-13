@@ -1,5 +1,8 @@
-<?
+<?php session_start();
 
+//Vérification des autorisations de l'utilisateur et des variables de session requises pour l'utilisation de cette requête:
+ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 'bi'.$_GET['numero']) !== false))
+{ 
 
 
 
@@ -54,4 +57,9 @@ header("Content-type: application/vnd.ms-excel");
 header("Content-disposition: attachment; filename=type-dechets_" . date("Ymd").".xls");
 print $xls_output;
 exit;
+}
+else { 
+header('Location:../moteur/destroy.php');
+     }
 ?>
+

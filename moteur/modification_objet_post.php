@@ -1,4 +1,9 @@
-<?php
+<?php session_start();
+
+//Vérification des autorisations de l'utilisateur et des variables de session requises pour l'utilisation de cette requête:
+ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 'g'.$_GET['numero']) !== false))
+{ 
+
 //martin vert
  try
             {
@@ -51,20 +56,12 @@ $req->execute(array('nom' => $_POST['nom'],'description' => $_POST['description'
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 // Redirection du visiteur vers la page de gestion des points de collecte
 header("Location:../ifaces/grilles_prix.php?typo=".$_POST['typo']);
 }
+}
+else { 
+header('Location:../moteur/destroy.php');
+     }
 ?>
+

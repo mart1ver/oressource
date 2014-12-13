@@ -1,4 +1,9 @@
-<?php
+<?php session_start();
+
+//Vérification des autorisations de l'utilisateur et des variables de session requises pour l'utilisation de cette requête:
+ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 'l'.$_GET['numero']) !== false))
+{ 
+
 //martin vert
 // Connexion à la base de données
 try
@@ -101,4 +106,9 @@ else
 $req->closeCursor(); // Termine le traitement de la requête puis redirige vers la page utilisateurs.php avec message d'erreur
 header( "Location: ../ifaces/utilisateurs.php?err=Veuillez confirmer votre mot de passe&nom=".$_POST['nom']."&prenom=".$_POST['prenom']."&mail=".$_POST['mail']);
 }
+
+}
+else { 
+header('Location:../moteur/destroy.php');
+     }
 ?>

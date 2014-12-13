@@ -1,5 +1,10 @@
+<?php session_start();
 
-<?php session_start(); 
+//Vérification des autorisations de l'utilisateur et des variables de session requises pour l'utilisation de cette requête:
+ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 'h'.$_GET['numero']) !== false))
+{ 
+
+
 //martin vert
  
      
@@ -29,21 +34,12 @@ $req->execute(array('id_type_sortie' => $_POST['id_type_sortie'],'id' => $_POST[
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // Redirection du visiteur vers la page de gestion des points de collecte
 header('Location:../ifaces/verif_sorties.php?numero='.$_POST['npoint'].'&date1='.$_POST['date1'].'&date2='.$_POST['date2']);
 
+}
+else { 
+header('Location:../moteur/destroy.php');
+     }
 ?>
+
