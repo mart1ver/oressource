@@ -97,7 +97,7 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
                       + " to " 
                       + picker.endDate.format('DD MM, YYYY')                      
                     ); 
-                    window.location.href = "bilanc.php?date1="+picker.startDate.format('DD-MM-YYYY')+"&date2="+picker.endDate.format('DD-MM-YYYY');
+                    window.location.href = "bilanc.php?date1="+picker.startDate.format('DD-MM-YYYY')+"&date2="+picker.endDate.format('DD-MM-YYYY')+"&numero=<?php echo $_GET['numero'] ?>";
                   });
                   $('#reportrange').on('cancel.daterangepicker', function(ev, picker) { console.log("cancel event fired"); });
 
