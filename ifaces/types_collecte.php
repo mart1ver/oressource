@@ -5,7 +5,7 @@
       { include "tete.php" ?>
     <div class="container">
         <h1>Gestion de la typologie des collectes</h1> 
-         <div class="panel-heading">Gerez ici les différents types de collectes</div>
+         <div class="panel-heading">Gérez ici les différents types de collectes</div>
          <p>Permet de différencier les collectes en fonction de leur originev(apport volontaire, collecte à domicile, collecte en pied d'immeuble...) </p>
 <?php
 if ($_GET['err'] == "") // SI on a pas de message d'erreur

@@ -64,7 +64,7 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
             <input type="hidden" name ="id" id="id" value="<?php echo $_POST['id']?>">
 
   <div class="col-md-2"><label for="nom">Nom:</label> <input type="text"value ="<?php echo $_POST['nom']?>" name="nom" id="nom" class="form-control " required autofocus></div>
-  <div class="col-md-3"><label for="description">Déscription:</label> <input type="text"value ="<?php echo $_POST['description']?>" name="description" id="description" class="form-control " required ></div>
+  <div class="col-md-3"><label for="description">Description:</label> <input type="text"value ="<?php echo $_POST['description']?>" name="description" id="description" class="form-control " required ></div>
   <div class="col-md-2"><label for="masse_bac">Masse de l'objet (Kg):</label> <input type="text"value ="<?php echo $_POST['masse_bac']?>" name="masse_bac" id="masse_bac" class="form-control " required ></div>
  
   <div class="col-md-1"><label for="couleur">Couleur:</label> <input type="color"        value ="<?php echo $couleur?>" name="couleur" id="couleur" class="form-control " required autofocus></div>

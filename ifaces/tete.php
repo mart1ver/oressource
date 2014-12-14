@@ -203,7 +203,7 @@ if(strpos($_SESSION['niveau'], 'bi') !== false)
           <li class="divider"></li>
           <li><a href="moyens_paiment.php">Moyens de paiment</a></li>
           <li><a href="edition_localites.php">Localités</a></li>
-          <li><a href="edition_description.php">Déscription de la structure</a></li>
+          <li><a href="edition_description.php">Description de la structure</a></li>
 <?php } ?>
           
           

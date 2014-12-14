@@ -7,7 +7,7 @@
                     ?>
 <div class="container">
 <h1>Gestion des points de collecte</h1> 
-  <div class="panel-heading">Gerez ici les différents points de collecte.</div>
+  <div class="panel-heading">Gérez ici les différents points de collecte.</div>
                     <?php
                     if ($_GET['err'] == "") // SI on a pas de message d'erreur
                     {

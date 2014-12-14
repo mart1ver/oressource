@@ -5,7 +5,7 @@
       { include "tete.php" ?>
     <div class="container">
         <h1>Gestion de la typologie des déchets évacués</h1> 
-         <div class="panel-heading">Gerez ici les différents types de déchets évacués par la structure.</div>
+         <div class="panel-heading">Gérez ici les différents types de déchets évacués par la structure.</div>
          <p>Permet de gérer par classes les déchets et matériaux sortant de la structure</p>
 <?php
 if ($_GET['err'] == "") // SI on a pas de message d'erreur
