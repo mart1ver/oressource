@@ -178,7 +178,7 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
            <?php }
               $reponse->closeCursor(); // Termine le traitement de la requête
            ?>
-           <li<?php if ($_GET['numero'] == 0){ echo ' class="active"';}?>><a href="<?php echo  "bilanc.php?numero=0" ."&date1=" . $_GET['date1']."&date2=" . $_GET['date2']?>">Tout les points</a></li>
+           <li<?php if ($_GET['numero'] == 0){ echo ' class="active"';}?>><a href="<?php echo  "bilanc.php?numero=0" ."&date1=" . $_GET['date1']."&date2=" . $_GET['date2']?>">Tous les points</a></li>
        </ul>
 
   <br>
@@ -336,7 +336,7 @@ $req->closeCursor(); // Termine le traitement de la requête
         <?php
         if ($_GET['numero'] == 0) {
 
-// on determine les masses totales collèctés sur cete periode(pour tout les points)
+// on determine les masses totales collèctés sur cete periode(pour Tous les points)
             try
             {
             // On se connecte à MySQL
@@ -585,7 +585,7 @@ ORDER BY somme DESC');
         <?php
         if ($_GET['numero'] == 0) {
 
-// on determine les masses totales collèctés sur cete periode(pour tout les points)
+// on determine les masses totales collèctés sur cete periode(pour Tous les points)
             try
             {
             // On se connecte à MySQL
