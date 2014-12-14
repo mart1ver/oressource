@@ -83,7 +83,7 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
 
 
           <div class="col-md-3 col-md-offset-9" >
-  <label for="reportrange">Choisisez la periode a inspecter:</label><br>
+  <label for="reportrange">Choisissez la periode a inspecter:</label><br>
 <div id="reportrange" class="pull-left" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc">
                   <i class="fa fa-calendar"></i>
                   <span></span> <b class="caret"></b>
