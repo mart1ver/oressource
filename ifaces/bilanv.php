@@ -363,9 +363,10 @@ FROM
 vendus,type_dechets, ventes
 
 WHERE
-
+vendus.timestamp BETWEEN :du AND :au AND
 type_dechets.id =  vendus.id_type_dechet AND vendus.id_vente = ventes.id
-GROUP BY id_type_dechet');
+GROUP BY id_type_dechet
+ORDER BY somme DESC');
  $reponse->execute(array('du' => $time_debut,'au' => $time_fin ));
            // On affiche chaque entree une à une
            while ($donnees = $reponse->fetch())
@@ -376,7 +377,7 @@ GROUP BY id_type_dechet');
             <td><?php echo $donnees['sommeq'] ?></td>
             <td><?php echo $donnees['sommep'] ?></td>
             <td><?php echo round($donnees['sommep']/$donnees['sommeq'],2) ?></td>     
-            <td>%</td> 
+            <td><?php echo round((100*$donnees['sommep'])/$mtotcolo,2)?> %</td> 
         </tr>
 
       <?php 
@@ -394,16 +395,21 @@ GROUP BY id_type_dechet');
             // Si tout va bien, on peut continuer
  
             // On recupère tout le contenu de la table affectations
-            $reponse2 = $bdd->prepare('SELECT type_dechets.couleur,type_dechets.nom, sum(pesees_collectes.masse) somme
- FROM type_dechets,pesees_collectes ,type_collecte , collectes
+            $reponse2 = $bdd->prepare('SELECT grille_objets.nom ,grille_objets.id, sum(vendus.prix) somme
+ FROM grille_objets, vendus ,ventes, type_dechets
 WHERE
-pesees_collectes.timestamp BETWEEN :du AND :au 
-AND type_dechets.id = pesees_collectes.id_type_dechet 
-AND type_collecte.id =  collectes.id_type_collecte AND pesees_collectes.id_collecte = collectes.id
-AND type_collecte.id = :id_type_collecte
+ vendus.timestamp BETWEEN :du AND :au 
+AND grille_objets.id = vendus.id_objet 
+AND type_dechets.id = vendus.id_type_dechet
+AND vendus.id_vente = ventes.id
+AND type_dechets.id = :id_type_dechet
 GROUP BY nom
-ORDER BY somme DESC');
-  $reponse2->execute(array('du' => $time_debut,'au' => $time_fin ,'id_type_collecte' => $donnees['id'] ));
+ORDER BY somme DESC
+
+
+
+');
+  $reponse2->execute(array('du' => $time_debut,'au' => $time_fin ,'id_type_dechet' => $donnees['id'] ));
            // On affiche chaque entree une à une
            while ($donnees2 = $reponse2->fetch())
            {        
@@ -417,7 +423,7 @@ ORDER BY somme DESC');
                 <?php echo $donnees2['somme']." Kgs." ?>
             </td>
             <td >
-                <?php echo  round($donnees2['somme']*100/$donnees['somme'], 2)." %"  ; ?>
+               
             </td>
           </tr>
         
