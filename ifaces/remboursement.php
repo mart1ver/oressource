@@ -130,7 +130,7 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
     <h3 class="panel-title"id="nom_objet"><label>Objet:</label></h3>
   </div>
   <div class="panel-body"> 
-      Quantité: <input type="text" class="form-control" placeholder="Qantité" id="quantite" name="quantite" onfocus="fokus(this)" > Prix unitaire: <input type="text" class="form-control" placeholder="€" id="prix" name="prix" onfocus="fokus(this)">
+      Quantité: <input type="text" class="form-control" placeholder="Quantité" id="quantite" name="quantite" onfocus="fokus(this)" > Prix unitaire: <input type="text" class="form-control" placeholder="€" id="prix" name="prix" onfocus="fokus(this)">
 <input type="hidden"  id="id_type_objet" name="id_type_objet">
 <input type="hidden"  id="id_objet" name="id_objet">   
 <input type="hidden"  id="nom_objet0" name="nom_objet0">   
@@ -140,7 +140,7 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
      
 
     <button type="button" class="btn btn-default btn-lg" onclick="ajout();">
-    Ajout!
+    Ajouter
     </button>
 
 
