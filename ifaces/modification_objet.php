@@ -4,7 +4,7 @@
    if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 'g') !== false))
       { include "tete.php" ?>
     <div class="container">
-        <h1>grilles de prix</h1> 
+        <h1>Grille des prix</h1> 
          <div class="panel-heading">Modifier les données concernant l'objet n° <?php echo $_POST['id']?>, <?php echo $_POST['nom']?>. </div>
 <?php
 

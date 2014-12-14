@@ -208,15 +208,15 @@ $time_fin = $time_fin." 23:59:59";
         <thead>
           <tr>
             <th>#</th>
-            <th>Momment de creation:</th>
+            <th>Moment de création</th>
             <th>Crédit</th>
             <th>Débit</th>
-            <th>nombre d'objets</th>
-            <th>moyen de paiement</th>
-            <th>commentaire:</th>
-            <th>Auteur de la ligne:</th>
+            <th>Nombre d'objets</th>
+            <th>Moyen de paiement</th>
+            <th>Commentaire</th>
+            <th>Auteur de la ligne</th>
             <th></th>
-            <th>Modifié par:</th>
+            <th>Modifié par</th>
             <th style="width:100px">Le:</th>
             
           </tr>

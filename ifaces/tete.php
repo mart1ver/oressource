@@ -162,9 +162,9 @@ if(strpos($_SESSION['niveau'], 'bi') !== false)
 <li class="dropdown">
         <a href="#" class="dropdown-toggle" data-toggle="dropdown">Gestion<b class="caret"></b></a>
         <ul class="dropdown-menu">
-<?php if(strpos($_SESSION['niveau'], 'g') !== false)//grilles de prix et masse des bacs(gestion quotidienne)
+<?php if(strpos($_SESSION['niveau'], 'g') !== false)//Grille des prix et masse des bacs(gestion quotidienne)
           { ?>
-          <li><a href="grilles_prix.php?typo=1">Grilles de prix</a></li>
+          <li><a href="grilles_prix.php?typo=1">Grille des prix</a></li>
           <li><a href="edition_types_contenants.php">Bacs et chariots</a></li>
           <li><a href="edition_types_poubelles.php">Types de poubelles</a></li>
           <li class="divider"></li>

@@ -7,7 +7,7 @@
 <div class="container">
 <h1>Gestion des localités de collecte</h1> 
   <div class="panel-heading">Définissez ici les localité d'origine possibles pour les matériaux entrant.</div>
-  <p>Ces localités sont renseignées au momment de la collecte et permettent d'estimer l'impact territorial de la structure </p>
+  <p>Ces localités sont renseignées au moment de la collecte et permettent d'estimer l'impact territorial de la structure </p>
                 <?php
                 if ($_GET['err'] == "") // SI on a pas de message d'erreur
                 {

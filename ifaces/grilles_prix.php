@@ -4,7 +4,7 @@
   if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 'g') !== false))
       {  include "tete.php" ?>
    <div class="container">
-        <h1>Grilles de prix</h1> 
+        <h1>Grille des prix</h1> 
         <?php
 if ($_GET['err'] == "") // SI on a pas de message d'erreur
 {
@@ -90,7 +90,7 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
         <thead>
           <tr>
             <th>#</th>
-            <th>Date de creation:</th>
+            <th>Date de création:</th>
             <th>Nom:</th>
             <th>Description:</th>
             <th>Prix</th>
