@@ -372,6 +372,9 @@ GROUP BY classe');
             <td><?php echo  round($donnees['somme']*100/$mtotcolo, 2)   ; ?></td>      
         </tr>
 
+     
+
+
       <?php 
             try
             {
