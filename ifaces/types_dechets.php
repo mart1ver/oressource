@@ -5,7 +5,7 @@
       { include "tete.php" ?>
     <div class="container">
         <h1>Gestion de la typologie des objets collectés</h1> 
-         <div class="panel-heading">Gérez ici les différents types d'objets collectés par la structure.</div>
+         <div class="panel-heading">Gérez ici la typologie des différents objets collectés par la structure.</div>
          <p>Permet de créer son propre jeu de sept famille (ou plus) des objets collectés</p>
 <?php
 if ($_GET['err'] == "") // SI on a pas de message d'erreur
