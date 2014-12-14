@@ -270,6 +270,8 @@ echo $donnees['total']." €.";
             
               $req->closeCursor(); // Termine le traitement de la requête
 
+
+
 }
 if ($_GET['numero'] == 0) {
 
