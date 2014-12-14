@@ -128,7 +128,7 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
 <ul class="nav nav-tabs">
 
   <li ><a href="<?php echo  "bilanc.php?date1=" . $_GET['date1'].'&date2='.$_GET['date2']?>">Collectes</a></li>
-  <li class="active"><a>Sorties hors boutique</a></li>
+  <li class="active"><a>Sorties hors-boutique</a></li>
   <li><a href="<?php echo  "bilanv.php?date1=" . $_GET['date1'].'&date2='.$_GET['date2']?>">Ventes</a></li>
   
 </ul>
@@ -147,7 +147,7 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
 
 <div class="row">
    <div class="col-md-8 col-md-offset-1" >
-  <h2> Bilan des sorties hors boutique de la structure 
+  <h2> Bilan des sorties hors-boutique de la structure 
   </h2>
   <ul class="nav nav-tabs">
  

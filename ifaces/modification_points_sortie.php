@@ -4,7 +4,7 @@
  if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 'k') !== false))
       { include "tete.php" ?>
     <div class="container">
-        <h1>Gestions des points de sortie hors boutique</h1> 
+        <h1>Gestions des points de sortie hors-boutique</h1> 
          <div class="panel-heading">Modifier les données concernant le point de sortie numero <?php echo $_POST['id']?>, <?php echo $_POST['nom']?>. </div>
 <?php
 //POST ou GET ?

@@ -4,7 +4,7 @@
 if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 's'.$_GET['numero']) !== false))
       {include "tete.php";
 
-//Oressource 2014, formulaire de sorties hors boutique
+//Oressource 2014, formulaire de sorties hors-boutique
 //Simple formulaire de saisie des matieres d'ouevres sortantes de la structure. (Dons)
 //Doit etre fonctionnel avec un ecran tactille.
 //Du javascript permet l'interactivité du keypad et des boutons centraux avec le bon de collecte 
@@ -89,7 +89,7 @@ function printdiv(divID)
 
           
         
-      var headstr = "<html><head><title></title></head><body><small><?php echo $_SESSION['structure'] ?><br><?php echo $_SESSION['adresse'] ?><br><label>Bon de sortie hors boutique.</label><br>";
+      var headstr = "<html><head><title></title></head><body><small><?php echo $_SESSION['structure'] ?><br><?php echo $_SESSION['adresse'] ?><br><label>Bon de sortie hors-boutique.</label><br>";
        var footstr = "<br>Masse totale : "+mtot+" Kgs.</body></small>";
       var newstr = document.all.item(divID).innerHTML;
       var oldstr = document.body.innerHTML;
@@ -267,7 +267,7 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
           <div class="panel panel-info">
         <div class="panel-heading">
           <form action="../moteur/collecte_post.php" method="post">
-    <h3 class="panel-title"><label>Bon de sortie hors boutique:</label></h3>
+    <h3 class="panel-title"><label>Bon de sortie hors-boutique:</label></h3>
   </div>
   <div class="panel-body" id="divID"> 
 

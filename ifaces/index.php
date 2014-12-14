@@ -37,7 +37,7 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
           <h2>Evacué aujourd'hui:</h2>
           <p><div id="grapha" style="height: 180px;"></div></p>
 <?php
-//Vérification des autorisations de l'utilisateur et des variables de session requises pour l'affichage des bilans de sortie hors boutique en première page:
+//Vérification des autorisations de l'utilisateur et des variables de session requises pour l'affichage des bilans de sortie hors-boutique en première page:
           if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 'bi') !== false))
       { ?>
           <p><a class="btn btn-default" href=" bilanhb.php?date1=<?php echo date("d-m-Y")?>&date2=<?php echo date("d-m-Y")?>" role="button">Détails &raquo;</a></p>
