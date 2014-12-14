@@ -230,7 +230,7 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
  
             // Si tout va bien, on peut continuer
  
-            // on affiche le bon de sortie hors boutique (à zéro) correspondant aux types de déchets visibles
+            // on affiche le bon de sortie hors-boutique (à zéro) correspondant aux types de déchets visibles
             $reponse = $bdd->query('SELECT * FROM type_dechets WHERE visible = "oui"');
             // On affiche chaque entrée une à une
             while ($donnees = $reponse->fetch())

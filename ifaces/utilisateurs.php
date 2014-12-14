@@ -109,7 +109,7 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
               <?php }
               $reponse->closeCursor(); // Termine le traitement de la requête
                  ?></div>
-                                            <div class="alert alert-info"><label for="niveaus">Points de sortie hors boutique:</label><br>
+                                            <div class="alert alert-info"><label for="niveaus">Points de sortie hors-boutique:</label><br>
           <?php 
             try
             {

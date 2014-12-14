@@ -78,7 +78,7 @@
       if(strpos($_SESSION['niveau'], 's') !== false )
           { ?>
              <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Sorties hors boutique<b class="caret"></b></a>
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Sorties hors-boutique<b class="caret"></b></a>
             <ul class="dropdown-menu">
             <li><?php 
             try
@@ -172,7 +172,7 @@ if(strpos($_SESSION['niveau'], 'bi') !== false)
 <?php if(strpos($_SESSION['niveau'], 'h') !== false)//gestion verif
           { ?>
           <li><a href="verif_collecte.php?date1=<?php echo date("d-m-Y")?>&date2=<?php echo date("d-m-Y")?>&numero=1">Verifier les collectes</a></li>
-          <li><a href="verif_sorties.php?date1=<?php echo date("d-m-Y")?>&date2=<?php echo date("d-m-Y")?>&numero=1">Verifier les sorties hors boutique</a></li>
+          <li><a href="verif_sorties.php?date1=<?php echo date("d-m-Y")?>&date2=<?php echo date("d-m-Y")?>&numero=1">Verifier les sorties hors-boutique</a></li>
           <li><a href="verif_vente.php?date1=<?php echo date("d-m-Y")?>&date2=<?php echo date("d-m-Y")?>&numero=1">Verifier les ventes</a></li>
           <li class="divider"></li>
 <?php } ?>
@@ -191,14 +191,14 @@ if(strpos($_SESSION['niveau'], 'bi') !== false)
 <?php if(strpos($_SESSION['niveau'], 'k') !== false)//configuration de oressource
           { ?>
 
-          <li><a href="edition_types_sortie.php">Types de sorties hors boutique</a></li>
+          <li><a href="edition_types_sortie.php">Types de sorties hors-boutique</a></li>
           <li><a href="types_collecte.php">Types de collectes</a></li>
           <li class="divider"></li>
           <li><a href="types_dechets.php">Types d'objets collectés</a></li>
           <li><a href="types_dechets_evac.php">Types de déchets evacués</a></li>       
           <li class="divider"></li>
           <li><a href="edition_points_collecte.php">Points de collecte</a></li>
-          <li><a href="edition_points_sorties.php">Points de sortie hors boutique</a></li>
+          <li><a href="edition_points_sorties.php">Points de sortie hors-boutique</a></li>
           <li><a href="edition_points_vente.php">Points de vente</a></li>
           <li class="divider"></li>
           <li><a href="moyens_paiment.php">Moyens de paiment</a></li>

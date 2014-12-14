@@ -23,7 +23,7 @@
 
 
    <div class="container">
-        <h1>Vérification des sorties hors boutique</h1> 
+        <h1>Vérification des sorties hors-boutique</h1> 
         <?php
 if ($_GET['err'] == "") // SI on a pas de message d'erreur
 {

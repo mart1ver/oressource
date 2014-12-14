@@ -4,7 +4,7 @@
 if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 's'.$_GET['numero']) !== false))
       { include "tete.php";
 
-//Oressource 2014, formulaire de sorties hors boutique
+//Oressource 2014, formulaire de sorties hors-boutique
 //Simple formulaire de saisie des matieres d'ouevres sortantes de la structure. (structures partenaires, conventiionnées)
 //Doit etre fonctionnel avec un ecran tactille.
 //Du javascript permet l'interactivité du keypad et des boutons centraux avec le bon de collecte 

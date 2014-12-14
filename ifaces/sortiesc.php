@@ -3,7 +3,7 @@
 //Vérification des autorisations de l'utilisateur et des variables de session requises pour l'affichage de cette page: 
 if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 's'.$_GET['numero']) !== false))
       {include "tete.php";
-//Oressource 2014, formulaire de sorties hors boutique
+//Oressource 2014, formulaire de sorties hors-boutique
 //Simple formulaire de saisie des matieres d'ouevres sortantes de la structure. (structures partenaires, conventiionnées)
 //Doit etre fonctionnel avec un ecran tactille.
 //Du javascript permet l'interactivité du keypad et des boutons centraux avec le bon de collecte 
@@ -300,7 +300,7 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
 
 <div class="panel panel-info">
         <div class="panel-heading">
-    <h3 class="panel-title"><label>Bon de sortie hors boutique:</label></h3>
+    <h3 class="panel-title"><label>Bon de sortie hors-boutique:</label></h3>
   </div>
   <div class="panel-body" id="divID"> 
 

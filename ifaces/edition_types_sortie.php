@@ -4,8 +4,8 @@
     if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 'k') !== false))
       { include "tete.php" ?>
     <div class="container">
-        <h1>Gestion de la typologie des sorties hors boutique</h1> 
-         <div class="panel-heading">Gérez ici les différents types de sorties hors boutique.</div>
+        <h1>Gestion de la typologie des sorties hors-boutique</h1> 
+         <div class="panel-heading">Gérez ici les différents types de sorties hors-boutique.</div>
          <p>Permet de différencier les différentes destinations des dons (don a un particulier , une association, lié à une convention,...) </p>
 <?php
 if ($_GET['err'] == "") // SI on a pas de message d'erreur

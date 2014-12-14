@@ -5,8 +5,8 @@
                         { include "tete.php";
                         ?>
 <div class="container">
-<h1>Gestion des points de sortie hors boutique</h1> 
-  <div class="panel-heading">Gérez ici les différents points de sortie hors boutique.</div>
+<h1>Gestion des points de sortie hors-boutique</h1> 
+  <div class="panel-heading">Gérez ici les différents points de sortie hors-boutique.</div>
                         <?php
                         if ($_GET['err'] == "") // SI on a pas de message d'erreur
                         {
