@@ -211,7 +211,7 @@ $time_fin = $time_fin." 23:59:59";
 
 
   ?>
-  masse collecté: <?php
+  Masse collectée: <?php
 // on determine la masse totale collecté sur cette periode (pour tous les points)
 
 
@@ -562,7 +562,7 @@ ORDER BY somme DESC');
 
 <div class="panel panel-default">
   <div class="panel-heading">
-    <h3 class="panel-title">Répartition par localités
+    <h3 class="panel-title">Répartition par localité
 </h3>
   </div>
   <div class="panel-body">
@@ -572,7 +572,7 @@ ORDER BY somme DESC');
         <tr>
             <th  style="width:300px">Localité</th>
             <th>Nbr.de collectes</th>
-            <th>Masse collecté</th>
+            <th>Masse collectée</th>
 
             <th>%</th>
             

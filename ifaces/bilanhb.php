@@ -128,7 +128,7 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
 <ul class="nav nav-tabs">
 
   <li ><a href="<?php echo  "bilanc.php?date1=" . $_GET['date1'].'&date2='.$_GET['date2'].'&numero=0'?>">Collectes</a></li>
-  <li class="active"><a>Sorties hors boutique</a></li>
+  <li class="active"><a>Sorties hors-boutique</a></li>
   <li><a href="<?php echo  "bilanv.php?date1=" . $_GET['date1'].'&date2='.$_GET['date2'].'&numero=0'?>">Ventes</a></li>
   
 </ul>
@@ -147,7 +147,7 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
 
 <div class="row">
    <div class="col-md-8 col-md-offset-1" >
-  <h2> Bilan des sorties hors boutique de la structure 
+  <h2> Bilan des sorties hors-boutique de la structure 
   </h2>
   <ul class="nav nav-tabs">
  
@@ -321,7 +321,7 @@ $req->closeCursor(); // Termine le traitement de la requête
 <table class="table table-condensed table-striped table table-bordered table-hover" style="border-collapse:collapse;">
     <thead>
         <tr>
-            <th  style="width:300px">classe:</th>
+            <th  style="width:300px">Classe:</th>
             <th>Nbr.de collectes</th>
             <th>Masse collectée</th>
 
@@ -572,7 +572,7 @@ ORDER BY somme DESC');
 
 <div class="panel panel-default">
   <div class="panel-heading">
-    <h3 class="panel-title">Répartition par localités
+    <h3 class="panel-title">Répartition par localité
 </h3>
   </div>
   <div class="panel-body">
@@ -582,7 +582,7 @@ ORDER BY somme DESC');
         <tr>
             <th  style="width:300px">Localité</th>
             <th>Nbr.de collectes</th>
-            <th>Masse collecté</th>
+            <th>Masse collectée</th>
 
             <th>%</th>
             
