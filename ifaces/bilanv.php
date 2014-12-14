@@ -366,7 +366,7 @@ WHERE
 vendus.timestamp BETWEEN :du AND :au AND
 type_dechets.id =  vendus.id_type_dechet AND vendus.id_vente = ventes.id
 GROUP BY id_type_dechet
-ORDER BY somme DESC');
+ORDER BY sommep DESC');
  $reponse->execute(array('du' => $time_debut,'au' => $time_fin ));
            // On affiche chaque entree une à une
            while ($donnees = $reponse->fetch())
@@ -395,20 +395,15 @@ ORDER BY somme DESC');
             // Si tout va bien, on peut continuer
  
             // On recupère tout le contenu de la table affectations
-            $reponse2 = $bdd->prepare('SELECT grille_objets.nom ,grille_objets.id, sum(vendus.prix) somme
+            $reponse2 = $bdd->prepare('SELECT IF(grille_objets.nom = 0, type_dechets.nom, grille_objets.nom) nom ,grille_objets.id, sum(vendus.quantite) sommeq, sum(vendus.prix) sommep
  FROM grille_objets, vendus ,ventes, type_dechets
-WHERE
- vendus.timestamp BETWEEN :du AND :au 
+WHERE vendus.timestamp BETWEEN :du AND :au 
 AND grille_objets.id = vendus.id_objet 
 AND type_dechets.id = vendus.id_type_dechet
 AND vendus.id_vente = ventes.id
 AND type_dechets.id = :id_type_dechet
 GROUP BY nom
-ORDER BY somme DESC
-
-
-
-');
+ORDER BY sommep DESC');
   $reponse2->execute(array('du' => $time_debut,'au' => $time_fin ,'id_type_dechet' => $donnees['id'] ));
            // On affiche chaque entree une à une
            while ($donnees2 = $reponse2->fetch())
@@ -420,11 +415,14 @@ ORDER BY somme DESC
               <?php echo $donnees2['nom'] ?>
             </td >
             <td >
-                <?php echo $donnees2['somme']." Kgs." ?>
+                <?php echo $donnees2['sommeq']." Pcs." ?>
             </td>
             <td >
-               
+                <?php echo $donnees2['sommep']." €." ?>
             </td>
+            <td >
+               <?php echo round((100*$donnees2['sommep'])/$donnees['sommep'],2)." %"?> 
+                           </td>
           </tr>
         
  <?php
