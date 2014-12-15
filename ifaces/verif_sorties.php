@@ -175,7 +175,7 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
           
 
 <?php
-// on affiche la periode visée
+// on affiche la période visée
   if($_GET['date1'] == $_GET['date2']){
     echo' le '.$_GET['date1'];
 
@@ -246,15 +246,15 @@ if($donnees['nid'] > 0){ $req->closeCursor();
         <thead>
           <tr>
             <th>#</th>
-            <th>Date de création:</th>
+            <th>Date de création</th>
             <th>type de collecte:</th>
             <th>Adhérent?:</th>
             
             <th>Masse totale</th>
             
-             <th>Auteur de la ligne:</th>
+             <th>Auteur de la ligne</th>
             <th></th>
-            <th>Modifié par:</th>
+            <th>Modifié par</th>
             <th>Le:</th>
             
           </tr>
@@ -471,7 +471,7 @@ $req4->execute(array('id_sortie' => $donnees['id']));
       </div>
 </div>
       <?php
-    } else{echo 'Pas de dons sur cette periode<br><br>';
+    } else{echo 'Pas de dons sur cette période<br><br>';
     $req->closeCursor(); }
 }
 ?>
@@ -519,14 +519,14 @@ if($donnees['nid'] > 0){ $req->closeCursor();
         <thead>
           <tr>
             <th>#</th>
-            <th>Date de création:</th>
+            <th>Date de création</th>
             <th>Nom du partenaire:</th>
             
             <th>Masse totale</th>
             
-             <th>Auteur de la ligne:</th>
-            <th>Modifier:</th>
-            <th>Modifié par:</th>
+             <th>Auteur de la ligne</th>
+            <th></th>
+            <th>Modifié par</th>
             <th>Le:</th>
             
           </tr>
@@ -741,7 +741,7 @@ $req4->execute(array('id_sortie' => $donnees['id']));
        </div>
 </div>
       <?php
-    } else{echo 'Pas de sorties en direction des partenaires sur cette periode<br><br>';
+    } else{echo 'Pas de sorties en direction des partenaires sur cette période<br><br>';
     $req->closeCursor(); }
 }
 ?>
@@ -789,13 +789,13 @@ if($donnees['nid'] > 0){ $req->closeCursor();
         <thead>
           <tr>
             <th>#</th>
-            <th>Date de création:</th>
+            <th>Date de création</th>
             <th>Nom de l'entreprise:</th>
             <th>Masse totale</th>
             
-             <th>Auteur de la ligne:</th>
-            <th>Modifier:</th>
-            <th>Modifié par:</th>
+             <th>Auteur de la ligne</th>
+            <th></th>
+            <th>Modifié par</th>
             <th>Le:</th>
             
           </tr>
@@ -1008,7 +1008,7 @@ $req4->execute(array('id_sortie' => $donnees['id']));
       </table>
       </div></div>
       <?php
-    } else{echo 'Pas de sorties recyclage sur cette periode<br><br>';
+    } else{echo 'Pas de sorties recyclage sur cette période<br><br>';
     $req->closeCursor(); }
 }
 ?>
@@ -1056,14 +1056,14 @@ if($donnees['nid'] > 0){ $req->closeCursor();
         <thead>
           <tr>
             <th>#</th>
-            <th>Date de création:</th>
+            <th>Date de création</th>
    
             
             <th>Masse totale</th>
             
-             <th>Auteur de la ligne:</th>
-            <th>Modifier:</th>
-            <th>Modifié par:</th>
+             <th>Auteur de la ligne</th>
+            <th></th>
+            <th>Modifié par</th>
             <th>Le:</th>
             
           </tr>
@@ -1279,7 +1279,7 @@ $req4->execute(array('id_sortie' => $donnees['id']));
       </table>
     </div></div>
 <?php
-    } else{echo 'Pas de poubelles evacuées sur cette periode<br><br>';
+    } else{echo 'Pas de poubelles evacuées sur cette période<br><br>';
     $req->closeCursor(); }
 }
 ?>
@@ -1329,14 +1329,14 @@ if($donnees['nid'] > 0){ $req->closeCursor();
         <thead>
           <tr>
             <th>#</th>
-            <th>Date de création:</th>
+            <th>Date de création</th>
             
             
             <th>Masse totale</th>
             
-             <th>Auteur de la ligne:</th>
-            <th>Modifier:</th>
-            <th>Modifié par:</th>
+             <th>Auteur de la ligne</th>
+            <th></th>
+            <th>Modifié par</th>
             <th>Le:</th>
             
           </tr>
@@ -1553,7 +1553,7 @@ $req4->execute(array('id_sortie' => $donnees['id']));
        </div>
 </div>
       <?php
-    } else{echo 'Pas de sorties en direction des partenaires sur cette periode<br><br>';
+    } else{echo 'Pas de sorties en direction des partenaires sur cette période<br><br>';
     $req->closeCursor(); }
 }
 ?>

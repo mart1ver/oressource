@@ -5,8 +5,8 @@
       { include "tete.php" ?>
     <div class="container">
         <h1>Gestion de la typologie des bacs et des outils de manutention. </h1> 
-         <div class="panel-heading">Renseignez ici la la masse de vos bacs et outils de manutention .</div>
-         <p>Cet outil vous permet notamment d'indiquer le poids de vos bacs, chariots, diables, etc. de manière à pouvoir le soustraire automatiquement à la pesée.</p>
+         <div class="panel-heading">Renseignez ici la masse de vos bacs et outils de manutention .</div>
+         <p>Cet outil vous permet notamment d'indiquer le poids de vos bacs, chariots, diables, etc. de manière à pouvoir le soustraire automatiquement au moment de la pesée.</p>
 <?php
 if ($_GET['err'] == "") // SI on a pas de message d'erreur
 {
@@ -46,13 +46,13 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
         <thead>
           <tr>
             <th>#</th>
-            <th>Date de création:</th>
-            <th>Nom:</th>
-            <th>Description:</th>
+            <th>Date de création</th>
+            <th>Nom</th>
+            <th>Description</th>
             <th>Masse de l'objet (Kg):</th>
-            <th>Couleur:</th>
-            <th>Visible:</th>
-            <th>Modifier:</th>
+            <th>Couleur</th>
+            <th>Visible</th>
+            <th></th>
             
           </tr>
         </thead>

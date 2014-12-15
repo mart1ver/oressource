@@ -40,7 +40,7 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
                         <label for="prenom">Prénom:</label> <input type="text" value ="<?php echo $_GET['prenom']?>" name="prenom" id="prenom" class="form-control " required><br>
                         <label for="mail">Mail:</label> <input type="email" value ="<?php echo $_GET['mail']?>" name="mail" id="mail" class="form-control " required ><br>
                         <label>Mot de passe</label> <input type="password"  name="pass1" id="pass1" class="form-control" required ><br>
-                                                       RÉpetez le mot de passe</label> <input type="password"  name="pass2" id="pass2" class="form-control" required >
+                                                       Répetez le mot de passe</label> <input type="password"  name="pass2" id="pass2" class="form-control" required >
   </div>
   <div class="col-md-4"><div class="alert alert-info"><label for="niveau">Permissions d'accès</label> <br>
           

@@ -6,7 +6,7 @@
     <div class="container">
         <h1>Gestion de la typologie des collectes</h1> 
          <div class="panel-heading">Gérez ici les différents types de collectes</div>
-         <p>Permet de différencier les collectes en fonction de leur originev(apport volontaire, collecte à domicile, collecte en pied d'immeuble...) </p>
+         <p>Permet de différencier les collectes en fonction de leur origine (apport volontaire, collecte à domicile, collecte en pied d'immeuble...) </p>
 <?php
 if ($_GET['err'] == "") // SI on a pas de message d'erreur
 {
@@ -49,12 +49,12 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
         <thead>
           <tr>
             <th>#</th>
-            <th>Date de création:</th>
-            <th>Nom:</th>
-            <th>Description:</th>
-            <th>Couleur:</th>
-            <th>Visible:</th>
-            <th>Modifier:</th>
+            <th>Date de création</th>
+            <th>Nom</th>
+            <th>Description</th>
+            <th>Couleur</th>
+            <th>Visible</th>
+            <th></th>
             
           </tr>
         </thead>

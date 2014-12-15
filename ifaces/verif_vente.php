@@ -172,7 +172,7 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
 
 
 <?php
-// on affiche la periode visée
+// on affiche la période visée
   if($_GET['date1'] == $_GET['date2']){
     echo' le '.$_GET['date1'];
 
@@ -208,7 +208,7 @@ $time_fin = $time_fin." 23:59:59";
         <thead>
           <tr>
             <th>#</th>
-            <th>Moment de création</th>
+            <th>Date de création</th>
             <th>Crédit</th>
             <th>Débit</th>
             <th>Nombre d'objets</th>

@@ -4,7 +4,7 @@
     if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 'k') !== false))
       { include "tete.php" ?>
     <div class="container">
-        <h1>Gestions des localités</h1> 
+        <h1>Gestion des localités</h1> 
          <div class="panel-heading">Modifier les données concernant la localité n° <?php echo $_POST['id']?>, <?php echo $_POST['nom']?>. </div>
 <?php
 //on obtien la couleur de la localité dans la base

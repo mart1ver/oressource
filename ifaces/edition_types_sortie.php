@@ -44,12 +44,12 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
         <thead>
           <tr>
             <th>#</th>
-            <th>Date de création:</th>
-            <th>Nom:</th>
-            <th>Description:</th>
-            <th>Couleur:</th>
-            <th>Visible:</th>
-            <th>Modifier:</th>
+            <th>Date de création</th>
+            <th>Nom</th>
+            <th>Description</th>
+            <th>Couleur</th>
+            <th>Visible</th>
+            <th></th>
             
           </tr>
         </thead>

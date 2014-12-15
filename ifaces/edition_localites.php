@@ -46,13 +46,13 @@
 <thead>
   <tr>
     <th>#</th>
-    <th>Date de création:</th>
-    <th>Nom:</th>
+    <th>Date de création</th>
+    <th>Nom</th>
     <th>Commentaire:</th>
-    <th>Couleur:</th>
-    <th>Lien:</th>
-    <th>Visible:</th>
-    <th>Modifier:</th>
+    <th>Couleur</th>
+    <th>Lien</th>
+    <th>Visible</th>
+    <th></th>
   </tr>
 </thead>
 <tbody>

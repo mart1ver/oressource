@@ -169,7 +169,7 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
         	
  </div>
 <?php
-// on affiche la periode visée
+// on affiche la période visée
   if($_GET['date1'] == $_GET['date2']){
     echo' le '.$_GET['date1'];
 
@@ -238,14 +238,14 @@ if($donnees['nid'] > 0){ $req->closeCursor();
         <thead>
           <tr>
             <th>#</th>
-            <th>Date de création:</th>
+            <th>Date de création</th>
             <th>Type de collecte:</th>
             <th>Adhérent?:</th>
             <th>Localisation:</th>
             <th>Masse totale</th>
-            <th>Auteur de la ligne:</th>
+            <th>Auteur de la ligne</th>
             <th></th>
-            <th>Modifié par:</th>
+            <th>Modifié par</th>
             <th>Le:</th>
           </tr>
         </thead>
@@ -424,7 +424,7 @@ $req3->execute(array('id_collecte' => $donnees['id']));
       </table>
 
 <?php
-    } else{echo 'Pas de correspondance trouvée pour cette periode<br><br>';
+    } else{echo 'Pas de correspondance trouvée pour cette période<br><br>';
     $req->closeCursor(); }
 }
 ?>

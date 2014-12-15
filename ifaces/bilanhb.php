@@ -187,7 +187,7 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
   <h2>
     <?php
 
-// on affiche la periode visée
+// on affiche la période visée
   if($_GET['date1'] == $_GET['date2']){
     echo' Le '.$_GET['date1']." ,";
 
@@ -212,7 +212,7 @@ $time_fin = $time_fin." 23:59:59";
 
   ?>
   masse totale évacuée: <?php
-// on determine la masse totale collecté sur cette periode (pour tous les points)
+// on determine la masse totale collecté sur cette période (pour tous les points)
 
 
            
@@ -336,7 +336,7 @@ $req->closeCursor(); // Termine le traitement de la requête
         <?php
         if ($_GET['numero'] == 0) {
 
-// on determine les masses totales collèctés sur cete periode(pour Tous les points)
+// on determine les masses totales collèctés sur cete période(pour Tous les points)
             try
             {
             // On se connecte à MySQL
@@ -439,7 +439,7 @@ GROUP BY nom');
 
 
 
-// on determine les masses totales collèctés sur cete periode(pour un point donné)
+// on determine les masses totales collèctés sur cete période(pour un point donné)
             try
             {
             // On se connecte à MySQL
@@ -595,7 +595,7 @@ ORDER BY somme DESC');
         <?php
         if ($_GET['numero'] == 0) {
 
-// on determine les masses totales collèctés sur cete periode(pour Tous les points)
+// on determine les masses totales collèctés sur cete période(pour Tous les points)
             try
             {
             // On se connecte à MySQL
@@ -688,7 +688,7 @@ ORDER BY somme DESC');
 
 
 
-// on determine les masses totales collèctés sur cete periode(pour un point donné)
+// on determine les masses totales collèctés sur cete période(pour un point donné)
             try
             {
             // On se connecte à MySQL

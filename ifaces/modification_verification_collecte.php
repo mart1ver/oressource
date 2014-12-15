@@ -133,13 +133,13 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
         <thead>
           <tr>
             <th>#</th>
-            <th>Date de création:</th>
+            <th>Date de création</th>
             <th>Type de déchet:</th>
-            <th>Masse:</th>
+            <th>Masse</th>
 
-            <th>Auteur de la ligne:</th>
-            <th>Modifier:</th>
-            <th>Modifié par:</th>
+            <th>Auteur de la ligne</th>
+            <th></th>
+            <th>Modifié par</th>
             <th>Le:</th>
 
             

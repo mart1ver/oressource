@@ -41,10 +41,10 @@
   <thead>
     <tr>
       <th>#</th>
-      <th>Date de création:</th>
-      <th>Nom:</th>
+      <th>Date de création</th>
+      <th>Nom</th>
       <th>Adresse:</th>
-      <th>Couleur:</th>
+      <th>Couleur</th>
       <th>Commentaire:</th>
       <th>Pesée maximum:</th>
       <th>Visible</th>
