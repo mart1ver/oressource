@@ -224,7 +224,7 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
             die('Erreur : '.$e->getMessage());
             }
              // On recupère tout le contenu de la table grille_objets
-           $req = $bdd->prepare('SELECT * FROM grille_objets WHERE id_type_dechet = :id_type_dechet AND visible = "oui"   ');
+           $req = $bdd->prepare('SELECT * FROM grille_objets WHERE id_type_dechet = :id_type_dechet AND visible = "oui"  ORDER BY nom ');
            $req->execute(array('id_type_dechet' => $donnees['id']));
            $i = 1;
            // On affiche chaque entree une à une
