@@ -462,6 +462,27 @@ document.getElementById('comm').value = document.getElementById('commentaire').v
 
     }
 
+function suprime(nsligne)
+{
+
+if (parseInt(document.getElementById('nlignes').value)>1)
+{
+var numero_ligne = nsligne.substr(5); // sous_chaine = le numero uniquement
+document.getElementById('narticles').value = parseInt(document.getElementById('narticles').value) - parseInt(document.getElementById('tquantite'+numero_ligne).value) ;
+document.getElementById('ptot').value = parseFloat(document.getElementById('ptot').value) - (parseFloat(document.getElementById('tprix'+numero_ligne).value)*parseFloat(document.getElementById('tquantite'+numero_ligne).value))  ;
+document.getElementById('recaptotal').innerHTML = parseFloat(document.getElementById('ptot').value).toFixed(2)+'€';
+document.getElementById('total').innerHTML = '<li class="list-group-item">Soit : '+document.getElementById('narticles').value+' article(s) pour : <span class="badge" style="float:right;">'+parseFloat(document.getElementById('ptot').value).toFixed(2)+'€</span></li>';
+document.getElementById('tquantite'+numero_ligne).value= "0";
+document.getElementById('tprix'+numero_ligne).value= "0";
+document.getElementById(nsligne).style.display="none";
+}
+else
+{
+window.location.reload();
+}
+}
+
+
 
 function ajout() {
      if (isNaN((parseFloat(document.getElementById('prix').value)*parseFloat(document.getElementById('quantite').value)).toFixed(2)) ) 
@@ -495,8 +516,7 @@ if (isNaN(parseInt(document.getElementById('ptot').value)) )
           document.getElementById('ptot').value=parseFloat(document.getElementById('ptot').value)+parseFloat(document.getElementById('prix').value*document.getElementById('quantite').value); 
           }          
 
-             document.getElementById('liste').innerHTML += '<li class="list-group-item"><span class="badge">'+parseFloat(parseFloat(document.getElementById('prix').value)*parseFloat(document.getElementById('quantite').value)).toFixed(2)+'€'+'</span>'
-             +document.getElementById('quantite').value+'*'+document.getElementById('nom_objet0').value
+             document.getElementById('liste').innerHTML += '<li class="list-group-item" name="ligne'+parseInt(document.getElementById('nlignes').value)+'" id="ligne'+parseInt(document.getElementById('nlignes').value)+'"><span class="badge">'+parseFloat(parseFloat(document.getElementById('prix').value)*parseFloat(document.getElementById('quantite').value)).toFixed(2)+'€'+'</span><span class="glyphicon glyphicon-minus" aria-hidden="true"    onclick="javascirpt:suprime('+"'ligne"+parseInt(document.getElementById('nlignes').value)+"');"+'"></span>&nbsp;&nbsp;'+document.getElementById('quantite').value+' * '+document.getElementById('nom_objet0').value
              +'<input type="hidden"  id="tid_type_objet'+parseInt(document.getElementById('nlignes').value)+'" name="tid_type_objet'+parseInt(document.getElementById('nlignes').value)+'"value="'+document.getElementById('id_type_objet').value+'">'
              +'<input type="hidden"  id="tid_objet'+parseInt(document.getElementById('nlignes').value)+'" name="tid_objet'+parseInt(document.getElementById('nlignes').value)+'"value="'+document.getElementById('id_objet').value+'">'
              +'<input type="hidden"  id="tquantite'+parseInt(document.getElementById('nlignes').value)+'" name="tquantite'+parseInt(document.getElementById('nlignes').value)+'"value="'+document.getElementById('quantite').value+'">'
