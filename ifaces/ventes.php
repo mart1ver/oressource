@@ -334,8 +334,8 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
 </div>
 <br>
 <ul id="boutons" class="list-group">
-        <button class="btn btn-primary btn-lg" onclick="encaisse();">Encaisser</button>
-        <button class="btn btn-primary btn-lg" type="button"   align="center" onclick="printdiv('divID');" value=" Print "><span class="glyphicon glyphicon-print"></span></button>
+        <button class="btn btn-danger btn-lg" onclick="encaisse();" style="height:70px">Encaisser</button>
+        <button class="btn btn-danger btn-lg" type="button"   align="center" onclick="printdiv('divID');" value=" Print "><span class="glyphicon glyphicon-print"></span></button>
         <button class="btn btn-warning btn-lg" onclick="javascript:window.location.reload()"><span class="glyphicon glyphicon-refresh"></button>
   
 <br><br>
