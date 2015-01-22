@@ -218,7 +218,7 @@ if(strpos($_SESSION['niveau'], 'bi') !== false)
       <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-user"></span><b class="caret"></b></a>
         <ul class="dropdown-menu">
         <li><a href="edition_mdp_utilisateur.php">Mot de passe</a></li>
-        <li><a href="../moteur/destroy.php">Déconnection</a></li>
+        <li><a href="../moteur/destroy.php">Déconnexion</a></li>
 
         </ul>  
       </li>        
