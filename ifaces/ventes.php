@@ -378,11 +378,12 @@ var codi = <?php
           echo $donnees['cr'];
 }
                 $reponse->closeCursor(); // Termine le traitement de la requête
-                ?>
+                ?>;
  if (code_soumis == codi) {
          window.location = "remboursement.php?numero=<?php echo $_GET['numero']?>&nom=<?php echo $_GET['nom']?>&adresse=<?php echo $_GET['adresse']?>";
        }else{
-       alert("Code de remboursement non valide!");}
+       alert("Code de remboursement non valide!");
+     }
 }
 var what;
 function fokus(that) {
