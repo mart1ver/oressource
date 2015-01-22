@@ -40,7 +40,7 @@ function submanut(x)
             if ((document.getElementById("number").value - x) > 0 )
             {
             var text_box = document.getElementById("number");
-            text_box.value = text_box.value - x;
+            text_box.value = (text_box.value - x).toFixed(2);
           }
           }
 
@@ -58,7 +58,7 @@ function submanut(x)
           {
           if (document.getElementById("number").value > 0 && document.getElementById("number").value < <?php echo $pesee_max;?>) 
           {
-             document.getElementById(y).innerText = parseFloat(document.getElementById(y).innerText) + parseFloat(document.getElementById("number").value)  ;
+             document.getElementById(y).innerText = (parseFloat(document.getElementById(y).innerText) + parseFloat(document.getElementById("number").value)).toFixed(2)  ;
               document.getElementById(z).value = parseFloat(document.getElementById(z).value) + parseFloat(document.getElementById("number").value)  ;
              document.getElementById("number").value = "";  
              document.getElementById("najout").value = parseInt(document.getElementById("najout").value)+1;

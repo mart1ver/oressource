@@ -98,8 +98,8 @@ function tdechet_write(y,z)
 if (document.getElementById("number").value-parseFloat(document.getElementById("m"+y).value)  > 0 && document.getElementById("number").value < <?php echo $pesee_max;?>) 
 {
   document.getElementById("najout").value = parseInt(document.getElementById("najout").value)+1;
-    document.getElementById(y).innerText = (parseFloat(document.getElementById(y).innerText) + parseFloat(document.getElementById("number").value))-parseFloat(document.getElementById("m"+y).value)  ;
-     document.getElementById(z).value = parseFloat(document.getElementById(z).value) + parseFloat(document.getElementById("number").value)-parseFloat(document.getElementById("m"+y).value)  ;
+    document.getElementById(y).innerText = ((parseFloat(document.getElementById(y).innerText) + parseFloat(document.getElementById("number").value))-parseFloat(document.getElementById("m"+y).value)).toFixed(2)  ;
+     document.getElementById(z).value = (parseFloat(document.getElementById(z).value) + parseFloat(document.getElementById("number").value)-parseFloat(document.getElementById("m"+y).value)).toFixed(2)  ;
     document.getElementById("number").value = "";  
 }
 
