@@ -366,7 +366,23 @@ GROUP BY classe');
            {
             ?>
             <tr data-toggle="collapse" data-target=".parmasse<?php echo $donnees['classe']?>" >
-            <td><?php echo $donnees['classe'] ?></td>
+
+<?php switch ($donnees['classe'])
+
+{
+case sotiesc;?>
+<td>don aux partenaires</td>
+<?php break;
+default; ?>
+<td>base érronée</td>
+<?php
+}
+
+
+?>
+            
+
+
             <td><?php echo $donnees['ncol'] ?></td>
             <td><?php echo $donnees['somme'] ?></td>
             <td><?php echo  round($donnees['somme']*100/$mtotcolo, 2)   ; ?></td>      
