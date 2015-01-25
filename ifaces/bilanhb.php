@@ -373,6 +373,19 @@ GROUP BY classe');
 case 'sortiesc';?>
 <td>don aux partenaires</td>
 <?php break;
+case 'sorties';?>
+<td>don</td>
+<?php break;
+case 'sortiesd';?>
+<td>dechetterie</td>
+<?php break;
+case 'sortiesp';?>
+<td>poubelles</td>
+<?php break;
+case 'sortiesr';?>
+<td>recycleurs</td>
+<?php break;
+
 default; ?>
 <td>base érronée</td>
 <?php
