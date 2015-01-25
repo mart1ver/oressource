@@ -401,68 +401,7 @@ default; ?>
             <td><?php echo  round($donnees['somme']*100/$mtotcolo, 2)   ; ?></td>      
         </tr>
 
-      <?php 
-            try
-            {
-            // On se connecte à MySQL
-            include('../moteur/dbconfig.php');
-            }
-            catch(Exception $e)
-            {
-            // En cas d'erreur, on affiche un message et on arrête tout
-            die('Erreur : '.$e->getMessage());
-            }
- 
-            // Si tout va bien, on peut continuer
- 
-            // On recupère tout le contenu de la table affectations
-            $reponse2 = $bdd->prepare('SELECT 
-type_dechets.couleur,
-type_dechets.nom,
-type_dechets_evac.couleur,
-type_dechets_evac.nom nom_evac,
-sum(pesees_sorties.masse) somme
-
-FROM type_dechets_evac, type_dechets, pesees_sorties , sorties
-
-WHERE
-pesees_sorties.timestamp BETWEEN :du AND :au 
-
-AND 
-pesees_sorties.id = sorties.id  
-AND 
-type_dechets.id = pesees_sorties.id_type_dechet 
-
-AND sorties.classe = :classe
-GROUP BY nom');
-  $reponse2->execute(array('du' => $time_debut,'au' => $time_fin ,'classe' => $donnees['classe'] ));
-           // On affiche chaque entree une à une
-           while ($donnees2 = $reponse2->fetch())
-           {        
-            ?>
-
-    <tr class="collapse parmasse<?php echo $donnees['classe']?> " >
-            <td  >
-              <?php echo $donnees2['nom'] ?>
-            </td >
-            <td >
-                <?php echo $donnees2['somme']." Kgs." ?>
-            </td>
-            <td >
-                <?php echo  round($donnees2['somme']*100/$donnees['somme'], 2)." %"  ; ?>
-            </td>
-          </tr>
-        
- <?php
-             }
-              $reponse2->closeCursor(); // Termine le traitement de la requête
-                ?>
-
-
-
-
-
-
+      
 
 
 
@@ -676,12 +615,9 @@ ORDER BY somme DESC');
 
 
   
-          <div  id="graphmasse" style="height: 180px;"></div>
+          <div  id="graphclasse" style="height: 180px;"></div>
           <br>
-          <div  id="graph2masse" style="height: 180px;"></div>
           
-          
-       <br>
 <a href="<?php echo  "../moteur/export_bilanc_partype.php?numero=". $_GET['numero']."&date1=" . $_GET['date1']."&date2=" . $_GET['date2']?>">
 
 
@@ -939,7 +875,7 @@ ORDER BY somme DESC');
  
 
  <script>       Morris.Donut({
-    element: 'graphmasse',
+    element: 'graphclasse',
    
 data: [
 <?php 
@@ -958,8 +894,8 @@ if ($_GET['numero'] == 0) {
             // Si tout va bien, on peut continuer
  
             // On recupère tout les masses collectés pour chaque type
-            $reponse = $bdd->prepare('SELECT type_collecte.couleur,type_collecte.nom, sum(pesees_collectes.masse) somme 
-              FROM type_collecte,pesees_collectes,collectes WHERE type_collecte.id = collectes.id_type_collecte AND pesees_collectes.id_collecte = collectes.id AND DATE(collectes.timestamp) BETWEEN :du AND :au
+            $reponse = $bdd->prepare('SELECT sorties.classe nom, sum(pesees_sorties.masse) somme 
+              FROM sorties,pesees_sorties WHERE pesees_sorties.id_sortie = sorties.id AND DATE(sorties.timestamp) BETWEEN :du AND :au
 GROUP BY nom');
  $reponse->execute(array('du' => $time_debut,'au' => $time_fin ));
            // On affiche chaque entree une à une
@@ -1009,6 +945,12 @@ GROUP BY nom');
     formatter: function (x) { return x + " Kg."}
     });
 </script>
+
+
+
+
+
+
 <?php }
 else {
 
