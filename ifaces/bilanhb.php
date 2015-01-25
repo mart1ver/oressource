@@ -432,8 +432,7 @@ AND
 pesees_sorties.id = sorties.id  
 AND 
 type_dechets.id = pesees_sorties.id_type_dechet 
-AND 
-type_dechets_evac.id = pesees_sorties.id_type_dechet_evac 
+
 AND sorties.classe = :classe
 GROUP BY nom');
   $reponse2->execute(array('du' => $time_debut,'au' => $time_fin ,'classe' => $donnees['classe'] ));
@@ -458,6 +457,64 @@ GROUP BY nom');
              }
               $reponse2->closeCursor(); // Termine le traitement de la requête
                 ?>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                
       <?php
            }
@@ -465,6 +522,50 @@ GROUP BY nom');
                }else
 
                {
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
