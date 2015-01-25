@@ -1,5 +1,4 @@
 <?php session_start(); 
-
 //Vérification des autorisations de l'utilisateur et des variables de session requises pour l'affichage de cette page:
 if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 'v'.$_GET['numero']) !== false))
       {include "tete.php";?>
@@ -65,18 +64,14 @@ if ($_GET['err'] == "") // SI on a pas de message d'erreur
 {
    echo'';
 }
-
 else // SINON 
 {
   echo'<div class="alert alert-danger">'.$_GET['err'].'</div>';
 }
-
-
 if ($_GET['msg'] == "") // SI on a pas de message positif
 {
    echo '';
 }
-
 else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
 {
   echo'<div class="alert alert-success alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'.$_GET['msg'].'</div>';
@@ -85,7 +80,7 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
       </fieldset>     
     <div class="row">
 
-   	<br>
+    <br>
       <div class="col-md-2 col-md-offset-2" style="width: 330px;" >
      
 
@@ -165,17 +160,27 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
         <button class="btn btn-default btn-lg" value="0" onclick="often(this);" style="margin-left:8px; margin-top:8px;">0</button>
         <button class="btn btn-default btn-lg" value="." onclick="often(this);" style="margin-left:8px; margin-top:8px;">,</button>
     </div>
-   </div>
-  </div>
-  </div>
     </div>
+
+
+  </div>
+  </div>
+
+
+
+    </div>
+
+ 
 <div class="col-md-3" >
 <div class="panel panel-info">
         <div class="panel-heading">
     <h3 class="panel-title"><label>Type d'objet:</label></h3>
   </div>
   <div class="panel-body"> 
-              <?php 
+      
+
+
+            <?php 
             try
             {
             // On se connecte à MySQL
@@ -200,6 +205,8 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
       <ul class="dropdown-menu" role="menu">
       <li><a href="javascript:edite('<?php echo$donnees['nom']?>','0','<?php echo$donnees['id']?>','0')" ><?php echo$donnees['nom']?></a></li>
       <li class="divider"></li>
+
+
   <?php 
             try
             {
@@ -231,6 +238,9 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
                 $reponse->closeCursor(); // Termine le traitement de la requête
                 ?>
     </div> 
+
+
+
     </div>
     <br>
     <div class="panel panel-info">
@@ -238,7 +248,12 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
   <div class="panel-body"> 
 <label>Moyen de paiement:</label>
 <br>
+
+
+
+
 <div class="btn-group" data-toggle="buttons">
+
  <?php 
             try
             {
@@ -264,39 +279,80 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
 <label class="btn btn-primary active " onclick="moyens('<?php echo$donnees['id']?>');">
     <input type="radio" name="paiement" id="paiement" autocomplete="off" value="<?php echo$donnees['id']?>" checked > <?php echo$donnees['nom']?>
   </label>
-  <?php 
+
+
+   
+   
+                <?php 
 }else{
 ?>
+
+
+
 <label class="btn btn-primary " onclick="moyens('<?php echo$donnees['id']?>');">
     <input type="radio" name="paiement" id="paiement" autocomplete="off" value="<?php echo$donnees['id']?>" > <?php echo$donnees['nom']?>
   </label>
+
+
+
 <?php
 }
               }
                 $reponse->closeCursor(); // Termine le traitement de la requête
                 ?>
+
+
+
+
+
+
+
+
+  
+  
+
+
 </div>
+
+
+
+
+
+
 <br><br>
+
+
  <input type="text" class="form-control" name="commentaire" id="commentaire" placeholder="Commentaire">
+
 </div>
 </div>
 <br>
 <ul id="boutons" class="list-group">
-        <button class="btn btn-danger btn-lg" onclick="encaisse();" style="height:70px">Encaisser</button>
-        <button class="btn btn-danger btn-lg" type="button"   align="center" onclick="printdiv('divID');" value=" Print "><span class="glyphicon glyphicon-print"></span></button>
-        <button class="btn btn-warning btn-lg" onclick="javascript:window.location.reload()"><span class="glyphicon glyphicon-refresh"></button> 
-<br><br>   
+        <button class="btn btn-primary btn-lg" onclick="encaisse();">Encaisser</button>
+        <button class="btn btn-primary btn-lg" type="button"   align="center" onclick="printdiv('divID');" value=" Print "><span class="glyphicon glyphicon-print"></span></button>
+        <button class="btn btn-warning btn-lg" onclick="javascript:window.location.reload()"><span class="glyphicon glyphicon-refresh"></button>
+  
+<br><br>
+    
+
 <?php /*
     <a href="remboursement.php?numero=<?php echo $_GET['numero']?>&nom=<?php echo $_GET['nom']?>&adresse=<?php echo $_GET['adresse']?>"> 
     */ ?>
     <button type="button"  class="btn btn-danger pull-right" onclick="rembou();" >
     Remboursement
     </button>
-        </ul>
-    <br><br>   
+   
+
+
+
+    </ul>
+
+    <br><br>
+     
     </div>
   </div>
     </div>
+   
     <br>
             <?php include "pied.php" ; ?> 
 <script type="text/javascript">
@@ -321,13 +377,13 @@ var codi = <?php
            {
           echo $donnees['cr'];
 }
-
                 $reponse->closeCursor(); // Termine le traitement de la requête
                 ?>;
  if (code_soumis == codi) {
          window.location = "remboursement.php?numero=<?php echo $_GET['numero']?>&nom=<?php echo $_GET['nom']?>&adresse=<?php echo $_GET['adresse']?>";
        }else{
-       alert("Code de remboursement non valide!");}
+       alert("Code de remboursement non valide!");
+     }
 }
 var what;
 function fokus(that) {
@@ -341,22 +397,21 @@ if (isNaN(parseInt(document.getElementById('id_type_objet').value)) )
           { 
           }
           else{
-
 if (what == null) {document.getElementById('quantite').value ="" ; what = document.getElementById('quantite');}
 if (that.value == "c"){what.value = "";}
 else{
 what.value = what.value + that.value;
 }
-
 }
-
 }
 function printdiv(divID)
     {
-
 if (parseInt(document.getElementById('nlignes').value) >= 1) 
           { 
-             var headstr = "<html><head><title></title></head><body><small>";     
+            
+      
+      var headstr = "<html><head><title></title></head><body><small>";
+      
  <?php if ($_SESSION['tva_active'] == 'oui'){?>
   var prixtot =  parseFloat(document.getElementById('ptot').value).toFixed(2);
   var prixht = parseFloat(prixtot).toFixed(2) / ( 1+parseFloat(<?php echo $_SESSION['taux_tva'] ?>).toFixed(2)/100 );
@@ -399,7 +454,8 @@ function ajout() {
      if (isNaN((parseFloat(document.getElementById('prix').value)*parseFloat(document.getElementById('quantite').value)).toFixed(2)) ) 
          {} 
           else
-          {         
+          {
+         
 if (isNaN(parseInt(document.getElementById('nlignes').value)) ) 
           { 
           document.getElementById('nlignes').value = 1;
@@ -424,7 +480,6 @@ if (isNaN(parseInt(document.getElementById('ptot').value)) )
           {
           document.getElementById('ptot').value=parseFloat(document.getElementById('ptot').value)+parseFloat(document.getElementById('prix').value*document.getElementById('quantite').value); 
           }          
-
              document.getElementById('liste').innerHTML += '<li class="list-group-item" name="ligne'+parseInt(document.getElementById('nlignes').value)+'" id="ligne'+parseInt(document.getElementById('nlignes').value)+'"><span class="badge">'+parseFloat(parseFloat(document.getElementById('prix').value)*parseFloat(document.getElementById('quantite').value)).toFixed(2)+'€'+'</span><span class="glyphicon glyphicon-minus" aria-hidden="true"    onclick="javascirpt:suprime('+"'ligne"+parseInt(document.getElementById('nlignes').value)+"');"+'"></span>&nbsp;&nbsp;'+document.getElementById('quantite').value+' * '+document.getElementById('nom_objet0').value
              +'<input type="hidden"  id="tid_type_objet'+parseInt(document.getElementById('nlignes').value)+'" name="tid_type_objet'+parseInt(document.getElementById('nlignes').value)+'"value="'+document.getElementById('id_type_objet').value+'">'
              +'<input type="hidden"  id="tid_objet'+parseInt(document.getElementById('nlignes').value)+'" name="tid_objet'+parseInt(document.getElementById('nlignes').value)+'"value="'+document.getElementById('id_objet').value+'">'
@@ -447,7 +502,6 @@ function edite(nom,prix,id_type_objet,id_objet) {
     document.getElementById('id_type_objet').value = parseFloat(id_type_objet);
     document.getElementById('id_objet').value = parseFloat(id_objet);
     document.getElementById('nom_objet0').value = nom;
-
 }
 function encaisse() {
   if (parseInt(document.getElementById('nlignes').value) >= 1) 
