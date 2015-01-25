@@ -911,37 +911,7 @@ GROUP BY nom');
 ],
     backgroundColor: '#ccc',
     labelColor: '#060',
-    colors: [
-<?php 
-            try
-            {
-            // On se connecte à MySQL
-            include('../moteur/dbconfig.php');
-            }
-            catch(Exception $e)
-            {
-            // En cas d'erreur, on affiche un message et on arrête tout
-            die('Erreur : '.$e->getMessage());
-            }
- 
-            // Si tout va bien, on peut continuer
- 
-            // On recupère les couleurs de chaque type
-            $reponse = $bdd->prepare('SELECT type_collecte.couleur,type_collecte.nom, sum(pesees_collectes.masse) somme 
-              FROM type_collecte,pesees_collectes,collectes WHERE type_collecte.id = collectes.id_type_collecte AND pesees_collectes.id_collecte = collectes.id AND DATE(collectes.timestamp) BETWEEN :du AND :au
-GROUP BY nom');
-  $reponse->execute(array('du' => $time_debut,'au' => $time_fin ));
-           // On affiche chaque entree une à une
-           while ($donnees = $reponse->fetch())
-           {
-
-            echo '"'.$donnees['couleur'].'"'.',';
-
-
-             }
-              $reponse->closeCursor(); // Termine le traitement de la requête
-                ?>
-    ],
+    colors: ["#FF530D","#E82C0C","#FF0000","#E80C7A","#FF0DFF"    ],
     formatter: function (x) { return x + " Kg."}
     });
 </script>
