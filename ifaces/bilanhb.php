@@ -508,7 +508,7 @@ default; ?>
 
 
 
-// on determine les masses totales collèctés sur cete période(pour un point donné)
+// on determine les masses totales collèctés sur cete période(pour Tous les points)
             try
             {
             // On se connecte à MySQL
@@ -525,76 +525,53 @@ default; ?>
             // On recupère tout le contenu de la table affectations
 
             $reponse = $bdd->prepare('SELECT 
-type_collecte.nom,SUM(`pesees_collectes`.`masse`) somme,pesees_collectes.timestamp,type_collecte.id,COUNT(distinct collectes.id) ncol
+SUM(pesees_sorties.masse) somme,pesees_sorties.timestamp,sorties.classe,COUNT(distinct sorties.id) ncol
 FROM 
-pesees_collectes,collectes,type_collecte
+pesees_sorties,sorties
 
 WHERE
-  pesees_collectes.timestamp BETWEEN :du AND :au AND
-type_collecte.id =  collectes.id_type_collecte AND pesees_collectes.id_collecte = collectes.id
-AND collectes.id_point_collecte = :numero
-GROUP BY id_type_collecte');
+  pesees_sorties.timestamp BETWEEN :du AND :au  AND pesees_sorties.id_sortie = sorties.id AND sorties.id_point_sortie = :numero
+GROUP BY classe');
  $reponse->execute(array('du' => $time_debut,'au' => $time_fin,'numero' => $_GET['numero']  ));
            // On affiche chaque entree une à une
            while ($donnees = $reponse->fetch())
            {
             ?>
             <tr data-toggle="collapse" data-target=".parmasse<?php echo $donnees['classe']?>" >
-            <td><?php echo $donnees['nom'] ?></td>
-             <td><?php echo $donnees['ncol'] ?></td>
+
+<?php switch ($donnees['classe'])
+
+{
+case 'sortiesc';?>
+<td>don aux partenaires</td>
+<?php break;
+case 'sorties';?>
+<td>don</td>
+<?php break;
+case 'sortiesd';?>
+<td>dechetterie</td>
+<?php break;
+case 'sortiesp';?>
+<td>poubelles</td>
+<?php break;
+case 'sortiesr';?>
+<td>recycleurs</td>
+<?php break;
+
+default; ?>
+<td>base érronée</td>
+<?php
+}
+
+
+?>
+            
+
+
+            <td><?php echo $donnees['ncol'] ?></td>
             <td><?php echo $donnees['somme'] ?></td>
             <td><?php echo  round($donnees['somme']*100/$mtotcolo, 2)   ; ?></td>      
         </tr>
-      <?php 
-            try
-            {
-            // On se connecte à MySQL
-            include('../moteur/dbconfig.php');
-            }
-            catch(Exception $e)
-            {
-            // En cas d'erreur, on affiche un message et on arrête tout
-            die('Erreur : '.$e->getMessage());
-            }
- 
-            // Si tout va bien, on peut continuer
- 
-            // On recupère tout le contenu de la table affectations
-            $reponse2 = $bdd->prepare('SELECT type_dechets.couleur,type_dechets.nom, sum(pesees_collectes.masse) somme
- FROM type_dechets,pesees_collectes ,type_collecte , collectes
-WHERE
-pesees_collectes.timestamp BETWEEN :du AND :au 
-AND type_dechets.id = pesees_collectes.id_type_dechet 
-AND type_collecte.id =  collectes.id_type_collecte AND pesees_collectes.id_collecte = collectes.id
-AND type_collecte.id = :id_type_collecte AND collectes.id_point_collecte = :numero
-GROUP BY nom
-ORDER BY somme DESC');
-  $reponse2->execute(array('du' => $time_debut,'au' => $time_fin,'numero' => $_GET['numero'] ,'id_type_collecte' => $donnees['id'] ));
-           // On affiche chaque entree une à une
-           while ($donnees2 = $reponse2->fetch())
-           {        
-            ?>
- <tr class="collapse parmasse<?php echo $donnees['id']?> active">
-    
-            <td class="hiddenRow">
-              <?php echo $donnees2['nom'] ?>
-            </td >
-            <td class="hiddenRow">
-                <?php echo $donnees2['somme']." Kgs." ?>
-            </td>
-            <td class="hiddenRow">
-                <?php echo  round($donnees2['somme']*100/$donnees['somme'], 2)." %"  ; ?>
-            </td>
-        </tr>
- <?php
-             }
-              $reponse2->closeCursor(); // Termine le traitement de la requête
-                ?>
-      <?php
-           }
-              $reponse->closeCursor(); // Termine le traitement de la requête
-
-               } ?>
 
       
 
@@ -611,12 +588,12 @@ ORDER BY somme DESC');
 
 
 
-<br>
+
 
 
   
           <div  id="graphclasse" style="height: 180px;"></div>
-          <br>
+          
           
 <a href="<?php echo  "../moteur/export_bilanc_partype.php?numero=". $_GET['numero']."&date1=" . $_GET['date1']."&date2=" . $_GET['date2']?>">
 
@@ -939,12 +916,10 @@ else {
  
             // Si tout va bien, on peut continuer
  
-            // On recupère tout le contenu de la table affectations
-            $reponse = $bdd->prepare('SELECT type_collecte.couleur,type_collecte.nom, sum(pesees_collectes.masse) somme 
-              FROM type_collecte,pesees_collectes,collectes 
-              WHERE type_collecte.id = collectes.id_type_collecte AND pesees_collectes.timestamp BETWEEN :du AND :au 
-              AND pesees_collectes.id_collecte = collectes.id AND collectes.id_point_collecte = :numero
-GROUP BY nom');
+            // On recupère tout le contenu de la table affectations $_GET['numero']
+            $reponse = $bdd->prepare('SELECT sorties.classe nom, sum(pesees_sorties.masse) somme 
+              FROM sorties,pesees_sorties WHERE pesees_sorties.id_sortie = sorties.id AND DATE(sorties.timestamp) BETWEEN :du AND :au AND sorties.id_point_sortie = :numero
+GROUP BY nom ');
  $reponse->execute(array('du' => $time_debut,'au' => $time_fin,'numero' => $_GET['numero'] ));
            // On affiche chaque entree une à une
            while ($donnees = $reponse->fetch())
@@ -959,39 +934,7 @@ GROUP BY nom');
 ],
     backgroundColor: '#ccc',
     labelColor: '#060',
-    colors: [
-<?php 
-            try
-            {
-            // On se connecte à MySQL
-            include('../moteur/dbconfig.php');
-            }
-            catch(Exception $e)
-            {
-            // En cas d'erreur, on affiche un message et on arrête tout
-            die('Erreur : '.$e->getMessage());
-            }
- 
-            // Si tout va bien, on peut continuer
- 
-            // On recupère tout le contenu de la table affectations
-            $reponse = $bdd->prepare('SELECT type_collecte.couleur,type_collecte.nom, sum(pesees_collectes.masse) somme 
-              FROM type_collecte,pesees_collectes,collectes 
-              WHERE type_collecte.id = collectes.id_type_collecte AND pesees_collectes.timestamp BETWEEN :du AND :au 
-              AND pesees_collectes.id_collecte = collectes.id AND collectes.id_point_collecte = :numero
-GROUP BY nom');
- $reponse->execute(array('du' => $time_debut,'au' => $time_fin,'numero' => $_GET['numero'] ));
-           // On affiche chaque entree une à une
-           while ($donnees = $reponse->fetch())
-           {
-
-            echo '"'.$donnees['couleur'].'"'.',';
-
-
-             }
-              $reponse->closeCursor(); // Termine le traitement de la requête
-                ?>
-    ],
+   colors: ["#FF530D","#E82C0C","#FF0000","#E80C7A","#FF0DFF"    ],
     formatter: function (x) { return x + " Kg."}
     });
 </script>
