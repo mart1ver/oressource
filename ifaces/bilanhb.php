@@ -370,7 +370,7 @@ GROUP BY classe');
 <?php switch ($donnees['classe'])
 
 {
-case sotiesc;?>
+case 'sotiesc';?>
 <td>don aux partenaires</td>
 <?php break;
 default; ?>
