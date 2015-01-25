@@ -916,10 +916,12 @@ else {
  
             // Si tout va bien, on peut continuer
  
-            // On recupère tout le contenu de la table affectations $_GET['numero']
-            $reponse = $bdd->prepare('SELECT sorties.classe nom, sum(pesees_sorties.masse) somme 
-              FROM sorties,pesees_sorties WHERE pesees_sorties.id_sortie = sorties.id AND DATE(sorties.timestamp) BETWEEN :du AND :au AND sorties.id_point_sortie = :numero
-GROUP BY nom ');
+            // On recupère tout le contenu de la table affectations
+            $reponse = $bdd->prepare('SELECT type_collecte.couleur,type_collecte.nom, sum(pesees_collectes.masse) somme 
+              FROM type_collecte,pesees_collectes,collectes 
+              WHERE type_collecte.id = collectes.id_type_collecte AND pesees_collectes.timestamp BETWEEN :du AND :au 
+              AND pesees_collectes.id_collecte = collectes.id AND collectes.id_point_collecte = :numero
+GROUP BY nom');
  $reponse->execute(array('du' => $time_debut,'au' => $time_fin,'numero' => $_GET['numero'] ));
            // On affiche chaque entree une à une
            while ($donnees = $reponse->fetch())
