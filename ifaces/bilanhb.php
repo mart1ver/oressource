@@ -405,55 +405,6 @@ default; ?>
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
                
       <?php
            }
@@ -469,47 +420,7 @@ default; ?>
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// on determine les masses totales collèctés sur cete période(pour Tous les points)
-            try
+// on determine les masses totales collèctés sur cete période(pour le point)
             {
             // On se connecte à MySQL
             include('../moteur/dbconfig.php');
@@ -575,7 +486,7 @@ default; ?>
 
       
 
-
+<?php }}?>
 
 
 
