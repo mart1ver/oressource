@@ -916,7 +916,7 @@ else {
  
             // Si tout va bien, on peut continuer
  
-            // On recupère tout le contenu de la table affectations
+            // On recupère tout le contenu de la table affectations $_GET['numero']
             $reponse = $bdd->prepare('SELECT type_collecte.couleur,type_collecte.nom, sum(pesees_collectes.masse) somme 
               FROM type_collecte,pesees_collectes,collectes 
               WHERE type_collecte.id = collectes.id_type_collecte AND pesees_collectes.timestamp BETWEEN :du AND :au 
