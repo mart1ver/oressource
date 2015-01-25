@@ -529,8 +529,7 @@ default; ?>
 
  <script>       Morris.Donut({
     element: 'graphclasse',
-   
-data: [
+    data: [
 <?php 
 if ($_GET['numero'] == 0) {
             try
@@ -572,8 +571,6 @@ GROUP BY nom');
 
 
 
-
-
 <?php }
 else {
 
@@ -609,15 +606,15 @@ GROUP BY nom');
              }
               $reponse->closeCursor(); // Termine le traitement de la requête
                 ?>
-],
-   
-    backgroundColor: '#ccc',
-    labelColor: '#060',
-    colors: ["#FF530D","#E82C0C","#FF0000","#E80C7A","#FF0DFF"    ],
-    formatter: function (x) { return x + " Kg."}
-    });
+
+      ],
+      backgroundColor: '#ccc',
+      labelColor: '#060',
+      colors: ["#FF530D","#E82C0C","#FF0000","#E80C7A","#FF0DFF"    ],
+      formatter: function (x) { return x + " Kg."},});
+    </script>
     <?php }?>
-</script>
+
 
 
 
