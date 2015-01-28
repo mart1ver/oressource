@@ -365,7 +365,6 @@ $req->closeCursor(); // Termine le traitement de la requête
 type_dechets.nom,type_dechets.id,SUM(vendus.quantite) sommeq,SUM(vendus.prix) sommep
 FROM 
 vendus,type_dechets, ventes
-
 WHERE
 vendus.timestamp BETWEEN :du AND :au AND
 type_dechets.id =  vendus.id_type_dechet AND vendus.id_vente = ventes.id
@@ -399,7 +398,7 @@ ORDER BY sommep DESC');
             // Si tout va bien, on peut continuer
  
             // On recupère tout le contenu de la table affectations
-            $reponse2 = $bdd->prepare('SELECT IF(grille_objets.nom = 0, type_dechets.nom, grille_objets.nom) nom ,grille_objets.id, sum(vendus.quantite) sommeq, sum(vendus.prix) sommep
+            $reponse2 = $bdd->prepare('SELECT IF(vendus.id_objet = 0, type_dechets.nom, grille_objets.nom) nom ,grille_objets.id, sum(vendus.quantite) sommeq, sum(vendus.prix) sommep
  FROM grille_objets, vendus ,ventes, type_dechets
 WHERE vendus.timestamp BETWEEN :du AND :au 
 AND grille_objets.id = vendus.id_objet 
