@@ -424,7 +424,7 @@ ORDER BY sommep DESC');
                 <?php echo $donnees2['sommep']." €." ?>
             </td>
             <td >
-               <?php echo round((100*$donnees2['sommep'])/$donnees['sommep'],2)." %"?> 
+               <?php echo round((100*$donnees['sommep'])/$donnees2['sommep'],2)." %"?> 
                            </td>
           </tr>
         
