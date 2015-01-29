@@ -450,7 +450,7 @@ ORDER BY sommep DESC');
             </td>
             <td >
                <?php 
-               if round( ((100*$donnees['sommep'])/$mtotcolo - $percenttot)   ,2) > 0
+               if (round( ((100*$donnees['sommep'])/$mtotcolo - $percenttot)   ,2) > 0)
                {
                echo round( ((100*$donnees['sommep'])/$mtotcolo - $percenttot)   ,2)." %"; 
               }
