@@ -385,7 +385,7 @@ ORDER BY sommep DESC');
 
       <?php 
       $someqtot = 0;
-      $sommeptot = 0;
+      $someptot = 0;
 
             try
             {
@@ -441,7 +441,7 @@ ORDER BY sommep DESC');
               <?php echo "autres" ?>
             </td >
             <td >
-                <?php echo $donnees['sommeq'] - $sommeqtot." Pcs." ?>
+                <?php echo $donnees['sommeq'] - $someqtot." Pcs." ?>
             </td>
             <td >
                 <?php echo $donnees['sommep'] - $someptot." €." ?>
@@ -452,7 +452,7 @@ ORDER BY sommep DESC');
           </tr>
              <?php
 
-             ?>
+             
               $reponse2->closeCursor(); // Termine le traitement de la requête
                 ?>
                
