@@ -384,8 +384,9 @@ ORDER BY sommep DESC');
         </tr>
 
       <?php 
-      $someqtot = 0
-      $sommeptot = 0
+      $someqtot = 0;
+      $sommeptot = 0;
+
             try
             {
             // On se connecte à MySQL
