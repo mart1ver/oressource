@@ -384,6 +384,8 @@ ORDER BY sommep DESC');
         </tr>
 
       <?php 
+      $someqtot = 0
+      $sommeptot = 0
             try
             {
             // On se connecte à MySQL
@@ -429,7 +431,27 @@ ORDER BY sommep DESC');
           </tr>
         
  <?php
-             }
+ $someqtot = $someqtot + $donnees2['sommeq'] ;
+ $someptot = $someptot + $donnees2['sommep'] ;
+             }?>
+
+             <tr class="collapse parmasse<?php echo $donnees['id']?> " >
+            <td  >
+              <?php echo "autres" ?>
+            </td >
+            <td >
+                <?php echo $donnees['sommeq'] - $sommeqtot." Pcs." ?>
+            </td>
+            <td >
+                <?php echo $donnees['sommep'] - $someptot." €." ?>
+            </td>
+            <td >
+               <?php echo " %"?> 
+                           </td>
+          </tr>
+             <?php
+
+             ?>
               $reponse2->closeCursor(); // Termine le traitement de la requête
                 ?>
                
