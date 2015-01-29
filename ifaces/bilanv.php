@@ -428,7 +428,7 @@ ORDER BY sommep DESC');
                 <?php echo $donnees2['sommep']." €." ?>
             </td>
             <td >
-               <?php echo round((100*$donnees2['sommep'])/$mtotcolo,2)." %"?> 
+               <?php echo round((100*$donnees2['sommep'])/$mtotcolo,2)." %" ?> 
                            </td>
           </tr>
         
@@ -449,16 +449,14 @@ ORDER BY sommep DESC');
                 <?php echo $donnees['sommep'] - $someptot." €." ?>
             </td>
             <td >
-               <?php echo (round((100*$donnees['sommep'])/$mtotcolo,2) - $percenttot ." %"?> 
+               <?php echo (round((100*$donnees['sommep'])/$mtotcolo,2) - $percenttot." %"; ?> 
                            </td>
           </tr>
              <?php
 
              
               $reponse2->closeCursor(); // Termine le traitement de la requête
-                ?>
                
-      <?php
            }
               $reponse->closeCursor(); // Termine le traitement de la requête
                }else
