@@ -435,7 +435,7 @@ ORDER BY sommep DESC');
  <?php
  $someqtot = $someqtot + $donnees2['sommeq'] ;
  $someptot = $someptot + $donnees2['sommep'] ;
- $percenttot = $percenttot + 
+ $percenttot = $percenttot + round((100*$donnees['sommep'])/$mtotcolo,2);
              }?>
 
              <tr class="collapse parmasse<?php echo $donnees['id']?> " >
@@ -449,7 +449,7 @@ ORDER BY sommep DESC');
                 <?php echo $donnees['sommep'] - $someptot." €." ?>
             </td>
             <td >
-               <?php echo (round((100*$donnees['sommep'])/$mtotcolo,2)-round((100*$donnees2['sommep'])/$mtotcolo,2))." %"?> 
+               <?php echo (round((100*$donnees['sommep'])/$mtotcolo,2)-$percenttot." %"?> 
                            </td>
           </tr>
              <?php
