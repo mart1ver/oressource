@@ -449,7 +449,7 @@ ORDER BY sommep DESC');
                 <?php echo $donnees['sommep'] - $someptot." €." ?>
             </td>
             <td >
-               <?php echo round( ((100*$donnees['sommep'])/$mtotcolo - $percenttot)  ,2)." %"; ?> 
+               <?php echo round( ((100*$donnees['sommep'])/$mtotcolo - $percenttot) + 0.1  ,2)." %"; ?> 
                            </td>
           </tr>
              <?php
