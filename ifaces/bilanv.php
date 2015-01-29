@@ -455,7 +455,7 @@ ORDER BY sommep DESC');
                echo round( ((100*$donnees['sommep'])/$mtotcolo - $percenttot)   ,2)." %"; 
               }
               else
-                {echo "0 %"}
+                {echo "0 %";}
                ?> 
                            </td>
           </tr>
