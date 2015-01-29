@@ -471,8 +471,7 @@ ORDER BY sommep DESC');
                {
 
 
-
-// on determine les masses totales collèctés sur cete période(pour un point donné)
+// on determine les masses totales collèctés sur cete période(pour Tous les points)
             try
             {
             // On se connecte à MySQL
@@ -489,27 +488,30 @@ ORDER BY sommep DESC');
             // On recupère tout le contenu de la table affectations
 
             $reponse = $bdd->prepare('SELECT 
-type_collecte.nom,SUM(`pesees_collectes`.`masse`) somme,pesees_collectes.timestamp,type_collecte.id,COUNT(distinct collectes.id) ncol
+type_dechets.nom,type_dechets.id,SUM(vendus.quantite) sommeq,SUM(vendus.prix) sommep
 FROM 
-pesees_collectes,collectes,type_collecte
-
+vendus,type_dechets, ventes
 WHERE
-  pesees_collectes.timestamp BETWEEN :du AND :au AND
-type_collecte.id =  collectes.id_type_collecte AND pesees_collectes.id_collecte = collectes.id
-AND collectes.id_point_collecte = :numero
-GROUP BY id_type_collecte');
- $reponse->execute(array('du' => $time_debut,'au' => $time_fin,'numero' => $_GET['numero']  ));
+vendus.timestamp BETWEEN :du AND :au AND
+type_dechets.id =  vendus.id_type_dechet AND vendus.id_vente = ventes.id AND ventes.id_point_vente = :numero
+GROUP BY id_type_dechet
+ORDER BY sommep DESC');
+ $reponse->execute(array('du' => $time_debut,'au' => $time_fin ,'numero' => $_GET['numero'] ));
            // On affiche chaque entree une à une
            while ($donnees = $reponse->fetch())
            {
             ?>
             <tr data-toggle="collapse" data-target=".parmasse<?php echo $donnees['id']?>" >
             <td><?php echo $donnees['nom'] ?></td>
-             <td><?php echo $donnees['ncol'] ?></td>
-            <td><?php echo $donnees['somme'] ?></td>
-            <td><?php echo  round($donnees['somme']*100/$mtotcolo, 2)   ; ?></td>      
+            <td><?php echo $donnees['sommeq'] ?></td>
+            <td><?php echo $donnees['sommep'] ?></td>
+            <td><?php echo round($donnees['sommep']/$donnees['sommeq'],2) ?></td>     
+            <td><?php echo round((100*$donnees['sommep'])/$mtotcolo,2)?> %</td> 
         </tr>
       <?php 
+      $someqtot = 0;
+      $someptot = 0;
+      $percenttot = 0;
             try
             {
             // On se connecte à MySQL
@@ -520,44 +522,73 @@ GROUP BY id_type_collecte');
             // En cas d'erreur, on affiche un message et on arrête tout
             die('Erreur : '.$e->getMessage());
             }
- 
-            // Si tout va bien, on peut continuer
- 
-            // On recupère tout le contenu de la table affectations
-            $reponse2 = $bdd->prepare('SELECT type_dechets.couleur,type_dechets.nom, sum(pesees_collectes.masse) somme
- FROM type_dechets,pesees_collectes ,type_collecte , collectes
-WHERE
-pesees_collectes.timestamp BETWEEN :du AND :au 
-AND type_dechets.id = pesees_collectes.id_type_dechet 
-AND type_collecte.id =  collectes.id_type_collecte AND pesees_collectes.id_collecte = collectes.id
-AND type_collecte.id = :id_type_collecte AND collectes.id_point_collecte = :numero
+             // Si tout va bien, on peut continuer
+             // On recupère tout le contenu de la table affectations
+            $reponse2 = $bdd->prepare('SELECT IF(vendus.id_objet = 0, type_dechets.nom, grille_objets.nom) nom ,grille_objets.id, sum(vendus.quantite) sommeq, sum(vendus.prix) sommep
+ FROM grille_objets, vendus ,ventes, type_dechets
+WHERE vendus.timestamp BETWEEN :du AND :au 
+AND grille_objets.id = vendus.id_objet 
+AND type_dechets.id = vendus.id_type_dechet
+AND vendus.id_vente = ventes.id
+AND type_dechets.id = :id_type_dechet
+AND ventes.id_point_vente = :numero
 GROUP BY nom
-ORDER BY somme DESC');
-  $reponse2->execute(array('du' => $time_debut,'au' => $time_fin,'numero' => $_GET['numero'] ,'id_type_collecte' => $donnees['id'] ));
+ORDER BY sommep DESC');
+  $reponse2->execute(array('du' => $time_debut,'au' => $time_fin ,'id_type_dechet' => $donnees['id'],'numero' => $_GET['numero'] ));
            // On affiche chaque entree une à une
            while ($donnees2 = $reponse2->fetch())
            {        
             ?>
- <tr class="collapse parmasse<?php echo $donnees['id']?> active">
-    
-            <td class="hiddenRow">
+
+    <tr class="collapse parmasse<?php echo $donnees['id']?> " >
+            <td  >
               <?php echo $donnees2['nom'] ?>
             </td >
-            <td class="hiddenRow">
-                <?php echo $donnees2['somme']." Kgs." ?>
+            <td >
+                <?php echo $donnees2['sommeq']." Pcs." ?>
             </td>
-            <td class="hiddenRow">
-                <?php echo  round($donnees2['somme']*100/$donnees['somme'], 2)." %"  ; ?>
+            <td >
+                <?php echo $donnees2['sommep']." €." ?>
             </td>
-        </tr>
+            <td >
+               <?php echo round((100*$donnees2['sommep'])/$mtotcolo,2)." %" ?> 
+                           </td>
+          </tr>
+        
  <?php
-             }
+ $someqtot = $someqtot + $donnees2['sommeq'] ;
+ $someptot = $someptot + $donnees2['sommep'] ;
+ $percenttot = $percenttot + round((100*$donnees2['sommep'])/$mtotcolo,2);
+             }?>
+
+             <tr class="collapse parmasse<?php echo $donnees['id']?> " >
+            <td  >
+              <?php echo "autres" ?>
+            </td >
+            <td >
+                <?php echo $donnees['sommeq'] - $someqtot." Pcs." ?>
+            </td>
+            <td >
+                <?php echo $donnees['sommep'] - $someptot." €." ?>
+            </td>
+            <td >
+               <?php 
+               if (round( ((100*$donnees['sommep'])/$mtotcolo - $percenttot)   ,2) > 0)
+               {
+               echo round( ((100*$donnees['sommep'])/$mtotcolo - $percenttot)   ,2)." %"; 
+              }
+              else
+                {echo "0 %";}
+               ?> 
+                           </td>
+          </tr>
+             <?php
+
+             
               $reponse2->closeCursor(); // Termine le traitement de la requête
-                ?>
-      <?php
+               
            }
               $reponse->closeCursor(); // Termine le traitement de la requête
-
                } ?>
 
       
