@@ -52,8 +52,8 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
                   }
 
                   var optionSet1 = {
-                    startDate: moment(),
-                    endDate: moment(),
+                    startDate: <?php echo $_GET['date1']?>,
+                    endDate: <?php echo $_GET['date2']?>,
                     minDate: '01/01/2010',
                     maxDate: '12/31/2020',
                     dateLimit: { days: 60 },
