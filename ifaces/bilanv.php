@@ -48,7 +48,7 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
                   var cb = function(start, end, label) {
                     console.log(start.toISOString(), end.toISOString(), label);
                     $('#reportrange span').html(start.format('DD, MMMM, YYYY') + ' - ' + end.format('DD, MMMM, YYYY'));
-                    alert("Callback has fired: [" + start.format('MMMM D, YYYY') + " to " + end.format('MMMM D, YYYY') + ", label = " + label + "]");
+                   // alert("Callback has fired: [" + start.format('MMMM D, YYYY') + " to " + end.format('MMMM D, YYYY') + ", label = " + label + "]");
                   }
 
                   var optionSet1 = {
@@ -94,7 +94,7 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
                   
 
                   $('#reportrange').daterangepicker(optionSet1, cb);
-                  $('#reportrange span').html(moment().format('D, MMMM, YYYY') + ' - ' + moment().format('D, MMMM, YYYY'));
+                  $('#reportrange span').html(picker.startDate.format('D, MMMM, YYYY') + ' - ' + picker.startDate.format('D, MMMM, YYYY'));
                   $('#reportrange').on('show.daterangepicker', function() { console.log("show event fired"); });
                   $('#reportrange').on('hide.daterangepicker', function() { console.log("hide event fired"); });
                   $('#reportrange').on('apply.daterangepicker', function(ev, picker) { 
