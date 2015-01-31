@@ -52,7 +52,7 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
                   }
 
                   var optionSet1 = {
-                    format: 'M/D/YYYY',
+                    format: 'MM/DD/YYYY',
                     startDate: '<?php echo str_replace ( "-", "/", $_GET['date1'])?>',
                     endDate: '<?php echo str_replace ( "-", "/", $_GET['date2'])?>',
                     minDate: '01/01/2010',
