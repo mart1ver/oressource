@@ -53,7 +53,7 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
 
                   var optionSet1 = {
                     startDate: date('<?php echo str_replace ( "-", "/", $_GET['date1'])?>').format('DD, MMMM, YYYY'),
-                    endDate: '<?php echo str_replace ( "-", "/", $_GET['date2'])?>'.format('DD, MMMM, YYYY'),
+                    endDate: date('<?php echo str_replace ( "-", "/", $_GET['date2'])?>').format('DD, MMMM, YYYY'),
                     minDate: '01/01/2010',
                     maxDate: '12/31/2020',
                     dateLimit: { days: 60 },
