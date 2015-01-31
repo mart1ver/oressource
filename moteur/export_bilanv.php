@@ -227,8 +227,8 @@ AND type_dechets.id = :id_type_dechet
 AND ventes.id_point_vente = :numero
 GROUP BY nom
 ORDER BY sommep DESC');
-  $reponse2->execute(array('du' => $time_debut,'au' => $time_fin,'numero' => $_GET['numero'] ,'id_type_collecte' => $donnees['id'] ));
-  $xls_output .= "objets collectés pour ce type de collecte:"."\t"."masse collecté:"."\t";
+  $reponse2->execute(array('du' => $time_debut,'au' => $time_fin,'numero' => $_GET['numero'] ,'id_type_dechet' => $donnees['id'] ));
+  $xls_output .= "objets:"."\t"."quantité vendue:"."\t"."chiffre dégagé:"."\t";
 $xls_output .= "\n\r";
            // On affiche chaque entree une à une
            while ($donnees2 = $reponse2->fetch())
