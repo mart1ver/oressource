@@ -54,7 +54,7 @@ $xls_output .= "Pour tout les points de vente"."\t";
 $xls_output .= "\n\r";
 $xls_output .= "\n\r";
 $xls_output .= "\n\r";
-$xls_output .= "type de collecte:"."\t"."masse collecté:"."\t"."nombre de collectes:"."\t";
+$xls_output .= "type d'objet':"."\t"."quantité vendue:"."\t"."chiffre dégagé:"."\t";
 $xls_output .= "\n\r";
 
 // on determine les masses totales collèctés sur cete periode(pour tout les points)
@@ -86,7 +86,7 @@ ORDER BY sommep DESC');
            // On affiche chaque entree une à une
            while ($donnees = $reponse->fetch())
            {
-           $xls_output .= $donnees['nom']."\t".$donnees['somme']."\t".$donnees['ncol']."\t"."\n";
+           $xls_output .= $donnees['nom']."\t".$donnees['sommeq']."\t".$donnees['sommep']."\t"."\n";
             try
             {
             // On se connecte à MySQL
@@ -112,13 +112,13 @@ GROUP BY nom
 ORDER BY sommep DESC');
   $reponse2->execute(array('du' => $time_debut,'au' => $time_fin ,'id_type_collecte' => $donnees['id'] ));
            // On affiche chaque entree une à une
-$xls_output .= "objets collectés pour ce type de collecte:"."\t"."masse collecté:"."\t";
+$xls_output .= "objets:"."\t"."quantité vendue:"."\t"."chiffre dégagé:"."\t";
 $xls_output .= "\n\r";
 
            while ($donnees2 = $reponse2->fetch())
            {       
 
-            $xls_output .= $donnees2['nom']."\t".$donnees2['somme']."\t"."\n";
+            $xls_output .= $donnees2['nom']."\t".$donnees2['sommeq']."\t".$donnees2['sommep']."\t"."\n";
             
              }
 
