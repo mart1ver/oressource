@@ -88,7 +88,7 @@ ORDER BY sommep DESC');
            {
             $someqtot = 0;
             $someptot = 0;
-           $xls_output .= $donnees['nom']."\t".$donnees['sommeq']."\t".$donnees['sommep']."\t"."\n";
+           $xls_output .= $donnees['nom']."\t".$donnees['sommeq']."\t".str_replace ( ".", ",",  $donnees['sommep'])."\t"."\n";
             
             try
             {
@@ -122,7 +122,7 @@ $xls_output .= "\n\r";
            while ($donnees2 = $reponse2->fetch())
            {       
 
-            $xls_output .= $donnees2['nom']."\t".$donnees2['sommeq']."\t".$donnees2['sommep']."\t"."\n";
+            $xls_output .= $donnees2['nom']."\t".$donnees2['sommeq']."\t".str_replace ( ".", ",",  $donnees['sommep'])."\t"."\n";
             
 
 
@@ -191,7 +191,7 @@ ORDER BY sommep DESC');
             $someqtot = 0;
             $someptot = 0;
 
-$xls_output .= $donnees['nom']."\t".$donnees['sommeq']."\t".$donnees['sommep']."\t"."\n";
+$xls_output .= $donnees['nom']."\t".$donnees['sommeq']."\t".str_replace ( ".", ",",  $donnees['sommep'])."\t"."\n";
 
 
 
@@ -237,14 +237,14 @@ $xls_output .= "\n\r";
  $someqtot = $someqtot + $donnees2['sommeq'] ;
  $someptot = $someptot + $donnees2['sommep'] ;
 
-$xls_output .= $donnees2['nom']."\t".$donnees2['sommeq']."\t".$donnees2['sommep']."\t"."\n";
+$xls_output .= $donnees2['nom']."\t".$donnees2['sommeq']."\t".str_replace ( ".", ",",  $donnees['sommep'])."\t"."\n";
 
 
             
              }
 
-
-             $xls_output .= 'autres'."\t".($donnees['sommeq'] - $someqtot)."\t".($donnees['sommep'] - $someptot)."\t"."\n";
+//str_replace ( ".", ",",  ($donnees['sommep'] - $someptot))
+             $xls_output .= 'autres'."\t".($donnees['sommeq'] - $someqtot)."\t".str_replace ( ".", ",",  ($donnees['sommep'] - $someptot))."\t"."\n";
               $reponse2->closeCursor(); // Termine le traitement de la requête
                 ?>
       <?php
