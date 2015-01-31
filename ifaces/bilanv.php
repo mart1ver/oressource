@@ -613,7 +613,7 @@ ORDER BY sommep DESC');
   
           
        <br>
-<a href="<?php echo  "../moteur/export_bilanc_partype.php?numero=". $_GET['numero']."&date1=" . $_GET['date1']."&date2=" . $_GET['date2']?>">
+<a href="<?php echo  "../moteur/export_bilanv.php?numero=". $_GET['numero']."&date1=" . $_GET['date1']."&date2=" . $_GET['date2']?>">
 
 
 
