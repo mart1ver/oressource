@@ -47,7 +47,7 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
 
                   var cb = function(start, end, label) {
                     console.log(start.toISOString(), end.toISOString(), label);
-                    $('#reportrange span').html(start.format('DD, MMMM, YYYY') + ' - ' + end.format('DD, MMMM, YYYY'));
+                    $('#reportrange span').html(startDate.format('DD, MMMM, YYYY') + ' - ' + endDate.format('DD, MMMM, YYYY'));
                     //alert("Callback has fired: [" + start.format('MMMM D, YYYY') + " to " + end.format('MMMM D, YYYY') + ", label = " + label + "]");
                   }
 
