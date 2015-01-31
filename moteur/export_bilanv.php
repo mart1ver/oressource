@@ -237,7 +237,7 @@ $xls_output .= "\n\r";
  $someqtot = $someqtot + $donnees2['sommeq'] ;
  $someptot = $someptot + $donnees2['sommep'] ;
 
-$xls_output .= $donnees2['nom']."\t".$donnees2['sommeq'].$donnees2['sommep']."\t"."\n";
+$xls_output .= $donnees2['nom']."\t".$donnees2['sommeq']."\t".$donnees2['sommep']."\t"."\n";
 
 
             
