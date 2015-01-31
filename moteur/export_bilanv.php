@@ -156,7 +156,7 @@ $xls_output .= " pour le point numero:  ".$_GET['numero']."\t";
 $xls_output .= "\n\r";
 $xls_output .= "\n\r";
 $xls_output .= "\n\r";
-$xls_output .= "type de collecte:"."\t"."masse collecté:"."\t"."nombre de collectes:"."\t";
+$xls_output .= "type d'objet':"."\t"."quantité vendue:"."\t"."chiffre dégagé:"."\t";
 $xls_output .= "\n\r";
 
 // on determine les masses totales collèctés sur cete periode(pour un point donné)
@@ -188,9 +188,10 @@ ORDER BY sommep DESC');
            // On affiche chaque entree une à une
            while ($donnees = $reponse->fetch())
            {
+            $someqtot = 0;
+            $someptot = 0;
 
-
-$xls_output .= $donnees['nom']."\t".$donnees['somme']."\t".$donnees['ncol']."\t"."\n";
+$xls_output .= $donnees['nom']."\t".$donnees['sommeq']."\t".$donnees['sommep']."\t"."\n";
 
 
 
@@ -233,12 +234,17 @@ $xls_output .= "\n\r";
            while ($donnees2 = $reponse2->fetch())
            {    
 
+ $someqtot = $someqtot + $donnees2['sommeq'] ;
+ $someptot = $someptot + $donnees2['sommep'] ;
 
-$xls_output .= $donnees2['nom']."\t".$donnees2['somme']."\t"."\n";
+$xls_output .= $donnees2['nom']."\t".$donnees2['sommeq'].$donnees2['sommep']."\t"."\n";
 
 
             
              }
+
+
+             $xls_output .= 'autres'."\t".($donnees['sommeq'] - $someqtot)."\t".($donnees['sommep'] - $someptot)."\t"."\n";
               $reponse2->closeCursor(); // Termine le traitement de la requête
                 ?>
       <?php
