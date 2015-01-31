@@ -87,6 +87,8 @@ ORDER BY sommep DESC');
            while ($donnees = $reponse->fetch())
            {
            $xls_output .= $donnees['nom']."\t".$donnees['sommeq']."\t".$donnees['sommep']."\t"."\n";
+            $someqtot = 0;
+            $someptot = 0;
             try
             {
             // On se connecte à MySQL
@@ -115,15 +117,27 @@ ORDER BY sommep DESC');
 $xls_output .= "objets:"."\t"."quantité vendue:"."\t"."chiffre dégagé:"."\t";
 $xls_output .= "\n\r";
 
+
            while ($donnees2 = $reponse2->fetch())
            {       
 
             $xls_output .= $donnees2['nom']."\t".$donnees2['sommeq']."\t".$donnees2['sommep']."\t"."\n";
             
+
+
+
+ $someqtot = $someqtot + $donnees2['sommeq'] ;
+ $someptot = $someptot + $donnees2['sommep'] ;
+
              }
 
+$xls_output .= "autres"."\t".$donnees['sommeq'] - $someqtot."\t".$donnees['sommep'] - $someptot."\t"."\n";
               $reponse2->closeCursor(); // Termine le traitement de la requête
                 ?>
+
+
+
+
                
       <?php
 
