@@ -110,7 +110,7 @@ AND vendus.id_vente = ventes.id
 AND type_dechets.id = :id_type_dechet
 GROUP BY nom
 ORDER BY sommep DESC');
-  $reponse2->execute(array('du' => $time_debut,'au' => $time_fin ,'id_type_collecte' => $donnees['id'] ));
+  $reponse2->execute(array('du' => $time_debut,'au' => $time_fin ,'id_type_dechet' => $donnees['id'] ));
            // On affiche chaque entree une à une
 $xls_output .= "objets:"."\t"."quantité vendue:"."\t"."chiffre dégagé:"."\t";
 $xls_output .= "\n\r";
