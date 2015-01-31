@@ -132,7 +132,7 @@ $xls_output .= "\n\r";
 
              }
 
-$xls_output .= 'autres'."\t".$donnees['sommeq'] - $someqtot."\t".$donnees['sommep'] - $someptot."\t"."\n";
+$xls_output .= 'autres'."\t".($donnees['sommeq'] - $someqtot)."\t".($donnees['sommep'] - $someptot)."\t"."\n";
 
               $reponse2->closeCursor(); // Termine le traitement de la requête
                 ?>
