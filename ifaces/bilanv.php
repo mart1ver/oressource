@@ -91,7 +91,7 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
 
                   
 
-                  $('#reportrange span').html('<?php echo str_replace ( "-", "/", $_GET['date1'])?>'.format('D, MMMM, YYYY') + ' - ' + '<?php echo str_replace ( "-", "/", $_GET['date1'])?>'.format('D, MMMM, YYYY'));
+                  $('#reportrange span').html(picker.startDate.format('D, MMMM, YYYY') + ' - ' + picker.endDate.format('D, MMMM, YYYY'));
 
                   $('#reportrange').daterangepicker(optionSet1, cb);
 
