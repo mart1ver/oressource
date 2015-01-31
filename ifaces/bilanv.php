@@ -94,7 +94,7 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
                   
 
                   $('#reportrange').daterangepicker(optionSet1, cb);
-                  $('#reportrange span').html(picker.startDate.format('D, MMMM, YYYY') + ' - ' + picker.startDate.format('D, MMMM, YYYY'));
+                  
                   $('#reportrange').on('show.daterangepicker', function() { console.log("show event fired"); });
                   $('#reportrange').on('hide.daterangepicker', function() { console.log("hide event fired"); });
                   $('#reportrange').on('apply.daterangepicker', function(ev, picker) { 
@@ -105,6 +105,7 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
                     ); 
                     window.location.href = "bilanv.php?date1="+picker.startDate.format('DD-MM-YYYY')+"&date2="+picker.endDate.format('DD-MM-YYYY')+"&numero=<?php echo $_GET['numero'] ?>";
                   });
+                  $('#reportrange span').html(picker.startDate.format('D, MMMM, YYYY') + ' - ' + picker.startDate.format('D, MMMM, YYYY'));
                   $('#reportrange').on('cancel.daterangepicker', function(ev, picker) { console.log("cancel event fired"); });
 
                   $('#options1').click(function() {
