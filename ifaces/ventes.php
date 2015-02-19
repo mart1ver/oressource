@@ -74,7 +74,7 @@ if ($_GET['msg'] == "") // SI on a pas de message positif
 }
 else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
 {
-  echo'<div class="alert alert-success alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'.$_GET['msg'].'</div>';
+  echo'<div class="alert alert-success alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-text="true">&times;</button>'.$_GET['msg'].'</div>';
 }
 ?>  
       </fieldset>     
@@ -99,13 +99,13 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
 </ul>
  <ul class="list-group" id="total">
 </ul>
-<input type="hidden" id="comm" name="comm"><br>
-<input type="hidden" id="moyen" name="moyen" value="1"><br>
-<input type="hidden"  id="nlignes" name="nlignes">
-<input type="hidden"  id="narticles" name="narticles">
-<input type="hidden"  id="ptot" name="ptot">
+<input type="text" id="comm" name="comm"><br>
+<input type="text" id="moyen" name="moyen" value="1"><br>
+<input type="text"  id="nlignes" name="nlignes">
+<input type="text"  id="narticles" name="narticles">
+<input type="text"  id="ptot" name="ptot">
 
-<input type="hidden" name ="id_point_vente" id="id_point_vente" value="<?php echo $_GET['numero']?>">
+<input type="text" name ="id_point_vente" id="id_point_vente" value="<?php echo $_GET['numero']?>">
     </form>
  
 
