@@ -450,12 +450,7 @@ else
 window.location.reload();
 }
 }
-
 function ajout() {
-  var prixtemp;
-  prixtemp = document.getElementById('prix').value;
-   prixtemp = prixtemp.replace(",", ".");
-   document.getElementById('prix').value = prixtemp;
      if (isNaN((parseFloat(document.getElementById('prix').value)*parseFloat(document.getElementById('quantite').value)).toFixed(2)) ) 
          {} 
           else
@@ -500,9 +495,6 @@ if (isNaN(parseInt(document.getElementById('ptot').value)) )
                document.getElementById('nom_objet0').value = "";
                }
                   }
-
-
-
 function edite(nom,prix,id_type_objet,id_objet) {
     document.getElementById('nom_objet').innerHTML = "<label>"+nom+"</label>";
     document.getElementById('quantite').value = "1";
