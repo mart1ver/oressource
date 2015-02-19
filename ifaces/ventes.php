@@ -443,7 +443,8 @@ document.getElementById('recaptotal').innerHTML = parseFloat(document.getElement
 document.getElementById('total').innerHTML = '<li class="list-group-item">Soit : '+document.getElementById('narticles').value+' article(s) pour : <span class="badge" style="float:right;">'+parseFloat(document.getElementById('ptot').value).toFixed(2)+'€</span></li>';
 document.getElementById('tquantite'+numero_ligne).value= "0";
 document.getElementById('tprix'+numero_ligne).value= "0";
-document.getElementById(nsligne).style.display="none";
+//document.getElementById(nsligne).style.display="none";
+document.getElementById(nsligne).parentNode.removeChild(nsligne);
 }
 else
 {
