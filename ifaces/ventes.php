@@ -451,6 +451,10 @@ window.location.reload();
 }
 }
 function ajout() {
+  var prixtemp;
+  prixtemp = document.getElementById('prix').value;
+   prixtemp = prixtemp.replace(",", ".");
+   document.getElementById('prix').value = prixtemp;
      if (isNaN((parseFloat(document.getElementById('prix').value)*parseFloat(document.getElementById('quantite').value)).toFixed(2)) ) 
          {} 
           else
