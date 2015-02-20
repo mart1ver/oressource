@@ -517,7 +517,7 @@ function edite(nom,prix,id_type_objet,id_objet) {
     document.getElementById('nom_objet0').value = nom;
 }
 function encaisse() {
-  if (parseInt(document.getElementById('nlignes').value) >= 1) 
+  if ((parseInt(document.getElementById('nlignes').value) >= 1) && ((document.getElementById('quantite').value == "")||(document.getElementById('quantite').value == "0"))&&((document.getElementById('prix').value == "")||(document.getElementById('prix').value == "0")) )
           { 
             document.getElementById('comm').value = document.getElementById('commentaire').value
             
