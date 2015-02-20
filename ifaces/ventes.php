@@ -444,7 +444,7 @@ document.getElementById('total').innerHTML = '<li class="list-group-item">Soit :
 document.getElementById('tquantite'+numero_ligne).value= "0";
 document.getElementById('tprix'+numero_ligne).value= "0";
 //document.getElementById(nsligne).style.display="none";
-$( ".".nsligne ).remove();
+document.getElementById(nsligne).remove();
 }
 else
 {
