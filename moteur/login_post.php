@@ -58,6 +58,7 @@ else
 $_SESSION['id'] =$resultat['id'];
 $_SESSION['niveau'] = $resultat['niveau'];
 $_SESSION['nom'] = $resultat['nom'];
+$_SESSION['prenom'] = $resultat['prenom'];
 $_SESSION['mail'] = $resultat['mail'];
 $_SESSION['systeme'] = "oressource";
 

@@ -14,7 +14,7 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource")
     <!-- Main jumbotron for a primary marketing message or call to action -->
     <div class="page-header">
       <div class="container">
-        <h1>Bienvenue à bord d'Oressource <?php echo $_SESSION['nom']?>! </h1>
+        <h1>Bienvenue à bord d'Oressource <?php echo $_SESSION['prenom']?>! </h1>
         <p>Oressource est un outil libre de quantification et de mise en bilan dédié aux structures du ré-emploi</p>
       </div>
     </div>
