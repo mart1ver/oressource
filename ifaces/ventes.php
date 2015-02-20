@@ -516,14 +516,18 @@ function edite(nom,prix,id_type_objet,id_objet) {
     document.getElementById('id_objet').value = parseFloat(id_objet);
     document.getElementById('nom_objet0').value = nom;
 }
+
+
 function encaisse() {
-  if (parseInt(document.getElementById('nlignes').value) >= 1) 
+  if (parseInt(document.getElementById('nlignes').value) >= 1) && (document.getElementById('nom_objet').innerHTML == "<label>Objet:</label>") //et si le la bel = objet:
           { 
             document.getElementById('comm').value = document.getElementById('commentaire').value
             
           document.getElementById("formulaire").submit();
           }
                     }
+
+
 </script>
 
             <?php 
