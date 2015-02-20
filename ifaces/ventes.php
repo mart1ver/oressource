@@ -99,13 +99,13 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
 </ul>
  <ul class="list-group" id="total">
 </ul>
-<input type="text" id="comm" name="comm"><br>
-<input type="text" id="moyen" name="moyen" value="1"><br>
-<input type="text"  id="nlignes" name="nlignes">
-<input type="text"  id="narticles" name="narticles">
-<input type="text"  id="ptot" name="ptot">
+<input type="hidden" id="comm" name="comm"><br>
+<input type="hidden" id="moyen" name="moyen" value="1"><br>
+<input type="hidden"  id="nlignes" name="nlignes">
+<input type="hidden"  id="narticles" name="narticles">
+<input type="hidden"  id="ptot" name="ptot">
 
-<input type="text" name ="id_point_vente" id="id_point_vente" value="<?php echo $_GET['numero']?>">
+<input type="hidden" name ="id_point_vente" id="id_point_vente" value="<?php echo $_GET['numero']?>">
     </form>
  
 
@@ -443,7 +443,6 @@ document.getElementById('recaptotal').innerHTML = parseFloat(document.getElement
 document.getElementById('total').innerHTML = '<li class="list-group-item">Soit : '+document.getElementById('narticles').value+' article(s) pour : <span class="badge" style="float:right;">'+parseFloat(document.getElementById('ptot').value).toFixed(2)+'€</span></li>';
 document.getElementById('tquantite'+numero_ligne).value= "0";
 document.getElementById('tprix'+numero_ligne).value= "0";
-//document.getElementById(nsligne).style.display="none";
 document.getElementById('nlignes').value = parseInt(document.getElementById('nlignes').value) - 1 ;
 document.getElementById(nsligne).remove();
 }
@@ -487,10 +486,10 @@ if (isNaN(parseInt(document.getElementById('ptot').value)) )
           document.getElementById('ptot').value=parseFloat(document.getElementById('ptot').value)+parseFloat(document.getElementById('prix').value*document.getElementById('quantite').value); 
           }          
              document.getElementById('liste').innerHTML += '<li class="list-group-item" name="ligne'+parseInt(document.getElementById('nlignes').value)+'" id="ligne'+parseInt(document.getElementById('nlignes').value)+'"><span class="badge">'+parseFloat(parseFloat(document.getElementById('prix').value)*parseFloat(document.getElementById('quantite').value)).toFixed(2)+'€'+'</span><span class="glyphicon glyphicon-minus" aria-hidden="true"    onclick="javascirpt:suprime('+"'ligne"+parseInt(document.getElementById('nlignes').value)+"');"+'"></span>&nbsp;&nbsp;'+document.getElementById('quantite').value+' * '+document.getElementById('nom_objet0').value
-             +'<input type="text"  id="tid_type_objet'+parseInt(document.getElementById('nlignes').value)+'" name="tid_type_objet'+parseInt(document.getElementById('nlignes').value)+'"value="'+document.getElementById('id_type_objet').value+'">'
-             +'<input type="text"  id="tid_objet'+parseInt(document.getElementById('nlignes').value)+'" name="tid_objet'+parseInt(document.getElementById('nlignes').value)+'"value="'+document.getElementById('id_objet').value+'">'
-             +'<input type="text"  id="tquantite'+parseInt(document.getElementById('nlignes').value)+'" name="tquantite'+parseInt(document.getElementById('nlignes').value)+'"value="'+document.getElementById('quantite').value+'">'
-             +'<input type="text"  id="tprix'+parseInt(document.getElementById('nlignes').value)+'" name="tprix'+parseInt(document.getElementById('nlignes').value)+'"value="'+document.getElementById('prix').value+'"></li>';                                               
+             +'<input type="hidden"  id="tid_type_objet'+parseInt(document.getElementById('nlignes').value)+'" name="tid_type_objet'+parseInt(document.getElementById('nlignes').value)+'"value="'+document.getElementById('id_type_objet').value+'">'
+             +'<input type="hidden"  id="tid_objet'+parseInt(document.getElementById('nlignes').value)+'" name="tid_objet'+parseInt(document.getElementById('nlignes').value)+'"value="'+document.getElementById('id_objet').value+'">'
+             +'<input type="hidden"  id="tquantite'+parseInt(document.getElementById('nlignes').value)+'" name="tquantite'+parseInt(document.getElementById('nlignes').value)+'"value="'+document.getElementById('quantite').value+'">'
+             +'<input type="hidden"  id="tprix'+parseInt(document.getElementById('nlignes').value)+'" name="tprix'+parseInt(document.getElementById('nlignes').value)+'"value="'+document.getElementById('prix').value+'"></li>';                                               
                document.getElementById('total').innerHTML = '<li class="list-group-item">Soit : '+document.getElementById('narticles').value+' article(s) pour : <span class="badge" style="float:right;">'+parseFloat(document.getElementById('ptot').value).toFixed(2)+'€</span></li>';
                document.getElementById('recaptotal').innerHTML = parseFloat(document.getElementById('ptot').value).toFixed(2)+'€';
                document.getElementById('nom_objet').innerHTML = "<label>Objet:</label>";
