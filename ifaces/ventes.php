@@ -99,13 +99,13 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
 </ul>
  <ul class="list-group" id="total">
 </ul>
-<input type="hidden" id="comm" name="comm"><br>
-<input type="hidden" id="moyen" name="moyen" value="1"><br>
-<input type="hidden"  id="nlignes" name="nlignes">
-<input type="hidden"  id="narticles" name="narticles">
-<input type="hidden"  id="ptot" name="ptot">
+<input type="text" id="comm" name="comm"><br>
+<input type="text" id="moyen" name="moyen" value="1"><br>
+<input type="text"  id="nlignes" name="nlignes">
+<input type="text"  id="narticles" name="narticles">
+<input type="text"  id="ptot" name="ptot">
 
-<input type="hidden" name ="id_point_vente" id="id_point_vente" value="<?php echo $_GET['numero']?>">
+<input type="text" name ="id_point_vente" id="id_point_vente" value="<?php echo $_GET['numero']?>">
     </form>
  
 
@@ -432,6 +432,8 @@ document.getElementById('comm').value = document.getElementById('commentaire').v
           document.getElementById("formulaire").submit();
           }
     }
+
+
 function suprime(nsligne)
 {
 if (parseInt(document.getElementById('nlignes').value)>1)
@@ -443,7 +445,7 @@ document.getElementById('recaptotal').innerHTML = parseFloat(document.getElement
 document.getElementById('total').innerHTML = '<li class="list-group-item">Soit : '+document.getElementById('narticles').value+' article(s) pour : <span class="badge" style="float:right;">'+parseFloat(document.getElementById('ptot').value).toFixed(2)+'€</span></li>';
 document.getElementById('tquantite'+numero_ligne).value= "0";
 document.getElementById('tprix'+numero_ligne).value= "0";
-document.getElementById('nlignes').value = parseInt(document.getElementById('nlignes').value) - 1 ;
+//document.getElementById('nlignes').value = parseInt(document.getElementById('nlignes').value) - 1 ;
 document.getElementById(nsligne).remove();
 }
 else
@@ -451,6 +453,12 @@ else
 window.location.reload();
 }
 }
+
+
+
+
+
+
 function ajout() {
   var prixtemp;
   prixtemp = document.getElementById('prix').value;
