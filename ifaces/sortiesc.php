@@ -154,7 +154,7 @@ function tdechet_clear()
 
            ?>
     document.getElementById('<?php echo$donnees['nom']?>').innerText = "0"  ;
-    document.getElementById(<?php echo$donnees['id']?>).value = "0" ; 
+    document.getElementById('<?php echo$donnees['id']?>').value = "0" ; 
 <?php }
 
               $reponse->closeCursor(); // Termine le traitement de la requête
@@ -184,7 +184,7 @@ function tdechet_clear()
 
            ?>
     document.getElementById('<?php echo "d".$donnees['nom']?>').innerText = "0"  ;
-    document.getElementById(<?php echo "d".$donnees['id']?>).value = "0" ; 
+    document.getElementById('<?php echo "d".$donnees['id']?>').value = "0" ; 
 <?php }
 
               $reponse->closeCursor(); // Termine le traitement de la requête
