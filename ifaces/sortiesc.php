@@ -146,7 +146,7 @@ function tdechet_clear()
             // Si tout va bien, on peut continuer
  
             // On recupère tout le contenu de la table point de collecte
-            $reponse = $bdd->query('SELECT * FROM type_dechets WHERE visible = "oui"');
+            $reponse = $bdd->query('SELECT * FROM type_dechets W');
  
            // On affiche chaque entree une à une
            while ($donnees = $reponse->fetch())
@@ -176,7 +176,7 @@ function tdechet_clear()
             // Si tout va bien, on peut continuer
  
             // On recupère tout le contenu de la table point de collecte
-            $reponse = $bdd->query('SELECT * FROM type_dechets_evac WHERE visible = "oui"');
+            $reponse = $bdd->query('SELECT * FROM type_dechets_evac ');
  
            // On affiche chaque entree une à une
            while ($donnees = $reponse->fetch())
