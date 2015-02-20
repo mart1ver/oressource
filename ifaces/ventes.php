@@ -74,7 +74,7 @@ if ($_GET['msg'] == "") // SI on a pas de message positif
 }
 else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
 {
-  echo'<div class="alert alert-success alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'.$_GET['msg'].'</div>';
+  echo'<div class="alert alert-success alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-text="true">&times;</button>'.$_GET['msg'].'</div>';
 }
 ?>  
       </fieldset>     
@@ -443,7 +443,8 @@ document.getElementById('recaptotal').innerHTML = parseFloat(document.getElement
 document.getElementById('total').innerHTML = '<li class="list-group-item">Soit : '+document.getElementById('narticles').value+' article(s) pour : <span class="badge" style="float:right;">'+parseFloat(document.getElementById('ptot').value).toFixed(2)+'€</span></li>';
 document.getElementById('tquantite'+numero_ligne).value= "0";
 document.getElementById('tprix'+numero_ligne).value= "0";
-document.getElementById(nsligne).style.display="none";
+document.getElementById('nlignes').value = parseInt(document.getElementById('nlignes').value) - 1 ;
+document.getElementById(nsligne).remove();
 }
 else
 {
@@ -451,6 +452,10 @@ window.location.reload();
 }
 }
 function ajout() {
+  var prixtemp;
+  prixtemp = document.getElementById('prix').value;
+   prixtemp = prixtemp.replace(",", ".");
+   document.getElementById('prix').value = prixtemp;
      if (isNaN((parseFloat(document.getElementById('prix').value)*parseFloat(document.getElementById('quantite').value)).toFixed(2)) ) 
          {} 
           else
