@@ -278,7 +278,37 @@ if ($_GET['numero'] == 0) {
 
 
   ?>
-  en X ventes , sur <?php
+  en <?php
+  // on determine le nombre de ventes sur la periode donée
+
+
+            try
+            {
+            // On se connecte à MySQL
+            include('../moteur/dbconfig.php');
+            }
+            catch(Exception $e)
+            {
+            // En cas d'erreur, on affiche un message et on arrête tout
+            die('Erreur : '.$e->getMessage());
+            }
+ 
+            // Si tout va bien, on peut continuer
+            /*
+
+            */
+ $req = $bdd->prepare("SELECT COUNT(id) FROM ventes WHERE
+ventes.timestamp BETWEEN :du AND :au AND");
+$req->execute(array('du' => $time_debut,'au' => $time_fin ));
+$donnees = $req->fetch();
+     
+echo $donnees['COUNT(id)'];
+
+$req->closeCursor(); // Termine le traitement de la requête
+
+
+
+  ?> ?> ventes, sur <?php
 // on determine le nombre de points de collecte
 
 
@@ -298,7 +328,7 @@ if ($_GET['numero'] == 0) {
 
             */
  $req = $bdd->prepare("SELECT COUNT(id) FROM points_vente");
-$req->execute(array('au' => $time_fin ));
+$req->execute();
 $donnees = $req->fetch();
      
 echo $donnees['COUNT(id)'];
