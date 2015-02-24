@@ -3,6 +3,8 @@
 if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 'v'.$_GET['numero']) !== false))
       {include "tete.php";?>
 
+<link href="../css/bootstrap-switch.css" rel="stylesheet">
+<script type="text/javascript" src="../js/bootstrap-switch.js"></script>
 
 <div class="panel-body">
 
@@ -121,6 +123,12 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
     <h3 class="panel-title"id="nom_objet"><label>Objet:</label></h3>
   </div>
   <div class="panel-body"> 
+     
+
+<input type="checkbox" name="my-checkbox" checked>
+<script type="text/javascript">
+$("[name='my-checkbox']").bootstrapSwitch();
+</script>
       Quantité: <input type="text" class="form-control" placeholder="Quantité" id="quantite" name="quantite" onfocus="fokus(this)" > Prix unitaire: <input type="text" class="form-control" placeholder="€" id="prix" name="prix" onfocus="fokus(this)">
 <input type="hidden"  id="id_type_objet" name="id_type_objet">
 <input type="hidden"  id="id_objet" name="id_objet">   
