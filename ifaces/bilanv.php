@@ -306,7 +306,9 @@ echo $donnees['COUNT(id)'];
 
 
 
-  ?> vente<?php if ($donnees['COUNT(id)'] > 1) {echo "s"};
+  ?> vente<?php 
+  if ($donnees['COUNT(id)'] > 1) 
+  {echo "s";}
   $req->closeCursor(); // Termine le traitement de la requête
  ?>, sur <?php
 // on determine le nombre de points de collecte
