@@ -235,7 +235,7 @@ $req = $bdd->prepare("SELECT SUM(vendus.prix) AS total   FROM vendus  WHERE  DAT
 $req->execute(array('du' => $time_debut,'au' => $time_fin ));
 $donnees = $req->fetch();
 $mtotcolo = $donnees['total'];
-echo $donnees['total']." €.";
+echo $donnees['total']." €,";
             
               $req->closeCursor(); // Termine le traitement de la requête
                
@@ -278,7 +278,7 @@ if ($_GET['numero'] == 0) {
 
 
   ?>
-  , sur <?php
+  en X ventes , sur <?php
 // on determine le nombre de points de collecte
 
 
@@ -297,7 +297,7 @@ if ($_GET['numero'] == 0) {
             /*
 
             */
- $req = $bdd->prepare("SELECT COUNT(id) FROM points_vente");//SELECT `titre_affectation` FROM affectations WHERE titre_affectation = "conssomables" LIMIT 1
+ $req = $bdd->prepare("SELECT COUNT(id) FROM points_vente");
 $req->execute(array('au' => $time_fin ));
 $donnees = $req->fetch();
      
