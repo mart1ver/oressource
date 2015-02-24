@@ -339,13 +339,18 @@ echo $donnees['COUNT(id)'];
 
 
 
-  ?> Point<?php 
+  ?> point<?php 
   if ($donnees['COUNT(id)'] > 1) 
   {echo "s";}
   $req->closeCursor(); // Termine le traitement de la requête
  ?> de vente.
 
-<?php } ?></h2>
+<?php }else{
+?>
+EN X VENTES!!!!
+
+<?php
+} ?></h2>
   <div class="col-md-7">        
 
 
