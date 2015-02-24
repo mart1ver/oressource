@@ -347,7 +347,39 @@ echo $donnees['COUNT(id)'];
 
 <?php }else{
 ?>
-EN X VENTES!!!!
+en <?php
+  // on determine le nombre de ventes sur la periode donée et un point en particulierMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM
+
+
+            try
+            {
+            // On se connecte à MySQL
+            include('../moteur/dbconfig.php');
+            }
+            catch(Exception $e)
+            {
+            // En cas d'erreur, on affiche un message et on arrête tout
+            die('Erreur : '.$e->getMessage());
+            }
+ 
+            // Si tout va bien, on peut continuer
+            /*
+
+            */
+ $req = $bdd->prepare("SELECT COUNT(id) FROM ventes WHERE DATE(ventes.timestamp) BETWEEN :du AND :au AND ventes.id_point_vente = :numero");
+$req->execute(array('du' => $time_debut,'au' => $time_fin,'numero' => $_GET['numero'] ));
+$donnees = $req->fetch();
+     
+echo $donnees['COUNT(id)'];
+
+
+
+
+  ?> vente<?php 
+  if ($donnees['COUNT(id)'] > 1) 
+  {echo "s";}
+  $req->closeCursor(); // Termine le traitement de la requête
+ ?>
 
 <?php
 } ?></h2>
