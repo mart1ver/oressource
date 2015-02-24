@@ -27,7 +27,7 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
 <div class"row">
   <div class="col-md-11 " >
 <h1>Bilan global</h1>
-<input type="checkbox" name="my-checkbox" checked>
+
    <div class="col-md-4 col-md-offset-8" >
 <label for="reportrange">Choisissez la période à inspecter:</label><br>
 
