@@ -45,6 +45,7 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
                </div>
 
                <script type="text/javascript">
+               $("[name='my-checkbox']").bootstrapSwitch();
                $(document).ready(function() {
 
                   var cb = function(start, end, label) {
