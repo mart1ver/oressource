@@ -1,10 +1,9 @@
 <?php session_start(); 
 //Vérification des autorisations de l'utilisateur et des variables de session requises pour l'affichage de cette page:
 if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 'v'.$_GET['numero']) !== false))
-      {include "tete.php";?>
+      {include "tete_vente.php";?>
 
-<link href="../css/bootstrap-switch.css" rel="stylesheet">
-<script type="text/javascript" src="../js/bootstrap-switch.js"></script>
+
 
 <div class="panel-body">
 
