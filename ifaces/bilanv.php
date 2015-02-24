@@ -308,7 +308,7 @@ $req->closeCursor(); // Termine le traitement de la requête
 
 
 
-  ?> ?> ventes, sur <?php
+  ?> ventes, sur <?php
 // on determine le nombre de points de collecte
 
 
