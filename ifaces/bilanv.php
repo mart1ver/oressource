@@ -8,12 +8,13 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
    <head>
       
       <link href="../css/bootstrap.min.css" rel="stylesheet">
-      
+      <link href="../css/bootstrap-switch.css" rel="stylesheet">
       <link href="../fonts/font-awesome/css/font-awesome.min.css" rel="stylesheet">
       <link rel="stylesheet" type="text/css" media="all" href="../css/daterangepicker-bs3.css" />
       
       <script type="text/javascript" src="../js/jquery-2.0.3.min.js"></script>
       <script type="text/javascript" src="../js/bootstrap.min.js"></script>
+      <script type="text/javascript" src="../js/bootstrap-switch.js"></script>
       <script type="text/javascript" src="../js/moment.js"></script>
       <script type="text/javascript" src="../js/daterangepicker.js"></script>
    </head>
@@ -26,7 +27,7 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
 <div class"row">
   <div class="col-md-11 " >
 <h1>Bilan global</h1>
-
+<input type="checkbox" name="my-checkbox" checked>
    <div class="col-md-4 col-md-offset-8" >
 <label for="reportrange">Choisissez la période à inspecter:</label><br>
 
