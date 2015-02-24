@@ -297,8 +297,7 @@ if ($_GET['numero'] == 0) {
             /*
 
             */
- $req = $bdd->prepare("SELECT COUNT(id) FROM ventes WHERE
-timestamp BETWEEN :du AND :au AND");
+ $req = $bdd->prepare("SELECT COUNT(id) FROM ventes DATE(ventes.timestamp) BETWEEN :du AND :au ");
 $req->execute(array('du' => $time_debut,'au' => $time_fin ));
 $donnees = $req->fetch();
      
