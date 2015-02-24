@@ -303,11 +303,12 @@ $donnees = $req->fetch();
      
 echo $donnees['COUNT(id)'];
 
-$req->closeCursor(); // Termine le traitement de la requête
 
 
 
-  ?> ventes, sur <?php
+  ?> vente<?php if $donnees['COUNT(id)'] > 1 {echo"s"};
+  $req->closeCursor(); // Termine le traitement de la requête
+ ?>, sur <?php
 // on determine le nombre de points de collecte
 
 
