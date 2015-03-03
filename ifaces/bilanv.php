@@ -234,7 +234,7 @@ if ($_GET['numero'] == 0) {
             // On recupère tout le contenu de la table point de vente
 
 
-$req = $bdd->prepare("SELECT SUM(vendus.prix) AS total   FROM vendus  WHERE  DATE(vendus.timestamp) BETWEEN :du AND :au  ");
+$req = $bdd->prepare("SELECT  (SUM(vendus.prix)-SUM(vendus.remboursement)) AS total   FROM vendus  WHERE  DATE(vendus.timestamp) BETWEEN :du AND :au  ");
 $req->execute(array('du' => $time_debut,'au' => $time_fin ));
 $donnees = $req->fetch();
 $mtotcolo = $donnees['total'];
@@ -260,7 +260,7 @@ try
             // On recupère tout le contenu de la table point de vente
 
 
-$req = $bdd->prepare("SELECT SUM(vendus.prix) AS total  
+$req = $bdd->prepare("SELECT (SUM(vendus.prix)-SUM(vendus.remboursement))  AS total  
 FROM vendus ,ventes
 WHERE vendus.id_vente = ventes.id 
 AND vendus.timestamp BETWEEN :du AND :au  AND ventes.id_point_vente  = :numero ");
