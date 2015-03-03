@@ -87,7 +87,7 @@ vendus, type_dechets, grille_objets
 WHERE 
 vendus.id_vente = :id_vente
 AND type_dechets.id = vendus.id_type_dechet
-AND (grille_objets.id = vendus.id_objet OR vendus.id_objet = '0' )
+AND (grille_objets.id = vendus.id_objet OR vendus.id_objet = 0 )
 GROUP BY id');
 $req->execute(array('id_vente' => $_GET['nvente']));
 
