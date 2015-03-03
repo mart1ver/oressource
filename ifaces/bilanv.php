@@ -11,8 +11,10 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
       
       <link href="../fonts/font-awesome/css/font-awesome.min.css" rel="stylesheet">
       <link rel="stylesheet" type="text/css" media="all" href="../css/daterangepicker-bs3.css" />
+      
       <script type="text/javascript" src="../js/jquery-2.0.3.min.js"></script>
       <script type="text/javascript" src="../js/bootstrap.min.js"></script>
+      
       <script type="text/javascript" src="../js/moment.js"></script>
       <script type="text/javascript" src="../js/daterangepicker.js"></script>
    </head>
@@ -43,6 +45,7 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
                </div>
 
                <script type="text/javascript">
+               
                $(document).ready(function() {
 
                   var cb = function(start, end, label) {
@@ -235,7 +238,7 @@ $req = $bdd->prepare("SELECT SUM(vendus.prix) AS total   FROM vendus  WHERE  DAT
 $req->execute(array('du' => $time_debut,'au' => $time_fin ));
 $donnees = $req->fetch();
 $mtotcolo = $donnees['total'];
-echo $donnees['total']." €.";
+echo $donnees['total']." €,";
             
               $req->closeCursor(); // Termine le traitement de la requête
                
@@ -278,7 +281,39 @@ if ($_GET['numero'] == 0) {
 
 
   ?>
-  , sur <?php
+  en <?php
+  // on determine le nombre de ventes sur la periode donée
+
+
+            try
+            {
+            // On se connecte à MySQL
+            include('../moteur/dbconfig.php');
+            }
+            catch(Exception $e)
+            {
+            // En cas d'erreur, on affiche un message et on arrête tout
+            die('Erreur : '.$e->getMessage());
+            }
+ 
+            // Si tout va bien, on peut continuer
+            /*
+
+            */
+ $req = $bdd->prepare("SELECT COUNT(id) FROM ventes WHERE DATE(ventes.timestamp) BETWEEN :du AND :au ");
+$req->execute(array('du' => $time_debut,'au' => $time_fin ));
+$donnees = $req->fetch();
+     
+echo $donnees['COUNT(id)'];
+
+
+
+
+  ?> vente<?php 
+  if ($donnees['COUNT(id)'] > 1) 
+  {echo "s";}
+  $req->closeCursor(); // Termine le traitement de la requête
+ ?>, sur <?php
 // on determine le nombre de points de collecte
 
 
@@ -297,19 +332,60 @@ if ($_GET['numero'] == 0) {
             /*
 
             */
- $req = $bdd->prepare("SELECT COUNT(id) FROM points_vente");//SELECT `titre_affectation` FROM affectations WHERE titre_affectation = "conssomables" LIMIT 1
-$req->execute(array('au' => $time_fin ));
+ $req = $bdd->prepare("SELECT COUNT(id) FROM points_vente");
+$req->execute();
 $donnees = $req->fetch();
      
 echo $donnees['COUNT(id)'];
 
-$req->closeCursor(); // Termine le traitement de la requête
 
 
 
-  ?> Point(s) de vente.
 
-<?php } ?></h2>
+  ?> point<?php 
+  if ($donnees['COUNT(id)'] > 1) 
+  {echo "s";}
+  $req->closeCursor(); // Termine le traitement de la requête
+ ?> de vente.
+
+<?php }else{
+?>
+en <?php
+  // on determine le nombre de ventes sur la periode donée et un point en particulierMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM
+
+
+            try
+            {
+            // On se connecte à MySQL
+            include('../moteur/dbconfig.php');
+            }
+            catch(Exception $e)
+            {
+            // En cas d'erreur, on affiche un message et on arrête tout
+            die('Erreur : '.$e->getMessage());
+            }
+ 
+            // Si tout va bien, on peut continuer
+            /*
+
+            */
+ $req = $bdd->prepare("SELECT COUNT(id) FROM ventes WHERE DATE(ventes.timestamp) BETWEEN :du AND :au AND ventes.id_point_vente = :numero");
+$req->execute(array('du' => $time_debut,'au' => $time_fin,'numero' => $_GET['numero'] ));
+$donnees = $req->fetch();
+     
+echo $donnees['COUNT(id)'];
+
+
+
+
+  ?> vente<?php 
+  if ($donnees['COUNT(id)'] > 1) 
+  {echo "s";}
+  $req->closeCursor(); // Termine le traitement de la requête
+ ?>
+
+<?php
+} ?></h2>
   <div class="col-md-7">        
 
 
