@@ -74,36 +74,21 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
             }
  
             // Si tout va bien, on peut continuer
-/*
-'SELECT type_dechets.couleur,type_dechets.nom, sum(pesees_collectes.masse) somme 
-FROM type_dechets,pesees_collectes 
-WHERE type_dechets.id = pesees_collectes.id_type_dechet AND DATE(pesees_collectes.timestamp) = CURDATE()
-GROUP BY nom'
 
-SELECT pesees_collectes.id ,pesees_collectes.timestamp  ,type_dechets.nom  , pesees_collectes.masse
-                       FROM pesees_collectes ,type_dechets
-                       WHERE type_dechets.id = pesees_collectes.id_type_dechet AND pesees_collectes.id_collecte = :id_collecte
-*/
-
-
- 
-            // On recupère toute la liste des filieres de sortie
-            //   $reponse = $bdd->query('SELECT * FROM grille_objets');
           
-$req = $bdd->prepare('SELECT vendus.id ,vendus.timestamp  
- ,type_dechets.nom type
-,grille_objets.nom objet
- ,vendus.quantite 
- ,vendus.prix
-,utilisateurs.mail
-
- FROM vendus, type_dechets, grille_objets ,utilisateurs
-
-WHERE vendus.id_vente = :id_vente
-
-AND grille_objets.id = vendus.id_objet
+$req = $bdd->prepare('SELECT 
+vendus.id ,vendus.timestamp,
+type_dechets.nom type,
+IF(vendus.id_objet > 0 ,grille_objets.nom, "autre") objet,
+vendus.quantite ,
+vendus.prix
+FROM
+vendus, type_dechets, grille_objets 
+WHERE 
+vendus.id_vente = :id_vente
 AND type_dechets.id = vendus.id_type_dechet
-AND utilisateurs.id = vendus.id_createur');
+AND (grille_objets.id = vendus.id_objet OR vendus.id_objet = '0' )
+GROUP BY id');
 $req->execute(array('id_vente' => $_GET['nvente']));
 
 
