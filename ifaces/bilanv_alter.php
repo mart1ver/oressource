@@ -451,8 +451,9 @@ echo "-nombre de remboursemments : ";
 echo $donnees['COUNT(ventes.id)']."<br>";
 echo "-somme remboursée : ";
 
-
-
+try
+ {
+ 
   // On se connecte à MySQL
   include('../moteur/dbconfig.php');
   }
