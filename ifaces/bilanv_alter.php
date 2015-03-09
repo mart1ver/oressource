@@ -186,7 +186,7 @@ if ($_GET['numero'] == 0) // si numero == 0
  $donnees = $req->fetch();
 echo $donnees['COUNT(id)']."<br>";
 
-  echo "-chiffre total dégagé : ";
+  echo "-chiffre total dégagé (remboursemments déduits) : ";
  try
  {
   // On se connecte à MySQL
@@ -248,10 +248,68 @@ echo $donnees['SUM(vendus.quantite)']."<br>";
  $donnees = $req->fetch();
 echo $donnees['COUNT(ventes.id)']."<br>";
 
+  echo "-nombre d'objets remboursés' :";
+  // on determine le nombre d'objets remboursés
+            try
+            {
+            // On se connecte à MySQL
+            include('../moteur/dbconfig.php');
+            }
+            catch(Exception $e)
+            {
+            // En cas d'erreur, on affiche un message et on arrête tout
+            die('Erreur : '.$e->getMessage());
+            }
+ 
+            // Si tout va bien, on peut continuer
+            /*
 
+            */
+ $req = $bdd->prepare("SELECT SUM(vendus.quantite) FROM vendus WHERE remboursement > 0 ");
+ $req->execute();
+ $donnees = $req->fetch();
+echo $donnees['SUM(vendus.quantite)']."<br>";
   echo "-nombre de remboursemments :";
+  // on determine le nombre de remboursements
+            try
+            {
+            // On se connecte à MySQL
+            include('../moteur/dbconfig.php');
+            }
+            catch(Exception $e)
+            {
+            // En cas d'erreur, on affiche un message et on arrête tout
+            die('Erreur : '.$e->getMessage());
+            }
+ 
+            // Si tout va bien, on peut continuer
+            /*
 
+            */
+ $req = $bdd->prepare("SELECT COUNT(ventes.id) FROM ventes ,vendus WHERE vendus.id_vente = ventes.id AND vendus.remboursement > 0 ");
+ $req->execute();
+ $donnees = $req->fetch();
+echo $donnees['COUNT(ventes.id)']."<br>";
 
+  echo "-somme remboursée :";
+try
+ {
+  // On se connecte à MySQL
+  include('../moteur/dbconfig.php');
+  }
+  catch(Exception $e)
+  {
+  // En cas d'erreur, on affiche un message et on arrête tout
+  die('Erreur : '.$e->getMessage());
+  }
+  // Si tout va bien, on peut continuer
+  // On recupère tout le contenu de la table point de vente
+  $req = $bdd->prepare("SELECT  SUM(vendus.remboursement) AS total   FROM vendus  WHERE  DATE(vendus.timestamp) BETWEEN :du AND :au  ");
+  $req->execute(array('du' => $time_debut,'au' => $time_fin ));
+  $donnees = $req->fetch();
+  $mtotcolo = $donnees['total'];
+  echo $donnees['total']." €.<br>";
+  $req->closeCursor(); // Termine le traitement de la requête
 
 
 
