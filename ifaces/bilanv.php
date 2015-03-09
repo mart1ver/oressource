@@ -1,31 +1,23 @@
 
 <?php session_start();
-
 //Vérification des autorisations de l'utilisateur et des variables de session requises pour l'affichage de cette page:
 if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 'bi') !== false))
       { include "tete.php";?>
-
    <head>
-      
       <link href="../css/bootstrap.min.css" rel="stylesheet">
-      
-      <link href="../fonts/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+       <link href="../fonts/font-awesome/css/font-awesome.min.css" rel="stylesheet">
       <link rel="stylesheet" type="text/css" media="all" href="../css/daterangepicker-bs3.css" />
-      
-      <script type="text/javascript" src="../js/jquery-2.0.3.min.js"></script>
+       <script type="text/javascript" src="../js/jquery-2.0.3.min.js"></script>
       <script type="text/javascript" src="../js/bootstrap.min.js"></script>
       
       <script type="text/javascript" src="../js/moment.js"></script>
       <script type="text/javascript" src="../js/daterangepicker.js"></script>
    </head>
- 
-
-      <div class="container">
-         
-
-          
-<div class"row">
+  
+  <div class="container">
+  <div class"row">
   <div class="col-md-11 " >
+<<<<<<< HEAD
 <h1>Bilan global</h1>
 
    <div class="col-md-4 col-md-offset-8" >
@@ -47,6 +39,17 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
                <script type="text/javascript">
                
                $(document).ready(function() {
+=======
+   <h1>Bilan global</h1>
+    <div class="col-md-4 col-md-offset-8" >
+     <label for="reportrange">Choisissez la période à inspecter:</label><br>
+      <div id="reportrange" class="pull-left" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc">
+       <i class="fa fa-calendar"></i>
+       <span></span> <b class="caret"></b>
+      </div>
+     <script type="text/javascript">
+                   $(document).ready(function() {
+>>>>>>> c989c3d13469c2a3933e36095ca29c48df1a2232
 
                   var cb = function(start, end, label) {
                     console.log(start.toISOString(), end.toISOString(), label);
@@ -91,11 +94,6 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
                         firstDay: 1
                     }
                   };
-
-                  
-
-                  
-
                   $('#reportrange').daterangepicker(optionSet1, cb);
                   $('#reportrange span').html(moment().format('D, MMMM, YYYY') + ' - ' + moment().format('D, MMMM, YYYY'));
                   $('#reportrange').on('show.daterangepicker', function() { console.log("show event fired"); });
@@ -121,42 +119,24 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
                   $('#destroy').click(function() {
                     $('#reportrange').data('daterangepicker').remove();
                   });
-
                });
                </script>
-
-            
-
-</div>
-<ul class="nav nav-tabs">
- 
-
-  <li><a href="<?php echo  "bilanc.php?date1=" . $_GET['date1'].'&date2='.$_GET['date2'].'&numero=0'?>" >Collectes</a></li>
-  <li><a href="<?php echo  "bilanhb.php?date1=" . $_GET['date1'].'&date2='.$_GET['date2'].'&numero=0'?>">Sorties hors-boutique</a></li>
-
-  <li class="active"><a>Ventes</a></li>
-  
-</ul>
-      
-         
-  </div>
-
-      </div>    
-
- 
-  
-      </div>
-      <hr />
-
-<div class="row">
-   <div class="col-md-8 col-md-offset-1" >
-  <h2> Bilan des ventes de la structure 
-  </h2>
-  <ul class="nav nav-tabs">
- 
-
- <?php 
-          //on affiche un onglet par type d'objet
+             </div>
+       
+       <ul class="nav nav-tabs">
+        <li><a href="<?php echo  "bilanc.php?date1=" . $_GET['date1'].'&date2='.$_GET['date2'].'&numero=0'?>" >Collectes</a></li>
+        <li><a href="<?php echo  "bilanhb.php?date1=" . $_GET['date1'].'&date2='.$_GET['date2'].'&numero=0'?>">Sorties hors-boutique</a></li>
+        <li class="active"><a>Ventes</a></li>
+      </ul>
+            </div>
+            </div>    
+            </div>
+      <hr/>
+      <div class="row">
+       <div class="col-md-8 col-md-offset-1" >
+        <h2> Bilan des ventes de la structure</h2>
+        <ul class="nav nav-tabs">
+        <?php      //on affiche un onglet par point de vente
             try
             {
             // On se connecte à MySQL
@@ -170,7 +150,7 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
  
             // Si tout va bien, on peut continuer
  
-            // On recupère tout le contenu des visibles de la table type_dechets
+            // On recupère tout le contenu des visibles de la table points_vente
             $reponse = $bdd->query('SELECT * FROM points_vente');
  
            // On affiche chaque entree une à une
@@ -180,143 +160,41 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
             <li<?php if ($_GET['numero'] == $donnees['id']){ echo ' class="active"';}?>><a href="<?php echo  "bilanv.php?numero=" . $donnees['id']."&date1=" . $_GET['date1']."&date2=" . $_GET['date2']?>"><?php echo$donnees['nom']?></a></li>
            <?php }
               $reponse->closeCursor(); // Termine le traitement de la requête
+              // sortisde la boucle on affiche un onglet special "touts les points"
            ?>
+
            <li<?php if ($_GET['numero'] == 0){ echo ' class="active"';}?>><a href="<?php echo  "bilanv.php?numero=0" ."&date1=" . $_GET['date1']."&date2=" . $_GET['date2']?>">Tous les points</a></li>
        </ul>
-
-  <br>
-
-<div class="row">
-  <h2>
-    <?php
-
+       <br>
+        <div class="row">
+         <h2>
+         <?php
 // on affiche la période visée
   if($_GET['date1'] == $_GET['date2']){
-    echo' Le '.$_GET['date1']." ,";
-
+    echo' Le '.$_GET['date1']." : </h2>";
   }
   else
   {
-  echo' Du '.$_GET['date1']." au ".$_GET['date2']." ,";  
+  echo' Du '.$_GET['date1']." au ".$_GET['date2']." : </h2>";  
 }
 //on convertit les deux dates en un format compatible avec la bdd
-
 $txt1  = $_GET['date1'];
 $date1ft = DateTime::createFromFormat('d-m-Y', $txt1);
 $time_debut = $date1ft->format('Y-m-d');
 $time_debut = $time_debut." 00:00:00";
-
 $txt2  = $_GET['date2'];
 $date2ft = DateTime::createFromFormat('d-m-Y', $txt2);
 $time_fin = $date2ft->format('Y-m-d');
 $time_fin = $time_fin." 23:59:59";
-
-
-
-  ?>
-  chiffre total dégagé: <?php
-// on determine la masse totale collecté sur cette période (pour tous les points)
-
-
-           
-if ($_GET['numero'] == 0) {
-            try
-            {
-            // On se connecte à MySQL
-            include('../moteur/dbconfig.php');
-            }
-            catch(Exception $e)
-            {
-            // En cas d'erreur, on affiche un message et on arrête tout
-            die('Erreur : '.$e->getMessage());
-            }
-            // Si tout va bien, on peut continuer
-            // On recupère tout le contenu de la table point de vente
-
-
-$req = $bdd->prepare("SELECT  (SUM(vendus.prix)-SUM(vendus.remboursement)) AS total   FROM vendus  WHERE  DATE(vendus.timestamp) BETWEEN :du AND :au  ");
-$req->execute(array('du' => $time_debut,'au' => $time_fin ));
-$donnees = $req->fetch();
-$mtotcolo = $donnees['total'];
-echo $donnees['total']." €,";
-            
-              $req->closeCursor(); // Termine le traitement de la requête
-               
-}
-else //si on observe un point en particulier
+  
+if ($_GET['numero'] == 0) // si numero == 0*****************************************************************************************************************************************
 {
-
-try
-            {
-            // On se connecte à MySQL
-            include('../moteur/dbconfig.php');
-            }
-            catch(Exception $e)
-            {
-            // En cas d'erreur, on affiche un message et on arrête tout
-            die('Erreur : '.$e->getMessage());
-            }
-            // Si tout va bien, on peut continuer
-            // On recupère tout le contenu de la table point de vente
-
-
-$req = $bdd->prepare("SELECT (SUM(vendus.prix)-SUM(vendus.remboursement))  AS total  
-FROM vendus ,ventes
-WHERE vendus.id_vente = ventes.id 
-AND vendus.timestamp BETWEEN :du AND :au  AND ventes.id_point_vente  = :numero ");
-
-
-
-$req->execute(array('du' => $time_debut,'au' => $time_fin,'numero' => $_GET['numero'] ));
-$donnees = $req->fetch();
-$mtotcolo = $donnees['total'];
-echo $donnees['total']." €.";
-            
-              $req->closeCursor(); // Termine le traitement de la requête
-
-
-
-}
-if ($_GET['numero'] == 0) {
-
-
   ?>
-  en <?php
-  // on determine le nombre de ventes sur la periode donée
-
-
-            try
-            {
-            // On se connecte à MySQL
-            include('../moteur/dbconfig.php');
-            }
-            catch(Exception $e)
-            {
-            // En cas d'erreur, on affiche un message et on arrête tout
-            die('Erreur : '.$e->getMessage());
-            }
- 
-            // Si tout va bien, on peut continuer
-            /*
-
-            */
- $req = $bdd->prepare("SELECT COUNT(id) FROM ventes WHERE DATE(ventes.timestamp) BETWEEN :du AND :au ");
-$req->execute(array('du' => $time_debut,'au' => $time_fin ));
-$donnees = $req->fetch();
-     
-echo $donnees['COUNT(id)'];
-
-
-
-
-  ?> vente<?php 
-  if ($donnees['COUNT(id)'] > 1) 
-  {echo "s";}
-  $req->closeCursor(); // Termine le traitement de la requête
- ?>, sur <?php
-// on determine le nombre de points de collecte
-
-
+  <div class="row">
+  <div class="col-md-6">
+  <?php
+  echo "-nombre de points de vente : ";
+  // on determine le nombre de points de vente à cet instant
             try
             {
             // On se connecte à MySQL
@@ -333,27 +211,31 @@ echo $donnees['COUNT(id)'];
 
             */
  $req = $bdd->prepare("SELECT COUNT(id) FROM points_vente");
-$req->execute();
-$donnees = $req->fetch();
-     
-echo $donnees['COUNT(id)'];
+ $req->execute();
+ $donnees = $req->fetch();
+echo $donnees['COUNT(id)']."<br>";
 
-
-
-
-
-  ?> point<?php 
-  if ($donnees['COUNT(id)'] > 1) 
-  {echo "s";}
+  echo "-chiffre total dégagé (remboursemments déduits) : ";
+ try
+ {
+  // On se connecte à MySQL
+  include('../moteur/dbconfig.php');
+  }
+  catch(Exception $e)
+  {
+  // En cas d'erreur, on affiche un message et on arrête tout
+  die('Erreur : '.$e->getMessage());
+  }
+  // Si tout va bien, on peut continuer
+  // On recupère tout le contenu de la table point de vente
+  $req = $bdd->prepare("SELECT  (SUM(vendus.prix)-SUM(vendus.remboursement)) AS total   FROM vendus  WHERE  DATE(vendus.timestamp) BETWEEN :du AND :au  ");
+  $req->execute(array('du' => $time_debut,'au' => $time_fin ));
+  $donnees = $req->fetch();
+  $mtotcolo = $donnees['total'];
+  echo $donnees['total']." €.<br>";
   $req->closeCursor(); // Termine le traitement de la requête
- ?> de vente.
-
-<?php }else{
-?>
-en <?php
-  // on determine le nombre de ventes sur la periode donée et un point en particulierMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM
-
-
+ echo "-nombre d'objets vendus : ";
+// on determine le nombre d'objets vendus
             try
             {
             // On se connecte à MySQL
@@ -369,420 +251,280 @@ en <?php
             /*
 
             */
- $req = $bdd->prepare("SELECT COUNT(id) FROM ventes WHERE DATE(ventes.timestamp) BETWEEN :du AND :au AND ventes.id_point_vente = :numero");
+ $req = $bdd->prepare("SELECT SUM(vendus.quantite) FROM vendus WHERE prix > 0 AND DATE(vendus.timestamp) BETWEEN :du AND :au ");
+ $req->execute(array('du' => $time_debut,'au' => $time_fin ));
+ $donnees = $req->fetch();
+echo $donnees['SUM(vendus.quantite)']."<br>";
+ echo "-nombre de ventes : ";
+// on determine le nombre de ventes
+            try
+            {
+            // On se connecte à MySQL
+            include('../moteur/dbconfig.php');
+            }
+            catch(Exception $e)
+            {
+            // En cas d'erreur, on affiche un message et on arrête tout
+            die('Erreur : '.$e->getMessage());
+            }
+ 
+            // Si tout va bien, on peut continuer
+            /*
+
+            */
+ $req = $bdd->prepare("SELECT COUNT(ventes.id) FROM ventes ,vendus WHERE vendus.id_vente = ventes.id AND DATE(vendus.timestamp) BETWEEN :du AND :au  AND vendus.prix > 0 ");
+ $req->execute(array('du' => $time_debut,'au' => $time_fin ));
+ $donnees = $req->fetch();
+echo $donnees['COUNT(ventes.id)']."<br>";
+
+  echo "-nombre d'objets remboursés : ";
+  // on determine le nombre d'objets remboursés
+            try
+            {
+            // On se connecte à MySQL
+            include('../moteur/dbconfig.php');
+            }
+            catch(Exception $e)
+            {
+            // En cas d'erreur, on affiche un message et on arrête tout
+            die('Erreur : '.$e->getMessage());
+            }
+ 
+            // Si tout va bien, on peut continuer
+            /*
+
+            */
+ $req = $bdd->prepare("SELECT SUM(vendus.quantite) FROM vendus WHERE remboursement > 0 AND DATE(vendus.timestamp) BETWEEN :du AND :au ");
+ $req->execute(array('du' => $time_debut,'au' => $time_fin ));
+ $donnees = $req->fetch();
+echo intval($donnees['SUM(vendus.quantite)'])."<br>";
+  echo "-nombre de remboursemments : ";
+  // on determine le nombre de remboursements
+            try
+            {
+            // On se connecte à MySQL
+            include('../moteur/dbconfig.php');
+            }
+            catch(Exception $e)
+            {
+            // En cas d'erreur, on affiche un message et on arrête tout
+            die('Erreur : '.$e->getMessage());
+            }
+ 
+            // Si tout va bien, on peut continuer
+            /*
+
+            */
+ $req = $bdd->prepare("SELECT COUNT(ventes.id) FROM ventes ,vendus WHERE vendus.id_vente = ventes.id AND DATE(vendus.timestamp) BETWEEN :du AND :au   AND vendus.remboursement > 0 ");
+ $req->execute(array('du' => $time_debut,'au' => $time_fin ));
+ $donnees = $req->fetch();
+echo $donnees['COUNT(ventes.id)']."<br>";
+
+  echo "-somme remboursée : ";
+try
+ {
+  // On se connecte à MySQL
+  include('../moteur/dbconfig.php');
+  }
+  catch(Exception $e)
+  {
+  // En cas d'erreur, on affiche un message et on arrête tout
+  die('Erreur : '.$e->getMessage());
+  }
+  // Si tout va bien, on peut continuer
+  // On recupère tout le contenu de la table point de vente
+  $req = $bdd->prepare("SELECT  SUM(vendus.remboursement) AS total   FROM vendus  WHERE  DATE(vendus.timestamp) BETWEEN :du AND :au  ");
+  $req->execute(array('du' => $time_debut,'au' => $time_fin ));
+  $donnees = $req->fetch();
+  $mtotcolo = $donnees['total'];
+  echo $donnees['total']." €.<br>";
+  $req->closeCursor(); // Termine le traitement de la requête
+
+
+?>
+</div>
+
+</div>
+<?php
+
+
+
+
+}
+else // si numero ==! 0*********************************************************************************************************************************************************
+{
+?>
+  <div class="row">
+  <div class="col-md-6">
+  <?php
+echo "-chiffre total dégagé : (remboursemments déduits) ";
+try
+            {
+            // On se connecte à MySQL
+            include('../moteur/dbconfig.php');
+            }
+            catch(Exception $e)
+            {
+            // En cas d'erreur, on affiche un message et on arrête tout
+            die('Erreur : '.$e->getMessage());
+            }
+            // Si tout va bien, on peut continuer
+            // On recupère tout le contenu de la table point de vente
+
+
+$req = $bdd->prepare("SELECT (SUM(vendus.prix)-SUM(vendus.remboursement))  AS total  
+FROM vendus ,ventes
+WHERE DATE(ventes.timestamp) BETWEEN :du AND :au AND ventes.id_point_vente  = :numero AND ventes.id = vendus.id_vente");
 $req->execute(array('du' => $time_debut,'au' => $time_fin,'numero' => $_GET['numero'] ));
 $donnees = $req->fetch();
-     
-echo $donnees['COUNT(id)'];
+$mtotcolo = $donnees['total'];
+echo $donnees['total']." €.<br>";
+$req->closeCursor(); // Termine le traitement de la requête
+echo "-nombre d'objets vendus : ";
+// on determine le nombre d'objets vendus
+            try
+            {
+            // On se connecte à MySQL
+            include('../moteur/dbconfig.php');
+            }
+            catch(Exception $e)
+            {
+            // En cas d'erreur, on affiche un message et on arrête tout
+            die('Erreur : '.$e->getMessage());
+            }
+ 
+            // Si tout va bien, on peut continuer
+            /*
 
+            */
+ $req = $bdd->prepare("SELECT SUM(vendus.quantite) FROM vendus, ventes WHERE vendus.prix > 0 AND DATE(vendus.timestamp) BETWEEN :du AND :au AND ventes.id_point_vente  = :numero AND ventes.id = vendus.id_vente");
+ $req->execute(array('du' => $time_debut,'au' => $time_fin,'numero' => $_GET['numero'] ));
+ $donnees = $req->fetch();
+ echo $donnees['SUM(vendus.quantite)']."<br>";
+ echo "-nombre de ventes : ";
+ // on determine le nombre de ventes
+            try
+            {
+            // On se connecte à MySQL
+            include('../moteur/dbconfig.php');
+            }
+            catch(Exception $e)
+            {
+            // En cas d'erreur, on affiche un message et on arrête tout
+            die('Erreur : '.$e->getMessage());
+            }
+ 
+            // Si tout va bien, on peut continuer
+            /*
 
+            */
+ $req = $bdd->prepare("SELECT COUNT(ventes.id) FROM ventes ,vendus WHERE vendus.id_vente = ventes.id AND DATE(vendus.timestamp) BETWEEN :du AND :au  AND vendus.prix > 0 AND ventes.id_point_vente  = :numero");
+ $req->execute(array('du' => $time_debut,'au' => $time_fin,'numero' => $_GET['numero'] ));
+ $donnees = $req->fetch();
+echo $donnees['COUNT(ventes.id)']."<br>";
 
+echo "-nombre de ventes : ";
+// on determine le nombre de ventes
+            try
+            {
+            // On se connecte à MySQL
+            include('../moteur/dbconfig.php');
+            }
+            catch(Exception $e)
+            {
+            // En cas d'erreur, on affiche un message et on arrête tout
+            die('Erreur : '.$e->getMessage());
+            }
+ 
+            // Si tout va bien, on peut continuer
+            /*
 
-  ?> vente<?php 
-  if ($donnees['COUNT(id)'] > 1) 
-  {echo "s";}
+            */
+ $req = $bdd->prepare("SELECT COUNT(ventes.id) FROM ventes ,vendus WHERE vendus.id_vente = ventes.id AND DATE(vendus.timestamp) BETWEEN :du AND :au  AND vendus.prix > 0 AND ventes.id_point_vente  = :numero ");
+ $req->execute(array('du' => $time_debut,'au' => $time_fin,'numero' => $_GET['numero'] ));
+ $donnees = $req->fetch();
+echo $donnees['COUNT(ventes.id)']."<br>";
+echo "-nombre d'objets remboursés : ";
+// on determine le nombre d'objets remboursés
+            try
+            {
+            // On se connecte à MySQL
+            include('../moteur/dbconfig.php');
+            }
+            catch(Exception $e)
+            {
+            // En cas d'erreur, on affiche un message et on arrête tout
+            die('Erreur : '.$e->getMessage());
+            }
+ 
+            // Si tout va bien, on peut continuer
+            /*
+
+            */
+ $req = $bdd->prepare("SELECT SUM(vendus.quantite) FROM vendus,ventes WHERE vendus.remboursement > 0 AND DATE(vendus.timestamp) BETWEEN :du AND :au AND ventes.id_point_vente  = :numero AND ventes.id = vendus.id_vente");
+ $req->execute(array('du' => $time_debut,'au' => $time_fin,'numero' => $_GET['numero'] ));
+ $donnees = $req->fetch();
+echo intval($donnees['SUM(vendus.quantite)'])."<br>";
+echo "-nombre de remboursemments : ";
+// on determine le nombre de remboursements
+            try
+            {
+            // On se connecte à MySQL
+            include('../moteur/dbconfig.php');
+            }
+            catch(Exception $e)
+            {
+            // En cas d'erreur, on affiche un message et on arrête tout
+            die('Erreur : '.$e->getMessage());
+            }
+ 
+            // Si tout va bien, on peut continuer
+            /*
+
+            */
+ $req = $bdd->prepare("SELECT COUNT(ventes.id) FROM ventes ,vendus WHERE vendus.id_vente = ventes.id AND DATE(vendus.timestamp) BETWEEN :du AND :au   AND vendus.remboursement > 0 AND ventes.id_point_vente  = :numero ");
+ $req->execute(array('du' => $time_debut,'au' => $time_fin,'numero' => $_GET['numero'] ));
+ $donnees = $req->fetch();
+echo $donnees['COUNT(ventes.id)']."<br>";
+echo "-somme remboursée : ";
+
+try
+ {
+ 
+  // On se connecte à MySQL
+  include('../moteur/dbconfig.php');
+  }
+  catch(Exception $e)
+  {
+  // En cas d'erreur, on affiche un message et on arrête tout
+  die('Erreur : '.$e->getMessage());
+  }
+  // Si tout va bien, on peut continuer
+  // On recupère tout le contenu de la table point de vente
+  $req = $bdd->prepare("SELECT  SUM(vendus.remboursement) AS total   FROM vendus,ventes  WHERE  DATE(vendus.timestamp) BETWEEN :du AND :au  AND ventes.id_point_vente  = :numero AND ventes.id = vendus.id_vente ");
+  $req->execute(array('du' => $time_debut,'au' => $time_fin,'numero' => $_GET['numero'] ));
+  $donnees = $req->fetch();
+  $mtotcolo = $donnees['total'];
+  echo $donnees['total']." €.<br>";
   $req->closeCursor(); // Termine le traitement de la requête
- ?>
 
+
+?>
+</div>
+<div class="col-md-6"></div>
+</div>
 <?php
-} ?></h2>
-  <div class="col-md-7">        
 
 
-
-
-
-  
-
-
-
-
-<div class="panel panel-default">
-  <div class="panel-heading">
-    <h3 class="panel-title">Répartition par type d'objet
-</h3>
-  </div>
-  <div class="panel-body">
-    
-<table class="table table-condensed table-striped table table-bordered table-hover" style="border-collapse:collapse;">
-    <thead>
-        <tr>
-            <th  style="width:300px">Type d'objet</th>
-            <th>Quantité vendue</th>
-            <th>Chiffre dégagé</th>
-            <th>Prix moyen</th>
-            <th>%</th>
-            
-        </tr>
-    </thead>
-    <tbody>
-       
-
-
-        <?php
-        if ($_GET['numero'] == 0) {
-
-// on determine les masses totales collèctés sur cete période(pour Tous les points)
-            try
-            {
-            // On se connecte à MySQL
-            include('../moteur/dbconfig.php');
-            }
-            catch(Exception $e)
-            {
-            // En cas d'erreur, on affiche un message et on arrête tout
-            die('Erreur : '.$e->getMessage());
-            }
- 
-            // Si tout va bien, on peut continuer
- 
-            // On recupère tout le contenu de la table affectations
-
-            $reponse = $bdd->prepare('SELECT 
-type_dechets.nom,type_dechets.id,SUM(vendus.quantite) sommeq,SUM(vendus.prix) sommep
-FROM 
-vendus,type_dechets, ventes
-WHERE
-vendus.timestamp BETWEEN :du AND :au AND
-type_dechets.id =  vendus.id_type_dechet AND vendus.id_vente = ventes.id
-GROUP BY id_type_dechet
-ORDER BY sommep DESC');
- $reponse->execute(array('du' => $time_debut,'au' => $time_fin ));
-           // On affiche chaque entree une à une
-           while ($donnees = $reponse->fetch())
-           {
-            ?>
-            <tr data-toggle="collapse" data-target=".parmasse<?php echo $donnees['id']?>" >
-            <td><?php echo $donnees['nom'] ?></td>
-            <td><?php echo $donnees['sommeq'] ?></td>
-            <td><?php echo $donnees['sommep'] ?></td>
-            <td><?php echo round($donnees['sommep']/$donnees['sommeq'],2) ?></td>     
-            <td><?php echo round((100*$donnees['sommep'])/$mtotcolo,2)?> %</td> 
-        </tr>
-
-      <?php 
-      $someqtot = 0;
-      $someptot = 0;
-      $percenttot = 0;
-
-            try
-            {
-            // On se connecte à MySQL
-            include('../moteur/dbconfig.php');
-            }
-            catch(Exception $e)
-            {
-            // En cas d'erreur, on affiche un message et on arrête tout
-            die('Erreur : '.$e->getMessage());
-            }
- 
-            // Si tout va bien, on peut continuer
- 
-            // On recupère tout le contenu de la table affectations
-            $reponse2 = $bdd->prepare('SELECT IF(vendus.id_objet = 0, type_dechets.nom, grille_objets.nom) nom ,grille_objets.id, sum(vendus.quantite) sommeq, sum(vendus.prix) sommep
- FROM grille_objets, vendus ,ventes, type_dechets
-WHERE vendus.timestamp BETWEEN :du AND :au 
-AND grille_objets.id = vendus.id_objet 
-AND type_dechets.id = vendus.id_type_dechet
-AND vendus.id_vente = ventes.id
-AND type_dechets.id = :id_type_dechet
-GROUP BY nom
-ORDER BY sommep DESC');
-  $reponse2->execute(array('du' => $time_debut,'au' => $time_fin ,'id_type_dechet' => $donnees['id'] ));
-           // On affiche chaque entree une à une
-           while ($donnees2 = $reponse2->fetch())
-           {        
-            ?>
-
-    <tr class="collapse parmasse<?php echo $donnees['id']?> " >
-            <td  >
-              <?php echo $donnees2['nom'] ?>
-            </td >
-            <td >
-                <?php echo $donnees2['sommeq']." Pcs." ?>
-            </td>
-            <td >
-                <?php echo $donnees2['sommep']." €." ?>
-            </td>
-            <td >
-               <?php echo round((100*$donnees2['sommep'])/$mtotcolo,2)." %" ?> 
-                           </td>
-          </tr>
-        
- <?php
- $someqtot = $someqtot + $donnees2['sommeq'] ;
- $someptot = $someptot + $donnees2['sommep'] ;
- $percenttot = $percenttot + round((100*$donnees2['sommep'])/$mtotcolo,2);
-             }?>
-
-             <tr class="collapse parmasse<?php echo $donnees['id']?> " >
-            <td  >
-              <?php echo "autres" ?>
-            </td >
-            <td >
-                <?php echo $donnees['sommeq'] - $someqtot." Pcs." ?>
-            </td>
-            <td >
-                <?php echo $donnees['sommep'] - $someptot." €." ?>
-            </td>
-            <td >
-               <?php 
-               if (round( ((100*$donnees['sommep'])/$mtotcolo - $percenttot)   ,2) > 0)
-               {
-               echo round( ((100*$donnees['sommep'])/$mtotcolo - $percenttot)   ,2)." %"; 
-              }
-              else
-                {echo "0 %";}
-               ?> 
-                           </td>
-          </tr>
-             <?php
-
-             
-              $reponse2->closeCursor(); // Termine le traitement de la requête
-               
-           }
-              $reponse->closeCursor(); // Termine le traitement de la requête
-               }else
-
-               {
-
-
-// on determine les masses totales collèctés sur cete période(pour Tous les points)
-            try
-            {
-            // On se connecte à MySQL
-            include('../moteur/dbconfig.php');
-            }
-            catch(Exception $e)
-            {
-            // En cas d'erreur, on affiche un message et on arrête tout
-            die('Erreur : '.$e->getMessage());
-            }
- 
-            // Si tout va bien, on peut continuer
- 
-            // On recupère tout le contenu de la table affectations
-
-            $reponse = $bdd->prepare('SELECT 
-type_dechets.nom,type_dechets.id,SUM(vendus.quantite) sommeq,SUM(vendus.prix) sommep
-FROM 
-vendus,type_dechets, ventes
-WHERE
-vendus.timestamp BETWEEN :du AND :au AND
-type_dechets.id =  vendus.id_type_dechet AND vendus.id_vente = ventes.id AND ventes.id_point_vente = :numero
-GROUP BY id_type_dechet
-ORDER BY sommep DESC');
- $reponse->execute(array('du' => $time_debut,'au' => $time_fin ,'numero' => $_GET['numero'] ));
-           // On affiche chaque entree une à une
-           while ($donnees = $reponse->fetch())
-           {
-            ?>
-            <tr data-toggle="collapse" data-target=".parmasse<?php echo $donnees['id']?>" >
-            <td><?php echo $donnees['nom'] ?></td>
-            <td><?php echo $donnees['sommeq'] ?></td>
-            <td><?php echo $donnees['sommep'] ?></td>
-            <td><?php echo round($donnees['sommep']/$donnees['sommeq'],2) ?></td>     
-            <td><?php echo round((100*$donnees['sommep'])/$mtotcolo,2)?> %</td> 
-        </tr>
-      <?php 
-      $someqtot = 0;
-      $someptot = 0;
-      $percenttot = 0;
-            try
-            {
-            // On se connecte à MySQL
-            include('../moteur/dbconfig.php');
-            }
-            catch(Exception $e)
-            {
-            // En cas d'erreur, on affiche un message et on arrête tout
-            die('Erreur : '.$e->getMessage());
-            }
-             // Si tout va bien, on peut continuer
-             // On recupère tout le contenu de la table affectations
-            $reponse2 = $bdd->prepare('SELECT IF(vendus.id_objet = 0, type_dechets.nom, grille_objets.nom) nom ,grille_objets.id, sum(vendus.quantite) sommeq, sum(vendus.prix) sommep
- FROM grille_objets, vendus ,ventes, type_dechets
-WHERE vendus.timestamp BETWEEN :du AND :au 
-AND grille_objets.id = vendus.id_objet 
-AND type_dechets.id = vendus.id_type_dechet
-AND vendus.id_vente = ventes.id
-AND type_dechets.id = :id_type_dechet
-AND ventes.id_point_vente = :numero
-GROUP BY nom
-ORDER BY sommep DESC');
-  $reponse2->execute(array('du' => $time_debut,'au' => $time_fin ,'id_type_dechet' => $donnees['id'],'numero' => $_GET['numero'] ));
-           // On affiche chaque entree une à une
-           while ($donnees2 = $reponse2->fetch())
-           {        
-            ?>
-
-    <tr class="collapse parmasse<?php echo $donnees['id']?> " >
-            <td  >
-              <?php echo $donnees2['nom'] ?>
-            </td >
-            <td >
-                <?php echo $donnees2['sommeq']." Pcs." ?>
-            </td>
-            <td >
-                <?php echo $donnees2['sommep']." €." ?>
-            </td>
-            <td >
-               <?php echo round((100*$donnees2['sommep'])/$mtotcolo,2)." %" ?> 
-                           </td>
-          </tr>
-        
- <?php
- $someqtot = $someqtot + $donnees2['sommeq'] ;
- $someptot = $someptot + $donnees2['sommep'] ;
- $percenttot = $percenttot + round((100*$donnees2['sommep'])/$mtotcolo,2);
-             }?>
-
-             <tr class="collapse parmasse<?php echo $donnees['id']?> " >
-            <td  >
-              <?php echo "autres" ?>
-            </td >
-            <td >
-                <?php echo $donnees['sommeq'] - $someqtot." Pcs." ?>
-            </td>
-            <td >
-                <?php echo $donnees['sommep'] - $someptot." €." ?>
-            </td>
-            <td >
-               <?php 
-               if (round( ((100*$donnees['sommep'])/$mtotcolo - $percenttot)   ,2) > 0)
-               {
-               echo round( ((100*$donnees['sommep'])/$mtotcolo - $percenttot)   ,2)." %"; 
-              }
-              else
-                {echo "0 %";}
-               ?> 
-                           </td>
-          </tr>
-             <?php
-
-             
-              $reponse2->closeCursor(); // Termine le traitement de la requête
-               
-           }
-              $reponse->closeCursor(); // Termine le traitement de la requête
-               } ?>
-
-      
-
-
-
-
-
-
-
-
-    </tbody>
-</table>
-
-
-
-
-<br>
-
-
-  
-          
-       <br>
-<a href="<?php echo  "../moteur/export_bilanv.php?numero=". $_GET['numero']."&date1=" . $_GET['date1']."&date2=" . $_GET['date2']?>">
-
-
-
-      
-        <button type="button" class="btn btn-default btn-xs">exporter ces données (.csv) </button>
-      </a>
+}
+?>
 </div>
   </div>
-
-
-
-  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  </div>
- 
-
-
-  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  <div class="col-md-5">
-
-
-
-  </div>
- 
-
- 
-
-
-
-
-
-
-
-
-</div>
-
-<br>
- 
-
-       
-</div>
-        </div>
-
- 
-
-
-
-
-
-
-
-   
-
-
+   </div>
+    </div>
+    <br>
+     </div>
+      </div>
 <?php include "pied_bilan.php";
 }
     else
