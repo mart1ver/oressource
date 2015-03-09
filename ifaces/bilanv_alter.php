@@ -164,7 +164,29 @@ $time_fin = $time_fin." 23:59:59";
   
 if ($_GET['numero'] == 0) // si numero == 0
 {
- echo "-chiffre total dégagé:";
+  echo "-nombre de points de vente :";
+  // on determine le nombre de points de vente
+            try
+            {
+            // On se connecte à MySQL
+            include('../moteur/dbconfig.php');
+            }
+            catch(Exception $e)
+            {
+            // En cas d'erreur, on affiche un message et on arrête tout
+            die('Erreur : '.$e->getMessage());
+            }
+ 
+            // Si tout va bien, on peut continuer
+            /*
+
+            */
+ $req = $bdd->prepare("SELECT COUNT(id) FROM points_vente");
+ $req->execute();
+ $donnees = $req->fetch();
+echo $donnees['COUNT(id)']."<br>";
+
+  echo "-chiffre total dégagé :";
  try
  {
   // On se connecte à MySQL
@@ -181,9 +203,13 @@ if ($_GET['numero'] == 0) // si numero == 0
   $req->execute(array('du' => $time_debut,'au' => $time_fin ));
   $donnees = $req->fetch();
   $mtotcolo = $donnees['total'];
-  echo $donnees['total']." €,";
+  echo $donnees['total']." €.<br>";
   $req->closeCursor(); // Termine le traitement de la requête
+ echo "-nombre d'objets vendus :";
 
+ echo "-nombre de ventes :";
+
+  echo "-nombre de remboursemments :";
 
 
 
@@ -196,7 +222,7 @@ if ($_GET['numero'] == 0) // si numero == 0
 }
 else // si numero ==! 0
 {
-echo "-chiffre total dégagé:";
+echo "-chiffre total dégagé :";
 try
             {
             // On se connecte à MySQL
@@ -217,16 +243,17 @@ WHERE DATE(ventes.timestamp) BETWEEN :du AND :au AND ventes.id_point_vente  = :n
 $req->execute(array('du' => $time_debut,'au' => $time_fin,'numero' => $_GET['numero'] ));
 $donnees = $req->fetch();
 $mtotcolo = $donnees['total'];
-echo $donnees['total']." €.";
+echo $donnees['total']." €.<br>";
 $req->closeCursor(); // Termine le traitement de la requête
+echo "-nombre d'objets vendus :";
+echo "-nombre de ventes :";
+echo "-nombre de remboursemments :";
+
+
+
+
 }
-
-
-
-
-
-
-  ?>
+?>
 </div>
   </div>
    </div>
