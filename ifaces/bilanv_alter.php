@@ -248,7 +248,7 @@ echo $donnees['SUM(vendus.quantite)']."<br>";
  $donnees = $req->fetch();
 echo $donnees['COUNT(ventes.id)']."<br>";
 
-  echo "-nombre d'objets remboursés' : ";
+  echo "-nombre d'objets remboursés : ";
   // on determine le nombre d'objets remboursés
             try
             {
