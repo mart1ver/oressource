@@ -140,122 +140,50 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
 
            <li<?php if ($_GET['numero'] == 0){ echo ' class="active"';}?>><a href="<?php echo  "bilanv_alter.php?numero=0" ."&date1=" . $_GET['date1']."&date2=" . $_GET['date2']?>">Tous les points</a></li>
        </ul>
-
-  <br>
-
-<div class="row">
-  <h2>
-    <?php
-
+       <br>
+        <div class="row">
+         <h2>
+         <?php
 // on affiche la période visée
   if($_GET['date1'] == $_GET['date2']){
     echo' Le '.$_GET['date1']." ,";
-
   }
   else
   {
   echo' Du '.$_GET['date1']." au ".$_GET['date2']." ,";  
 }
 //on convertit les deux dates en un format compatible avec la bdd
-
 $txt1  = $_GET['date1'];
 $date1ft = DateTime::createFromFormat('d-m-Y', $txt1);
 $time_debut = $date1ft->format('Y-m-d');
 $time_debut = $time_debut." 00:00:00";
-
 $txt2  = $_GET['date2'];
 $date2ft = DateTime::createFromFormat('d-m-Y', $txt2);
 $time_fin = $date2ft->format('Y-m-d');
 $time_fin = $time_fin." 23:59:59";
+  
+if ($_GET['numero'] == 0) // si numero == 0
+{
+echo "cumul tout les points";
+}
+else // si numero ==! 0
+{
+echo "point ".$_GET['numero'];
+}
+
+
+
 
 
 
   ?>
-
-  
 </div>
   </div>
-
-
-
-  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  </div>
- 
-
-
-  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
- 
-
- 
-
-
-
-
-
-
-
-
-</div>
-
-<br>
- 
-
-       
-</div>
-        </div>
-
- 
-
-
-
-
-
-
-
-   
-
-
+   </div>
+    </div>
+    <br>
+     </div>
+      </div>
 <?php include "pied_bilan.php";
 }
     else
