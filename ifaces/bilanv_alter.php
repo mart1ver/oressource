@@ -227,6 +227,27 @@ echo $donnees['COUNT(id)']."<br>";
  $donnees = $req->fetch();
 echo $donnees['SUM(vendus.quantite)']."<br>";
  echo "-nombre de ventes :";
+// on determine le nombre dde ventes
+            try
+            {
+            // On se connecte à MySQL
+            include('../moteur/dbconfig.php');
+            }
+            catch(Exception $e)
+            {
+            // En cas d'erreur, on affiche un message et on arrête tout
+            die('Erreur : '.$e->getMessage());
+            }
+ 
+            // Si tout va bien, on peut continuer
+            /*
+
+            */
+ $req = $bdd->prepare("SELECT COUNT(ventes.id) FROM ventes ,vendus WHERE vendus.id_vente = ventes.id AND vendus.prix > 0 ");
+ $req->execute();
+ $donnees = $req->fetch();
+echo $donnees['COUNT(ventes.id)']."<br>";
+
 
   echo "-nombre de remboursemments :";
 
