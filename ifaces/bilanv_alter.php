@@ -162,7 +162,7 @@ $date2ft = DateTime::createFromFormat('d-m-Y', $txt2);
 $time_fin = $date2ft->format('Y-m-d');
 $time_fin = $time_fin." 23:59:59";
   
-if ($_GET['numero'] == 0) // si numero == 0
+if ($_GET['numero'] == 0) // si numero == 0*****************************************************************************************************************************************
 {
   echo "-nombre de points de vente : ";
   // on determine le nombre de points de vente à cet instant
@@ -205,7 +205,7 @@ echo $donnees['COUNT(id)']."<br>";
   $mtotcolo = $donnees['total'];
   echo $donnees['total']." €.<br>";
   $req->closeCursor(); // Termine le traitement de la requête
- echo "-nombre d'objets vendus :";
+ echo "-nombre d'objets vendus : ";
 // on determine le nombre d'objets vendus
             try
             {
@@ -226,7 +226,7 @@ echo $donnees['COUNT(id)']."<br>";
  $req->execute(array('du' => $time_debut,'au' => $time_fin ));
  $donnees = $req->fetch();
 echo $donnees['SUM(vendus.quantite)']."<br>";
- echo "-nombre de ventes :";
+ echo "-nombre de ventes : ";
 // on determine le nombre dde ventes
             try
             {
@@ -248,7 +248,7 @@ echo $donnees['SUM(vendus.quantite)']."<br>";
  $donnees = $req->fetch();
 echo $donnees['COUNT(ventes.id)']."<br>";
 
-  echo "-nombre d'objets remboursés' :";
+  echo "-nombre d'objets remboursés' : ";
   // on determine le nombre d'objets remboursés
             try
             {
@@ -269,7 +269,7 @@ echo $donnees['COUNT(ventes.id)']."<br>";
  $req->execute(array('du' => $time_debut,'au' => $time_fin ));
  $donnees = $req->fetch();
 echo $donnees['SUM(vendus.quantite)']."<br>";
-  echo "-nombre de remboursemments :";
+  echo "-nombre de remboursemments : ";
   // on determine le nombre de remboursements
             try
             {
@@ -291,7 +291,7 @@ echo $donnees['SUM(vendus.quantite)']."<br>";
  $donnees = $req->fetch();
 echo $donnees['COUNT(ventes.id)']."<br>";
 
-  echo "-somme remboursée :";
+  echo "-somme remboursée : ";
 try
  {
   // On se connecte à MySQL
@@ -318,7 +318,7 @@ try
 
 
 }
-else // si numero ==! 0
+else // si numero ==! 0*********************************************************************************************************************************************************
 {
 echo "-chiffre total dégagé : ";
 try
@@ -343,9 +343,13 @@ $donnees = $req->fetch();
 $mtotcolo = $donnees['total'];
 echo $donnees['total']." €.<br>";
 $req->closeCursor(); // Termine le traitement de la requête
-echo "-nombre d'objets vendus :";
-echo "-nombre de ventes :";
-echo "-nombre de remboursemments :";
+echo "-nombre d'objets vendus : ";
+echo "-nombre de ventes : ";
+echo "-nombre d'objets remboursés : ";
+echo "-nombre de remboursemments : ";
+echo "-somme remboursée : ";
+
+
 
 
 
