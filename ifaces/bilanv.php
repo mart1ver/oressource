@@ -318,7 +318,41 @@ try
 
 ?>
 </div>
+<div class="col-md-6">
 
+<table class="table table-hover">
+      <thead>
+        <tr>
+          <th>type d'objet</th>
+          <th>chiffre dégagé</th>
+          <th>quantité vendue</th>
+          <th>%</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th scope="row">mobilier</th>
+          <td>12€</td>
+          <td>12</td>
+          <td>20%</td>
+        </tr>
+        <tr>
+          <th scope="row">2</th>
+          <td>Jacob</td>
+          <td>Thornton</td>
+          <td>@fat</td>
+        </tr>
+        <tr>
+          <th scope="row">3</th>
+          <td>Larry</td>
+          <td>the Bird</td>
+          <td>@twitter</td>
+        </tr>
+      </tbody>
+    </table>
+
+
+</div>
 </div>
 <?php
 
@@ -486,7 +520,7 @@ try
 
 ?>
 </div>
-<div class="col-md-6"></div>
+<div class="col-md-6">tableau par type d'objets</div>
 </div>
 <?php
 
