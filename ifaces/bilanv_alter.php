@@ -146,11 +146,11 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
          <?php
 // on affiche la période visée
   if($_GET['date1'] == $_GET['date2']){
-    echo' Le '.$_GET['date1']." ,";
+    echo' Le '.$_GET['date1']." : </h2><br>";
   }
   else
   {
-  echo' Du '.$_GET['date1']." au ".$_GET['date2']." ,";  
+  echo' Du '.$_GET['date1']." au ".$_GET['date2']." : </h2><br>";  
 }
 //on convertit les deux dates en un format compatible avec la bdd
 $txt1  = $_GET['date1'];
@@ -164,7 +164,18 @@ $time_fin = $time_fin." 23:59:59";
   
 if ($_GET['numero'] == 0) // si numero == 0
 {
-echo "cumul tout les points";
+echo "-cumul tout les points";
+
+
+
+
+
+
+
+
+
+
+
 }
 else // si numero ==! 0
 {
