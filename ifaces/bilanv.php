@@ -1,50 +1,30 @@
 
 <?php session_start();
-
 //Vérification des autorisations de l'utilisateur et des variables de session requises pour l'affichage de cette page:
 if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 'bi') !== false))
       { include "tete.php";?>
-
    <head>
-      
       <link href="../css/bootstrap.min.css" rel="stylesheet">
-      
-      <link href="../fonts/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+       <link href="../fonts/font-awesome/css/font-awesome.min.css" rel="stylesheet">
       <link rel="stylesheet" type="text/css" media="all" href="../css/daterangepicker-bs3.css" />
-      
-      <script type="text/javascript" src="../js/jquery-2.0.3.min.js"></script>
+       <script type="text/javascript" src="../js/jquery-2.0.3.min.js"></script>
       <script type="text/javascript" src="../js/bootstrap.min.js"></script>
       <script type="text/javascript" src="../js/moment.js"></script>
       <script type="text/javascript" src="../js/daterangepicker.js"></script>
    </head>
- 
-
-      <div class="container">
-         
-
-          
-<div class"row">
+  
+  <div class="container">
+  <div class"row">
   <div class="col-md-11 " >
-<h1>Bilan global</h1>
-
-   <div class="col-md-4 col-md-offset-8" >
-<label for="reportrange">Choisissez la période à inspecter:</label><br>
-
-           
-
-                      
-
-            
-
-            
-
-               <div id="reportrange" class="pull-left" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc">
-                  <i class="fa fa-calendar"></i>
-                  <span></span> <b class="caret"></b>
-               </div>
-
-               <script type="text/javascript">
-               $(document).ready(function() {
+   <h1>Bilan global</h1>
+    <div class="col-md-4 col-md-offset-8" >
+     <label for="reportrange">Choisissez la période à inspecter:</label><br>
+      <div id="reportrange" class="pull-left" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc">
+       <i class="fa fa-calendar"></i>
+       <span></span> <b class="caret"></b>
+      </div>
+     <script type="text/javascript">
+                   $(document).ready(function() {
 
                   var cb = function(start, end, label) {
                     console.log(start.toISOString(), end.toISOString(), label);
@@ -89,11 +69,6 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
                         firstDay: 1
                     }
                   };
-
-                  
-
-                  
-
                   $('#reportrange').daterangepicker(optionSet1, cb);
                   $('#reportrange span').html(moment().format('D, MMMM, YYYY') + ' - ' + moment().format('D, MMMM, YYYY'));
                   $('#reportrange').on('show.daterangepicker', function() { console.log("show event fired"); });
@@ -119,42 +94,24 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
                   $('#destroy').click(function() {
                     $('#reportrange').data('daterangepicker').remove();
                   });
-
                });
                </script>
-
-            
-
-</div>
-<ul class="nav nav-tabs">
- 
-
-  <li><a href="<?php echo  "bilanc.php?date1=" . $_GET['date1'].'&date2='.$_GET['date2'].'&numero=0'?>" >Collectes</a></li>
-  <li><a href="<?php echo  "bilanhb.php?date1=" . $_GET['date1'].'&date2='.$_GET['date2'].'&numero=0'?>">Sorties hors-boutique</a></li>
-
-  <li class="active"><a>Ventes</a></li>
-  
-</ul>
-      
-         
-  </div>
-
-      </div>    
-
- 
-  
-      </div>
-      <hr />
-
-<div class="row">
-   <div class="col-md-8 col-md-offset-1" >
-  <h2> Bilan des ventes de la structure 
-  </h2>
-  <ul class="nav nav-tabs">
- 
-
- <?php 
-          //on affiche un onglet par type d'objet
+             </div>
+       
+       <ul class="nav nav-tabs">
+        <li><a href="<?php echo  "bilanc.php?date1=" . $_GET['date1'].'&date2='.$_GET['date2'].'&numero=0'?>" >Collectes</a></li>
+        <li><a href="<?php echo  "bilanhb.php?date1=" . $_GET['date1'].'&date2='.$_GET['date2'].'&numero=0'?>">Sorties hors-boutique</a></li>
+        <li class="active"><a>Ventes</a></li>
+      </ul>
+            </div>
+            </div>    
+            </div>
+      <hr/>
+      <div class="row">
+       <div class="col-md-8 col-md-offset-1" >
+        <h2> Bilan des ventes de la structure</h2>
+        <ul class="nav nav-tabs">
+        <?php      //on affiche un onglet par point de vente
             try
             {
             // On se connecte à MySQL
@@ -168,7 +125,7 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
  
             // Si tout va bien, on peut continuer
  
-            // On recupère tout le contenu des visibles de la table type_dechets
+            // On recupère tout le contenu des visibles de la table points_vente
             $reponse = $bdd->query('SELECT * FROM points_vente');
  
            // On affiche chaque entree une à une
@@ -178,7 +135,9 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
             <li<?php if ($_GET['numero'] == $donnees['id']){ echo ' class="active"';}?>><a href="<?php echo  "bilanv.php?numero=" . $donnees['id']."&date1=" . $_GET['date1']."&date2=" . $_GET['date2']?>"><?php echo$donnees['nom']?></a></li>
            <?php }
               $reponse->closeCursor(); // Termine le traitement de la requête
+              // sortisde la boucle on affiche un onglet special "touts les points"
            ?>
+
            <li<?php if ($_GET['numero'] == 0){ echo ' class="active"';}?>><a href="<?php echo  "bilanv.php?numero=0" ."&date1=" . $_GET['date1']."&date2=" . $_GET['date2']?>">Tous les points</a></li>
        </ul>
 
@@ -420,7 +379,7 @@ echo $donnees['COUNT(id)'];
         <?php
         if ($_GET['numero'] == 0) {
 
-// on determine les masses totales collèctés sur cete période(pour Tous les points)
+// on determine les ventes totales collèctés sur cete période(pour Tous les points)
             try
             {
             // On se connecte à MySQL
@@ -476,7 +435,7 @@ ORDER BY sommep DESC');
  
             // Si tout va bien, on peut continuer
  
-            // On recupère tout le contenu de la table affectations
+          
             $reponse2 = $bdd->prepare('SELECT IF(vendus.id_objet = 0, type_dechets.nom, grille_objets.nom) nom ,grille_objets.id, sum(vendus.quantite) sommeq, sum(vendus.prix) sommep
  FROM grille_objets, vendus ,ventes, type_dechets
 WHERE vendus.timestamp BETWEEN :du AND :au 
@@ -546,7 +505,7 @@ ORDER BY sommep DESC');
                {
 
 
-// on determine les masses totales collèctés sur cete période(pour Tous les points)
+// on determine les ventes totales sur cete période(pour un pôint en particulier)
             try
             {
             // On se connecte à MySQL
