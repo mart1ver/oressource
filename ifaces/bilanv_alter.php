@@ -320,7 +320,7 @@ try
 }
 else // si numero ==! 0*********************************************************************************************************************************************************
 {
-echo "-chiffre total dégagé : ";
+echo "-chiffre total dégagé : (remboursemments déduits) ";
 try
             {
             // On se connecte à MySQL
@@ -344,6 +344,27 @@ $mtotcolo = $donnees['total'];
 echo $donnees['total']." €.<br>";
 $req->closeCursor(); // Termine le traitement de la requête
 echo "-nombre d'objets vendus : ";
+// on determine le nombre d'objets vendus
+            try
+            {
+            // On se connecte à MySQL
+            include('../moteur/dbconfig.php');
+            }
+            catch(Exception $e)
+            {
+            // En cas d'erreur, on affiche un message et on arrête tout
+            die('Erreur : '.$e->getMessage());
+            }
+ 
+            // Si tout va bien, on peut continuer
+            /*
+
+            */
+ $req = $bdd->prepare("SELECT SUM(vendus.quantite) FROM vendus, ventes WHERE vendus.prix > 0 AND DATE(vendus.timestamp) BETWEEN :du AND :au AND ventes.id_point_vente  = :numero AND ventes.id = vendus.id_vente");
+ $req->execute(array('du' => $time_debut,'au' => $time_fin,'numero' => $_GET['numero'] ));
+ $donnees = $req->fetch();
+echo $donnees['SUM(vendus.quantite)']."<br>";
+ echo "-nombre de ventes : ";
 echo "-nombre de ventes : ";
 echo "-nombre d'objets remboursés : ";
 echo "-nombre de remboursemments : ";
