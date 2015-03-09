@@ -146,11 +146,11 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
          <?php
 // on affiche la période visée
   if($_GET['date1'] == $_GET['date2']){
-    echo' Le '.$_GET['date1']." : </h2><br>";
+    echo' Le '.$_GET['date1']." : </h2>";
   }
   else
   {
-  echo' Du '.$_GET['date1']." au ".$_GET['date2']." : </h2><br>";  
+  echo' Du '.$_GET['date1']." au ".$_GET['date2']." : </h2>";  
 }
 //on convertit les deux dates en un format compatible avec la bdd
 $txt1  = $_GET['date1'];
