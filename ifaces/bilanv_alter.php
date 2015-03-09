@@ -164,8 +164,25 @@ $time_fin = $time_fin." 23:59:59";
   
 if ($_GET['numero'] == 0) // si numero == 0
 {
-echo "-cumul tout les points";
-
+ echo "-chiffre total dégagé:";
+ try
+ {
+  // On se connecte à MySQL
+  include('../moteur/dbconfig.php');
+  }
+  catch(Exception $e)
+  {
+  // En cas d'erreur, on affiche un message et on arrête tout
+  die('Erreur : '.$e->getMessage());
+  }
+  // Si tout va bien, on peut continuer
+  // On recupère tout le contenu de la table point de vente
+  $req = $bdd->prepare("SELECT  (SUM(vendus.prix)-SUM(vendus.remboursement)) AS total   FROM vendus  WHERE  DATE(vendus.timestamp) BETWEEN :du AND :au  ");
+  $req->execute(array('du' => $time_debut,'au' => $time_fin ));
+  $donnees = $req->fetch();
+  $mtotcolo = $donnees['total'];
+  echo $donnees['total']." €,";
+  $req->closeCursor(); // Termine le traitement de la requête
 
 
 
@@ -179,7 +196,30 @@ echo "-cumul tout les points";
 }
 else // si numero ==! 0
 {
-echo "point ".$_GET['numero'];
+echo "-chiffre total dégagé:";
+try
+            {
+            // On se connecte à MySQL
+            include('../moteur/dbconfig.php');
+            }
+            catch(Exception $e)
+            {
+            // En cas d'erreur, on affiche un message et on arrête tout
+            die('Erreur : '.$e->getMessage());
+            }
+            // Si tout va bien, on peut continuer
+            // On recupère tout le contenu de la table point de vente
+
+
+$req = $bdd->prepare("SELECT (SUM(vendus.prix)-SUM(vendus.remboursement))  AS total  
+FROM vendus 
+AND vendus.timestamp BETWEEN :du AND :au  AND ventes.id_point_vente  = :numero ");
+$req->execute(array('du' => $time_debut,'au' => $time_fin,'numero' => $_GET['numero'] ));
+$donnees = $req->fetch();
+$mtotcolo = $donnees['total'];
+echo $donnees['total']." €.";
+            
+              $req->closeCursor(); // Termine le traitement de la requête
 }
 
 
