@@ -486,7 +486,7 @@ try
 
 ?>
 </div>
-<div class="col-md-6">tableau par type d'objets</div>
+<div class="col-md-6"></div>
 </div>
 <?php
 
