@@ -268,7 +268,7 @@ echo $donnees['COUNT(ventes.id)']."<br>";
  $req = $bdd->prepare("SELECT SUM(vendus.quantite) FROM vendus WHERE remboursement > 0 AND DATE(vendus.timestamp) BETWEEN :du AND :au ");
  $req->execute(array('du' => $time_debut,'au' => $time_fin ));
  $donnees = $req->fetch();
-echo $donnees['SUM(vendus.quantite)']."<br>";
+echo intval($donnees['SUM(vendus.quantite)'])."<br>";
   echo "-nombre de remboursemments : ";
   // on determine le nombre de remboursements
             try
@@ -427,7 +427,7 @@ echo "-nombre d'objets remboursés : ";
  $req = $bdd->prepare("SELECT SUM(vendus.quantite) FROM vendus,ventes WHERE vendus.remboursement > 0 AND DATE(vendus.timestamp) BETWEEN :du AND :au AND ventes.id_point_vente  = :numero AND ventes.id = vendus.id_vente");
  $req->execute(array('du' => $time_debut,'au' => $time_fin,'numero' => $_GET['numero'] ));
  $donnees = $req->fetch();
-echo $donnees['SUM(vendus.quantite)']."<br>";
+echo intval($donnees['SUM(vendus.quantite)'])."<br>";
 echo "-nombre de remboursemments : ";
 // on determine le nombre de remboursements
             try
