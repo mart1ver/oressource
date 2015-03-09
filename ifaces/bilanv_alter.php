@@ -387,10 +387,88 @@ echo "-nombre d'objets vendus : ";
 echo $donnees['COUNT(ventes.id)']."<br>";
 
 echo "-nombre de ventes : ";
+// on determine le nombre de ventes
+            try
+            {
+            // On se connecte à MySQL
+            include('../moteur/dbconfig.php');
+            }
+            catch(Exception $e)
+            {
+            // En cas d'erreur, on affiche un message et on arrête tout
+            die('Erreur : '.$e->getMessage());
+            }
+ 
+            // Si tout va bien, on peut continuer
+            /*
+
+            */
+ $req = $bdd->prepare("SELECT COUNT(ventes.id) FROM ventes ,vendus WHERE vendus.id_vente = ventes.id AND DATE(vendus.timestamp) BETWEEN :du AND :au  AND vendus.prix > 0 AND ventes.id_point_vente  = :numero ");
+ $req->execute(array('du' => $time_debut,'au' => $time_fin,'numero' => $_GET['numero'] ));
+ $donnees = $req->fetch();
+echo $donnees['COUNT(ventes.id)']."<br>";
 echo "-nombre d'objets remboursés : ";
+// on determine le nombre d'objets remboursés
+            try
+            {
+            // On se connecte à MySQL
+            include('../moteur/dbconfig.php');
+            }
+            catch(Exception $e)
+            {
+            // En cas d'erreur, on affiche un message et on arrête tout
+            die('Erreur : '.$e->getMessage());
+            }
+ 
+            // Si tout va bien, on peut continuer
+            /*
+
+            */
+ $req = $bdd->prepare("SELECT SUM(vendus.quantite) FROM vendus,ventes WHERE vendus.remboursement > 0 AND DATE(vendus.timestamp) BETWEEN :du AND :au AND ventes.id_point_vente  = :numero AND ventes.id = vendus.id_vente");
+ $req->execute(array('du' => $time_debut,'au' => $time_fin,'numero' => $_GET['numero'] ));
+ $donnees = $req->fetch();
+echo $donnees['SUM(vendus.quantite)']."<br>";
 echo "-nombre de remboursemments : ";
+// on determine le nombre de remboursements
+            try
+            {
+            // On se connecte à MySQL
+            include('../moteur/dbconfig.php');
+            }
+            catch(Exception $e)
+            {
+            // En cas d'erreur, on affiche un message et on arrête tout
+            die('Erreur : '.$e->getMessage());
+            }
+ 
+            // Si tout va bien, on peut continuer
+            /*
+
+            */
+ $req = $bdd->prepare("SELECT COUNT(ventes.id) FROM ventes ,vendus WHERE vendus.id_vente = ventes.id AND DATE(vendus.timestamp) BETWEEN :du AND :au   AND vendus.remboursement > 0 AND ventes.id_point_vente  = :numero ");
+ $req->execute(array('du' => $time_debut,'au' => $time_fin,'numero' => $_GET['numero'] ));
+ $donnees = $req->fetch();
+echo $donnees['COUNT(ventes.id)']."<br>";
 echo "-somme remboursée : ";
 
+
+
+  // On se connecte à MySQL
+  include('../moteur/dbconfig.php');
+  }
+  catch(Exception $e)
+  {
+  // En cas d'erreur, on affiche un message et on arrête tout
+  die('Erreur : '.$e->getMessage());
+  }
+  // Si tout va bien, on peut continuer
+  // On recupère tout le contenu de la table point de vente
+  $req = $bdd->prepare("SELECT  SUM(vendus.remboursement) AS total   FROM vendus,ventes  WHERE  DATE(vendus.timestamp) BETWEEN :du AND :au  AND ventes.id_point_vente  = :numero AND ventes.id = vendus.id_vente ");
+  $req->execute(array('du' => $time_debut,'au' => $time_fin,'numero' => $_GET['numero'] ));
+  $donnees = $req->fetch();
+  $mtotcolo = $donnees['total'];
+  echo $donnees['total']." €.<br>";
+  $req->closeCursor(); // Termine le traitement de la requête
 
 
 
