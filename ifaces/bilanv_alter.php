@@ -213,13 +213,12 @@ try
 
 $req = $bdd->prepare("SELECT (SUM(vendus.prix)-SUM(vendus.remboursement))  AS total  
 FROM vendus 
-AND vendus.timestamp BETWEEN :du AND :au  AND ventes.id_point_vente  = :numero ");
+WHERE DATE(vendus.timestamp) BETWEEN :du AND :au  AND ventes.id_point_vente  = :numero ");
 $req->execute(array('du' => $time_debut,'au' => $time_fin,'numero' => $_GET['numero'] ));
 $donnees = $req->fetch();
 $mtotcolo = $donnees['total'];
 echo $donnees['total']." €.";
-            
-              $req->closeCursor(); // Termine le traitement de la requête
+$req->closeCursor(); // Termine le traitement de la requête
 }
 
 
