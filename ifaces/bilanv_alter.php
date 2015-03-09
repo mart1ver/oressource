@@ -164,6 +164,10 @@ $time_fin = $time_fin." 23:59:59";
   
 if ($_GET['numero'] == 0) // si numero == 0*****************************************************************************************************************************************
 {
+  ?>
+  <div class="row">
+  <div class="col-md-6">
+  <?php
   echo "-nombre de points de vente : ";
   // on determine le nombre de points de vente à cet instant
             try
@@ -312,7 +316,11 @@ try
   $req->closeCursor(); // Termine le traitement de la requête
 
 
-
+?>
+</div>
+<div class="col-md-6">tableau par type d'objets</div>
+</div>
+<?php
 
 
 
@@ -320,6 +328,10 @@ try
 }
 else // si numero ==! 0*********************************************************************************************************************************************************
 {
+?>
+  <div class="row">
+  <div class="col-md-1">.col-md-1
+  <?php
 echo "-chiffre total dégagé : (remboursemments déduits) ";
 try
             {
@@ -472,7 +484,11 @@ try
   $req->closeCursor(); // Termine le traitement de la requête
 
 
-
+?>
+</div>
+<div class="col-md-6">tableau par type d'objets</div>
+</div>
+<?php
 
 
 }
