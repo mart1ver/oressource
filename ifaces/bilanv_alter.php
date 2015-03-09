@@ -165,7 +165,7 @@ $time_fin = $time_fin." 23:59:59";
 if ($_GET['numero'] == 0) // si numero == 0
 {
   echo "-nombre de points de vente : ";
-  // on determine le nombre de points de vente
+  // on determine le nombre de points de vente à cet instant
             try
             {
             // On se connecte à MySQL
@@ -222,8 +222,8 @@ echo $donnees['COUNT(id)']."<br>";
             /*
 
             */
- $req = $bdd->prepare("SELECT SUM(vendus.quantite) FROM vendus WHERE prix > 0 ");
- $req->execute();
+ $req = $bdd->prepare("SELECT SUM(vendus.quantite) FROM vendus WHERE prix > 0 AND DATE(vendus.timestamp) BETWEEN :du AND :au ");
+ $req->execute(array('du' => $time_debut,'au' => $time_fin ));
  $donnees = $req->fetch();
 echo $donnees['SUM(vendus.quantite)']."<br>";
  echo "-nombre de ventes :";
@@ -243,8 +243,8 @@ echo $donnees['SUM(vendus.quantite)']."<br>";
             /*
 
             */
- $req = $bdd->prepare("SELECT COUNT(ventes.id) FROM ventes ,vendus WHERE vendus.id_vente = ventes.id AND vendus.prix > 0 ");
- $req->execute();
+ $req = $bdd->prepare("SELECT COUNT(ventes.id) FROM ventes ,vendus WHERE vendus.id_vente = ventes.id AND DATE(vendus.timestamp) BETWEEN :du AND :au  AND vendus.prix > 0 ");
+ $req->execute(array('du' => $time_debut,'au' => $time_fin ));
  $donnees = $req->fetch();
 echo $donnees['COUNT(ventes.id)']."<br>";
 
@@ -265,8 +265,8 @@ echo $donnees['COUNT(ventes.id)']."<br>";
             /*
 
             */
- $req = $bdd->prepare("SELECT SUM(vendus.quantite) FROM vendus WHERE remboursement > 0 ");
- $req->execute();
+ $req = $bdd->prepare("SELECT SUM(vendus.quantite) FROM vendus WHERE remboursement > 0 AND DATE(vendus.timestamp) BETWEEN :du AND :au ");
+ $req->execute(array('du' => $time_debut,'au' => $time_fin ));
  $donnees = $req->fetch();
 echo $donnees['SUM(vendus.quantite)']."<br>";
   echo "-nombre de remboursemments :";
@@ -286,8 +286,8 @@ echo $donnees['SUM(vendus.quantite)']."<br>";
             /*
 
             */
- $req = $bdd->prepare("SELECT COUNT(ventes.id) FROM ventes ,vendus WHERE vendus.id_vente = ventes.id AND vendus.remboursement > 0 ");
- $req->execute();
+ $req = $bdd->prepare("SELECT COUNT(ventes.id) FROM ventes ,vendus WHERE vendus.id_vente = ventes.id AND DATE(vendus.timestamp) BETWEEN :du AND :au   AND vendus.remboursement > 0 ");
+ $req->execute(array('du' => $time_debut,'au' => $time_fin ));
  $donnees = $req->fetch();
 echo $donnees['COUNT(ventes.id)']."<br>";
 
