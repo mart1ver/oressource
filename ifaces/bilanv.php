@@ -1,25 +1,18 @@
 
 <?php session_start();
-
 //Vérification des autorisations de l'utilisateur et des variables de session requises pour l'affichage de cette page:
 if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 'bi') !== false))
       { include "tete.php";?>
-
    <head>
-      
       <link href="../css/bootstrap.min.css" rel="stylesheet">
-      
-      <link href="../fonts/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+       <link href="../fonts/font-awesome/css/font-awesome.min.css" rel="stylesheet">
       <link rel="stylesheet" type="text/css" media="all" href="../css/daterangepicker-bs3.css" />
-      
-      <script type="text/javascript" src="../js/jquery-2.0.3.min.js"></script>
+       <script type="text/javascript" src="../js/jquery-2.0.3.min.js"></script>
       <script type="text/javascript" src="../js/bootstrap.min.js"></script>
       <script type="text/javascript" src="../js/moment.js"></script>
       <script type="text/javascript" src="../js/daterangepicker.js"></script>
    </head>
- 
-
-      <div class="container">
+  <div class="container">
          
 
           
@@ -420,7 +413,7 @@ echo $donnees['COUNT(id)'];
         <?php
         if ($_GET['numero'] == 0) {
 
-// on determine les masses totales collèctés sur cete période(pour Tous les points)
+// on determine les ventes totales collèctés sur cete période(pour Tous les points)
             try
             {
             // On se connecte à MySQL
@@ -476,7 +469,7 @@ ORDER BY sommep DESC');
  
             // Si tout va bien, on peut continuer
  
-            // On recupère tout le contenu de la table affectations
+          
             $reponse2 = $bdd->prepare('SELECT IF(vendus.id_objet = 0, type_dechets.nom, grille_objets.nom) nom ,grille_objets.id, sum(vendus.quantite) sommeq, sum(vendus.prix) sommep
  FROM grille_objets, vendus ,ventes, type_dechets
 WHERE vendus.timestamp BETWEEN :du AND :au 
@@ -546,7 +539,7 @@ ORDER BY sommep DESC');
                {
 
 
-// on determine les masses totales collèctés sur cete période(pour Tous les points)
+// on determine les ventes totales sur cete période(pour un pôint en particulier)
             try
             {
             // On se connecte à MySQL

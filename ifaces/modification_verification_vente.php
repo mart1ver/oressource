@@ -81,13 +81,15 @@ vendus.id ,vendus.timestamp,
 type_dechets.nom type,
 IF(vendus.id_objet > 0 ,grille_objets.nom, "autre") objet,
 vendus.quantite ,
-vendus.prix
+vendus.prix,
+utilisateurs.mail
 FROM
-vendus, type_dechets, grille_objets 
+vendus, type_dechets, grille_objets ,utilisateurs
 WHERE 
 vendus.id_vente = :id_vente
 AND type_dechets.id = vendus.id_type_dechet
 AND (grille_objets.id = vendus.id_objet OR vendus.id_objet = 0 )
+AND utilisateurs.id = vendus.id_createur
 GROUP BY id');
 $req->execute(array('id_vente' => $_GET['nvente']));
 
