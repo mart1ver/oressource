@@ -320,7 +320,10 @@ try
 ?>
 </div>
 <div class="col-md-6">
+  
+<h2>
 chiffre de caisse : <?php echo  $mtotcolo- $mtotcolo2." €";?> 
+</h2>
 <table class="table table-hover">
       <thead>
         <tr>
