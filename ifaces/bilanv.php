@@ -565,7 +565,9 @@ echo "-nombre de ventes : ";
  $req = $bdd->prepare("SELECT COUNT(ventes.id) FROM ventes ,vendus WHERE vendus.id_vente = ventes.id AND DATE(vendus.timestamp) BETWEEN :du AND :au  AND vendus.prix > 0 AND ventes.id_point_vente  = :numero ");
  $req->execute(array('du' => $time_debut,'au' => $time_fin,'numero' => $_GET['numero'] ));
  $donnees = $req->fetch();
+ $nventes = $donnees['COUNT(ventes.id)']
 echo $donnees['COUNT(ventes.id)']."<br>";
+echo "-panier moyen : ".$mtotcolo/$nventes." € <br>";
 echo "-nombre d'objets remboursés : ";
 // on determine le nombre d'objets remboursés
             try
@@ -626,7 +628,7 @@ try
   $req = $bdd->prepare("SELECT  SUM(vendus.remboursement) AS total   FROM vendus,ventes  WHERE  DATE(vendus.timestamp) BETWEEN :du AND :au  AND ventes.id_point_vente  = :numero AND ventes.id = vendus.id_vente ");
   $req->execute(array('du' => $time_debut,'au' => $time_fin,'numero' => $_GET['numero'] ));
   $donnees = $req->fetch();
-  $mtotcolo = $donnees['total'];
+  $mtotcolo2 = $donnees['total'];
   echo $donnees['total']." €.<br>";
   $req->closeCursor(); // Termine le traitement de la requête
 
