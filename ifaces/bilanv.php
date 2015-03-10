@@ -478,7 +478,7 @@ else // si numero ==! 0*********************************************************
   <div class="row">
   <div class="col-md-6">
   <?php
-echo "-chiffre total dégagé : (remboursemments déduits) ";
+echo "-chiffre total dégagé :  ";
 try
             {
             // On se connecte à MySQL
@@ -493,9 +493,10 @@ try
             // On recupère tout le contenu de la table point de vente
 
 
-$req = $bdd->prepare("SELECT (SUM(vendus.prix)-SUM(vendus.remboursement))  AS total  
+$req = $bdd->prepare("SELECT (SUM(vendus.prix) AS total  
 FROM vendus ,ventes
-WHERE DATE(ventes.timestamp) BETWEEN :du AND :au AND ventes.id_point_vente  = :numero AND ventes.id = vendus.id_vente");
+WHERE DATE(ventes.timestamp) BETWEEN :du AND :au AND ventes.id_point_vente  = :numero 
+AND ventes.id = vendus.id_vente AND vendus.prix > 0");
 $req->execute(array('du' => $time_debut,'au' => $time_fin,'numero' => $_GET['numero'] ));
 $donnees = $req->fetch();
 $mtotcolo = $donnees['total'];
