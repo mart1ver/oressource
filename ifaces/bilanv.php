@@ -251,7 +251,7 @@ echo $donnees['SUM(vendus.quantite)']."<br>";
  $req = $bdd->prepare("SELECT COUNT(ventes.id) FROM ventes ,vendus WHERE vendus.id_vente = ventes.id AND DATE(vendus.timestamp) BETWEEN :du AND :au  AND vendus.prix > 0 ");
  $req->execute(array('du' => $time_debut,'au' => $time_fin ));
  $donnees = $req->fetch();
- $nventes = $donnees['COUNT(ventes.id)']
+ $nventes = $donnees['COUNT(ventes.id)'];
 echo $donnees['COUNT(ventes.id)']."<br>";
  echo "-panier moyen : ".$mtotcolo/$nventes." €";
 
