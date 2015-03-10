@@ -330,25 +330,62 @@ try
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <th scope="row">mobilier</th>
-          <td>12€</td>
-          <td>12</td>
-          <td>20%</td>
+<?php
+ try
+            {
+            // On se connecte à MySQL
+            include('../moteur/dbconfig.php');
+            }
+            catch(Exception $e)
+            {
+            // En cas d'erreur, on affiche un message et on arrête tout
+            die('Erreur : '.$e->getMessage());
+            }
+ 
+            // Si tout va bien, on peut continuer
+ 
+            // On recupère tout le contenu de la table affectations
+            $reponse2 = $bdd->prepare('SELECT 
+ SELECT  type_dechets.nom , SUM(vendus.prix) prix, SUM(vendus.quantite) quantite
+
+ FROM type_dechets , vendus, ventes
+
+WHERE vendus.id_vente = ventes.id AND type_dechets.id = vendus.id_type_dechet AND vendus.prix > 0 AND DATE(vendus.timestamp) BETWEEN :du AND :au 
+
+GROUP BY type_dechets.nom
+');
+  $reponse2->execute(array('du' => $time_debut,'au' => $time_fin));
+           // On affiche chaque entree une à une
+           while ($donnees2 = $reponse2->fetch())
+           {        
+            ?>
+
+            <tr>
+              <th scope="row"><?php echo $donnees2['nom']?></th>
+            <td  >
+              <?php echo $donnees2['prix']."€" ?>
+            </td >
+            <td >
+                <?php echo $donnees2['quantite'] ?>
+            </td>
+            <td >
+                <?php echo  " %"  ; ?>
+            </td>
         </tr>
-        <tr>
-          <th scope="row">2</th>
-          <td>Jacob</td>
-          <td>Thornton</td>
-          <td>@fat</td>
-        </tr>
-        <tr>
-          <th scope="row">3</th>
-          <td>Larry</td>
-          <td>the Bird</td>
-          <td>@twitter</td>
-        </tr>
-      </tbody>
+        
+ <?php
+             }
+              $reponse2->closeCursor(); // Termine le traitement de la requête
+                ?>
+
+
+
+
+        
+          
+         
+        
+        </tbody>
     </table>
 
 
