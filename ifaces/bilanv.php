@@ -320,7 +320,7 @@ try
 ?>
 </div>
 <div class="col-md-6">
-chiffre total moins les sommes rembourses : <?php echo  $mtotcolo- $mtotcolo2;?> 
+chiffre de caisse : <?php echo  $mtotcolo- $mtotcolo2." €";?> 
 <table class="table table-hover">
       <thead>
         <tr>
