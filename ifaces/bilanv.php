@@ -253,7 +253,7 @@ echo $donnees['SUM(vendus.quantite)']."<br>";
  $donnees = $req->fetch();
  $nventes = $donnees['COUNT(ventes.id)'];
 echo $donnees['COUNT(ventes.id)']."<br>";
- echo "-panier moyen : ".$mtotcolo/$nventes." €";
+ echo "-panier moyen : ".$mtotcolo/$nventes." € <br>";
 
   echo "-nombre d'objets remboursés : ";
   // on determine le nombre d'objets remboursés
