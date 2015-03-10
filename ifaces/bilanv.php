@@ -312,7 +312,7 @@ try
   $req = $bdd->prepare("SELECT  SUM(vendus.remboursement) AS total   FROM vendus  WHERE  DATE(vendus.timestamp) BETWEEN :du AND :au  ");
   $req->execute(array('du' => $time_debut,'au' => $time_fin ));
   $donnees = $req->fetch();
-  $mtotcolo = $donnees['total'];
+  $mtotcolo2 = $donnees['total'];
   echo $donnees['total']." €.<br>";
   $req->closeCursor(); // Termine le traitement de la requête
 
@@ -320,7 +320,7 @@ try
 ?>
 </div>
 <div class="col-md-6">
-
+chiffre total moins les sommes rembourses : <?php echo  $mtotcolo- $mtotcolo2;?> 
 <table class="table table-hover">
       <thead>
         <tr>
