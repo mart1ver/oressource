@@ -345,7 +345,7 @@ try
             // Si tout va bien, on peut continuer
  
             // On recupère tout le contenu de la table affectations
-            $reponse2 = $bdd->prepare('SELECT 
+            $reponse2 = $bdd->prepare('SELECT type_dechets.nom id,
    type_dechets.nom ,(SUM(vendus.prix)-SUM(vendus.remboursement)) total 
 
  FROM type_dechets , vendus, ventes
@@ -367,7 +367,27 @@ GROUP BY type_dechets.nom
               <?php echo $donnees2['total']."€" ?>
             </td >
             <td >
-                <?php echo'qq' ?>
+              <?
+                // on determine le nombre d'objets vendus
+            try
+            {
+            // On se connecte à MySQL
+            include('../moteur/dbconfig.php');
+            }
+            catch(Exception $e)
+            {
+            // En cas d'erreur, on affiche un message et on arrête tout
+            die('Erreur : '.$e->getMessage());
+            }
+ 
+            // Si tout va bien, on peut continuer
+            /*
+
+            */
+ $req = $bdd->prepare("SELECT SUM(vendus.quantite) FROM vendus WHERE prix > 0 AND vendus.id_type_dechet = :id AND DATE(vendus.timestamp) BETWEEN :du AND :au ");
+ $req->execute(array('du' => $time_debut,'au' => $time_fin ,'id' => $donnees2['id'] ));
+ $donnees = $req->fetch();
+echo $donnees['SUM(vendus.quantite)'];?>
             </td>
             <td >
                 <?php echo  " %"  ; ?>
