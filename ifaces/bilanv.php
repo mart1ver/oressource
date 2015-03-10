@@ -347,7 +347,7 @@ try
  
             // On recupère tout le contenu de la table affectations
             $reponse2 = $bdd->prepare('SELECT type_dechets.id id,
-   type_dechets.nom ,(SUM(vendus.prix)-SUM(vendus.remboursement))*vendus.quantite total 
+   type_dechets.nom ,SUM(vendus.prix*vendus.quantite) total 
 
  FROM type_dechets , vendus, ventes
 
