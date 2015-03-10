@@ -329,6 +329,7 @@ chiffre de caisse : <?php echo  $mtotcolo- $mtotcolo2." €";?>
         <tr>
           <th>type d'objet</th>
           <th>chiffre dégagé</th>
+          <th>somme remboursée</th>
           <th>quantité vendue</th>
           <th>%</th>
         </tr>
@@ -370,6 +371,9 @@ GROUP BY type_dechets.nom
             <td  >
               <?php echo $donnees2['total']."€" ?>
             </td >
+            <td>
+              rembo
+            </td>  
             <td >
               <?
                 // on determine le nombre d'objets vendus
