@@ -346,13 +346,13 @@ try
  
             // On recupère tout le contenu de la table affectations
             $reponse2 = $bdd->prepare('SELECT 
-   type_dechets.nom , SUM(vendus.prix) , SUM(vendus.quantite) 
+   type_dechets.nom ,(SUM(vendus.prix)-SUM(vendus.remboursement)) , SUM(vendus.quantite) 
 
  FROM type_dechets , vendus, ventes
 
 WHERE vendus.id_vente = ventes.id 
 AND type_dechets.id = vendus.id_type_dechet 
-AND vendus.prix > 0 AND DATE(vendus.timestamp) BETWEEN :du AND :au 
+AND DATE(vendus.timestamp) BETWEEN :du AND :au 
 GROUP BY type_dechets.nom
 ');
   $reponse2->execute(array('du' => $time_debut,'au' => $time_fin));
