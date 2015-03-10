@@ -190,7 +190,7 @@ if ($_GET['numero'] == 0) // si numero == 0*************************************
  $donnees = $req->fetch();
 echo $donnees['COUNT(id)']."<br>";
 
-  echo "-chiffre total dégagé (remboursemments déduits) : ";
+  echo "-chiffre total dégagé  : ";
  try
  {
   // On se connecte à MySQL
@@ -203,7 +203,7 @@ echo $donnees['COUNT(id)']."<br>";
   }
   // Si tout va bien, on peut continuer
   // On recupère tout le contenu de la table point de vente
-  $req = $bdd->prepare("SELECT  (SUM(vendus.prix*vendus.quantite)-SUM(vendus.remboursement*vendus.quantite)) AS total   FROM vendus 
+  $req = $bdd->prepare("SELECT  SUM(vendus.prix*vendus.quantite) AS total   FROM vendus 
    WHERE  DATE(vendus.timestamp) BETWEEN :du AND :au  ");
   $req->execute(array('du' => $time_debut,'au' => $time_fin ));
   $donnees = $req->fetch();
