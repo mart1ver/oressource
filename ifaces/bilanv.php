@@ -346,12 +346,13 @@ try
  
             // On recupère tout le contenu de la table affectations
             $reponse2 = $bdd->prepare('SELECT 
- SELECT  type_dechets.nom , SUM(vendus.prix) prix, SUM(vendus.quantite) quantite
+   type_dechets.nom , SUM(vendus.prix) , SUM(vendus.quantite) 
 
  FROM type_dechets , vendus, ventes
 
-WHERE vendus.id_vente = ventes.id AND type_dechets.id = vendus.id_type_dechet AND vendus.prix > 0 AND DATE(vendus.timestamp) BETWEEN :du AND :au 
-
+WHERE vendus.id_vente = ventes.id 
+AND type_dechets.id = vendus.id_type_dechet 
+AND vendus.prix > 0 AND DATE(vendus.timestamp) BETWEEN :du AND :au 
 GROUP BY type_dechets.nom
 ');
   $reponse2->execute(array('du' => $time_debut,'au' => $time_fin));
@@ -363,10 +364,10 @@ GROUP BY type_dechets.nom
             <tr>
               <th scope="row"><?php echo $donnees2['nom']?></th>
             <td  >
-              <?php echo $donnees2['prix']."€" ?>
+              <?php echo $donnees2['SUM(vendus.prix)']."€" ?>
             </td >
             <td >
-                <?php echo $donnees2['quantite'] ?>
+                <?php echo $donnees2['SUM(vendus.quantite)'] ?>
             </td>
             <td >
                 <?php echo  " %"  ; ?>
