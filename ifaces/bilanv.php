@@ -346,7 +346,7 @@ try
  
             // On recupère tout le contenu de la table affectations
             $reponse2 = $bdd->prepare('SELECT 
-   type_dechets.nom ,(SUM(vendus.prix)-SUM(vendus.remboursement)) total , SUM(vendus.quantite) 
+   type_dechets.nom ,(SUM(vendus.prix)-SUM(vendus.remboursement)) total 
 
  FROM type_dechets , vendus, ventes
 
@@ -367,7 +367,7 @@ GROUP BY type_dechets.nom
               <?php echo $donnees2['total']."€" ?>
             </td >
             <td >
-                <?php echo $donnees2['SUM(vendus.quantite)'] ?>
+                <?php echo'qq' ?>
             </td>
             <td >
                 <?php echo  " %"  ; ?>
