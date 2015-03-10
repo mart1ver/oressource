@@ -329,9 +329,10 @@ chiffre de caisse : <?php echo  $mtotcolo- $mtotcolo2." €";?>
         <tr>
           <th>type d'objet</th>
           <th>chiffre dégagé</th>
-          <th>somme remboursée</th>
           <th>quantité vendue</th>
-          <th>%</th>
+          <th>somme remboursée</th>
+          <th>quantité remboursée</th>
+          
         </tr>
       </thead>
       <tbody>
@@ -371,27 +372,6 @@ GROUP BY type_dechets.nom
             <td  >
               <?php echo $donnees2['total']." €" ?>
             </td >
-            <td>
-              <?php try
- {
-  // On se connecte à MySQL
-  include('../moteur/dbconfig.php');
-  }
-  catch(Exception $e)
-  {
-  // En cas d'erreur, on affiche un message et on arrête tout
-  die('Erreur : '.$e->getMessage());
-  }
-  // Si tout va bien, on peut continuer
-  // On recupère tout le contenu de la table point de vente
-  $req3 = $bdd->prepare("SELECT  SUM(vendus.remboursement) AS total   FROM vendus 
-   WHERE  DATE(vendus.timestamp) BETWEEN :du AND :au AND vendus.id_type_dechet = :id  ");
-  $req3->execute(array('du' => $time_debut,'au' => $time_fin ,'id' => $donnees2['id'] ));
-  $donnees3 = $req3->fetch();
-
-  echo $donnees3['total']." €.<br>";
-  $req3->closeCursor(); // Termine le traitement de la requête ?>
-            </td>  
             <td >
               <?
                 // on determine le nombre d'objets vendus
@@ -414,10 +394,55 @@ GROUP BY type_dechets.nom
   AND vendus.id_type_dechet = :id AND DATE(vendus.timestamp) BETWEEN :du AND :au ");
  $req->execute(array('du' => $time_debut,'au' => $time_fin ,'id' => $donnees2['id'] ));
  $donnees = $req->fetch();
-echo $donnees['SUM(vendus.quantite)'];?>
+echo $donnees['SUM(vendus.quantite)'];
+$req->closeCursor(); // Termine le traitement de la requête ?>
             </td>
+            <td>
+              <?php try
+ {
+  // On se connecte à MySQL
+  include('../moteur/dbconfig.php');
+  }
+  catch(Exception $e)
+  {
+  // En cas d'erreur, on affiche un message et on arrête tout
+  die('Erreur : '.$e->getMessage());
+  }
+  // Si tout va bien, on peut continuer
+  // On recupère tout le contenu de la table point de vente
+  $req3 = $bdd->prepare("SELECT  SUM(vendus.remboursement) AS total   FROM vendus 
+   WHERE  DATE(vendus.timestamp) BETWEEN :du AND :au AND vendus.id_type_dechet = :id  ");
+  $req3->execute(array('du' => $time_debut,'au' => $time_fin ,'id' => $donnees2['id'] ));
+  $donnees3 = $req3->fetch();
+
+  echo $donnees3['total']." €.<br>";
+  $req3->closeCursor(); // Termine le traitement de la requête ?>
+            </td>  
+            
             <td >
-                <?php echo  " %"  ; ?>
+              <?
+                // on determine le nombre d'objets remboursés
+            try
+            {
+            // On se connecte à MySQL
+            include('../moteur/dbconfig.php');
+            }
+            catch(Exception $e)
+            {
+            // En cas d'erreur, on affiche un message et on arrête tout
+            die('Erreur : '.$e->getMessage());
+            }
+ 
+            // Si tout va bien, on peut continuer
+            /*
+
+            */
+ $req = $bdd->prepare("SELECT SUM(vendus.quantite) FROM vendus WHERE remboursement > 0 
+  AND vendus.id_type_dechet = :id AND DATE(vendus.timestamp) BETWEEN :du AND :au ");
+ $req->execute(array('du' => $time_debut,'au' => $time_fin ,'id' => $donnees2['id'] ));
+ $donnees = $req->fetch();
+echo $donnees['SUM(vendus.quantite)'];
+$req->closeCursor(); // Termine le traitement de la requête ?>
             </td>
         </tr>
         
