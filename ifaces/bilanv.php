@@ -635,7 +635,147 @@ try
 
 ?>
 </div>
-<div class="col-md-6">tableau par type d'objets</div>
+<div class="col-md-6">
+<h2>
+chiffre de caisse : <?php echo  $mtotcolo- $mtotcolo2." €";?> 
+</h2>
+<table class="table table-hover">
+      <thead>
+        <tr>
+          <th>type d'objet</th>
+          <th>chiffre dégagé</th>
+          <th>quantité vendue</th>
+          <th>somme remboursée</th>
+          <th>quantité remboursée</th>
+          
+        </tr>
+      </thead>
+      <tbody>
+<?php
+ try
+            {
+            // On se connecte à MySQL
+            include('../moteur/dbconfig.php');
+            }
+            catch(Exception $e)
+            {
+            // En cas d'erreur, on affiche un message et on arrête tout
+            die('Erreur : '.$e->getMessage());
+            }
+ 
+            // Si tout va bien, on peut continuer
+ 
+            // On recupère tout le contenu de la table affectations
+            $reponse2 = $bdd->prepare('SELECT type_dechets.id id,
+   type_dechets.nom ,SUM(vendus.prix*vendus.quantite) total 
+
+ FROM type_dechets , vendus, ventes
+
+WHERE vendus.id_vente = ventes.id 
+AND type_dechets.id = vendus.id_type_dechet 
+AND DATE(vendus.timestamp) BETWEEN :du AND :au 
+GROUP BY type_dechets.nom
+');
+  $reponse2->execute(array('du' => $time_debut,'au' => $time_fin));
+           // On affiche chaque entree une à une
+           while ($donnees2 = $reponse2->fetch())
+           {        
+            ?>
+
+            <tr>
+              <th scope="row"><?php echo $donnees2['nom']?></th>
+            <td  >
+              <?php echo $donnees2['total']." €" ?>
+            </td >
+            <td >
+              <?
+                // on determine le nombre d'objets vendus
+            try
+            {
+            // On se connecte à MySQL
+            include('../moteur/dbconfig.php');
+            }
+            catch(Exception $e)
+            {
+            // En cas d'erreur, on affiche un message et on arrête tout
+            die('Erreur : '.$e->getMessage());
+            }
+ 
+            // Si tout va bien, on peut continuer
+            /*
+
+            */
+ $req = $bdd->prepare("SELECT SUM(vendus.quantite) FROM vendus WHERE prix > 0 
+  AND vendus.id_type_dechet = :id AND DATE(vendus.timestamp) BETWEEN :du AND :au ");
+ $req->execute(array('du' => $time_debut,'au' => $time_fin ,'id' => $donnees2['id'] ));
+ $donnees = $req->fetch();
+echo $donnees['SUM(vendus.quantite)'];
+$req->closeCursor(); // Termine le traitement de la requête ?>
+            </td>
+            <td>
+              <?php try
+ {
+  // On se connecte à MySQL
+  include('../moteur/dbconfig.php');
+  }
+  catch(Exception $e)
+  {
+  // En cas d'erreur, on affiche un message et on arrête tout
+  die('Erreur : '.$e->getMessage());
+  }
+  // Si tout va bien, on peut continuer
+  // On recupère tout le contenu de la table point de vente
+  $req3 = $bdd->prepare("SELECT  SUM(vendus.remboursement) AS total   FROM vendus 
+   WHERE  DATE(vendus.timestamp) BETWEEN :du AND :au AND vendus.id_type_dechet = :id  ");
+  $req3->execute(array('du' => $time_debut,'au' => $time_fin ,'id' => $donnees2['id'] ));
+  $donnees3 = $req3->fetch();
+
+  echo $donnees3['total']." €.<br>";
+  $req3->closeCursor(); // Termine le traitement de la requête ?>
+            </td>  
+            
+            <td >
+              <?
+                // on determine le nombre d'objets remboursés
+            try
+            {
+            // On se connecte à MySQL
+            include('../moteur/dbconfig.php');
+            }
+            catch(Exception $e)
+            {
+            // En cas d'erreur, on affiche un message et on arrête tout
+            die('Erreur : '.$e->getMessage());
+            }
+ 
+            // Si tout va bien, on peut continuer
+            /*
+
+            */
+ $req = $bdd->prepare("SELECT SUM(vendus.quantite) FROM vendus WHERE remboursement > 0 
+  AND vendus.id_type_dechet = :id AND DATE(vendus.timestamp) BETWEEN :du AND :au ");
+ $req->execute(array('du' => $time_debut,'au' => $time_fin ,'id' => $donnees2['id'] ));
+ $donnees = $req->fetch();
+echo $donnees['SUM(vendus.quantite)'];
+$req->closeCursor(); // Termine le traitement de la requête ?>
+            </td>
+        </tr>
+        
+ <?php
+             }
+              $reponse2->closeCursor(); // Termine le traitement de la requête
+                ?>
+
+
+
+
+        
+          
+         
+        
+        </tbody>
+    </table>
+</div>
 </div>
 <?php
 
