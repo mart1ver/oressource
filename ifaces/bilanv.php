@@ -203,7 +203,8 @@ echo $donnees['COUNT(id)']."<br>";
   }
   // Si tout va bien, on peut continuer
   // On recupère tout le contenu de la table point de vente
-  $req = $bdd->prepare("SELECT  (SUM(vendus.prix)-SUM(vendus.remboursement))*vendus.quantite AS total   FROM vendus  WHERE  DATE(vendus.timestamp) BETWEEN :du AND :au  ");
+  $req = $bdd->prepare("SELECT  (SUM(vendus.prix)-SUM(vendus.remboursement))*vendus.quantite AS total   FROM vendus 
+   WHERE  DATE(vendus.timestamp) BETWEEN :du AND :au  ");
   $req->execute(array('du' => $time_debut,'au' => $time_fin ));
   $donnees = $req->fetch();
   $mtotcolo = $donnees['total'];
