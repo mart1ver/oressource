@@ -625,7 +625,8 @@ try
   }
   // Si tout va bien, on peut continuer
   // On recupère tout le contenu de la table point de vente
-  $req = $bdd->prepare("SELECT  SUM(vendus.remboursement) AS total   FROM vendus,ventes  WHERE  DATE(vendus.timestamp) BETWEEN :du AND :au  AND ventes.id_point_vente  = :numero AND ventes.id = vendus.id_vente ");
+  $req = $bdd->prepare("SELECT  SUM(vendus.remboursement) AS total   FROM vendus,ventes  WHERE  DATE(vendus.timestamp) BETWEEN :du AND :au  AND ventes.id_point_vente  = :numero 
+    AND ventes.id = vendus.id_vente ");
   $req->execute(array('du' => $time_debut,'au' => $time_fin,'numero' => $_GET['numero'] ));
   $donnees = $req->fetch();
   $mtotcolo2 = $donnees['total'];
@@ -671,12 +672,12 @@ chiffre de caisse : <?php echo  $mtotcolo- $mtotcolo2." €";?>
 
  FROM type_dechets , vendus, ventes
 
-WHERE vendus.id_vente = ventes.id 
+WHERE vendus.id_vente = ventes.id  AND ventes.id_point_vente  = :numero
 AND type_dechets.id = vendus.id_type_dechet 
 AND DATE(vendus.timestamp) BETWEEN :du AND :au 
 GROUP BY type_dechets.nom
 ');
-  $reponse2->execute(array('du' => $time_debut,'au' => $time_fin));
+  $reponse2->execute(array('du' => $time_debut,'au' => $time_fin,'numero' => $_GET['numero'] ));
            // On affiche chaque entree une à une
            while ($donnees2 = $reponse2->fetch())
            {        
@@ -705,9 +706,9 @@ GROUP BY type_dechets.nom
             /*
 
             */
- $req = $bdd->prepare("SELECT SUM(vendus.quantite) FROM vendus WHERE prix > 0 
-  AND vendus.id_type_dechet = :id AND DATE(vendus.timestamp) BETWEEN :du AND :au ");
- $req->execute(array('du' => $time_debut,'au' => $time_fin ,'id' => $donnees2['id'] ));
+ $req = $bdd->prepare("SELECT SUM(vendus.quantite) FROM vendus,ventes WHERE prix > 0 
+  AND vendus.id_type_dechet = :id AND DATE(vendus.timestamp) BETWEEN :du AND :au AND ventes.id_point_vente  = :numero AND ventes.id = vendus.id_vente");
+ $req->execute(array('du' => $time_debut,'au' => $time_fin ,'id' => $donnees2['id'],'numero' => $_GET['numero'] ));
  $donnees = $req->fetch();
 echo $donnees['SUM(vendus.quantite)'];
 $req->closeCursor(); // Termine le traitement de la requête ?>
@@ -725,9 +726,9 @@ $req->closeCursor(); // Termine le traitement de la requête ?>
   }
   // Si tout va bien, on peut continuer
   // On recupère tout le contenu de la table point de vente
-  $req3 = $bdd->prepare("SELECT  SUM(vendus.remboursement) AS total   FROM vendus 
-   WHERE  DATE(vendus.timestamp) BETWEEN :du AND :au AND vendus.id_type_dechet = :id  ");
-  $req3->execute(array('du' => $time_debut,'au' => $time_fin ,'id' => $donnees2['id'] ));
+  $req3 = $bdd->prepare("SELECT  SUM(vendus.remboursement) AS total   FROM vendus,ventes 
+   WHERE  DATE(vendus.timestamp) BETWEEN :du AND :au AND vendus.id_type_dechet = :id AND ventes.id_point_vente  = :numero AND ventes.id = vendus.id_vente ");
+  $req3->execute(array('du' => $time_debut,'au' => $time_fin ,'id' => $donnees2['id'] ,'numero' => $_GET['numero'] ));
   $donnees3 = $req3->fetch();
 
   echo $donnees3['total']." €.<br>";
@@ -753,8 +754,8 @@ $req->closeCursor(); // Termine le traitement de la requête ?>
 
             */
  $req = $bdd->prepare("SELECT SUM(vendus.quantite) FROM vendus WHERE remboursement > 0 
-  AND vendus.id_type_dechet = :id AND DATE(vendus.timestamp) BETWEEN :du AND :au ");
- $req->execute(array('du' => $time_debut,'au' => $time_fin ,'id' => $donnees2['id'] ));
+  AND vendus.id_type_dechet = :id AND DATE(vendus.timestamp) BETWEEN :du AND :au AND ventes.id_point_vente  = :numero AND ventes.id = vendus.id_vente  ");
+ $req->execute(array('du' => $time_debut,'au' => $time_fin ,'id' => $donnees2['id'] ,'numero' => $_GET['numero'] ));
  $donnees = $req->fetch();
 echo $donnees['SUM(vendus.quantite)'];
 $req->closeCursor(); // Termine le traitement de la requête ?>
