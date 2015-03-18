@@ -124,7 +124,7 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
   <div class="panel-body"> 
      
 <p align="right">
-  <b id="labellot">vente à: </b>
+  <b id="labellot">vente à:  </b>
 <input type="checkbox" name="my-checkbox"   checked  data-on-text="l'unité" data-off-text="lot" data-handle-width="45" data-size="small" >
 <script type="text/javascript">
 $("[name='my-checkbox']").bootstrapSwitch();
@@ -380,7 +380,7 @@ document.getElementById('labellot').innerHTML = "vente au: "
 }
 else
 {
-document.getElementById('labellot').innerHTML = "vente à: "  
+document.getElementById('labellot').innerHTML = "vente à:  "  
 }
 }
 function rembou() {
