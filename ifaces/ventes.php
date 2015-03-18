@@ -375,17 +375,21 @@ $('input[name="my-checkbox"]').on('switchChange.bootstrapSwitch', function(event
 <script type="text/javascript">
 function switchlot(state) {
   if (state == false){
-document.getElementById('labellot').innerHTML = "vente au: "
-document.getElementById('labelpul').innerHTML = "Prix du lot: "
-document.getElementById('panelcalc').style.background-color = 'pink';
-
+document.getElementById('labellot').innerHTML = "vente au: ";
+document.getElementById('labelpul').innerHTML = "Prix du lot: ";
+document.getElementById('panelcalc').style.backgroundColor = 'pink';
 }
 else
 {
-document.getElementById('labellot').innerHTML = "vente à:  "  
-document.getElementById('labelpul').innerHTML = "Prix unitaire: "
+document.getElementById('labellot').innerHTML = "vente à:  "  ;
+document.getElementById('labelpul').innerHTML = "Prix unitaire: ";
 }
+
+
+
 }
+
+
 function rembou() {
   var code_soumis = prompt('Veuillez renseigner le code de remboursement');
 var codi = <?php 
