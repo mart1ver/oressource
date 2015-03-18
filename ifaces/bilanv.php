@@ -17,29 +17,6 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
   <div class="container">
   <div class"row">
   <div class="col-md-11 " >
-<<<<<<< HEAD
-<h1>Bilan global</h1>
-
-   <div class="col-md-4 col-md-offset-8" >
-<label for="reportrange">Choisissez la période à inspecter:</label><br>
-
-           
-
-                      
-
-            
-
-            
-
-               <div id="reportrange" class="pull-left" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc">
-                  <i class="fa fa-calendar"></i>
-                  <span></span> <b class="caret"></b>
-               </div>
-
-               <script type="text/javascript">
-               
-               $(document).ready(function() {
-=======
    <h1>Bilan global</h1>
     <div class="col-md-4 col-md-offset-8" >
      <label for="reportrange">Choisissez la période à inspecter:</label><br>
@@ -49,7 +26,6 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
       </div>
      <script type="text/javascript">
                    $(document).ready(function() {
->>>>>>> c989c3d13469c2a3933e36095ca29c48df1a2232
 
                   var cb = function(start, end, label) {
                     console.log(start.toISOString(), end.toISOString(), label);
