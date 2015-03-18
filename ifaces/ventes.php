@@ -124,7 +124,7 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
   <div class="panel-body"> 
      
 
-<input type="checkbox" name="my-checkbox" checked  data-on-text="unité" data-off-text="lot" data-handle-width="100">
+<input type="checkbox" name="my-checkbox" checked  data-on-text="unité" data-off-text="lot" data-handle-width="70">
 
 <script type="text/javascript">
 $("[name='my-checkbox']").bootstrapSwitch();
