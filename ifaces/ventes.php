@@ -129,8 +129,7 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
 <script type="text/javascript">
 $("[name='my-checkbox']").bootstrapSwitch();
 $('input[name="my-checkbox"]').on('switchChange.bootstrapSwitch', function(event, state) {
-  console.log(this); // DOM element
-  console.log(event); // jQuery event
+   console.log(event); // jQuery event
   console.log(state); // true | false
 });
 </script>
