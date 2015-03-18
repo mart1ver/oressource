@@ -139,8 +139,7 @@ $('input[name="my-checkbox"]').on('switchChange.bootstrapSwitch', function(event
 
 
 
-
-      Quantité: <input type="text" class="form-control" placeholder="Quantité" id="quantite" name="quantite" onfocus="fokus(this)" > Prix unitaire: <input type="text" class="form-control" placeholder="€" id="prix" name="prix" onfocus="fokus(this)">
+<b>Quantité:</b> <input type="text" class="form-control" placeholder="Quantité" id="quantite" name="quantite" onfocus="fokus(this)" > <b id = "labelpul">Prix unitaire:</b> <input type="text" class="form-control" placeholder="€" id="prix" name="prix" onfocus="fokus(this)">
 <input type="hidden"  id="id_type_objet" name="id_type_objet">
 <input type="hidden"  id="id_objet" name="id_objet">   
 <input type="hidden"  id="nom_objet0" name="nom_objet0">   
@@ -377,10 +376,12 @@ $('input[name="my-checkbox"]').on('switchChange.bootstrapSwitch', function(event
 function switchlot(state) {
   if (state == false){
 document.getElementById('labellot').innerHTML = "vente au: "
+document.getElementById('labelpul').innerHTML = "Prix du lot: "
 }
 else
 {
 document.getElementById('labellot').innerHTML = "vente à:  "  
+document.getElementById('labelpul').innerHTML = "Prix unitaire: "
 }
 }
 function rembou() {
