@@ -383,6 +383,7 @@ else
 {
 document.getElementById('labellot').innerHTML = "vente à:  "  ;
 document.getElementById('labelpul').innerHTML = "Prix unitaire: ";
+document.getElementById('panelcalc').style.backgroundColor = 'blue';
 }
 
 
