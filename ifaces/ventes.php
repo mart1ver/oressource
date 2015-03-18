@@ -141,8 +141,7 @@ $("[name='my-checkbox']").bootstrapSwitch();
 <input type="hidden"  id="nom_objet0" name="nom_objet0">   
 
 
-      <br>
-     
+   
 
     <button type="button" class="btn btn-default btn-lg" onclick="ajout();">
     Ajouter
