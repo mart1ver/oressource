@@ -374,6 +374,9 @@ $('input[name="my-checkbox"]').on('switchChange.bootstrapSwitch', function(event
     <br>
             <?php include "pied.php" ; ?> 
 <script type="text/javascript">
+function switchlot() {
+
+}
 function rembou() {
   var code_soumis = prompt('Veuillez renseigner le code de remboursement');
 var codi = <?php 
