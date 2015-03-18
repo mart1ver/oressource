@@ -121,7 +121,7 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
         <div class="panel-heading">
     <h3 class="panel-title"id="nom_objet"><label>Objet:</label></h3>
   </div>
-  <div class="panel-body"> 
+  <div class="panel-body" id="panelcalc"> 
      
 <p align="right">
   <b id="labellot">vente à:  </b>
@@ -377,6 +377,8 @@ function switchlot(state) {
   if (state == false){
 document.getElementById('labellot').innerHTML = "vente au: "
 document.getElementById('labelpul').innerHTML = "Prix du lot: "
+document.getElementById('panelcalc').style.background-color = 'pink';
+
 }
 else
 {
