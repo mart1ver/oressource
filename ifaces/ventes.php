@@ -427,7 +427,13 @@ var footstr = "Association non assujettie à la TVA.</body></small> ";
       window.print();
       document.body.innerHTML = oldstr;
       return false;
-document.getElementById('comm').value = document.getElementById('commentaire').value
+
+          }
+
+          //puis encaisse
+           if ((parseInt(document.getElementById('nlignes').value) >= 1) && ((document.getElementById('quantite').value == "")||(document.getElementById('quantite').value == "0"))&&((document.getElementById('prix').value == "")||(document.getElementById('prix').value == "0")) )
+          { 
+            document.getElementById('comm').value = document.getElementById('commentaire').value
             
           document.getElementById("formulaire").submit();
           }
