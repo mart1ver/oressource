@@ -121,23 +121,31 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
         <div class="panel-heading">
     <h3 class="panel-title"id="nom_objet"><label>Objet:</label></h3>
   </div>
-  <div class="panel-body"> 
+  <div class="panel-body" id="panelcalc"> 
      
-
-<input type="checkbox" name="my-checkbox" checked  data-on-text="unité" data-off-text="lot">
-
+<p align="right">
+  <b id="labellot">vente à:  </b>
+<input type="checkbox" name="my-checkbox"   checked  data-on-text="l'unité" data-off-text="lot" data-handle-width="45" data-size="small" >
 <script type="text/javascript">
 $("[name='my-checkbox']").bootstrapSwitch();
+$('input[name="my-checkbox"]').on('switchChange.bootstrapSwitch', function(event, state) {
+  console.log(state); // true | false
+  switchlot(state); // true | false
+});
 </script>
+<p>
+
 <br>
-      Quantité: <input type="text" class="form-control" placeholder="Quantité" id="quantite" name="quantite" onfocus="fokus(this)" > Prix unitaire: <input type="text" class="form-control" placeholder="€" id="prix" name="prix" onfocus="fokus(this)">
+
+
+
+<b>Quantité:</b> <input type="text" class="form-control" placeholder="Quantité" id="quantite" name="quantite" onfocus="fokus(this)" > <b id = "labelpul">Prix unitaire:</b> <input type="text" class="form-control" placeholder="€" id="prix" name="prix" onfocus="fokus(this)">
 <input type="hidden"  id="id_type_objet" name="id_type_objet">
 <input type="hidden"  id="id_objet" name="id_objet">   
 <input type="hidden"  id="nom_objet0" name="nom_objet0">   
 
 
-      <br>
-     
+   
 
     <button type="button" class="btn btn-default btn-lg" onclick="ajout();">
     Ajouter
@@ -365,6 +373,24 @@ $("[name='my-checkbox']").bootstrapSwitch();
     <br>
             <?php include "pied.php" ; ?> 
 <script type="text/javascript">
+function switchlot(state) {
+  if (state == false){
+document.getElementById('labellot').innerHTML = "vente au: ";
+document.getElementById('labelpul').innerHTML = "Prix du lot: ";
+document.getElementById('panelcalc').style.backgroundColor = 'pink';
+}
+else
+{
+document.getElementById('labellot').innerHTML = "vente à:  "  ;
+document.getElementById('labelpul').innerHTML = "Prix unitaire: ";
+document.getElementById('panelcalc').style.backgroundColor = 'blue';
+}
+
+
+
+}
+
+
 function rembou() {
   var code_soumis = prompt('Veuillez renseigner le code de remboursement');
 var codi = <?php 
