@@ -426,7 +426,7 @@ var footstr = "Association non assujettie à la TVA.</body></small> ";
       document.body.innerHTML = headstr+newstr+footstr;
       window.print();
       document.body.innerHTML = oldstr;
-      return false;
+      //return false;
 
           }
 
