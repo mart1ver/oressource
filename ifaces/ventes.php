@@ -485,14 +485,15 @@ window.location.reload();
 function switchlot(state) {
 
   if (state == false){
-    sul = "lot"
+ 
+document.getElementById('sul').value = "lot";
 document.getElementById('labellot').innerHTML = "vente au: ";
 document.getElementById('labelpul').innerHTML = "Prix du lot: ";
 document.getElementById('panelcalc').style.backgroundColor = '#A18681';
 }
 else
 {
-   sul = "unite"
+ document.getElementById('sul').value = "unite";
 document.getElementById('labellot').innerHTML = "vente à:  "  ;
 document.getElementById('labelpul').innerHTML = "Prix unitaire: ";
 document.getElementById('panelcalc').style.backgroundColor = '#95BA73';
