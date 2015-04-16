@@ -143,7 +143,7 @@ $('input[name="my-checkbox"]').on('switchChange.bootstrapSwitch', function(event
 <input type="hidden"  id="id_type_objet" name="id_type_objet">
 <input type="hidden"  id="id_objet" name="id_objet">   
 <input type="hidden"  id="nom_objet0" name="nom_objet0">   
-<input type="text"  id="sul" name="sul" value ="unite">   
+<input type="text"  id="sul" name="sul" >   
 
 
    
@@ -559,7 +559,7 @@ if (isNaN(parseInt(document.getElementById('ptot').value)) )
       
       }
       else {
-        
+
       }
 
                   }
