@@ -505,7 +505,7 @@ document.getElementById('panelcalc').style.backgroundColor = '#F0EBEA';
 function ajout() {
 
 
-if ( document.getElementById('sul').value = "unite"){
+if ( document.getElementById('sul').value == "unite"){
   var prixtemp;
   prixtemp = document.getElementById('prix').value;
    prixtemp = prixtemp.replace(",", ".");
