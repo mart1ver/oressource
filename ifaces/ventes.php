@@ -496,7 +496,7 @@ else
  document.getElementById('sul').value = "unite";
 document.getElementById('labellot').innerHTML = "vente à:  "  ;
 document.getElementById('labelpul').innerHTML = "Prix unitaire: ";
-document.getElementById('panelcalc').style.backgroundColor = '#95BA73';
+document.getElementById('panelcalc').style.backgroundColor = '#F0EBEA';
 }
 }
 
