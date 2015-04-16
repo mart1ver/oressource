@@ -503,6 +503,9 @@ document.getElementById('panelcalc').style.backgroundColor = '#95BA73';
 
 
 function ajout() {
+
+
+if ( document.getElementById('sul').value = "unite"){
   var prixtemp;
   prixtemp = document.getElementById('prix').value;
    prixtemp = prixtemp.replace(",", ".");
@@ -550,6 +553,15 @@ if (isNaN(parseInt(document.getElementById('ptot').value)) )
                document.getElementById('id_objet').value = "";
                document.getElementById('nom_objet0').value = "";
                }
+
+
+
+      
+      }
+      else {
+        
+      }
+
                   }
 
 
