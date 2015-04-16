@@ -480,8 +480,9 @@ window.location.reload();
 }
 
 
-var sul = "unite"
+
 function switchlot(state) {
+  var sul = "unite"
   if (state == false){
     sul = "lot"
 document.getElementById('labellot').innerHTML = "vente au: ";
