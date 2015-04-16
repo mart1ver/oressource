@@ -533,7 +533,7 @@ if (isNaN(parseInt(document.getElementById('narticles').value)) )
           }          
 if (isNaN(parseInt(document.getElementById('ptot').value)) ) 
           { 
-          document.getElementById('ptot').value = document.getElementById('prix').value;
+          document.getElementById('ptot').value = document.getElementById('prix').value*document.getElementById('quantite').value;
           } 
           else
           {
@@ -588,7 +588,7 @@ if (isNaN(parseInt(document.getElementById('narticles').value)) )
           }          
 if (isNaN(parseInt(document.getElementById('ptot').value)) ) 
           { 
-          document.getElementById('ptot').value = document.getElementById('prix').value*document.getElementById('quantite').value;
+          document.getElementById('ptot').value = document.getElementById('prix').value;
           } 
           else
           {
