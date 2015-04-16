@@ -489,14 +489,14 @@ function switchlot(state) {
 document.getElementById('sul').value = "lot";
 document.getElementById('labellot').innerHTML = "vente au: ";
 document.getElementById('labelpul').innerHTML = "Prix du lot: ";
-document.getElementById('panelcalc').style.backgroundColor = 'white';
+document.getElementById('panelcalc').style.backgroundColor = '#A18681';
 }
 else
 {
  document.getElementById('sul').value = "unite";
 document.getElementById('labellot').innerHTML = "vente à:  "  ;
 document.getElementById('labelpul').innerHTML = "Prix unitaire: ";
-document.getElementById('panelcalc').style.backgroundColor = '#F0EBEA';
+document.getElementById('panelcalc').style.backgroundColor = 'white';
 }
 }
 
