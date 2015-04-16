@@ -377,13 +377,13 @@ function switchlot(state) {
   if (state == false){
 document.getElementById('labellot').innerHTML = "vente au: ";
 document.getElementById('labelpul').innerHTML = "Prix du lot: ";
-document.getElementById('panelcalc').style.backgroundColor = 'pink';
+document.getElementById('panelcalc').style.backgroundColor = '#A18681';
 }
 else
 {
 document.getElementById('labellot').innerHTML = "vente à:  "  ;
 document.getElementById('labelpul').innerHTML = "Prix unitaire: ";
-document.getElementById('panelcalc').style.backgroundColor = 'blue';
+document.getElementById('panelcalc').style.backgroundColor = '#95BA73';
 }
 
 
