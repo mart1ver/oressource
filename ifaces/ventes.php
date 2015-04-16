@@ -489,7 +489,7 @@ function switchlot(state) {
 document.getElementById('sul').value = "lot";
 document.getElementById('labellot').innerHTML = "vente au: ";
 document.getElementById('labelpul').innerHTML = "Prix du lot: ";
-document.getElementById('panelcalc').style.backgroundColor = '#A18681';
+document.getElementById('panelcalc').style.backgroundColor = 'white';
 }
 else
 {
