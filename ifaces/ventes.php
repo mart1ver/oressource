@@ -135,7 +135,7 @@ $('input[name="my-checkbox"]').on('switchChange.bootstrapSwitch', function(event
 </script>
 <p>
 
-<br>
+
 
 
 
