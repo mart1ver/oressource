@@ -373,22 +373,6 @@ $('input[name="my-checkbox"]').on('switchChange.bootstrapSwitch', function(event
     <br>
             <?php include "pied.php" ; ?> 
 <script type="text/javascript">
-function switchlot(state) {
-  if (state == false){
-document.getElementById('labellot').innerHTML = "vente au: ";
-document.getElementById('labelpul').innerHTML = "Prix du lot: ";
-document.getElementById('panelcalc').style.backgroundColor = '#A18681';
-}
-else
-{
-document.getElementById('labellot').innerHTML = "vente à:  "  ;
-document.getElementById('labelpul').innerHTML = "Prix unitaire: ";
-document.getElementById('panelcalc').style.backgroundColor = '#95BA73';
-}
-
-
-
-}
 
 
 function rembou() {
@@ -496,7 +480,22 @@ window.location.reload();
 }
 
 
-
+var sul = "unite"
+function switchlot(state) {
+  if (state == false){
+    sul = "lot"
+document.getElementById('labellot').innerHTML = "vente au: ";
+document.getElementById('labelpul').innerHTML = "Prix du lot: ";
+document.getElementById('panelcalc').style.backgroundColor = '#A18681';
+}
+else
+{
+   sul = "unite"
+document.getElementById('labellot').innerHTML = "vente à:  "  ;
+document.getElementById('labelpul').innerHTML = "Prix unitaire: ";
+document.getElementById('panelcalc').style.backgroundColor = '#95BA73';
+}
+}
 
 
 
@@ -549,6 +548,11 @@ if (isNaN(parseInt(document.getElementById('ptot').value)) )
                document.getElementById('nom_objet0').value = "";
                }
                   }
+
+
+
+
+
 function edite(nom,prix,id_type_objet,id_objet) {
     document.getElementById('nom_objet').innerHTML = "<label>"+nom+"</label>";
     document.getElementById('quantite').value = "1";
