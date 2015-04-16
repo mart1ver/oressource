@@ -147,7 +147,7 @@ $('input[name="my-checkbox"]').on('switchChange.bootstrapSwitch', function(event
 
 
    
-
+<br>
     <button type="button" class="btn btn-default btn-lg" onclick="ajout();">
     Ajouter
     </button>
