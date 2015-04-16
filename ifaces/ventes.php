@@ -157,7 +157,7 @@ $('input[name="my-checkbox"]').on('switchChange.bootstrapSwitch', function(event
     <div class="row">
     
     </div>
-    <br>
+   
     <div class="row">
         <button class="btn btn-default btn-lg" value="1" onclick="often(this);" style="margin-top:8px;">1</button>
         <button class="btn btn-default btn-lg" value="2" onclick="often(this);" style="margin-left:8px; margin-top:8px;">2</button>
