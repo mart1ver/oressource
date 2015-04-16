@@ -143,6 +143,7 @@ $('input[name="my-checkbox"]').on('switchChange.bootstrapSwitch', function(event
 <input type="hidden"  id="id_type_objet" name="id_type_objet">
 <input type="hidden"  id="id_objet" name="id_objet">   
 <input type="hidden"  id="nom_objet0" name="nom_objet0">   
+<input type="text"  id="sul" name="sul" value ="unite">   
 
 
    
@@ -482,7 +483,7 @@ window.location.reload();
 
 
 function switchlot(state) {
-  var sul = "unite"
+
   if (state == false){
     sul = "lot"
 document.getElementById('labellot').innerHTML = "vente au: ";
