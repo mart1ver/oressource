@@ -71,6 +71,8 @@ Code de remboursement à la caisse: <input type="text" value ="<?php echo $donne
 <br>
 Activer la vente par lot à la caisse : <input name ="lot" id ="lot" type="checkbox" value = "oui" <?php if((strpos($donnees['lot'], 'oui') !== false)){ echo "checked";} ?> >
 <br>
+Activer la visualisation des ventes du jour à la caisse : <input name ="viz" id ="viz" type="checkbox" value = "oui" <?php if((strpos($donnees['viz'], 'oui') !== false)){ echo "checked";} ?> >
+<br>
 </div>
 </div>
 
