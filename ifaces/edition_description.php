@@ -61,12 +61,22 @@
         <br>
         <label for="mail">Mail principal:</label> <input type="email" name="mail" id="mail" class="form-control " value = "<?php echo $donnees['mail']; ?>" required > 
         <br>
- <label for="atva">Activer la TVA à la vente:</label> <input name ="atva" id ="atva" type="checkbox" value = "oui" <?php if((strpos($donnees['tva_active'], 'oui') !== false)){ echo "checked";} ?> >
+<div class="panel panel-default">
+  <div class="panel-body">
+ <label for="atva">Activer la TVA à la vente : </label> <input name ="atva" id ="atva" type="checkbox" value = "oui" <?php if((strpos($donnees['tva_active'], 'oui') !== false)){ echo "checked";} ?> >
 <br>
 <label for="ttva">Taux en vigueur:</label> <input type="text" value ="<?php echo $donnees['taux_tva']; ?>" name="ttva" id="ttva" class="form-control " required >
 <br>
 <label for="cr">Code de remboursement à la caisse:</label> <input type="text" value ="<?php echo $donnees['cr']; ?>" name="cr" id="cr" class="form-control " required > 
 <br>
+<label for="atva">Activer la vente par lot à la caisse : </label> <input name ="lot" id ="lot" type="checkbox" value = "oui" <?php if((strpos($donnees['lot_actif'], 'oui') !== false)){ echo "checked";} ?> >
+<br>
+</div>
+</div>
+
+
+
+
       </div>
        <div class="row">
       
