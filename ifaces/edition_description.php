@@ -50,26 +50,26 @@
   <div class="panel-body">
     <div class="row">
     <form action="../moteur/edition_description_post.php" method="post">
-      <div class="col-md-3 col-md-offset-2"><label for="nom">Nom de la structure:</label> <input type="text"value ="<?php echo $donnees['nom']; ?>" name="nom" id="nom" class="form-control " required autofocus></div>
+      <div class="col-md-3 col-md-offset-1"><label for="nom">Nom de la structure:</label> <input type="text"value ="<?php echo $donnees['nom']; ?>" name="nom" id="nom" class="form-control " required autofocus></div>
       <div class="col-md-4"><label for="adresse">Adresse:</label> <input type="text"       value ="<?php echo $donnees['adresse']; ?>" name="adresse" id="adresse" class="form-control " required ></div>
       <div class="col-md-2"><label for="telephone">Téléphone:</label> <input type="tel" value ="<?php echo $donnees['telephone']; ?>" name="telephone" id="telephone" class="form-control " required ></div>
       <div class="col-md-2"></div>
     </div>
   <br>
     <div class="row">
-      <div class="col-md-3 col-md-offset-2"><label for="localite">Localité:</label> <input type="text" value ="<?php echo $donnees['id_localite']; ?>" name="localite" id="localite" class="form-control " required > 
+      <div class="col-md-4 col-md-offset-1"><label for="localite">Localité:</label> <input type="text" value ="<?php echo $donnees['id_localite']; ?>" name="localite" id="localite" class="form-control " required > 
         <br>
         <label for="mail">Mail principal:</label> <input type="email" name="mail" id="mail" class="form-control " value = "<?php echo $donnees['mail']; ?>" required > 
         <br>
 <div class="panel panel-default">
   <div class="panel-body">
- <label for="atva">Activer la TVA à la vente : </label> <input name ="atva" id ="atva" type="checkbox" value = "oui" <?php if((strpos($donnees['tva_active'], 'oui') !== false)){ echo "checked";} ?> >
+ Activer la TVA à la vente : <input name ="atva" id ="atva" type="checkbox" value = "oui" <?php if((strpos($donnees['tva_active'], 'oui') !== false)){ echo "checked";} ?> >
 <br>
-<label for="ttva">Taux en vigueur:</label> <input type="text" value ="<?php echo $donnees['taux_tva']; ?>" name="ttva" id="ttva" class="form-control " required >
+Taux en vigueur: <input type="text" value ="<?php echo $donnees['taux_tva']; ?>" name="ttva" id="ttva" class="form-control " required >
 <br>
-<label for="cr">Code de remboursement à la caisse:</label> <input type="text" value ="<?php echo $donnees['cr']; ?>" name="cr" id="cr" class="form-control " required > 
+Code de remboursement à la caisse: <input type="text" value ="<?php echo $donnees['cr']; ?>" name="cr" id="cr" class="form-control " required > 
 <br>
-<label for="atva">Activer la vente par lot à la caisse : </label> <input name ="lot" id ="lot" type="checkbox" value = "oui" <?php if((strpos($donnees['lot_actif'], 'oui') !== false)){ echo "checked";} ?> >
+Activer la vente par lot à la caisse : <input name ="lot" id ="lot" type="checkbox" value = "oui" <?php if((strpos($donnees['lot_actif'], 'oui') !== false)){ echo "checked";} ?> >
 <br>
 </div>
 </div>
