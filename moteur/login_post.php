@@ -32,6 +32,7 @@ $_SESSION['siret'] = $resultat['siret'];
 $_SESSION['adresse'] = $resultat['adresse'];
 $_SESSION['texte_adhesion'] = $resultat['texte_adhesion'];
 $_SESSION['lot_caisse'] = $resultat['lot'];
+$_SESSION['viz_caisse'] = $resultat['viz'];
   
   
 

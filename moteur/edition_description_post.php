@@ -15,7 +15,12 @@ if ($_POST['lot'] == 'oui')
 
 	$lot = 'oui' ;
 }
-		
+$viz = 'non' ;
+if ($_POST['viz'] == 'oui')
+{
+
+	$viz = 'oui' ;
+}		
 
 
 
@@ -38,12 +43,12 @@ if ($_POST['lot'] == 'oui')
 // Insertion du post à l'aide d'une requête préparée
 	
 
-$req = $bdd->prepare('UPDATE description_structure SET id = :id, nom = :nom, adresse = :adresse, description = :description , siret = :siret , telephone = :telephone , mail =:mail, taux_tva =:taux_tva, tva_active=:tva_active ,cr=:cr,lot=:lot
+$req = $bdd->prepare('UPDATE description_structure SET id = :id, nom = :nom, adresse = :adresse, description = :description , siret = :siret , telephone = :telephone , mail =:mail, taux_tva =:taux_tva, tva_active=:tva_active ,cr=:cr,lot=:lot,viz=:viz
 WHERE id = :id');
 
 
 
-$req->execute(array('id' => 1,'nom' => $_POST['nom'], 'description' => $_POST['description'],'siret' => $_POST['siret'], 'mail' => $_POST['mail'], 'adresse' => $_POST['adresse'],'telephone' => $_POST['telephone'],'id_localite' => $_POST['localite'],'taux_tva' => $_POST['ttva'], 'tva_active' => $atva, 'lot' => $lot ,'cr' => $_POST['cr']));
+$req->execute(array('id' => 1,'nom' => $_POST['nom'], 'description' => $_POST['description'],'siret' => $_POST['siret'], 'mail' => $_POST['mail'], 'adresse' => $_POST['adresse'],'telephone' => $_POST['telephone'],'id_localite' => $_POST['localite'],'taux_tva' => $_POST['ttva'], 'tva_active' => $atva, 'lot' => $lot , 'viz' => $viz,'cr' => $_POST['cr']));
 
 
 
