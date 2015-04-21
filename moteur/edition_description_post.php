@@ -38,7 +38,7 @@ if ($_POST['lot'] == 'oui')
 // Insertion du post à l'aide d'une requête préparée
 	
 
-$req = $bdd->prepare('UPDATE description_structure SET id = :id, nom = :nom, adresse = :adresse, description = :description , siret = :siret , telephone = :telephone , mail =:mail, taux_tva =:taux_tva, tva_active=:tva_active ,cr=:cr
+$req = $bdd->prepare('UPDATE description_structure SET id = :id, nom = :nom, adresse = :adresse, description = :description , siret = :siret , telephone = :telephone , mail =:mail, taux_tva =:taux_tva, tva_active=:tva_active ,cr=:cr,lot=:lot
 WHERE id = :id');
 
 
