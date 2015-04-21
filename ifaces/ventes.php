@@ -123,6 +123,9 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
   </div>
   <div class="panel-body" id="panelcalc"> 
      
+
+
+     <?php if ($_SESSION['lot_caisse'] == 'oui'){ ?>
 <p align="right">
   <b id="labellot">vente à:  </b>
 <input type="checkbox" name="my-checkbox"   checked  data-on-text="l'unité" data-off-text="lot" data-handle-width="45" data-size="small" >
@@ -134,7 +137,7 @@ $('input[name="my-checkbox"]').on('switchChange.bootstrapSwitch', function(event
 });
 </script>
 <p>
-
+<?php }?>
 
 
 
