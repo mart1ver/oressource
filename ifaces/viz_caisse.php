@@ -18,7 +18,7 @@
  if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND $_SESSION['viz_caisse'] = "oui" AND (strpos($_SESSION['niveau'], 'v'.$_GET['numero']) !== false)  )
       {  include "tete.php" ?>
    <div class="container">
-        <h1>verification des ventes</h1> 
+        <h1>Visualisation des <?php echo $_SESSION['nb_viz_caisse'] ?> derniere ventes</h1> 
         <?php
 if ($_GET['err'] == "") // SI on a pas de message d'erreur
 {
