@@ -100,10 +100,11 @@ GROUP BY nom'
 $req = $bdd->prepare('SELECT ventes.id,ventes.timestamp ,moyens_paiement.nom moyen, moyens_paiement.couleur coul, ventes.commentaire ,ventes.last_hero_timestamp lht 
                        FROM ventes ,moyens_paiement 
                        WHERE ventes.id_point_vente = :id_point_vente 
-                       AND ventes.id_moyen_paiement = moyens_paiement.id AND DATE(ventes.timestamp) =DATE(CURRENT_TIMESTAMP()) LIMIT 0,:offset' );
+                       AND ventes.id_moyen_paiement = moyens_paiement.id AND DATE(ventes.timestamp) =DATE(CURRENT_TIMESTAMP())
+                       LIMIT 0,10 ');
 
 $req->bindValue('id_point_vente' , $_GET['numero'] , PDO::PARAM_INT );
-$req->bindValue('offset' , $offset , PDO::PARAM_INT );
+//$req->bindValue('offset' , $offset , PDO::PARAM_INT );
 $req->execute();
 
 
