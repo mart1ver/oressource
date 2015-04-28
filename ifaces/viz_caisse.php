@@ -15,7 +15,7 @@
 
 <?php
 //Vérification des autorisations de l'utilisateur et des variables de session requises pour l'affichage de cette page:
- if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND $_SESSION['viz_caisse'] = "oui" AND (strpos($_SESSION['niveau'], 'v'.$_GET['numero']) !== false) AND )
+ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND $_SESSION['viz_caisse'] = "oui" AND (strpos($_SESSION['niveau'], 'v'.$_GET['numero']) !== false)  )
       {  include "tete.php" ?>
    <div class="container">
         <h1>verification des ventes</h1> 
