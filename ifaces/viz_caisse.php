@@ -72,7 +72,7 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
         </thead>
         <tbody>
         <?php 
-        $offset =  $_SESSION['nb_viz_caisse']
+        $offset =  $_SESSION['nb_viz_caisse'];
             try
             {
             // On se connecte à MySQL
