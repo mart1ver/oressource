@@ -21,7 +21,7 @@
         <h1>Visualisation des <?php echo $_SESSION['nb_viz_caisse'] ?> derniere ventes</h1> 
         <p align="right">
         <input class="btn btn-default btn-lg" type='button'name='quitter' value='Quitter' OnClick="window.close();"/></p>
-      </br>
+
         <?php
 if ($_GET['err'] == "") // SI on a pas de message d'erreur
 {

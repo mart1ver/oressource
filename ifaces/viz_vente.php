@@ -5,6 +5,8 @@
       {  include "tete.php" ?>
    <div class="container">
         <h1>Visualiser la vente n° <?php echo $_GET['nvente']?></h1> 
+        <p align="right">
+        <input class="btn btn-default btn-lg" type='button'name='quitter' value='Quitter' OnClick="window.close();"/></p>
         <?php
 if ($_GET['err'] == "") // SI on a pas de message d'erreur
 {
