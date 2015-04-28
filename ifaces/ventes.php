@@ -380,7 +380,7 @@ $('input[name="my-checkbox"]').on('switchChange.bootstrapSwitch', function(event
      <div class="col-md-2 col-md-offset-2" style="width: 330px;" >
 
 
-  <a href="viz_caisse.php?numero=<?php echo $_GET['numero'] ?>">visualiser les <?php echo $_SESSION['nb_viz_caisse'] ?> dernieres ventes</a>
+  <a href="viz_caisse.php?numero=<?php echo $_GET['numero'] ?>" target="_blank">visualiser les <?php echo $_SESSION['nb_viz_caisse'] ?> dernieres ventes</a>
 
 
  </div>

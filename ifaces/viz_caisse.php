@@ -65,8 +65,7 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
             <th>Commentaire</th>
             <th>Auteur de la ligne</th>
             <th></th>
-            <th>Modifié par</th>
-            <th style="width:100px">Le:</th>
+           
             
           </tr>
         </thead>
@@ -293,40 +292,7 @@ echo $donnees4['pto'];
 <?php } ?>
 
             </td>
-            <td><?php 
-            try
-            {
-            // On se connecte à MySQL
-            include('../moteur/dbconfig.php');
-            }
-            catch(Exception $e)
-            {
-            // En cas d'erreur, on affiche un message et on arrête tout
-            die('Erreur : '.$e->getMessage());
-            }
- 
-            // Si tout va bien, on peut continuer
-$req5 = $bdd->prepare('SELECT utilisateurs.mail mail
-                       FROM utilisateurs, ventes 
-                       WHERE  ventes.id = :id_vente 
-                       AND utilisateurs.id = ventes.id_last_hero');
-$req5->execute(array('id_vente' => $donnees['id']));
-
-
-           // On affiche chaque entree une à une
-           while ($donnees5 = $req5->fetch())
-           { ?>
-
-
-
-<?php echo $donnees5['mail']?>
-
-
-         <?php }
-           
-                ?></td>
-
-            <td><?php if ($donnees['lht'] !== '0000-00-00 00:00:00'){echo $donnees['lht'];}?></td>
+            
 
 
 
@@ -339,7 +305,7 @@ $req5->execute(array('id_vente' => $donnees['id']));
                 $req2->closeCursor(); // Termine le traitement de la requête2
                 $req3->closeCursor(); // Termine le traitement de la requête3
                 $req4->closeCursor(); // Termine le traitement de la requête4
-                $req5->closeCursor(); // Termine le traitement de la requête 5                ?>
+                          ?>
        </tbody>
         <tfoot>
           <tr>
@@ -352,8 +318,7 @@ $req5->execute(array('id_vente' => $donnees['id']));
             <th></th>
             <th></th>
             <th></th>
-            <th></th>
-            <th></th>
+           
             
           </tfoot>
         
