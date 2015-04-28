@@ -375,6 +375,8 @@ $('input[name="my-checkbox"]').on('switchChange.bootstrapSwitch', function(event
     </div>
   </div>
     </div>
+
+<?php if ($_SESSION['viz_caisse'] == 'oui'){ ?>
      <div class="col-md-2 col-md-offset-2" style="width: 330px;" >
 
 
@@ -382,6 +384,7 @@ $('input[name="my-checkbox"]').on('switchChange.bootstrapSwitch', function(event
 
 
  </div>
+<?php }?>
  <br><br><br>   
             <?php include "pied.php" ; ?> 
 <script type="text/javascript">
