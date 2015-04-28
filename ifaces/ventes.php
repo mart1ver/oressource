@@ -370,14 +370,14 @@ $('input[name="my-checkbox"]').on('switchChange.bootstrapSwitch', function(event
 
     </ul>
 
-    <br><br>
+    
      
     </div>
   </div>
     </div>
      <div class="col-md-2 col-md-offset-2" style="width: 330px;" >
    <a>visualiser les x derniers ventes</a>
-   <br>
+   <br><br><br>
  </div>
  <br>
     
