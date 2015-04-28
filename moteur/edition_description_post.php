@@ -48,7 +48,7 @@ WHERE id = :id');
 
 
 
-$req->execute(array('id' => 1,'nom' => $_POST['nom'], 'description' => $_POST['description'],'siret' => $_POST['siret'], 'mail' => $_POST['mail'], 'adresse' => $_POST['adresse'],'telephone' => $_POST['telephone'],'id_localite' => $_POST['localite'],'taux_tva' => $_POST['ttva'], 'tva_active' => $atva, 'lot' => $lot , 'viz' => $viz, 'nb_viz' => $_POST['ttva'],'cr' => $_POST['cr']));
+$req->execute(array('id' => 1,'nom' => $_POST['nom'], 'description' => $_POST['description'],'siret' => $_POST['siret'], 'mail' => $_POST['mail'], 'adresse' => $_POST['adresse'],'telephone' => $_POST['telephone'],'id_localite' => $_POST['localite'],'taux_tva' => $_POST['ttva'], 'tva_active' => $atva, 'lot' => $lot , 'viz' => $viz, 'nb_viz' => $_POST['nb_viz'],'cr' => $_POST['cr']));
 
 
 
