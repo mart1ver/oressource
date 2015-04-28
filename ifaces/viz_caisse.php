@@ -101,6 +101,7 @@ $req = $bdd->prepare('SELECT ventes.id,ventes.timestamp ,moyens_paiement.nom moy
                        FROM ventes ,moyens_paiement 
                        WHERE ventes.id_point_vente = :id_point_vente 
                        AND ventes.id_moyen_paiement = moyens_paiement.id AND DATE(ventes.timestamp) =DATE(CURRENT_TIMESTAMP())
+                       ORDER BY ventes.timestamp DESC
                        LIMIT 0,:offset ');
 
 $req->bindValue('id_point_vente' , $_GET['numero'] , PDO::PARAM_INT );
