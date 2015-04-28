@@ -378,7 +378,7 @@ $('input[name="my-checkbox"]').on('switchChange.bootstrapSwitch', function(event
      <div class="col-md-2 col-md-offset-2" style="width: 330px;" >
 
 
-  <a>visualiser les <?php echo $_SESSION['nb_viz_caisse'] ?>derniers ventes</a>
+  <a>visualiser les <?php echo $_SESSION['nb_viz_caisse'] ?> dernieres ventes</a>
 
 
  </div>
