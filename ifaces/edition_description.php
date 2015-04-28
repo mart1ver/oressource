@@ -73,6 +73,8 @@ Activer la vente par lot à la caisse: <input name ="lot" id ="lot" type="checkb
 <br>
 Activer la visualisation des ventes à la caisse: <input name ="viz" id ="viz" type="checkbox" value = "oui" <?php if((strpos($donnees['viz'], 'oui') !== false)){ echo "checked";} ?> >
 <br>
+Nombre de ventesanterieures visibles: <input type="text" value ="<?php echo $donnees['nb_viz']; ?>" name="nb_viz" id="nb_viz" class="form-control " required >
+<br>
 </div>
 </div>
 

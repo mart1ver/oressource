@@ -375,7 +375,7 @@ $('input[name="my-checkbox"]').on('switchChange.bootstrapSwitch', function(event
     </div>
   </div>
     </div>
-   
+   visualiser les x derniers ventes
     <br>
             <?php include "pied.php" ; ?> 
 <script type="text/javascript">
