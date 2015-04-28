@@ -72,7 +72,7 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
         </thead>
         <tbody>
         <?php 
-        $offset =  $_SESSION['nb_viz_caisse'];
+        $offset = intval($_SESSION['nb_viz_caisse']);
             try
             {
             // On se connecte à MySQL
@@ -104,7 +104,7 @@ $req = $bdd->prepare('SELECT ventes.id,ventes.timestamp ,moyens_paiement.nom moy
                        LIMIT 0,10 ');
 
 $req->bindValue('id_point_vente' , $_GET['numero'] , PDO::PARAM_INT );
-//$req->bindValue('offset' , $offset , PDO::PARAM_INT );
+$req->bindValue('offset' , $offset , PDO::PARAM_INT );
 $req->execute();
 
 
