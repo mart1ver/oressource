@@ -19,7 +19,7 @@
       {  include "tete.php" ?>
    <div class="container">
         <h1>Visualisation des <?php echo $_SESSION['nb_viz_caisse'] ?> derniere ventes</h1> 
-        <input class='boutton' type='button'name='quitter' value='Quitter' OnClick="close();"/></br>
+        <input class='boutton' type='button'name='quitter' value='Quitter' OnClick="window.close();"/></br>
         <?php
 if ($_GET['err'] == "") // SI on a pas de message d'erreur
 {
