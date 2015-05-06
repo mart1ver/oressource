@@ -226,7 +226,7 @@ $('input[name="my-checkbox"]').on('switchChange.bootstrapSwitch', function(event
       <span class="badge" id="cool" style="background-color:<?php echo$donnees['couleur']?>"><?php echo$donnees['nom']?></span>
       </button>
       <ul class="dropdown-menu" role="menu">
-      <li><font size="2"><a href="javascript:edite('<?php echo$donnees['nom']?>','0','<?php echo$donnees['id']?>','0')" ><?php echo$donnees['nom']?></a></font></li>
+      <li><font size="3"><a href="javascript:edite('<?php echo$donnees['nom']?>','0','<?php echo$donnees['id']?>','0')" ><?php echo$donnees['nom']?></a></font></li>
       <li class="divider"></li>
 
 
@@ -249,7 +249,7 @@ $('input[name="my-checkbox"]').on('switchChange.bootstrapSwitch', function(event
            while ($donneesint = $req->fetch())
            {
            ?>
-    <li><font size="2"><a href="javascript:edite('<?php echo$donneesint['nom']?>','<?php echo$donneesint['prix']?>','<?php echo$donnees['id']?>','<?php echo$donneesint['id']?>')"><?php echo$donneesint['nom']?></a></font></li>
+    <li><font size="3"><a href="javascript:edite('<?php echo$donneesint['nom']?>','<?php echo$donneesint['prix']?>','<?php echo$donnees['id']?>','<?php echo$donneesint['id']?>')"><?php echo$donneesint['nom']?></a></font></li>
     </li>
            <?php }
            $req->closeCursor(); // Termine le traitement de la requête
