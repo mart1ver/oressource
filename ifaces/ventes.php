@@ -226,7 +226,7 @@ $('input[name="my-checkbox"]').on('switchChange.bootstrapSwitch', function(event
       <span class="badge" id="cool" style="background-color:<?php echo$donnees['couleur']?>"><?php echo$donnees['nom']?></span>
       </button>
       <ul class="dropdown-menu" role="menu">
-      <li><font size="7"><a href="javascript:edite('<?php echo$donnees['nom']?>','0','<?php echo$donnees['id']?>','0')" ><?php echo$donnees['nom']?></a></font></li>
+      <li><a href="javascript:edite('<?php echo$donnees['nom']?>','0','<?php echo$donnees['id']?>','0')" ><?php echo$donnees['nom']?></a></li>
       <li class="divider"></li>
 
 
