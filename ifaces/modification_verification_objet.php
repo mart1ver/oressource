@@ -59,7 +59,8 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
 <br><input type="text"       value ="<?php echo $_POST['prix']?>" name="prix" id="prix" class="form-control " required >
   
  </div>
-  <div class="col-md-3">
+
+  <div class="col-md-1">
   
   <br>
 <button name="creer" class="btn btn-warning">Modifier</button>
