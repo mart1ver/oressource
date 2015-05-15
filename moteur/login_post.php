@@ -34,6 +34,7 @@ $_SESSION['texte_adhesion'] = $resultat['texte_adhesion'];
 $_SESSION['lot_caisse'] = $resultat['lot'];
 $_SESSION['viz_caisse'] = $resultat['viz'];
 $_SESSION['nb_viz_caisse'] = $resultat['nb_viz'];
+$_SESSION['saisiec'] = $resultat['saisiec'];
   
   
 
