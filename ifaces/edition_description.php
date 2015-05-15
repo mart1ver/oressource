@@ -75,6 +75,8 @@ Activer la visualisation des ventes à la caisse: <input name ="viz" id ="viz" t
 <br>
 Nombre de ventes anterieures visibles: <input type="text" value ="<?php echo $donnees['nb_viz']; ?>" name="nb_viz" id="nb_viz" class="form-control " required >
 <br>
+Permetre de dater Les ventes (mode saisie):  <input name ="saisiec" id ="saisiec" type="checkbox" value = "oui" <?php if((strpos($donnees['saisiec'], 'oui') !== false)){ echo "checked";} ?> >
+<br>
 </div>
 </div>
 
