@@ -28,8 +28,8 @@ $antidate = $_POST['antidate'].date(" H:i:s");
         die('Erreur : '.$e->getMessage());
 }
 // Insertion de la vente (sans les objets vendus) l'aide d'une requête préparée
-  $req = $bdd->prepare('INSERT INTO ventes (adherent, commentaire, id_point_vente, id_moyen_paiement, id_createur) VALUES(?, ?, ?, ?, ?)');
-  $req->execute(array($adh,  $_POST['comm'] , $_POST['id_point_vente'], $_POST['moyen'], $_SESSION['id']));
+  $req = $bdd->prepare('INSERT INTO ventes (timestamp, adherent, commentaire, id_point_vente, id_moyen_paiement, id_createur) VALUES(?,?, ?, ?, ?, ?)');
+  $req->execute(array($antidate, $adh,  $_POST['comm'] , $_POST['id_point_vente'], $_POST['moyen'], $_SESSION['id']));
   $id_vente = $bdd->lastInsertId();
     $req->closeCursor();
 //insertion des vendus dans la table vendus
