@@ -17,7 +17,7 @@ if(isset($_POST['adh']))
   if ($_SESSION['saisiec'] == "oui")
    {
     
-$antidate = $_POST['antidate'];
+$antidate = $_POST['antidate'].date(" H:i:s");
     // Connexion à la base de données
     try
 {
