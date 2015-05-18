@@ -15,7 +15,7 @@ if(isset($_POST['adh']))
 
 
   if ($_SESSION['saisiec'] == "oui")
-
+$antidate = $_POST['antidate']
 
    {
     
@@ -63,8 +63,9 @@ $req->execute(array($id_vente ,  $_POST[$tid_type_objet] ,  $_POST[$tid_objet] ,
 }
     $i++;
 }
-// Redirection du visiteur vers la page de gestion des affectation
-  header("Location:../ifaces/ventes.php?numero=".$_POST['id_point_vente']);
+// Redirection du visiteur vers la page de ventes
+ // header("Location:../ifaces/ventes.php?numero=".$_POST['id_point_vente']);
+echo $antidate
   }else      {
 
 

@@ -95,7 +95,7 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
      <form action="../moteur/vente_post.php" id="formulaire" method="post">
 
 <?php if ($_SESSION['saisiec'] == 'oui'){ ?>
-      Date de la vente:  <input type="date" name="antidate" style="height:20px;" value=<?php echo date("Y-m-d") ?>>
+      Date de la vente:  <input type="date" id="antidate" name="antidate" style="height:20px;" value=<?php echo date("Y-m-d") ?>>
 <br>
 <br>
 <?php }?>
