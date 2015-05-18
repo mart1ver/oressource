@@ -11,6 +11,10 @@ if(isset($_POST['adh']))
   {
    $adh = "non";
   }
+
+
+
+  
 // Connexion à la base de données
 		try
 {
