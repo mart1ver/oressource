@@ -93,7 +93,7 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
   </div>
   <div class="panel-body" id="divID">
      <form action="../moteur/vente_post.php" id="formulaire" method="post">
-      date à poser:  <input type="date" name="antidate" style="height:20px;">
+      date à poser:  <input type="date" name="antidate" style="height:20px;" value=<?php echo date("d/m/Y") ?>>
 <br>
 <ul id="liste" class="list-group">
    <li class="list-group-item">Vente: <?php echo $_GET['numero']?>#<?php echo $numero_vente?>, date: <?php echo date("d-m-Y") ?><br><?php echo $nom_pv;?><br><?php echo $adresse_pv;?>,<br>siret: <?php echo$_SESSION['siret'];?></li>
