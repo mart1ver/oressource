@@ -133,7 +133,7 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
         <thead>
           <tr>
             <th>#</th>
-            <th>Date de création</th>
+            <th>Moment de la collecte</th>
             <th>Type de déchet:</th>
             <th>Masse</th>
 

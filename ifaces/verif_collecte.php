@@ -238,7 +238,7 @@ if($donnees['nid'] > 0){ $req->closeCursor();
         <thead>
           <tr>
             <th>#</th>
-            <th>Date de création</th>
+            <th>Moment de la collecte</th>
             <th>Type de collecte:</th>
             <th>Adhérent?:</th>
             <th>Localisation:</th>
