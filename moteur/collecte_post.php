@@ -85,6 +85,8 @@ $req->execute(array($antidate,$_POST[$i],  $id_collecte , $i , $_SESSION['id']))
 
 
 
+     
+
 
 
 
@@ -166,9 +168,12 @@ $req->execute(array($_POST[$i],  $id_collecte , $i , $_SESSION['id']));
 
 
 }
-else { 
-header('Location:../moteur/destroy.php');
+else {
+  header('Location:../moteur/destroy.php');
      }
+
+
+
 
 
 
