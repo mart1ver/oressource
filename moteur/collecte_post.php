@@ -15,7 +15,9 @@ if(isset($_POST['adh']))
 
 
 if ($_SESSION['saisiec'] == "oui" AND (strpos($_SESSION['niveau'], 'e') !== false) )
-   {
+{
+
+
 $antidate = $_POST['antidate'].date(" H:i:s");
 
 
@@ -160,19 +162,22 @@ $req->execute(array($_POST[$i],  $id_collecte , $i , $_SESSION['id']));
 }
 // Redirection du visiteur vers la page de gestion des affectation
 	header("Location:../ifaces/collecte.php?numero=".$_POST['id_point_collecte']);
-
-
 }
-
-
-
-
-
 
 
 }
 else { 
 header('Location:../moteur/destroy.php');
      }
+
+
+
+
+
+
+
+
+
+
 ?>
 
