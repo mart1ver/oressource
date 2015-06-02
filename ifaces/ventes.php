@@ -94,7 +94,7 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
   <div class="panel-body" id="divID">
      <form action="../moteur/vente_post.php" id="formulaire" method="post">
 
-<?php if ($_SESSION['saisiec'] == 'oui'){ ?>
+<?php if ($_SESSION['saisiec'] == 'oui' AND (strpos($_SESSION['niveau'], 'e') !== false) ){ ?>
       Date de la vente:  <input type="date" id="antidate" name="antidate" style="height:20px;" value=<?php echo date("Y-m-d") ?>>
 <br>
 <br>
