@@ -208,7 +208,7 @@ $time_fin = $time_fin." 23:59:59";
         <thead>
           <tr>
             <th>#</th>
-            <th>Date de création</th>
+            <th>Momment de la vente</th>
             <th>Crédit</th>
             <th>Débit</th>
             <th>Nombre d'objets</th>
