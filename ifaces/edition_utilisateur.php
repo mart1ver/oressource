@@ -53,8 +53,9 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
           <input type="checkbox" name="niveaul" id="niveaul" value="l"<?php if((strpos($_POST['niveau'], 'l') !== false)){ echo "checked";} ?>> <label for="niveaul">Utilisateurs</label><br>
           <input type="checkbox" name="niveauj" id="niveauj" value="j"<?php if((strpos($_POST['niveau'], 'j') !== false)){ echo "checked";} ?>> <label for="niveauj">Recycleurs et convention partenaires</label><br>
           <input type="checkbox" name="niveauk" id="niveauk" value="k"<?php if((strpos($_POST['niveau'], 'k') !== false)){ echo "checked";} ?>> <label for="niveauk">Configuration de Oressource</label><br>
+        <?php if ($_SESSION['saisiec'] == 'oui'){ ?>
           <input type="checkbox" name="niveaue" id="niveauk" value="e"<?php if((strpos($_POST['niveau'], 'e') !== false)){ echo "checked";} ?>> <label for="niveauk">Saisir la date dans les formulaires</label><br>
-
+        <?php }?>
 
      </div>
           
