@@ -61,6 +61,8 @@
         <br>
         <label for="mail">Mail principal:</label> <input type="email" name="mail" id="mail" class="form-control " value = "<?php echo $donnees['mail']; ?>" required > 
         <br>
+        Permetre de dater Les ventes (mode saisie):  <input name ="saisiec" id ="saisiec" type="checkbox" value = "oui" <?php if((strpos($donnees['saisiec'], 'oui') !== false)){ echo "checked";} ?> >
+        <br>
 <div class="panel panel-default">
   <div class="panel-body">
  Activer la TVA à la vente : <input name ="atva" id ="atva" type="checkbox" value = "oui" <?php if((strpos($donnees['tva_active'], 'oui') !== false)){ echo "checked";} ?> >
@@ -74,8 +76,6 @@ Activer la vente par lot à la caisse: <input name ="lot" id ="lot" type="checkb
 Activer la visualisation des ventes à la caisse: <input name ="viz" id ="viz" type="checkbox" value = "oui" <?php if((strpos($donnees['viz'], 'oui') !== false)){ echo "checked";} ?> >
 <br>
 Nombre de ventes anterieures visibles: <input type="text" value ="<?php echo $donnees['nb_viz']; ?>" name="nb_viz" id="nb_viz" class="form-control " required >
-<br>
-Permetre de dater Les ventes (mode saisie):  <input name ="saisiec" id ="saisiec" type="checkbox" value = "oui" <?php if((strpos($donnees['saisiec'], 'oui') !== false)){ echo "checked";} ?> >
 <br>
 </div>
 </div>
