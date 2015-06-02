@@ -16,7 +16,6 @@ if(isset($_POST['adh']))
 
 if ($_SESSION['saisiec'] == "oui" AND (strpos($_SESSION['niveau'], 'e') !== false) )
    {
-
 $antidate = $_POST['antidate'].date(" H:i:s");
 
 
@@ -83,7 +82,7 @@ $req->execute(array($antidate,$_POST[$i],  $id_collecte , $i , $_SESSION['id']))
   header("Location:../ifaces/collecte.php?numero=".$_POST['id_point_collecte']);
 
 
-}
+
 
 
 
