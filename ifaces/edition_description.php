@@ -61,7 +61,7 @@
         <br>
         <label for="mail">Mail principal:</label> <input type="email" name="mail" id="mail" class="form-control " value = "<?php echo $donnees['mail']; ?>" required > 
         <br>
-        Permetre de dater Les ventes (mode saisie):  <input name ="saisiec" id ="saisiec" type="checkbox" value = "oui" <?php if((strpos($donnees['saisiec'], 'oui') !== false)){ echo "checked";} ?> >
+        Permetre de dater formulaires (mode saisie):  <input name ="saisiec" id ="saisiec" type="checkbox" value = "oui" <?php if((strpos($donnees['saisiec'], 'oui') !== false)){ echo "checked";} ?> >
         <br>
 <div class="panel panel-default">
   <div class="panel-body">
