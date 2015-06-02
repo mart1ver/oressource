@@ -5,6 +5,28 @@
 { 
 
 
+if ($_SESSION['saisiec'] == "oui" AND (strpos($_SESSION['niveau'], 'e') !== false) )
+{
+$antidate = $_POST['antidate'].date(" H:i:s");
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+}
+else{
+
+
 // Connexion à la base de données
 		try
 {
@@ -66,6 +88,7 @@ $req->execute(array($_POST[$i],  $id_sortie , $i, $_SESSION['id']));
 	header("Location:../ifaces/sortiesd.php?numero=".$_POST['id_point_sortie']);
 
 	 }
+  }
 else { 
 header('Location:../moteur/destroy.php');
      }

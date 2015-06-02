@@ -14,10 +14,12 @@ if(isset($_POST['adh']))
   }
 
 
+
+
+
+
 if ($_SESSION['saisiec'] == "oui" AND (strpos($_SESSION['niveau'], 'e') !== false) )
 {
-
-
 $antidate = $_POST['antidate'].date(" H:i:s");
 
 

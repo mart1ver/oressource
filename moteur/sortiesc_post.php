@@ -6,6 +6,21 @@
 
 
 
+if ($_SESSION['saisiec'] == "oui" AND (strpos($_SESSION['niveau'], 'e') !== false) )
+{
+$antidate = $_POST['antidate'].date(" H:i:s");
+
+
+
+
+
+
+
+
+}
+else{
+
+
 // Connexion à la base de données
 		try
 {
@@ -111,6 +126,8 @@ $req->execute(array($_POST["d".$i],  $id_sortie , $i, $_SESSION['id']));
 
 // Redirection du visiteur vers la page de gestion des affectation
 	header("Location:../ifaces/sortiesc.php?numero=".$_POST['id_point_sortie']);
+
+}
 
 }
 else { 
