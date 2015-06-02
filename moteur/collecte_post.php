@@ -34,7 +34,7 @@ $antidate = $_POST['antidate'].date(" H:i:s");
 }
 // Insertion de la collecte (sans les pesées) l'aide d'une requête préparée
   $req = $bdd->prepare('INSERT INTO collectes (timestamp, id_type_collecte,  adherent, localisation, id_point_collecte, commentaire, id_createur) VALUES(?,?, ?, ?, ?, ?, ?)');
-  $req->execute(array($_POST[$antidate,'id_type_collecte'],$adh,  $_POST['loc'] , $_POST['id_point_collecte'] , $_POST['comm'] , $_SESSION['id']));
+  $req->execute(array($antidate, $_POST['id_type_collecte'],$adh,  $_POST['loc'] , $_POST['id_point_collecte'] , $_POST['comm'] , $_SESSION['id']));
   $id_collecte = $bdd->lastInsertId();
     $req->closeCursor();
 
