@@ -216,7 +216,7 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
     <h3 class="panel-title"><label>Bon d'apport:</label></h3>
   </div>
   <?php if ($_SESSION['saisiec'] == 'oui' AND (strpos($_SESSION['niveau'], 'e') !== false) ){ ?>
-      <P>   Date de l'apport:  <input type="date" id="antidate" name="antidate" style="width: 130px;height:20px;" value=<?php echo date("Y-m-d") ?>>
+      <p align="center">   Date de l'apport:  <input type="date" id="antidate" name="antidate" style="width: 130px;height:20px;" value=<?php echo date("Y-m-d") ?>>
 <br>
 </p>
 <?php }?>
