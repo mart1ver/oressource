@@ -132,6 +132,8 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
            // On affiche chaque entree une à une
            while ($donnees = $reponse->fetch())
            {
+                  // Si le Point de Vente n'est pas visible, on passe directement au prochain
+                  if ($donnees['visible'] != "oui") continue;
            ?> 
             <li<?php if ($_GET['numero'] == $donnees['id']){ echo ' class="active"';}?>><a href="<?php echo  "bilanv.php?numero=" . $donnees['id']."&date1=" . $_GET['date1']."&date2=" . $_GET['date2']?>"><?php echo$donnees['nom']?></a></li>
            <?php }
