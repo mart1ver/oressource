@@ -1,4 +1,4 @@
-<?
+<?php
 session_start();
 //martin vert
 // Connexion à la base de données
