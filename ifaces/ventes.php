@@ -461,9 +461,12 @@ var footstr = "TVA à <?php echo $_SESSION['taux_tva'] ?>%"+" Prix H.T. ="+parse
   }else{?>
 var footstr = "Association non assujettie à la TVA.</body></small> ";
   <?php } ?>
+      var comstr = "<ul id='liste' class='list-group'><li class='list-group-item'><b>";
+      comstr += document.getElementById('commentaire').value;
+      comstr += "</b></li></ul>";
       var newstr = document.all.item(divID).innerHTML;
       var oldstr = document.body.innerHTML;
-      document.body.innerHTML = headstr+newstr+footstr;
+      document.body.innerHTML = headstr+comstr+newstr+footstr;
       window.print();
       document.body.innerHTML = oldstr;
       //return false;
