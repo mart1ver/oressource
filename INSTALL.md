@@ -24,7 +24,7 @@ GRANT ALL PRIVILEGES ON oressource.* TO 'oressource'@'localhost' ;
 ## Charger les données
 
 ``
-cat mysql/oressource\ .sql  |mysql -u oressource -h localhost oressource -p
+cat mysql/oressource.sql  |mysql -u oressource -h localhost oressource -p
 ``
 
 ## Préparer le virtual host
@@ -37,7 +37,9 @@ sudo chown -R www-data.www-data /var/www/oressource
 Editer le fichier de configuration 
 
 ``
-sudo vi /var/www/oressource/moteur/dbconfig.php
+cd /var/www/oressource/moteur/
+sudo cp dbconfig.php.exemple dbconfig.php
+sudo vi dbconfig.php
 ``
 
 
