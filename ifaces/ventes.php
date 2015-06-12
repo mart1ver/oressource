@@ -282,6 +282,25 @@ $('input[name="my-checkbox"]').on('switchChange.bootstrapSwitch', function(event
 
 
 <div class="btn-group" data-toggle="buttons">
+<?php
+
+// On produit du style à la volée pour les boutons de paiement
+// Si le bouton est inactif on le rend transparent
+
+?>
+<style type="text/css">
+.ors_btn_pay {
+    opacity: 0.5;
+    color: #dddddd;	
+    font-weight: bold;
+}
+
+.ors_btn_pay.active, .ors_btn_pay:active {
+    opacity: 1.0;
+    color: #dddddd;
+    font-weight: bold;
+}
+</style>
 
  <?php 
             try
@@ -295,40 +314,33 @@ $('input[name="my-checkbox"]').on('switchChange.bootstrapSwitch', function(event
             die('Erreur : '.$e->getMessage());
             }
             // On recupère tout le contenu de la table point de collecte
-            $reponse = $bdd->query('SELECT * FROM moyens_paiement WHERE visible = "oui"');
+            $reponse = $bdd->query('SELECT id,nom,couleur FROM moyens_paiement WHERE visible = "oui"');
  
            // On affiche chaque entree une à une
            while ($donnees = $reponse->fetch())
            {
-            if ($donnees['id'] == 1){
-           ?>
-      
-      
+		$id=$donnees['id'];
+		if ($id==1) {
+			$active="active";
+			$checked="checked";
+		}else{
+			$active ="";
+			$checked="";
+		}
+		$nom=$donnees['nom'];
+		$couleur=$donnees['couleur'];
+           	print "<label class='btn ors_btn_pay  btn-default $active' ";
+		print "onclick=\"moyens('$id');\" ";
+		print "style='background-color:$couleur;' ";
+		print ">";
+		print "<input type='radio' name='paiement' id='paiement' autocomplete='off' value='$id' $checked >";
+		print "$nom";
+		print "</label>";
 
-<label class="btn btn-primary active " onclick="moyens('<?php echo$donnees['id']?>');">
-    <input type="radio" name="paiement" id="paiement" autocomplete="off" value="<?php echo$donnees['id']?>" checked > <?php echo$donnees['nom']?>
-  </label>
-
-
-   
-   
-                <?php 
-}else{
+	   }
+           
+           $reponse->closeCursor(); // Termine le traitement de la requête
 ?>
-
-
-
-<label class="btn btn-primary " onclick="moyens('<?php echo$donnees['id']?>');">
-    <input type="radio" name="paiement" id="paiement" autocomplete="off" value="<?php echo$donnees['id']?>" > <?php echo$donnees['nom']?>
-  </label>
-
-
-
-<?php
-}
-              }
-                $reponse->closeCursor(); // Termine le traitement de la requête
-                ?>
 
 
 
