@@ -378,7 +378,7 @@ GROUP BY type_dechets.nom
               <?php echo $donnees2['total']." €" ?>
             </td >
             <td >
-              <?
+              <?php
                 // on determine le nombre d'objets vendus
             try
             {
@@ -425,7 +425,7 @@ $req->closeCursor(); // Termine le traitement de la requête ?>
             </td>  
             
             <td >
-              <?
+              <?php
                 // on determine le nombre d'objets remboursés
             try
             {
@@ -692,7 +692,7 @@ GROUP BY type_dechets.nom
               <?php echo $donnees2['total']." €" ?>
             </td >
             <td >
-              <?
+              <?php
                 // on determine le nombre d'objets vendus
             try
             {
@@ -739,7 +739,7 @@ $req->closeCursor(); // Termine le traitement de la requête ?>
             </td>  
             
             <td >
-              <?
+              <?php
                 // on determine le nombre d'objets remboursés
             try
             {
