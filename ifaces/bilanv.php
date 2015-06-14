@@ -1,5 +1,7 @@
-
 <?php session_start();
+
+require_once('../moteur/dbconfig.php');
+
 //Vérification des autorisations de l'utilisateur et des variables de session requises pour l'affichage de cette page:
 if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 'bi') !== false))
       { include "tete.php";?>
@@ -113,19 +115,6 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
         <h2> Bilan des ventes de la structure</h2>
         <ul class="nav nav-tabs">
         <?php      //on affiche un onglet par point de vente
-            try
-            {
-            // On se connecte à MySQL
-            include('../moteur/dbconfig.php');
-            }
-            catch(Exception $e)
-            {
-            // En cas d'erreur, on affiche un message et on arrête tout
-            die('Erreur : '.$e->getMessage());
-            }
- 
-            // Si tout va bien, on peut continuer
- 
             // On recupère tout le contenu des visibles de la table points_vente
             $reponse = $bdd->query('SELECT * FROM points_vente');
  
@@ -173,18 +162,6 @@ if ($_GET['numero'] == 0) // si numero == 0*************************************
   <?php
   echo "-nombre de points de vente : ";
   // on determine le nombre de points de vente à cet instant
-            try
-            {
-            // On se connecte à MySQL
-            include('../moteur/dbconfig.php');
-            }
-            catch(Exception $e)
-            {
-            // En cas d'erreur, on affiche un message et on arrête tout
-            die('Erreur : '.$e->getMessage());
-            }
- 
-            // Si tout va bien, on peut continuer
             /*
 
             */
@@ -194,17 +171,6 @@ if ($_GET['numero'] == 0) // si numero == 0*************************************
 echo $donnees['COUNT(id)']."<br>";
 
   echo "-chiffre total dégagé  : ";
- try
- {
-  // On se connecte à MySQL
-  include('../moteur/dbconfig.php');
-  }
-  catch(Exception $e)
-  {
-  // En cas d'erreur, on affiche un message et on arrête tout
-  die('Erreur : '.$e->getMessage());
-  }
-  // Si tout va bien, on peut continuer
   // On recupère tout le contenu de la table point de vente
   $req = $bdd->prepare("SELECT  SUM(vendus.prix*vendus.quantite) AS total   FROM vendus 
    WHERE  DATE(vendus.timestamp) BETWEEN :du AND :au AND vendus.prix > 0  ");
@@ -215,18 +181,6 @@ echo $donnees['COUNT(id)']."<br>";
   $req->closeCursor(); // Termine le traitement de la requête
  echo "-nombre d'objets vendus : ";
 // on determine le nombre d'objets vendus
-            try
-            {
-            // On se connecte à MySQL
-            include('../moteur/dbconfig.php');
-            }
-            catch(Exception $e)
-            {
-            // En cas d'erreur, on affiche un message et on arrête tout
-            die('Erreur : '.$e->getMessage());
-            }
- 
-            // Si tout va bien, on peut continuer
             /*
 
             */
@@ -236,18 +190,6 @@ echo $donnees['COUNT(id)']."<br>";
 echo $donnees['SUM(vendus.quantite)']."<br>";
  echo "-nombre de ventes : ";
 // on determine le nombre de ventes
-            try
-            {
-            // On se connecte à MySQL
-            include('../moteur/dbconfig.php');
-            }
-            catch(Exception $e)
-            {
-            // En cas d'erreur, on affiche un message et on arrête tout
-            die('Erreur : '.$e->getMessage());
-            }
- 
-            // Si tout va bien, on peut continuer
             /*
 
             */
@@ -260,18 +202,6 @@ echo $donnees['COUNT(ventes.id)']."<br>";
 
   echo "-nombre d'objets remboursés : ";
   // on determine le nombre d'objets remboursés
-            try
-            {
-            // On se connecte à MySQL
-            include('../moteur/dbconfig.php');
-            }
-            catch(Exception $e)
-            {
-            // En cas d'erreur, on affiche un message et on arrête tout
-            die('Erreur : '.$e->getMessage());
-            }
- 
-            // Si tout va bien, on peut continuer
             /*
 
             */
@@ -281,18 +211,6 @@ echo $donnees['COUNT(ventes.id)']."<br>";
 echo intval($donnees['SUM(vendus.quantite)'])."<br>";
   echo "-nombre de remboursemments : ";
   // on determine le nombre de remboursements
-            try
-            {
-            // On se connecte à MySQL
-            include('../moteur/dbconfig.php');
-            }
-            catch(Exception $e)
-            {
-            // En cas d'erreur, on affiche un message et on arrête tout
-            die('Erreur : '.$e->getMessage());
-            }
- 
-            // Si tout va bien, on peut continuer
             /*
 
             */
@@ -302,17 +220,6 @@ echo intval($donnees['SUM(vendus.quantite)'])."<br>";
 echo $donnees['COUNT(ventes.id)']."<br>";
 
   echo "-somme remboursée : ";
-try
- {
-  // On se connecte à MySQL
-  include('../moteur/dbconfig.php');
-  }
-  catch(Exception $e)
-  {
-  // En cas d'erreur, on affiche un message et on arrête tout
-  die('Erreur : '.$e->getMessage());
-  }
-  // Si tout va bien, on peut continuer
   // On recupère tout le contenu de la table point de vente
   $req = $bdd->prepare("SELECT  SUM(vendus.remboursement) AS total   FROM vendus  WHERE  DATE(vendus.timestamp) BETWEEN :du AND :au  ");
   $req->execute(array('du' => $time_debut,'au' => $time_fin ));
@@ -342,19 +249,6 @@ chiffre de caisse : <?php echo  $mtotcolo- $mtotcolo2." €";?>
       </thead>
       <tbody>
 <?php
- try
-            {
-            // On se connecte à MySQL
-            include('../moteur/dbconfig.php');
-            }
-            catch(Exception $e)
-            {
-            // En cas d'erreur, on affiche un message et on arrête tout
-            die('Erreur : '.$e->getMessage());
-            }
- 
-            // Si tout va bien, on peut continuer
- 
             // On recupère tout le contenu de la table affectations
             $reponse2 = $bdd->prepare('SELECT type_dechets.id id,
    type_dechets.nom ,SUM(vendus.prix*vendus.quantite) total 
@@ -380,18 +274,6 @@ GROUP BY type_dechets.nom
             <td >
               <?php
                 // on determine le nombre d'objets vendus
-            try
-            {
-            // On se connecte à MySQL
-            include('../moteur/dbconfig.php');
-            }
-            catch(Exception $e)
-            {
-            // En cas d'erreur, on affiche un message et on arrête tout
-            die('Erreur : '.$e->getMessage());
-            }
- 
-            // Si tout va bien, on peut continuer
             /*
 
             */
@@ -403,17 +285,7 @@ echo $donnees['SUM(vendus.quantite)'];
 $req->closeCursor(); // Termine le traitement de la requête ?>
             </td>
             <td>
-              <?php try
- {
-  // On se connecte à MySQL
-  include('../moteur/dbconfig.php');
-  }
-  catch(Exception $e)
-  {
-  // En cas d'erreur, on affiche un message et on arrête tout
-  die('Erreur : '.$e->getMessage());
-  }
-  // Si tout va bien, on peut continuer
+              <?php 
   // On recupère tout le contenu de la table point de vente
   $req3 = $bdd->prepare("SELECT  SUM(vendus.remboursement) AS total   FROM vendus 
    WHERE  DATE(vendus.timestamp) BETWEEN :du AND :au AND vendus.id_type_dechet = :id  ");
@@ -427,18 +299,6 @@ $req->closeCursor(); // Termine le traitement de la requête ?>
             <td >
               <?php
                 // on determine le nombre d'objets remboursés
-            try
-            {
-            // On se connecte à MySQL
-            include('../moteur/dbconfig.php');
-            }
-            catch(Exception $e)
-            {
-            // En cas d'erreur, on affiche un message et on arrête tout
-            die('Erreur : '.$e->getMessage());
-            }
- 
-            // Si tout va bien, on peut continuer
             /*
 
             */
@@ -482,17 +342,6 @@ else // si numero ==! 0*********************************************************
   <div class="col-md-6">
   <?php
 echo "-chiffre total dégagé :  ";
-try
-            {
-            // On se connecte à MySQL
-            include('../moteur/dbconfig.php');
-            }
-            catch(Exception $e)
-            {
-            // En cas d'erreur, on affiche un message et on arrête tout
-            die('Erreur : '.$e->getMessage());
-            }
-            // Si tout va bien, on peut continuer
             // On recupère tout le contenu de la table point de vente
 
 
@@ -507,18 +356,6 @@ echo $donnees['total']." €.<br>";
 $req->closeCursor(); // Termine le traitement de la requête
 echo "-nombre d'objets vendus : ";
 // on determine le nombre d'objets vendus
-            try
-            {
-            // On se connecte à MySQL
-            include('../moteur/dbconfig.php');
-            }
-            catch(Exception $e)
-            {
-            // En cas d'erreur, on affiche un message et on arrête tout
-            die('Erreur : '.$e->getMessage());
-            }
- 
-            // Si tout va bien, on peut continuer
             /*
 
             */
@@ -528,18 +365,6 @@ echo "-nombre d'objets vendus : ";
  echo $donnees['SUM(vendus.quantite)']."<br>";
  echo "-nombre de ventes : ";
  // on determine le nombre de ventes
-            try
-            {
-            // On se connecte à MySQL
-            include('../moteur/dbconfig.php');
-            }
-            catch(Exception $e)
-            {
-            // En cas d'erreur, on affiche un message et on arrête tout
-            die('Erreur : '.$e->getMessage());
-            }
- 
-            // Si tout va bien, on peut continuer
             /*
 
             */
@@ -550,18 +375,6 @@ echo $donnees['COUNT(ventes.id)']."<br>";
 
 echo "-nombre de ventes : ";
 // on determine le nombre de ventes
-            try
-            {
-            // On se connecte à MySQL
-            include('../moteur/dbconfig.php');
-            }
-            catch(Exception $e)
-            {
-            // En cas d'erreur, on affiche un message et on arrête tout
-            die('Erreur : '.$e->getMessage());
-            }
- 
-            // Si tout va bien, on peut continuer
             /*
 
             */
@@ -573,18 +386,6 @@ echo $donnees['COUNT(ventes.id)']."<br>";
 echo "-panier moyen : ".$mtotcolo/$nventes." € <br>";
 echo "-nombre d'objets remboursés : ";
 // on determine le nombre d'objets remboursés
-            try
-            {
-            // On se connecte à MySQL
-            include('../moteur/dbconfig.php');
-            }
-            catch(Exception $e)
-            {
-            // En cas d'erreur, on affiche un message et on arrête tout
-            die('Erreur : '.$e->getMessage());
-            }
- 
-            // Si tout va bien, on peut continuer
             /*
 
             */
@@ -594,18 +395,6 @@ echo "-nombre d'objets remboursés : ";
 echo intval($donnees['SUM(vendus.quantite)'])."<br>";
 echo "-nombre de remboursemments : ";
 // on determine le nombre de remboursements
-            try
-            {
-            // On se connecte à MySQL
-            include('../moteur/dbconfig.php');
-            }
-            catch(Exception $e)
-            {
-            // En cas d'erreur, on affiche un message et on arrête tout
-            die('Erreur : '.$e->getMessage());
-            }
- 
-            // Si tout va bien, on peut continuer
             /*
 
             */
@@ -615,18 +404,6 @@ echo "-nombre de remboursemments : ";
 echo $donnees['COUNT(ventes.id)']."<br>";
 echo "-somme remboursée : ";
 
-try
- {
- 
-  // On se connecte à MySQL
-  include('../moteur/dbconfig.php');
-  }
-  catch(Exception $e)
-  {
-  // En cas d'erreur, on affiche un message et on arrête tout
-  die('Erreur : '.$e->getMessage());
-  }
-  // Si tout va bien, on peut continuer
   // On recupère tout le contenu de la table point de vente
   $req = $bdd->prepare("SELECT  SUM(vendus.remboursement) AS total   FROM vendus,ventes  WHERE  DATE(vendus.timestamp) BETWEEN :du AND :au  AND ventes.id_point_vente  = :numero 
     AND ventes.id = vendus.id_vente ");
@@ -656,19 +433,6 @@ chiffre de caisse : <?php echo  $mtotcolo- $mtotcolo2." €";?>
       </thead>
       <tbody>
 <?php
- try
-            {
-            // On se connecte à MySQL
-            include('../moteur/dbconfig.php');
-            }
-            catch(Exception $e)
-            {
-            // En cas d'erreur, on affiche un message et on arrête tout
-            die('Erreur : '.$e->getMessage());
-            }
- 
-            // Si tout va bien, on peut continuer
- 
             // On recupère tout le contenu de la table affectations
             $reponse2 = $bdd->prepare('SELECT type_dechets.id id,
    type_dechets.nom ,SUM(vendus.prix*vendus.quantite) total 
@@ -694,18 +458,6 @@ GROUP BY type_dechets.nom
             <td >
               <?php
                 // on determine le nombre d'objets vendus
-            try
-            {
-            // On se connecte à MySQL
-            include('../moteur/dbconfig.php');
-            }
-            catch(Exception $e)
-            {
-            // En cas d'erreur, on affiche un message et on arrête tout
-            die('Erreur : '.$e->getMessage());
-            }
- 
-            // Si tout va bien, on peut continuer
             /*
 
             */
@@ -717,17 +469,7 @@ echo $donnees['SUM(vendus.quantite)'];
 $req->closeCursor(); // Termine le traitement de la requête ?>
             </td>
             <td>
-              <?php try
- {
-  // On se connecte à MySQL
-  include('../moteur/dbconfig.php');
-  }
-  catch(Exception $e)
-  {
-  // En cas d'erreur, on affiche un message et on arrête tout
-  die('Erreur : '.$e->getMessage());
-  }
-  // Si tout va bien, on peut continuer
+              <?php 
   // On recupère tout le contenu de la table point de vente
   $req3 = $bdd->prepare("SELECT  SUM(vendus.remboursement) AS total   FROM vendus,ventes 
    WHERE  DATE(vendus.timestamp) BETWEEN :du AND :au AND vendus.id_type_dechet = :id  AND ventes.id = vendus.id_vente AND ventes.id_point_vente  = :numero");
@@ -741,18 +483,6 @@ $req->closeCursor(); // Termine le traitement de la requête ?>
             <td >
               <?php
                 // on determine le nombre d'objets remboursés
-            try
-            {
-            // On se connecte à MySQL
-            include('../moteur/dbconfig.php');
-            }
-            catch(Exception $e)
-            {
-            // En cas d'erreur, on affiche un message et on arrête tout
-            die('Erreur : '.$e->getMessage());
-            }
- 
-            // Si tout va bien, on peut continuer
             /*
 
             */
