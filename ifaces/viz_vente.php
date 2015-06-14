@@ -1,5 +1,7 @@
 <?php session_start();
 
+require_once('../moteur/dbconfig.php');
+
 //Vérification des autorisations de l'utilisateur et des variables de session requises pour l'affichage de cette page:
    if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND $_SESSION['viz_caisse'] = "oui" AND (strpos($_SESSION['niveau'], 'v'.$_GET['numero']) !== false)  )
       {  include "tete.php" ?>
@@ -63,19 +65,6 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
 
 
         <?php 
-            try
-            {
-            // On se connecte à MySQL
-            include('../moteur/dbconfig.php');
-            }
-            catch(Exception $e)
-            {
-            // En cas d'erreur, on affiche un message et on arrête tout
-            die('Erreur : '.$e->getMessage());
-            }
- 
-            // Si tout va bien, on peut continuer
-
           
 $req = $bdd->prepare('SELECT 
 vendus.id ,vendus.timestamp,
@@ -118,18 +107,6 @@ $req->execute(array('id_vente' => $_GET['nvente']));
 
 
 <td><?php 
-            try
-            {
-            // On se connecte à MySQL
-            include('../moteur/dbconfig.php');
-            }
-            catch(Exception $e)
-            {
-            // En cas d'erreur, on affiche un message et on arrête tout
-            die('Erreur : '.$e->getMessage());
-            }
- 
-            // Si tout va bien, on peut continuer
 $req3 = $bdd->prepare('SELECT utilisateurs.mail mail
                        FROM utilisateurs, vendus
                        WHERE  vendus.id = :id_vendu 
@@ -152,18 +129,6 @@ $req3->execute(array('id_vendu' => $donnees['id']));
 
 
 <td><?php 
-            try
-            {
-            // On se connecte à MySQL
-            include('../moteur/dbconfig.php');
-            }
-            catch(Exception $e)
-            {
-            // En cas d'erreur, on affiche un message et on arrête tout
-            die('Erreur : '.$e->getMessage());
-            }
- 
-            // Si tout va bien, on peut continuer
 $req3 = $bdd->prepare('SELECT vendus.last_hero_timestamp lht
                        FROM  vendus
                        WHERE  vendus.id = :id_vendu 

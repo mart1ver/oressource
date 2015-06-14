@@ -1,4 +1,7 @@
-<?php session_start();?>
+<?php session_start();
+
+require_once('../moteur/dbconfig.php');
+?>
 <head>
       
       <link href="../css/bootstrap.min.css" rel="stylesheet">
@@ -52,18 +55,6 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
 
  <?php 
           //on affiche un onglet par type d'objet
-            try
-            {
-            // On se connecte à MySQL
-            include('../moteur/dbconfig.php');
-            }
-            catch(Exception $e)
-            {
-            // En cas d'erreur, on affiche un message et on arrête tout
-            die('Erreur : '.$e->getMessage());
-            }
- 
-            // Si tout va bien, on peut continuer
  
             // On recupère tout le contenu des visibles de la table points_sortie
             $reponse = $bdd->query('SELECT * FROM points_sortie');
@@ -204,21 +195,6 @@ $time_fin = $time_fin." 23:59:59";
 
 </div>
 <?php
-try
-            {
-            // On se connecte à MySQL
-            include('../moteur/dbconfig.php');
-            }
-            catch(Exception $e)
-            {
-            // En cas d'erreur, on affiche un message et on arrête tout
-            die('Erreur : '.$e->getMessage());
-            }
- 
-            // Si tout va bien, on peut continuer
-
-
- 
             // On recupère toute la liste des filieres de sortie
             //   $reponse = $bdd->query('SELECT * FROM grille_objets');
           
@@ -261,18 +237,6 @@ if($donnees['nid'] > 0){ $req->closeCursor();
         </thead>
         <tbody>
         <?php 
-            try
-            {
-            // On se connecte à MySQL
-            include('../moteur/dbconfig.php');
-            }
-            catch(Exception $e)
-            {
-            // En cas d'erreur, on affiche un message et on arrête tout
-            die('Erreur : '.$e->getMessage());
-            }
- 
-            // Si tout va bien, on peut continuer
           
 $req = $bdd->prepare('SELECT sorties.id,sorties.timestamp ,type_sortie.nom,sorties.adherent ,sorties.classe classe 
                        FROM sorties ,type_sortie
@@ -294,16 +258,6 @@ $req->execute(array('id_point_sortie' => $_GET['numero'], 'du' => $time_debut,'a
            <td> 
 
  <?php 
-            try
-            {
-            // On se connecte à MySQL
-            include('../moteur/dbconfig.php');
-            }
-            catch(Exception $e)
-            {
-            // En cas d'erreur, on affiche un message et on arrête tout
-            die('Erreur : '.$e->getMessage());
-            }
  
            
           
@@ -334,18 +288,6 @@ $req2->execute(array('id_sortie' => $donnees['id']));
 
 <td>
  <?php 
-            try
-            {
-            // On se connecte à MySQL
-            include('../moteur/dbconfig.php');
-            }
-            catch(Exception $e)
-            {
-            // En cas d'erreur, on affiche un message et on arrête tout
-            die('Erreur : '.$e->getMessage());
-            }
- 
-           
           
 $req3 = $bdd->prepare('SELECT utilisateurs.mail mail
                        FROM utilisateurs ,sorties
@@ -388,18 +330,6 @@ $req3->execute(array('id_sortie' => $donnees['id']));
 </td>
 
 <td><?php 
-            try
-            {
-            // On se connecte à MySQL
-            include('../moteur/dbconfig.php');
-            }
-            catch(Exception $e)
-            {
-            // En cas d'erreur, on affiche un message et on arrête tout
-            die('Erreur : '.$e->getMessage());
-            }
- 
-           
           
 $req5 = $bdd->prepare('SELECT utilisateurs.mail mail
                        FROM sorties, utilisateurs
@@ -421,16 +351,6 @@ $req5->execute(array('id_sortie' => $donnees['id']));
             
                 ?></td>
 <td><?php 
-            try
-            {
-            // On se connecte à MySQL
-            include('../moteur/dbconfig.php');
-            }
-            catch(Exception $e)
-            {
-            // En cas d'erreur, on affiche un message et on arrête tout
-            die('Erreur : '.$e->getMessage());
-            }
  
            
           
@@ -476,20 +396,6 @@ $req4->execute(array('id_sortie' => $donnees['id']));
 }
 ?>
 <?php
-try
-            {
-            // On se connecte à MySQL
-            include('../moteur/dbconfig.php');
-            }
-            catch(Exception $e)
-            {
-            // En cas d'erreur, on affiche un message et on arrête tout
-            die('Erreur : '.$e->getMessage());
-            }
- 
-            // Si tout va bien, on peut continuer
-
-
  
             // On recupère toute la liste des filieres de sortie
             //   $reponse = $bdd->query('SELECT * FROM grille_objets');
@@ -533,17 +439,6 @@ if($donnees['nid'] > 0){ $req->closeCursor();
         </thead>
         <tbody>
         <?php 
-            try
-            {
-            // On se connecte à MySQL
-            include('../moteur/dbconfig.php');
-            }
-            catch(Exception $e)
-            {
-            // En cas d'erreur, on affiche un message et on arrête tout
-            die('Erreur : '.$e->getMessage());
-            }
- 
           
 $req = $bdd->prepare('SELECT sorties.id,sorties.timestamp ,conventions_sorties.nom,sorties.adherent , sorties.classe classe
                        FROM sorties ,conventions_sorties
@@ -564,17 +459,6 @@ $req->execute(array('id_point_sortie' => $_GET['numero'], 'du' => $time_debut,'a
            <td> 
 
  <?php 
-            try
-            {
-            // On se connecte à MySQL
-            include('../moteur/dbconfig.php');
-            }
-            catch(Exception $e)
-            {
-            // En cas d'erreur, on affiche un message et on arrête tout
-            die('Erreur : '.$e->getMessage());
-            }
- 
            
           
 $req2 = $bdd->prepare('SELECT SUM(pesees_sorties.masse) masse
@@ -605,17 +489,6 @@ $req2->execute(array('id_sortie' => $donnees['id']));
 
 <td>
  <?php 
-            try
-            {
-            // On se connecte à MySQL
-            include('../moteur/dbconfig.php');
-            }
-            catch(Exception $e)
-            {
-            // En cas d'erreur, on affiche un message et on arrête tout
-            die('Erreur : '.$e->getMessage());
-            }
- 
            
           
 $req3 = $bdd->prepare('SELECT utilisateurs.mail mail
@@ -654,17 +527,6 @@ $req3->execute(array('id_sortie' => $donnees['id']));
 </form>
 
 <td><?php 
-            try
-            {
-            // On se connecte à MySQL
-            include('../moteur/dbconfig.php');
-            }
-            catch(Exception $e)
-            {
-            // En cas d'erreur, on affiche un message et on arrête tout
-            die('Erreur : '.$e->getMessage());
-            }
- 
            
           
 $req5 = $bdd->prepare('SELECT utilisateurs.mail mail
@@ -687,18 +549,6 @@ $req5->execute(array('id_sortie' => $donnees['id']));
             
                 ?></td>
 <td><?php 
-            try
-            {
-            // On se connecte à MySQL
-            include('../moteur/dbconfig.php');
-            }
-            catch(Exception $e)
-            {
-            // En cas d'erreur, on affiche un message et on arrête tout
-            die('Erreur : '.$e->getMessage());
-            }
- 
-           
           
 $req4 = $bdd->prepare('SELECT sorties.last_hero_timestamp lht
                        FROM sorties
@@ -746,20 +596,6 @@ $req4->execute(array('id_sortie' => $donnees['id']));
 }
 ?>
 <?php
-try
-            {
-            // On se connecte à MySQL
-            include('../moteur/dbconfig.php');
-            }
-            catch(Exception $e)
-            {
-            // En cas d'erreur, on affiche un message et on arrête tout
-            die('Erreur : '.$e->getMessage());
-            }
- 
-            // Si tout va bien, on peut continuer
-
-
  
             // On recupère toute la liste des filieres de sortie
             //   $reponse = $bdd->query('SELECT * FROM grille_objets');
@@ -802,18 +638,6 @@ if($donnees['nid'] > 0){ $req->closeCursor();
         </thead>
         <tbody>
         <?php 
-            try
-            {
-            // On se connecte à MySQL
-            include('../moteur/dbconfig.php');
-            }
-            catch(Exception $e)
-            {
-            // En cas d'erreur, on affiche un message et on arrête tout
-            die('Erreur : '.$e->getMessage());
-            }
- 
-           
           
 $req = $bdd->prepare('SELECT sorties.id,sorties.timestamp ,filieres_sortie.nom , sorties.classe classe
                        FROM sorties ,filieres_sortie
@@ -834,18 +658,6 @@ $req->execute(array('id_point_sortie' => $_GET['numero'], 'du' => $time_debut,'a
            <td> 
 
  <?php 
-            try
-            {
-            // On se connecte à MySQL
-            include('../moteur/dbconfig.php');
-            }
-            catch(Exception $e)
-            {
-            // En cas d'erreur, on affiche un message et on arrête tout
-            die('Erreur : '.$e->getMessage());
-            }
- 
-            
           
 $req2 = $bdd->prepare('SELECT SUM(pesees_sorties.masse) masse
                        FROM pesees_sorties
@@ -874,18 +686,6 @@ $req2->execute(array('id_sortie' => $donnees['id']));
 
 <td>
  <?php 
-            try
-            {
-            // On se connecte à MySQL
-            include('../moteur/dbconfig.php');
-            }
-            catch(Exception $e)
-            {
-            // En cas d'erreur, on affiche un message et on arrête tout
-            die('Erreur : '.$e->getMessage());
-            }
- 
-           
           
 $req3 = $bdd->prepare('SELECT utilisateurs.mail mail
                        FROM utilisateurs ,sorties
@@ -924,18 +724,6 @@ $req3->execute(array('id_sortie' => $donnees['id']));
 </form>
 
 <td><?php 
-            try
-            {
-            // On se connecte à MySQL
-            include('../moteur/dbconfig.php');
-            }
-            catch(Exception $e)
-            {
-            // En cas d'erreur, on affiche un message et on arrête tout
-            die('Erreur : '.$e->getMessage());
-            }
- 
-           
           
 $req5 = $bdd->prepare('SELECT utilisateurs.mail mail
                        FROM sorties, utilisateurs
@@ -957,16 +745,6 @@ $req5->execute(array('id_sortie' => $donnees['id']));
             
                 ?></td>
 <td><?php 
-            try
-            {
-            // On se connecte à MySQL
-            include('../moteur/dbconfig.php');
-            }
-            catch(Exception $e)
-            {
-            // En cas d'erreur, on affiche un message et on arrête tout
-            die('Erreur : '.$e->getMessage());
-            }
  
            
           
@@ -1013,21 +791,6 @@ $req4->execute(array('id_sortie' => $donnees['id']));
 }
 ?>
 <?php
-try
-            {
-            // On se connecte à MySQL
-            include('../moteur/dbconfig.php');
-            }
-            catch(Exception $e)
-            {
-            // En cas d'erreur, on affiche un message et on arrête tout
-            die('Erreur : '.$e->getMessage());
-            }
- 
-            // Si tout va bien, on peut continuer
-
-
- 
             // On recupère toute la liste des filieres de sortie
             //   $reponse = $bdd->query('SELECT * FROM grille_objets');
           
@@ -1070,17 +833,6 @@ if($donnees['nid'] > 0){ $req->closeCursor();
         </thead>
         <tbody>
         <?php 
-            try
-            {
-            // On se connecte à MySQL
-            include('../moteur/dbconfig.php');
-            }
-            catch(Exception $e)
-            {
-            // En cas d'erreur, on affiche un message et on arrête tout
-            die('Erreur : '.$e->getMessage());
-            }
- 
             
           
 $req = $bdd->prepare('SELECT sorties.id,sorties.timestamp , sorties.classe classe
@@ -1102,16 +854,6 @@ $req->execute(array('id_point_sortie' => $_GET['numero'], 'du' => $time_debut,'a
            <td> 
 
  <?php 
-            try
-            {
-            // On se connecte à MySQL
-            include('../moteur/dbconfig.php');
-            }
-            catch(Exception $e)
-            {
-            // En cas d'erreur, on affiche un message et on arrête tout
-            die('Erreur : '.$e->getMessage());
-            }
  
            
           
@@ -1142,19 +884,6 @@ $req2->execute(array('id_sortie' => $donnees['id']));
 
 <td>
  <?php 
-            try
-            {
-            // On se connecte à MySQL
-            include('../moteur/dbconfig.php');
-            }
-            catch(Exception $e)
-            {
-            // En cas d'erreur, on affiche un message et on arrête tout
-            die('Erreur : '.$e->getMessage());
-            }
- 
-           
-          
 $req3 = $bdd->prepare('SELECT utilisateurs.mail mail
                        FROM utilisateurs ,sorties
                        WHERE  sorties.id = :id_sortie
@@ -1193,18 +922,6 @@ $req3->execute(array('id_sortie' => $donnees['id']));
 </td>
 
 <td><?php 
-            try
-            {
-            // On se connecte à MySQL
-            include('../moteur/dbconfig.php');
-            }
-            catch(Exception $e)
-            {
-            // En cas d'erreur, on affiche un message et on arrête tout
-            die('Erreur : '.$e->getMessage());
-            }
- 
-           
           
 $req5 = $bdd->prepare('SELECT utilisateurs.mail mail
                        FROM sorties, utilisateurs
@@ -1226,19 +943,6 @@ $req5->execute(array('id_sortie' => $donnees['id']));
             
                 ?></td>
 <td><?php 
-            try
-            {
-            // On se connecte à MySQL
-            include('../moteur/dbconfig.php');
-            }
-            catch(Exception $e)
-            {
-            // En cas d'erreur, on affiche un message et on arrête tout
-            die('Erreur : '.$e->getMessage());
-            }
- 
-           
-          
 $req4 = $bdd->prepare('SELECT sorties.last_hero_timestamp lht
                        FROM sorties
                        WHERE  sorties.id = :id_sortie
@@ -1286,20 +990,6 @@ $req4->execute(array('id_sortie' => $donnees['id']));
 
 
 <?php
-try
-            {
-            // On se connecte à MySQL
-            include('../moteur/dbconfig.php');
-            }
-            catch(Exception $e)
-            {
-            // En cas d'erreur, on affiche un message et on arrête tout
-            die('Erreur : '.$e->getMessage());
-            }
- 
-            // Si tout va bien, on peut continuer
-
-
  
             // On recupère toute la liste des filieres de sortie
             //   $reponse = $bdd->query('SELECT * FROM grille_objets');
@@ -1343,17 +1033,6 @@ if($donnees['nid'] > 0){ $req->closeCursor();
         </thead>
         <tbody>
         <?php 
-            try
-            {
-            // On se connecte à MySQL
-            include('../moteur/dbconfig.php');
-            }
-            catch(Exception $e)
-            {
-            // En cas d'erreur, on affiche un message et on arrête tout
-            die('Erreur : '.$e->getMessage());
-            }
- 
           
 $req = $bdd->prepare('SELECT sorties.id,sorties.timestamp ,sorties.adherent , sorties.classe classe
                        FROM sorties ,conventions_sorties
@@ -1376,17 +1055,6 @@ $req->execute(array('id_point_sortie' => $_GET['numero'], 'du' => $time_debut,'a
            <td> 
 
  <?php 
-            try
-            {
-            // On se connecte à MySQL
-            include('../moteur/dbconfig.php');
-            }
-            catch(Exception $e)
-            {
-            // En cas d'erreur, on affiche un message et on arrête tout
-            die('Erreur : '.$e->getMessage());
-            }
- 
            
           
 $req2 = $bdd->prepare('SELECT SUM(pesees_sorties.masse) masse
@@ -1417,18 +1085,6 @@ $req2->execute(array('id_sortie' => $donnees['id']));
 
 <td>
  <?php 
-            try
-            {
-            // On se connecte à MySQL
-            include('../moteur/dbconfig.php');
-            }
-            catch(Exception $e)
-            {
-            // En cas d'erreur, on affiche un message et on arrête tout
-            die('Erreur : '.$e->getMessage());
-            }
- 
-           
           
 $req3 = $bdd->prepare('SELECT utilisateurs.mail mail
                        FROM utilisateurs ,sorties
@@ -1466,18 +1122,6 @@ $req3->execute(array('id_sortie' => $donnees['id']));
 </form>
 
 <td><?php 
-            try
-            {
-            // On se connecte à MySQL
-            include('../moteur/dbconfig.php');
-            }
-            catch(Exception $e)
-            {
-            // En cas d'erreur, on affiche un message et on arrête tout
-            die('Erreur : '.$e->getMessage());
-            }
- 
-           
           
 $req5 = $bdd->prepare('SELECT utilisateurs.mail mail
                        FROM sorties, utilisateurs
@@ -1499,16 +1143,6 @@ $req5->execute(array('id_sortie' => $donnees['id']));
             
                 ?></td>
 <td><?php 
-            try
-            {
-            // On se connecte à MySQL
-            include('../moteur/dbconfig.php');
-            }
-            catch(Exception $e)
-            {
-            // En cas d'erreur, on affiche un message et on arrête tout
-            die('Erreur : '.$e->getMessage());
-            }
  
            
           
