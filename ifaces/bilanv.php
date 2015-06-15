@@ -334,7 +334,7 @@ $ok = $req->execute(array('du' => $time_debut,'au' => $time_fin ,'numero' => $_G
 
 
 //Affichage du tableau
-print "<h2>Récapitulatif par mode de paiement</h2>";
+print "<h3>Récapitulatif par mode de paiement</h3>";
 print "<table class='table table-hover'>";
 print "<thead>";
 print "<tr>";
@@ -686,7 +686,7 @@ $ok = $req->execute(array('du' => $time_debut,'au' => $time_fin ,'numero' => $_G
 
 
 //Affichage du tableau
-print "<h2>Récapitulatif par mode de paiement</h2>";
+print "<h3>Récapitulatif par mode de paiement</h3>";
 print "<table class='table table-hover'>";
 print "<thead>";
 print "<tr>";
