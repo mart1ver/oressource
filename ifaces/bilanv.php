@@ -323,6 +323,7 @@ try
 
 
 ?>
+<br>
 <?php
 // Tableau de recap du Chiffre d'Affaire par mode de paiement
 // Utile pour vérifier le fond de caisse en fin de vente
@@ -675,6 +676,7 @@ try
 
 
 ?>
+<br>
 <?php
 // Tableau de recap du Chiffre d'Affaire par mode de paiement
 // Utile pour vérifier le fond de caisse en fin de vente
