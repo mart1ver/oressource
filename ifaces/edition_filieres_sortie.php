@@ -81,24 +81,6 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
         </thead>
         <tbody>
         <?php 
-            try
-            {
-            // On se connecte à MySQL
-            include('../moteur/dbconfig.php');
-            }
-            catch(Exception $e)
-            {
-            // En cas d'erreur, on affiche un message et on arrête tout
-            die('Erreur : '.$e->getMessage());
-            }
- 
-            // Si tout va bien, on peut continuer
-
-
-
-
-
- 
             // On reccupère toute la liste des filières de sortie
             $reponse = $bdd->query('SELECT filieres_sortie.id, 
                                            filieres_sortie.timestamp, 

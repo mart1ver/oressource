@@ -1,5 +1,7 @@
 <?php session_start();
 
+require_once("../moteur/dbconfig.php");
+
 //Vérification des autorisations de l'utilisateur et des variables de session requises pour l'affichage de cette page:
    if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 'h') !== false))
       {  include "tete.php" ?>
@@ -51,16 +53,6 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
 <label for="id_type_collecte">Type de collecte:</label>
 <select name="id_type_collecte" id="id_type_collecte" class="form-control " required>
             <?php 
-            try
-            {
-            // On se connecte à MySQL
-            include('../moteur/dbconfig.php');
-            }
-            catch(Exception $e)
-            {
-            // En cas d'erreur, on affiche un message et on arrête tout
-            die('Erreur : '.$e->getMessage());
-            }
             // On affiche une liste deroulante des type de collecte visibles
             $reponse = $bdd->query('SELECT * FROM type_collecte WHERE visible = "oui"');
             // On affiche chaque entree une à une
@@ -86,16 +78,6 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
     <label for="id_localite">Localisation:</label>
 <select name="id_localite" id="id_localite" class="form-control " required>
             <?php 
-            try
-            {
-            // On se connecte à MySQL
-            include('../moteur/dbconfig.php');
-            }
-            catch(Exception $e)
-            {
-            // En cas d'erreur, on affiche un message et on arrête tout
-            die('Erreur : '.$e->getMessage());
-            }
             // On affiche une liste deroulante des type de collecte visibles
             $reponse = $bdd->query('SELECT * FROM localites WHERE visible = "oui"');
             // On affiche chaque entree une à une
@@ -147,18 +129,6 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
         </thead>
         <tbody>
         <?php 
-            try
-            {
-            // On se connecte à MySQL
-            include('../moteur/dbconfig.php');
-            }
-            catch(Exception $e)
-            {
-            // En cas d'erreur, on affiche un message et on arrête tout
-            die('Erreur : '.$e->getMessage());
-            }
- 
-            // Si tout va bien, on peut continuer
 /*
 'SELECT type_dechets.couleur,type_dechets.nom, sum(pesees_collectes.masse) somme 
 FROM type_dechets,pesees_collectes 
@@ -226,18 +196,6 @@ $req->execute(array('id_collecte' => $_GET['ncollecte']));
 
 
 <td><?php 
-            try
-            {
-            // On se connecte à MySQL
-            include('../moteur/dbconfig.php');
-            }
-            catch(Exception $e)
-            {
-            // En cas d'erreur, on affiche un message et on arrête tout
-            die('Erreur : '.$e->getMessage());
-            }
- 
-            // Si tout va bien, on peut continuer
 $req3 = $bdd->prepare('SELECT utilisateurs.mail mail
                        FROM utilisateurs, pesees_collectes
                        WHERE  pesees_collectes.id = :id_collecte 

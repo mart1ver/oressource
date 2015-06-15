@@ -1,5 +1,7 @@
 <?php session_start(); 
 
+require_once("../moteur/dbconfig.php");
+
 //Vérification des autorisations de l'utilisateur et des variables de session requises pour l'affichage de cette page:
     if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 'k') !== false))
       { include "tete.php" ?>
@@ -8,17 +10,6 @@
          <div class="panel-heading">Modifier les données concernant le type de déchet sortant n° <?php echo $_POST['id']?>, <?php echo $_POST['nom']?>. </div>
 <?php
 //on obtient la couleur de la localité dans la base
-            try
-            {
-            // On se connecte à MySQL
-            include('../moteur/dbconfig.php');
-            }
-            catch(Exception $e)
-            {
-            // En cas d'erreur, on affiche un message et on arrête tout
-            die('Erreur : '.$e->getMessage());
-            }
-            // Si tout va bien, on peut continuer
             // On recupère tout le contenu de la table point de vente
 
 
