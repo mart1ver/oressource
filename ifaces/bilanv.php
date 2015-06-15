@@ -146,7 +146,7 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
        <br>
         <div class="row">
         
- <div class="col-md-6">
+ 
          <h2>
          <?php
 // on affiche la période visée
@@ -158,11 +158,7 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
   echo' Du '.$_GET['date1']." au ".$_GET['date2']." : </h2>";  
 }
 
-?>
 
-</div>
-
-<?php
 
 
 //on convertit les deux dates en un format compatible avec la bdd
