@@ -1,4 +1,4 @@
---
+---
 -- name : bilan_z.sql
 -- desc : récapitulatif des encaissements classés par moyen de paiement
 --
