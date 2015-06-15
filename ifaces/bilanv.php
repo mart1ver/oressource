@@ -145,6 +145,8 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
        </ul>
        <br>
         <div class="row">
+        
+ <div class="col-md-6">
          <h2>
          <?php
 // on affiche la période visée
@@ -155,6 +157,14 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
   {
   echo' Du '.$_GET['date1']." au ".$_GET['date2']." : </h2>";  
 }
+
+?>
+
+</div>
+
+<?php
+
+
 //on convertit les deux dates en un format compatible avec la bdd
 $txt1  = $_GET['date1'];
 $date1ft = DateTime::createFromFormat('d-m-Y', $txt1);
@@ -323,6 +333,7 @@ try
 
 
 ?>
+<br>
 <br>
 <?php
 // Tableau de recap du Chiffre d'Affaire par mode de paiement
@@ -677,6 +688,7 @@ try
 
 ?>
 <br>
+<br>
 <?php
 // Tableau de recap du Chiffre d'Affaire par mode de paiement
 // Utile pour vérifier le fond de caisse en fin de vente
@@ -852,7 +864,7 @@ $req->closeCursor(); // Termine le traitement de la requête ?>
 
        
           
-         kjhkjhkuhg
+      
         
         </tbody>
     </table>
