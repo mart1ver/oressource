@@ -773,7 +773,7 @@ $req->closeCursor(); // Termine le traitement de la requête ?>
 
 
 
-        +<?php
+        <?php
 // Tableau de recap du Chiffre d'Affaire par mode de paiement
 // Utile pour vérifier le fond de caisse en fin de vente
 // Equivalent de la touche 'Z' sur une caisse enregistreuse
