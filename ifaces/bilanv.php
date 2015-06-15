@@ -323,6 +323,43 @@ try
 
 
 ?>
+<?php
+// Tableau de recap du Chiffre d'Affaire par mode de paiement
+// Utile pour vérifier le fond de caisse en fin de vente
+// Equivalent de la touche 'Z' sur une caisse enregistreuse
+
+$sql =  file_get_contents('../mysql/recap_CA_par_mode_paiement_tout_les points.sql');
+$req = $bdd->prepare($sql);
+$ok = $req->execute(array('du' => $time_debut,'au' => $time_fin ,'numero' => $_GET['numero'] ));
+
+
+//Affichage du tableau
+print "<h2>Récapitulatif par mode de paiement</h2>";
+print "<table class='table table-hover'>";
+print "<thead>";
+print "<tr>";
+print "<th>Moyen de Paiement</th>";
+print "<th>Nombre de Ventes</th>";
+print "<th>Chiffre Dégagé</th>";
+print "<th>Remboursements</th>";
+print "</tr>";
+print "</tr>";
+print "</thead>";
+print "<tbody>";
+
+while ($ligne = $req->fetch())
+{
+print "<tr>";
+print "<td>".$ligne['moyen']."</td>";
+print "<td>".$ligne['quantite_vendue']."</td>";
+print "<td>".$ligne['total']."</td>";
+print "<td>".$ligne['remboursement']."</td>";
+print "</tr>";
+
+}
+print "</tbody>";
+print "</table>";
+?>
 </div>
 <div class="col-md-6">
   
