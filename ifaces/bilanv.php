@@ -781,6 +781,11 @@ $req->closeCursor(); // Termine le traitement de la requête ?>
     </table>
 
 
+<?php
+ $sql =  file_get_contents('../mysql/recap_CA_par_mode_paiement.sql');
+ echo $sql
+?>
+
 
 </div>
 </div>
