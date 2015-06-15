@@ -785,23 +785,7 @@ $req->closeCursor(); // Termine le traitement de la requête ?>
 // Utile pour vérifier le fond de caisse en fin de vente
 // Equivalent de la touche 'Z' sur une caisse enregistreuse
 
-$sql =  'SELECT 
-  ventes.id_moyen_paiement AS id_moyen, 
-  moyens_paiement.nom AS moyen,
-  COUNT(vendus.id) AS quantite_vendue, 
-  SUM(vendus.prix*vendus.quantite) AS total, 
-  SUM(vendus.remboursement) AS remboursement 
-FROM 
-  ventes,
-  vendus,
-  moyens_paiement 
-WHERE 
-  vendus.id_vente = ventes.id  
-   AND moyens_paiement.id = ventes.id_moyen_paiement 
-   AND DATE(vendus.timestamp) BETWEEN :du AND :au 
-   AND ventes.id_point_vente  = :numero
-GROUP BY ventes.id_moyen_paiement;
-';
+$sql =  file_get_contents('../mysql/recap_CA_par_mode_paiement.sql');
 $req = $bdd->prepare($sql);
 $ok = $req->execute(array('du' => $time_debut,'au' => $time_fin ,'numero' => $_GET['numero'] ));
 if ( ! $ok ) {
