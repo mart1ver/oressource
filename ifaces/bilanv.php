@@ -330,7 +330,7 @@ try
 
 $sql =  file_get_contents('../mysql/recap_CA_par_mode_paiement_tout_les points.sql');
 $req = $bdd->prepare($sql);
-$ok = $req->execute(array('du' => $time_debut,'au' => $time_fin ,'numero' => $_GET['numero'] ));
+$ok = $req->execute(array('du' => $time_debut,'au' => $time_fin ));
 
 
 //Affichage du tableau
