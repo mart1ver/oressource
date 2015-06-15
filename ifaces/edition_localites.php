@@ -8,28 +8,6 @@
 <h1>Gestion des localités de collecte</h1> 
   <div class="panel-heading">Définissez ici les localité d'origine possibles pour les matériaux entrant.</div>
   <p>Ces localités sont renseignées au moment de la collecte et permettent d'estimer l'impact territorial de la structure </p>
-                <?php
-                if ($_GET['err'] == "") // SI on a pas de message d'erreur
-                {
-                   echo'';
-                }
-
-                else // SINON 
-                {
-                  echo'<div class="alert alert-danger">'.$_GET['err'].'</div>';
-                }
-
-
-                if ($_GET['msg'] == "") // SI on a pas de message positif
-                {
-                   echo '';
-                }
-
-                else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
-                {
-                  echo'<div class="alert alert-success alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'.$_GET['msg'].'</div>';
-                }
-                ?>
 <div class="panel-body">
   <div class="row">
  	<form action="../moteur/edition_localites_post.php" method="post">

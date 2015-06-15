@@ -1,34 +1,15 @@
 <?php session_start();
 
+
+
 //Vérification des autorisations de l'utilisateur et des variables de session requises pour l'affichage de cette page:
    if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND $_SESSION['viz_caisse'] = "oui" AND (strpos($_SESSION['niveau'], 'v'.$_GET['numero']) !== false)  )
-      {  include "tete.php" ?>
+      {  include "tete.php"
+?>
    <div class="container">
         <h1>Visualiser la vente n° <?php echo $_GET['nvente']?></h1> 
         <p align="right">
         <input class="btn btn-default btn-lg" type='button'name='quitter' value='Quitter' OnClick="window.close();"/></p>
-        <?php
-if ($_GET['err'] == "") // SI on a pas de message d'erreur
-{
-   echo'';
-}
-
-else // SINON 
-{
-  echo'<div class="alert alert-danger">'.$_GET['err'].'</div>';
-}
-
-
-if ($_GET['msg'] == "") // SI on a pas de message positif
-{
-   echo '';
-}
-
-else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
-{
-  echo'<div class="alert alert-success alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'.$_GET['msg'].'</div>';
-}
-?>
  <div class="panel-body">
 
 

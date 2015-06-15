@@ -7,32 +7,6 @@
         <h1>Gestion de la typologie des objets collectés</h1> 
          <div class="panel-heading">Gérez ici la typologie des différents objets collectés par la structure.</div>
          <p>Permet de créer son propre jeu de sept famille (ou plus) des objets collectés</p>
-<?php
-if ($_GET['err'] == "") // SI on a pas de message d'erreur
-{
-   echo'';
-}
-
-else // SINON 
-{
-  echo'<div class="alert alert-danger">'.$_GET['err'].'</div>';
-}
-
-
-if ($_GET['msg'] == "") // SI on a pas de message positif
-{
-   echo '';
-}
-
-else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
-{
-  echo'<div class="alert alert-success alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'.$_GET['msg'].'</div>';
-}
-?>
-
-
-
-
 
       <div class="panel-body">
         <div class="row">

@@ -7,29 +7,6 @@
         <h1>Gestion de la typologie et de la masse des différentes poubelles mises à disposition de la structure par la ville</h1> 
          <div class="panel-heading">Gérez ici la liste de vos bacs à déchets.</div>
          <p>Cet outil vous permet notamment de discerner les bacs de matières recyclables de ceux dont le contenu est destiné à un enfouissement ou une incinération.</p>
-<?php
-if ($_GET['err'] == "") // SI on a pas de message d'erreur
-{
-   echo'';
-}
-
-else // SINON 
-{
-  echo'<div class="alert alert-danger">'.$_GET['err'].'</div>';
-}
-
-
-if ($_GET['msg'] == "") // SI on a pas de message positif
-{
-   echo '';
-}
-
-else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
-{
-  echo'<div class="alert alert-success alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'.$_GET['msg'].'</div>';
- 
-}
-?>
       <div class="panel-body">
         <div class="row">
         	<form action="../moteur/type_poubelles_post.php" method="post">
