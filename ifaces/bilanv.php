@@ -638,6 +638,11 @@ try
 
 
 ?>
+<?php
+ $sql =  file_get_contents('../mysql/recap_CA_par_mode_paiement.sql');
+ echo $sql
+?>
+
 </div>
 <div class="col-md-6">
 <h2>
@@ -781,10 +786,7 @@ $req->closeCursor(); // Termine le traitement de la requête ?>
     </table>
 
 
-<?php
- $sql =  file_get_contents('../mysql/recap_CA_par_mode_paiement.sql');
- echo $sql
-?>
+
 
 
 </div>
