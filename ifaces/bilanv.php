@@ -643,7 +643,7 @@ try
 // Utile pour vérifier le fond de caisse en fin de vente
 // Equivalent de la touche 'Z' sur une caisse enregistreuse
 
-$sql =  file_get_contents('../mysql/recap_CA_par_mode_paiement.sql');
+$sql =  '"'.file_get_contents('../mysql/recap_CA_par_mode_paiement.sql').'"';
 $req = $bdd->prepare($sql);
 $ok = $req->execute(array('du' => $time_debut,'au' => $time_fin ,'numero' => $_GET['numero'] ));
 if ( ! $ok ) {
