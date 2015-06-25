@@ -73,9 +73,8 @@ Nombre de ventes anterieures visibles: <input type="text" value ="<?php echo $do
       <div class="col-md-2"><label for="siret">Numéro de siret:</label> <input type="text" value ="<?php echo $donnees['siret']; ?>" name="siret" id="siret" class="form-control " required >
 
       </div>
-      <div class="col-md-4"><label for="description">Présentation générale de la strucure:</label> <textarea name="description" id="description" rows="10" cols="50" required><?php echo $donnees['description']; ?></textarea> </div>
-    
-  <br>
+      <div class="col-md-4"><label for="description">Présentation générale de la strucure:</label> <textarea name="description" id="description" rows="10" cols="50" required><?php echo $donnees['description']; ?></textarea> 
+
         <br>
         <br>
         <br>
@@ -94,6 +93,10 @@ Utiliser l'onglet "déchetterie" :<input name ="lot" id ="lot" type="checkbox" v
 <br>
 </div>
 </div>
+      </div>
+    
+  <br>
+        
 
 
     </div>
