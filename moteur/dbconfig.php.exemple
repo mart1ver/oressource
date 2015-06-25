@@ -1,3 +1,16 @@
 <?php
-$bdd = new PDO('mysql:host=localhost;dbname=oressource', 'oressource', 'mot_de_passe_a_changer');
+
+$host='localhost';
+$base='oressource';
+$user='oressource';
+$pass='mot_de_passe_a_changer';
+
+
+// NE RIEN MODIFIER APRES CETTE LIGNE
+try {
+	$bdd = new PDO("mysql:host=$host;dbname=$base", $user, $pass);
+} catch (PDOException $e) {
+        die('Connexion échouée : ' . $e->getMessage());
+}
+
 ?>
