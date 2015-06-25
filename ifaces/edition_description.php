@@ -14,7 +14,7 @@ require_once('../moteur/dbconfig.php');
 
 <div class="container">
 <h1>Configuration de Oressource</h1> 
-<label>Description de la structure<:label>
+<label>Description de la structure</label>
   <div class="panel-heading"> 
   </div>
             <?php 
