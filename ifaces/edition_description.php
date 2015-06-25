@@ -41,6 +41,14 @@ require_once('../moteur/dbconfig.php');
         Permetre de dater formulaires (mode saisie):  <input name ="saisiec" id ="saisiec" type="checkbox" value = "oui" <?php if((strpos($donnees['saisiec'], 'oui') !== false)){ echo "checked";} ?> >
         <br>
         <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
 <div class="panel panel-default">
   <label class="panel-title">formulaire de ventes</label>
   <div class="panel-body">
@@ -69,6 +77,18 @@ Nombre de ventes anterieures visibles: <input type="text" value ="<?php echo $do
 
       </div>
       <div class="col-md-4"><label for="description">Présentation générale de la strucure:</label> <textarea name="description" id="description" rows="10" cols="50" required><?php echo $donnees['description']; ?></textarea> </div>
+    
+  <br>
+        <br>
+        <br>
+        <br>
+<div class="panel panel-default">
+  <label class="panel-title">formulaires de sorties hors boutique</label>
+  <div class="panel-body">
+</div>
+</div>
+
+
     </div>
    
     <div class="row">
