@@ -177,7 +177,7 @@ function tdechet_clear()
 
  <ul class="nav nav-tabs">
   <?php if ($_SESSION['affsp'] == "oui"){ ?><li><a href="<?php echo  "sortiesp.php?numero=" . $_GET['numero']?>">Poubelles</a></li><?php } ?>
-  <?php if ($_SESSION['affss'] == "oui"){ ?><li class="active"><a>Don aux partenaires</a></li><?php } ?>
+  <?php if ($_SESSION['affss'] == "oui"){ ?><li class="active"><a>Sorties partenaires</a></li><?php } ?>
   <?php if ($_SESSION['affsr'] == "oui"){ ?><li><a href="<?php echo  "sortiesr.php?numero=" . $_GET['numero']?>">Recyclage</a></li><?php } ?>
   <?php if ($_SESSION['affsd'] == "oui"){ ?> <li><a href="<?php echo  "sorties.php?numero=" . $_GET['numero']?>">Don</a></li><?php } ?>
   <?php if ($_SESSION['affsde'] == "oui"){ ?><li><a href="<?php echo  "sortiesd.php?numero=" . $_GET['numero']?>">Déchetterie</a></li><?php } ?>
