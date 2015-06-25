@@ -96,13 +96,18 @@ $req = $bdd->prepare('UPDATE description_structure
 					  lot=:lot,
 					  viz=:viz,
 					  nb_viz=:nb_viz,
-					  saisiec=:saisiec
+					  saisiec=:saisiec,
+					  affsp=:affsp,
+					  affss=:affss,
+					  affsr=:affsr,
+					  affsd=:affsd,
+					  affsde=:affsde
 						
 					  WHERE id = :id');
 
 
 
-$req->execute(array('id' => 1,'nom' => $_POST['nom'], 'description' => $_POST['description'],'siret' => $_POST['siret'], 'mail' => $_POST['mail'], 'adresse' => $_POST['adresse'],'telephone' => $_POST['telephone'],'id_localite' => $_POST['localite'],'taux_tva' => $_POST['ttva'], 'tva_active' => $atva, 'lot' => $lot , 'viz' => $viz, 'saisiec' => $saisiec, 'nb_viz' => $_POST['nb_viz'],'cr' => $_POST['cr']));
+$req->execute(array('id' => 1,'nom' => $_POST['nom'], 'description' => $_POST['description'],'siret' => $_POST['siret'], 'mail' => $_POST['mail'], 'adresse' => $_POST['adresse'],'telephone' => $_POST['telephone'],'id_localite' => $_POST['localite'],'taux_tva' => $_POST['ttva'], 'tva_active' => $atva, 'lot' => $lot , 'viz' => $viz, 'saisiec' => $saisiec, 'nb_viz' => $_POST['nb_viz'],'cr' => $_POST['cr'],'affsp' => $_POST['affsp'],'affss' => $_POST['affss'],'affsr' => $_POST['affsr'],'affsd' => $_POST['affsd'],'affsde' => $_POST['affsde']));
 
 
 
