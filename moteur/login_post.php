@@ -35,6 +35,12 @@ $_SESSION['lot_caisse'] = $resultat['lot'];
 $_SESSION['viz_caisse'] = $resultat['viz'];
 $_SESSION['nb_viz_caisse'] = $resultat['nb_viz'];
 $_SESSION['saisiec'] = $resultat['saisiec'];
+
+$_SESSION['affsp'] = $resultat['affsp'];
+$_SESSION['affss'] = $resultat['affss'];
+$_SESSION['affsr'] = $resultat['affsr'];
+$_SESSION['affsd'] = $resultat['affsd'];
+$_SESSION['affsde'] = $resultat['affsde'];
   
   
 

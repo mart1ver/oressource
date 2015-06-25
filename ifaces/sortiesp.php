@@ -146,11 +146,11 @@ function tdechet_clear()
         <div class="col-md-7 col-md-offset-1" >
 
  <ul class="nav nav-tabs">
-  <li class="active"><a>Poubelles</a></li>
-  <li><a href="<?php echo  "sortiesc.php?numero=" . $_GET['numero']?>">Don aux partenaires</a></li>
-  <li><a href="<?php echo  "sortiesr.php?numero=" . $_GET['numero']?>">Recyclage</a></li>
-  <li><a href="<?php echo  "sorties.php?numero=" . $_GET['numero']?>">Don</a></li> 
-  <li><a href="<?php echo  "sortiesd.php?numero=" . $_GET['numero']?>">Déchetterie</a></li>
+ <?php if ($_SESSION['affsp'] == "oui"){ ?> <li class="active"><a>Poubelles</a></li><?php } ?>
+  <?php if ($_SESSION['affss'] == "oui"){ ?><li><a href="<?php echo  "sortiesc.php?numero=" . $_GET['numero']?>">Don aux partenaires</a></li><?php } ?>
+  <?php if ($_SESSION['affsr'] == "oui"){ ?><li><a href="<?php echo  "sortiesr.php?numero=" . $_GET['numero']?>">Recyclage</a></li><?php } ?>
+  <?php if ($_SESSION['affsd'] == "oui"){ ?><li><a href="<?php echo  "sorties.php?numero=" . $_GET['numero']?>">Don</a></li> <?php } ?>
+  <?php if ($_SESSION['affsde'] == "oui"){ ?><li><a href="<?php echo  "sortiesd.php?numero=" . $_GET['numero']?>">Déchetterie</a></li><?php } ?>
 </ul>
     
 </div>
