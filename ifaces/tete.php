@@ -34,6 +34,9 @@
  <ul class="nav navbar-nav">
   <?php
 //session_start(); déjà inclu dans chacun des fichiers appelant ce fichier
+
+require_once('../moteur/dbconfig.php');
+
     if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource")
       { ?> 
 <ul class="nav navbar-nav">
@@ -44,17 +47,6 @@
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">Points de collecte<b class="caret"></b></a>
             <ul class="dropdown-menu">
             <li><?php 
-            try
-            {
-            // On se connecte à MySQL
-            include('../moteur/dbconfig.php');
-            }
-            catch(Exception $e)
-            {
-            // En cas d'erreur, on affiche un message et on arrête tout
-            die('Erreur : '.$e->getMessage());
-            }
-            // Si tout va bien, on peut continuer
             // On recupère tout le contenu de la table point de vente
             $reponse = $bdd->query('SELECT * FROM points_collecte');
             // On affiche chaque entree une à une
@@ -81,17 +73,6 @@
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">Sorties hors-boutique<b class="caret"></b></a>
             <ul class="dropdown-menu">
             <li><?php 
-            try
-            {
-            // On se connecte à MySQL
-            include('../moteur/dbconfig.php');
-            }
-            catch(Exception $e)
-            {
-            // En cas d'erreur, on affiche un message et on arrête tout
-            die('Erreur : '.$e->getMessage());
-            }
-            // Si tout va bien, on peut continuer
             // On recupère tout le contenu de la table point de vente
             $reponse = $bdd->query('SELECT * FROM points_sortie');
             // On affiche chaque entree une à une
@@ -119,17 +100,6 @@
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">Points de vente<b class="caret"></b></a>
             <ul class="dropdown-menu">
             <li><?php 
-            try
-            {
-            // On se connecte à MySQL
-            include('../moteur/dbconfig.php');
-            }
-            catch(Exception $e)
-            {
-            // En cas d'erreur, on affiche un message et on arrête tout
-            die('Erreur : '.$e->getMessage());
-            }
-            // Si tout va bien, on peut continuer
             // On recupère tout le contenu de la table point de vente
             $reponse = $bdd->query('SELECT * FROM points_vente');
             // On affiche chaque entree une à une

@@ -1,5 +1,7 @@
 <?php session_start(); 
 
+require_once('../moteur/dbconfig.php');
+
 //Vérification des autorisations de l'utilisateur et des variables de session requises pour l'affichage de cette page:
 if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 's'.$_GET['numero']) !== false))
       { include "tete.php";
@@ -14,16 +16,6 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
 //
 //
         //on obtient la masse maximum suporté par la balance à ce point de sortie dans la variable $pesee_max
-  try
-            {
-            // On se connecte à MySQL
-            include('../moteur/dbconfig.php');
-            }
-            catch(Exception $e)
-            {
-            // En cas d'erreur, on affiche un message et on arrête tout
-            die('Erreur : '.$e->getMessage());
-            }
             //on obtient le nom du point de collecte designé par $GET['numero']
             $req = $bdd->prepare("SELECT pesee_max FROM points_collecte WHERE id = :id ");
             $req->execute(array('id' => $_GET['numero']));
@@ -43,16 +35,6 @@ function printdiv(divID)
 
 
             var mtot =<?php 
-                      try
-                      {
-                      // On se connecte à MySQL
-                      include('../moteur/dbconfig.php');
-                      }
-                      catch(Exception $e)
-                      {
-                      // En cas d'erreur, on affiche un message et on arrête tout
-                      die('Erreur : '.$e->getMessage());
-                      }
                       // On obtient tous les visibles de la table type_dechets de manière à cacluler mtot...
                       $reponse = $bdd->query('SELECT * FROM type_dechets_evac WHERE visible = "oui"' );
                       // On affiche chaque entrée une à une
@@ -121,20 +103,6 @@ function tdechet_write(y,z)
 function tdechet_clear()
 {
 <?php 
-          
-            try
-            {
-            // On se connecte à MySQL
-            include('../moteur/dbconfig.php');
-            }
-            catch(Exception $e)
-            {
-            // En cas d'erreur, on affiche un message et on arrête tout
-            die('Erreur : '.$e->getMessage());
-            }
- 
-            // Si tout va bien, on peut continuer
- 
             // On recupère tout le contenu de la table point de collecte
             $reponse = $bdd->query('SELECT * FROM type_dechets_evac WHERE visible = "oui"');
  
@@ -177,20 +145,6 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
           <fieldset>
        <legend>
         <?php 
-          
-            try
-            {
-            // On se connecte à MySQL
-            include('../moteur/dbconfig.php');
-            }
-            catch(Exception $e)
-            {
-            // En cas d'erreur, on affiche un message et on arrête tout
-            die('Erreur : '.$e->getMessage());
-            }
- 
-            // Si tout va bien, on peut continuer
- 
             // On recupère tout le contenu de la table point de collecte
           
             $req = $bdd->prepare("SELECT * FROM points_sortie WHERE id = :id ");
@@ -274,20 +228,6 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
 
 
 <?php 
-          
-            try
-            {
-            // On se connecte à MySQL
-            include('../moteur/dbconfig.php');
-            }
-            catch(Exception $e)
-            {
-            // En cas d'erreur, on affiche un message et on arrête tout
-            die('Erreur : '.$e->getMessage());
-            }
- 
-            // Si tout va bien, on peut continuer
- 
             // On recupère tout le contenu de la table point de collecte
             $reponse = $bdd->query('SELECT * FROM type_dechets_evac WHERE visible = "oui"');
  
@@ -357,16 +297,6 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
         <ul class="dropdown-menu dropdown-menu-right" role="menu">
         
   <?php 
-            try
-            {
-            // On se connecte à MySQL
-            include('../moteur/dbconfig.php');
-            }
-            catch(Exception $e)
-            {
-            // En cas d'erreur, on affiche un message et on arrête tout
-            die('Erreur : '.$e->getMessage());
-            }
             // On affiche une liste déroulante des localités visibles
             $reponse = $bdd->query('SELECT * FROM type_contenants WHERE visible = "oui"');
             // On affiche chaque entrée une à une
@@ -442,16 +372,6 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
 
 
             <?php 
-            try
-            {
-            // On se connecte à MySQL
-            include('../moteur/dbconfig.php');
-            }
-            catch(Exception $e)
-            {
-            // En cas d'erreur, on affiche un message et on arrête tout
-            die('Erreur : '.$e->getMessage());
-            }
             // On recupère tout le contenu de la table point de collecte
             $reponse = $bdd->query('SELECT * FROM type_dechets_evac WHERE visible = "oui"');
  

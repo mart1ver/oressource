@@ -1,4 +1,8 @@
-<?php session_start();?>
+<?php session_start();
+
+require_once('../moteur/dbconfig.php');
+
+?>
 <head>
       
       <link href="../css/bootstrap.min.css" rel="stylesheet">
@@ -47,19 +51,6 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
 
  <?php 
           //on affiche un onglet par type d'objet
-            try
-            {
-            // On se connecte à MySQL
-            include('../moteur/dbconfig.php');
-            }
-            catch(Exception $e)
-            {
-            // En cas d'erreur, on affiche un message et on arrête tout
-            die('Erreur : '.$e->getMessage());
-            }
- 
-            // Si tout va bien, on peut continuer
- 
             // On recupère tout le contenu des visibles de la table type_dechets
             $reponse = $bdd->query('SELECT * FROM points_vente');
  
@@ -223,18 +214,6 @@ $time_fin = $time_fin." 23:59:59";
         </thead>
         <tbody>
         <?php 
-            try
-            {
-            // On se connecte à MySQL
-            include('../moteur/dbconfig.php');
-            }
-            catch(Exception $e)
-            {
-            // En cas d'erreur, on affiche un message et on arrête tout
-            die('Erreur : '.$e->getMessage());
-            }
- 
-            // Si tout va bien, on peut continuer
 /*
 'SELECT type_dechets.couleur,type_dechets.nom, sum(pesees_collectes.masse) somme 
 FROM type_dechets,pesees_collectes 
@@ -266,16 +245,6 @@ $req->execute(array('id_point_vente' => $_GET['numero'], 'du' => $time_debut,'au
 
 
             <td> <?php 
-            try
-            {
-            // On se connecte à MySQL
-            include('../moteur/dbconfig.php');
-            }
-            catch(Exception $e)
-            {
-            // En cas d'erreur, on affiche un message et on arrête tout
-            die('Erreur : '.$e->getMessage());
-            }
  
             // Si tout va bien, on peut continuer
 $req2 = $bdd->prepare('SELECT SUM(vendus.prix*vendus.quantite) pto
@@ -300,16 +269,6 @@ $rembo = 'non';
             
                 ?></td>
             <td><?php 
-            try
-            {
-            // On se connecte à MySQL
-            include('../moteur/dbconfig.php');
-            }
-            catch(Exception $e)
-            {
-            // En cas d'erreur, on affiche un message et on arrête tout
-            die('Erreur : '.$e->getMessage());
-            }
  
             // Si tout va bien, on peut continuer
 $req3 = $bdd->prepare('SELECT SUM(vendus.remboursement*vendus.quantite) pto
@@ -334,18 +293,6 @@ $rembo = 'oui';
             
                 ?></td>
             <td><?php 
-            try
-            {
-            // On se connecte à MySQL
-            include('../moteur/dbconfig.php');
-            }
-            catch(Exception $e)
-            {
-            // En cas d'erreur, on affiche un message et on arrête tout
-            die('Erreur : '.$e->getMessage());
-            }
- 
-            // Si tout va bien, on peut continuer
 $req4 = $bdd->prepare('SELECT SUM(vendus.quantite) pto
                        FROM vendus
                        WHERE  vendus.id_vente = :id_vente 
@@ -371,16 +318,6 @@ $req4->execute(array('id_vente' => $donnees['id']));
             <td> <span class="badge" style="background-color:<?php echo$donnees['coul']?>"><?php echo $donnees['moyen']?></span></td>
             <td style="width:100px"><?php echo $donnees['commentaire']?></td>
             <td><?php 
-            try
-            {
-            // On se connecte à MySQL
-            include('../moteur/dbconfig.php');
-            }
-            catch(Exception $e)
-            {
-            // En cas d'erreur, on affiche un message et on arrête tout
-            die('Erreur : '.$e->getMessage());
-            }
  
             // Si tout va bien, on peut continuer
 $req5 = $bdd->prepare('SELECT utilisateurs.mail mail
@@ -440,16 +377,6 @@ echo $donnees4['pto'];
 
             </td>
             <td><?php 
-            try
-            {
-            // On se connecte à MySQL
-            include('../moteur/dbconfig.php');
-            }
-            catch(Exception $e)
-            {
-            // En cas d'erreur, on affiche un message et on arrête tout
-            die('Erreur : '.$e->getMessage());
-            }
  
             // Si tout va bien, on peut continuer
 $req5 = $bdd->prepare('SELECT utilisateurs.mail mail

@@ -1,7 +1,6 @@
-
-
-
 <?php session_start(); 
+
+require_once("../moteur/dbconfig.php");
 
 //Vérification du renseignement du champ "id" (dans le tableau $_SESSION) et du fait que la variable "système" de ce même tableau a bien la valeur "oressource" avant d'afficher quoique ce soit:    
 if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource")
@@ -68,19 +67,6 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
     element: 'graphj',
     data: [
 <?php 
-            try
-            {
-            // On se connecte à MySQL
-            include('../moteur/dbconfig.php');
-            }
-            catch(Exception $e)
-            {
-            // En cas d'erreur, on affiche un message et on arrête tout
-            die('Erreur : '.$e->getMessage());
-            }
- 
-            // Si tout va bien, on peut continuer
- 
             // On recupère tout le contenu de la table affectations
             $reponse = $bdd->query('SELECT type_dechets.couleur,type_dechets.nom, sum(pesees_collectes.masse) somme FROM type_dechets,pesees_collectes WHERE type_dechets.id = pesees_collectes.id_type_dechet AND DATE(pesees_collectes.timestamp) = CURDATE()
 GROUP BY nom');
@@ -100,19 +86,6 @@ GROUP BY nom');
     labelColor: '#060',
     colors: [
 <?php 
-            try
-            {
-            // On se connecte à MySQL
-            include('../moteur/dbconfig.php');
-            }
-            catch(Exception $e)
-            {
-            // En cas d'erreur, on affiche un message et on arrête tout
-            die('Erreur : '.$e->getMessage());
-            }
- 
-            // Si tout va bien, on peut continuer
- 
             // On recupère tout le contenu de la table affectations
             $reponse = $bdd->query('SELECT type_dechets.couleur,type_dechets.nom, sum(pesees_collectes.masse) somme FROM type_dechets,pesees_collectes WHERE type_dechets.id = pesees_collectes.id_type_dechet AND DATE(pesees_collectes.timestamp) = CURDATE()
 GROUP BY nom');
@@ -136,19 +109,6 @@ GROUP BY nom');
     element: 'graphm',
     data: [
 <?php 
-            try
-            {
-            // On se connecte à MySQL
-            include('../moteur/dbconfig.php');
-            }
-            catch(Exception $e)
-            {
-            // En cas d'erreur, on affiche un message et on arrête tout
-            die('Erreur : '.$e->getMessage());
-            }
- 
-            // Si tout va bien, on peut continuer
- 
             // On recupère tout le contenu de la table affectations
             $reponse = $bdd->query('SELECT type_dechets.couleur,type_dechets.nom, sum(vendus.quantite ) somme FROM type_dechets,vendus WHERE type_dechets.id = vendus.id_type_dechet AND DATE(vendus.timestamp) = CURDATE() AND vendus.prix > 0
 GROUP BY nom');
@@ -168,18 +128,6 @@ GROUP BY nom');
     labelColor: '#060',
     colors: [
 <?php 
-            try
-            {
-            // On se connecte à MySQL
-            include('../moteur/dbconfig.php');
-            }
-            catch(Exception $e)
-            {
-            // En cas d'erreur, on affiche un message et on arrête tout
-            die('Erreur : '.$e->getMessage());
-            }
- 
-            // Si tout va bien, on peut continuer
  
             // On recupère tout le contenu de la table affectations
             $reponse = $bdd->query('SELECT type_dechets.couleur,type_dechets.nom, sum(vendus.quantite ) somme FROM type_dechets,vendus WHERE type_dechets.id = vendus.id_type_dechet AND DATE(vendus.timestamp) = CURDATE() AND vendus.prix > 0
@@ -204,19 +152,6 @@ GROUP BY nom');
     element: 'grapha',
     data: [
 <?php 
-            try
-            {
-            // On se connecte à MySQL
-            include('../moteur/dbconfig.php');
-            }
-            catch(Exception $e)
-            {
-            // En cas d'erreur, on affiche un message et on arrête tout
-            die('Erreur : '.$e->getMessage());
-            }
- 
-            // Si tout va bien, on peut continuer
- 
             // On recupère tout le contenu de la table affectations
             $reponse = $bdd->query('SELECT type_dechets.couleur,type_dechets.nom, sum(pesees_sorties.masse) somme 
 FROM type_dechets,pesees_sorties 
@@ -251,19 +186,6 @@ GROUP BY nom');
     labelColor: '#060',
     colors: [
 <?php 
-            try
-            {
-            // On se connecte à MySQL
-            include('../moteur/dbconfig.php');
-            }
-            catch(Exception $e)
-            {
-            // En cas d'erreur, on affiche un message et on arrête tout
-            die('Erreur : '.$e->getMessage());
-            }
- 
-            // Si tout va bien, on peut continuer
- 
             // On recupère tout le contenu de la table affectations
             $reponse = $bdd->query('SELECT type_dechets.couleur,type_dechets.nom, sum(pesees_sorties.masse) somme 
 FROM type_dechets,pesees_sorties 

@@ -1,5 +1,8 @@
  <?php session_start(); 
 
+
+require_once('../moteur/dbconfig.php');
+
 //Vérification des autorisations de l'utilisateur et des variables de session requises pour l'affichage de cette page: 
             if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 'k') !== false))
 
@@ -14,17 +17,6 @@
   <div class="panel-heading"> 
   </div>
             <?php 
-            try
-            {
-            // On se connecte à MySQL
-            include('../moteur/dbconfig.php');
-            }
-            catch(Exception $e)
-            {
-            // En cas d'erreur, on affiche un message et on arrête tout
-            die('Erreur : '.$e->getMessage());
-            }
-            // Si tout va bien, on peut continuer
             // On recupère tout le contenu de la table description structure
             $reponse = $bdd->query('SELECT * FROM description_structure');
             // On affiche chaque entree une à une
