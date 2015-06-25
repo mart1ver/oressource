@@ -1,5 +1,7 @@
 <?php session_start(); 
 
+require_once('../moteur/dbconfig.php');
+
 //Vérification des autorisations de l'utilisateur et des variables de session requisent pour l'affichage de cette page:
     if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 'j') !== false))
       { include "tete.php" ?>
@@ -8,24 +10,6 @@
          <div class="panel-heading">Modifier les données concernant la filiere n° <?php echo $_POST['id']?>, <?php echo $_POST['nom']?>. </div>
 <?php
 //on obtient la couleur de la localité dans la base
-
-
-
-
-
-            try
-            {
-            // On se connecte à MySQL
-            include('../moteur/dbconfig.php');
-            }
-            catch(Exception $e)
-            {
-            // En cas d'erreur, on affiche un message et on arrête tout
-            die('Erreur : '.$e->getMessage());
-            }
-            // Si tout va bien, on peut continuer
-            // On recupère tout le contenu de la table point de vente
-
 
 $req = $bdd->prepare("SELECT couleur FROM filieres_sortie WHERE id = :id ");
 $req->execute(array('id' => $_POST['id']));
@@ -77,16 +61,6 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
 <label>Type de dechets enlevé:</label>
 <select name="id_dechet" id="id_dechet" class="form-control " required>
             <?php 
-            try
-            {
-            // On se connecte à MySQL
-            include('../moteur/dbconfig.php');
-            }
-            catch(Exception $e)
-            {
-            // En cas d'erreur, on affiche un message et on arrête tout
-            die('Erreur : '.$e->getMessage());
-            }
             // On affiche une liste deroulante des type de collecte visibles
             $reponse = $bdd->query('SELECT * FROM type_dechets_evac WHERE visible = "oui"');
             // On affiche chaque entree une à une

@@ -1,5 +1,7 @@
 <?php session_start(); 
 
+require_once('../moteur/dbconfig.php');
+
 //Vérification des autorisations de l'utilisateur et des variables de session requises pour l'affichage de cette page:
   if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 'h') !== false))
       {  include "tete.php" ?>
@@ -58,18 +60,6 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
         </thead>
         <tbody>
         <?php 
-            try
-            {
-            // On se connecte à MySQL
-            include('../moteur/dbconfig.php');
-            }
-            catch(Exception $e)
-            {
-            // En cas d'erreur, on affiche un message et on arrête tout
-            die('Erreur : '.$e->getMessage());
-            }
- 
-            // Si tout va bien, on peut continuer
 /*
 'SELECT type_dechets.couleur,type_dechets.nom, sum(pesees_collectes.masse) somme 
 FROM type_dechets,pesees_collectes 
@@ -111,18 +101,6 @@ $req->execute(array('id_sortie' => $_GET['nsortie']));
 
 <td>
  <?php 
-            try
-            {
-            // On se connecte à MySQL
-            include('../moteur/dbconfig.php');
-            }
-            catch(Exception $e)
-            {
-            // En cas d'erreur, on affiche un message et on arrête tout
-            die('Erreur : '.$e->getMessage());
-            }
- 
-           
           
 $req3 = $bdd->prepare('SELECT utilisateurs.mail mail
                        FROM utilisateurs ,pesees_sorties
@@ -168,18 +146,6 @@ $req3->execute(array('id_sortie' => $_GET['nsortie']));
 </td>
 
 <td><?php 
-            try
-            {
-            // On se connecte à MySQL
-            include('../moteur/dbconfig.php');
-            }
-            catch(Exception $e)
-            {
-            // En cas d'erreur, on affiche un message et on arrête tout
-            die('Erreur : '.$e->getMessage());
-            }
- 
-           
           
 $req5 = $bdd->prepare('SELECT utilisateurs.mail mail
                        FROM pesees_sorties, utilisateurs
@@ -201,19 +167,6 @@ $req5->execute(array('id_sortie' => $donnees['id']));
             
                 ?></td>
 <td><?php 
-            try
-            {
-            // On se connecte à MySQL
-            include('../moteur/dbconfig.php');
-            }
-            catch(Exception $e)
-            {
-            // En cas d'erreur, on affiche un message et on arrête tout
-            die('Erreur : '.$e->getMessage());
-            }
- 
-           
-          
 $req4 = $bdd->prepare('SELECT pesees_sorties.last_hero_timestamp lht
                        FROM pesees_sorties
                        WHERE  pesees_sorties.id = :id_sortie

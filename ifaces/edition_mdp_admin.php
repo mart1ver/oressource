@@ -1,4 +1,6 @@
-                    <?php session_start();
+<?php session_start();
+
+
 
 //Vérification des autorisations de l'utilisateur et des variables de session requises pour l'affichage de cette page: 
                     if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 'l') !== false))

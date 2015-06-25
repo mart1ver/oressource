@@ -1,4 +1,8 @@
-<?php session_start(); ?>
+<?php session_start(); 
+
+require_once('../moteur/dbconfig.php');
+
+?>
 <head>
       
       <link href="../css/bootstrap.min.css" rel="stylesheet">
@@ -47,19 +51,6 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
 
  <?php 
           //on affiche un onglet par type d'objet
-            try
-            {
-            // On se connecte à MySQL
-            include('../moteur/dbconfig.php');
-            }
-            catch(Exception $e)
-            {
-            // En cas d'erreur, on affiche un message et on arrête tout
-            die('Erreur : '.$e->getMessage());
-            }
- 
-            // Si tout va bien, on peut continuer
- 
             // On recupère tout le contenu des visibles de la table type_dechets
             $reponse = $bdd->query('SELECT * FROM points_collecte');
  
@@ -197,21 +188,6 @@ $time_fin = $time_fin." 23:59:59";
 </div>
 
 <?php
-try
-            {
-            // On se connecte à MySQL
-            include('../moteur/dbconfig.php');
-            }
-            catch(Exception $e)
-            {
-            // En cas d'erreur, on affiche un message et on arrête tout
-            die('Erreur : '.$e->getMessage());
-            }
- 
-            // Si tout va bien, on peut continuer
-
-
- 
             // On recupère toute la liste des filieres de sortie
             //   $reponse = $bdd->query('SELECT * FROM grille_objets');
           
@@ -251,18 +227,6 @@ if($donnees['nid'] > 0){ $req->closeCursor();
         </thead>
         <tbody>
         <?php 
-            try
-            {
-            // On se connecte à MySQL
-            include('../moteur/dbconfig.php');
-            }
-            catch(Exception $e)
-            {
-            // En cas d'erreur, on affiche un message et on arrête tout
-            die('Erreur : '.$e->getMessage());
-            }
- 
-            // Si tout va bien, on peut continuer
 /*
 'SELECT type_dechets.couleur,type_dechets.nom, sum(pesees_collectes.masse) somme 
 FROM type_dechets,pesees_collectes 
@@ -300,18 +264,6 @@ $req->execute(array('id_point_collecte' => $_GET['numero'], 'du' => $time_debut,
             <td style="height:20px"> 
 
  <?php 
-            try
-            {
-            // On se connecte à MySQL
-            include('../moteur/dbconfig.php');
-            }
-            catch(Exception $e)
-            {
-            // En cas d'erreur, on affiche un message et on arrête tout
-            die('Erreur : '.$e->getMessage());
-            }
- 
-            // Si tout va bien, on peut continuer
 $req2 = $bdd->prepare('SELECT SUM(pesees_collectes.masse) masse
                        FROM pesees_collectes
                        WHERE  pesees_collectes.id_collecte = :id_collecte ');
@@ -362,18 +314,6 @@ $req2->execute(array('id_collecte' => $donnees['id']));
 <td>
 
 <?php 
-            try
-            {
-            // On se connecte à MySQL
-            include('../moteur/dbconfig.php');
-            }
-            catch(Exception $e)
-            {
-            // En cas d'erreur, on affiche un message et on arrête tout
-            die('Erreur : '.$e->getMessage());
-            }
- 
-            // Si tout va bien, on peut continuer
 $req3 = $bdd->prepare('SELECT utilisateurs.mail mail
                        FROM utilisateurs, collectes
                        WHERE  collectes.id = :id_collecte 
