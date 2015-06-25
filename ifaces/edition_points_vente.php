@@ -8,29 +8,6 @@ require_once('../moteur/dbconfig.php');
     <div class="container">
         <h1>Gestion des points de vente</h1> 
          <div class="panel-heading">Gérez ici les différents points de vente.</div>
-<?php
-if ($_GET['err'] == "") // SI on a pas de message d'erreur
-{
-   echo'';
-}
-
-else // SINON 
-{
-  echo'<div class="alert alert-danger">'.$_GET['err'].'</div>';
-}
-
-
-if ($_GET['msg'] == "") // SI on a pas de message positif
-{
-   echo '';
-}
-
-else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
-{
-  echo'<div class="alert alert-success alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'.$_GET['msg'].'</div>';
-}
-?>
-
       <div class="panel-body">
         <div class="row">
           <form action="../moteur/edition_points_vente_post.php" method="post">

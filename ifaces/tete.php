@@ -202,3 +202,13 @@ if(strpos($_SESSION['niveau'], 'bi') !== false)
 </div><!--/.navbar-collapse -->
       </div>
     </div>
+
+<?php
+
+// Afficher l'erreur si elle existe
+if (isset($_GET['err'])) echo "<div class='alert alert-danger' style='width:80%;margin:auto;'>$_GET[err]</div>";
+
+// Affiche le message s'il existe
+if (isset($_GET['msg'])) echo "<div class='alert alert-success alert-dismissable' style='width:80%;margin:auto;'><button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;</button>$_GET[msg]</div>";
+
+?>

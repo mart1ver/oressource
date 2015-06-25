@@ -15,28 +15,6 @@ require_once('../moteur/dbconfig.php');
         <h1>Gestion des conventions avec les partenaires</h1> 
          <div class="panel-heading">Gérez ici la liste de vos partenaires de réemploi.</div>
          <p>Permet de différencier les partenaires au moment de la mise en bilan </p>
-<?php
-if ($_GET['err'] == "") // SI on a pas de message d'erreur
-{
-   echo'';
-}
-
-else // SINON 
-{
-  echo'<div class="alert alert-danger">'.$_GET['err'].'</div>';
-}
-
-
-if ($_GET['msg'] == "") // SI on a pas de message positif
-{
-   echo '';
-}
-
-else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
-{
-  echo'<div class="alert alert-success alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'.$_GET['msg'].'</div>';
-}
-?>
       <div class="panel-body">
         <div class="row">
         	<form action="../moteur/convention_sortie_post.php" method="post">

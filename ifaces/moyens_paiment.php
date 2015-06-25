@@ -9,32 +9,6 @@ require_once('../moteur/dbconfig.php');
         <h1>Gestion des moyens de paiement en caisse</h1> 
          <div class="panel-heading">Gérez ici les moyens de paiement disponibles aux différents points de vente</div>
          <p>Permet de définir les différents moyens de paiement disponibles aux différents points de vente.</p>
-<?php
-if ($_GET['err'] == "") // SI on a pas de message d'erreur
-{
-   echo'';
-}
-
-else // SINON 
-{
-  echo'<div class="alert alert-danger">'.$_GET['err'].'</div>';
-}
-
-
-if ($_GET['msg'] == "") // SI on a pas de message positif
-{
-   echo '';
-}
-
-else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
-{
-  echo'<div class="alert alert-success alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'.$_GET['msg'].'</div>';
-}
-?>
-
-
-
-
 
       <div class="panel-body">
         <div class="row">
