@@ -3,6 +3,7 @@
 //Vérification des autorisations de l'utilisateur et des variables de session requises pour l'utilisation de cette requête:
  if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 'k') !== false))
 {
+
 $atva = 'non' ;
 if ($_POST['atva'] == 'oui')
 {
@@ -29,7 +30,40 @@ if ($_POST['saisiec'] == 'oui')
 	$saisiec = 'oui' ;
 }		
 
+$affsp = 'non' ;
+if ($_POST['affsp'] == 'oui')
+{
 
+	$affsp = 'oui' ;
+}		
+
+$affss = 'non' ;
+if ($_POST['affss'] == 'oui')
+{
+
+	$affss = 'oui' ;
+}		
+
+$affsr = 'non' ;
+if ($_POST['affsr'] == 'oui')
+{
+
+	$affsr = 'oui' ;
+}		
+
+$affsd = 'non' ;
+if ($_POST['affsd'] == 'oui')
+{
+
+	$affsd = 'oui' ;
+}		
+
+$affsde = 'non' ;
+if ($_POST['affsde'] == 'oui')
+{
+
+	$affsde = 'oui' ;
+}
 
 //martin vert
 // Connexion à la base de données
@@ -48,8 +82,23 @@ if ($_POST['saisiec'] == 'oui')
 // Insertion du post à l'aide d'une requête préparée
 	
 
-$req = $bdd->prepare('UPDATE description_structure SET id = :id, nom = :nom, adresse = :adresse, description = :description , siret = :siret , telephone = :telephone , mail =:mail, taux_tva =:taux_tva, tva_active=:tva_active ,cr=:cr,lot=:lot,viz=:viz,nb_viz=:nb_viz,saisiec=:saisiec
-WHERE id = :id');
+$req = $bdd->prepare('UPDATE description_structure 
+
+					  SET id = :id, nom = :nom, 
+					  adresse = :adresse,
+					  description = :description, 
+					  siret = :siret, 
+					  telephone = :telephone, 
+					  mail =:mail, 
+					  taux_tva =:taux_tva, 
+					  tva_active=:tva_active,
+					  cr=:cr,
+					  lot=:lot,
+					  viz=:viz,
+					  nb_viz=:nb_viz,
+					  saisiec=:saisiec
+						
+					  WHERE id = :id');
 
 
 
