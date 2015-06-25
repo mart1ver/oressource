@@ -81,15 +81,15 @@ Nombre de ventes anterieures visibles: <input type="text" value ="<?php echo $do
 <div class="panel panel-default">
   <label class="panel-title">formulaires de sorties hors boutique</label>
   <div class="panel-body">
-Utiliser l'onglet "poubelles" :  <input name ="affsp" id ="lot" type="checkbox" value = "oui" <?php if((strpos($donnees['lot'], 'oui') !== false)){ echo "checked";} ?> >
+Utiliser l'onglet "poubelles" :  <input name ="affsp" id ="lot" type="checkbox" value = "oui" <?php if((strpos($donnees['affsp'], 'oui') !== false)){ echo "checked";} ?> >
 <br>
-Utiliser l'onglet "sorties partenaires" : <input name ="affss" id ="lot" type="checkbox" value = "oui" <?php if((strpos($donnees['lot'], 'oui') !== false)){ echo "checked";} ?> >
+Utiliser l'onglet "sorties partenaires" : <input name ="affss" id ="lot" type="checkbox" value = "oui" <?php if((strpos($donnees['affss'], 'oui') !== false)){ echo "checked";} ?> >
 <br>
-Utiliser l'onglet "recyclage" :<input name ="affsr" id ="lot" type="checkbox" value = "oui" <?php if((strpos($donnees['lot'], 'oui') !== false)){ echo "checked";} ?> >
+Utiliser l'onglet "recyclage" :<input name ="affsr" id ="lot" type="checkbox" value = "oui" <?php if((strpos($donnees['affsr'], 'oui') !== false)){ echo "checked";} ?> >
 <br>
-Utiliser l'onglet "don" : <input name ="affsd" id ="viz" type="checkbox" value = "oui" <?php if((strpos($donnees['viz'], 'oui') !== false)){ echo "checked";} ?> >
+Utiliser l'onglet "don" : <input name ="affsd" id ="viz" type="checkbox" value = "oui" <?php if((strpos($donnees['affsd'], 'oui') !== false)){ echo "checked";} ?> >
 <br>
-Utiliser l'onglet "déchetterie" :<input name ="affsde" id ="lot" type="checkbox" value = "oui" <?php if((strpos($donnees['lot'], 'oui') !== false)){ echo "checked";} ?> >
+Utiliser l'onglet "déchetterie" :<input name ="affsde" id ="lot" type="checkbox" value = "oui" <?php if((strpos($donnees['affsde'], 'oui') !== false)){ echo "checked";} ?> >
 <br>
 </div>
 </div>
