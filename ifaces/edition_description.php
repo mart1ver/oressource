@@ -13,7 +13,8 @@ require_once('../moteur/dbconfig.php');
             ?>
 
 <div class="container">
-<h1>Description de la structure</h1> 
+<h1>Configuration de Oressource</h1> 
+<label>Description de la structure<:label>
   <div class="panel-heading"> 
   </div>
             <?php 
@@ -39,8 +40,9 @@ require_once('../moteur/dbconfig.php');
         <br>
         Permetre de dater formulaires (mode saisie):  <input name ="saisiec" id ="saisiec" type="checkbox" value = "oui" <?php if((strpos($donnees['saisiec'], 'oui') !== false)){ echo "checked";} ?> >
         <br>
+        <br>
 <div class="panel panel-default">
-  <label class="panel-title">Panel title</label>
+  <label class="panel-title">formulaire de ventes</label>
   <div class="panel-body">
  Activer la TVA à la vente : <input name ="atva" id ="atva" type="checkbox" value = "oui" <?php if((strpos($donnees['tva_active'], 'oui') !== false)){ echo "checked";} ?> >
 <br>
