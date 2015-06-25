@@ -8,24 +8,6 @@
 <h1>Édition de votre mot de passe:</h1> 
 <p>Votre E-mail est: <?php echo $_SESSION['mail'] ?>, il vous est demandé au login.</p>
 <br>     
-                    <?php
-                    if ($_GET['err'] == "") // SI on a pas de message d'erreur
-                    {
-                       echo'';
-                    }
-                    else // SINON 
-                    {
-                      echo'<div class="alert alert-danger">'.$_GET['err'].'</div>';
-                    }
-                    if ($_GET['msg'] == "") // SI on a pas de message positif
-                    {
-                       echo '';
-                    }
-                    else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
-                    {
-                      echo'<div class="alert alert-success alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'.$_GET['msg'].'</div>';
-                    }
-                    ?>
 <div class="panel-body">
   <div class="row">
   <form action="../moteur/edition_mdp_utilisateur_post.php" method="post">
