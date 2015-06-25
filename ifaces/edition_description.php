@@ -40,6 +40,7 @@ require_once('../moteur/dbconfig.php');
         Permetre de dater formulaires (mode saisie):  <input name ="saisiec" id ="saisiec" type="checkbox" value = "oui" <?php if((strpos($donnees['saisiec'], 'oui') !== false)){ echo "checked";} ?> >
         <br>
 <div class="panel panel-default">
+  <label class="panel-title">Panel title</label>
   <div class="panel-body">
  Activer la TVA à la vente : <input name ="atva" id ="atva" type="checkbox" value = "oui" <?php if((strpos($donnees['tva_active'], 'oui') !== false)){ echo "checked";} ?> >
 <br>
