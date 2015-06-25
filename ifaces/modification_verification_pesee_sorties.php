@@ -1,5 +1,7 @@
 <?php session_start(); 
 
+require_once("../moteur/dbconfig.php");
+
 //Vérification des autorisations de l'utilisateur et des variables de session requises pour l'affichage de cette page:
   if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 'h') !== false))
       {  include "tete.php" ?>
@@ -54,16 +56,6 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
   <label for="id_type_dechet">Type d'objet:</label>
 <select name="id_type_dechet" id="id_type_dechet" class="form-control " required>
             <?php 
-            try
-            {
-            // On se connecte à MySQL
-            include('../moteur/dbconfig.php');
-            }
-            catch(Exception $e)
-            {
-            // En cas d'erreur, on affiche un message et on arrête tout
-            die('Erreur : '.$e->getMessage());
-            }
             // On affiche une liste deroulante des type de collecte visibles
             $reponse = $bdd->query('SELECT * FROM type_dechets');
             // On affiche chaque entree une à une
@@ -93,16 +85,6 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
   <label for="id_type_dechet">Dechets et materiaux:</label>
 <select name="id_type_dechet_evac" id="id_type_dechet_evac" class="form-control " required>
             <?php 
-            try
-            {
-            // On se connecte à MySQL
-            include('../moteur/dbconfig.php');
-            }
-            catch(Exception $e)
-            {
-            // En cas d'erreur, on affiche un message et on arrête tout
-            die('Erreur : '.$e->getMessage());
-            }
             // On affiche une liste deroulante des type de collecte visibles
             $reponse = $bdd->query('SELECT * FROM type_dechets_evac ');
             // On affiche chaque entree une à une

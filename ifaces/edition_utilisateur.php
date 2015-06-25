@@ -1,5 +1,7 @@
 <?php session_start(); 
 
+require_once('../moteur/dbconfig.php');
+
 //Vérification des autorisations de l'utilisateur et des variables de session requisent pour l'affichage de cette page:
      if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 'l') !== false))
       {  include "tete.php" ?>
@@ -63,18 +65,6 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
   </div>
 <div class="col-md-4"><div class="alert alert-info"><label for="niveauc">Points de collecte:</label><br>
 <?php 
-            try
-            {
-            // On se connecte à MySQL
-            include('../moteur/dbconfig.php');
-            }
-            catch(Exception $e)
-            {
-            // En cas d'erreur, on affiche un message et on arrête tout
-            die('Erreur : '.$e->getMessage());
-            }
-            // Si tout va bien, on peut continuer
-            // On recupère tout le contenu de la table point de collecte
             $reponse = $bdd->query('SELECT * FROM points_collecte');
             // On affiche chaque entree une à une
            while ($donnees = $reponse->fetch())
@@ -89,17 +79,6 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
           
                                             <div class="alert alert-info"><label for="niveauv">Points de vente:</label><br>
           <?php 
-            try
-            {
-            // On se connecte à MySQL
-            include('../moteur/dbconfig.php');
-            }
-            catch(Exception $e)
-            {
-            // En cas d'erreur, on affiche un message et on arrête tout
-            die('Erreur : '.$e->getMessage());
-            }
-            // Si tout va bien, on peut continuer
             // On recupère tout le contenu de la table point de vente
             $reponse = $bdd->query('SELECT * FROM points_vente');
             // On affiche chaque entree une à une
@@ -119,17 +98,6 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
                  ?></div>
                                             <div class="alert alert-info"><label for="niveaus">Points de sortie hors-boutique:</label><br>
           <?php 
-            try
-            {
-            // On se connecte à MySQL
-            include('../moteur/dbconfig.php');
-            }
-            catch(Exception $e)
-            {
-            // En cas d'erreur, on affiche un message et on arrête tout
-            die('Erreur : '.$e->getMessage());
-            }
-            // Si tout va bien, on peut continuer
             // On recupère tout le contenu de la table point de vente
             $reponse = $bdd->query('SELECT * FROM points_sortie');
             // On affiche chaque entree une à une

@@ -1,5 +1,7 @@
 <?php session_start(); 
 
+require_once('../moteur/dbconfig.php');
+
 //Vérification des autorisations de l'utilisateur et des variables de session requises pour l'affichage de cette page:
 if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 'v'.$_GET['numero']) !== false))
       {include "tete.php";?>
@@ -32,17 +34,6 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
       <legend>
              <?php 
           // on determine le numero de la vente
-        try
-            {
-            // On se connecte à MySQL 
-            include('../moteur/dbconfig.php');
-            }
-            catch(Exception $e)
-            {
-            // En cas d'erreur, on affiche un message et on arrête tout
-            die('Erreur : '.$e->getMessage());
-            }
- 
          $req = $bdd->prepare("SELECT max(id) FROM ventes WHERE id_point_vente = :id ");
             $req->execute(array('id' => $_GET['numero']));
  
@@ -53,19 +44,6 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
            }
               $req->closeCursor(); // Termine le traitement de la requête
             //on affiche le nom du point de vente
-            try
-            {
-            // On se connecte à MySQL 
-            include('../moteur/dbconfig.php');
-            }
-            catch(Exception $e)
-            {
-            // En cas d'erreur, on affiche un message et on arrête tout
-            die('Erreur : '.$e->getMessage());
-            }
- 
-            // Si tout va bien, on peut continuer
- 
             // On recupère tout le contenu de la table point de collecte
           
             $req = $bdd->prepare("SELECT * FROM points_vente WHERE id = :id ");
@@ -190,16 +168,6 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
 
 
             <?php 
-            try
-            {
-            // On se connecte à MySQL
-            include('../moteur/dbconfig.php');
-            }
-            catch(Exception $e)
-            {
-            // En cas d'erreur, on affiche un message et on arrête tout
-            die('Erreur : '.$e->getMessage());
-            }
             // On recupère tout le contenu de la table point de collecte
             $reponse = $bdd->query('SELECT * FROM type_dechets WHERE visible = "oui"');
  
@@ -217,16 +185,6 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
 
 
   <?php 
-            try
-            {
-            // On se connecte à MySQL
-            include('../moteur/dbconfig.php');
-            }
-            catch(Exception $e)
-            {
-            // En cas d'erreur, on affiche un message et on arrête tout
-            die('Erreur : '.$e->getMessage());
-            }
              // On recupère tout le contenu de la table grille_objets
            $req = $bdd->prepare('SELECT * FROM grille_objets WHERE id_type_dechet = :id_type_dechet AND visible = "oui"   ');
            $req->execute(array('id_type_dechet' => $donnees['id']));

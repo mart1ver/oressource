@@ -1,5 +1,7 @@
 <?php session_start();
 
+require_once('../moteur/dbconfig.php');
+
 //Vérification des autorisations de l'utilisateur et des variables de session requises pour l'affichage de cette page:
    if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 'h') !== false))
       {  include "tete.php" ?>
@@ -63,18 +65,6 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
 
 
         <?php 
-            try
-            {
-            // On se connecte à MySQL
-            include('../moteur/dbconfig.php');
-            }
-            catch(Exception $e)
-            {
-            // En cas d'erreur, on affiche un message et on arrête tout
-            die('Erreur : '.$e->getMessage());
-            }
- 
-            // Si tout va bien, on peut continuer
 /*
 'SELECT type_dechets.couleur,type_dechets.nom, sum(pesees_collectes.masse) somme 
 FROM type_dechets,pesees_collectes 

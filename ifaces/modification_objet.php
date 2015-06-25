@@ -1,5 +1,6 @@
 <?php session_start(); 
 
+
 //Vérification des autorisations de l'utilisateur et des variables de session requisent pour l'affichage de cette page:
    if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 'g') !== false))
       { include "tete.php" ?>
