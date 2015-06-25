@@ -84,13 +84,13 @@ Nombre de ventes anterieures visibles: <input type="text" value ="<?php echo $do
   <div class="panel-body">
 Utiliser l'onglet "poubelles" :  <input name ="lot" id ="lot" type="checkbox" value = "oui" <?php if((strpos($donnees['lot'], 'oui') !== false)){ echo "checked";} ?> >
 <br>
-Utiliser l'onglet "sorties partenaires" : <input name ="viz" id ="viz" type="checkbox" value = "oui" <?php if((strpos($donnees['viz'], 'oui') !== false)){ echo "checked";} ?> >
+Utiliser l'onglet "sorties partenaires" : <input name ="lot" id ="lot" type="checkbox" value = "oui" <?php if((strpos($donnees['lot'], 'oui') !== false)){ echo "checked";} ?> >
 <br>
-Utiliser l'onglet "recyclage" :<input type="text" value ="<?php echo $donnees['nb_viz']; ?>" name="nb_viz" id="nb_viz" class="form-control " required >
+Utiliser l'onglet "recyclage" :<input name ="lot" id ="lot" type="checkbox" value = "oui" <?php if((strpos($donnees['lot'], 'oui') !== false)){ echo "checked";} ?> >
 <br>
 Utiliser l'onglet "don" : <input name ="viz" id ="viz" type="checkbox" value = "oui" <?php if((strpos($donnees['viz'], 'oui') !== false)){ echo "checked";} ?> >
 <br>
-Utiliser l'onglet "déchetterie" :<input type="text" value ="<?php echo $donnees['nb_viz']; ?>" name="nb_viz" id="nb_viz" class="form-control " required >
+Utiliser l'onglet "déchetterie" :<input name ="lot" id ="lot" type="checkbox" value = "oui" <?php if((strpos($donnees['lot'], 'oui') !== false)){ echo "checked";} ?> >
 <br>
 </div>
 </div>
