@@ -12,5 +12,6 @@ ALTER TABLE  `description_structure`
 	ADD  `affss` TEXT NOT NULL ,
 	ADD  `affsr` TEXT NOT NULL ,
 	ADD  `affsd` TEXT NOT NULL ; 
+	ADD  `affsde` TEXT NOT NULL ; 
 
 COMMIT;
