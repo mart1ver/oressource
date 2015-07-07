@@ -43,6 +43,22 @@ AND vendus.remboursement =0');
 }
         
               $reponse->closeCursor(); // Termine le traitement de la requête
+
+               $reponse = $bdd->query('SELECT sum(pesees_collectes.masse) mc
+FROM pesees_collectes
+WHERE DATE(pesees_collectes.timestamp ) = CURDATE()');
+ 
+           //on envoie la réponse dans trois variables distinctes
+           while ($donnees = $reponse->fetch())
+           {
+
+           $mc = $donnees['mc'];
+           if ($mc == NULL){$mc = "0";}
+           
+
+}
+        
+              $reponse->closeCursor(); // Termine le traitement de la requête
                 
           ?>
           <h2>Collecté aujourd'hui:<?php echo $mc."Kgs.";?></h2>
