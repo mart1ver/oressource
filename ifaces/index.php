@@ -22,7 +22,28 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource")
       <!-- Example row of columns -->
       <div class="row">
         <div class="col-md-4" >
-          <h2>Collecté aujourd'hui:</h2>
+          <?php 
+//on determine les masses collectés et evacuées ansi que le nombre d'objets vendus aujoud'hui 
+
+
+           
+            $reponse = $bdd->query('SELECT  sum(vendus.quantite) qv, sum(pesees_collectes.masse) mc, sum(pesees_sorties.masse) me  FROM pesees_collectes ,pesees_sorties,vendus
+                                    WHERE  DATE(pesees_collectes.timestamp) = CURDATE() AND DATE(pesees_sorties.timestamp) = CURDATE() AND DATE(vendus.timestamp) = CURDATE() AND vendus.remboursement = 0');
+ 
+           //on envoie la réponse dans trois variables distinctes
+           while ($donnees = $reponse->fetch())
+           {
+
+           $qv = $donnees['qv'];
+           $qv = $donnees['mc'];
+           $qv = $donnees['me'];
+
+
+             }
+              $reponse->closeCursor(); // Termine le traitement de la requête
+                
+          ?>
+          <h2>Collecté aujourd'hui:<?php echo $mc."Kgs.";?></h2>
           <p><div id="graphj" style="height: 180px;"></div></p>
 <?php 
 //Vérification des autorisations de l'utilisateur et des variables de session requises pour l'affichage des bilans de collecte en première page:
@@ -33,7 +54,7 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
 
         </div>
         <div class="col-md-4">
-          <h2>Evacué aujourd'hui:</h2>
+          <h2>Evacué aujourd'hui:<?php echo $me."Kgs.";?></h2>
           <p><div id="grapha" style="height: 180px;"></div></p>
 <?php
 //Vérification des autorisations de l'utilisateur et des variables de session requises pour l'affichage des bilans de sortie hors-boutique en première page:
@@ -43,7 +64,7 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
           <?php } ?>
        </div>
         <div class="col-md-4">
-          <h2>Vendu aujourd'hui:</h2>
+          <h2>Vendu aujourd'hui:<?php echo $qv."Pcs.";?></h2>
           <p><div id="graphm" style="height: 180px;"></div></p>
           <?php
 //Vérification des autorisations de l'utilisateur et des variables de session requises pour l'affichage des bilans de vente en première page:
