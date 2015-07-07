@@ -24,8 +24,8 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource")
 
 
 <p align="right">
-  <b id="labellot">vente à:  </b>
-<input type="checkbox" name="my-checkbox"   checked  data-on-text="l'unité" data-off-text="lot" data-handle-width="45" data-size="small" >
+  <b id="labellot">Afficher le donnée pour ce : </b>
+<input type="checkbox" name="my-checkbox"   checked  data-on-text="jour" data-off-text="mois" data-handle-width="45" data-size="small" >
 </p>
 
 <script type="text/javascript">
