@@ -33,10 +33,10 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource")
            //on envoie la réponse dans trois variables distinctes
           
 
-           $qv = $donnees['qv'];
+           $qv = $reponse['qv'];
            if ($qv == NULL){$qv = "100";}
-           $qv = $donnees['mc'];
-           $qv = $donnees['me'];
+           $qv = $reponse['mc'];
+           $qv = $reponse['me'];
 
 
         
