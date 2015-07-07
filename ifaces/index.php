@@ -31,14 +31,15 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource")
                                     WHERE  DATE(pesees_collectes.timestamp) = CURDATE() AND DATE(pesees_sorties.timestamp) = CURDATE() AND DATE(vendus.timestamp) = CURDATE() AND vendus.remboursement = 0');
  
            //on envoie la réponse dans trois variables distinctes
-          
+           while ($donnees = $reponse->fetch())
+           {
 
-           $qv = $reponse['qv'];
+           $qv = $donnees['qv'];
            if ($qv == NULL){$qv = "100";}
-           $qv = $reponse['mc'];
-           $qv = $reponse['me'];
+           $qv = $donnees['mc'];
+           $qv = $donnees['me'];
 
-
+}
         
               $reponse->closeCursor(); // Termine le traitement de la requête
                 
