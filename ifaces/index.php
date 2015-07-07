@@ -5,7 +5,7 @@ require_once("../moteur/dbconfig.php");
 //Vérification du renseignement du champ "id" (dans le tableau $_SESSION) et du fait que la variable "système" de ce même tableau a bien la valeur "oressource" avant d'afficher quoique ce soit:    
 if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource")
       
-{ include "tete.php" ?>
+{ include "tete_vente.php" ?>
 
 
 
