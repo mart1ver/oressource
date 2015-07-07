@@ -21,6 +21,21 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource")
     <div class="container" id="actualise">
       <!-- Example row of columns -->
       <div class="row">
+
+
+<p align="right">
+  <b id="labellot">vente à:  </b>
+<input type="checkbox" name="my-checkbox"   checked  data-on-text="l'unité" data-off-text="lot" data-handle-width="45" data-size="small" >
+</p>
+
+<script type="text/javascript">
+$("[name='my-checkbox']").bootstrapSwitch();
+$('input[name="my-checkbox"]').on('switchChange.bootstrapSwitch', function(event, state) {
+//console.log(state); // true | false
+  switchlot(state); // true | false
+});
+</script>
+
         <div class="col-md-4" >
           <?php 
 //on determine les masses collectés et evacuées ansi que le nombre d'objets vendus aujoud'hui 
