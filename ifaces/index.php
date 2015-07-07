@@ -93,23 +93,33 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
         </div>
         <div class="col-md-4">
           <h3>Evacué aujourd'hui: <?php echo $me." Kgs.";?></h3>
+           <?php  if ($me == "0"){?>
+<img src="../images/nodata.jpg" class="img-responsive" alt="Responsive image">
+
+          <?php }else{
+                    ?>
           <p><div id="grapha" style="height: 180px;"></div></p>
 <?php
 //Vérification des autorisations de l'utilisateur et des variables de session requises pour l'affichage des bilans de sortie hors-boutique en première page:
           if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 'bi') !== false))
       { ?>
           <p><a class="btn btn-default" href=" bilanhb.php?date1=<?php echo date("d-m-Y")?>&date2=<?php echo date("d-m-Y")?>" role="button">Détails &raquo;</a></p>
-          <?php } ?>
+          <?php }} ?>
        </div>
         <div class="col-md-4">
           <h3>Vendu aujourd'hui: <?php echo $qv." Pcs.";?></h3>
+           <?php  if ($qv == "0"){?>
+<img src="../images/nodata.jpg" class="img-responsive" alt="Responsive image">
+
+          <?php }else{
+                    ?>
           <p><div id="graphm" style="height: 180px;"></div></p>
           <?php
 //Vérification des autorisations de l'utilisateur et des variables de session requises pour l'affichage des bilans de vente en première page:
 if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 'bi') !== false))
       { ?>
           <p><a class="btn btn-default" href=" bilanv.php?date1=<?php echo date("d-m-Y")?>&date2=<?php echo date("d-m-Y")?>" role="button">Détails &raquo;</a></p>
-          <?php } ?>
+          <?php }} ?>
         </div>
       </div>
       <hr>
