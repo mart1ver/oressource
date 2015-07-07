@@ -62,7 +62,7 @@ $req->execute(array($antidate, $id_vente ,  $_POST[$tid_type_objet] ,  $_POST[$t
     $i++;
 }
 // Redirection du visiteur vers la page de ventes
- // header("Location:../ifaces/ventes.php?numero=".$_POST['id_point_vente']);
+ header("Location:../ifaces/ventes.php?numero=".$_POST['id_point_vente']);
   }else      {
 
 

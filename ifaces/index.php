@@ -22,35 +22,104 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource")
       <!-- Example row of columns -->
       <div class="row">
         <div class="col-md-4" >
-          <h2>Collecté aujourd'hui:</h2>
+          <?php 
+//on determine les masses collectés et evacuées ansi que le nombre d'objets vendus aujoud'hui 
+
+
+           
+            $reponse = $bdd->query('SELECT SUM( vendus.quantite ) qv
+FROM vendus
+WHERE DATE( vendus.timestamp ) = CURDATE( ) 
+AND vendus.remboursement =0');
+ 
+           //on envoie la réponse dans trois variables distinctes
+           while ($donnees = $reponse->fetch())
+           {
+
+           $qv = $donnees['qv'];
+           if ($qv == NULL){$qv = "0";}
+           
+
+}
+        
+              $reponse->closeCursor(); // Termine le traitement de la requête
+
+               $reponse = $bdd->query('SELECT sum(pesees_collectes.masse) mc
+FROM pesees_collectes
+WHERE DATE(pesees_collectes.timestamp ) = CURDATE()');
+ 
+           //on envoie la réponse dans trois variables distinctes
+           while ($donnees = $reponse->fetch())
+           {
+
+           $mc = $donnees['mc'];
+           if ($mc == NULL){$mc = "0";}
+           
+
+}
+        
+              $reponse->closeCursor(); // Termine le traitement de la requête
+               $reponse = $bdd->query('SELECT sum(pesees_sorties.masse) me
+FROM pesees_sorties
+WHERE DATE(pesees_sorties.timestamp ) = CURDATE()');
+ 
+           //on envoie la réponse dans trois variables distinctes
+           while ($donnees = $reponse->fetch())
+           {
+
+           $me= $donnees['me'];
+           if ($me == NULL){$me = "0";}
+           
+
+}
+        
+              $reponse->closeCursor(); // Termine le traitement de la requête
+                
+          ?>
+          <h3>Collecté aujourd'hui: <?php echo $mc." Kgs.";?></h3>
+          <?php  if ($mc == "0"){?>
+<img src="../images/nodata.jpg" class="img-responsive" alt="Responsive image">
+
+          <?php }else{
+                    ?>
           <p><div id="graphj" style="height: 180px;"></div></p>
 <?php 
 //Vérification des autorisations de l'utilisateur et des variables de session requises pour l'affichage des bilans de collecte en première page:
 if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 'bi') !== false))
       { ?>
           <p><a href=" bilanc.php?date1=<?php echo date("d-m-Y")?>&date2=<?php echo date("d-m-Y")?>&numero=0" class="btn btn-default"  role="button">Détails &raquo;</a></p>
-<?php } ?>
+<?php } }?>
 
         </div>
         <div class="col-md-4">
-          <h2>Evacué aujourd'hui:</h2>
+          <h3>Evacué aujourd'hui: <?php echo $me." Kgs.";?></h3>
+           <?php  if ($me == "0"){?>
+<img src="../images/nodata.jpg" class="img-responsive" alt="Responsive image">
+
+          <?php }else{
+                    ?>
           <p><div id="grapha" style="height: 180px;"></div></p>
 <?php
 //Vérification des autorisations de l'utilisateur et des variables de session requises pour l'affichage des bilans de sortie hors-boutique en première page:
           if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 'bi') !== false))
       { ?>
           <p><a class="btn btn-default" href=" bilanhb.php?date1=<?php echo date("d-m-Y")?>&date2=<?php echo date("d-m-Y")?>" role="button">Détails &raquo;</a></p>
-          <?php } ?>
+          <?php }} ?>
        </div>
         <div class="col-md-4">
-          <h2>Vendu aujourd'hui:</h2>
+          <h3>Vendu aujourd'hui: <?php echo $qv." Pcs.";?></h3>
+           <?php  if ($qv == "0"){?>
+<img src="../images/nodata.jpg" class="img-responsive" alt="Responsive image">
+
+          <?php }else{
+                    ?>
           <p><div id="graphm" style="height: 180px;"></div></p>
           <?php
 //Vérification des autorisations de l'utilisateur et des variables de session requises pour l'affichage des bilans de vente en première page:
 if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 'bi') !== false))
       { ?>
           <p><a class="btn btn-default" href=" bilanv.php?date1=<?php echo date("d-m-Y")?>&date2=<?php echo date("d-m-Y")?>" role="button">Détails &raquo;</a></p>
-          <?php } ?>
+          <?php }} ?>
         </div>
       </div>
       <hr>
