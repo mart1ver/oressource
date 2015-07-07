@@ -32,7 +32,7 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource")
 $("[name='my-checkbox']").bootstrapSwitch();
 $('input[name="my-checkbox"]').on('switchChange.bootstrapSwitch', function(event, state) {
 //console.log(state); // true | false
-  switchlot(state); // true | false
+  switchperiode(state); // true | false
 });
 </script>
 
@@ -147,6 +147,21 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
       <script src="../js/jquery-2.0.3.min.js"></script>
       <script src="../js/raphael.js"></script>
       <script src="../js/morris/morris.js"></script>
+      <script type="text/javascript">
+      function switchlot(state) {
+
+  if (state == false){
+ 
+loadPage('http://www.google.be');
+}
+else
+{
+loadPage('http://www.google.be');
+}
+}
+
+
+      </script>
   <script>       Morris.Donut({
     element: 'graphj',
     data: [
