@@ -81,7 +81,7 @@ WHERE DATE(pesees_sorties.timestamp ) = CURDATE()');
           if ($mc == "0"){?>
 <img src="../images/nodata.jpg" class="img-responsive" alt="Responsive image">
 
-          <?php}else{
+          <?php}else{}
                     ?>
           <p><div id="graphj" style="height: 180px;"></div></p>
 <?php 
@@ -90,7 +90,7 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
       { ?>
           <p><a href=" bilanc.php?date1=<?php echo date("d-m-Y")?>&date2=<?php echo date("d-m-Y")?>&numero=0" class="btn btn-default"  role="button">Détails &raquo;</a></p>
 <?php } ?>
-}
+
         </div>
         <div class="col-md-4">
           <h3>Evacué aujourd'hui: <?php echo $me." Kgs.";?></h3>
