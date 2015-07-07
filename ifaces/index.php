@@ -35,6 +35,9 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource")
            {
 
            $qv = $donnees['qv'];
+           if (is_null($qv)){
+            $qv = 0 ;
+           }
            $qv = $donnees['mc'];
            $qv = $donnees['me'];
 
