@@ -76,7 +76,7 @@ WHERE DATE(pesees_sorties.timestamp ) = CURDATE()');
               $reponse->closeCursor(); // Termine le traitement de la requête
                 
           ?>
-          <h2>Collecté aujourd'hui:<?php echo $mc."Kgs.";?></h2>
+          <h3>Collecté aujourd'hui:<?php echo $mc."Kgs.";?></h3>
           <p><div id="graphj" style="height: 180px;"></div></p>
 <?php 
 //Vérification des autorisations de l'utilisateur et des variables de session requises pour l'affichage des bilans de collecte en première page:
@@ -87,7 +87,7 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
 
         </div>
         <div class="col-md-4">
-          <h2>Evacué aujourd'hui:<?php echo $me."Kgs.";?></h2>
+          <h3>Evacué aujourd'hui:<?php echo $me."Kgs.";?></h3>
           <p><div id="grapha" style="height: 180px;"></div></p>
 <?php
 //Vérification des autorisations de l'utilisateur et des variables de session requises pour l'affichage des bilans de sortie hors-boutique en première page:
@@ -97,7 +97,7 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
           <?php } ?>
        </div>
         <div class="col-md-4">
-          <h2>Vendu aujourd'hui:<?php echo $qv."Pcs.";?></h2>
+          <h3>Vendu aujourd'hui:<?php echo $qv."Pcs.";?></h3>
           <p><div id="graphm" style="height: 180px;"></div></p>
           <?php
 //Vérification des autorisations de l'utilisateur et des variables de session requises pour l'affichage des bilans de vente en première page:
