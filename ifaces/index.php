@@ -27,17 +27,18 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource")
 
 
            
-            $reponse = $bdd->query('SELECT  sum(vendus.quantite) qv, sum(pesees_collectes.masse) mc, sum(pesees_sorties.masse) me  FROM pesees_collectes ,pesees_sorties,vendus
-                                    WHERE  DATE(pesees_collectes.timestamp) = CURDATE() AND DATE(pesees_sorties.timestamp) = CURDATE() AND DATE(vendus.timestamp) = CURDATE() AND vendus.remboursement = 0');
+            $reponse = $bdd->query('SELECT SUM( vendus.quantite ) qv
+FROM vendus
+WHERE DATE( vendus.timestamp ) = CURDATE( ) 
+AND vendus.remboursement =0');
  
            //on envoie la réponse dans trois variables distinctes
            while ($donnees = $reponse->fetch())
            {
 
            $qv = $donnees['qv'];
-           if ($qv == NULL){$qv = "100";}
-           $qv = $donnees['mc'];
-           $qv = $donnees['me'];
+           if ($qv == NULL){$qv = "0";}
+           
 
 }
         
