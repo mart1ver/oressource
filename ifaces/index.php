@@ -77,12 +77,7 @@ WHERE DATE(pesees_sorties.timestamp ) = CURDATE()');
                 
           ?>
           <h3>Collecté aujourd'hui: <?php echo $mc." Kgs.";?></h3>
-          <?php 
-          if ($mc == "0"){?>
-<img src="../images/nodata.jpg" class="img-responsive" alt="Responsive image">
-
-          <?php}else{}
-                    ?>
+          
           <p><div id="graphj" style="height: 180px;"></div></p>
 <?php 
 //Vérification des autorisations de l'utilisateur et des variables de session requises pour l'affichage des bilans de collecte en première page:
