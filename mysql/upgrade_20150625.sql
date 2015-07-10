@@ -7,11 +7,20 @@
 --
 
 BEGIN;
-ALTER TABLE  `description_structure` 
-	ADD  `affsp` TEXT NOT NULL ,
-	ADD  `affss` TEXT NOT NULL ,
-	ADD  `affsr` TEXT NOT NULL ,
-	ADD  `affsd` TEXT NOT NULL ; 
-	ADD  `affsde` TEXT NOT NULL ; 
+
+ALTER TABLE `description_structure` 
+ADD COLUMN `affsp` text NOT NULL;
+
+ALTER TABLE `description_structure`  
+ADD COLUMN `affss` text NOT NULL;
+
+ALTER TABLE `description_structure`
+ADD COLUMN `affsr` int(11) NOT NULL;
+
+ALTER TABLE `description_structure`
+ADD COLUMN `affsd` text NOT NULL;
+
+ALTER TABLE `description_structure`
+ADD COLUMN `affsde` text NOT NULL;
 
 COMMIT;
