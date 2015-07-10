@@ -15,7 +15,7 @@ ALTER TABLE `description_structure`
 ADD COLUMN `affss` text NOT NULL;
 
 ALTER TABLE `description_structure`
-ADD COLUMN `affsr` int(11) NOT NULL;
+ADD COLUMN `affsr` text NOT NULL;
 
 ALTER TABLE `description_structure`
 ADD COLUMN `affsd` text NOT NULL;
