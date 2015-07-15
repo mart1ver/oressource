@@ -162,7 +162,11 @@ $('input[name="my-checkbox"]').on('switchChange.bootstrapSwitch', function(event
         <div class="panel-heading">
     <h2 class="panel-title"id="rendu">Rendu monaie:</h2>
   </div>
-  <div class="panel-body" id="panelcalc"> 
+  <div class="panel-body" id="panelrendu"> 
+    Somme due:<br>
+    Réglement:<br>
+    ------------<br>
+    A rendre:<br>
 
     </div>
     </div>
