@@ -169,17 +169,17 @@ $('input[name="my-checkbox"]').on('switchChange.bootstrapSwitch', function(event
     
 <div class="input-group input-group-sm">
   Somme due:
-  <input type="text" class="form-control" placeholder="Username" aria-describedby="sizing-addon3">
+  <input type="text" class="form-control" placeholder="€" aria-describedby="sizing-addon3">
  <br>
 </div>
 <div class="input-group input-group-sm">
-  <span class="input-group-addon" id="sizing-addon3">Somme due:</span>
-  <input type="text" class="form-control" placeholder="Username" aria-describedby="sizing-addon3">
+ Réglement
+  <input type="text" class="form-control" placeholder="€" aria-describedby="sizing-addon3">
  <br>
 </div>
 <div class="input-group input-group-sm">
-  <span class="input-group-addon" id="sizing-addon3">Somme due:</span>
-  <input type="text" class="form-control" placeholder="Username" aria-describedby="sizing-addon3">
+  <span class="input-group-addon" id="sizing-addon3">A rendre</span>
+  <input type="text" class="form-control" placeholder="€" aria-describedby="sizing-addon3">
  <br>
 </div>
    
