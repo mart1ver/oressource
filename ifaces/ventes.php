@@ -160,7 +160,7 @@ $('input[name="my-checkbox"]').on('switchChange.bootstrapSwitch', function(event
 
       <div class="panel panel-info">
         <div class="panel-heading">
-    <h3 class="panel-title"id="rendu"><label>Rendu monaie:</label></h3>
+    <h2 class="panel-title"id="rendu"><label>Rendu monaie:</label></h2>
   </div>
   <div class="panel-body" id="panelcalc"> 
 
