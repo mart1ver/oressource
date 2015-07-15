@@ -405,7 +405,7 @@ if (isNaN(parseInt(document.getElementById('id_type_objet').value)) )
             if (what="rendub"){what.value = what.value + that.value;}
           }
           else{
-if (what == null) {document.getElementById('quantite').value ="" ; what = document.getElementById('quantite');}
+if (that == null) {document.getElementById('quantite').value ="" ; what = document.getElementById('quantite');}
 if (that.value == "c"){what.value = "";}
 else{
 what.value = what.value + that.value;
