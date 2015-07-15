@@ -400,7 +400,10 @@ function moyens(moy) {
  document.getElementById('moyen').value = moy;
 }
 function often(that) {
-  if (document.getElementById('ptot').value > 0 && isNaN(parseInt(document.getElementById('id_type_objet').value))){what.value = what.value + that.value;}
+  if (document.getElementById('ptot').value > 0 && isNaN(parseInt(document.getElementById('id_type_objet').value))){what.value = what.value + that.value;
+document.getElementById('quantite').value ="";
+document.getElementById('prix').value ="";
+  }
 if (isNaN(parseInt(document.getElementById('id_type_objet').value)) ) 
           { 
             
