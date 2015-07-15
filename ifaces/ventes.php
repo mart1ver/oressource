@@ -165,23 +165,38 @@ $('input[name="my-checkbox"]').on('switchChange.bootstrapSwitch', function(event
   <div class="panel-body" id="panelrendu"> 
    
     
-    
-    
-<div class="input-group input-group-sm">
+
+
+<ul class="list-group">
+  <li class="list-group-item">
+
   <span class="input-group-addon" id="sizing-addon3">Somme due:</span>
   <input type="text" class="form-control" placeholder="€" aria-describedby="sizing-addon3" name="rendua" id="rendua" disabled>
  <br>
-</div>
-<div class="input-group input-group-sm">
+
+  </li>
+  <li class="list-group-item">
+
   <span class="input-group-addon" id="sizing-addon3">Réglement</span>
   <input type="text" class="form-control" placeholder="€" aria-describedby="sizing-addon3" name="rendub" id="rendub" onfocus="fokus(this)" oninput="rendu()">
  <br>
-</div>
-<div class="input-group input-group-sm">
+
+  </li>
+  <li class="list-group-item">
+    
   <span class="input-group-addon" id="sizing-addon3">A rendre</span>
   <input type="text" class="form-control" placeholder="€" aria-describedby="sizing-addon3" name="renduc" id="renduc" disabled>
  <br>
-</div>
+
+  </li>
+</ul>
+
+
+    
+    
+
+
+
    
     </div>
     </div>
