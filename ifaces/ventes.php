@@ -608,6 +608,7 @@ if (isNaN(parseInt(document.getElementById('ptot').value)) )
 
       }
       document.getElementById('rendua').value = document.getElementById('ptot').value ;
+      document.getElementById('renduc').value = document.getElementById('rendub').value -  document.getElementById('rendua').value;
 
                   }
 
