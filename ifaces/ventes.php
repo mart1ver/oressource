@@ -174,7 +174,7 @@ $('input[name="my-checkbox"]').on('switchChange.bootstrapSwitch', function(event
 </div>
 <div class="input-group input-group-sm">
   <span class="input-group-addon" id="sizing-addon3">Réglement</span>
-  <input type="text" class="form-control" placeholder="€" aria-describedby="sizing-addon3" name="rendub" id="rendub">
+  <input type="text" class="form-control" placeholder="€" aria-describedby="sizing-addon3" name="rendub" id="rendub" oninput="rendu()">
  <br>
 </div>
 <div class="input-group input-group-sm">
@@ -367,6 +367,11 @@ $('input[name="my-checkbox"]').on('switchChange.bootstrapSwitch', function(event
             <?php include "pied.php" ; ?> 
 <script type="text/javascript">
 
+function rendu() 
+
+{
+document.getElementById('renduc').value = document.getElementById('rendua').value -  document.getElementById('rendua').value;
+}
 
 function rembou() {
   var code_soumis = prompt('Veuillez renseigner le code de remboursement');
