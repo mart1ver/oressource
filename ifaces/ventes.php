@@ -404,6 +404,7 @@ function often(that) {
 document.getElementById('quantite').value ="";
 document.getElementById('prix').value ="";
 if (that.value == "c"){what.value = "";}
+document.getElementById('renduc').value = document.getElementById('rendub').value -  document.getElementById('rendua').value;
   }
 if (isNaN(parseInt(document.getElementById('id_type_objet').value)) ) 
           { 
