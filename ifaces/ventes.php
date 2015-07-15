@@ -171,14 +171,8 @@ $('input[name="my-checkbox"]').on('switchChange.bootstrapSwitch', function(event
   <span class="input-group-addon" id="sizing-addon3">Somme due:</span>
   <input type="text" class="form-control" placeholder="Username" aria-describedby="sizing-addon3">
  <br>
-
-   <span class="input-group-addon" id="sizing-addon3">Réglement:</span>
-  <input type="text" class="form-control" placeholder="Username" aria-describedby="sizing-addon3">
-------------<br>
-   <span class="input-group-addon" id="sizing-addon3">A rendre:</span>
-  <input type="text" class="form-control" placeholder="Username" aria-describedby="sizing-addon3">
-   <br>
 </div>
+   
     </div>
     </div>
 
