@@ -169,17 +169,17 @@ $('input[name="my-checkbox"]').on('switchChange.bootstrapSwitch', function(event
     
 <div class="input-group input-group-sm">
   <span class="input-group-addon" id="sizing-addon3">Somme due:</span>
-  <input type="text" class="form-control" placeholder="€" aria-describedby="sizing-addon3" disabled>
+  <input type="text" class="form-control" placeholder="€" aria-describedby="sizing-addon3" name="rendua" id="rendua" disabled>
  <br>
 </div>
 <div class="input-group input-group-sm">
   <span class="input-group-addon" id="sizing-addon3">Réglement</span>
-  <input type="text" class="form-control" placeholder="€" aria-describedby="sizing-addon3">
+  <input type="text" class="form-control" placeholder="€" aria-describedby="sizing-addon3" name="rendub" id="rendub">
  <br>
 </div>
 <div class="input-group input-group-sm">
   <span class="input-group-addon" id="sizing-addon3">A rendre</span>
-  <input type="text" class="form-control" placeholder="€" aria-describedby="sizing-addon3" disabled>
+  <input type="text" class="form-control" placeholder="€" aria-describedby="sizing-addon3" name="renduc" id="renduc" disabled>
  <br>
 </div>
    
@@ -455,6 +455,7 @@ document.getElementById('tquantite'+numero_ligne).value= "0";
 document.getElementById('tprix'+numero_ligne).value= "0";
 //document.getElementById('nlignes').value = parseInt(document.getElementById('nlignes').value) - 1 ;
 document.getElementById(nsligne).remove();
+document.getElementById('rendua').value = document.getElementById('ptot').value ;
 }
 else
 {
@@ -520,6 +521,7 @@ if (isNaN(parseInt(document.getElementById('ptot').value)) )
           else
           {
           document.getElementById('ptot').value=parseFloat(document.getElementById('ptot').value)+parseFloat(document.getElementById('prix').value*document.getElementById('quantite').value); 
+          document.getElementById('rendua').value = document.getElementById('ptot').value 
           }          
              document.getElementById('liste').innerHTML += '<li class="list-group-item" name="ligne'+parseInt(document.getElementById('nlignes').value)+'" id="ligne'+parseInt(document.getElementById('nlignes').value)+'"><span class="badge">'+parseFloat(parseFloat(document.getElementById('prix').value)*parseFloat(document.getElementById('quantite').value)).toFixed(2)+'€'+'</span><span class="glyphicon glyphicon-remove" aria-hidden="true"    onclick="javascirpt:suprime('+"'ligne"+parseInt(document.getElementById('nlignes').value)+"');"+'"></span>&nbsp;&nbsp;'+document.getElementById('quantite').value+' * '+document.getElementById('nom_objet0').value
              +'<input type="hidden"  id="tid_type_objet'+parseInt(document.getElementById('nlignes').value)+'" name="tid_type_objet'+parseInt(document.getElementById('nlignes').value)+'"value="'+document.getElementById('id_type_objet').value+'">'
@@ -571,6 +573,7 @@ if (isNaN(parseInt(document.getElementById('narticles').value)) )
 if (isNaN(parseInt(document.getElementById('ptot').value)) ) 
           { 
           document.getElementById('ptot').value = document.getElementById('prix').value;
+          document.getElementById('rendua').value = document.getElementById('ptot').value ;
           } 
           else
           {
@@ -593,6 +596,7 @@ if (isNaN(parseInt(document.getElementById('ptot').value)) )
 
 
       }
+      document.getElementById('rendua').value = document.getElementById('ptot').value ;
 
                   }
 
