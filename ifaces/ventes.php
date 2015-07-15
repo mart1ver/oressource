@@ -163,11 +163,22 @@ $('input[name="my-checkbox"]').on('switchChange.bootstrapSwitch', function(event
     <h2 class="panel-title"id="rendu">Rendu monaie:</h2>
   </div>
   <div class="panel-body" id="panelrendu"> 
-    Somme due:<br>
-    Réglement:<br>
-    ------------<br>
-    A rendre:<br>
+   
+    
+    
+    
+<div class="input-group input-group-sm">
+  <span class="input-group-addon" id="sizing-addon3">Somme due:</span>
+  <input type="text" class="form-control" placeholder="Username" aria-describedby="sizing-addon3">
+ <br>
 
+   <span class="input-group-addon" id="sizing-addon3">Réglement:</span>
+  <input type="text" class="form-control" placeholder="Username" aria-describedby="sizing-addon3">
+------------<br>
+   <span class="input-group-addon" id="sizing-addon3">A rendre:</span>
+  <input type="text" class="form-control" placeholder="Username" aria-describedby="sizing-addon3">
+   <br>
+</div>
     </div>
     </div>
 
