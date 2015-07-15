@@ -175,7 +175,7 @@ Somme due:
 
 
   </li>
-  <li class="list-group-itemlist-group-item-success">
+  <li class="list-group-item list-group-item-success">
 
 Réglement
   <input type="text" class="form-control" placeholder="€" name="rendub" id="rendub" onfocus="fokus(this)" oninput="rendu()">
