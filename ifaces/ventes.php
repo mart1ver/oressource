@@ -171,21 +171,21 @@ $('input[name="my-checkbox"]').on('switchChange.bootstrapSwitch', function(event
   <li class="list-group-item">
 
 Somme due:
-  <input type="text" class="form-control" placeholder="€" aria-describedby="sizing-addon3" name="rendua" id="rendua" disabled>
+  <input type="text" class="form-control" placeholder="€" name="rendua" id="rendua" disabled>
 
 
   </li>
   <li class="list-group-item">
 
 Réglement
-  <input type="text" class="form-control" placeholder="€" aria-describedby="sizing-addon3" name="rendub" id="rendub" onfocus="fokus(this)" oninput="rendu()">
+  <input type="text" class="form-control" placeholder="€" name="rendub" id="rendub" onfocus="fokus(this)" oninput="rendu()">
 
 
   </li>
   <li class="list-group-item">
     
 A rendre
-  <input type="text" class="form-control" placeholder="€" aria-describedby="sizing-addon3" name="renduc" id="renduc" disabled>
+  <input type="text" class="form-control" placeholder="€"  name="renduc" id="renduc" disabled>
 
 
   </li>
