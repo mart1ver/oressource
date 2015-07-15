@@ -400,14 +400,14 @@ function moyens(moy) {
  document.getElementById('moyen').value = moy;
 }
 function often(that) {
+  if (that.value =="rendub"){what.value = what.value + that.value;}
 if (isNaN(parseInt(document.getElementById('id_type_objet').value)) ) 
           { 
-           
+            
           }
           else{
 if (that == null) {document.getElementById('quantite').value ="" ; what = document.getElementById('quantite');}
-if (that.value == "c"){what.value = "";
- if (that.value =="rendub"){what.value = what.value + that.value;}}
+if (that.value == "c"){what.value = "";}
 else{
 what.value = what.value + that.value;
 }
