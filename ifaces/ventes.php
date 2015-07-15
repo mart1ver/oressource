@@ -370,7 +370,7 @@ $('input[name="my-checkbox"]').on('switchChange.bootstrapSwitch', function(event
 function rendu() 
 
 {
-document.getElementById('renduc').value = document.getElementById('rendua').value -  document.getElementById('rendua').value;
+document.getElementById('renduc').value = document.getElementById('rendua').value -  document.getElementById('rendub').value;
 }
 
 function rembou() {
