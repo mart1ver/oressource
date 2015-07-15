@@ -23,18 +23,7 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource")
       <div class="row">
 
 
-<p align="right">
-  <b id="labellot">Afficher le donnée pour ce : </b>
-<input type="checkbox" name="my-checkbox"   checked  data-on-text="jour" data-off-text="mois" data-handle-width="45" data-size="small" >
-</p>
 
-<script type="text/javascript">
-$("[name='my-checkbox']").bootstrapSwitch();
-$('input[name="my-checkbox"]').on('switchChange.bootstrapSwitch', function(event, state) {
-//console.log(state); // true | false
-  switchperiode(state); // true | false
-});
-</script>
 
         <div class="col-md-4" >
           <?php 
