@@ -174,7 +174,7 @@ $('input[name="my-checkbox"]').on('switchChange.bootstrapSwitch', function(event
 </div>
 <div class="input-group input-group-sm">
   <span class="input-group-addon" id="sizing-addon3">Réglement</span>
-  <input type="text" class="form-control" placeholder="€" aria-describedby="sizing-addon3" name="rendub" id="rendub" oninput="rendu()">
+  <input type="text" class="form-control" placeholder="€" aria-describedby="sizing-addon3" name="rendub" id="rendub" onfocus="fokus(this)" oninput="rendu()">
  <br>
 </div>
 <div class="input-group input-group-sm">
