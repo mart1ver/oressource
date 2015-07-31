@@ -390,7 +390,7 @@ echo "-chiffre total dégagé :  ";
             // On recupère tout le contenu de la table point de vente
 
 
-$req = $bdd->prepare("SELECT SUM(vendus.prix) AS total  
+$req = $bdd->prepare("SELECT SUM(vendus.prix*vendus.quantite) AS total  
 FROM vendus ,ventes
 WHERE DATE(ventes.timestamp) BETWEEN :du AND :au AND ventes.id_point_vente  = :numero 
 AND ventes.id = vendus.id_vente AND vendus.prix > 0");
