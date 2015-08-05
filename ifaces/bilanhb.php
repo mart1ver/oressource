@@ -301,7 +301,7 @@ default; ?>
             
             $reponse2 = $bdd->prepare('SELECT 
 
-type_dechets.nom,
+type_dechets.nom name,
 
 
 sum(pesees_sorties.masse) somme
@@ -314,7 +314,7 @@ AND
 type_dechets.id = pesees_sorties.id_type_dechet 
 
 AND sorties.classe = :classe
-GROUP BY nom');
+GROUP BY name');
   $reponse2->execute(array('du' => $time_debut,'au' => $time_fin ,'classe' => $donnees['classe'] ));
            // On affiche chaque entree une à une
            while ($donnees2 = $reponse2->fetch())
