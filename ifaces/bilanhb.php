@@ -265,7 +265,7 @@ GROUP BY classe');
            while ($donnees = $reponse->fetch())
            {
             ?>
-            <tr data-toggle="collapse" data-target=".parmasse<?php echo $donnees['classe']?>" >
+            <tr data-toggle="collapse" data-target=".parmasse<?php echo $donnees['classe']?>" class="collapsed" >
 
 <?php switch ($donnees['classe'])
 {
@@ -322,7 +322,7 @@ GROUP BY nom');
            {        
             ?>
 
-    <tr class="collapse parmasse<?php echo $donnees['classe']?>"class="collapsed" >
+    <tr class="collapse parmasse<?php echo $donnees['classe']?>" >
             <td  >
               <?php echo $donnees2['nom'] ?>
             </td >
