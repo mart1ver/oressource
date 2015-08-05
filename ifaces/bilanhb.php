@@ -313,10 +313,9 @@ pesees_sorties.id = sorties.id
 AND 
 type_dechets.id = pesees_sorties.id_type_dechet 
 
-AND sorties.classe = :classe
+AND sorties.classe = 'sortiesr'
 GROUP BY name');
-            $classey = "'".$donnees['classe']."'";
-  $reponse2->execute(array('du' => $time_debut,'au' => $time_fin ,'classe' =>$classey ));
+  $reponse2->execute(array('du' => $time_debut,'au' => $time_fin ,'classe' => $donnees['classe'] ));
            // On affiche chaque entree une à une
            while ($donnees2 = $reponse2->fetch())
            {        
@@ -342,7 +341,13 @@ GROUP BY name');
       <?php
            }
               $reponse->closeCursor(); // Termine le traitement de la requête
-               }else
+               }
+
+
+
+
+
+               else
                {
 // on determine les masses totales collèctés sur cete période(pour un point donné)
             // On recupère tout le contenu de la table affectations
