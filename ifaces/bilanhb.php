@@ -315,7 +315,8 @@ type_dechets.id = pesees_sorties.id_type_dechet
 
 AND sorties.classe = :classe
 GROUP BY name');
-  $reponse2->execute(array('du' => $time_debut,'au' => $time_fin ,'classe' => $donnees['classe'] ));
+            $classey = "'".$donnees['classe']."'"
+  $reponse2->execute(array('du' => $time_debut,'au' => $time_fin ,'classe' =>$classey ));
            // On affiche chaque entree une à une
            while ($donnees2 = $reponse2->fetch())
            {        
@@ -323,7 +324,7 @@ GROUP BY name');
 
     <tr class="collapse parmasse<?php echo $donnees['classe']?>" >
             <td  >
-              <?php echo $donnees2['nom'] ?>
+              <?php echo $donnees2['name'] ?>
             </td >
             <td >
                 <?php echo $donnees2['somme']." Kgs." ?>
