@@ -238,8 +238,8 @@ $req->closeCursor(); // Termine le traitement de la requête
     <thead>
         <tr>
             <th  style="width:300px">Classe:</th>
-            <th>Nbr.de collectes</th>
-            <th>Masse collectée</th>
+            <th>Nbr.de bons de sortie</th>
+            <th>Masse évacuée</th>
 
             <th>%</th>
             
@@ -251,8 +251,8 @@ $req->closeCursor(); // Termine le traitement de la requête
 
         <?php
         if ($_GET['numero'] == 0) {
-// on determine les masses totales collèctés sur cete période(pour Tous les points)
-            // On recupère tout le contenu de la table affectations
+// on determine les masses totales évacuées sur cete période(pour Tous les points)
+            
             $reponse = $bdd->prepare('SELECT 
 SUM(pesees_sorties.masse) somme,pesees_sorties.timestamp,sorties.classe,COUNT(distinct sorties.id) ncol
 FROM 
@@ -298,7 +298,7 @@ default; ?>
         </tr>
 
       <?php 
-            // On recupère tout le contenu de la table affectations
+            
             $reponse2 = $bdd->prepare('SELECT 
 type_dechets.couleur,
 type_dechets.nom,
@@ -322,7 +322,7 @@ GROUP BY nom');
            {        
             ?>
 
-    <tr class="collapse parmasse<?php echo $donnees['classe']?> " >
+    <tr class="collapse parmasse<?php echo $donnees['classe']?>"class="collapsed" >
             <td  >
               <?php echo $donnees2['nom'] ?>
             </td >
@@ -457,8 +457,8 @@ ORDER BY somme DESC');
     <thead>
         <tr>
             <th  style="width:300px">Localité</th>
-            <th>Nbr.de collectes</th>
-            <th>Masse collectée</th>
+            <th>Nbr.de bons de sorties</th>
+            <th>Masse évacuée</th>
 
             <th>%</th>
             
