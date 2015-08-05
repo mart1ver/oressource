@@ -297,22 +297,53 @@ default; ?>
             <td><?php echo  round($donnees['somme']*100/$mtotcolo, 2)   ; ?></td>      
         </tr>
 
-      
+      <?php 
+            
+            $reponse2 = $bdd->prepare('SELECT 
+
+type_dechets.nom name,
+
+
+sum(pesees_sorties.masse) somme
+FROM type_dechets, pesees_sorties , sorties
+WHERE
+pesees_sorties.timestamp BETWEEN :du AND :au 
+AND 
+pesees_sorties.id = sorties.id  
+AND 
+type_dechets.id = pesees_sorties.id_type_dechet 
+
+AND sorties.classe = "sortiesr"
+
+GROUP BY name');
+  $reponse2->execute(array('du' => $time_debut,'au' => $time_fin ,'classe' => $donnees['classe'] ));
+           // On affiche chaque entree une à une
+           while ($donnees2 = $reponse2->fetch())
+           {        
+            ?>
+
+    <tr class="collapse parmasse<?php echo $donnees['classe']?>" >
+            <td  >
+              <?php echo $donnees2['name'] ?>
+            </td >
+            <td >
+                <?php echo $donnees2['somme']." Kgs." ?>
+            </td>
+            <td >
+                <?php echo  round($donnees2['somme']*100/$donnees['somme'], 2)." %"  ; ?>
+            </td>
+          </tr>
+        
+ <?php
+             }
+              $reponse2->closeCursor(); // Termine le traitement de la requête
+                ?>
+                tag1
                
       <?php
-           }
+           }?> tag2 <?php
               $reponse->closeCursor(); // Termine le traitement de la requête
-               }
-
-
-
-?>
-,jgfgkjyfgkghfkjghfkhgfhfdsjhufskjtrfljktfkhjrtd
-<?php
-
-
-
-               else
+               }else
                {
 // on determine les masses totales collèctés sur cete période(pour un point donné)
             // On recupère tout le contenu de la table affectations
