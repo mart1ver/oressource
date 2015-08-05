@@ -341,13 +341,7 @@ GROUP BY name');
       <?php
            }
               $reponse->closeCursor(); // Termine le traitement de la requête
-               }
-
-
-
-
-
-               else
+               }else
                {
 // on determine les masses totales collèctés sur cete période(pour un point donné)
             // On recupère tout le contenu de la table affectations
