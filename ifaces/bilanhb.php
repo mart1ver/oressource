@@ -265,7 +265,7 @@ GROUP BY classe');
            while ($donnees = $reponse->fetch())
            {
             ?>
-            <tr data-toggle="collapse" data-target=".parmasse<?php echo $donnees['classe']?>" class="collapsed" >
+            <tr data-toggle="collapse" data-target=".parmasse<?php echo $donnees['classe']?>" >
 
 <?php switch ($donnees['classe'])
 {
@@ -297,7 +297,11 @@ default; ?>
             <td><?php echo  round($donnees['somme']*100/$mtotcolo, 2)   ; ?></td>      
         </tr>
 
-      <?php 
+  
+            
+               
+      <?php
+           }?>    <?php 
             
             $reponse2 = $bdd->prepare('SELECT 
 
@@ -322,7 +326,7 @@ GROUP BY name');
            {        
             ?>
 
-    <tr class="collapse parmasse<?php echo $donnees['classe']?>" >
+    <tr class="collapse parmasse<?php echo $donnees['classe']?> collapse in" style="height: auto;" >
             <td  >
               <?php echo $donnees2['name'] ?>
             </td >
@@ -337,13 +341,16 @@ GROUP BY name');
  <?php
              }
               $reponse2->closeCursor(); // Termine le traitement de la requête
-                ?>
-                tag1
-               
-      <?php
-           }?> tag2 <?php
+                ?> <?php
               $reponse->closeCursor(); // Termine le traitement de la requête
-               }else
+               }
+
+
+
+
+
+
+               else
                {
 // on determine les masses totales collèctés sur cete période(pour un point donné)
             // On recupère tout le contenu de la table affectations
