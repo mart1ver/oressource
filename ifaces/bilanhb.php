@@ -305,7 +305,7 @@ type_dechets.nom name,
 
 
 sum(pesees_sorties.masse) somme
-FROM , type_dechets, pesees_sorties , sorties
+FROM type_dechets, pesees_sorties , sorties
 WHERE
 pesees_sorties.timestamp BETWEEN :du AND :au 
 AND 
@@ -315,7 +315,7 @@ type_dechets.id = pesees_sorties.id_type_dechet
 
 AND sorties.classe = :classe
 GROUP BY name');
-  $reponse2->execute(array('du' => $time_debut,'au' => $time_fin ,'classe' => $donnees['classe'] ));
+  $reponse2->execute(array('du' => $time_debut,'au' => $time_fin ,'classe' => "'".$donnees['classe']."'" ));
            // On affiche chaque entree une à une
            while ($donnees2 = $reponse2->fetch())
            {        
