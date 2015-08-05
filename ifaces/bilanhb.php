@@ -300,20 +300,19 @@ default; ?>
       <?php 
             
             $reponse2 = $bdd->prepare('SELECT 
-type_dechets.couleur,
+
 type_dechets.nom,
-type_dechets_evac.couleur,
-type_dechets_evac.nom nom_evac,
+
+
 sum(pesees_sorties.masse) somme
-FROM type_dechets_evac, type_dechets, pesees_sorties , sorties
+FROM , type_dechets, pesees_sorties , sorties
 WHERE
 pesees_sorties.timestamp BETWEEN :du AND :au 
 AND 
 pesees_sorties.id = sorties.id  
 AND 
 type_dechets.id = pesees_sorties.id_type_dechet 
-AND 
-type_dechets_evac.id = pesees_sorties.id_type_dechet_evac 
+
 AND sorties.classe = :classe
 GROUP BY nom');
   $reponse2->execute(array('du' => $time_debut,'au' => $time_fin ,'classe' => $donnees['classe'] ));
