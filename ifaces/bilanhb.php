@@ -430,9 +430,7 @@ ORDER BY somme DESC');
 
 
   
-          <div  id="graphmasse" style="height: 180px;"></div>
-          <br>
-          <div  id="graph2masse" style="height: 180px;"></div>
+          
           
           
        <br>
