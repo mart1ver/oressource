@@ -299,9 +299,7 @@ default; ?>
 
   
             
-               
-      <?php
-           }?>    <?php 
+                           <?php 
             
             $reponse2 = $bdd->prepare('SELECT 
 
@@ -338,10 +336,18 @@ GROUP BY name');
             </td>
           </tr>
         
+      <?php
+           }?>   
+
+
+
+
  <?php
              }
+
+
+
               $reponse2->closeCursor(); // Termine le traitement de la requête
-                ?> <?php
               $reponse->closeCursor(); // Termine le traitement de la requête
                }
 
@@ -352,75 +358,12 @@ GROUP BY name');
 
                else
                {
-// on determine les masses totales collèctés sur cete période(pour un point donné)
-            // On recupère tout le contenu de la table affectations
-            $reponse = $bdd->prepare('SELECT 
-type_collecte.nom,SUM(`pesees_collectes`.`masse`) somme,pesees_collectes.timestamp,type_collecte.id,COUNT(distinct collectes.id) ncol
-FROM 
-pesees_collectes,collectes,type_collecte
-WHERE
-  pesees_collectes.timestamp BETWEEN :du AND :au AND
-type_collecte.id =  collectes.id_type_collecte AND pesees_collectes.id_collecte = collectes.id
-AND collectes.id_point_collecte = :numero
-GROUP BY id_type_collecte');
- $reponse->execute(array('du' => $time_debut,'au' => $time_fin,'numero' => $_GET['numero']  ));
-           // On affiche chaque entree une à une
-           while ($donnees = $reponse->fetch())
-           {
-            ?>
-            <tr data-toggle="collapse" data-target=".parmasse<?php echo $donnees['classe']?>" >
-            <td><?php echo $donnees['nom'] ?></td>
-             <td><?php echo $donnees['ncol'] ?></td>
-            <td><?php echo $donnees['somme'] ?></td>
-            <td><?php echo  round($donnees['somme']*100/$mtotcolo, 2)   ; ?></td>      
-        </tr>
-      <?php 
-            // On recupère tout le contenu de la table affectations
-            $reponse2 = $bdd->prepare('SELECT type_dechets.couleur,type_dechets.nom, sum(pesees_collectes.masse) somme
- FROM type_dechets,pesees_collectes ,type_collecte , collectes
-WHERE
-pesees_collectes.timestamp BETWEEN :du AND :au 
-AND type_dechets.id = pesees_collectes.id_type_dechet 
-AND type_collecte.id =  collectes.id_type_collecte AND pesees_collectes.id_collecte = collectes.id
-AND type_collecte.id = :id_type_collecte AND collectes.id_point_collecte = :numero
-GROUP BY nom
-ORDER BY somme DESC');
-  $reponse2->execute(array('du' => $time_debut,'au' => $time_fin,'numero' => $_GET['numero'] ,'id_type_collecte' => $donnees['id'] ));
-           // On affiche chaque entree une à une
-           while ($donnees2 = $reponse2->fetch())
-           {        
-            ?>
- <tr class="collapse parmasse<?php echo $donnees['id']?> active">
-    
-            <td class="hiddenRow">
-              <?php echo $donnees2['nom'] ?>
-            </td >
-            <td class="hiddenRow">
-                <?php echo $donnees2['somme']." Kgs." ?>
-            </td>
-            <td class="hiddenRow">
-                <?php echo  round($donnees2['somme']*100/$donnees['somme'], 2)." %"  ; ?>
-            </td>
-        </tr>
- <?php
-             }
-              $reponse2->closeCursor(); // Termine le traitement de la requête
-                ?>
-      <?php
-           }
-              $reponse->closeCursor(); // Termine le traitement de la requête
+
+
+
                } ?>
 
-      
-
-
-
-
-
-
-
-
-    </tbody>
+      </tbody>
 </table>
 
 
