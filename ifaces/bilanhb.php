@@ -317,7 +317,7 @@ pesees_sorties.id = sorties.id
 AND 
 type_dechets.id = pesees_sorties.id_type_dechet 
 
-AND sorties.classe = "sortiesr"
+
 
 GROUP BY name');
   $reponse2->execute(array('du' => $time_debut,'au' => $time_fin ,'classe' => $donnees['classe'] ));
