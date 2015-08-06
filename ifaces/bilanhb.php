@@ -957,16 +957,16 @@ $reponse->closeCursor(); // Termine le traitement de la requête
 
 <br>
  
-
+<div class="col-md-6"> 
+  <h2>ici ou pas</h2>
+  </div>
        
 </div>
 
         </div>
 
  
-<div class="col-md-6"> 
-  <h2>ici ou pas</h2>
-  </div>
+
 
 
 
