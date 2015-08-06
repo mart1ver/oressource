@@ -300,7 +300,7 @@ default; ?>
   
             
                            <?php 
-            echo 'totototototo';
+            echo '<td>totototototo</td>';
             $reponse2 = $bdd->prepare('SELECT 
 
 type_dechets.nom name,
