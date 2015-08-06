@@ -399,7 +399,7 @@ GROUP BY nom');
                      
 
 
-            <td><?php echo $donnees['ncol'] ?></td>
+            <td><?php echo $donnees['nom'] ?></td>
             <td><?php echo $donnees['somme'] ?></td>
             <td><?php echo  round($donnees['somme']*100/$mtotcolo, 2)   ; ?></td>      
         </tr>
