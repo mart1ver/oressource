@@ -544,7 +544,7 @@ $reponse->closeCursor(); // Termine le traitement de la requête
     <thead>
       <th  style="width:300px">poubelles</th>
         <tr>
-            <th  style="width:300px">typo</th>
+            <th  style="width:300px">type de bac</th>
             <th>masse</th>
             <th>%</th>
 
@@ -554,10 +554,10 @@ $reponse->closeCursor(); // Termine le traitement de la requête
     <tbody>
        
 <?php
- $reponse = $bdd->prepare('SELECT type_poubelles.nom, sum(pesees_sorties.masse) somme
-FROM type_poubelles, pesees_sorties, sorties
+ $reponse = $bdd->prepare('SELECT types_poubelles.nom, sum(pesees_sorties.masse) somme
+FROM types_poubelles, pesees_sorties, sorties
 WHERE
-type_pobelles.id=pesees_sorties.id_type_poubelle
+types_poubelles.id=pesees_sorties.id_type_poubelle
 AND
 pesees_sorties.id_sortie = sorties.id
 AND sorties.classe = "sortiep"
