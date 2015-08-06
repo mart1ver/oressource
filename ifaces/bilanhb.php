@@ -352,7 +352,14 @@ GROUP BY name');
                
 
 ?> 
-
+ <tr class="collapse parmasse1 " >
+            <td  >
+              matériel électrique            </td >
+            <td >
+                55.000 Kgs.            </td>
+            <td >
+                100 %            </td>
+          </tr>
 <?php
 
 
