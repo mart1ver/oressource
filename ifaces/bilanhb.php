@@ -301,17 +301,6 @@ default; ?>
 $reponse->closeCursor(); // Termine le traitement de la requête
                }else
                {
-
-
-
-
-
-
-
-
-
-
-
 // on determine les masses totales évacuées sur cete période(pour Tous les points)
             
             $reponse = $bdd->prepare('SELECT 
@@ -350,9 +339,6 @@ default; ?>
 <?php
 }
 ?>
-            
-
-
             <td><?php echo $donnees['ncol'] ?></td>
             <td><?php echo $donnees['somme'] ?></td>
             <td><?php echo  round($donnees['somme']*100/$mtotcolo, 2)   ; ?></td>      
@@ -360,50 +346,20 @@ default; ?>
  <?php
              }
 $reponse->closeCursor(); // Termine le traitement de la requête
-
-
-
-
-
-
-
-
-
-
                } ?>
-
       </tbody>
 </table>
-
-
-
-
 <br>
-
-
-  
-          
-          
           
        <br>
 <a href="<?php echo  "../moteur/export_bilanc_partype.php?numero=". $_GET['numero']."&date1=" . $_GET['date1']."&date2=" . $_GET['date2']?>">
 
-
-
-      
         <button type="button" class="btn btn-default btn-xs">exporter ces données (.csv) </button>
       </a>
 </div>
   </div>
-
-
-
   </div>
- 
-
-
   <div class="col-md-6">
-
 <div class="panel panel-default">
   <div class="panel-heading">
     <h3 class="panel-title">Répartition par localité
@@ -426,130 +382,153 @@ $reponse->closeCursor(); // Termine le traitement de la requête
        
 
 
+       
+
+      
+
+
+if ($_GET['numero'] == 0) {
+  ?>
+  , sur <?php
+// on determine le nombre de points de collecte
+            /*
+            */
+ $req = $bdd->prepare("SELECT COUNT(id) FROM points_sortie");//SELECT `titre_affectation` FROM affectations WHERE titre_affectation = "conssomables" LIMIT 1
+$req->execute(array('au' => $time_fin ));
+$donnees = $req->fetch();
+     
+echo $donnees['COUNT(id)'];
+$req->closeCursor(); // Termine le traitement de la requête
+  ?> Point(s) de sorties.
+
+<?php } ?></h2>
+  <div class="col-md-6">        
+
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Répartition par classe de sorties
+</h3>
+  </div>
+  <div class="panel-body">
+    
+<table class="table table-condensed table-striped table table-bordered table-hover" style="border-collapse:collapse;">
+    <thead>
+        <tr>
+            <th  style="width:300px">Classe:</th>
+            <th>Nbr.de bons de sortie</th>
+            <th>Masse évacuée</th>
+
+            <th>%</th>
+            
+        </tr>
+    </thead>
+    <tbody>
+       
+
+
         <?php
         if ($_GET['numero'] == 0) {
-// on determine les masses totales collèctés sur cete période(pour Tous les points)
-            // On recupère tout le contenu de la table affectations
+// on determine les masses totales évacuées sur cete période(pour Tous les points)
+            
             $reponse = $bdd->prepare('SELECT 
-localites.nom,SUM(pesees_collectes.masse) somme,pesees_collectes.timestamp,localites.id id,COUNT(distinct collectes.id) ncol
+SUM(pesees_sorties.masse) somme,pesees_sorties.timestamp,sorties.classe,COUNT(distinct sorties.id) ncol
 FROM 
-pesees_collectes,collectes,localites
+pesees_sorties,sorties
 WHERE
-  pesees_collectes.timestamp BETWEEN :du AND :au AND
-localites.id =  collectes.localisation AND pesees_collectes.id_collecte = collectes.id
-GROUP BY id');
+  pesees_sorties.timestamp BETWEEN :du AND :au  AND pesees_sorties.id_sortie = sorties.id
+GROUP BY classe');
  $reponse->execute(array('du' => $time_debut,'au' => $time_fin ));
            // On affiche chaque entree une à une
            while ($donnees = $reponse->fetch())
            {
             ?>
-            <tr data-toggle="collapse" data-target=".parloc<?php echo $donnees['id']?>" >
-            <td><?php echo $donnees['nom'] ?></td>
+            <tr data-toggle="collapse" data-target=".parmasse<?php echo $donnees['classe']?>" >
+
+<?php switch ($donnees['classe'])
+{
+case 'sortiesc';?>
+<td>don aux partenaires</td>
+<?php break;
+case 'sorties';?>
+<td>don</td>
+<?php break;
+case 'sortiesd';?>
+<td>dechetterie</td>
+<?php break;
+case 'sortiesp';?>
+<td>poubelles</td>
+<?php break;
+case 'sortiesr';?>
+<td>recycleurs</td>
+<?php break;
+default; ?>
+<td>base érronée</td>
+<?php
+}
+?>
+            
+
+
             <td><?php echo $donnees['ncol'] ?></td>
             <td><?php echo $donnees['somme'] ?></td>
             <td><?php echo  round($donnees['somme']*100/$mtotcolo, 2)   ; ?></td>      
         </tr>
-
-      <?php 
-            // On recupère tout le contenu de la table affectations
-            $reponse2 = $bdd->prepare('SELECT localites.couleur,type_dechets.nom, sum(pesees_collectes.masse) somme
- FROM type_dechets,pesees_collectes ,localites , collectes
-WHERE
-pesees_collectes.timestamp BETWEEN :du AND :au 
-AND type_dechets.id = pesees_collectes.id_type_dechet 
-AND localites.id =  collectes.localisation AND pesees_collectes.id_collecte = collectes.id
-AND localites.id = :id_loc
-GROUP BY nom
-ORDER BY somme DESC');
-  $reponse2->execute(array('du' => $time_debut,'au' => $time_fin ,'id_loc' => $donnees['id'] ));
-           // On affiche chaque entree une à une
-           while ($donnees2 = $reponse2->fetch())
-           {        
-            ?>
-
-    <tr class="collapse parloc<?php echo $donnees['id']?> " >
-            <td  >
-              <?php echo $donnees2['nom'] ?>
-            </td >
-            <td >
-                <?php echo $donnees2['somme']." Kgs." ?>
-            </td>
-            <td >
-                <?php echo  round($donnees2['somme']*100/$donnees['somme'], 2)." %"  ; ?>
-            </td>
-          </tr>
-        
  <?php
              }
-              $reponse2->closeCursor(); // Termine le traitement de la requête
-                ?>
-               
-      <?php
-           }
-              $reponse->closeCursor(); // Termine le traitement de la requête
+$reponse->closeCursor(); // Termine le traitement de la requête
                }else
                {
-// on determine les masses totales collèctés sur cete période(pour un point donné)
-            // On recupère tout le contenu de la table affectations
+// on determine les masses totales évacuées sur cete période(pour Tous les points)
+            
             $reponse = $bdd->prepare('SELECT 
-localites.nom,SUM(pesees_collectes.masse) somme,pesees_collectes.timestamp,localites.id,COUNT(distinct collectes.id) ncol
+SUM(pesees_sorties.masse) somme,pesees_sorties.timestamp,sorties.classe,COUNT(distinct sorties.id) ncol
 FROM 
-pesees_collectes,collectes,localites
+pesees_sorties,sorties
 WHERE
-  pesees_collectes.timestamp BETWEEN :du AND :au AND
-localites.id =  collectes.localisation AND pesees_collectes.id_collecte = collectes.id
-AND collectes.id_point_collecte = :numero
-GROUP BY id
-');
- $reponse->execute(array('du' => $time_debut,'au' => $time_fin,'numero' => $_GET['numero']  ));
+  pesees_sorties.timestamp BETWEEN :du AND :au  AND pesees_sorties.id_sortie = sorties.id AND sorties.id_point_sortie = :numero
+GROUP BY classe');
+ $reponse->execute(array('du' => $time_debut,'au' => $time_fin,'numero' => $_GET['numero']   ));
            // On affiche chaque entree une à une
            while ($donnees = $reponse->fetch())
            {
             ?>
-            <tr data-toggle="collapse" data-target=".parloc<?php echo $donnees['id']?>" >
-            <td><?php echo $donnees['nom'] ?></td>
-             <td><?php echo $donnees['ncol'] ?></td>
+            <tr data-toggle="collapse" data-target=".parmasse<?php echo $donnees['classe']?>" >
+
+<?php switch ($donnees['classe'])
+{
+case 'sortiesc';?>
+<td>don aux partenaires</td>
+<?php break;
+case 'sorties';?>
+<td>don</td>
+<?php break;
+case 'sortiesd';?>
+<td>dechetterie</td>
+<?php break;
+case 'sortiesp';?>
+<td>poubelles</td>
+<?php break;
+case 'sortiesr';?>
+<td>recycleurs</td>
+<?php break;
+default; ?>
+<td>base érronée</td>
+<?php
+}
+?>
+            <td><?php echo $donnees['ncol'] ?></td>
             <td><?php echo $donnees['somme'] ?></td>
             <td><?php echo  round($donnees['somme']*100/$mtotcolo, 2)   ; ?></td>      
         </tr>
-      <?php 
-            // On recupère tout le contenu de la table affectations
-            $reponse2 = $bdd->prepare('SELECT type_dechets.couleur,type_dechets.nom, sum(pesees_collectes.masse) somme
- FROM type_dechets,pesees_collectes ,type_collecte , collectes
-WHERE
-pesees_collectes.timestamp BETWEEN :du AND :au 
-AND type_dechets.id = pesees_collectes.id_type_dechet 
-AND type_collecte.id =  collectes.id_type_collecte AND pesees_collectes.id_collecte = collectes.id
-AND type_collecte.id = :id_type_collecte AND collectes.id_point_collecte = :numero
-GROUP BY nom
-ORDER BY somme DESC');
-  $reponse2->execute(array('du' => $time_debut,'au' => $time_fin,'numero' => $_GET['numero'] ,'id_type_collecte' => $donnees['id'] ));
-           // On affiche chaque entree une à une
-           while ($donnees2 = $reponse2->fetch())
-           {        
-            ?>
- <tr class="collapse parloc<?php echo $donnees['id']?> active">
-    
-            <td class="hiddenRow">
-              <?php echo $donnees2['nom'] ?>
-            </td >
-            <td class="hiddenRow">
-                <?php echo $donnees2['somme']." Kgs." ?>
-            </td>
-            <td class="hiddenRow">
-                <?php echo  round($donnees2['somme']*100/$donnees['somme'], 2)." %"  ; ?>
-            </td>
-        </tr>
  <?php
              }
-              $reponse2->closeCursor(); // Termine le traitement de la requête
-                ?>
-      <?php
-           }
-              $reponse->closeCursor(); // Termine le traitement de la requête
+$reponse->closeCursor(); // Termine le traitement de la requête
                } ?>
 
-      
+
+
+
 
 
 
