@@ -306,21 +306,13 @@ default; ?>
 
   $reponsex = $bdd->prepare('SELECT 
 
-type_dechets.nom name,
-
-
-sum(pesees_sorties.masse) somme
-FROM type_dechets, pesees_sorties , sorties
-WHERE
-  pesees_sorties.timestamp BETWEEN :du AND :au  
-  AND
-pesees_sorties.id = sorties.id  
-AND 
-type_dechets.id = pesees_sorties.id_type_dechet 
+*
+FROM type_dechets
 
 
 
-GROUP BY name');
+
+');
   $reponsex->execute(array('du' => $time_debut,'au' => $time_fin ));
            // On affiche chaque entree une à une
            while ($donneesx = $reponsex->fetch())
