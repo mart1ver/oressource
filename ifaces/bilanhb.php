@@ -311,7 +311,7 @@ WHERE
   sorties.timestamp BETWEEN :du AND :au
   AND
 pesees_sorties.id = sorties.id  
-AND pesees_sorties.id_type_dechet > 0
+AND pesees_sorties.id_type_dechet > "0"
 AND 
 type_dechets.id = pesees_sorties.id_type_dechet
 AND
