@@ -554,7 +554,7 @@ $reponse->closeCursor(); // Termine le traitement de la requête
     <tbody>
        
 <?php
- $reponse = $bdd->prepare('SELECT type_poubelle.nom, sum(pesees_sorties.masse) somme
+ $reponse = $bdd->prepare('SELECT type_poubelles.nom, sum(pesees_sorties.masse) somme
 FROM type_poubelles, pesees_sorties, sorties
 WHERE
 type_pobelles.id=pesees_sorties.id_type_poubelle
