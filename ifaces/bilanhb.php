@@ -305,14 +305,14 @@ default; ?>
 
 
   $reponsex = $bdd->prepare('SELECT 
-
-*
-FROM type_dechets
-
-
-
-
-');
+type_dechets.nom, sum(pesees_sorties.masse) somme
+FROM type_dechets, pesees_sorties , sorties
+WHERE
+ 
+pesees_sorties.id = sorties.id  
+AND 
+type_dechets.id = pesees_sorties.id_type_dechet
+GROUP BY nom');
   $reponsex->execute(array('du' => $time_debut,'au' => $time_fin ));
            // On affiche chaque entree une à une
            while ($donneesx = $reponsex->fetch())
