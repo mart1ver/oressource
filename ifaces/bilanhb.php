@@ -323,7 +323,7 @@ GROUP BY name');
            {        
             ?>
 
-    <tr class="collapse parmasse<?php echo $donnees['classe']?> collapse in" style="height: auto;" >
+    <tr class="collapse parmasse<?php echo $donnees['classe']?>" >
             <td  >
               <?php echo $donnees2['name'] ?>
             </td >
