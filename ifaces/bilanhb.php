@@ -322,7 +322,7 @@ FROM type_dechets
 
     
             <td  >
-              <?php echo $donneesx['name'] ?>
+              <?php echo $donneesx['nom'] ?>
             </td >
             <td >
                 <?php echo $donneesx['somme']." Kgs." ?>
