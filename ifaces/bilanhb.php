@@ -385,49 +385,7 @@ $reponse->closeCursor(); // Termine le traitement de la requête
        
 
       
-
-
-if ($_GET['numero'] == 0) {
-  ?>
-  , sur <?php
-// on determine le nombre de points de collecte
-            /*
-            */
- $req = $bdd->prepare("SELECT COUNT(id) FROM points_sortie");//SELECT `titre_affectation` FROM affectations WHERE titre_affectation = "conssomables" LIMIT 1
-$req->execute(array('au' => $time_fin ));
-$donnees = $req->fetch();
-     
-echo $donnees['COUNT(id)'];
-$req->closeCursor(); // Termine le traitement de la requête
-  ?> Point(s) de sorties.
-
-<?php } ?></h2>
-  <div class="col-md-6">        
-
-
-<div class="panel panel-default">
-  <div class="panel-heading">
-    <h3 class="panel-title">Répartition par classe de sorties
-</h3>
-  </div>
-  <div class="panel-body">
-    
-<table class="table table-condensed table-striped table table-bordered table-hover" style="border-collapse:collapse;">
-    <thead>
-        <tr>
-            <th  style="width:300px">Classe:</th>
-            <th>Nbr.de bons de sortie</th>
-            <th>Masse évacuée</th>
-
-            <th>%</th>
-            
-        </tr>
-    </thead>
-    <tbody>
-       
-
-
-        <?php
+ <?php
         if ($_GET['numero'] == 0) {
 // on determine les masses totales évacuées sur cete période(pour Tous les points)
             
@@ -525,11 +483,6 @@ default; ?>
              }
 $reponse->closeCursor(); // Termine le traitement de la requête
                } ?>
-
-
-
-
-
 
 
 
