@@ -369,7 +369,7 @@ $reponse->closeCursor(); // Termine le traitement de la requête
     
 <table class="table table-condensed table-striped table table-bordered table-hover" style="border-collapse:collapse;">
     <thead>
-      <th  style="width:300px">Dons simples</th>
+      <th data-toggle="collapse" data-target=".sorties" style="width:300px">Dons simples</th>
         <tr>
             <th  style="width:300px">typo</th>
             <th>masse</th>
@@ -408,7 +408,7 @@ GROUP BY nom2');
             ?>
                      
 
-
+        <tr class="collapse parmasse1 ">
             <td><?php echo $donnees['nom'] ?></td>
             <td><?php echo $donnees['somme'] ?></td>
             <td><?php echo  round($donnees['somme']*100/$mtotcolo, 2)   ; ?></td>      
