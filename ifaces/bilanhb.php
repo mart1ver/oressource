@@ -505,7 +505,7 @@ WHERE
 type_dechets.id=pesees_sorties.id_type_dechet
 AND
 pesees_sorties.id_sortie = sorties.id
-AND sorties.classe = "sortied"
+AND sorties.classe = "sortiesd"
 AND pesees_sorties.timestamp BETWEEN :du AND :au
 GROUP BY nom
 UNION
@@ -557,10 +557,10 @@ $reponse->closeCursor(); // Termine le traitement de la requête
  $reponse = $bdd->prepare('SELECT types_poubelles.nom, sum(pesees_sorties.masse) somme
 FROM types_poubelles, pesees_sorties, sorties
 WHERE
-types_poubelles.id = pesees_sorties.id_type_poubelle
-AND
 pesees_sorties.id_sortie = sorties.id
-AND sorties.classe = "sortiep"
+AND
+types_poubelles.id = pesees_sorties.id_type_poubelle
+AND sorties.classe = "sortiesp"
 AND pesees_sorties.timestamp BETWEEN :du AND :au
 GROUP BY nom
 ');
@@ -606,7 +606,7 @@ WHERE
 type_dechets.id=pesees_sorties.id_type_dechet
 AND
 pesees_sorties.id_sortie = sorties.id
-AND sorties.classe = "sortier"
+AND sorties.classe = "sortiesr"
 AND pesees_sorties.timestamp BETWEEN :du AND :au
 GROUP BY nom
 UNION
@@ -616,7 +616,7 @@ WHERE
 type_dechets_evac.id=pesees_sorties.id_type_dechet_evac
 AND
 pesees_sorties.id_sortie = sorties.id
-AND sorties.classe = "sortier"
+AND sorties.classe = "sortiesr"
 AND pesees_sorties.timestamp BETWEEN :du AND :au
 GROUP BY nom2');
  $reponse->execute(array('du' => $time_debut,'au' => $time_fin ));
