@@ -308,7 +308,8 @@ default; ?>
 type_dechets.nom, sum(pesees_sorties.masse) somme
 FROM type_dechets, pesees_sorties , sorties
 WHERE
- 
+  sorties.timestamp BETWEEN :du AND :au
+  AND
 pesees_sorties.id = sorties.id  
 AND 
 type_dechets.id = pesees_sorties.id_type_dechet
