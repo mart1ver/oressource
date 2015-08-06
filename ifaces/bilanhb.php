@@ -300,7 +300,7 @@ default; ?>
   
             
                            <?php 
-            echo '<tr class="collapse parmasse'.$donnees['classe'].' >tototo</tr>';
+            echo '<tr class="collapse parmasse'.$donnees['classe'].'">tototo</tr>';
             $reponse2 = $bdd->prepare('SELECT 
 
 type_dechets.nom name,
