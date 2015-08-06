@@ -299,45 +299,7 @@ default; ?>
 
   
             
-                           <?php 
-            
-
-
-
-  $reponsex = $bdd->prepare('SELECT 
-type_dechets.nom, sum(pesees_sorties.masse) somme
-FROM type_dechets, pesees_sorties , sorties
-WHERE
-  sorties.timestamp BETWEEN :du AND :au
-  AND
-pesees_sorties.id = sorties.id  
-AND pesees_sorties.id_type_dechet > "0"
-AND 
-type_dechets.id = pesees_sorties.id_type_dechet
-AND
- sorties.classe = :classe
-GROUP BY nom');
-  $reponsex->execute(array('du' => $time_debut,'au' => $time_fin,'classe' => $donnees['classe'] ));
-           // On affiche chaque entree une à une
-           while ($donneesx = $reponsex->fetch())
-           {       
-           echo '<tr class="collapse parmasse'.$donnees['classe'].'">'; 
-            ?>
-
-    
-            <td  >
-              <?php echo $donneesx['nom'] ?>
-            </td >
-            <td >
-                <?php echo $donneesx['somme']." Kgs." ?>
-            </td>
-            <td >
-                <?php echo  round($donneesx['somme']*100/$donnees['somme'], 2)." %"  ; ?>
-            </td>
-          </tr>
-        
-      <?php
-           }?> 
+                       
 
 
 
@@ -353,13 +315,11 @@ GROUP BY nom');
 
 
 
-              $reponsex->closeCursor(); // Termine le traitement de la requête
+              
               $reponse->closeCursor(); // Termine le traitement de la requête
                
 
-?> 
- 
-<?php
+
 
 
 
