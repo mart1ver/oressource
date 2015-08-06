@@ -321,7 +321,7 @@ pesees_sorties,sorties
 WHERE
   pesees_sorties.timestamp BETWEEN :du AND :au  AND pesees_sorties.id_sortie = sorties.id AND sorties.id_point_sortie = :numero
 GROUP BY classe');
- $reponse->execute(array('du' => $time_debut,'au' => $time_fin,'au' => $_GET['numero']   ));
+ $reponse->execute(array('du' => $time_debut,'au' => $time_fin,'numero' => $_GET['numero']   ));
            // On affiche chaque entree une à une
            while ($donnees = $reponse->fetch())
            {
