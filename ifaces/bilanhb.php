@@ -304,14 +304,16 @@ default; ?>
 
 
 
-  $reponse2 = $bdd->prepare('SELECT 
+  $reponsex = $bdd->prepare('SELECT 
 
 type_dechets.nom name,
 
 
 sum(pesees_sorties.masse) somme
 FROM type_dechets, pesees_sorties , sorties
- 
+WHERE
+  pesees_sorties.timestamp BETWEEN :du AND :au  
+  AND
 pesees_sorties.id = sorties.id  
 AND 
 type_dechets.id = pesees_sorties.id_type_dechet 
@@ -319,22 +321,22 @@ type_dechets.id = pesees_sorties.id_type_dechet
 
 
 GROUP BY name');
-  $reponse2->execute();
+  $reponsex->execute(array('du' => $time_debut,'au' => $time_fin ));
            // On affiche chaque entree une à une
-           while ($donnees2 = $reponse2->fetch())
+           while ($donneesx = $reponsex->fetch())
            {       
            echo '<tr class="collapse parmasse'.$donnees['classe'].'">'; 
             ?>
 
     
             <td  >
-              <?php echo $donnees2['name'] ?>
+              <?php echo $donneesx['name'] ?>
             </td >
             <td >
-                <?php echo $donnees2['somme']." Kgs." ?>
+                <?php echo $donneesx['somme']." Kgs." ?>
             </td>
             <td >
-                <?php echo  round($donnees2['somme']*100/$donnees['somme'], 2)." %"  ; ?>
+                <?php echo  round($donneesx['somme']*100/$donnees['somme'], 2)." %"  ; ?>
             </td>
           </tr>
         
