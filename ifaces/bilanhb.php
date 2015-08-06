@@ -505,7 +505,7 @@ WHERE
 type_dechets.id=pesees_sorties.id_type_dechet
 AND
 pesees_sorties.id_sortie = sorties.id
-AND sorties.classe = "sorties"
+AND sorties.classe = "sortied"
 AND pesees_sorties.timestamp BETWEEN :du AND :au
 GROUP BY nom
 UNION
@@ -515,7 +515,7 @@ WHERE
 type_dechets_evac.id=pesees_sorties.id_type_dechet_evac
 AND
 pesees_sorties.id_sortie = sorties.id
-AND sorties.classe = "sorties"
+AND sorties.classe = "sortiesd"
 AND pesees_sorties.timestamp BETWEEN :du AND :au
 GROUP BY nom2');
  $reponse->execute(array('du' => $time_debut,'au' => $time_fin ));
