@@ -317,7 +317,7 @@ type_dechets.id = pesees_sorties.id_type_dechet
 
 
 GROUP BY name');
-  $reponse2->execute(array('du' => $time_debut,'au' => $time_fin ,'classe' => $donnees['classe'] ));
+  $reponse2->execute();
            // On affiche chaque entree une à une
            while ($donnees2 = $reponse2->fetch())
            {        
