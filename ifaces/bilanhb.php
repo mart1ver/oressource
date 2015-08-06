@@ -352,7 +352,7 @@ GROUP BY name');
                
 
 ?> 
- <tr class="collapse parmasse1 " >
+ <tr class="collapse parmassesorties " >
             <td  >
               matériel électrique            </td >
             <td >
