@@ -953,6 +953,39 @@ $reponse->closeCursor(); // Termine le traitement de la requête
  
 <div class="col-md-6"> 
   <h2>ici ou pas</h2>
+
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">détail 
+</h3>
+  </div>
+  <div class="panel-body">
+
+
+<table class="table table-condensed table-striped table table-bordered table-hover" style="border-collapse:collapse;">
+    <thead>
+      <th style="width:300px">Dons simples</th>
+        <tr>
+            <th  style="width:300px">type de sortie</th>
+            <th>masse</th>
+            <th>%</th>
+
+                        
+        </tr>
+    </thead>
+    <tbody>
+
+
+
+
+
+ </tbody>
+
+  </div>
+</div>
+
+
   </div>
  
 </div>
