@@ -396,9 +396,7 @@ $reponse->closeCursor(); // Termine le traitement de la requête
 
 <br>
 
-<div id="graphloca" style="height: 180px;"></div>
-<br>
-<div id="graph2loca" style="height: 180px;"></div>          
+       
 
 <br>
        <a href="<?php echo  "../moteur/export_bilanc_parloca.php?numero=". $_GET['numero']."&date1=" . $_GET['date1']."&date2=" . $_GET['date2']?>">
