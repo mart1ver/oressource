@@ -993,7 +993,7 @@ $reponse->closeCursor(); // Termine le traitement de la requête
        
 </div>
 
-       
+   </div>    
 
  
 
