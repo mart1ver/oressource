@@ -352,14 +352,7 @@ GROUP BY name');
                }
 
 ?> 
- <tr class="collapse parmassesorties " >
-            <td  >
-              matériel électrique            </td >
-            <td >
-                55.000 Kgs.            </td>
-            <td >
-                100 %            </td>
-          </tr>
+
 <?php
 
 
