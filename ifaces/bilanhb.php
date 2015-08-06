@@ -359,7 +359,7 @@ $reponse->closeCursor(); // Termine le traitement de la requête
 </div>
   </div>
   </div>
-  <div class="col-md-6">
+  
 <div class="panel panel-default">
   <div class="panel-heading">
     <h3 class="panel-title">détail
