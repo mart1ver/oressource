@@ -380,15 +380,82 @@ $reponse->closeCursor(); // Termine le traitement de la requête
     </thead>
     <tbody>
        
+   </tbody>
+</table>
 
 
+
+
+
+<table class="table table-condensed table-striped table table-bordered table-hover" style="border-collapse:collapse;">
+    <thead>
+      <th  style="width:300px">Dons aux partenaires</th>
+        <tr>
+            <th  style="width:300px">typo</th>
+            <th>masse</th>
+            <th>%</th>
+
+                        
+        </tr>
+    </thead>
+    <tbody>
        
+   </tbody>
+</table>
 
-      
 
 
 
-    </tbody>
+<table class="table table-condensed table-striped table table-bordered table-hover" style="border-collapse:collapse;">
+    <thead>
+      <th  style="width:300px">dechetterie</th>
+        <tr>
+            <th  style="width:300px">typo</th>
+            <th>masse</th>
+            <th>%</th>
+
+                        
+        </tr>
+    </thead>
+    <tbody>
+       
+   </tbody>
+</table>
+
+
+
+<table class="table table-condensed table-striped table table-bordered table-hover" style="border-collapse:collapse;">
+    <thead>
+      <th  style="width:300px">poubelles</th>
+        <tr>
+            <th  style="width:300px">typo</th>
+            <th>masse</th>
+            <th>%</th>
+
+                        
+        </tr>
+    </thead>
+    <tbody>
+       
+   </tbody>
+</table>
+
+
+
+<table class="table table-condensed table-striped table table-bordered table-hover" style="border-collapse:collapse;">
+    <thead>
+      <th  style="width:300px">recycleurs</th>
+        <tr>
+            <th  style="width:300px">typo</th>
+            <th>masse</th>
+            <th>%</th>
+
+                        
+        </tr>
+    </thead>
+    <tbody>
+       
+   </tbody>
 </table>
 
 
