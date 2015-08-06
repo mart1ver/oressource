@@ -308,8 +308,7 @@ type_dechets.nom name,
 
 sum(pesees_sorties.masse) somme
 FROM type_dechets, pesees_sorties , sorties
-WHERE
-pesees_sorties.timestamp BETWEEN :du AND :au 
+ 
 AND 
 pesees_sorties.id = sorties.id  
 AND 
@@ -352,8 +351,8 @@ GROUP BY name');
                
 
 ?> 
- <tr class="collapse parmassesorties " >
-            <td  >
+ <tr class="collapse parmassesorties">
+            <td>
               matériel électrique            </td >
             <td >
                 55.000 Kgs.            </td>
