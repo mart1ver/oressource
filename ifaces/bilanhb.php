@@ -361,7 +361,7 @@ $reponse->closeCursor(); // Termine le traitement de la requête
 
 <div class="panel panel-default">
   <div class="panel-heading">
-    <h3 class="panel-title">détail
+    <h3 class="panel-title">détail par type d'objets
 </h3>
   </div>
   <div class="panel-body">
@@ -960,6 +960,9 @@ $reponse->closeCursor(); // Termine le traitement de la requête
 
        
 </div>
+<div class="col-md-6"> 
+  <h2>ici ou pas</h2>
+  </div>
         </div>
 
  
