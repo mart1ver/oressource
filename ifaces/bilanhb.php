@@ -357,7 +357,7 @@ GROUP BY name');
 
 
 
-              $reponse2->closeCursor(); // Termine le traitement de la requête
+              $reponsex->closeCursor(); // Termine le traitement de la requête
               $reponse->closeCursor(); // Termine le traitement de la requête
                
 
