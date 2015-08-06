@@ -313,8 +313,10 @@ WHERE
 pesees_sorties.id = sorties.id  
 AND 
 type_dechets.id = pesees_sorties.id_type_dechet
+AND
+ sorties.classe = :classe
 GROUP BY nom');
-  $reponsex->execute(array('du' => $time_debut,'au' => $time_fin ));
+  $reponsex->execute(array('du' => $time_debut,'au' => $time_fin,'classe' => $donnees['classe'] ));
            // On affiche chaque entree une à une
            while ($donneesx = $reponsex->fetch())
            {       
