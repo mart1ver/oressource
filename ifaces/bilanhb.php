@@ -300,8 +300,11 @@ default; ?>
   
             
                            <?php 
-            echo '<tr class="collapse parmasse'.$donnees['classe'].'"><td>tototo</td></tr>';
-            $reponse2 = $bdd->prepare('SELECT 
+            
+
+
+
+  $reponse2 = $bdd->prepare('SELECT 
 
 type_dechets.nom name,
 
@@ -309,7 +312,6 @@ type_dechets.nom name,
 sum(pesees_sorties.masse) somme
 FROM type_dechets, pesees_sorties , sorties
  
-AND 
 pesees_sorties.id = sorties.id  
 AND 
 type_dechets.id = pesees_sorties.id_type_dechet 
@@ -320,10 +322,11 @@ GROUP BY name');
   $reponse2->execute();
            // On affiche chaque entree une à une
            while ($donnees2 = $reponse2->fetch())
-           {        
+           {       
+           echo '<tr class="collapse parmasse'.$donnees['classe'].'">'; 
             ?>
 
-    <tr class="collapse parmasse<?php echo $donnees['classe']?>" >
+    
             <td  >
               <?php echo $donnees2['name'] ?>
             </td >
@@ -336,7 +339,13 @@ GROUP BY name');
           </tr>
         
       <?php
-           }?>   
+           }?> 
+
+
+
+
+
+            
 
 
 
