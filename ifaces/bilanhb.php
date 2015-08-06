@@ -390,7 +390,17 @@ AND
 pesees_sorties.id_sortie = sorties.id
 AND sorties.classe = "sorties"
 AND pesees_sorties.timestamp BETWEEN :du AND :au
-GROUP BY nom');
+GROUP BY nom
+UNION
+SELECT type_dechets_evac.nom nom2, sum(pesees_sorties.masse) somme
+FROM type_dechets_evac, pesees_sorties, sorties
+WHERE
+type_dechets_evac.id=pesees_sorties.id_type_dechet_evac
+AND
+pesees_sorties.id_sortie = sorties.id
+AND sorties.classe = "sorties"
+AND pesees_sorties.timestamp BETWEEN :du AND :au
+GROUP BY nom2');
  $reponse->execute(array('du' => $time_debut,'au' => $time_fin ));
            // On affiche chaque entree une à une
            while ($donnees = $reponse->fetch())
@@ -406,8 +416,6 @@ GROUP BY nom');
  <?php
              }
 $reponse->closeCursor(); // Termine le traitement de la requête
-
-
 ?>
 
 
