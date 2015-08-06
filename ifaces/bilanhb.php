@@ -351,7 +351,16 @@ GROUP BY name');
               $reponse->closeCursor(); // Termine le traitement de la requête
                }
 
-
+?> 
+ <tr class="collapse parmassesorties " >
+            <td  >
+              matériel électrique            </td >
+            <td >
+                55.000 Kgs.            </td>
+            <td >
+                100 %            </td>
+          </tr>
+<?php
 
 
 
