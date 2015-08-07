@@ -1015,9 +1015,9 @@ $reponse->closeCursor(); // Termine le traitement de la requête
 </table>
 <table class="table table-condensed table-striped table table-bordered table-hover" style="border-collapse:collapse;">
     <thead>
-      <th style="width:300px">Dons simples</th>
+      <th style="width:300px">Dons aux partenaires</th>
         <tr>
-            <th  style="width:300px">type de sortie</th>
+            <th  style="width:300px">Nom du partenaire</th>
             <th>masse</th>
             <th>%</th>
 
@@ -1027,13 +1027,13 @@ $reponse->closeCursor(); // Termine le traitement de la requête
     <tbody>
 
 <?php
- $reponse = $bdd->prepare('SELECT type_sortie.nom, sum(pesees_sorties.masse) somme
-FROM type_sortie, pesees_sorties, sorties
+ $reponse = $bdd->prepare('SELECT conventions_sorties.nom, sum(pesees_sorties.masse) somme
+FROM conventions_sorties, pesees_sorties, sorties
 WHERE
-type_sortie.id=sorties.id_type_sortie
+conventions_sorties.id=sorties.id_convention
 AND
 pesees_sorties.id_sortie = sorties.id
-AND sorties.classe = "sorties"
+AND sorties.classe = "sortiesc"
 AND pesees_sorties.timestamp BETWEEN :du AND :au
 GROUP BY nom');
  $reponse->execute(array('du' => $time_debut,'au' => $time_fin ));
