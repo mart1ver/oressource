@@ -229,7 +229,7 @@ $req->closeCursor(); // Termine le traitement de la requête
 </div>
 </div>
 <div class="row">   
-  <div class="col-md-5"col-md-offset-1>        
+  <div class="col-md-5 col-md-offset-1">        
 
 
 <div class="panel panel-default">
