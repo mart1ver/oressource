@@ -726,7 +726,7 @@ $reponse->closeCursor(); // Termine le traitement de la requête
     </thead>
     <tbody>
        
-        <?php if ($_GET['numero'] == 0) {  ?>
+       
 <?php
  $reponse = $bdd->prepare('SELECT type_dechets.nom, sum(pesees_sorties.masse) somme
 FROM type_dechets, pesees_sorties, sorties
@@ -930,18 +930,7 @@ $reponse->closeCursor(); // Termine le traitement de la requête
 
 
 
-
-
-
-
-
-}else{
-?>
-
-
-
-
-<?php } ?>
+  ?>
 
    </tbody>
 </table>
