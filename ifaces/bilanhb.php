@@ -1076,7 +1076,7 @@ FROM filieres_sortie, pesees_sorties, sorties
 WHERE
 filieres_sorties.id=sorties.id_filiere
 AND
-pesees_sorties.id_sortie = sorties.id
+pesees_sortie.id_sortie = sorties.id
 AND sorties.classe = "sortiesr"
 AND pesees_sorties.timestamp BETWEEN :du AND :au
 GROUP BY nom');
