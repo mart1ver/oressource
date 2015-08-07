@@ -372,7 +372,7 @@ $reponse->closeCursor(); // Termine le traitement de la requête
   <div class="panel-body">
 
 
-    <a class="btn btn-primary"  data-toggle="collapse" href="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+    <a  data-toggle="collapse" href="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
   Link with href
 </a>
 
