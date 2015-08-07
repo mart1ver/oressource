@@ -963,7 +963,7 @@ $reponse->closeCursor(); // Termine le traitement de la requête
 
 <div class="panel panel-default">
   <div class="panel-heading">
-    <h3 class="panel-title">détail 
+    <h3 class="panel-title">Partenaires, recycleurs et dons 
 </h3>
   </div>
   <div class="panel-body">
