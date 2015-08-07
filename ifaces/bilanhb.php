@@ -454,13 +454,12 @@ $reponse->closeCursor(); // Termine le traitement de la requête
 </div>
 
 <div class="list-group"><a class="list-group-item" data-toggle="collapse" href="#collapse1" aria-expanded="false" aria-controls="collapse0">
-  Dons simples
+Dons aux partenaires
 </a></div>
 <div class="collapse" id="collapse1">
 <table class="table table-condensed table-striped table table-bordered table-hover" style="border-collapse:collapse;">
     <thead>
-      <th  style="width:300px">Dons aux partenaires</th>
-        <tr>
+              <tr>
             <th  style="width:300px">typo</th>
             <th>masse</th>
             <th>%</th>
@@ -512,13 +511,13 @@ $reponse->closeCursor(); // Termine le traitement de la requête
 
 </div>
 <div class="list-group"><a class="list-group-item" data-toggle="collapse" href="#collapse2" aria-expanded="false" aria-controls="collapse0">
-  Dons simples
+  dechetterie
 </a></div>
 <div class="collapse" id="collapse2">
 
 <table class="table table-condensed table-striped table table-bordered table-hover" style="border-collapse:collapse;">
     <thead>
-      <th  style="width:300px">dechetterie</th>
+    
         <tr>
             <th  style="width:300px">typo</th>
             <th>masse</th>
@@ -570,14 +569,14 @@ $reponse->closeCursor(); // Termine le traitement de la requête
 </table>
 </div>
 <div class="list-group"><a class="list-group-item" data-toggle="collapse" href="#collapse3" aria-expanded="false" aria-controls="collapse0">
-  Dons simples
+ poubelles
 </a></div>
 <div class="collapse" id="collapse3">
 
 
 <table class="table table-condensed table-striped table table-bordered table-hover" style="border-collapse:collapse;">
     <thead>
-      <th  style="width:300px">poubelles</th>
+    
         <tr>
             <th  style="width:300px">type de bac</th>
             <th>masse</th>
@@ -621,13 +620,13 @@ $reponse->closeCursor(); // Termine le traitement de la requête
 
 </div>
 <div class="list-group"><a class="list-group-item" data-toggle="collapse" href="#collapse4" aria-expanded="false" aria-controls="collapse0">
-  Dons simples
+  recycleurs
 </a></div>
 <div class="collapse" id="collapse4">
 
 <table class="table table-condensed table-striped table table-bordered table-hover" style="border-collapse:collapse;">
     <thead>
-      <th  style="width:300px">recycleurs</th>
+     
         <tr>
             <th  style="width:300px">typo</th>
             <th>masse</th>
@@ -686,7 +685,7 @@ $reponse->closeCursor(); // Termine le traitement de la requête
 <div class="collapse" id="collapse0">
 <table class="table table-condensed table-striped table table-bordered table-hover" style="border-collapse:collapse;">
     <thead>
-      <th style="width:300px">Dons simples</th>
+    
         <tr>
             <th  style="width:300px">typo</th>
             <th>masse</th>
@@ -746,7 +745,7 @@ $reponse->closeCursor(); // Termine le traitement de la requête
 
 </div>
 <div class="list-group"><a class="list-group-item" data-toggle="collapse" href="#collapse1" aria-expanded="false" aria-controls="collapse0">
-  Dons simples
+  Dons aux partenaires
 </a></div>
 <div class="collapse" id="collapse1">
 
@@ -754,7 +753,7 @@ $reponse->closeCursor(); // Termine le traitement de la requête
 
 <table class="table table-condensed table-striped table table-bordered table-hover" style="border-collapse:collapse;">
     <thead>
-      <th  style="width:300px">Dons aux partenaires</th>
+      
         <tr>
             <th  style="width:300px">typo</th>
             <th>masse</th>
@@ -809,14 +808,13 @@ $reponse->closeCursor(); // Termine le traitement de la requête
 
 </div>
 <div class="list-group"><a class="list-group-item" data-toggle="collapse" href="#collapse2" aria-expanded="false" aria-controls="collapse0">
-  Dons simples
+  dechetterie
 </a></div>
 <div class="collapse" id="collapse2">
 
 
 <table class="table table-condensed table-striped table table-bordered table-hover" style="border-collapse:collapse;">
-    <thead>
-      <th  style="width:300px">dechetterie</th>
+    
         <tr>
             <th  style="width:300px">typo</th>
             <th>masse</th>
@@ -871,13 +869,13 @@ $reponse->closeCursor(); // Termine le traitement de la requête
 
 </div>
 <div class="list-group"><a class="list-group-item" data-toggle="collapse" href="#collapse3" aria-expanded="false" aria-controls="collapse0">
-  Dons simples
+  poubelles
 </a></div>
 <div class="collapse" id="collapse3">
 
 <table class="table table-condensed table-striped table table-bordered table-hover" style="border-collapse:collapse;">
     <thead>
-      <th  style="width:300px">poubelles</th>
+      
         <tr>
             <th  style="width:300px">type de bac</th>
             <th>masse</th>
@@ -922,14 +920,13 @@ $reponse->closeCursor(); // Termine le traitement de la requête
 
 </div>
 <div class="list-group"><a class="list-group-item" data-toggle="collapse" href="#collapse4" aria-expanded="false" aria-controls="collapse0">
-  Dons simples
+  recycleurs
 </a></div>
 <div class="collapse" id="collapse4">
 
 <table class="table table-condensed table-striped table table-bordered table-hover" style="border-collapse:collapse;">
     <thead>
-      <th  style="width:300px">recycleurs</th>
-        <tr>
+           <tr>
             <th  style="width:300px">typo</th>
             <th>masse</th>
             <th>%</th>
@@ -987,11 +984,11 @@ $reponse->closeCursor(); // Termine le traitement de la requête
 
 
 ?>
-</div>
+
    </tbody>
 </table>
 
-
+</div>
 
 
 
