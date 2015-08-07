@@ -981,19 +981,25 @@ $reponse->closeCursor(); // Termine le traitement de la requête
         </tr>
     </thead>
     <tbody>
-
-
-
-
-
  </tbody>
 </div>
+
+
+
   </div>
+
+
+
+
 
    </div>
   </div>    
-
-<?php include "pied_bilan.php";
+  <div class="row"> 
+<div class="col-md-12"> 
+<?php include "pied_bilan.php"; ?>
+</div>
+</div>
+<?php
 }
     else
     {header('Location: ../moteur/destroy.php') ;}
