@@ -393,7 +393,7 @@ $reponse->closeCursor(); // Termine le traitement de la requête
                         
         </tr>
     </thead>
-    <tbody>
+   
        
 
 <?php
@@ -440,7 +440,6 @@ $reponse->closeCursor(); // Termine le traitement de la requête
    </tbody>
 </table>
 
-</div>
 
 
 
