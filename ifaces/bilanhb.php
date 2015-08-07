@@ -1057,6 +1057,50 @@ $reponse->closeCursor(); // Termine le traitement de la requête
 
  </tbody>
 </table>
+<table class="table table-condensed table-striped table table-bordered table-hover" style="border-collapse:collapse;">
+    <thead>
+      <th style="width:300px">Recycleurs</th>
+        <tr>
+            <th  style="width:300px">Nom du recycleur</th>
+            <th>masse</th>
+            <th>%</th>
+
+                        
+        </tr>
+    </thead>
+    <tbody>
+
+<?php
+ $reponse = $bdd->prepare('SELECT filieres_sortie.nom, sum(pesees_sorties.masse) somme
+FROM filieres_sortie, pesees_sorties, sorties
+WHERE
+filieres_sorties.id=sorties.id_filiere
+AND
+pesees_sorties.id_sortie = sorties.id
+AND sorties.classe = "sortiesr"
+AND pesees_sorties.timestamp BETWEEN :du AND :au
+GROUP BY nom');
+ $reponse->execute(array('du' => $time_debut,'au' => $time_fin ));
+           // On affiche chaque entree une à une
+           while ($donnees = $reponse->fetch())
+           {
+            ?>
+                     
+
+        <tr>
+            <td><?php echo $donnees['nom'] ?></td>
+            <td><?php echo $donnees['somme'] ?></td>
+            <td><?php echo  round($donnees['somme']*100/$mtotcolo, 2)   ; ?></td>      
+        </tr>
+ <?php
+             }
+$reponse->closeCursor(); // Termine le traitement de la requête
+?>
+
+
+
+ </tbody>
+</table>
 </div>
 
 
