@@ -968,6 +968,7 @@ $reponse->closeCursor(); // Termine le traitement de la requête
   </div>
   <div class="panel-body">
 
+<?php if ($_GET['numero'] == 0) {  ?>
 
 <table class="table table-condensed table-striped table table-bordered table-hover" style="border-collapse:collapse;">
     <thead>
@@ -1101,6 +1102,13 @@ $reponse->closeCursor(); // Termine le traitement de la requête
 
  </tbody>
 </table>
+<?php
+}
+
+
+
+}else{
+ } ?>
 </div>
 
 
