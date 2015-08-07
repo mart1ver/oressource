@@ -378,6 +378,8 @@ $reponse->closeCursor(); // Termine le traitement de la requête
     <thead>
       <th style="width:300px" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">Dons simples</th>
 
+<div class="collapse" id="collapseExample">
+ 
 
 
 
@@ -389,7 +391,7 @@ $reponse->closeCursor(); // Termine le traitement de la requête
                         
         </tr>
     </thead>
-    <tbody class="collapse" id="collapseExample">
+    <tbody>
        
 
 <?php
@@ -436,7 +438,7 @@ $reponse->closeCursor(); // Termine le traitement de la requête
    </tbody>
 </table>
 
-
+</div>
 
 
 
