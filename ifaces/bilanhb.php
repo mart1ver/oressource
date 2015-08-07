@@ -982,6 +982,7 @@ $reponse->closeCursor(); // Termine le traitement de la requête
     </thead>
     <tbody>
  </tbody>
+</table>
 </div>
 
 
@@ -995,7 +996,7 @@ $reponse->closeCursor(); // Termine le traitement de la requête
    </div>
      
   
-<?php //include "pied_bilan.php"; ?>
+<?php include "pied_bilan.php"; ?>
 
 <?php
 }
