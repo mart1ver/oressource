@@ -1103,10 +1103,6 @@ $reponse->closeCursor(); // Termine le traitement de la requête
  </tbody>
 </table>
 <?php
-}
-
-
-
 }else{
  } ?>
 </div>
