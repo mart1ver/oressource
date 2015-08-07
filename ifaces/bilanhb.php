@@ -225,6 +225,7 @@ $req->closeCursor(); // Termine le traitement de la requête
   ?> Point(s) de sorties.
 
 <?php } ?></h2>
+</div>
   <div class="col-md-6">        
 
 
