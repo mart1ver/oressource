@@ -359,7 +359,7 @@ $reponse->closeCursor(); // Termine le traitement de la requête
    
 <a href="<?php echo  "../moteur/export_bilanc_partype.php?numero=". $_GET['numero']."&date1=" . $_GET['date1']."&date2=" . $_GET['date2']?>">
 
-        <button type="button" class="btn btn-default btn-xs">exporter ces données (.csv) </button>
+        <button type="button" class="btn btn-default btn-xs" disabled>exporter ces données (.csv) </button>
       </a>
 </div>
   </div>
@@ -997,7 +997,7 @@ $reponse->closeCursor(); // Termine le traitement de la requête
 
 <br>
        <a href="<?php echo  "../moteur/export_bilanc_parloca.php?numero=". $_GET['numero']."&date1=" . $_GET['date1']."&date2=" . $_GET['date2']?>">
-        <button type="button" class="btn btn-default btn-xs">exporter ces données (.csv) </button>
+        <button type="button" class="btn btn-default btn-xs" disabled>exporter ces données (.csv) </button>
       </a>
   </div>
 </div>
@@ -1297,7 +1297,7 @@ $reponse->closeCursor(); // Termine le traitement de la requête
    
 <a href="<?php echo  "../moteur/export_bilanc_partype.php?numero=". $_GET['numero']."&date1=" . $_GET['date1']."&date2=" . $_GET['date2']?>">
 
-        <button type="button" class="btn btn-default btn-xs">exporter ces données (.csv) </button>
+        <button type="button" class="btn btn-default btn-xs" disabled>exporter ces données (.csv) </button>
       </a>
 </div>
 
