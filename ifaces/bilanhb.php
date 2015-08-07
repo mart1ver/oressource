@@ -131,7 +131,7 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
 
  
   
-      
+      </div>
       
 
 
@@ -159,7 +159,8 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
        </ul>
 
   <br>
-
+</div>
+</div>
 <div class="row">
   <h2>
     <?php
@@ -980,7 +981,7 @@ $reponse->closeCursor(); // Termine le traitement de la requête
  </tbody>
 
   </div>
-</div>
+
    </div>
   </div>
  
