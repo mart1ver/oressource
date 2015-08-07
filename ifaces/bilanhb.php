@@ -958,7 +958,7 @@ $reponse->closeCursor(); // Termine le traitement de la requête
 </div>
    
 <div class="col-md-6"> 
-  <h2>ici ou pas</h2>
+ 
 
 
 <div class="panel panel-default">
@@ -993,7 +993,7 @@ $reponse->closeCursor(); // Termine le traitement de la requête
    </div>
   </div>    
 
-<?php //include "pied_bilan.php";
+<?php include "pied_bilan.php";
 }
     else
     {header('Location: ../moteur/destroy.php') ;}
