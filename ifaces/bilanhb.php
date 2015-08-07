@@ -956,7 +956,7 @@ $reponse->closeCursor(); // Termine le traitement de la requête
 
  
 </div>
-   </div>
+   
 <div class="col-md-6"> 
   <h2>ici ou pas</h2>
 
@@ -987,7 +987,7 @@ $reponse->closeCursor(); // Termine le traitement de la requête
 
 
  </tbody>
-
+</div>
   </div>
 
    </div>
