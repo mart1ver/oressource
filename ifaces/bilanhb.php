@@ -389,8 +389,7 @@ $reponse->closeCursor(); // Termine le traitement de la requête
 <div class="collapse" id="collapseExample">
   <div class="well">
     ...
-  </div>
-</div>
+
 
 
 
@@ -449,7 +448,8 @@ $reponse->closeCursor(); // Termine le traitement de la requête
    </tbody>
 </table>
 
-
+  </div>
+</div>
 
 
 <table class="table table-condensed table-striped table table-bordered table-hover" style="border-collapse:collapse;">
