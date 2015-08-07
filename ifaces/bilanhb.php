@@ -162,7 +162,7 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
 </div>
 </div>
 <div class="row">
-  <div class="col-md-8"> 
+  <div class="col-md-8 col-md-offset-1"> 
   <h2>
     <?php
 // on affiche la période visée
@@ -229,7 +229,7 @@ $req->closeCursor(); // Termine le traitement de la requête
 </div>
 </div>
 <div class="row">   
-  <div class="col-md-6">        
+  <div class="col-md-5"col-md-offset-1>        
 
 
 <div class="panel panel-default">
