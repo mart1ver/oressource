@@ -380,10 +380,10 @@ $reponse->closeCursor(); // Termine le traitement de la requête
 
 
   <?php if ($_GET['numero'] == 0) {  ?>
-  <div class="list-group"><a class="list-group-item" data-toggle="collapse" href="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+  <div class="list-group"><a class="list-group-item" data-toggle="collapse" href="#collapse0" aria-expanded="false" aria-controls="collapse0">
   Dons simples
 </a></div>
-<div class="collapse" id="collapseExample">
+<div class="collapse" id="collapse0">
 <table class="table table-condensed table-striped table table-bordered table-hover" style="border-collapse:collapse;">
     <thead>
      
