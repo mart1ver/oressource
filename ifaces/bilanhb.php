@@ -1292,8 +1292,6 @@ $reponse->closeCursor(); // Termine le traitement de la requête
 
 
 <?php } ?>
-</div>
-
 <br>
           
    
@@ -1301,6 +1299,9 @@ $reponse->closeCursor(); // Termine le traitement de la requête
 
         <button type="button" class="btn btn-default btn-xs">exporter ces données (.csv) </button>
       </a>
+</div>
+
+
 
   </div>
 
