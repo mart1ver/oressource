@@ -131,7 +131,7 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
 
  
   
-      </div>
+      
       
 
 
@@ -980,7 +980,7 @@ $reponse->closeCursor(); // Termine le traitement de la requête
  </tbody>
 
   </div>
-
+</div>
    </div>
   </div>
  
