@@ -376,7 +376,11 @@ $reponse->closeCursor(); // Termine le traitement de la requête
   <?php if ($_GET['numero'] == 0) {  ?>
 <table class="table table-condensed table-striped table table-bordered table-hover" style="border-collapse:collapse;">
     <thead>
-      <th style="width:300px">Dons simples</th>
+      <th style="width:300px" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">Dons simples</th>
+
+
+
+
         <tr>
             <th  style="width:300px">typo</th>
             <th>masse</th>
@@ -385,7 +389,7 @@ $reponse->closeCursor(); // Termine le traitement de la requête
                         
         </tr>
     </thead>
-    <tbody>
+    <tbody class="collapse" id="collapseExample">
        
 
 <?php
