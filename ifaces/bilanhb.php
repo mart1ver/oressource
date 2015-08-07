@@ -228,7 +228,7 @@ $req->closeCursor(); // Termine le traitement de la requête
 <?php } ?></h2>
 </div>
 </div>
-
+<div class="row">   
   <div class="col-md-6">        
 
 
@@ -989,7 +989,7 @@ $reponse->closeCursor(); // Termine le traitement de la requête
    </div>
   </div>
  
-
+</div>
    </div>
     
 
