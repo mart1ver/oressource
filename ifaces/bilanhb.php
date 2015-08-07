@@ -30,7 +30,7 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
 <h1>Bilan global</h1>
 
    <div class="col-md-4 col-md-offset-8" >
-<label for="reportrange">Choisissez la période à inspecter::</label><br>
+<label for="reportrange">Choisissez la période à inspecter:</label><br>
 <div id="reportrange" class="pull-left" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc">
                   <i class="fa fa-calendar"></i>
                   <span></span> <b class="caret"></b>
@@ -994,11 +994,9 @@ $reponse->closeCursor(); // Termine le traitement de la requête
 
    </div>
   </div>    
-  <div class="row"> 
-<div class="col-md-12"> 
+  
 <?php include "pied_bilan.php"; ?>
-</div>
-</div>
+
 <?php
 }
     else
