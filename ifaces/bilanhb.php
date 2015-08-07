@@ -957,7 +957,7 @@ $reponse->closeCursor(); // Termine le traitement de la requête
  
 </div>
    
-<div class="col-md-6"> 
+<div class="col-md-5"> 
  
 
 
