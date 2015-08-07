@@ -1128,8 +1128,9 @@ AND
 pesees_sorties.id_sortie = sorties.id
 AND sorties.classe = "sorties"
 AND pesees_sorties.timestamp BETWEEN :du AND :au
+AND sorties.id_point_sortie = :numero
 GROUP BY nom');
- $reponse->execute(array('du' => $time_debut,'au' => $time_fin ));
+ $reponse->execute(array('du' => $time_debut,'au' => $time_fin,'numero' => $_GET['numero']  ));
            // On affiche chaque entree une à une
            while ($donnees = $reponse->fetch())
            {
@@ -1172,8 +1173,9 @@ AND
 pesees_sorties.id_sortie = sorties.id
 AND sorties.classe = "sortiesc"
 AND pesees_sorties.timestamp BETWEEN :du AND :au
+AND sorties.id_point_sortie = :numero
 GROUP BY nom');
- $reponse->execute(array('du' => $time_debut,'au' => $time_fin ));
+ $reponse->execute(array('du' => $time_debut,'au' => $time_fin ,'numero' => $_GET['numero'] ));
            // On affiche chaque entree une à une
            while ($donnees = $reponse->fetch())
            {
@@ -1216,8 +1218,9 @@ AND
 pesees_sorties.id_sortie = sorties.id
 AND sorties.classe = "sortiesr"
 AND pesees_sorties.timestamp BETWEEN :du AND :au
+AND sorties.id_point_sortie = :numero
 GROUP BY nom');
- $reponse->execute(array('du' => $time_debut,'au' => $time_fin ));
+ $reponse->execute(array('du' => $time_debut,'au' => $time_fin,'numero' => $_GET['numero']  ));
            // On affiche chaque entree une à une
            while ($donnees = $reponse->fetch())
            {
