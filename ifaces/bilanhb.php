@@ -374,11 +374,7 @@ $reponse->closeCursor(); // Termine le traitement de la requête
 
     
 
-<div class="collapse" id="collapseExample">
-  <div class="well">
-    ...
-  </div>
-</div>
+
 
 
 
