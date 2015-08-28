@@ -292,7 +292,7 @@ chiffre de caisse : <?php echo  $mtotcolo- $mtotcolo2." €";?>
 
       <thead>
         <tr>
-        <th>chiffre de caisse : </th>
+        <th colspan="2" >chiffre de caisse : </th>
         <th><?php echo  $mtotcolo- $mtotcolo2." €";?></th>
         </tr>
         <tr>
