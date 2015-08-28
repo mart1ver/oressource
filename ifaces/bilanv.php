@@ -183,7 +183,7 @@ echo $donnees['COUNT(id)']."<br>";
   $req->execute(array('du' => $time_debut,'au' => $time_fin ));
   $donnees = $req->fetch();
   $mtotcolo = $donnees['total'];
-  echo $donnees['total']." €.<br>";
+  echo $donnees['total']." €<br>";
   $req->closeCursor(); // Termine le traitement de la requête
  echo "-nombre d'objets vendus : ";
 // on determine le nombre d'objets vendus
@@ -231,7 +231,7 @@ echo $donnees['COUNT(ventes.id)']."<br>";
   $req->execute(array('du' => $time_debut,'au' => $time_fin ));
   $donnees = $req->fetch();
   $mtotcolo2 = $donnees['total'];
-  echo $donnees['total']." €.<br>";
+  echo $donnees['total']." €<br>";
   $req->closeCursor(); // Termine le traitement de la requête
 
 
@@ -337,7 +337,7 @@ $req->closeCursor(); // Termine le traitement de la requête ?>
   $req3->execute(array('du' => $time_debut,'au' => $time_fin ,'id' => $donnees2['id'] ));
   $donnees3 = $req3->fetch();
 
-  echo $donnees3['total']." €.<br>";
+  echo $donnees3['total']." €<br>";
   $req3->closeCursor(); // Termine le traitement de la requête ?>
             </td>  
             
@@ -397,7 +397,7 @@ AND ventes.id = vendus.id_vente AND vendus.prix > 0");
 $req->execute(array('du' => $time_debut,'au' => $time_fin,'numero' => $_GET['numero'] ));
 $donnees = $req->fetch();
 $mtotcolo = $donnees['total'];
-echo $donnees['total']." €.<br>";
+echo $donnees['total']." €<br>";
 $req->closeCursor(); // Termine le traitement de la requête
 echo "-nombre d'objets vendus : ";
 // on determine le nombre d'objets vendus
@@ -455,7 +455,7 @@ echo "-somme remboursée : ";
   $req->execute(array('du' => $time_debut,'au' => $time_fin,'numero' => $_GET['numero'] ));
   $donnees = $req->fetch();
   $mtotcolo2 = $donnees['total'];
-  echo $donnees['total']." €.<br>";
+  echo $donnees['total']." €<br>";
   $req->closeCursor(); // Termine le traitement de la requête
 
 
@@ -561,7 +561,7 @@ $req->closeCursor(); // Termine le traitement de la requête ?>
   $req3->execute(array('du' => $time_debut,'au' => $time_fin ,'id' => $donnees2['id'] ,'numero' => $_GET['numero'] ));
   $donnees3 = $req3->fetch();
 
-  echo $donnees3['total']." €.<br>";
+  echo $donnees3['total']." €<br>";
   $req3->closeCursor(); // Termine le traitement de la requête ?>
             </td>  
             
