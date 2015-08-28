@@ -168,7 +168,7 @@ if ($_GET['numero'] == 0) // si numero == 0*************************************
 <table class='table table-hover'>
     <tbody><tr>
   <?php
-  echo '<th scope="row">-nombre de points de vente : </th>';
+  echo '<td>-nombre de points de vente : </td>';
   // on determine le nombre de points de vente à cet instant
             /*
 
@@ -176,19 +176,19 @@ if ($_GET['numero'] == 0) // si numero == 0*************************************
  $req = $bdd->prepare("SELECT COUNT(id) FROM points_vente");
  $req->execute();
  $donnees = $req->fetch();
-echo "<td>".$donnees['COUNT(id)']."</td>";
+echo "<td>".$donnees['COUNT(id)']."</td> </tr>";
 
-  echo '<th scope="row">-chiffre total dégagé  : </th>';
+  echo '<tr><td>-chiffre total dégagé  : </td>';
   // On recupère tout le contenu de la table point de vente
   $req = $bdd->prepare("SELECT  SUM(vendus.prix*vendus.quantite) AS total   FROM vendus 
    WHERE  DATE(vendus.timestamp) BETWEEN :du AND :au AND vendus.prix > 0  ");
   $req->execute(array('du' => $time_debut,'au' => $time_fin ));
   $donnees = $req->fetch();
   $mtotcolo = $donnees['total'];
-  echo   "<td>".$donnees['total']." €"."</td>";
+  echo   "<td>".$donnees['total']." €"."</td></tr>";
   $req->closeCursor(); // Termine le traitement de la requête
 
- echo "<th scope='row'>-nombre d'objets vendus : </th>";
+ echo "<tr><td>-nombre d'objets vendus : </td>";
 // on determine le nombre d'objets vendus
             /*
 
@@ -196,8 +196,8 @@ echo "<td>".$donnees['COUNT(id)']."</td>";
  $req = $bdd->prepare("SELECT SUM(vendus.quantite) FROM vendus WHERE prix > 0 AND DATE(vendus.timestamp) BETWEEN :du AND :au ");
  $req->execute(array('du' => $time_debut,'au' => $time_fin ));
  $donnees = $req->fetch();
-echo "<td>".$donnees['SUM(vendus.quantite)']."</td>"; 
- echo '<th scope="row">-nombre de ventes : </th>';
+echo "<td>".$donnees['SUM(vendus.quantite)']."</td></tr>"; 
+ echo '<tr><td">-nombre de ventes : </td>';
 // on determine le nombre de ventes
             /*
 
@@ -206,12 +206,12 @@ echo "<td>".$donnees['SUM(vendus.quantite)']."</td>";
  $req->execute(array('du' => $time_debut,'au' => $time_fin ));
  $donnees = $req->fetch();
  $nventes = $donnees['COUNT(ventes.id)'];
-echo "<td>".$donnees['COUNT(ventes.id)']."</td>";
+echo "<td>".$donnees['COUNT(ventes.id)']."</td></tr>";
 
 
- echo '<th scope="row">-panier moyen : </th> <td>'.$mtotcolo/$nventes.' € </td>';
+ echo '<tr><td>-panier moyen : </td> <td>'.$mtotcolo/$nventes.' € </td></tr>';
 
-  echo "<th scope='row'>-nombre d'objets remboursés :  </th> ";
+  echo "<tr><td>-nombre d'objets remboursés :  </td> ";
   // on determine le nombre d'objets remboursés
             /*
 
@@ -219,8 +219,8 @@ echo "<td>".$donnees['COUNT(ventes.id)']."</td>";
  $req = $bdd->prepare("SELECT SUM(vendus.quantite) FROM vendus WHERE remboursement > 0 AND DATE(vendus.timestamp) BETWEEN :du AND :au ");
  $req->execute(array('du' => $time_debut,'au' => $time_fin ));
  $donnees = $req->fetch();
-echo "<td>".intval($donnees['SUM(vendus.quantite)'])."</td>";
-  echo '<th scope="row">-nombre de remboursemments : </th> ';
+echo "<td>".intval($donnees['SUM(vendus.quantite)'])."</td></tr>";
+  echo '<tr><td>-nombre de remboursemments : </d> ';
   // on determine le nombre de remboursements
             /*
 
@@ -228,15 +228,15 @@ echo "<td>".intval($donnees['SUM(vendus.quantite)'])."</td>";
  $req = $bdd->prepare("SELECT COUNT(ventes.id) FROM ventes ,vendus WHERE vendus.id_vente = ventes.id AND DATE(vendus.timestamp) BETWEEN :du AND :au   AND vendus.remboursement > 0 ");
  $req->execute(array('du' => $time_debut,'au' => $time_fin ));
  $donnees = $req->fetch();
-echo "<td>".$donnees['COUNT(ventes.id)']."</td>";
+echo "<td>".$donnees['COUNT(ventes.id)']."</td></tr>";
 
-  echo '<th scope="row">-somme remboursée : </th> ';
+  echo '<tr><td>-somme remboursée : </td> ';
   // On recupère tout le contenu de la table point de vente
   $req = $bdd->prepare("SELECT  SUM(vendus.remboursement) AS total   FROM vendus  WHERE  DATE(vendus.timestamp) BETWEEN :du AND :au  ");
   $req->execute(array('du' => $time_debut,'au' => $time_fin ));
   $donnees = $req->fetch();
   $mtotcolo2 = $donnees['total'];
-  echo "<td>".$donnees['total']." €" ."</td>";
+  echo "<td>".$donnees['total']." €" ."</td></tr>";
   $req->closeCursor(); // Termine le traitement de la requête
 
 
