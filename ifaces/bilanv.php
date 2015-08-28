@@ -166,7 +166,7 @@ if ($_GET['numero'] == 0) // si numero == 0*************************************
   <div class="row">
   <div class="col-md-6">
 <table class='table table-hover'>
-    <tbody>
+    <tbody><tr>
   <?php
   echo '<th scope="row">-nombre de points de vente : </th>';
   // on determine le nombre de points de vente à cet instant
@@ -241,6 +241,7 @@ echo "<td>".$donnees['COUNT(ventes.id)']."</td>";
 
 
 ?>
+</tr>
 </tbody></table>
 <br>
 <br>
