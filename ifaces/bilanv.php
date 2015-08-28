@@ -392,8 +392,10 @@ else // si numero ==! 0*********************************************************
 ?>
   <div class="row">
   <div class="col-md-6">
+    <table class='table table-hover'>
+    <tbody><tr>
   <?php
-echo "-chiffre total dégagé :  ";
+echo '<tr><td>-chiffre total dégagé  : </td>';
             // On recupère tout le contenu de la table point de vente
 
 
@@ -404,9 +406,9 @@ AND ventes.id = vendus.id_vente AND vendus.prix > 0");
 $req->execute(array('du' => $time_debut,'au' => $time_fin,'numero' => $_GET['numero'] ));
 $donnees = $req->fetch();
 $mtotcolo = $donnees['total'];
-echo $donnees['total']." €<br>";
+echo "<td>".$donnees['total']." €"."</td></tr>";
 $req->closeCursor(); // Termine le traitement de la requête
-echo "-nombre d'objets vendus : ";
+echo "<tr><td>-nombre d'objets vendus : </td>";
 // on determine le nombre d'objets vendus
             /*
 
@@ -415,7 +417,7 @@ echo "-nombre d'objets vendus : ";
  $req->execute(array('du' => $time_debut,'au' => $time_fin,'numero' => $_GET['numero'] ));
  $donnees = $req->fetch();
  echo $donnees['SUM(vendus.quantite)']."<br>";
- echo "-nombre de ventes : ";
+ echo '<tr><td>-nombre de ventes : </td>';
  // on determine le nombre de ventes
             /*
 
@@ -434,9 +436,9 @@ echo "-nombre de ventes : ";
  $req->execute(array('du' => $time_debut,'au' => $time_fin,'numero' => $_GET['numero'] ));
  $donnees = $req->fetch();
  $nventes = $donnees['COUNT(ventes.id)'];
-echo $donnees['COUNT(ventes.id)']."<br>";
-echo "-panier moyen : ".$mtotcolo/$nventes." € <br>";
-echo "-nombre d'objets remboursés : ";
+echo "<td>".$donnees['COUNT(ventes.id)']."</td></tr>";
+echo '<tr><td>-panier moyen : </td> <td>'.$mtotcolo/$nventes.' € </td></tr>';
+echo "<tr><td>-nombre d'objets remboursés :  </td> ";
 // on determine le nombre d'objets remboursés
             /*
 
@@ -444,8 +446,8 @@ echo "-nombre d'objets remboursés : ";
  $req = $bdd->prepare("SELECT SUM(vendus.quantite) FROM vendus,ventes WHERE vendus.remboursement > 0 AND DATE(vendus.timestamp) BETWEEN :du AND :au AND ventes.id_point_vente  = :numero AND ventes.id = vendus.id_vente");
  $req->execute(array('du' => $time_debut,'au' => $time_fin,'numero' => $_GET['numero'] ));
  $donnees = $req->fetch();
-echo intval($donnees['SUM(vendus.quantite)'])."<br>";
-echo "-nombre de remboursemments : ";
+echo "<td>".intval($donnees['SUM(vendus.quantite)'])."</td></tr>";
+echo '<tr> <td>-nombre de remboursemments : </td>';
 // on determine le nombre de remboursements
             /*
 
@@ -453,8 +455,8 @@ echo "-nombre de remboursemments : ";
  $req = $bdd->prepare("SELECT COUNT(ventes.id) FROM ventes ,vendus WHERE vendus.id_vente = ventes.id AND DATE(vendus.timestamp) BETWEEN :du AND :au   AND vendus.remboursement > 0 AND ventes.id_point_vente  = :numero ");
  $req->execute(array('du' => $time_debut,'au' => $time_fin,'numero' => $_GET['numero'] ));
  $donnees = $req->fetch();
-echo $donnees['COUNT(ventes.id)']."<br>";
-echo "-somme remboursée : ";
+echo "<td>".$donnees['COUNT(ventes.id)']."</td></tr>";
+echo '<tr><td>-somme remboursée : </td> ';
 
   // On recupère tout le contenu de la table point de vente
   $req = $bdd->prepare("SELECT  SUM(vendus.remboursement) AS total   FROM vendus,ventes  WHERE  DATE(vendus.timestamp) BETWEEN :du AND :au  AND ventes.id_point_vente  = :numero 
@@ -462,11 +464,13 @@ echo "-somme remboursée : ";
   $req->execute(array('du' => $time_debut,'au' => $time_fin,'numero' => $_GET['numero'] ));
   $donnees = $req->fetch();
   $mtotcolo2 = $donnees['total'];
-  echo $donnees['total']." €<br>";
+  echo "<td>".$donnees['total']." €" ."</td></tr>";
   $req->closeCursor(); // Termine le traitement de la requête
 
 
 ?>
+</tr>
+</tbody></table>
 <br>
 <br>
 <?php
@@ -487,7 +491,7 @@ print "<tr>";
 print "<th>Moyen de Paiement</th>";
 print "<th>Nombre de Ventes</th>";
 print "<th>Chiffre Dégagé</th>";
-print "<th>Remboursements</th>";
+print "<th>Somme remboursée</th>";
 print "</tr>";
 print "</tr>";
 print "</thead>";
@@ -498,8 +502,8 @@ while ($ligne = $req->fetch())
 print "<tr>";
 print "<td>".$ligne['moyen']."</td>";
 print "<td>".$ligne['quantite_vendue']."</td>";
-print "<td>".$ligne['total']."</td>";
-print "<td>".$ligne['remboursement']."</td>";
+print "<td>".$ligne['total']." €</td>";
+print "<td>".$ligne['remboursement']." €</td>";
 print "</tr>";
 
 }
@@ -508,7 +512,7 @@ print "</table>";
 ?>
 
 </div>
-<div class="col-md-6">
+<div class="col-md-5 col-md-offset-1">
 <h2>
 chiffre de caisse : <?php echo  $mtotcolo- $mtotcolo2." €";?> 
 </h2>
