@@ -30,7 +30,7 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
 <h1>Bilan global</h1>
 
    <div class="col-md-4 col-md-offset-8" >
-<label for="reportrange">Choisissez la période à inspecter::</label><br>
+<label for="reportrange">Choisissez la période à inspecter:</label><br>
 <div id="reportrange" class="pull-left" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc">
                   <i class="fa fa-calendar"></i>
                   <span></span> <b class="caret"></b>
@@ -159,8 +159,10 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
        </ul>
 
   <br>
-
+</div>
+</div>
 <div class="row">
+  <div class="col-md-8 col-md-offset-1"> 
   <h2>
     <?php
 // on affiche la période visée
@@ -224,7 +226,10 @@ $req->closeCursor(); // Termine le traitement de la requête
   ?> Point(s) de sorties.
 
 <?php } ?></h2>
-  <div class="col-md-6">        
+</div>
+</div>
+<div class="row">   
+  <div class="col-md-5 col-md-offset-1">        
 
 
 <div class="panel panel-default">
@@ -354,7 +359,7 @@ $reponse->closeCursor(); // Termine le traitement de la requête
    
 <a href="<?php echo  "../moteur/export_bilanc_partype.php?numero=". $_GET['numero']."&date1=" . $_GET['date1']."&date2=" . $_GET['date2']?>">
 
-        <button type="button" class="btn btn-default btn-xs">exporter ces données (.csv) </button>
+        <button type="button" class="btn btn-default btn-xs" disabled>exporter ces données (.csv) </button>
       </a>
 </div>
   </div>
@@ -365,13 +370,31 @@ $reponse->closeCursor(); // Termine le traitement de la requête
 </h3>
   </div>
   <div class="panel-body">
+
+
     
 
 
+
+
+
+
   <?php if ($_GET['numero'] == 0) {  ?>
+  <div class="list-group"><a class="list-group-item" data-toggle="collapse" href="#collapse0" aria-expanded="false" aria-controls="collapse0">
+  Dons simples
+</a></div>
+<div class="collapse" id="collapse0">
 <table class="table table-condensed table-striped table table-bordered table-hover" style="border-collapse:collapse;">
     <thead>
-      <th style="width:300px">Dons simples</th>
+     
+
+
+  
+    
+
+
+
+
         <tr>
             <th  style="width:300px">typo</th>
             <th>masse</th>
@@ -380,7 +403,7 @@ $reponse->closeCursor(); // Termine le traitement de la requête
                         
         </tr>
     </thead>
-    <tbody>
+   
        
 
 <?php
@@ -427,14 +450,16 @@ $reponse->closeCursor(); // Termine le traitement de la requête
    </tbody>
 </table>
 
+  
+</div>
 
-
-
-
+<div class="list-group"><a class="list-group-item" data-toggle="collapse" href="#collapse1" aria-expanded="false" aria-controls="collapse0">
+Dons aux partenaires
+</a></div>
+<div class="collapse" id="collapse1">
 <table class="table table-condensed table-striped table table-bordered table-hover" style="border-collapse:collapse;">
     <thead>
-      <th  style="width:300px">Dons aux partenaires</th>
-        <tr>
+              <tr>
             <th  style="width:300px">typo</th>
             <th>masse</th>
             <th>%</th>
@@ -484,12 +509,15 @@ $reponse->closeCursor(); // Termine le traitement de la requête
    </tbody>
 </table>
 
-
-
+</div>
+<div class="list-group"><a class="list-group-item" data-toggle="collapse" href="#collapse2" aria-expanded="false" aria-controls="collapse0">
+  dechetterie
+</a></div>
+<div class="collapse" id="collapse2">
 
 <table class="table table-condensed table-striped table table-bordered table-hover" style="border-collapse:collapse;">
     <thead>
-      <th  style="width:300px">dechetterie</th>
+    
         <tr>
             <th  style="width:300px">typo</th>
             <th>masse</th>
@@ -539,12 +567,16 @@ $reponse->closeCursor(); // Termine le traitement de la requête
 
    </tbody>
 </table>
-
+</div>
+<div class="list-group"><a class="list-group-item" data-toggle="collapse" href="#collapse3" aria-expanded="false" aria-controls="collapse0">
+ poubelles
+</a></div>
+<div class="collapse" id="collapse3">
 
 
 <table class="table table-condensed table-striped table table-bordered table-hover" style="border-collapse:collapse;">
     <thead>
-      <th  style="width:300px">poubelles</th>
+    
         <tr>
             <th  style="width:300px">type de bac</th>
             <th>masse</th>
@@ -586,11 +618,15 @@ $reponse->closeCursor(); // Termine le traitement de la requête
    </tbody>
 </table>
 
-
+</div>
+<div class="list-group"><a class="list-group-item" data-toggle="collapse" href="#collapse4" aria-expanded="false" aria-controls="collapse0">
+  recycleurs
+</a></div>
+<div class="collapse" id="collapse4">
 
 <table class="table table-condensed table-striped table table-bordered table-hover" style="border-collapse:collapse;">
     <thead>
-      <th  style="width:300px">recycleurs</th>
+     
         <tr>
             <th  style="width:300px">typo</th>
             <th>masse</th>
@@ -643,10 +679,13 @@ $reponse->closeCursor(); // Termine le traitement de la requête
 
 ?>
 
-
+<div class="list-group"><a class="list-group-item" data-toggle="collapse" href="#collapse0" aria-expanded="false" aria-controls="collapse0">
+  Dons simples
+</a></div>
+<div class="collapse" id="collapse0">
 <table class="table table-condensed table-striped table table-bordered table-hover" style="border-collapse:collapse;">
     <thead>
-      <th style="width:300px">Dons simples</th>
+    
         <tr>
             <th  style="width:300px">typo</th>
             <th>masse</th>
@@ -704,13 +743,17 @@ $reponse->closeCursor(); // Termine le traitement de la requête
    </tbody>
 </table>
 
-
+</div>
+<div class="list-group"><a class="list-group-item" data-toggle="collapse" href="#collapse1" aria-expanded="false" aria-controls="collapse0">
+  Dons aux partenaires
+</a></div>
+<div class="collapse" id="collapse1">
 
 
 
 <table class="table table-condensed table-striped table table-bordered table-hover" style="border-collapse:collapse;">
     <thead>
-      <th  style="width:300px">Dons aux partenaires</th>
+      
         <tr>
             <th  style="width:300px">typo</th>
             <th>masse</th>
@@ -763,12 +806,15 @@ $reponse->closeCursor(); // Termine le traitement de la requête
    </tbody>
 </table>
 
-
+</div>
+<div class="list-group"><a class="list-group-item" data-toggle="collapse" href="#collapse2" aria-expanded="false" aria-controls="collapse0">
+  dechetterie
+</a></div>
+<div class="collapse" id="collapse2">
 
 
 <table class="table table-condensed table-striped table table-bordered table-hover" style="border-collapse:collapse;">
-    <thead>
-      <th  style="width:300px">dechetterie</th>
+    
         <tr>
             <th  style="width:300px">typo</th>
             <th>masse</th>
@@ -821,11 +867,15 @@ $reponse->closeCursor(); // Termine le traitement de la requête
    </tbody>
 </table>
 
-
+</div>
+<div class="list-group"><a class="list-group-item" data-toggle="collapse" href="#collapse3" aria-expanded="false" aria-controls="collapse0">
+  poubelles
+</a></div>
+<div class="collapse" id="collapse3">
 
 <table class="table table-condensed table-striped table table-bordered table-hover" style="border-collapse:collapse;">
     <thead>
-      <th  style="width:300px">poubelles</th>
+      
         <tr>
             <th  style="width:300px">type de bac</th>
             <th>masse</th>
@@ -868,12 +918,15 @@ $reponse->closeCursor(); // Termine le traitement de la requête
    </tbody>
 </table>
 
-
+</div>
+<div class="list-group"><a class="list-group-item" data-toggle="collapse" href="#collapse4" aria-expanded="false" aria-controls="collapse0">
+  recycleurs
+</a></div>
+<div class="collapse" id="collapse4">
 
 <table class="table table-condensed table-striped table table-bordered table-hover" style="border-collapse:collapse;">
     <thead>
-      <th  style="width:300px">recycleurs</th>
-        <tr>
+           <tr>
             <th  style="width:300px">typo</th>
             <th>masse</th>
             <th>%</th>
@@ -935,7 +988,7 @@ $reponse->closeCursor(); // Termine le traitement de la requête
    </tbody>
 </table>
 
-
+</div>
 
 
 
@@ -944,21 +997,26 @@ $reponse->closeCursor(); // Termine le traitement de la requête
 
 <br>
        <a href="<?php echo  "../moteur/export_bilanc_parloca.php?numero=". $_GET['numero']."&date1=" . $_GET['date1']."&date2=" . $_GET['date2']?>">
-        <button type="button" class="btn btn-default btn-xs">exporter ces données (.csv) </button>
+        <button type="button" class="btn btn-default btn-xs" disabled>exporter ces données (.csv) </button>
       </a>
   </div>
 </div>
-<div class="col-md-6"> 
-  <h2>ici ou pas</h2>
+
+ 
+</div>
+   
+<div class="col-md-5"> 
+ 
 
 
 <div class="panel panel-default">
   <div class="panel-heading">
-    <h3 class="panel-title">détail 
+    <h3 class="panel-title">Partenaires, recycleurs et dons 
 </h3>
   </div>
   <div class="panel-body">
 
+<?php if ($_GET['numero'] == 0) {  ?>
 
 <table class="table table-condensed table-striped table table-bordered table-hover" style="border-collapse:collapse;">
     <thead>
@@ -973,22 +1031,290 @@ $reponse->closeCursor(); // Termine le traitement de la requête
     </thead>
     <tbody>
 
+<?php
+ $reponse = $bdd->prepare('SELECT type_sortie.nom, sum(pesees_sorties.masse) somme
+FROM type_sortie, pesees_sorties, sorties
+WHERE
+type_sortie.id=sorties.id_type_sortie
+AND
+pesees_sorties.id_sortie = sorties.id
+AND sorties.classe = "sorties"
+AND pesees_sorties.timestamp BETWEEN :du AND :au
+GROUP BY nom');
+ $reponse->execute(array('du' => $time_debut,'au' => $time_fin ));
+           // On affiche chaque entree une à une
+           while ($donnees = $reponse->fetch())
+           {
+            ?>
+                     
 
+        <tr>
+            <td><?php echo $donnees['nom'] ?></td>
+            <td><?php echo $donnees['somme'] ?></td>
+            <td><?php echo  round($donnees['somme']*100/$mtotcolo, 2)   ; ?></td>      
+        </tr>
+ <?php
+             }
+$reponse->closeCursor(); // Termine le traitement de la requête
+?>
 
 
 
  </tbody>
+</table>
+<table class="table table-condensed table-striped table table-bordered table-hover" style="border-collapse:collapse;">
+    <thead>
+      <th style="width:300px">Dons aux partenaires</th>
+        <tr>
+            <th  style="width:300px">Nom du partenaire</th>
+            <th>masse</th>
+            <th>%</th>
+
+                        
+        </tr>
+    </thead>
+    <tbody>
+
+<?php
+ $reponse = $bdd->prepare('SELECT conventions_sorties.nom, sum(pesees_sorties.masse) somme
+FROM conventions_sorties, pesees_sorties, sorties
+WHERE
+conventions_sorties.id=sorties.id_convention
+AND
+pesees_sorties.id_sortie = sorties.id
+AND sorties.classe = "sortiesc"
+AND pesees_sorties.timestamp BETWEEN :du AND :au
+GROUP BY nom');
+ $reponse->execute(array('du' => $time_debut,'au' => $time_fin ));
+           // On affiche chaque entree une à une
+           while ($donnees = $reponse->fetch())
+           {
+            ?>
+                     
+
+        <tr>
+            <td><?php echo $donnees['nom'] ?></td>
+            <td><?php echo $donnees['somme'] ?></td>
+            <td><?php echo  round($donnees['somme']*100/$mtotcolo, 2)   ; ?></td>      
+        </tr>
+ <?php
+             }
+$reponse->closeCursor(); // Termine le traitement de la requête
+?>
+
+
+
+ </tbody>
+</table>
+<table class="table table-condensed table-striped table table-bordered table-hover" style="border-collapse:collapse;">
+    <thead>
+      <th style="width:300px">Recycleurs</th>
+        <tr>
+            <th  style="width:300px">Nom du recycleur</th>
+            <th>masse</th>
+            <th>%</th>
+
+                        
+        </tr>
+    </thead>
+    <tbody>
+
+<?php
+ $reponse = $bdd->prepare('SELECT filieres_sortie.nom, sum(pesees_sorties.masse) somme
+FROM filieres_sortie, pesees_sorties, sorties
+WHERE
+filieres_sortie.id=sorties.id_filiere
+AND
+pesees_sorties.id_sortie = sorties.id
+AND sorties.classe = "sortiesr"
+AND pesees_sorties.timestamp BETWEEN :du AND :au
+GROUP BY nom');
+ $reponse->execute(array('du' => $time_debut,'au' => $time_fin ));
+           // On affiche chaque entree une à une
+           while ($donnees = $reponse->fetch())
+           {
+            ?>
+                     
+
+        <tr>
+            <td><?php echo $donnees['nom'] ?></td>
+            <td><?php echo $donnees['somme'] ?></td>
+            <td><?php echo  round($donnees['somme']*100/$mtotcolo, 2)   ; ?></td>      
+        </tr>
+ <?php
+             }
+$reponse->closeCursor(); // Termine le traitement de la requête
+?>
+
+
+
+ </tbody>
+</table>
+<?php
+}else{
+?>
+
+<table class="table table-condensed table-striped table table-bordered table-hover" style="border-collapse:collapse;">
+    <thead>
+      <th style="width:300px">Dons simples</th>
+        <tr>
+            <th  style="width:300px">type de sortie</th>
+            <th>masse</th>
+            <th>%</th>
+
+                        
+        </tr>
+    </thead>
+    <tbody>
+
+<?php
+ $reponse = $bdd->prepare('SELECT type_sortie.nom, sum(pesees_sorties.masse) somme
+FROM type_sortie, pesees_sorties, sorties
+WHERE
+type_sortie.id=sorties.id_type_sortie
+AND
+pesees_sorties.id_sortie = sorties.id
+AND sorties.classe = "sorties"
+AND pesees_sorties.timestamp BETWEEN :du AND :au
+AND sorties.id_point_sortie = :numero
+GROUP BY nom');
+ $reponse->execute(array('du' => $time_debut,'au' => $time_fin,'numero' => $_GET['numero']  ));
+           // On affiche chaque entree une à une
+           while ($donnees = $reponse->fetch())
+           {
+            ?>
+                     
+
+        <tr>
+            <td><?php echo $donnees['nom'] ?></td>
+            <td><?php echo $donnees['somme'] ?></td>
+            <td><?php echo  round($donnees['somme']*100/$mtotcolo, 2)   ; ?></td>      
+        </tr>
+ <?php
+             }
+$reponse->closeCursor(); // Termine le traitement de la requête
+?>
+
+
+
+ </tbody>
+</table>
+<table class="table table-condensed table-striped table table-bordered table-hover" style="border-collapse:collapse;">
+    <thead>
+      <th style="width:300px">Dons aux partenaires</th>
+        <tr>
+            <th  style="width:300px">Nom du partenaire</th>
+            <th>masse</th>
+            <th>%</th>
+
+                        
+        </tr>
+    </thead>
+    <tbody>
+
+<?php
+ $reponse = $bdd->prepare('SELECT conventions_sorties.nom, sum(pesees_sorties.masse) somme
+FROM conventions_sorties, pesees_sorties, sorties
+WHERE
+conventions_sorties.id=sorties.id_convention
+AND
+pesees_sorties.id_sortie = sorties.id
+AND sorties.classe = "sortiesc"
+AND pesees_sorties.timestamp BETWEEN :du AND :au
+AND sorties.id_point_sortie = :numero
+GROUP BY nom');
+ $reponse->execute(array('du' => $time_debut,'au' => $time_fin ,'numero' => $_GET['numero'] ));
+           // On affiche chaque entree une à une
+           while ($donnees = $reponse->fetch())
+           {
+            ?>
+                     
+
+        <tr>
+            <td><?php echo $donnees['nom'] ?></td>
+            <td><?php echo $donnees['somme'] ?></td>
+            <td><?php echo  round($donnees['somme']*100/$mtotcolo, 2)   ; ?></td>      
+        </tr>
+ <?php
+             }
+$reponse->closeCursor(); // Termine le traitement de la requête
+?>
+
+
+
+ </tbody>
+</table>
+<table class="table table-condensed table-striped table table-bordered table-hover" style="border-collapse:collapse;">
+    <thead>
+      <th style="width:300px">Recycleurs</th>
+        <tr>
+            <th  style="width:300px">Nom du recycleur</th>
+            <th>masse</th>
+            <th>%</th>
+
+                        
+        </tr>
+    </thead>
+    <tbody>
+
+<?php
+ $reponse = $bdd->prepare('SELECT filieres_sortie.nom, sum(pesees_sorties.masse) somme
+FROM filieres_sortie, pesees_sorties, sorties
+WHERE
+filieres_sortie.id=sorties.id_filiere
+AND
+pesees_sorties.id_sortie = sorties.id
+AND sorties.classe = "sortiesr"
+AND pesees_sorties.timestamp BETWEEN :du AND :au
+AND sorties.id_point_sortie = :numero
+GROUP BY nom');
+ $reponse->execute(array('du' => $time_debut,'au' => $time_fin,'numero' => $_GET['numero']  ));
+           // On affiche chaque entree une à une
+           while ($donnees = $reponse->fetch())
+           {
+            ?>
+                     
+
+        <tr>
+            <td><?php echo $donnees['nom'] ?></td>
+            <td><?php echo $donnees['somme'] ?></td>
+            <td><?php echo  round($donnees['somme']*100/$mtotcolo, 2)   ; ?></td>      
+        </tr>
+ <?php
+             }
+$reponse->closeCursor(); // Termine le traitement de la requête
+?>
+
+
+
+ </tbody>
+</table>
+
+
+<?php } ?>
+<br>
+          
+   
+<a href="<?php echo  "../moteur/export_bilanc_partype.php?numero=". $_GET['numero']."&date1=" . $_GET['date1']."&date2=" . $_GET['date2']?>">
+
+        <button type="button" class="btn btn-default btn-xs" disabled>exporter ces données (.csv) </button>
+      </a>
+</div>
+
+
 
   </div>
 
-   </div>
-  </div>
- 
+
+
+
 
    </div>
-    
+     </div>
+  
+<?php include "pied_bilan.php"; ?>
 
-<?php include "pied_bilan.php";
+<?php
 }
     else
     {header('Location: ../moteur/destroy.php') ;}
