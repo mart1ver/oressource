@@ -285,14 +285,14 @@ print "</table>";
 </div>
 <div class="col-md-5 col-md-offset-1">
   
-<h2>
+<h3>
 Récapitulatif par type d'objet
-</h2>
+</h3>
 <table class="table table-hover">
 
       <thead>
         <tr>
-        <th colspan="2" >chiffre de caisse : </th>
+        <th colspan="3" >chiffre de caisse : </th>
         <th><?php echo  $mtotcolo- $mtotcolo2." €";?></th>
         </tr>
         <tr>
@@ -518,13 +518,13 @@ print "</table>";
 
 </div>
 <div class="col-md-5 col-md-offset-1">
-<h2>
+<h3>
 Récapitulatif par type d'objet
-</h2>
+</h3>
 <table class="table table-hover">
       <thead>
         <tr>
-        <th colspan="2" >chiffre de caisse : </th>
+        <th colspan="3" >chiffre de caisse : </th>
         <th><?php echo  $mtotcolo- $mtotcolo2." €";?></th>
         </tr>
         <tr>
