@@ -284,18 +284,17 @@ print "</table>";
 ?>
 </div>
 <div class="col-md-5 col-md-offset-1">
-  
+  <h2>
+    chiffre de caisse : <?php echo  $mtotcolo- $mtotcolo2." €";?>
+  </h2>
+  <br>
 <h3>
 Récapitulatif par type d'objet
 </h3>
 <table class="table table-hover">
 
       <thead>
-        <tr>
-        <th colspan="3" >chiffre de caisse : </th>
-        <th><?php echo  $mtotcolo- $mtotcolo2." €";?></th>
-        <th></th>
-        </tr>
+       
         <tr>
           <th>type d'objet</th>
           <th>chiffre dégagé</th>
@@ -384,8 +383,8 @@ $req->closeCursor(); // Termine le traitement de la requête ?>
         </tbody>
         <tfoot>
     <tr>
-      <td colspan="3" >chiffre de caisse : </td>
-        <td><?php echo  $mtotcolo- $mtotcolo2." €";?></td>
+      <td></td>
+        <td></td>
       
       <td></td>
       <td></td>
@@ -529,15 +528,16 @@ print "</table>";
 
 </div>
 <div class="col-md-5 col-md-offset-1">
+  <h2>
+    chiffre de caisse : <?php echo  $mtotcolo- $mtotcolo2." €";?>
+  </h2>
+  <br>
 <h3>
 Récapitulatif par type d'objet
 </h3>
 <table class="table table-hover">
       <thead>
-        <tr>
-        <th colspan="3" >chiffre de caisse : </th>
-        <th><?php echo  $mtotcolo- $mtotcolo2." €";?></th>
-        </tr>
+        
         <tr>
           <th>type d'objet</th>
           <th>chiffre dégagé</th>
