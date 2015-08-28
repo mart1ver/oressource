@@ -427,7 +427,7 @@ echo "<tr><td>-nombre d'objets vendus : </td>";
  $donnees = $req->fetch();
  echo "<td>".$donnees['COUNT(ventes.id)']."</td></tr>";
 
-echo "-nombre de ventes : ";
+echo '<tr><td>-nombre de ventes : </td>';
 // on determine le nombre de ventes
             /*
 
