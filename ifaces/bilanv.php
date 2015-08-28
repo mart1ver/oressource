@@ -363,7 +363,7 @@ $req->closeCursor(); // Termine le traitement de la requête ?>
   AND vendus.id_type_dechet = :id AND DATE(vendus.timestamp) BETWEEN :du AND :au ");
  $req->execute(array('du' => $time_debut,'au' => $time_fin ,'id' => $donnees2['id'] ));
  $donnees = $req->fetch();
-echo $donnees['SUM(vendus.quantite)'].".";
+echo intval($donnees['SUM(vendus.quantite)']);
 $req->closeCursor(); // Termine le traitement de la requête ?>
             </td>
         </tr>
@@ -606,7 +606,7 @@ $req->closeCursor(); // Termine le traitement de la requête ?>
   AND vendus.id_type_dechet = :id AND DATE(vendus.timestamp) BETWEEN :du AND :au AND ventes.id_point_vente  = :numero AND ventes.id = vendus.id_vente  ");
  $req->execute(array('du' => $time_debut,'au' => $time_fin ,'id' => $donnees2['id'] ,'numero' => $_GET['numero'] ));
  $donnees = $req->fetch();
-echo $donnees['SUM(vendus.quantite)'];
+echo intval ($donnees['SUM(vendus.quantite)']);
 $req->closeCursor(); // Termine le traitement de la requête ?>
             </td>
         </tr>
