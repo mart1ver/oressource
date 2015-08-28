@@ -178,7 +178,7 @@ if ($_GET['numero'] == 0) // si numero == 0*************************************
  $donnees = $req->fetch();
 echo "<td>".$donnees['COUNT(id)']."</td>";
 
-  echo "<th scope="row">-chiffre total dégagé  : </th>";
+  echo '<th scope="row">-chiffre total dégagé  : </th>';
   // On recupère tout le contenu de la table point de vente
   $req = $bdd->prepare("SELECT  SUM(vendus.prix*vendus.quantite) AS total   FROM vendus 
    WHERE  DATE(vendus.timestamp) BETWEEN :du AND :au AND vendus.prix > 0  ");
@@ -188,7 +188,7 @@ echo "<td>".$donnees['COUNT(id)']."</td>";
   echo   "<td>".$donnees['total']." €"."</td>";
   $req->closeCursor(); // Termine le traitement de la requête
 
- echo "<th scope="row">-nombre d'objets vendus : </th>";
+ echo '<th scope="row">-nombre d'objets vendus : </th>';
 // on determine le nombre d'objets vendus
             /*
 
@@ -197,7 +197,7 @@ echo "<td>".$donnees['COUNT(id)']."</td>";
  $req->execute(array('du' => $time_debut,'au' => $time_fin ));
  $donnees = $req->fetch();
 echo "<td>".$donnees['SUM(vendus.quantite)']."</td>"; 
- echo "<th scope="row">-nombre de ventes : </th>";
+ echo '<th scope="row">-nombre de ventes : </th>';
 // on determine le nombre de ventes
             /*
 
@@ -209,9 +209,9 @@ echo "<td>".$donnees['SUM(vendus.quantite)']."</td>";
 echo "<td>".$donnees['COUNT(ventes.id)']."</td>";
 
 
- echo "<th scope="row">-panier moyen : </th> "."<td>".$mtotcolo/$nventes." € </td>";
+ echo '<th scope="row">-panier moyen : </th> "."<td>".$mtotcolo/$nventes." € </td>';
 
-  echo "<th scope="row">-nombre d'objets remboursés :  </th> ";
+  echo "<th scope='row'>-nombre d'objets remboursés :  </th> ";
   // on determine le nombre d'objets remboursés
             /*
 
@@ -220,7 +220,7 @@ echo "<td>".$donnees['COUNT(ventes.id)']."</td>";
  $req->execute(array('du' => $time_debut,'au' => $time_fin ));
  $donnees = $req->fetch();
 echo "<td>".intval($donnees['SUM(vendus.quantite)'])."</td>";
-  echo "<th scope="row">-nombre de remboursemments : </th> ";
+  echo '<th scope="row">-nombre de remboursemments : </th> ';
   // on determine le nombre de remboursements
             /*
 
@@ -230,7 +230,7 @@ echo "<td>".intval($donnees['SUM(vendus.quantite)'])."</td>";
  $donnees = $req->fetch();
 echo "<td>".$donnees['COUNT(ventes.id)']."</td>";
 
-  echo "<th scope="row">-somme remboursée : </th> ";
+  echo '<th scope="row">-somme remboursée : </th> ';
   // On recupère tout le contenu de la table point de vente
   $req = $bdd->prepare("SELECT  SUM(vendus.remboursement) AS total   FROM vendus  WHERE  DATE(vendus.timestamp) BETWEEN :du AND :au  ");
   $req->execute(array('du' => $time_debut,'au' => $time_fin ));
