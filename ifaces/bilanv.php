@@ -220,7 +220,7 @@ echo "<td>".$donnees['COUNT(ventes.id)']."</td></tr>";
  $req->execute(array('du' => $time_debut,'au' => $time_fin ));
  $donnees = $req->fetch();
 echo "<td>".intval($donnees['SUM(vendus.quantite)'])."</td></tr>";
-  echo '<tr><td>-nombre de remboursemments : </td>';
+  echo '<tr> <td>-nombre de remboursemments : </td>';
   // on determine le nombre de remboursements
             /*
 
