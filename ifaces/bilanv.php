@@ -135,7 +135,7 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
        <br>
         <div class="row">
         
- 
+ <td>
          <h2>
          <?php
 // on affiche la période visée
@@ -144,7 +144,7 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
   }
   else
   {
-  echo' Du '.$_GET['date1']." au ".$_GET['date2']." : </h2>";  
+  echo' Du '.$_GET['date1']." au ".$_GET['date2']." : </h2></td>";  
 }
 
 
