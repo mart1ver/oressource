@@ -381,6 +381,15 @@ $req->closeCursor(); // Termine le traitement de la requête ?>
          
         
         </tbody>
+        <tfoot>
+    <tr>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+  </tfoot>
     </table>
 
 
