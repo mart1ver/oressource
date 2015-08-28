@@ -263,7 +263,7 @@ print "<tr>";
 print "<th>Moyen de Paiement</th>";
 print "<th>Nombre de Ventes</th>";
 print "<th>Chiffre Dégagé</th>";
-print "<th>Remboursements</th>";
+print "<th>Somme remboursée</th>";
 print "</tr>";
 print "</tr>";
 print "</thead>";
@@ -274,8 +274,8 @@ while ($ligne = $req->fetch())
 print "<tr>";
 print "<td>".$ligne['moyen']."</td>";
 print "<td>".$ligne['quantite_vendue']."</td>";
-print "<td>".$ligne['total']."</td>";
-print "<td>".$ligne['remboursement']."</td>";
+print "<td>".$ligne['total']." €</td>";
+print "<td>".$ligne['remboursement']." €</td>";
 print "</tr>";
 
 }
