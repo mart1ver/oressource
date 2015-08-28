@@ -197,7 +197,7 @@ echo "<td>".$donnees['COUNT(id)']."</td> </tr>";
  $req->execute(array('du' => $time_debut,'au' => $time_fin ));
  $donnees = $req->fetch();
 echo "<td>".$donnees['SUM(vendus.quantite)']."</td></tr>"; 
- echo '<tr><td">-nombre de ventes : </td>';
+ echo '<tr><td>-nombre de ventes : </td>';
 // on determine le nombre de ventes
             /*
 
