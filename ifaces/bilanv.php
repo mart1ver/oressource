@@ -289,7 +289,12 @@ print "</table>";
 chiffre de caisse : <?php echo  $mtotcolo- $mtotcolo2." €";?> 
 </h2>
 <table class="table table-hover">
+
       <thead>
+        <tr>
+        <th>chiffre de caisse : </th>
+        <th><?php echo  $mtotcolo- $mtotcolo2." €";?></th>
+        </tr>
         <tr>
           <th>type d'objet</th>
           <th>chiffre dégagé</th>
