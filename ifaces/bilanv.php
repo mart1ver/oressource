@@ -164,7 +164,9 @@ if ($_GET['numero'] == 0) // si numero == 0*************************************
 {
   ?>
   <div class="row">
-  <div class="col-md-6"><tbody>
+  <div class="col-md-6">
+<table class='table table-hover'>
+    <tbody>
   <?php
   echo '<th scope="row">-nombre de points de vente : </th>';
   // on determine le nombre de points de vente à cet instant
@@ -174,7 +176,7 @@ if ($_GET['numero'] == 0) // si numero == 0*************************************
  $req = $bdd->prepare("SELECT COUNT(id) FROM points_vente");
  $req->execute();
  $donnees = $req->fetch();
-echo "<td>".$donnees['COUNT(id)']."</td>";
+echo "<td>".$donnees['COUNT(id)']."</td></tbody></table>";
 
   echo "-chiffre total dégagé  : ";
   // On recupère tout le contenu de la table point de vente
@@ -236,7 +238,7 @@ echo $donnees['COUNT(ventes.id)']."<br>";
 
 
 ?>
-</tbody>
+
 <br>
 <br>
 <?php
