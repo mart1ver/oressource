@@ -416,7 +416,7 @@ echo "<tr><td>-nombre d'objets vendus : </td>";
  $req = $bdd->prepare("SELECT SUM(vendus.quantite) FROM vendus, ventes WHERE vendus.prix > 0 AND DATE(vendus.timestamp) BETWEEN :du AND :au AND ventes.id_point_vente  = :numero AND ventes.id = vendus.id_vente");
  $req->execute(array('du' => $time_debut,'au' => $time_fin,'numero' => $_GET['numero'] ));
  $donnees = $req->fetch();
- echo $donnees['SUM(vendus.quantite)']."<br>";
+ echo "<td>".$donnees['SUM(vendus.quantite)']."</td></tr>"; 
  echo '<tr><td>-nombre de ventes : </td>';
  // on determine le nombre de ventes
             /*
@@ -425,7 +425,7 @@ echo "<tr><td>-nombre d'objets vendus : </td>";
  $req = $bdd->prepare("SELECT COUNT(ventes.id) FROM ventes ,vendus WHERE vendus.id_vente = ventes.id AND DATE(vendus.timestamp) BETWEEN :du AND :au  AND vendus.prix > 0 AND ventes.id_point_vente  = :numero");
  $req->execute(array('du' => $time_debut,'au' => $time_fin,'numero' => $_GET['numero'] ));
  $donnees = $req->fetch();
-echo $donnees['COUNT(ventes.id)']."<br>";
+ echo "<td>".$donnees['COUNT(ventes.id)']."</td></tr>";
 
 echo "-nombre de ventes : ";
 // on determine le nombre de ventes
