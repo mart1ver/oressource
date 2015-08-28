@@ -285,9 +285,9 @@ print "</table>";
 </div>
 <div class="col-md-5 col-md-offset-1">
   
-
-<table><tr><td><h2>chiffre de caisse : </td><?php echo  "<td> ".$mtotcolo- $mtotcolo2." €</h2> </td></tr></table>";?> 
-
+<h2>
+chiffre de caisse : <?php echo  $mtotcolo- $mtotcolo2." €";?> 
+</h2>
 <table class="table table-hover">
       <thead>
         <tr>
