@@ -209,7 +209,7 @@ echo "<td>".$donnees['SUM(vendus.quantite)']."</td>";
 echo "<td>".$donnees['COUNT(ventes.id)']."</td>";
 
 
- echo '<th scope="row">-panier moyen : </th> "."<td>".$mtotcolo/$nventes." € </td>';
+ echo '<th scope="row">-panier moyen : </th> <td>'.$mtotcolo/$nventes.' € </td>';
 
   echo "<th scope='row'>-nombre d'objets remboursés :  </th> ";
   // on determine le nombre d'objets remboursés
