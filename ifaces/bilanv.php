@@ -294,6 +294,7 @@ Récapitulatif par type d'objet
         <tr>
         <th colspan="3" >chiffre de caisse : </th>
         <th><?php echo  $mtotcolo- $mtotcolo2." €";?></th>
+        <th></th>
         </tr>
         <tr>
           <th>type d'objet</th>
