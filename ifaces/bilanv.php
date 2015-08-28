@@ -384,8 +384,9 @@ $req->closeCursor(); // Termine le traitement de la requête ?>
         </tbody>
         <tfoot>
     <tr>
-      <td></td>
-      <td></td>
+      <td colspan="3" >chiffre de caisse : </td>
+        <td><?php echo  $mtotcolo- $mtotcolo2." €";?></td>
+      
       <td></td>
       <td></td>
       <td></td>
