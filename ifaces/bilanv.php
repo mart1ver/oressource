@@ -188,7 +188,7 @@ echo "<td>".$donnees['COUNT(id)']."</td>";
   echo   "<td>".$donnees['total']." €"."</td>";
   $req->closeCursor(); // Termine le traitement de la requête
 
- echo '<th scope="row">-nombre d'objets vendus : </th>';
+ echo "<th scope='row'>-nombre d'objets vendus : </th>";
 // on determine le nombre d'objets vendus
             /*
 
