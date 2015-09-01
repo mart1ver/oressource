@@ -38,7 +38,7 @@ $req->execute(array('id' => $_POST['id'],'id_last_hero' => $_SESSION['id'],'comm
 
 
 // Redirection du visiteur vers la page de gestion des points de collecte
-header('Location:../ifaces/verif_collecte.php?numero='.$_POST['npoint'].'&date1='.$_POST['date1'].'&date2='.$_POST['date2']);
+header('Location:../ifaces/verif_ventes.php?numero='.$_POST['npoint'].'&date1='.$_POST['date1'].'&date2='.$_POST['date2']);
 
 }
 else { 
