@@ -15,7 +15,7 @@ require_once('../moteur/dbconfig.php');
 <br>
 <div class="row">
    
-          <form action="../moteur/modification_verification_collecte_post.php?nvente=<?php echo $_GET['nvente']?>" method="post">
+          <form action="../moteur/modification_verification_vente_post.php?nvente=<?php echo $_GET['nvente']?>" method="post">
       <input type="hidden" name ="id" id="id" value="<?php echo $_GET['nvente']?>">
 
  
