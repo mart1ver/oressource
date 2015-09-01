@@ -27,23 +27,13 @@ require_once('../moteur/dbconfig.php');
     <label for="commentaire">Commentaire</label>
 
            
-            <textarea name="commentaire" id="commentaire" class="form-control"><?php 
-            // On affiche le commentaire
-            $reponse = $bdd->prepare('SELECT commentaire FROM ventes WHERE id = :id_vente');
-            $reponse->execute(array('id_vente' => $_GET['nvente']));
-            // On affiche chaque entree une à une
-            while ($donnees = $reponse->fetch()){
-     
-           echo $donnees['commentaire'];
-             }
-            $reponse->closeCursor(); // Termine le traitement de la requête
-            ?></textarea>
+           
 
 
 <textarea name="commentaire" id="commentaire" class="form-control"><?php 
             // On affiche le commentaire
-            $reponse = $bdd->prepare('SELECT commentaire FROM vente WHERE id = :id_collecte');
-            $reponse->execute(array('id_collecte' => $_GET['nvente']));
+            $reponse = $bdd->prepare('SELECT commentaire FROM vente WHERE id = :id_vente');
+            $reponse->execute(array('id_vente' => $_GET['nvente']));
             // On affiche chaque entree une à une
             while ($donnees = $reponse->fetch()){
      
