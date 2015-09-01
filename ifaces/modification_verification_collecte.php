@@ -81,19 +81,19 @@ require_once("../moteur/dbconfig.php");
     <label for="commentaire">Commentaire</label>
 
            
-            <?php 
+            <input name="commentaire" id="commentaire" class="form-control" value="<?php 
             // On affiche le commentaire
             $reponse = $bdd->prepare('SELECT commentaire FROM collectes WHERE id = :id_collecte');
             $reponse->execute(array('id_collecte' => $_GET['ncollecte']));
             // On affiche chaque entree une à une
             while ($donnees = $reponse->fetch()){
      
-           echo '<input name="commentaire" id="commentaire" class="form-control" value="'.$donnees['commentaire'].'">'
+           echo $donnees['commentaire']
              }
             $reponse->closeCursor(); // Termine le traitement de la requête
-            ?>
+            ?>">
 
-    </input>
+    
   
  </div>
   <div class="col-md-3">
