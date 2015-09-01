@@ -193,11 +193,11 @@ if($donnees['nid'] > 0){ $req->closeCursor();
           <tr>
             <th>#</th>
             <th>Moment de la collecte</th>
-            <th>Type de collecte:</th>
-            <th>Commentaire:</th>
-            <th>Localisation:</th>
+            <th>Type de collecte</th>
+            <th>Commentaire</th>
+            <th>Localité</th>
             <th>Masse totale</th>
-            <th>Auteur de la ligne</th>
+            <th>Créée par</th>
             <th></th>
             <th>Modifié par</th>
             <th>Le:</th>
