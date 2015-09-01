@@ -194,7 +194,7 @@ if($donnees['nid'] > 0){ $req->closeCursor();
             <th>#</th>
             <th>Moment de la collecte</th>
             <th>Type de collecte:</th>
-            <th>Adhérent?:</th>
+            <th>Commentaire:</th>
             <th>Localisation:</th>
             <th>Masse totale</th>
             <th>Auteur de la ligne</th>
@@ -237,7 +237,7 @@ $req->execute(array('id_point_collecte' => $_GET['numero'], 'du' => $time_debut,
             <td <td style="height:20px"><?php echo $donnees['id']?></td>
             <td style="height:20px"><?php echo $donnees['timestamp']?></td>
             <td style="height:20px"><?php echo $donnees['nom']?></td>
-            <td style="height:20px"><?php echo $donnees['adherent']?></td>
+            <td style="height:20px"><?php echo $donnees['commentaire']?></td>
             <td style="height:20px"><?php echo $donnees['localisation']?></td>
             <td style="height:20px"> 
 
