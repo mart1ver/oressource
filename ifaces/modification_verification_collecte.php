@@ -76,6 +76,25 @@ require_once("../moteur/dbconfig.php");
     </select>
   
  </div>
+ <div class="col-md-3">
+
+    <label for="commentaire">Commentaire</label>
+<input name="commentaire" id="commentaire" class="form-control " >
+           
+            <?php 
+            // On affiche le commentaire
+            $reponse = $bdd->prepare('SELECT commentaire FROM collectes WHERE id = :id_collecte');
+            $reponse->execute(array('id_collecte' => $_GET['ncollecte']));
+            // On affiche chaque entree une à une
+            while ($donnees = $reponse->fetch()){
+            echo$donnees['commentaire'];
+             }
+            $reponse->closeCursor(); // Termine le traitement de la requête
+            ?>
+
+    </input>
+  
+ </div>
   <div class="col-md-3">
   
   <br>
