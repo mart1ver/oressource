@@ -81,7 +81,7 @@ require_once("../moteur/dbconfig.php");
     <label for="commentaire">Commentaire</label>
 
            
-            <input name="commentaire" id="commentaire" class="form-control" value="<?php 
+            <textarea name="commentaire" id="commentaire" class="form-control"><?php 
             // On affiche le commentaire
             $reponse = $bdd->prepare('SELECT commentaire FROM collectes WHERE id = :id_collecte');
             $reponse->execute(array('id_collecte' => $_GET['ncollecte']));
@@ -91,7 +91,7 @@ require_once("../moteur/dbconfig.php");
            echo $donnees['commentaire'];
              }
             $reponse->closeCursor(); // Termine le traitement de la requête
-            ?>">
+            ?></textarea>
 
     
   
