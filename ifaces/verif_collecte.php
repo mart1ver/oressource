@@ -217,7 +217,7 @@ GROUP BY nom'
             // On recupère toute la liste des filieres de sortie
             //   $reponse = $bdd->query('SELECT * FROM grille_objets');
           
-$req = $bdd->prepare('SELECT collectes.id,collectes.timestamp ,type_collecte.nom, collectes.adherent, localites.nom localisation, utilisateurs.mail mail , collectes.last_hero_timestamp lht
+$req = $bdd->prepare('SELECT collectes.id,collectes.timestamp ,type_collecte.nom, collectes.commentaire, localites.nom localisation, utilisateurs.mail mail , collectes.last_hero_timestamp lht
                        FROM collectes ,type_collecte, localites,utilisateurs
                        WHERE type_collecte.id = collectes.id_type_collecte
                        
