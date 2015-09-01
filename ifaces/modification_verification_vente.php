@@ -29,8 +29,8 @@ require_once('../moteur/dbconfig.php');
            
             <textarea name="commentaire" id="commentaire" class="form-control"><?php 
             // On affiche le commentaire
-            $reponse = $bdd->prepare('SELECT commentaire FROM collectes WHERE id = :id_collecte');
-            $reponse->execute(array('id_collecte' => $_GET['ncollecte']));
+            $reponse = $bdd->prepare('SELECT commentaire FROM ventes WHERE id = :id_vente');
+            $reponse->execute(array('id_vente' => $_GET['nvente']));
             // On affiche chaque entree une à une
             while ($donnees = $reponse->fetch()){
      
