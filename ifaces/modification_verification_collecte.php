@@ -81,9 +81,7 @@ require_once("../moteur/dbconfig.php");
     <label for="commentaire">Commentaire</label>
 
            
-            <input name="commentaire" id="commentaire" class="form-control" value="
-
-            <?php 
+            <input name="commentaire" id="commentaire" class="form-control" value="<?php 
             // On affiche le commentaire
             $reponse = $bdd->prepare('SELECT commentaire FROM collectes WHERE id = :id_collecte');
             $reponse->execute(array('id_collecte' => $_GET['ncollecte']));
@@ -93,9 +91,7 @@ require_once("../moteur/dbconfig.php");
            echo $donnees['commentaire'];
              }
             $reponse->closeCursor(); // Termine le traitement de la requête
-            ?>
-
-            ">
+            ?>">
 
     
   
@@ -131,22 +127,7 @@ require_once("../moteur/dbconfig.php");
         </thead>
         <tbody>
         <?php 
-/*
-'SELECT type_dechets.couleur,type_dechets.nom, sum(pesees_collectes.masse) somme 
-FROM type_dechets,pesees_collectes 
-WHERE type_dechets.id = pesees_collectes.id_type_dechet AND DATE(pesees_collectes.timestamp) = CURDATE()
-GROUP BY nom'
 
-SELECT pesees_collectes.id ,pesees_collectes.timestamp  ,type_dechets.nom  , pesees_collectes.masse
-                       FROM pesees_collectes ,type_dechets
-                       WHERE type_dechets.id = pesees_collectes.id_type_dechet AND pesees_collectes.id_collecte = :id_collecte
-*/
-
-
- 
-            // On recupère toute la liste des filieres de sortie
-            //   $reponse = $bdd->query('SELECT * FROM grille_objets');
-          
 $req = $bdd->prepare('SELECT pesees_collectes.id ,pesees_collectes.timestamp  ,type_dechets.nom  , pesees_collectes.masse ,type_dechets.couleur , utilisateurs.mail mail , pesees_collectes.last_hero_timestamp lht
                       
 
