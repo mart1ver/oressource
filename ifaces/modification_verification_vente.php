@@ -13,6 +13,45 @@ require_once('../moteur/dbconfig.php');
 
 
 <br>
+<div class="row">
+   
+          <form action="../moteur/modification_verification_collecte_post.php?nvente=<?php echo $_GET['nvente']?>" method="post">
+      <input type="hidden" name ="id" id="id" value="<?php echo $_GET['nvente']?>">
+
+ 
+
+
+
+ <div class="col-md-3">
+
+    <label for="commentaire">Commentaire</label>
+
+           
+            <textarea name="commentaire" id="commentaire" class="form-control"><?php 
+            // On affiche le commentaire
+            $reponse = $bdd->prepare('SELECT commentaire FROM collectes WHERE id = :id_collecte');
+            $reponse->execute(array('id_collecte' => $_GET['ncollecte']));
+            // On affiche chaque entree une à une
+            while ($donnees = $reponse->fetch()){
+     
+           echo $donnees['commentaire'];
+             }
+            $reponse->closeCursor(); // Termine le traitement de la requête
+            ?></textarea>
+
+    
+  
+ </div>
+  <div class="col-md-3">
+  
+  <br>
+<button name="creer" class="btn btn-warning">Modifier</button>
+</div>
+</form>
+</div>
+
+
+
 
 
 
