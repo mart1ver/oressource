@@ -38,7 +38,7 @@ require_once('../moteur/dbconfig.php');
         <br>
         <label for="mail">Mail principal:</label> <input type="email" name="mail" id="mail" class="form-control " value = "<?php echo $donnees['mail']; ?>" required > 
         <br>
-        Permetre de dater formulaires (mode saisie):  <input name ="saisiec" id ="saisiec" type="checkbox" value = "oui" <?php if((strpos($donnees['saisiec'], 'oui') !== false)){ echo "checked";} ?> >
+        Permettre de dater formulaires (mode saisie):  <input name ="saisiec" id ="saisiec" type="checkbox" value = "oui" <?php if((strpos($donnees['saisiec'], 'oui') !== false)){ echo "checked";} ?> >
         <br>
         <br>
         <br>
