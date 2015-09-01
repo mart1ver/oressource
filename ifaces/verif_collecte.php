@@ -237,7 +237,7 @@ $req->execute(array('id_point_collecte' => $_GET['numero'], 'du' => $time_debut,
             <td <td style="height:20px"><?php echo $donnees['id']?></td>
             <td style="height:20px"><?php echo $donnees['timestamp']?></td>
             <td style="height:20px"><?php echo $donnees['nom']?></td>
-            <td style="height:20px"><?php echo $donnees['commentaire']?></td>
+            <td width="30%" style="height:20px"><?php echo $donnees['commentaire']?></td>
             <td style="height:20px"><?php echo $donnees['localisation']?></td>
             <td style="height:20px"> 
 
