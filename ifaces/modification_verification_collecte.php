@@ -88,7 +88,7 @@ require_once("../moteur/dbconfig.php");
             // On affiche chaque entree une à une
             while ($donnees = $reponse->fetch()){
      
-           echo' <input name="commentaire" id="commentaire" class="form-control" value="'.$donnees['commentaire'].'"">'
+           echo '<input name="commentaire" id="commentaire" class="form-control" value="'.$donnees['commentaire'].'">'
              }
             $reponse->closeCursor(); // Termine le traitement de la requête
             ?>
