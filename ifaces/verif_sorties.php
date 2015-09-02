@@ -215,7 +215,8 @@ if($donnees['nid'] > 0){ $req->closeCursor();
           
 $req = $bdd->prepare('SELECT sorties.id,sorties.timestamp ,type_sortie.nom,sorties.commentaire ,sorties.classe classe 
                        FROM sorties ,type_sortie
-                       WHERE type_sortie.id = sorties.id_type_sortie  AND sorties.id_point_sortie = :id_point_sortie AND DATE(sorties.timestamp) BETWEEN :du AND :au');
+                       WHERE type_sortie.id = sorties.id_type_sortie  AND sorties.id_point_sortie = :id_point_sortie AND DATE(sorties.timestamp) BETWEEN :du AND :au
+                       ORDER BY sorties.timestamp DESC');
 $req->execute(array('id_point_sortie' => $_GET['numero'], 'du' => $time_debut,'au' => $time_fin));
 
 
@@ -416,7 +417,8 @@ if($donnees['nid'] > 0){ $req->closeCursor();
           
 $req = $bdd->prepare('SELECT sorties.id,sorties.timestamp ,conventions_sorties.nom,sorties.commentaire,sorties.adherent , sorties.classe classe
                        FROM sorties ,conventions_sorties
-                       WHERE conventions_sorties.id = sorties.id_convention  AND sorties.id_point_sortie = :id_point_sortie AND DATE(sorties.timestamp) BETWEEN :du AND :au AND classe = "sortiesc" ');
+                       WHERE conventions_sorties.id = sorties.id_convention  AND sorties.id_point_sortie = :id_point_sortie AND DATE(sorties.timestamp) BETWEEN :du AND :au AND classe = "sortiesc" 
+                       ORDER BY sorties.timestamp DESC');
 $req->execute(array('id_point_sortie' => $_GET['numero'], 'du' => $time_debut,'au' => $time_fin));
 
 
@@ -616,7 +618,8 @@ if($donnees['nid'] > 0){ $req->closeCursor();
           
 $req = $bdd->prepare('SELECT sorties.id,sorties.timestamp ,filieres_sortie.nom,sorties.commentaire , sorties.classe classe
                        FROM sorties ,filieres_sortie
-                       WHERE filieres_sortie.id = sorties.id_filiere  AND sorties.id_point_sortie = :id_point_sortie AND DATE(sorties.timestamp) BETWEEN :du AND :au AND classe = "sortiesr"');
+                       WHERE filieres_sortie.id = sorties.id_filiere  AND sorties.id_point_sortie = :id_point_sortie AND DATE(sorties.timestamp) BETWEEN :du AND :au AND classe = "sortiesr"
+                       ORDER BY sorties.timestamp DESC');
 $req->execute(array('id_point_sortie' => $_GET['numero'], 'du' => $time_debut,'au' => $time_fin));
 
 
@@ -811,7 +814,7 @@ if($donnees['nid'] > 0){ $req->closeCursor();
 $req = $bdd->prepare('SELECT sorties.id,sorties.timestamp , sorties.classe classe
                        FROM sorties 
                        WHERE sorties.id_point_sortie = :id_point_sortie AND DATE(sorties.timestamp) BETWEEN :du AND :au AND classe = "sortiesp"
-                        ');
+                       ORDER BY sorties.timestamp DESC');
 $req->execute(array('id_point_sortie' => $_GET['numero'], 'du' => $time_debut,'au' => $time_fin));
 
 
