@@ -796,14 +796,11 @@ if($donnees['nid'] > 0){ $req->closeCursor();
           <tr>
             <th>#</th>
             <th>Date de création</th>
-   
-            
             <th>Masse totale</th>
-            
-             <th>Auteur de la ligne</th>
+            <th>Auteur de la ligne</th>
             <th></th>
             <th>Modifié par</th>
-            <th>Le:</th>
+            <th>Le</th>
             
           </tr>
         </thead>
@@ -813,7 +810,8 @@ if($donnees['nid'] > 0){ $req->closeCursor();
           
 $req = $bdd->prepare('SELECT sorties.id,sorties.timestamp , sorties.classe classe
                        FROM sorties 
-                       WHERE sorties.id_point_sortie = :id_point_sortie AND DATE(sorties.timestamp) BETWEEN :du AND :au AND classe = "sortiesp" ');
+                       WHERE sorties.id_point_sortie = :id_point_sortie AND DATE(sorties.timestamp) BETWEEN :du AND :au AND classe = "sortiesp"
+                        ');
 $req->execute(array('id_point_sortie' => $_GET['numero'], 'du' => $time_debut,'au' => $time_fin));
 
 
@@ -996,24 +994,22 @@ if($donnees['nid'] > 0){ $req->closeCursor();
           <tr>
             <th>#</th>
             <th>Date de création</th>
-            
-            
+            <th>Commentaire</th>            
             <th>Masse totale</th>
-            
-             <th>Auteur de la ligne</th>
+            <th>Auteur de la ligne</th>
             <th></th>
             <th>Modifié par</th>
-            <th>Le:</th>
+            <th>Le</th>
             
           </tr>
         </thead>
         <tbody>
         <?php 
           
-$req = $bdd->prepare('SELECT sorties.id,sorties.timestamp ,sorties.adherent , sorties.classe classe
+$req = $bdd->prepare('SELECT sorties.id,sorties.timestamp ,sorties.commentaire , sorties.classe classe
                        FROM sorties ,conventions_sorties
                        WHERE  sorties.id_point_sortie = :id_point_sortie AND DATE(sorties.timestamp) BETWEEN :du AND :au AND classe = "sortiesd" 
-                       GROUP BY id
+                       GROUP BY id ORDER BY id DESC
                        ');
 $req->execute(array('id_point_sortie' => $_GET['numero'], 'du' => $time_debut,'au' => $time_fin));
 
@@ -1026,7 +1022,7 @@ $req->execute(array('id_point_sortie' => $_GET['numero'], 'du' => $time_debut,'a
             <tr> 
             <td><?php echo $donnees['id']?></td>
             <td><?php echo $donnees['timestamp']?></td>
-           
+            <td><?php echo $donnees['commentaire']?></td>
             
            <td> 
 
