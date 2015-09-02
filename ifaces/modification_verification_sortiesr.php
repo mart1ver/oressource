@@ -51,7 +51,13 @@ require_once('../moteur/dbconfig.php');
     </select>
       
   </div>
-  <textarea name="commentaire" id="commentaire" class="form-control"><?php 
+  <div class="col-md-3">
+
+    <label for="commentaire">Commentaire</label>
+
+           
+           
+ <textarea name="commentaire" id="commentaire" class="form-control"><?php 
             // On affiche le commentaire
             $reponse = $bdd->prepare('SELECT commentaire FROM sorties WHERE id = :id_sortie');
             $reponse->execute(array('id_sortie' => $_GET['nsortie']));
@@ -62,6 +68,12 @@ require_once('../moteur/dbconfig.php');
              }
             $reponse->closeCursor(); // Termine le traitement de la requête
             ?></textarea>
+
+
+
+    
+  
+ </div>
   <div class="col-md-3">
   
   <br>
