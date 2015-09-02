@@ -1009,7 +1009,7 @@ if($donnees['nid'] > 0){ $req->closeCursor();
 $req = $bdd->prepare('SELECT sorties.id,sorties.timestamp ,sorties.commentaire , sorties.classe classe
                        FROM sorties ,conventions_sorties
                        WHERE  sorties.id_point_sortie = :id_point_sortie AND DATE(sorties.timestamp) BETWEEN :du AND :au AND classe = "sortiesd" 
-                       GROUP BY id ORDER BY id DESC
+                       GROUP BY id ORDER BY sorties.timestamp DESC
                        ');
 $req->execute(array('id_point_sortie' => $_GET['numero'], 'du' => $time_debut,'au' => $time_fin));
 
