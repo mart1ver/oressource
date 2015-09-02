@@ -17,7 +17,47 @@ require_once('../moteur/dbconfig.php');
 
 
 
+<div class="row">
+   
+          <form action="../moteur/modification_verification_sortiesd_post.php?nsortie=<?php echo $_GET['nsortie']?>" method="post">
+            <input type="hidden" name ="id" id="id" value="<?php echo $_GET['nsortie']?>">
 
+<input type="hidden" name ="date1" id="date1" value="<?php echo $_POST['date1']?>">
+  <input type="hidden" name ="date2" id="date2" value="<?php echo $_POST['date2']?>">
+    <input type="hidden" name ="npoint" id="npoint" value="<?php echo $_POST['npoint']?>">
+
+
+  <div class="col-md-3">
+
+    <label for="commentaire">Commentaire</label>
+
+           
+           
+ <textarea name="commentaire" id="commentaire" class="form-control"><?php 
+            // On affiche le commentaire
+            $reponse = $bdd->prepare('SELECT commentaire FROM sorties WHERE id = :id_sortie');
+            $reponse->execute(array('id_sortie' => $_GET['nsortie']));
+            // On affiche chaque entree une à une
+            while ($donnees = $reponse->fetch()){
+     
+           echo $donnees['commentaire'];
+             }
+            $reponse->closeCursor(); // Termine le traitement de la requête
+            ?></textarea>
+
+
+
+    
+  
+ </div>
+  
+  <div class="col-md-3">
+  
+  <br>
+<button name="creer" class="btn btn-warning">Modifier</button>
+</div>
+</form>
+</div>
 
 </div>
 <h1>Pesées incluses dans cette sortie déchetterie</h1> 
