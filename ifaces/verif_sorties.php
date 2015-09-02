@@ -201,22 +201,19 @@ if($donnees['nid'] > 0){ $req->closeCursor();
           <tr>
             <th>#</th>
             <th>Date de création</th>
-            <th>type de collecte:</th>
-            <th>Adhérent?:</th>
-            
+            <th>Type de collecte</th>
+            <th>Commentaire</th>
             <th>Masse totale</th>
-            
-             <th>Auteur de la ligne</th>
+            <th>Auteur de la ligne</th>
             <th></th>
             <th>Modifié par</th>
             <th>Le:</th>
-            
           </tr>
         </thead>
         <tbody>
         <?php 
           
-$req = $bdd->prepare('SELECT sorties.id,sorties.timestamp ,type_sortie.nom,sorties.adherent ,sorties.classe classe 
+$req = $bdd->prepare('SELECT sorties.id,sorties.timestamp ,type_sortie.nom,sorties.commentaire ,sorties.classe classe 
                        FROM sorties ,type_sortie
                        WHERE type_sortie.id = sorties.id_type_sortie  AND sorties.id_point_sortie = :id_point_sortie AND DATE(sorties.timestamp) BETWEEN :du AND :au');
 $req->execute(array('id_point_sortie' => $_GET['numero'], 'du' => $time_debut,'au' => $time_fin));
@@ -231,7 +228,7 @@ $req->execute(array('id_point_sortie' => $_GET['numero'], 'du' => $time_debut,'a
             <td><?php echo $donnees['id']?></td>
             <td><?php echo $donnees['timestamp']?></td>
             <td><?php echo $donnees['nom']?></td>
-            <td><?php echo $donnees['adherent']?></td>
+            <td><?php echo $donnees['commentaire']?></td>
             
            <td> 
 
