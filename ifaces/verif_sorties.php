@@ -207,7 +207,7 @@ if($donnees['nid'] > 0){ $req->closeCursor();
             <th>Auteur de la ligne</th>
             <th></th>
             <th>Modifié par</th>
-            <th>Le:</th>
+            <th>Le</th>
           </tr>
         </thead>
         <tbody>
@@ -401,21 +401,20 @@ if($donnees['nid'] > 0){ $req->closeCursor();
           <tr>
             <th>#</th>
             <th>Date de création</th>
-            <th>Nom du partenaire:</th>
-            
+            <th>Nom du partenaire</th>
+            <th>Commentaire</th>
             <th>Masse totale</th>
-            
-             <th>Auteur de la ligne</th>
+            <th>Auteur de la ligne</th>
             <th></th>
             <th>Modifié par</th>
-            <th>Le:</th>
+            <th>Le</th>
             
           </tr>
         </thead>
         <tbody>
         <?php 
           
-$req = $bdd->prepare('SELECT sorties.id,sorties.timestamp ,conventions_sorties.nom,sorties.adherent , sorties.classe classe
+$req = $bdd->prepare('SELECT sorties.id,sorties.timestamp ,conventions_sorties.nom,sorties.commentaire,sorties.adherent , sorties.classe classe
                        FROM sorties ,conventions_sorties
                        WHERE conventions_sorties.id = sorties.id_convention  AND sorties.id_point_sortie = :id_point_sortie AND DATE(sorties.timestamp) BETWEEN :du AND :au AND classe = "sortiesc" ');
 $req->execute(array('id_point_sortie' => $_GET['numero'], 'du' => $time_debut,'au' => $time_fin));
@@ -430,6 +429,7 @@ $req->execute(array('id_point_sortie' => $_GET['numero'], 'du' => $time_debut,'a
             <td><?php echo $donnees['id']?></td>
             <td><?php echo $donnees['timestamp']?></td>
             <td><?php echo $donnees['nom']?></td>
+            <td><?php echo $donnees['commentaire']?></td>
             
            <td> 
 
