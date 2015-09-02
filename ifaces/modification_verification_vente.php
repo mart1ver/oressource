@@ -17,9 +17,9 @@ require_once('../moteur/dbconfig.php');
    
           <form action="../moteur/modification_verification_vente_post.php?nvente=<?php echo $_GET['nvente']?>" method="post">
       <input type="hidden" name ="id" id="id" value="<?php echo $_GET['nvente']?>">
-<input type="hidden" name ="date1" id="date1" value="<?php echo $_POST['date1']?>">
-  <input type="hidden" name ="date2" id="date2" value="<?php echo $_POST['date2']?>">
-    <input type="hidden" name ="npoint" id="npoint" value="<?php echo $_POST['npoint']?>">
+      <input type="hidden" name ="date1" id="date1" value="<?php echo $_POST['date1']?>">
+      <input type="hidden" name ="date2" id="date2" value="<?php echo $_POST['date2']?>">
+      <input type="hidden" name ="npoint" id="npoint" value="<?php echo $_POST['npoint']?>">
  
 
 

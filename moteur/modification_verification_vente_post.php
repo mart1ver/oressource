@@ -25,7 +25,7 @@ catch(Exception $e)
 // mot de passe crypté md5 
 
 // Insertion du post à l'aide d'une requête préparée
-$req = $bdd->prepare('UPDATE vente SET commentaire =:commentaire , id_last_hero = :id_last_hero, last_hero_timestamp = NOW()
+$req = $bdd->prepare('UPDATE ventes SET commentaire =:commentaire , id_last_hero = :id_last_hero, last_hero_timestamp = NOW()
 	WHERE id = :id');
 
 
