@@ -24,9 +24,13 @@ require_once('../moteur/dbconfig.php');
 
 
 
+
+
+
+
  <div class="col-md-3">
 
-    <label for="commentaire">Commentaire</label>
+    <label for="commentaire">Commentaire:</label>
 
            
            
@@ -50,6 +54,33 @@ require_once('../moteur/dbconfig.php');
   <div class="col-md-3">
   
   <br>
+
+
+  <div class="col-md-3">
+
+<label for="moyen">Moyen de paiement:</label>
+<select name="moyen" id="moyen" class="form-control " required>
+            <?php 
+            // On affiche une liste deroulante des type de collecte visibles
+            $reponse = $bdd->query('SELECT * FROM moyens_paiement WHERE visible = "oui"');
+            // On affiche chaque entree une à une
+            while ($donnees = $reponse->fetch())
+            {
+              if ($_POST['moyen'] == $donnees['nom'])  // SI on a pas de message d'erreur
+{
+  ?>
+    <option value = "<?php echo$donnees['id']?>" selected ><?php echo$donnees['nom']?></option>
+<?php
+} else {
+            ?>
+
+      <option value = "<?php echo$donnees['id']?>" ><?php echo$donnees['nom']?></option>
+            <?php }}
+            $reponse->closeCursor(); // Termine le traitement de la requête
+            ?>
+    </select>
+      
+  </div>
 <button name="creer" class="btn btn-warning">Modifier</button>
 </div>
 </form>

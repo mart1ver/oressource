@@ -326,7 +326,7 @@ echo $donnees4['pto'];
  if ( $rembo == 'non'){?>
 
               <form action="modification_verification_vente.php?nvente=<?php echo $donnees['id']?>" method="post">
-
+<input type="hidden" name ="moyen" id="moyen" value="<?php echo $donnees['moyen']?>">
 <input type="hidden" name ="id" id="id" value="<?php echo $donnees['id']?>">
 <input type="hidden" name ="date1" id="date1" value="<?php echo $_GET['date1']?>">
 <input type="hidden" name ="date2" id="date2" value="<?php echo $_GET['date2']?>">
@@ -340,7 +340,7 @@ echo $donnees4['pto'];
 <?php } if (  $rembo == 'oui'){?>
 
               <form action="modification_verification_remboursement.php?nvente=<?php echo $donnees['id']?>" method="post">
-
+<input type="hidden" name ="moyen" id="moyen" value="<?php echo $donnees['moyen']?>">
 <input type="hidden" name ="id" id="id" value="<?php echo $donnees['id']?>">
 <input type="hidden" name ="date1" id="date1" value="<?php echo $_GET['date1']?>">
 <input type="hidden" name ="date2" id="date2" value="<?php echo $_GET['date2']?>">
