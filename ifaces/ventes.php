@@ -557,9 +557,9 @@ if (isNaN(parseInt(document.getElementById('ptot').value)) )
           else
           {
           document.getElementById('ptot').value=parseFloat(document.getElementById('ptot').value)+parseFloat(document.getElementById('prix').value*document.getElementById('quantite').value); 
-       if(document.getElementById('rendub').value -  document.getElementById('rendua').value > 0){
+
           document.getElementById('rendua').value = document.getElementById('ptot').value 
-        }
+        
           }          
              document.getElementById('liste').innerHTML += '<li class="list-group-item" name="ligne'+parseInt(document.getElementById('nlignes').value)+'" id="ligne'+parseInt(document.getElementById('nlignes').value)+'"><span class="badge">'+parseFloat(parseFloat(document.getElementById('prix').value)*parseFloat(document.getElementById('quantite').value)).toFixed(2)+'€'+'</span><span class="glyphicon glyphicon-remove" aria-hidden="true"    onclick="javascirpt:suprime('+"'ligne"+parseInt(document.getElementById('nlignes').value)+"');"+'"></span>&nbsp;&nbsp;'+document.getElementById('quantite').value+' * '+document.getElementById('nom_objet0').value
              +'<input type="hidden"  id="tid_type_objet'+parseInt(document.getElementById('nlignes').value)+'" name="tid_type_objet'+parseInt(document.getElementById('nlignes').value)+'"value="'+document.getElementById('id_type_objet').value+'">'
@@ -611,9 +611,9 @@ if (isNaN(parseInt(document.getElementById('narticles').value)) )
 if (isNaN(parseInt(document.getElementById('ptot').value)) ) 
           { 
           document.getElementById('ptot').value = document.getElementById('prix').value;
-          if(document.getElementById('rendub').value -  document.getElementById('rendua').value > 0){
+       
           document.getElementById('rendua').value = document.getElementById('ptot').value ;
-        }
+       
           } 
           else
           {
@@ -637,9 +637,10 @@ if (isNaN(parseInt(document.getElementById('ptot').value)) )
 
       }
       if(document.getElementById('rendub').value -  document.getElementById('rendua').value > 0){
-      document.getElementById('rendua').value = document.getElementById('ptot').value ;
-      document.getElementById('renduc').value = document.getElementById('rendub').value -  document.getElementById('rendua').value;
-    }
+       document.getElementById('renduc').value = document.getElementById('rendub').value -  document.getElementById('rendua').value;
+      }
+     
+    document.getElementById('rendua').value = document.getElementById('ptot').value ;
 
                   }
 
