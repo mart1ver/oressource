@@ -384,7 +384,7 @@ $(document).ready(function(){
 function rendu() 
 
 {
-  if(rendub > 0){
+  if(document.getElementById('rendub').value > 0){
 
 
 document.getElementById('renduc').value = document.getElementById('rendub').value -  document.getElementById('rendua').value;
