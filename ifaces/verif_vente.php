@@ -186,7 +186,7 @@ $time_fin = $time_fin." 23:59:59";
             <th>Auteur de la ligne</th>
             <th></th>
             <th>Modifié par</th>
-            <th style="width:100px">Le:</th>
+            <th style="width:100px">Le</th>
             
           </tr>
         </thead>
