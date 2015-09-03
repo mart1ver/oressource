@@ -162,32 +162,7 @@ $('input[name="my-checkbox"]').on('switchChange.bootstrapSwitch', function(event
   <button type="button" class="btn btn-warning">Rendu Monnaie</button> 
     
   <div class="collapse">
-    Lorem ipsum dolor sit amet, consectetur adipisicing elit,
-    sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-    quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-  </div>
-</div>
-
-<script>
-$(document).ready(function(){
-    
-    $(".btn-warning").click(function(){
-        $(".collapse").collapse('toggle');
-    });
-});
-</script>
-
-
-      <div class="panel panel-info">
-        <div class="panel-heading">
-    <h2 class="panel-title"id="rendu">Rendu monnaie:</h2>
-  </div>
-  <div class="panel-body" id="panelrendu"> 
-   
-    
-
-
-<ul class="list-group list-group-item-warning">
+    <ul class="list-group list-group-item-warning">
   <li class="list-group-item">
 
 Somme due:
@@ -210,10 +185,28 @@ Réglement
 
   </li>
 </ul>
+  </div>
+</div>
+
+<script>
+$(document).ready(function(){
+    
+    $(".btn-warning").click(function(){
+        $(".collapse").collapse('toggle');
+    });
+});
+</script>
 
 
+      <div class="panel panel-info">
+        <div class="panel-heading">
+    <h2 class="panel-title"id="rendu">Rendu monnaie:</h2>
+  </div>
+  <div class="panel-body" id="panelrendu"> 
+   
     
-    
+
+  
 
 
 
