@@ -160,7 +160,7 @@ $('input[name="my-checkbox"]').on('switchChange.bootstrapSwitch', function(event
 
   
   <button type="button" class="btn btn-warning">Rendu Monnaie</button> 
-    
+    <br>
   <div class="collapse">
     <ul class="list-group list-group-item-warning">
   <li class="list-group-item">
