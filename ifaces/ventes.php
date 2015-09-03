@@ -198,21 +198,7 @@ $(document).ready(function(){
 </script>
 
 
-      <div class="panel panel-info">
-        <div class="panel-heading">
-    <h2 class="panel-title"id="rendu">Rendu monnaie:</h2>
-  </div>
-  <div class="panel-body" id="panelrendu"> 
-   
-    
-
-  
-
-
-
-   
-    </div>
-    </div>
+ 
 
 
     </div>
