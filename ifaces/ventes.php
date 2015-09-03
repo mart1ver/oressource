@@ -157,7 +157,7 @@ $('input[name="my-checkbox"]').on('switchChange.bootstrapSwitch', function(event
   </div>
 
 
-<div class="container">
+
   
   <button type="button" class="btn btn-warning">Rendu Monnaie</button> 
     
@@ -186,7 +186,7 @@ Réglement
   </li>
 </ul>
   </div>
-</div>
+
 
 <script>
 $(document).ready(function(){
