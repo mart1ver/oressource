@@ -157,6 +157,26 @@ $('input[name="my-checkbox"]').on('switchChange.bootstrapSwitch', function(event
   </div>
 
 
+<div class="container">
+  
+  <button type="button" class="btn btn-warning">Rendu Monnaie</button> 
+    
+  <div class="collapse">
+    Lorem ipsum dolor sit amet, consectetur adipisicing elit,
+    sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+    quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+  </div>
+</div>
+
+<script>
+$(document).ready(function(){
+    
+    $(".btn-warning").click(function(){
+        $(".collapse").collapse('toggle');
+    });
+});
+</script>
+
 
       <div class="panel panel-info">
         <div class="panel-heading">
