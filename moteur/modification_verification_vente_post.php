@@ -25,12 +25,12 @@ catch(Exception $e)
 // mot de passe crypté md5 
 
 // Insertion du post à l'aide d'une requête préparée
-$req = $bdd->prepare('UPDATE ventes SET commentaire =:commentaire , id_last_hero = :id_last_hero, last_hero_timestamp = NOW()
+$req = $bdd->prepare('UPDATE ventes SET commentaire =:commentaire , id_last_hero = :id_last_hero, last_hero_timestamp = NOW(), id_moyen_paiement =:id_moyen_paiement
 	WHERE id = :id');
 
 
 
-$req->execute(array('id' => $_POST['id'],'id_last_hero' => $_SESSION['id'],'commentaire' => $_POST['commentaire']));
+$req->execute(array('id' => $_POST['id'],'id_last_hero' => $_SESSION['id'],'commentaire' => $_POST['commentaire'],'id_moyen_paiement' => $_POST['moyen']));
 
   $req->closeCursor();
 
