@@ -51,10 +51,6 @@ require_once('../moteur/dbconfig.php');
     
   
  </div>
-  <div class="col-md-3">
-  
-  <br>
-
 
   <div class="col-md-3">
 
@@ -81,6 +77,12 @@ require_once('../moteur/dbconfig.php');
     </select>
       
   </div>
+  <div class="col-md-3">
+  
+  <br>
+
+
+ 
 <button name="creer" class="btn btn-warning">Modifier</button>
 </div>
 </form>
