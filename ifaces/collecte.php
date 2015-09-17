@@ -155,7 +155,7 @@ function encaisse() {
 <div class="panel panel-info" >
         <div class="panel-heading">
           <form action="../moteur/collecte_post.php" method="post" id="formulaire">
-    <h3 class="panel-title"><label>Bon d'apport:               <span class="badge" id="massetot" style="background-color:#026fe8" style="align:right;">0</span> Kgs.</label></h3>
+    <h3 class="panel-title"><label>Bon d'apport:               <span class="badge" id="massetot" style="align:right;">0</span> Kgs.</label></h3>
   </div>
   <?php if ($_SESSION['saisiec'] == 'oui' AND (strpos($_SESSION['niveau'], 'e') !== false) ){ ?>
   <br>
