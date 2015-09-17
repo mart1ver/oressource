@@ -154,7 +154,7 @@ function encaisse() {
 <div class="panel panel-info" >
         <div class="panel-heading">
           <form action="../moteur/collecte_post.php" method="post" id="formulaire">
-    <h3 class="panel-title"><label>Bon d'apport:</label></h3>
+    <h3 class="panel-title"><label>Bon d'apport:</label></h3> <span class="badge" id="massetot" style="background-color:#026fe8">0 Kgs.</span>
   </div>
   <?php if ($_SESSION['saisiec'] == 'oui' AND (strpos($_SESSION['niveau'], 'e') !== false) ){ ?>
       <p align="center">   Date de l'apport:  <input type="date" id="antidate" name="antidate" style="width: 130px;height:20px;" value=<?php echo date("Y-m-d") ?>>
