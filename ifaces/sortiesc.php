@@ -94,6 +94,7 @@ function tdechet_write(y,z)
  {
           if (document.getElementById("number").value > 0 && document.getElementById("number").value < <?php echo $pesee_max;?>) 
           {
+            document.getElementById("massetot").innerText = parseFloat(document.getElementById("massetot").innerText) + parseFloat(document.getElementById("number").value) ;
              document.getElementById(y).innerText = parseFloat(document.getElementById(y).innerText) + parseFloat(document.getElementById("number").value)  ;
               document.getElementById(z).value = parseFloat(document.getElementById(z).value) + parseFloat(document.getElementById("number").value)  ;
              document.getElementById("number").value = "";  
@@ -208,7 +209,7 @@ function tdechet_clear()
 
 <div class="panel panel-info">
         <div class="panel-heading">
-    <h3 class="panel-title"><label>Bon de sortie hors-boutique:</label></h3>
+    <h3 class="panel-title"><label>Bon de sortie hors-boutique: <span id="massetot" >0</span> Kgs.</label></h3>
   </div>
   <?php if ($_SESSION['saisiec'] == 'oui' AND (strpos($_SESSION['niveau'], 'e') !== false) ){ ?>
       <p align="center">   Date de la sortie:  <input type="date" id="antidate" name="antidate" style="width: 130px;height:20px;" value=<?php echo date("Y-m-d") ?>>
