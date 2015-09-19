@@ -38,7 +38,7 @@ else{
 
 }
 
-header("Location:../ifaces/ventes.php?numero=".$_GET['numero']."&nom=".$_GET['nom']."&adresse=".$_GET['adresse']);
+header("Location:../ifaces/ventes.php?numero=".$_GET['numero']."&msg=mauvais mot de passe");
 
 }
 else 

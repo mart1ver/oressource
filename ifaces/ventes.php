@@ -359,7 +359,7 @@ $(document).ready(function(){
 </button>
 <div class="collapse" id="collapserembou">
   <div class="well">
-    <form action="../moteur/verif_remb_post.php" id="champpassrmb" method="post">
+    <form action="../moteur/verif_remb_post.php?numero=<?php echo $_GET['numero'] ?>" id="champpassrmb" method="post">
     <br>
      <div class="input-group">
       <input name="passrmb" id="passrmb" type="password" class="form-control" placeholder="Mot de passe...">
