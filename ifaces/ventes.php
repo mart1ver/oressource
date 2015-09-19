@@ -353,17 +353,22 @@ $(document).ready(function(){
 <?php /*
     <a href="remboursement.php?numero=<?php echo $_GET['numero']?>&nom=<?php echo $_GET['nom']?>&adresse=<?php echo $_GET['adresse']?>"> 
     */ ?>
-    <button type="button"  class="btn btn-danger pull-right rmb" onclick="rembou();" >
+    <button type="button"  class="btn btn-danger pull-right " onclick="rembou();" >
     Remboursement
     </button>
    
 
-  <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+  <button class="btn btn-danger  pull-right" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
   Remboursement 
 </button>
 <div class="collapse" id="collapseExample">
   <div class="well">
-    ...
+     <div class="input-group">
+      <input type="password" class="form-control" placeholder="Mot de passe...">
+      <span class="input-group-btn">
+        <button class="btn btn-default" type="button">OK</button>
+      </span>
+    </div><!-- /input-group -->
   </div>
 </div>
 
