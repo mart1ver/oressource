@@ -37,7 +37,7 @@
                 $reponse->closeCursor(); // Termine le traitement de la requête
 
 
-if ($_POST['passrmb'] == $code){
+if ($_POST['passrmb'] = $code){
 
 //header("Location:../ifaces/remboursement.php?numero=".$_GET['numero']."&nom=".$_GET['nom']."&adresse=".$_GET['adresse']);
 
