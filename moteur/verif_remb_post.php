@@ -43,11 +43,8 @@ header("Location:../ifaces/remboursement.php?numero=".$_GET['numero']);
 
 }
 else{
-echo $code;
-echo "<br>";
-echo $_POST['passrmb'];
-echo $_GET['numero'];
-//header("Location:../ifaces/ventes.php?numero=".$_GET['numero']."&err=mauvais mot de passe");
+  
+header("Location:../ifaces/ventes.php?numero=".$_GET['numero']."&err=mauvais mot de passe");
 
 }
 
