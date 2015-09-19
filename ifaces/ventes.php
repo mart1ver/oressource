@@ -356,13 +356,16 @@ $(document).ready(function(){
     <button type="button"  class="btn btn-danger pull-right " onclick="rembou();" >
     Remboursement
     </button>
-   
+   <br>
+
+   <br>
 
   <button class="btn btn-danger  pull-right" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
   Remboursement 
 </button>
 <div class="collapse" id="collapseExample">
   <div class="well">
+    <br>
      <div class="input-group">
       <input type="password" class="form-control" placeholder="Mot de passe...">
       <span class="input-group-btn">
