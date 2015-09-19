@@ -364,7 +364,7 @@ $(document).ready(function(){
      <div class="input-group">
       <input name="passrmb" id="passrmb" type="password" class="form-control" placeholder="Mot de passe...">
       <span class="input-group-btn">
-        <button class="btn btn-default" type="button">OK</button>
+        <button class="btn btn-default" >OK</button>
       </span>
     </div><!-- /input-group -->
   </form>
