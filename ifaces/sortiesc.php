@@ -4,7 +4,7 @@ require_once('../moteur/dbconfig.php');
 
 if($_SESSION['affss'] !== "oui"){
 
-   header('Location:../moteur/destroy.php');
+   header("Location:sortiesr.php?numero=" . $_GET['numero']);
 }
 
 //Vérification des autorisations de l'utilisateur et des variables de session requises pour l'affichage de cette page: 
