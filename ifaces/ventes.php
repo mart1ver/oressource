@@ -353,7 +353,7 @@ $(document).ready(function(){
 <?php /*
     <a href="remboursement.php?numero=<?php echo $_GET['numero']?>&nom=<?php echo $_GET['nom']?>&adresse=<?php echo $_GET['adresse']?>"> 
     */ ?>
-    <button type="button"  class="btn btn-danger pull-right" onclick="rembou();" >
+    <button type="button"  class="btn btn-danger pull-right rmb" onclick="rembou();" >
     Remboursement
     </button>
    
@@ -390,8 +390,8 @@ Somme due:
 <script>
 $(document).ready(function(){
     
-    $(".btn-danger").click(function(){
-        $(".collapse").collapse2('toggle');
+    $(".rmb").click(function(){
+        $(".collapse2").collapse('toggle');
     });
 });
 </script>
