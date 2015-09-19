@@ -390,7 +390,7 @@ Somme due:
 <script>
 $(document).ready(function(){
     
-    $(".btn-warning").click(function(){
+    $(".btn-danger").click(function(){
         $(".collapse").collapse('toggle');
     });
 });
