@@ -353,25 +353,21 @@ $(document).ready(function(){
 <?php /*
     <a href="remboursement.php?numero=<?php echo $_GET['numero']?>&nom=<?php echo $_GET['nom']?>&adresse=<?php echo $_GET['adresse']?>"> 
     */ ?>
-    <button type="button"  class="btn btn-danger pull-right " onclick="rembou();" >
-    Remboursement
-    </button>
-   <br>
 
-   <br>
-
-  <button class="btn btn-danger  pull-right" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+  <button class="btn btn-danger  pull-right" type="button" data-toggle="collapse" data-target="#collapserembou" aria-expanded="false" aria-controls="collapseExample">
   Remboursement 
 </button>
-<div class="collapse" id="collapseExample">
+<div class="collapse" id="collapserembou">
   <div class="well">
+    <form action="../moteur/verif_remb_post.php" id="champpassrmb" method="post">
     <br>
      <div class="input-group">
-      <input type="password" class="form-control" placeholder="Mot de passe...">
+      <input name="passrmb" id="passrmb" type="password" class="form-control" placeholder="Mot de passe...">
       <span class="input-group-btn">
         <button class="btn btn-default" type="button">OK</button>
       </span>
     </div><!-- /input-group -->
+  </form>
   </div>
 </div>
 
@@ -407,25 +403,9 @@ document.getElementById('renduc').value = document.getElementById('rendub').valu
 }
 }
 
-function rembou() {
-  var code_soumis = prompt('Veuillez renseigner le code de remboursement');
-var codi = <?php 
-            // On recupère tout le contenu de la table point de collecte
-            $reponse = $bdd->query('SELECT cr FROM `description_structure`');
- 
-           // On affiche chaque entree une à une
-           while ($donnees = $reponse->fetch())
-           {
-          echo $donnees['cr'];
-}
-                $reponse->closeCursor(); // Termine le traitement de la requête
-                ?>;
- if (code_soumis == codi) {
-         window.location = "remboursement.php?numero=<?php echo $_GET['numero']?>&nom=<?php echo $_GET['nom']?>&adresse=<?php echo $_GET['adresse']?>";
-       }else{
-       alert("Code de remboursement non valide!");
-     }
-}
+
+
+
 var what;
 function fokus(that) {
 what = that;
