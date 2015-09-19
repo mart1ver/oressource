@@ -391,7 +391,7 @@ Somme due:
 $(document).ready(function(){
     
     $(".btn-danger").click(function(){
-        $(".collapse2").collapse('toggle');
+        $(".collapse2").collapse2('toggle');
     });
 });
 </script>
