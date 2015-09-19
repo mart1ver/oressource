@@ -39,15 +39,17 @@
 
 if ($_POST['passrmb'] == $code){
 
-header("Location:../ifaces/remboursement.php?numero=".$_GET['numero']."&nom=".$_GET['nom']."&adresse=".$_GET['adresse']);
+//header("Location:../ifaces/remboursement.php?numero=".$_GET['numero']."&nom=".$_GET['nom']."&adresse=".$_GET['adresse']);
 
 }
 else{
 
 
 }
-
-header("Location:../ifaces/ventes.php?numero=".$_GET['numero']."&msg=mauvais mot de passe");
+echo $code;
+echo "<br>"
+echo $_POST['passrmb']
+//header("Location:../ifaces/ventes.php?numero=".$_GET['numero']."&msg=mauvais mot de passe");
 
 }
 else 
