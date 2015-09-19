@@ -47,8 +47,8 @@ else{
 
 }
 echo $code;
-echo "<br>"
-echo $_POST['passrmb']
+echo "<br>";
+echo $_POST['passrmb'];
 //header("Location:../ifaces/ventes.php?numero=".$_GET['numero']."&msg=mauvais mot de passe");
 
 }
