@@ -39,7 +39,7 @@
 
 if ($_POST['passrmb'] == $code){
 
-//header("Location:../ifaces/remboursement.php?numero=".$_GET['numero']);
+header("Location:../ifaces/remboursement.php?numero=".$_GET['numero']);
 
 }
 else{
