@@ -358,43 +358,14 @@ $(document).ready(function(){
     </button>
    
 
-  <button type="button" class="btn btn-danger"> Remboursement</button> 
-    <br>
-  <div class="collapse2">
-    <ul class="list-group list-group-item-danger">
-  <li class="list-group-item">
-
-Somme due:
-  <input type="text" class="form-control " style=" height:22px;"  placeholder="€" name="rendua" id="rendua"  disabled>
-
-
-  </li>
-  <li class="list-group-item list-group-item-success">
-
-<b>Réglement</b>
-  <input type="text" class="form-control" style=" height:25px;"  placeholder="€" name="rendub" id="rendub"  onfocus="fokus(this)" oninput="rendu()">
-
-
-  </li>
-  <li class="list-group-item list-group-item-danger">
-    
-<b>A rendre</b>
-  <input type="text" class="form-control" style=" height:22px;" placeholder="€"  name="renduc" id="renduc"  disabled>
-
-
-  </li>
-</ul>
+  <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+  Remboursement 
+</button>
+<div class="collapse" id="collapseExample">
+  <div class="well">
+    ...
   </div>
-
-
-<script>
-$(document).ready(function(){
-    
-    $(".rmb").click(function(){
-        $(".collapse2").collapse('toggle');
-    });
-});
-</script>
+</div>
 
     </ul>
 
