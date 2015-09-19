@@ -973,7 +973,7 @@ $req4->execute(array('id_sortie' => $donnees['id']));
           
 $req = $bdd->prepare('SELECT COUNT(id) nid
                         FROM `sorties` 
-                       WHERE sorties.id_point_sortie = :id_point_sortie AND DATE(sorties.timestamp) BETWEEN :du AND :au AND classe = "sortiesc" ');
+                       WHERE sorties.id_point_sortie = :id_point_sortie AND DATE(sorties.timestamp) BETWEEN :du AND :au AND classe = "sortiesd" ');
 $req->execute(array('id_point_sortie' => $_GET['numero'], 'du' => $time_debut,'au' => $time_fin));
 
 
@@ -1162,7 +1162,7 @@ $req4->execute(array('id_sortie' => $donnees['id']));
        </div>
 </div>
       <?php
-    } else{echo 'Pas de sorties en direction des partenaires sur cette période<br><br>';
+    } else{echo 'Pas de sorties en direction de la dechetterie sur cette periode<br><br>';
     $req->closeCursor(); }
 }
 ?>
