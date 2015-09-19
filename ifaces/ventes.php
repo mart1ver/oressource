@@ -360,7 +360,7 @@ $(document).ready(function(){
 
   <button type="button" class="btn btn-danger"> Remboursement</button> 
     <br>
-  <div class="collapse">
+  <div class="collapse2">
     <ul class="list-group list-group-item-danger">
   <li class="list-group-item">
 
@@ -391,7 +391,7 @@ Somme due:
 $(document).ready(function(){
     
     $(".btn-danger").click(function(){
-        $(".collapse").collapse('toggle');
+        $(".collapse2").collapse('toggle');
     });
 });
 </script>
