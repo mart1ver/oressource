@@ -2,6 +2,11 @@
 
 require_once('../moteur/dbconfig.php');
 
+if($_SESSION['affss'] !== "oui"){
+
+   header('Location:../moteur/destroy.php');
+}
+
 //Vérification des autorisations de l'utilisateur et des variables de session requises pour l'affichage de cette page: 
 if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 's'.$_GET['numero']) !== false))
       {include "tete.php";
@@ -178,7 +183,7 @@ function tdechet_clear()
 
  <ul class="nav nav-tabs">
   <?php if ($_SESSION['affsp'] == "oui"){ ?><li><a href="<?php echo  "sortiesp.php?numero=" . $_GET['numero']?>">Poubelles</a></li><?php } ?>
-  <?php if ($_SESSION['affss'] == "oui"){ ?><li class="active"><a>Sorties partenaires</a></li><?php } else {header('Location:../ifaces/sortiesr.php?numero='. $_GET['numero']);} ?>
+  <?php if ($_SESSION['affss'] == "oui"){ ?><li class="active"><a>Sorties partenaires</a></li><?php } ?>
   <?php if ($_SESSION['affsr'] == "oui"){ ?><li><a href="<?php echo  "sortiesr.php?numero=" . $_GET['numero']?>">Recyclage</a></li><?php } ?>
   <?php if ($_SESSION['affsd'] == "oui"){ ?> <li><a href="<?php echo  "sorties.php?numero=" . $_GET['numero']?>">Don</a></li><?php } ?>
   <?php if ($_SESSION['affsde'] == "oui"){ ?><li><a href="<?php echo  "sortiesd.php?numero=" . $_GET['numero']?>">Déchetterie</a></li><?php } ?>
