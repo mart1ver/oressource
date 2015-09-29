@@ -2,7 +2,7 @@
 
 //Vérification des autorisations de l'utilisateur et des variables de session requises pour l'utilisation de cette fonction:
  if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 'j') !== false))
-
+{
 //martin vert
 // Connexion à la base de données
 try
