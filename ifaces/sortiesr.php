@@ -2,6 +2,12 @@
 
 require_once('../moteur/dbconfig.php');
 
+if(  $_SESSION['affsd'] !== "oui" && $_SESSION['affss'] !== "oui" && $_SESSION['affsde'] !== "oui" && $_SESSION['affsp'] !== "oui" && $_SESSION['affsr'] !== "oui"){
+
+   header("Location:index.php");
+}
+
+
 if($_SESSION['affsr'] !== "oui"){
 
    header("Location:sorties.php?numero=" . $_GET['numero']);
