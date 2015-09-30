@@ -7,7 +7,7 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
       {include "tete.php";?>
 
 
-<div class="panel-body" id="divID">
+<div class="panel-body" >
       <fieldset>
       <legend>
              <?php 
@@ -43,7 +43,7 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
       <div class="col-md-2 col-md-offset-2" style="width: 330px;" >
      
 
-       <div class="panel panel-danger">
+       <div class="panel panel-danger" id="divID">
         <div class="panel-heading">
     <label class="panel-title">Remboursement:</label>
     <span class ="badge" id="recaptotal"  style="float:right;">0€
