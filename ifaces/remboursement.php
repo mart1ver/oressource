@@ -228,7 +228,7 @@ var footstr = "TVA à <?php echo $_SESSION['taux_tva'] ?>%"+" Prix H.T. ="+parse
 var footstr = "Association non assujettie à la TVA.</body></small> ";
   <?php } ?>
       var comstr = "<ul id='liste' class='list-group'><li class='list-group-item'><b>";
-      comstr += document.getElementById('commentaire').value;
+      comstr += document.getElementById('comm').value;
       comstr += "</b></li></ul>";
       var newstr = document.all.item(divID).innerHTML;
       var oldstr = document.body.innerHTML;
@@ -242,7 +242,7 @@ var footstr = "Association non assujettie à la TVA.</body></small> ";
           //puis encaisse
            if ((parseInt(document.getElementById('nlignes').value) >= 1) && ((document.getElementById('quantite').value == "")||(document.getElementById('quantite').value == "0"))&&((document.getElementById('prix').value == "")||(document.getElementById('prix').value == "0")) )
           { 
-            document.getElementById('comm').value = document.getElementById('commentaire').value
+            document.getElementById('comm').value = document.getElementById('comm').value
             
           document.getElementById("formulaire").submit();
           }
