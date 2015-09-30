@@ -159,9 +159,9 @@ $('input[name="my-checkbox"]').on('switchChange.bootstrapSwitch', function(event
 
 
   
-  <button type="button" class="btn btn-warning">Rendu Monnaie</button> 
+  <button type="button" class="btn btn-warning data-target="#collapserendu" aria-expanded="false" aria-controls="collapserendu"">Rendu Monnaie</button> 
     <br>
-  <div class="collapse">
+  <div class="collapse" id="collapserendu">
     <ul class="list-group list-group-item-warning">
   <li class="list-group-item">
 
@@ -188,14 +188,7 @@ Somme due:
   </div>
 
 
-<script>
-$(document).ready(function(){
-    
-    $(".btn-warning").click(function(){
-        $(".collapse").collapse('toggle');
-    });
-});
-</script>
+
 
 
  
