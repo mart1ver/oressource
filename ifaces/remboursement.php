@@ -210,6 +210,47 @@ what = that;
 }
 
 
+function printdiv(divID)
+    {
+if (parseInt(document.getElementById('nlignes').value) >= 1) 
+          { 
+            
+      
+      var headstr = "<html><head><title></title></head><body><small>";
+      
+ <?php if ($_SESSION['tva_active'] == 'oui'){?>
+  var prixtot =  parseFloat(document.getElementById('ptot').value).toFixed(2);
+  var prixht = parseFloat(prixtot).toFixed(2) / ( 1+parseFloat(<?php echo $_SESSION['taux_tva'] ?>).toFixed(2)/100 );
+  var ptva = parseFloat(prixtot).toFixed(2)-parseFloat(prixht).toFixed(2)
+var footstr = "TVA à <?php echo $_SESSION['taux_tva'] ?>%"+" Prix H.T. ="+parseFloat(prixht).toFixed(2)+"€ TVA="+parseFloat(ptva).toFixed(2)+"€";
+<?php
+  }else{?>
+var footstr = "Association non assujettie à la TVA.</body></small> ";
+  <?php } ?>
+      var comstr = "<ul id='liste' class='list-group'><li class='list-group-item'><b>";
+      comstr += document.getElementById('commentaire').value;
+      comstr += "</b></li></ul>";
+      var newstr = document.all.item(divID).innerHTML;
+      var oldstr = document.body.innerHTML;
+      document.body.innerHTML = headstr+comstr+newstr+footstr;
+      window.print();
+      document.body.innerHTML = oldstr;
+      //return false;
+
+          }
+
+          //puis encaisse
+           if ((parseInt(document.getElementById('nlignes').value) >= 1) && ((document.getElementById('quantite').value == "")||(document.getElementById('quantite').value == "0"))&&((document.getElementById('prix').value == "")||(document.getElementById('prix').value == "0")) )
+          { 
+            document.getElementById('comm').value = document.getElementById('commentaire').value
+            
+          document.getElementById("formulaire").submit();
+          }
+    }
+
+
+
+
 function often(that) {
 if (isNaN(parseInt(document.getElementById('id_type_objet').value)) ) 
           { 
