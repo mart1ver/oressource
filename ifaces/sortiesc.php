@@ -1,9 +1,9 @@
 <?php session_start();
 
 require_once('../moteur/dbconfig.php');
-if(  $_SESSION['affsd'] !== "oui" && $_SESSION['affss'] !== "oui" && $_SESSION['affsde'] !== "oui" && $_SESSION['affsp'] !== "oui" && $_SESSION['affsr'] !== "oui"){
+if(  $_SESSION['affsd']  && $_SESSION['affss']  && $_SESSION['affsde']  && $_SESSION['affsp']  && $_SESSION['affsr'] !== "oui"){
 
-   header("Location:index.php");
+   header("Location:/");
 }
 
 
