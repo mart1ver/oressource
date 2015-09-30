@@ -7,7 +7,7 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
       {include "tete.php";?>
 
 
-<div class="panel-body">
+<div class="panel-body" id="divID">
       <fieldset>
       <legend>
              <?php 
