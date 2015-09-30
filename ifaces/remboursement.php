@@ -69,7 +69,7 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
     </form>
  <ul id="boutons" class="list-group">
         <button class="btn btn-danger btn-lg" onclick="encaisse();">Rembourser!</button>
-        <button class="btn btn-danger btn-lg" type="button"  align="center"><span class="glyphicon glyphicon-print"></span></button>
+        <button class="btn btn-danger btn-lg" type="button" onclick="printdiv('divID');" align="center"><span class="glyphicon glyphicon-print"></span></button>
         <button class="btn btn-warning btn-lg" onClick="javascript:window.location.reload()"><span class="glyphicon glyphicon-refresh"></button>
   </ul>
 
