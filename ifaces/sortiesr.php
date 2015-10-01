@@ -119,9 +119,9 @@ var ref = document.getElementById("sel_filiere").value;
 
  document.getElementById("sel_filiere").disabled = true;
 
- document.getElementById(tabref[1]).innerText = parseFloat(document.getElementById(tabref[1]).innerText) + parseFloat(document.getElementById("number").value)  ;
+ document.getElementById(tabref[1]).textContent = parseFloat(document.getElementById(tabref[1]).textContent) + parseFloat(document.getElementById("number").value)  ;
               document.getElementById("m"+tabref[1]).value = parseFloat(document.getElementById("m"+tabref[1]).value) + parseFloat(document.getElementById("number").value)  ;
-              document.getElementById("massetot").innerText = parseFloat(document.getElementById("massetot").innerText) + parseFloat(document.getElementById("number").value) ;
+              document.getElementById("massetot").textContent = parseFloat(document.getElementById("massetot").textContent) + parseFloat(document.getElementById("number").value) ;
             document.getElementById("number").value = "";  
 
 }
@@ -150,7 +150,7 @@ function tdechet_clear()
            {
 
            ?>
-    document.getElementById('<?php echo$donnees['id']?>').innerText = "0"  ;
+    document.getElementById('<?php echo$donnees['id']?>').textContent = "0"  ;
     document.getElementById('m'+<?php echo$donnees['id']?>).value = "0" ; 
 <?php }
 
