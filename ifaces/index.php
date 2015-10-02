@@ -137,6 +137,7 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
       <script src="../js/raphael.js"></script>
       <script src="../js/morris/morris.js"></script>
       <script type="text/javascript">
+"use strict";
       function switchperiode(state) {
 
   if (state == false){

@@ -35,6 +35,7 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
   ?>
 <script src="../js/utilitaire.js"></script>
 <script type="text/javascript">
+"use strict";
 function printdiv(divID)
     {
       

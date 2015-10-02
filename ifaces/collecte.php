@@ -29,6 +29,7 @@ require_once('../moteur/dbconfig.php');
 ?>
 <script src="../js/utilitaire.js"></script>
 <script type="text/javascript">
+"use strict";
 function encaisse() {
   if (parseInt(document.getElementById('najout').value) >= 1 && document.getElementById("id_type_collecte").value > 0 && document.getElementById("loc").value > 0) 
           { 

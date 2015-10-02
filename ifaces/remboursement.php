@@ -202,6 +202,7 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
     <br>
             <?php include "pied.php" ; ?> 
 <script type="text/javascript">
+"use strict";
 
 var what;
 
