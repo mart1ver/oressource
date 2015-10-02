@@ -68,17 +68,6 @@ function printdiv(divID)
           }
     }
 
-function tdechet_write(y,z)
- {
-          if (document.getElementById("number").value > 0 && document.getElementById("number").value < <?php echo $pesee_max;?>) 
-          {
-            document.getElementById("massetot").textContent = parseFloat(document.getElementById("massetot").textContent) + parseFloat(document.getElementById("number").value) ;
-            document.getElementById("najout").value = parseInt(document.getElementById("najout").value)+1;
-             document.getElementById(y).textContent = parseFloat(document.getElementById(y).textContent) + parseFloat(document.getElementById("number").value)  ;
-              document.getElementById(z).value = parseFloat(document.getElementById(z).value) + parseFloat(document.getElementById("number").value)  ;
-             document.getElementById("number").value = "";  
-          }
-          }
 function tdechet_clear()
 {
 <?php 
@@ -338,7 +327,7 @@ function tdechet_clear()
            {
            ?>
       <div class="btn-group">
-      <button class="btn btn-default" style="margin-left:8px; margin-top:16px;" onclick="tdechet_write('<?php echo$donnees['nom']?>','<?php echo$donnees['id']?>');" ><span class="badge" id="cool" style="background-color:<?php echo$donnees['couleur']?>"><?php echo$donnees['nom']?></span>
+      <button class="btn btn-default" style="margin-left:8px; margin-top:16px;" onclick="tdechet_write('<?php echo$donnees['nom']?>', '<?php echo$donnees['id']?>', <?php echo($pesee_max); ?>);" ><span class="badge" id="cool" style="background-color:<?php echo$donnees['couleur']?>"><?php echo$donnees['nom']?></span>
  </button>
       
     </div>
