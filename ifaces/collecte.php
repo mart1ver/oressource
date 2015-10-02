@@ -27,26 +27,8 @@ require_once('../moteur/dbconfig.php');
             $reponse->closeCursor(); // Termine le traitement de la requête
 
 ?>
+<script src="../js/utilitaire.js></script>
 <script type="text/javascript">
-function submanut(x)
-          {
-            if ((document.getElementById("number").value - x) > 0 )
-            {
-            var text_box = document.getElementById("number");
-            text_box.value = (text_box.value - x).toFixed(2);
-          }
-          }
-
-
-          function number_write(x)
-          {
-            var text_box = document.getElementById("number");
-            text_box.value = text_box.value + x;
-          }
-          function number_clear()
-          {
-            document.getElementById("number").value = "";
-          }
           function tdechet_write(y,z)
           {
           if (document.getElementById("number").value > 0 && document.getElementById("number").value < <?php echo $pesee_max;?>) 
