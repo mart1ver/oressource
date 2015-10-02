@@ -33,6 +33,7 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
             }
             $reponse->closeCursor(); // Termine le traitement de la requête        
   ?>
+<script src="../js/utilitaire.js"></script>
 <script type="text/javascript">
 function printdiv(divID)
     {
@@ -67,36 +68,6 @@ function printdiv(divID)
           }
     }
 
-    function encaisse() {
-  if (parseInt(document.getElementById('najout').value) >= 1) 
-          { 
-         
-          document.getElementById("formulaire").submit();
-          }
-        }
-function submanut(x)
-          {
-            if ((document.getElementById("number").value - x) > 0 )
-            {
-            var text_box = document.getElementById("number");
-            text_box.value = text_box.value - x;
-          }
-          }
-function number_write(x)
-{
-  var text_box = document.getElementById("number");
-  text_box.value = text_box.value + x;
-}
-function number_clear()
-{
-  document.getElementById("number").value = "";
-}
-
-
-function recocom()
-{
-  document.getElementById("commentaire").value = document.getElementById("commentaireini").value;
-}
 function tdechet_write(y,z)
  {
           if (document.getElementById("number").value > 0 && document.getElementById("number").value < <?php echo $pesee_max;?>) 
@@ -398,7 +369,7 @@ function tdechet_clear()
 
 
 
-<button class="btn btn-primary btn-lg"  onclick="encaisse();">C'est pesé!</button></form>
+<button class="btn btn-primary btn-lg"  onclick="verif_form_sortie();">C'est pesé!</button></form>
 <button class="btn btn-primary btn-lg"  align="center"  onclick="printdiv('divID');" value=" Print " ><span class="glyphicon glyphicon-print"></span></button>
         <button class="btn btn-warning btn-lg" onclick="tdechet_clear();"><span class="glyphicon glyphicon-refresh"></button>
       </div>
