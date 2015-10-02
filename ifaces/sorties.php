@@ -105,8 +105,8 @@ function tdechet_write(y,z)
  {
           if (document.getElementById("number").value > 0 && document.getElementById("number").value < <?php echo $pesee_max;?>) 
           {
-            document.getElementById("massetot").innerText = parseFloat(document.getElementById("massetot").innerText) + parseFloat(document.getElementById("number").value) ;
-             document.getElementById(y).innerText = parseFloat(document.getElementById(y).innerText) + parseFloat(document.getElementById("number").value)  ;
+            document.getElementById("massetot").textContent = parseFloat(document.getElementById("massetot").textContent) + parseFloat(document.getElementById("number").value) ;
+             document.getElementById(y).textContent = parseFloat(document.getElementById(y).textContent) + parseFloat(document.getElementById("number").value)  ;
               document.getElementById(z).value = parseFloat(document.getElementById(z).value) + parseFloat(document.getElementById("number").value)  ;
              document.getElementById("number").value = "";  
               document.getElementById("najout").value = parseInt(document.getElementById("najout").value)+1;
@@ -123,7 +123,7 @@ function tdechet_clear()
            {
 
            ?>
-    document.getElementById('<?php echo$donnees['nom']?>').innerText = "0"  ;
+    document.getElementById('<?php echo$donnees['nom']?>').textContent = "0"  ;
     document.getElementById(<?php echo$donnees['id']?>).value = "0" ; 
 <?php }
 
