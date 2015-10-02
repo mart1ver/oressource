@@ -33,14 +33,8 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
             }
             $reponse->closeCursor(); // Termine le traitement de la requête        
   ?>
+<script src="../js/utilitaire.js"></script>
 <script type="text/javascript">
-function encaisse() {
-  if (parseInt(document.getElementById('najout').value) >= 1) 
-          { 
-         
-          document.getElementById("formulaire").submit();
-          }
-        }
 function printdiv(divID)
     {
       if (parseInt(document.getElementById('najout').value) >= 1) 
@@ -69,19 +63,7 @@ function printdiv(divID)
       return false;
           }
     }
-function number_write(x)
-{
-    var text_box = document.getElementById("number");
-  
-   
- text_box.value = text_box.value + x;
-  
-}
 
-function number_clear()
-{
-    document.getElementById("number").value = "";
-}
 function tdechet_write(y,z)
 {
 
@@ -348,7 +330,7 @@ function tdechet_clear()
 
 
 
-<button class="btn btn-primary btn-lg"  onclick="encaisse();">C'est pesé!</button>
+<button class="btn btn-primary btn-lg"  onclick="verif_form_sortie();">C'est pesé!</button>
 <button class="btn btn-primary btn-lg"  align="center"  onclick="printdiv('divID');" value=" Print " ><span class="glyphicon glyphicon-print"></span></button>
         <button class="btn btn-warning btn-lg" onclick="tdechet_clear();"><span class="glyphicon glyphicon-refresh"></button>
       </div>
