@@ -27,6 +27,7 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
        <span></span> <b class="caret"></b>
       </div>
      <script type="text/javascript">
+"use strict";
                    $(document).ready(function() {
 
                   var cb = function(start, end, label) {

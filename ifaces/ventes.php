@@ -99,6 +99,7 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
 <p>
 <?php }?>
 <script type="text/javascript">
+"use strict";
 $("[name='my-checkbox']").bootstrapSwitch();
 $('input[name="my-checkbox"]').on('switchChange.bootstrapSwitch', function(event, state) {
 //console.log(state); // true | false
@@ -385,6 +386,7 @@ Somme due:
  <br><br><br>   
             <?php include "pied.php" ; ?> 
 <script type="text/javascript">
+"use strict";
 
 function rendu() 
 

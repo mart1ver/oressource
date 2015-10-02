@@ -64,6 +64,7 @@ require_once('../moteur/dbconfig.php');
 
 
                <script type="text/javascript">
+"use strict";
                $(document).ready(function() {
 
                   var cb = function(start, end, label) {

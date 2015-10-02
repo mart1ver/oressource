@@ -39,6 +39,7 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
 
 
                <script type="text/javascript">
+"use strict";
                $(document).ready(function() {
                   var cb = function(start, end, label) {
                     console.log(start.toISOString(), end.toISOString(), label);
