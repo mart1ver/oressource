@@ -65,43 +65,6 @@ function printdiv(divID)
           }
     }
 
-function tdechet_add()
-{
-   if (document.getElementById("number").value > 0 && document.getElementById("number").value < <?php echo $pesee_max;?>) 
-          {
-             document.getElementById("najout").value = parseInt(document.getElementById("najout").value)+1;
-var ref = document.getElementById("sel_filiere").value;
- tabref = ref.split('|')
-
-
-
-
-  var id_filiere = document.getElementById("id_filiere"); 
-  
-   
- id_filiere.value = tabref[0];
-
-
- var id_type_dechet = document.getElementById("id_type_dechet"); 
-  
-   
- id_type_dechet.value = tabref[1];
-
-  var type_dechet = document.getElementById("type_dechet"); 
-  
-   
- type_dechet.value = tabref[2];
-
- document.getElementById("sel_filiere").disabled = true;
-
- document.getElementById(tabref[1]).textContent = parseFloat(document.getElementById(tabref[1]).textContent) + parseFloat(document.getElementById("number").value)  ;
-              document.getElementById("m"+tabref[1]).value = parseFloat(document.getElementById("m"+tabref[1]).value) + parseFloat(document.getElementById("number").value)  ;
-              document.getElementById("massetot").textContent = parseFloat(document.getElementById("massetot").textContent) + parseFloat(document.getElementById("number").value) ;
-            document.getElementById("number").value = "";  
-
-}
-}
-
 function tdechet_clear()
 {
   document.getElementById("id_filiere").value = ""
@@ -413,7 +376,7 @@ WHERE filieres_sortie.visible = "oui" AND filieres_sortie.id_type_dechet_evac = 
   <div class="panel-body" style:"text-align:center"> 
 
   
-           <button class="btn btn-default " onclick="tdechet_add();" style="width:260px;height:130px;" ><span class="glyphicon glyphicon-plus"></span></button> 
+  <button class="btn btn-default " onclick="tdechet_add(<?php echo($pesee_max); ?>);" style="width:260px;height:130px;" ><span class="glyphicon glyphicon-plus"></span></button>
 
 </div>
 </div>
