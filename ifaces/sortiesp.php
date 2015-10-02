@@ -64,20 +64,6 @@ function printdiv(divID)
           }
     }
 
-function tdechet_write(y,z)
-{
-
-if (document.getElementById("number").value-parseFloat(document.getElementById("m"+y).value)  > 0 && document.getElementById("number").value < <?php echo $pesee_max;?>) 
-{
-  document.getElementById("massetot").textContent = parseFloat(parseFloat(document.getElementById("massetot").textContent) + (parseFloat(document.getElementById("number").value) - parseFloat(document.getElementById("m"+y).value))).toFixed(2);
-  document.getElementById("najout").value = parseInt(document.getElementById("najout").value)+1;
-    document.getElementById(y).textContent = ((parseFloat(document.getElementById(y).textContent) + parseFloat(document.getElementById("number").value))-parseFloat(document.getElementById("m"+y).value)).toFixed(2)  ;
-     document.getElementById(z).value = (parseFloat(document.getElementById(z).value) + parseFloat(document.getElementById("number").value)-parseFloat(document.getElementById("m"+y).value)).toFixed(2)  ;
-    document.getElementById("number").value = "";  
-}
-
-
-}
 function tdechet_clear()
 {
 <?php 
@@ -312,7 +298,7 @@ function tdechet_clear()
     
             
             <input type="hidden" name ="m<?php echo $donnees['nom']?>" id="m<?php echo $donnees['nom']?>" value="<?php echo $donnees['masse_bac']?>">
-            <button class="btn btn-default btn-sm" style="margin-left:8px; margin-top:16px;" onclick="tdechet_write('<?php echo$donnees['nom']?>','<?php echo$donnees['id']?>');" ><span class="badge" id="cool" style="background-color:<?php echo$donnees['couleur']?>"><?php echo$donnees['nom']?></span>
+            <button class="btn btn-default btn-sm" style="margin-left:8px; margin-top:16px;" onclick="tdechet_write('<?php echo$donnees['nom']?>', '<?php echo$donnees['id']?>', <?php echo($pesee_max); ?>);" ><span class="badge" id="cool" style="background-color:<?php echo$donnees['couleur']?>"><?php echo$donnees['nom']?></span>
             </button> 
           
    
