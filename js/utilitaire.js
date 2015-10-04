@@ -25,9 +25,9 @@ function number_clear() {
 function tdechet_write(nom, id, poids_max) {
   if (document.getElementById("number").value > 0
     && document.getElementById("number").value < poids_max) {
-    document.getElementById("massetot").textContent = parseFloat(document.getElementById("massetot").textContent) + parseFloat(document.getElementById("number").value) ;
-    document.getElementById(nom).textContent = (parseFloat(document.getElementById(nom).textContent) + parseFloat(document.getElementById("number").value)).toFixed(2)  ;
-    document.getElementById(id).value = parseFloat(document.getElementById(id).value) + parseFloat(document.getElementById("number").value)  ;
+    document.getElementById("massetot").textContent = parseFloat(document.getElementById("massetot").textContent) + parseFloat(document.getElementById("number").value);
+    document.getElementById(nom).textContent = (parseFloat(document.getElementById(nom).textContent) + parseFloat(document.getElementById("number").value)).toFixed(2);
+    document.getElementById(id).value = parseFloat(document.getElementById(id).value) + parseFloat(document.getElementById("number").value);
     document.getElementById("number").value = "";
     document.getElementById("najout").value = parseInt(document.getElementById("najout").value) + 1;
   }
@@ -41,7 +41,7 @@ function recocom() {
 function tdechet_add(pesee_max) {
   if (document.getElementById("number").value > 0
   && document.getElementById("number").value < pesee_max) {
-  document.getElementById("najout").value = parseInt(document.getElementById("najout").value)+1;
+  document.getElementById("najout").value = parseInt(document.getElementById("najout").value) + 1;
   var ref = document.getElementById("sel_filiere").value;
   var tabref = ref.split('|');
   var id_filiere = document.getElementById("id_filiere");
@@ -55,8 +55,8 @@ function tdechet_add(pesee_max) {
 
   document.getElementById("sel_filiere").disabled = true;
   document.getElementById(tabref[1]).textContent = parseFloat(document.getElementById(tabref[1]).textContent) + parseFloat(document.getElementById("number").value);
-  document.getElementById("m"+tabref[1]).value = parseFloat(document.getElementById("m"+tabref[1]).value) + parseFloat(document.getElementById("number").value)  ;
-  document.getElementById("massetot").textContent = parseFloat(document.getElementById("massetot").textContent) + parseFloat(document.getElementById("number").value) ;
+  document.getElementById("m"+tabref[1]).value = parseFloat(document.getElementById("m"+tabref[1]).value) + parseFloat(document.getElementById("number").value);
+  document.getElementById("massetot").textContent = parseFloat(document.getElementById("massetot").textContent) + parseFloat(document.getElementById("number").value);
   document.getElementById("number").value = "";
   }
 }
