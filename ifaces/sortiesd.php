@@ -98,17 +98,9 @@ function tdechet_clear()
             $req->execute(array('id' => $_GET['numero']));
  
            // On affiche chaque entree une à une
-           while ($donnees = $req->fetch())
-           {
-
-            echo$donnees['nom'];
-            
-              
-            
-             
-   
-               }
-              $reponse->closeCursor(); // Termine le traitement de la requête
+          $donnees = $req->fetch();
+          echo($donnees['nom']);
+          $reponse->closeCursor(); // Termine le traitement de la requête
                 ?>
 
 

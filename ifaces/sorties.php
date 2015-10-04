@@ -108,18 +108,9 @@ function tdechet_clear()
             $req = $bdd->prepare("SELECT * FROM points_sortie WHERE id = :id ");
             $req->execute(array('id' => $_GET['numero']));
  
-           // On affiche chaque entree une à une
-           while ($donnees = $req->fetch())
-           {
-
-            echo$donnees['nom'];
-            
-              
-            
-             
-   
-               }
-              $reponse->closeCursor(); // Termine le traitement de la requête
+           $donnees = $req->fetch();
+           echo($donnees['nom']);
+           $reponse->closeCursor(); // Termine le traitement de la requête
                 ?>
 
 
