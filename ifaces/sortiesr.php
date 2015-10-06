@@ -34,7 +34,9 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
             }
             $reponse->closeCursor(); // Termine le traitement de la requête        
   ?>
+<script src="../js/utilitaire.js"></script>
 <script type="text/javascript">
+"use strict";
 function printdiv(divID)
     {
        if (parseInt(document.getElementById('najout').value) >= 1) 
@@ -64,72 +66,6 @@ function printdiv(divID)
           }
     }
 
-function number_write(x)
-{
-
-  var text_box = document.getElementById("number");
-  
-   
- text_box.value = text_box.value + x;
-  
-}
-
-
-
-
-
-
-
-function number_clear()
-{
-  document.getElementById("number").value = "";
-}
-
-
-
-function tdechet_add()
-{
-   if (document.getElementById("number").value > 0 && document.getElementById("number").value < <?php echo $pesee_max;?>) 
-          {
-             document.getElementById("najout").value = parseInt(document.getElementById("najout").value)+1;
-var ref = document.getElementById("sel_filiere").value;
- tabref = ref.split('|')
-
-
-
-
-  var id_filiere = document.getElementById("id_filiere"); 
-  
-   
- id_filiere.value = tabref[0];
-
-
- var id_type_dechet = document.getElementById("id_type_dechet"); 
-  
-   
- id_type_dechet.value = tabref[1];
-
-  var type_dechet = document.getElementById("type_dechet"); 
-  
-   
- type_dechet.value = tabref[2];
-
- document.getElementById("sel_filiere").disabled = true;
-
- document.getElementById(tabref[1]).textContent = parseFloat(document.getElementById(tabref[1]).textContent) + parseFloat(document.getElementById("number").value)  ;
-              document.getElementById("m"+tabref[1]).value = parseFloat(document.getElementById("m"+tabref[1]).value) + parseFloat(document.getElementById("number").value)  ;
-              document.getElementById("massetot").textContent = parseFloat(document.getElementById("massetot").textContent) + parseFloat(document.getElementById("number").value) ;
-            document.getElementById("number").value = "";  
-
-}
-}
-function encaisse() {
-  if (parseInt(document.getElementById('najout').value) >= 1) 
-          { 
-         
-          document.getElementById("formulaire").submit();
-          }
-        }
 function tdechet_clear()
 {
   document.getElementById("id_filiere").value = ""
@@ -154,24 +90,6 @@ function tdechet_clear()
               $reponse->closeCursor(); // Termine le traitement de la requête
                 ?>  
 }
-
-
-function recocom()
-{
-  document.getElementById("commentaire").value = document.getElementById("commentaireini").value;
-}
-
-function submanut(x)
-          {
-            if ((document.getElementById("number").value - x) > 0 )
-            {
-            var text_box = document.getElementById("number");
-            text_box.value = text_box.value - x;
-          }
-          }
-
-          
-   
 </script>
 <div class="panel-body">
           <fieldset>
@@ -184,17 +102,9 @@ function submanut(x)
             $req->execute(array('id' => $_GET['numero']));
  
            // On affiche chaque entree une à une
-           while ($donnees = $req->fetch())
-           {
-
-            echo$donnees['nom'];
-            
-              
-            
-             
-   
-               }
-              $reponse->closeCursor(); // Termine le traitement de la requête
+           $donnees = $req->fetch();
+           echo$donnees['nom'];
+           $reponse->closeCursor(); // Termine le traitement de la requête
                 ?>
 
 
@@ -459,7 +369,7 @@ WHERE filieres_sortie.visible = "oui" AND filieres_sortie.id_type_dechet_evac = 
   <div class="panel-body" style:"text-align:center"> 
 
   
-           <button class="btn btn-default " onclick="tdechet_add();" style="width:260px;height:130px;" ><span class="glyphicon glyphicon-plus"></span></button> 
+  <button class="btn btn-default " onclick="tdechet_add(<?php echo($pesee_max); ?>);" style="width:260px;height:130px;" ><span class="glyphicon glyphicon-plus"></span></button>
 
 </div>
 </div>
@@ -474,7 +384,7 @@ WHERE filieres_sortie.visible = "oui" AND filieres_sortie.id_type_dechet_evac = 
 
 
 
-<button class="btn btn-primary btn-lg"  onclick="encaisse();">C'est pesé!</button>
+<button class="btn btn-primary btn-lg"  onclick="verif_form_sortie();">C'est pesé!</button>
 <button class="btn btn-primary btn-lg"  align="center"  onclick="printdiv('divID');" value=" Print " ><span class="glyphicon glyphicon-print"></span></button>
         <button class="btn btn-warning btn-lg" onclick="tdechet_clear();"><span class="glyphicon glyphicon-refresh"></button>
       </div>

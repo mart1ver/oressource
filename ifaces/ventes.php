@@ -99,6 +99,7 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
 <p>
 <?php }?>
 <script type="text/javascript">
+"use strict";
 $("[name='my-checkbox']").bootstrapSwitch();
 $('input[name="my-checkbox"]').on('switchChange.bootstrapSwitch', function(event, state) {
 //console.log(state); // true | false
@@ -384,275 +385,49 @@ Somme due:
 <?php }?>
  <br><br><br>   
             <?php include "pied.php" ; ?> 
-<script type="text/javascript">
 
-function rendu() 
+<script src="../js/ventes.js"></script>
+<script>
+"use strict";
+function printdiv(divID) {
+  if (parseInt(document.getElementById('nlignes').value) >= 1) {
+    var headstr = "<html><head><title></title></head><body><small>";
 
-{
-  if(document.getElementById('rendub').value > 0){
-
-
-document.getElementById('renduc').value = document.getElementById('rendub').value -  document.getElementById('rendua').value;
-
-}
-}
-
-
-
-
-var what;
-function fokus(that) {
-what = that;
-}
-function moyens(moy) {
- document.getElementById('moyen').value = moy;
-}
-function often(that) {
-  if (document.getElementById('ptot').value > 0 && isNaN(parseInt(document.getElementById('id_type_objet').value))){what.value = what.value + that.value;
-document.getElementById('quantite').value ="";
-document.getElementById('prix').value ="";
-if (that.value == "c"){what.value = "";}
-if(document.getElementById('rendub').value > 0){
-document.getElementById('renduc').value = document.getElementById('rendub').value -  document.getElementById('rendua').value;
-}
-  }
-if (isNaN(parseInt(document.getElementById('id_type_objet').value)) ) 
-          { 
-            
-          }
-          else{
-if (that == null) {document.getElementById('quantite').value ="" ; what = document.getElementById('quantite');}
-if (that.value == "c"){what.value = "";}
-else{
-what.value = what.value + that.value;
-}
-}
-}
-function printdiv(divID)
-    {
-if (parseInt(document.getElementById('nlignes').value) >= 1) 
-          { 
-            
-      
-      var headstr = "<html><head><title></title></head><body><small>";
-      
- <?php if ($_SESSION['tva_active'] == 'oui'){?>
-  var prixtot =  parseFloat(document.getElementById('ptot').value).toFixed(2);
-  var prixht = parseFloat(prixtot).toFixed(2) / ( 1+parseFloat(<?php echo $_SESSION['taux_tva'] ?>).toFixed(2)/100 );
-  var ptva = parseFloat(prixtot).toFixed(2)-parseFloat(prixht).toFixed(2)
-var footstr = "TVA à <?php echo $_SESSION['taux_tva'] ?>%"+" Prix H.T. ="+parseFloat(prixht).toFixed(2)+"€ TVA="+parseFloat(ptva).toFixed(2)+"€";
 <?php
-  }else{?>
-var footstr = "Association non assujettie à la TVA.</body></small> ";
-  <?php } ?>
-      var comstr = "<ul id='liste' class='list-group'><li class='list-group-item'><b>";
-      comstr += document.getElementById('commentaire').value;
-      comstr += "</b></li></ul>";
-      var newstr = document.all.item(divID).innerHTML;
-      var oldstr = document.body.innerHTML;
-      document.body.innerHTML = headstr+comstr+newstr+footstr;
-      window.print();
-      document.body.innerHTML = oldstr;
-      //return false;
-
-          }
-
-          //puis encaisse
-           if ((parseInt(document.getElementById('nlignes').value) >= 1) && ((document.getElementById('quantite').value == "")||(document.getElementById('quantite').value == "0"))&&((document.getElementById('prix').value == "")||(document.getElementById('prix').value == "0")) )
-          { 
-            document.getElementById('comm').value = document.getElementById('commentaire').value
-            
-          document.getElementById("formulaire").submit();
-          }
+    if ($_SESSION['tva_active'] == 'oui') {
+?>
+    var prixtot =  parseFloat(document.getElementById('ptot').value).toFixed(2);
+    var prixht = parseFloat(prixtot).toFixed(2) / ( 1+parseFloat(<?php echo $_SESSION['taux_tva'] ?>).toFixed(2)/100 );
+    var ptva = parseFloat(prixtot).toFixed(2)-parseFloat(prixht).toFixed(2)
+      var footstr = "TVA à <?php echo $_SESSION['taux_tva'] ?>%"+" Prix H.T. ="+parseFloat(prixht).toFixed(2)+"€ TVA="+parseFloat(ptva).toFixed(2)+"€";
+<?php
+    } else {
+?>
+    var footstr = "Association non assujettie à la TVA.</body></small> ";
+<?php
     }
+?>
+    var comstr = "<ul id='liste' class='list-group'><li class='list-group-item'><b>";
+    comstr += document.getElementById('commentaire').value;
+    comstr += "</b></li></ul>";
+    var newstr = document.all.item(divID).innerHTML;
+    var oldstr = document.body.innerHTML;
+    document.body.innerHTML = headstr+comstr+newstr+footstr;
+    window.print();
+    document.body.innerHTML = oldstr;
+    //return false;
+  }
 
-
-function suprime(nsligne)
-{
-if (parseInt(document.getElementById('nlignes').value)>1)
-{
-var numero_ligne = nsligne.substr(5); // sous_chaine = le numero uniquement
-document.getElementById('narticles').value = parseInt(document.getElementById('narticles').value) - parseInt(document.getElementById('tquantite'+numero_ligne).value) ;
-document.getElementById('ptot').value = parseFloat(document.getElementById('ptot').value) - (parseFloat(document.getElementById('tprix'+numero_ligne).value)*parseFloat(document.getElementById('tquantite'+numero_ligne).value))  ;
-document.getElementById('recaptotal').innerHTML = parseFloat(document.getElementById('ptot').value).toFixed(2)+'€';
-document.getElementById('total').innerHTML = '<li class="list-group-item">Soit : '+document.getElementById('narticles').value+' article(s) pour : <span class="badge" style="float:right;">'+parseFloat(document.getElementById('ptot').value).toFixed(2)+'€</span></li>';
-document.getElementById('tquantite'+numero_ligne).value= "0";
-document.getElementById('tprix'+numero_ligne).value= "0";
-//document.getElementById('nlignes').value = parseInt(document.getElementById('nlignes').value) - 1 ;
-document.getElementById(nsligne).remove();
-document.getElementById('rendua').value = document.getElementById('ptot').value ;
+  //puis encaisse
+  if ((parseInt(document.getElementById('nlignes').value) >= 1)
+    && ((document.getElementById('quantite').value == "")
+    || (document.getElementById('quantite').value == "0"))
+    && ((document.getElementById('prix').value == "")
+    || (document.getElementById('prix').value == "0")) ) {
+    document.getElementById('comm').value = document.getElementById('commentaire').value;
+    document.getElementById("formulaire").submit();
+  }
 }
-else
-{
-window.location.reload();
-}
-}
-
-
-
-function switchlot(state) {
-
-  if (state == false){
- 
-document.getElementById('sul').value = "lot";
-document.getElementById('labellot').innerHTML = "vente au: ";
-document.getElementById('labelpul').innerHTML = "Prix du lot: ";
-document.getElementById('panelcalc').style.backgroundColor = '#A18681';
-}
-else
-{
- document.getElementById('sul').value = "unite";
-document.getElementById('labellot').innerHTML = "vente à:  "  ;
-document.getElementById('labelpul').innerHTML = "Prix unitaire: ";
-document.getElementById('panelcalc').style.backgroundColor = 'white';
-}
-}
-
-
-
-function ajout() {
-
-
-if ( document.getElementById('sul').value == "unite"){
-  var prixtemp;
-  prixtemp = document.getElementById('prix').value;
-   prixtemp = prixtemp.replace(",", ".");
-   document.getElementById('prix').value = prixtemp;
-     if (isNaN((parseFloat(document.getElementById('prix').value)*parseFloat(document.getElementById('quantite').value)).toFixed(2)) ) 
-         {} 
-          else
-          {
-         
-if (isNaN(parseInt(document.getElementById('nlignes').value)) ) 
-          { 
-          document.getElementById('nlignes').value = 1;
-          } 
-          else
-          {
-          document.getElementById('nlignes').value=parseInt(document.getElementById('nlignes').value)+ 1; 
-          }
-if (isNaN(parseInt(document.getElementById('narticles').value)) ) 
-          { 
-          document.getElementById('narticles').value = document.getElementById('quantite').value;
-          } 
-          else
-          {
-          document.getElementById('narticles').value=parseInt(document.getElementById('narticles').value)+parseInt(document.getElementById('quantite').value); 
-          }          
-if (isNaN(parseInt(document.getElementById('ptot').value)) ) 
-          { 
-          document.getElementById('ptot').value = document.getElementById('prix').value*document.getElementById('quantite').value;
-          } 
-          else
-          {
-          document.getElementById('ptot').value=parseFloat(document.getElementById('ptot').value)+parseFloat(document.getElementById('prix').value*document.getElementById('quantite').value); 
-
-          document.getElementById('rendua').value = document.getElementById('ptot').value 
-        
-          }          
-             document.getElementById('liste').innerHTML += '<li class="list-group-item" name="ligne'+parseInt(document.getElementById('nlignes').value)+'" id="ligne'+parseInt(document.getElementById('nlignes').value)+'"><span class="badge">'+parseFloat(parseFloat(document.getElementById('prix').value)*parseFloat(document.getElementById('quantite').value)).toFixed(2)+'€'+'</span><span class="glyphicon glyphicon-remove" aria-hidden="true"    onclick="javascirpt:suprime('+"'ligne"+parseInt(document.getElementById('nlignes').value)+"');"+'"></span>&nbsp;&nbsp;'+document.getElementById('quantite').value+' * '+document.getElementById('nom_objet0').value
-             +'<input type="hidden"  id="tid_type_objet'+parseInt(document.getElementById('nlignes').value)+'" name="tid_type_objet'+parseInt(document.getElementById('nlignes').value)+'"value="'+document.getElementById('id_type_objet').value+'">'
-             +'<input type="hidden"  id="tid_objet'+parseInt(document.getElementById('nlignes').value)+'" name="tid_objet'+parseInt(document.getElementById('nlignes').value)+'"value="'+document.getElementById('id_objet').value+'">'
-             +'<input type="hidden"  id="tquantite'+parseInt(document.getElementById('nlignes').value)+'" name="tquantite'+parseInt(document.getElementById('nlignes').value)+'"value="'+document.getElementById('quantite').value+'">'
-             +'<input type="hidden"  id="tprix'+parseInt(document.getElementById('nlignes').value)+'" name="tprix'+parseInt(document.getElementById('nlignes').value)+'"value="'+document.getElementById('prix').value+'"></li>';                                               
-               document.getElementById('total').innerHTML = '<li class="list-group-item">Soit : '+document.getElementById('narticles').value+' article(s) pour : <span class="badge" style="float:right;">'+parseFloat(document.getElementById('ptot').value).toFixed(2)+'€</span></li>';
-               document.getElementById('recaptotal').innerHTML = parseFloat(document.getElementById('ptot').value).toFixed(2)+'€';
-               document.getElementById('nom_objet').innerHTML = "<label>Objet:</label>";
-               document.getElementById('quantite').value = "";
-               document.getElementById('prix').value = "";
-               document.getElementById('id_type_objet').value = "";
-               document.getElementById('id_objet').value = "";
-               document.getElementById('nom_objet0').value = "";
-               }
-
-
-
-      
-      }
-      else {
-
-
- var prixtemp;
-  prixtemp = document.getElementById('prix').value;
-   prixtemp = prixtemp.replace(",", ".");
-   document.getElementById('prix').value = prixtemp;
-     if (isNaN((parseFloat(document.getElementById('prix').value)*parseFloat(document.getElementById('quantite').value)).toFixed(2)) ) 
-         {} 
-          else
-          {
-         
-if (isNaN(parseInt(document.getElementById('nlignes').value)) ) 
-          { 
-          document.getElementById('nlignes').value = 1;
-          } 
-          else
-          {
-          document.getElementById('nlignes').value=parseInt(document.getElementById('nlignes').value)+ 1; 
-          }
-if (isNaN(parseInt(document.getElementById('narticles').value)) ) 
-          { 
-          document.getElementById('narticles').value = document.getElementById('quantite').value;
-          } 
-          else
-          {
-          document.getElementById('narticles').value=parseInt(document.getElementById('narticles').value)+parseInt(document.getElementById('quantite').value); 
-          }          
-if (isNaN(parseInt(document.getElementById('ptot').value)) ) 
-          { 
-          document.getElementById('ptot').value = document.getElementById('prix').value;
-       
-          document.getElementById('rendua').value = document.getElementById('ptot').value ;
-       
-          } 
-          else
-          {
-          document.getElementById('ptot').value=parseFloat(document.getElementById('ptot').value)+parseFloat(document.getElementById('prix').value);
-          }          
-             document.getElementById('liste').innerHTML += '<li class="list-group-item" name="ligne'+parseInt(document.getElementById('nlignes').value)+'" id="ligne'+parseInt(document.getElementById('nlignes').value)+'"><span class="badge">'+parseFloat(document.getElementById('prix').value).toFixed(2)+'€'+'</span><span class="glyphicon glyphicon-remove" aria-hidden="true"    onclick="javascirpt:suprime('+"'ligne"+parseInt(document.getElementById('nlignes').value)+"');"+'"></span>&nbsp;&nbsp;'+document.getElementById('quantite').value+' * '+document.getElementById('nom_objet0').value
-             +'<input type="hidden"  id="tid_type_objet'+parseInt(document.getElementById('nlignes').value)+'" name="tid_type_objet'+parseInt(document.getElementById('nlignes').value)+'"value="'+document.getElementById('id_type_objet').value+'">'
-             +'<input type="hidden"  id="tid_objet'+parseInt(document.getElementById('nlignes').value)+'" name="tid_objet'+parseInt(document.getElementById('nlignes').value)+'"value="'+document.getElementById('id_objet').value+'">'
-             +'<input type="hidden"  id="tquantite'+parseInt(document.getElementById('nlignes').value)+'" name="tquantite'+parseInt(document.getElementById('nlignes').value)+'"value="'+document.getElementById('quantite').value+'">'
-             +'<input type="hidden"  id="tprix'+parseInt(document.getElementById('nlignes').value)+'" name="tprix'+parseInt(document.getElementById('nlignes').value)+'"value="'+document.getElementById('prix').value/document.getElementById('quantite').value+'"></li>';                                               
-               document.getElementById('total').innerHTML = '<li class="list-group-item">Soit : '+document.getElementById('narticles').value+' article(s) pour : <span class="badge" style="float:right;">'+parseFloat(document.getElementById('ptot').value).toFixed(2)+'€</span></li>';
-               document.getElementById('recaptotal').innerHTML = parseFloat(document.getElementById('ptot').value).toFixed(2)+'€';
-               document.getElementById('nom_objet').innerHTML = "<label>Objet:</label>";
-               document.getElementById('quantite').value = "";
-               document.getElementById('prix').value = "";
-               document.getElementById('id_type_objet').value = "";
-               document.getElementById('id_objet').value = "";
-               document.getElementById('nom_objet0').value = "";
-               }
-
-
-      }
-      if(document.getElementById('rendub').value -  document.getElementById('rendua').value > 0){
-       document.getElementById('renduc').value = document.getElementById('rendub').value -  document.getElementById('rendua').value;
-      }
-     
-    document.getElementById('rendua').value = document.getElementById('ptot').value ;
-
-                  }
-
-
-
-
-
-function edite(nom,prix,id_type_objet,id_objet) {
-    document.getElementById('nom_objet').innerHTML = "<label>"+nom+"</label>";
-    document.getElementById('quantite').value = "1";
-    document.getElementById('prix').value = parseFloat(prix);
-    document.getElementById('id_type_objet').value = parseFloat(id_type_objet);
-    document.getElementById('id_objet').value = parseFloat(id_objet);
-    document.getElementById('nom_objet0').value = nom;
-}
-function encaisse() {
-  if ((parseInt(document.getElementById('nlignes').value) >= 1) && ((document.getElementById('quantite').value == "")||(document.getElementById('quantite').value == "0"))&&((document.getElementById('prix').value == "")||(document.getElementById('prix').value == "0")) )
-          { 
-            document.getElementById('comm').value = document.getElementById('commentaire').value
-            
-          document.getElementById("formulaire").submit();
-          }
-                    }
 </script>
 
             <?php 

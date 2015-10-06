@@ -27,38 +27,9 @@ require_once('../moteur/dbconfig.php');
             $reponse->closeCursor(); // Termine le traitement de la requête
 
 ?>
+<script src="../js/utilitaire.js"></script>
 <script type="text/javascript">
-function submanut(x)
-          {
-            if ((document.getElementById("number").value - x) > 0 )
-            {
-            var text_box = document.getElementById("number");
-            text_box.value = (text_box.value - x).toFixed(2);
-          }
-          }
-
-
-          function number_write(x)
-          {
-            var text_box = document.getElementById("number");
-            text_box.value = text_box.value + x;
-          }
-          function number_clear()
-          {
-            document.getElementById("number").value = "";
-          }
-          function tdechet_write(y,z)
-          {
-          if (document.getElementById("number").value > 0 && document.getElementById("number").value < <?php echo $pesee_max;?>) 
-          {
-            document.getElementById("massetot").textContent = parseFloat(document.getElementById("massetot").textContent) + parseFloat(document.getElementById("number").value) ;
-             document.getElementById(y).textContent = (parseFloat(document.getElementById(y).textContent) + parseFloat(document.getElementById("number").value)).toFixed(2)  ;
-              document.getElementById(z).value = parseFloat(document.getElementById(z).value) + parseFloat(document.getElementById("number").value)  ;
-             document.getElementById("number").value = "";  
-             document.getElementById("najout").value = parseInt(document.getElementById("najout").value)+1;
-          }
-          }
-
+"use strict";
 function encaisse() {
   if (parseInt(document.getElementById('najout').value) >= 1 && document.getElementById("id_type_collecte").value > 0 && document.getElementById("loc").value > 0) 
           { 
@@ -347,7 +318,7 @@ function encaisse() {
            {
            ?>
       <div class="btn-group">
-      <button class="btn btn-default" style="margin-left:8px; margin-top:16px;" onclick="tdechet_write('<?php echo$donnees['nom']?>','<?php echo$donnees['id']?>');" ><span class="badge" id="cool" style="background-color:<?php echo$donnees['couleur']?>"><?php echo$donnees['nom']?></span>
+      <button class="btn btn-default" style="margin-left:8px; margin-top:16px;" onclick="tdechet_write('<?php echo$donnees['nom']?>', '<?php echo$donnees['id']?>', <?php echo($pesee_max); ?>);" ><span class="badge" id="cool" style="background-color:<?php echo$donnees['couleur']?>"><?php echo$donnees['nom']?></span>
  </button>
       
     </div>

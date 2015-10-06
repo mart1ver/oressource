@@ -32,14 +32,9 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
             }
             $reponse->closeCursor(); // Termine le traitement de la requête        
   ?>
+<script src="../js/utilitaire.js"></script>
 <script type="text/javascript">
-function encaisse() {
-  if (parseInt(document.getElementById('najout').value) >= 1) 
-          { 
-         
-          document.getElementById("formulaire").submit();
-          }
-        }
+"use strict";
 function printdiv(divID)
     {
        if (parseInt(document.getElementById('najout').value) >= 1) 
@@ -80,34 +75,6 @@ var mtot =<?php
           }
     }
 
-function submanut(x)
-          {
-            if ((document.getElementById("number").value - x) > 0 )
-            {
-            var text_box = document.getElementById("number");
-            text_box.value = text_box.value - x;
-          }
-          }
-function number_write(x)
-{
-  var text_box = document.getElementById("number");
-  text_box.value = text_box.value + x;
-}
-function number_clear()
-{
-  document.getElementById("number").value = "";
-}
-function tdechet_write(y,z)
- {
-          if (document.getElementById("number").value > 0 && document.getElementById("number").value < <?php echo $pesee_max;?>) 
-          {
-            document.getElementById("massetot").textContent = parseFloat(document.getElementById("massetot").textContent) + parseFloat(document.getElementById("number").value) ;
-             document.getElementById(y).textContent = parseFloat(document.getElementById(y).textContent) + parseFloat(document.getElementById("number").value)  ;
-              document.getElementById(z).value = parseFloat(document.getElementById(z).value) + parseFloat(document.getElementById("number").value)  ;
-             document.getElementById("number").value = "";  
-             document.getElementById("najout").value = parseInt(document.getElementById("najout").value)+1;
-          }
-          }
 function tdechet_clear()
 {
 <?php 
@@ -156,17 +123,9 @@ function tdechet_clear()
             $req->execute(array('id' => $_GET['numero']));
  
            // On affiche chaque entree une à une
-           while ($donnees = $req->fetch())
-           {
-
-            echo$donnees['nom'];
-            
-              
-            
-             
-   
-               }
-              $reponse->closeCursor(); // Termine le traitement de la requête
+           $donnees = $req->fetch();
+           echo$donnees['nom'];
+           $reponse->closeCursor(); // Termine le traitement de la requête
                 ?>
 
 
@@ -469,7 +428,7 @@ function tdechet_clear()
            {
            ?>
       <div class="btn-group">
-      <button class="btn btn-default" style="margin-left:8px; margin-top:16px;" onclick="tdechet_write('<?php echo$donnees['nom']?>','<?php echo$donnees['id']?>');" ><span class="badge" id="cool" style="background-color:<?php echo$donnees['couleur']?>"><?php echo$donnees['nom']?></span>
+      <button class="btn btn-default" style="margin-left:8px; margin-top:16px;" onclick="tdechet_write('<?php echo$donnees['nom']?>', '<?php echo$donnees['id']?>', <?php echo($pesee_max); ?>);" ><span class="badge" id="cool" style="background-color:<?php echo$donnees['couleur']?>"><?php echo$donnees['nom']?></span>
  </button>
       
     </div>
@@ -502,7 +461,7 @@ function tdechet_clear()
            {
            ?>
       <div class="btn-group">
-      <button class="btn btn-default" style="margin-left:8px; margin-top:16px;" onclick="tdechet_write('<?php echo"d".$donnees['nom']?>','<?php echo "d".$donnees['id']?>');" ><span class="badge" id="cool" style="background-color:<?php echo$donnees['couleur']?>"><?php echo$donnees['nom']?></span>
+      <button class="btn btn-default" style="margin-left:8px; margin-top:16px;" onclick="tdechet_write('<?php echo"d".$donnees['nom']?>','<?php echo "d".$donnees['id']?>', <?php echo($pesee_max); ?>);" ><span class="badge" id="cool" style="background-color:<?php echo$donnees['couleur']?>"><?php echo$donnees['nom']?></span>
  </button>
       
     </div>
@@ -516,7 +475,7 @@ function tdechet_clear()
 
     </div>
   </div>
-<button class="btn btn-primary btn-lg" onclick="encaisse();">C'est pesé!</button>
+<button class="btn btn-primary btn-lg" onclick="verif_form_sortie();">C'est pesé!</button>
 
 <button class="btn btn-primary btn-lg"  align="center"  onclick="printdiv('divID');" value=" Print " ><span class="glyphicon glyphicon-print"></span></button>
         <button class="btn btn-warning btn-lg" onclick="tdechet_clear();"><span class="glyphicon glyphicon-refresh"></button>
