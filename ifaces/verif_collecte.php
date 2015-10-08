@@ -230,19 +230,16 @@ $req->execute(array('id_point_collecte' => $_GET['numero'], 'du' => $time_debut,
 
 
            // On affiche chaque entree une à une
-           while ($donnees = $req->fetch())
-           {
-
+           while ($donnees = $req->fetch()) {
            ?>
-            <tr> 
-            <td <td style="height:20px"><?php echo $donnees['id']?></td>
+            <tr>
+            <td style="height:20px"><?php echo $donnees['id']?></td>
             <td style="height:20px"><?php echo $donnees['timestamp']?></td>
             <td style="height:20px"><?php echo $donnees['nom']?></td>
             <td width="20%" style="height:20px"><?php echo $donnees['commentaire']?></td>
             <td style="height:20px"><?php echo $donnees['localisation']?></td>
-            <td style="height:20px"> 
-
- <?php 
+            <td style="height:20px">
+ <?php
 $req2 = $bdd->prepare('SELECT SUM(pesees_collectes.masse) masse
                        FROM pesees_collectes
                        WHERE  pesees_collectes.id_collecte = :id_collecte ');
