@@ -17,7 +17,7 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
    </head>
   
   <div class="container">
-  <div class"row">
+  <div class="row">
   <div class="col-md-11 " >
    <h1>Bilan global</h1>
     <div class="col-md-4 col-md-offset-8" >
