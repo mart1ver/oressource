@@ -136,204 +136,137 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
       <script src="../js/jquery-2.0.3.min.js"></script>
       <script src="../js/raphael.js"></script>
       <script src="../js/morris/morris.js"></script>
-      <script type="text/javascript">
+<script type="text/javascript" src="../js/utilitaire.js"></script>
+<script type="text/javascript">
 "use strict";
-      function switchperiode(state) {
-
-  if (state == false){
+(function() {
+  const data_j = [
+  <?php
+    // On recupère tout le contenu de la table affectations
+    $reponse = $bdd->query('SELECT type_dechets.couleur,type_dechets.nom, sum(pesees_collectes.masse) somme FROM type_dechets,pesees_collectes WHERE type_dechets.id = pesees_collectes.id_type_dechet AND DATE(pesees_collectes.timestamp) = CURDATE()
+    GROUP BY nom');
  
-loadPage('http://www.google.be');
-}
-else
-{
-loadPage('http://www.google.be');
-}
-}
+    // On affiche chaque entree une à une
+    while ($donnees = $reponse->fetch()) {
+      echo "{value:".$donnees['somme'].", label:'".$donnees['nom']."'},";
+    }
+    $reponse->closeCursor(); // Termine le traitement de la requête
+  ?>];
 
+  const data_m = [
+  <?php
+    // On recupère tout le contenu de la table affectations
+    $reponse = $bdd->query('SELECT type_dechets.couleur,type_dechets.nom, sum(vendus.quantite ) somme FROM type_dechets,vendus WHERE type_dechets.id = vendus.id_type_dechet AND DATE(vendus.timestamp) = CURDATE() AND vendus.prix > 0
+      GROUP BY nom');
 
-      </script>
-  <script>       Morris.Donut({
-    element: 'graphj',
-    data: [
-<?php 
-            // On recupère tout le contenu de la table affectations
-            $reponse = $bdd->query('SELECT type_dechets.couleur,type_dechets.nom, sum(pesees_collectes.masse) somme FROM type_dechets,pesees_collectes WHERE type_dechets.id = pesees_collectes.id_type_dechet AND DATE(pesees_collectes.timestamp) = CURDATE()
-GROUP BY nom');
- 
-           // On affiche chaque entree une à une
-           while ($donnees = $reponse->fetch())
-           {
+    // On affiche chaque entree une à une
+    while ($donnees = $reponse->fetch()) {
+      echo "{value:".$donnees['somme'].", label:'".$donnees['nom']."'},";
+    }
+    $reponse->closeCursor(); // Termine le traitement de la requête
+  ?>
+  ];
 
-            echo "{value:".$donnees['somme'].", label:'".$donnees['nom']."'},";
+  const data_a = [
+  <?php
+    // On recupère tout le contenu de la table affectations
+    $reponse = $bdd->query('SELECT type_dechets.couleur,type_dechets.nom, sum(pesees_sorties.masse) somme
+      FROM type_dechets,pesees_sorties
+      WHERE type_dechets.id = pesees_sorties.id_type_dechet
+      AND DATE(pesees_sorties.timestamp) = CURDATE()
+      GROUP BY nom
+  UNION
+  SELECT types_poubelles.couleur,types_poubelles.nom, sum(pesees_sorties.masse) somme
+    FROM types_poubelles,pesees_sorties
+    WHERE types_poubelles.id = pesees_sorties.id_type_poubelle
+    AND DATE(pesees_sorties.timestamp) = CURDATE()
+    GROUP BY nom
+  UNION
+  SELECT type_dechets_evac.couleur,type_dechets_evac.nom, sum(pesees_sorties.masse) somme
+    FROM type_dechets_evac ,pesees_sorties
+    WHERE type_dechets_evac.id=pesees_sorties.id_type_dechet_evac
+    AND DATE(pesees_sorties.timestamp) = CURDATE()
+    GROUP BY nom');
 
+    // On affiche chaque entree une à une
+    while ($donnees = $reponse->fetch()) {
+      echo "{value:".$donnees['somme'].", label:'".$donnees['nom']."'},";
+    }
+    $reponse->closeCursor(); // Termine le traitement de la requête
+  ?>
+  ];
 
-             }
-              $reponse->closeCursor(); // Termine le traitement de la requête
-                ?>
-],
-    backgroundColor: '#ccc',
-    labelColor: '#060',
-    colors: [
-<?php 
-            // On recupère tout le contenu de la table affectations
-            $reponse = $bdd->query('SELECT type_dechets.couleur,type_dechets.nom, sum(pesees_collectes.masse) somme FROM type_dechets,pesees_collectes WHERE type_dechets.id = pesees_collectes.id_type_dechet AND DATE(pesees_collectes.timestamp) = CURDATE()
-GROUP BY nom');
- 
-           // On affiche chaque entree une à une
-           while ($donnees = $reponse->fetch())
-           {
+  const colors_j = [
+  <?php
+    // On recupère tout le contenu de la table affectations
+    $reponse = $bdd->query('SELECT type_dechets.couleur,type_dechets.nom, sum(pesees_collectes.masse) somme FROM type_dechets,pesees_collectes WHERE type_dechets.id = pesees_collectes.id_type_dechet AND DATE(pesees_collectes.timestamp) = CURDATE()
+      GROUP BY nom');
 
-            echo "'".$donnees['couleur']."'".",";
+    // On affiche chaque entree une à une
+    while ($donnees = $reponse->fetch()) {
+      echo "'".$donnees['couleur']."', ";
+    }
+    $reponse->closeCursor(); // Termine le traitement de la requête
+  ?>
+  ];
 
+  const colors_m = [
+  <?php
+    // On recupère tout le contenu de la table affectations
+    $reponse = $bdd->query('SELECT type_dechets.couleur,type_dechets.nom, sum(vendus.quantite ) somme FROM type_dechets,vendus WHERE type_dechets.id = vendus.id_type_dechet AND DATE(vendus.timestamp) = CURDATE() AND vendus.prix > 0
+      GROUP BY nom');
 
-             }
-              $reponse->closeCursor(); // Termine le traitement de la requête
-                ?>
-    ],
-    formatter: function (x) { return x + " Kg."}
-    });
+    // On affiche chaque entree une à une
+    while ($donnees = $reponse->fetch()) {
+      echo "'".$donnees['couleur']."', ";
+    }
+    $reponse->closeCursor(); // Termine le traitement de la requête
+  ?>
+  ];
+
+  const colors_a = [
+  <?php
+    // On recupère tout le contenu de la table affectations
+    $reponse = $bdd->query('SELECT type_dechets.couleur,type_dechets.nom, sum(pesees_sorties.masse) somme
+      FROM type_dechets,pesees_sorties
+      WHERE type_dechets.id = pesees_sorties.id_type_dechet
+      AND DATE(pesees_sorties.timestamp) = CURDATE()
+      GROUP BY nom
+    UNION
+    SELECT types_poubelles.couleur,types_poubelles.nom, sum(pesees_sorties.masse) somme
+      FROM types_poubelles,pesees_sorties
+      WHERE types_poubelles.id = pesees_sorties.id_type_poubelle
+      AND DATE(pesees_sorties.timestamp) = CURDATE()
+      GROUP BY nom
+    UNION
+    SELECT type_dechets_evac.couleur,type_dechets_evac.nom, sum(pesees_sorties.masse) somme
+      FROM type_dechets_evac ,pesees_sorties
+      WHERE type_dechets_evac.id=pesees_sorties.id_type_dechet_evac
+      AND DATE(pesees_sorties.timestamp) = CURDATE()
+      GROUP BY nom');
+
+    // On affiche chaque entree une à une
+    while ($donnees = $reponse->fetch()) {
+      echo "'".$donnees['couleur']."', ";
+    }
+    $reponse->closeCursor(); // Termine le traitement de la requête
+  ?>
+  ];
+
+  make_graph('graphj', data_j, colors_j, "Kg");
+  make_graph('grapha', data_a, colors_a, "Kg");
+  make_graph('graphm', data_m, colors_m, "pcs");
+
+  // FIX: This is a hack.
+  // Utiliser AJAX et recharger serait mieux.
+  setTimeout(function(){
+       window.location.reload(true);
+  }, 50000);
+})();
 </script>
-
-<script>       Morris.Donut({
-    element: 'graphm',
-    data: [
-<?php 
-            // On recupère tout le contenu de la table affectations
-            $reponse = $bdd->query('SELECT type_dechets.couleur,type_dechets.nom, sum(vendus.quantite ) somme FROM type_dechets,vendus WHERE type_dechets.id = vendus.id_type_dechet AND DATE(vendus.timestamp) = CURDATE() AND vendus.prix > 0
-GROUP BY nom');
- 
-           // On affiche chaque entree une à une
-           while ($donnees = $reponse->fetch())
-           {
-
-            echo "{value:".$donnees['somme'].", label:'".$donnees['nom']."'},";
-
-
-             }
-              $reponse->closeCursor(); // Termine le traitement de la requête
-                ?>
-],
-    backgroundColor: '#ccc',
-    labelColor: '#060',
-    colors: [
-<?php 
- 
-            // On recupère tout le contenu de la table affectations
-            $reponse = $bdd->query('SELECT type_dechets.couleur,type_dechets.nom, sum(vendus.quantite ) somme FROM type_dechets,vendus WHERE type_dechets.id = vendus.id_type_dechet AND DATE(vendus.timestamp) = CURDATE() AND vendus.prix > 0
-GROUP BY nom');
- 
-           // On affiche chaque entree une à une
-           while ($donnees = $reponse->fetch())
-           {
-
-            echo "'".$donnees['couleur']."'".",";
-
-
-             }
-              $reponse->closeCursor(); // Termine le traitement de la requête
-                ?>
-    ],
-    formatter: function (x) { return x + " pcs."}
-    });
-</script>
-
-<script>       Morris.Donut({
-    element: 'grapha',
-    data: [
-<?php 
-            // On recupère tout le contenu de la table affectations
-            $reponse = $bdd->query('SELECT type_dechets.couleur,type_dechets.nom, sum(pesees_sorties.masse) somme 
-FROM type_dechets,pesees_sorties 
-WHERE type_dechets.id = pesees_sorties.id_type_dechet 
-AND DATE(pesees_sorties.timestamp) = CURDATE()
-GROUP BY nom
-UNION
-SELECT types_poubelles.couleur,types_poubelles.nom, sum(pesees_sorties.masse) somme 
-FROM types_poubelles,pesees_sorties 
-WHERE types_poubelles.id = pesees_sorties.id_type_poubelle 
-AND DATE(pesees_sorties.timestamp) = CURDATE()
-GROUP BY nom
-UNION
-SELECT type_dechets_evac.couleur,type_dechets_evac.nom, sum(pesees_sorties.masse) somme 
-FROM type_dechets_evac ,pesees_sorties 
-WHERE type_dechets_evac.id=pesees_sorties.id_type_dechet_evac 
-AND DATE(pesees_sorties.timestamp) = CURDATE()
-GROUP BY nom');
- 
-           // On affiche chaque entree une à une
-           while ($donnees = $reponse->fetch())
-           {
-
-            echo "{value:".$donnees['somme'].", label:'".$donnees['nom']."'},";
-
-
-             }
-              $reponse->closeCursor(); // Termine le traitement de la requête
-                ?>
-],
-    backgroundColor: '#ccc',
-    labelColor: '#060',
-    colors: [
-<?php 
-            // On recupère tout le contenu de la table affectations
-            $reponse = $bdd->query('SELECT type_dechets.couleur,type_dechets.nom, sum(pesees_sorties.masse) somme 
-FROM type_dechets,pesees_sorties 
-WHERE type_dechets.id = pesees_sorties.id_type_dechet 
-AND DATE(pesees_sorties.timestamp) = CURDATE()
-GROUP BY nom
-UNION
-SELECT types_poubelles.couleur,types_poubelles.nom, sum(pesees_sorties.masse) somme 
-FROM types_poubelles,pesees_sorties 
-WHERE types_poubelles.id = pesees_sorties.id_type_poubelle 
-AND DATE(pesees_sorties.timestamp) = CURDATE()
-GROUP BY nom
-UNION
-SELECT type_dechets_evac.couleur,type_dechets_evac.nom, sum(pesees_sorties.masse) somme 
-FROM type_dechets_evac ,pesees_sorties 
-WHERE type_dechets_evac.id=pesees_sorties.id_type_dechet_evac 
-AND DATE(pesees_sorties.timestamp) = CURDATE()
-GROUP BY nom');
- 
-           // On affiche chaque entree une à une
-           while ($donnees = $reponse->fetch())
-           {
-
-            echo "'".$donnees['couleur']."'".",";
-
-
-             }
-              $reponse->closeCursor(); // Termine le traitement de la requête
-                ?>
-    ],
-    formatter: function (x) { return x + " Kg."}
-    });
-var temps_reload = 240
-for (var i = 1; i <= temps_reload; i++) {
-    var tick = function(i) {
-        return function() {
-            
-            if (i == temps_reload) {
-              window.location.reload();
-   
-}
-        }
-
-    };
-    setTimeout(tick(i), 500 * i);
-
-}
-
-</script>
-  
-
-
-
-<?php include "pied.php";
-}
-    else
-{
-     header('Location: login.php') ; 
+<?php
+  include("pied.php");
+} else {
+  header('Location: login.php');
 }
 ?>
-
-
