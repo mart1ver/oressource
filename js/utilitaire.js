@@ -85,8 +85,8 @@ function tdechet_add(pesee_max) {
     const nAjout = document.getElementById('najout');
     nAjout.value = parseInt(nAjout.value) + 1;
 
-    const ref = document.getElementById("sel_filiere").value;
-    const tabref = ref.split('|');
+    const ref = document.getElementById("sel_filiere");
+    const tabref = ref.value.split('|');
 
     const id_filiere = document.getElementById("id_filiere");
     id_filiere.value = tabref[0];
@@ -96,7 +96,6 @@ function tdechet_add(pesee_max) {
 
     const type_dechet = document.getElementById("type_dechet");
     type_dechet.value = tabref[2];
-
 
     ref.disabled = true;
     document.getElementById(tabref[1]).textContent = parseFloat(document.getElementById(tabref[1]).textContent) + n;
