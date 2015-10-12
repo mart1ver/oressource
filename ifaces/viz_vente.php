@@ -1,10 +1,10 @@
 <?php session_start();
 
-<<<<<<< HEAD
+//<<<<<<< HEAD
 require_once('../moteur/dbconfig.php');
-=======
+//=======
 
->>>>>>> daamien-err_msg
+//>>>>>>> daamien-err_msg
 
 //Vérification des autorisations de l'utilisateur et des variables de session requises pour l'affichage de cette page:
    if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND $_SESSION['viz_caisse'] = "oui" AND (strpos($_SESSION['niveau'], 'v'.$_GET['numero']) !== false)  )

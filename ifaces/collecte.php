@@ -231,15 +231,14 @@ function encaisse() {
       
 
    <div class="input-group">
-      <input type="text" class="form-control" placeholder="Masse" id="number" name="num" style=" margin-left:8px; " >
+      <input type="text" class="form-control" placeholder="Masse" id="number" name="num" style="margin-left:8px;">
       <div class="input-group-btn">
-        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" style=" margin-right:8px; " > <span class="glyphicon glyphicon-minus"></span> <span class="caret"</span></button>
-        
-
-
+        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" style=" margin-right:8px;">
+          <span class="glyphicon glyphicon-minus"></span>
+          <span class="caret"></span>
+        </button>
         <ul class="dropdown-menu dropdown-menu-right" role="menu">
-        
-  <?php 
+  <?php
             // On affiche une liste déroulante des localités visibles
             $reponse = $bdd->query('SELECT * FROM type_contenants WHERE visible = "oui"');
             // On affiche chaque entrée une à une
