@@ -285,23 +285,21 @@ function tdechet_clear()
             $reponse = $bdd->query('SELECT * FROM types_poubelles WHERE visible = "oui" ');
  
            // On affiche chaque entree une à une
-           while ($donnees = $reponse->fetch())
-           {
-
+           while ($donnees = $reponse->fetch()) {
            ?>
 <button class="btn btn-default btn-sm"
 style="margin-left:8px; margin-top:16px;"
-onclick="tdechet_write_poubelle(document.getElementById('<?php echo($donnees['nom'])?>'),
-                               document.getElementById('<?php echo($donnees['id'])?>'),
-                                 <?php echo($pesee_max); ?>,
-                                 <?php echo($donnees['masse_bac']); ?>);">
+onclick="masse_write(
+         document.getElementById('<?php echo($donnees['nom'])?>'),
+         document.getElementById('<?php echo($donnees['id'])?>'),
+         <?php echo($pesee_max); ?>,
+         <?php echo($donnees['masse_bac']); ?>);">
 <span class="badge" id="cool"
 style="background-color:<?php echo$donnees['couleur']?>"><?php echo$donnees['nom']?></span>
 </button>
               <?php }
               $reponse->closeCursor(); // Termine le traitement de la requête
                 ?>
-
               </div>
               </div>
 <div class="row">

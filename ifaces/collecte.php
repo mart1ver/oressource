@@ -155,10 +155,6 @@ function encaisse() {
     </ul>
     <input type="hidden" value="0" name ="najout" id="najout">
     <input type="hidden" id="comm" name="comm">
-  
-  
-
-
 </div> 
 </div>
 <!--endprint-->
@@ -304,27 +300,28 @@ function encaisse() {
         <div class="panel-heading">
     <h3 class="panel-title"><label>Type d'objet:</label></h3>
   </div>
-  <div class="panel-body"> 
-      
-
-
-            <?php 
-            // On recupère tout le contenu de la table point de collecte
-            $reponse = $bdd->query('SELECT * FROM type_dechets WHERE visible = "oui"');
- 
-           // On affiche chaque entree une à une
-           while ($donnees = $reponse->fetch())
-           {
-           ?>
+  <div class="panel-body">
+<?php
+    // On recupère tout le contenu de la table point de collecte
+    $reponse = $bdd->query('SELECT * FROM type_dechets WHERE visible = "oui"');
+    // On affiche chaque entree une à une
+    while ($donnees = $reponse->fetch()) {
+    ?>
       <div class="btn-group">
-      <button class="btn btn-default" style="margin-left:8px; margin-top:16px;" onclick="tdechet_write('<?php echo$donnees['nom']?>', '<?php echo$donnees['id']?>', <?php echo($pesee_max); ?>);" ><span class="badge" id="cool" style="background-color:<?php echo$donnees['couleur']?>"><?php echo$donnees['nom']?></span>
+      <button class="btn btn-default" style="margin-left:8px; margin-top:16px;"
+              onclick="masse_write(
+                document.getElementById('<?php echo$donnees['nom']?>'),
+                document.getElementById('<?php echo$donnees['id']?>'),
+                <?php echo($pesee_max); ?>,
+                0.0);">
+<span class="badge" id="cool"
+style="background-color:<?php echo$donnees['couleur']?>"><?php echo$donnees['nom']?></span>
  </button>
-      
     </div>
-   
-                <?php }
-                $reponse->closeCursor(); // Termine le traitement de la requête
-                ?>
+<?php
+    }
+    $reponse->closeCursor(); // Termine le traitement de la requête
+?>
     </div> 
 
 

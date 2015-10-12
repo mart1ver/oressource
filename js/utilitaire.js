@@ -20,30 +20,9 @@ function number_write(x) {
 }
 
 function number_clear() {
-  document.getElementById("number").value = "";
-}
-
-// FIX: changer les parametres pour que cette fonction reçoive des elements DOM
-// et non des ID.
-function tdechet_write(nom, id, masse_max) {
-  const number = document.getElementById("number");
-  const number_value = parseFloat(number.value);
-
-  if (number_value > 0
-      && number_value < masse_max) {
-    const masseTotale = document.getElementById("massetot");
-    masseTotale.textContent = (parseFloat(masseTotale.textContent) + number_value).toFixed(2);
-
-    var nom = document.getElementById(nom);
-    nom.textContent = (parseFloat(nom.textContent) + number_value).toFixed(2);
-
-    var id = document.getElementById(id);
-    id.value = (parseFloat(id.value) + number_value).toFixed(2);
-
-    number.value = "";
-    const nAjout = document.getElementById("najout");
-    nAjout.value = parseInt(nAjout.value) + 1;
-  }
+  const input = document.getElementById("number");
+  input.value = "";
+  input.setCustomValidity("");
 }
 
 /*
@@ -52,22 +31,30 @@ function tdechet_write(nom, id, masse_max) {
  * masse_max: float
  * masse_bac: float
  */
-function tdechet_write_poubelle(nom, id, masse_max, masse_bac) {
-  const number = document.getElementById("number");
-  const number_value = parseFloat(number.value);
-  const new_number = number_value - masse_bac;
 
-  if (new_number > 0.0
-      && number_value <= masse_max) {
-    const masseTotale = document.getElementById("massetot");
-    masseTotale.textContent = (parseFloat(masseTotale.textContent) + new_number).toFixed(2);
+function masse_write(nom, id, masse_max, masse_bac) {
+  const input = document.getElementById("number");
+  const number_value = parseFloat(input.value);
+  const masse_reele = number_value - masse_bac;
 
-    id.value = (parseFloat(id.value) + new_number).toFixed(2);
-    nom.textContent = (parseFloat(nom.textContent) + new_number).toFixed(2);
-    number.value = "";
+  if (masse_reele > 0.00) {
+    if (number_value <= masse_max) {
+      const masseTotale = document.getElementById("massetot");
+      masseTotale.textContent = (parseFloat(masseTotale.textContent) + masse_reele).toFixed(2);
 
-    const nAjout = document.getElementById("najout");
-    nAjout.value = parseInt(nAjout.value) + 1;
+      id.value = (parseFloat(id.value) + masse_reele).toFixed(2);
+      nom.textContent = (parseFloat(nom.textContent) + masse_reele).toFixed(2);
+      input.value = "";
+
+      const nAjout = document.getElementById("najout");
+      nAjout.value = parseInt(nAjout.value) + 1;
+
+      number_clear();
+    } else {
+      input.setCustomValidity("Masse supérieure aux limites de pesée de la balance.");
+    }
+  } else {
+      input.setCustomValidity("Masse entrée inférieure au poids du conteneur ou inférieure ou égale à 0.");
   }
 }
 
@@ -77,31 +64,18 @@ function recocom() {
 }
 
 function tdechet_add(pesee_max) {
-  const number = document.getElementById('number');
-  const n = parseFloat(number.value);
+  const ref = document.getElementById("sel_filiere");
+  const tabref = ref.value.split('|');
 
-  if (n > 0
-      && n < pesee_max) {
-    const nAjout = document.getElementById('najout');
-    nAjout.value = parseInt(nAjout.value) + 1;
+  const id_filiere = document.getElementById("id_filiere");
+  id_filiere.value = tabref[0];
 
-    const ref = document.getElementById("sel_filiere");
-    const tabref = ref.value.split('|');
+  const id_type_dechet = document.getElementById("id_type_dechet");
+  id_type_dechet.value = tabref[1];
 
-    const id_filiere = document.getElementById("id_filiere");
-    id_filiere.value = tabref[0];
+  const type_dechet = document.getElementById("type_dechet");
+  type_dechet.value = tabref[2];
 
-    const id_type_dechet = document.getElementById("id_type_dechet");
-    id_type_dechet.value = tabref[1];
-
-    const type_dechet = document.getElementById("type_dechet");
-    type_dechet.value = tabref[2];
-
-    ref.disabled = true;
-    document.getElementById(tabref[1]).textContent = parseFloat(document.getElementById(tabref[1]).textContent) + n;
-    document.getElementById("m"+tabref[1]).value = parseFloat(document.getElementById("m"+tabref[1]).value) + n;
-    const masse_totale = document.getElementById("massetot");
-    masse_totale.textContent = parseFloat(masse_totale.textContent) + n;
-    number.value = "";
-  }
+  ref.disabled = true;
+  masse_write(document.getElementById(tabref[1]), document.getElementById("m"+tabref[1]), pesee_max, 0.0);
 }
