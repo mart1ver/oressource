@@ -79,3 +79,28 @@ function tdechet_add(pesee_max) {
   ref.disabled = true;
   masse_write(document.getElementById(tabref[1]), document.getElementById("m"+tabref[1]), pesee_max, 0.0);
 }
+
+function parse_current_url() {
+  return parse_url(window.location.search.slice(1));
+}
+
+function parse_url(url) {
+  return decodeURIComponent(url)
+    .split('&')
+    .reduce(function (a, b) {
+      b = b.split('=');
+      a[b[0]] = b[1];
+      return a;
+    }, {});
+}
+
+function make_graph(id, data, colors, unite) {
+  Morris.Donut({
+    element: id,
+    data: data,
+    backgroundColor: '#ccc',
+    labelColor: '#060',
+    colors: colors,
+    formatter: function (x) { return x + unite + '.'; }
+  });
+}
