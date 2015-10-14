@@ -231,6 +231,7 @@ function tdechet_clear()
            
 
           <select name ="sel_filiere" id ="sel_filiere" class="form-control " autofocus required>
+            <option value = "0" disabled selected></option>
 
 
 <?php 
@@ -368,7 +369,7 @@ WHERE filieres_sortie.visible = "oui" AND filieres_sortie.id_type_dechet_evac = 
   <div class="panel-body" style:"text-align:center"> 
 
   
-  <button class="btn btn-default " onclick="tdechet_add(<?php echo($pesee_max); ?>);" style="width:260px;height:130px;" ><span class="glyphicon glyphicon-plus"></span></button>
+  <button class="btn btn-default " onclick="if (parseInt(document.getElementById('sel_filiere').value) != 0){tdechet_add(<?php echo($pesee_max); ?>);}" style="width:260px;height:130px;" ><span class="glyphicon glyphicon-plus"></span></button>
 
 </div>
 </div>
@@ -383,7 +384,7 @@ WHERE filieres_sortie.visible = "oui" AND filieres_sortie.id_type_dechet_evac = 
 
 
 
-<button class="btn btn-primary btn-lg"  onclick="verif_form_sortie();">C'est pesé!</button>
+<button class="btn btn-primary btn-lg"  onclick="if (parseInt(document.getElementById('sel_filiere').value) != 0){verif_form_sortie();}">C'est pesé!</button>
 <button class="btn btn-primary btn-lg"  align="center"  onclick="printdiv('divID');" value=" Print " ><span class="glyphicon glyphicon-print"></span></button>
         <button class="btn btn-warning btn-lg" onclick="tdechet_clear();"><span class="glyphicon glyphicon-refresh"></button>
       </div>
