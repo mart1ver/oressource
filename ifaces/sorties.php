@@ -404,7 +404,7 @@ function tdechet_clear()
            {
            ?>
       <div class="btn-group">
-      <button class="btn btn-default" style="margin-left:8px; margin-top:16px;" onclick="if (parseInt(document.getElementById('type_sortie').value) != 0){tdechet_write('<?php echo$donnees['nom']?>', '<?php echo$donnees['id']?>', <?php echo($pesee_max); ?>);}" ><span class="badge" id="cool" style="background-color:<?php echo$donnees['couleur']?>"><?php echo$donnees['nom']?></span>
+      <button class="btn btn-default" style="margin-left:8px; margin-top:16px;" onclick="tdechet_write('<?php echo$donnees['nom']?>', '<?php echo$donnees['id']?>', <?php echo($pesee_max); ?>);" ><span class="badge" id="cool" style="background-color:<?php echo$donnees['couleur']?>"><?php echo$donnees['nom']?></span>
  </button>
       
     </div>
@@ -451,7 +451,7 @@ function tdechet_clear()
 
     </div>
   </div>
-<button class="btn btn-primary btn-lg" onclick="verif_form_sortie();">C'est pesé!</button>
+<button class="btn btn-primary btn-lg" onclick="if (parseInt(document.getElementById('type_sortie').value) != 0){verif_form_sortie();}">C'est pesé!</button>
 
 <button class="btn btn-primary btn-lg"  align="center"  onclick="printdiv('divID');" value=" Print " ><span class="glyphicon glyphicon-print"></span></button>
         <button class="btn btn-warning btn-lg" onclick="tdechet_clear();"><span class="glyphicon glyphicon-refresh"></button>
