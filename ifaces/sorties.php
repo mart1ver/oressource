@@ -258,6 +258,7 @@ function tdechet_clear()
   <div class="panel-body"> 
  <label for="type_sortie">Types de sortie:</label>
           <select name ="type_sortie" id ="type_sortie" class="form-control" required autofocus>
+            <option disabled selected> -- select an option -- </option>
 <?php         
             // On recupère tout le contenu de la table type de sortie
             $reponse = $bdd->query('SELECT * FROM type_sortie WHERE visible = "oui"');
