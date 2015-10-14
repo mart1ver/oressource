@@ -76,6 +76,8 @@ function tdechet_add(pesee_max) {
   const type_dechet = document.getElementById("type_dechet");
   type_dechet.value = tabref[2];
 
+
   ref.disabled = true;
   masse_write(document.getElementById(tabref[1]), document.getElementById("m"+tabref[1]), pesee_max, 0.0);
 }
+

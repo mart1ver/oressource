@@ -258,6 +258,7 @@ function tdechet_clear()
   <div class="panel-body"> 
  <label for="type_sortie">Types de sortie:</label>
           <select name ="type_sortie" id ="type_sortie" class="form-control" required autofocus>
+            <option value = "0" disabled selected></option>
 <?php         
             // On recupère tout le contenu de la table type de sortie
             $reponse = $bdd->query('SELECT * FROM type_sortie WHERE visible = "oui"');
@@ -446,7 +447,7 @@ function tdechet_clear()
 
     </div>
   </div>
-<button class="btn btn-primary btn-lg" onclick="verif_form_sortie();">C'est pesé!</button>
+<button class="btn btn-primary btn-lg" onclick="if (parseInt(document.getElementById('type_sortie').value) != 0){verif_form_sortie();}">C'est pesé!</button>
 
 <button class="btn btn-primary btn-lg"  align="center"  onclick="printdiv('divID');" value=" Print " ><span class="glyphicon glyphicon-print"></span></button>
         <button class="btn btn-warning btn-lg" onclick="tdechet_clear();"><span class="glyphicon glyphicon-refresh"></button>

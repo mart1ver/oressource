@@ -276,6 +276,7 @@ function tdechet_clear()
   <div class="panel-body"> 
 
           <select name ="id_convention" id ="id_convention" class="form-control " autofocus required>
+            <option value = "0" disabled selected></option>
 
 
 <?php 
@@ -474,7 +475,7 @@ function tdechet_clear()
     </div>
     </div>
   </div>
-<button class="btn btn-primary btn-lg" onclick="verif_form_sortie();">C'est pesé!</button>
+<button class="btn btn-primary btn-lg" onclick="if (parseInt(document.getElementById('id_convention').value) != 0){verif_form_sortie();}">C'est pesé!</button>
 
 <button class="btn btn-primary btn-lg"  align="center"  onclick="printdiv('divID');" value=" Print " ><span class="glyphicon glyphicon-print"></span></button>
         <button class="btn btn-warning btn-lg" onclick="tdechet_clear();"><span class="glyphicon glyphicon-refresh"></button>
