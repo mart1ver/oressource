@@ -48,7 +48,7 @@ if (isset($_SESSION['id'])
 <?php
   if ($mass_input == "0") {
 ?>
-<img src="../img/nodata.jpg" class="img-responsive" alt="Responsive image">
+<img src="../images/nodata.jpg" class="img-responsive" alt="Responsive image">
 <?php
 } else {
 ?>
@@ -68,7 +68,7 @@ if (isset($_SESSION['id'])
 <?php
   if ($mass_input == "0") {
 ?>
-<img src="../img/nodata.jpg" class="img-responsive" alt="Responsive image">
+<img src="../images/nodata.jpg" class="img-responsive" alt="Responsive image">
 <?php
   } else {
 ?>
@@ -88,7 +88,7 @@ if (isset($_SESSION['id'])
 <?php
   if ($quantity_sell == "0") {
 ?>
-<img src="../img/nodata.jpg" class="img-responsive" alt="Responsive image">
+<img src="../images/nodata.jpg" class="img-responsive" alt="Responsive image">
 <?php
   } else {
 ?>
