@@ -66,7 +66,7 @@ if (isset($_SESSION['id'])
         <div class="col-md-4">
         <h3>Evacué aujourd'hui: <?php echo $mass_output;?> Kgs.</h3>
 <?php
-  if ($mass_input == "0") {
+  if ($mass_output == "0") {
 ?>
 <img src="../images/nodata.jpg" class="img-responsive" alt="Responsive image">
 <?php
