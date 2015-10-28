@@ -1,9 +1,19 @@
-/* Move down content because we have a fixed navbar that is 50px tallles textarea ne sont plus resizables */
+/*
+ * Oressource Cascading Style Sheet.
+ */
 body {
   padding-top: 50px;
   padding-bottom: 20px;
-
 }
-textarea{
-        resize:none;
-    }
+
+textarea {
+  resize:none;
+}
+
+.chart {
+ height:180px
+}
+
+.chart: first-child {
+  position: relative;
+}

@@ -16,21 +16,29 @@ if (isset($_SESSION['id'])
   $show_details = (boolean) (isset($_SESSION['id'])
     && $_SESSION['systeme'] = "oressource"
     && (strpos($_SESSION['niveau'], 'bi')));
-    //on determine les masses collectés et evacuées ansi que le nombre d'objets vendus aujoud'hui
+  /*
+   * On recupére les quantitées vendues, et masses entrées et sorties.
+   * La requête est pas très belle. Mais c'est mieux que trois separées...
+   */
   $reponse = $bdd->query('
-      SELECT SUM(vendus.quantite) quantity_sell,
-          SUM(pesees_collectes.masse) mass_input,
-          SUM(pesees_sorties.masse) mass_output
-          FROM vendus, pesees_collectes, pesees_sorties
-          WHERE DATE(vendus.timestamp) = CURDATE()
-      AND DATE(pesees_collectes.timestamp) = CURDATE()
-      AND DATE(pesees_sorties.timestamp) = CURDATE()
-          AND vendus.remboursement = 0');
+  SELECT COALESCE(SUM(vendus.quantite), 0) as x
+  FROM vendus
+  WHERE DATE(vendus.timestamp) = CURDATE()
+    AND vendus.remboursement = 0
+  UNION ALL
+  SELECT SUM(pesees_collectes.masse)
+  FROM pesees_collectes
+  WHERE DATE(pesees_collectes.timestamp) = CURDATE()
+  UNION ALL
+  SELECT COALESCE(SUM(pesees_sorties.masse), 0)
+  FROM pesees_sorties
+  WHERE DATE(pesees_sorties.timestamp) = CURDATE()
+');
 
-  $donnees = $reponse->fetch();
-  $quantity_sell = ($donnees['quantity_sell'] == NULL) ? "0" : $donnees['quantity_sell'];
-  $mass_input = ($donnees['mass_input'] == NULL) ? "0" : $donnees['mass_input'];
-  $mass_output = ($donnees['mass_output'] == NULL) ? "0" : $donnees['mass_output'];
+  $donnees = $reponse->fetchAll();
+  $quantity_sell = $donnees[0]['x'];
+  $mass_input = $donnees[1]['x'];
+  $mass_output = $donnees[2]['x'];
   $reponse->closeCursor(); // Termine le traitement de la requête
 ?>
 
@@ -45,75 +53,33 @@ if (isset($_SESSION['id'])
       <div class="row">
         <div class="col-md-4" >
           <h3>Collecté aujourd'hui: <?php echo $mass_input; ?> Kgs.</h3>
-<?php
-  if ($mass_input == "0") {
-?>
-<img src="../images/nodata.jpg" class="img-responsive" alt="Responsive image">
-<?php
-} else {
-?>
-          <div id="graphj" style="height: 180px;"></div>
-<?php
-  //Vérification des autorisations de l'utilisateur et des variables de session requises pour l'affichage des bilans de collecte en première page:
-  if ($show_details) {
- ?>
-          <a href=" bilanc.php?date1=<?php echo date("d-m-Y")?>&date2=<?php echo date("d-m-Y")?>&numero=0" class="btn btn-default"  role="button">Détails &raquo;</a>
-<?php
-  }
-}
-?>
+          <div class="chart" id="chart_inputs"></div>
+          <a hidden
+             class="charts-details btn btn-default"
+             role="button"
+             href="/ifaces/bilanc.php?date1=<?php echo date("d-m-Y")?>&date2=<?php echo date("d-m-Y")?>&numero=0"
+          >Détails &raquo;</a>
         </div>
         <div class="col-md-4">
         <h3>Evacué aujourd'hui: <?php echo $mass_output;?> Kgs.</h3>
-<?php
-  if ($mass_output == "0") {
-?>
-<img src="../images/nodata.jpg" class="img-responsive" alt="Responsive image">
-<?php
-  } else {
-?>
-          <div id="grapha" style="height: 180px;"></div>
-<?php
-    //Vérification des autorisations de l'utilisateur et des variables de session requises pour l'affichage des bilans de sortie hors-boutique en première page:
-    if ($show_details) {
- ?>
-          <a class="btn btn-default" href=" bilanhb.php?date1=<?php echo date("d-m-Y")?>&date2=<?php echo date("d-m-Y")?>" role="button">Détails &raquo;</a>
-<?php
-    }
-  }
-?>
+        <div class="chart" id="chart_outputs"></div>
+          <a hidden
+             class="chart-details btn btn-default"
+             role="button"
+             href="/ifaces/bilanhb.php?date1=<?php echo date("d-m-Y")?>&date2=<?php echo date("d-m-Y")?>&numero=0"
+           >Détails &raquo;</a>
        </div>
-        <div class="col-md-4">
-          <h3>Vendu aujourd'hui: <?php echo $quantity_sell ?> Pcs.</h3>
-<?php
-  if ($quantity_sell == "0") {
-?>
-<img src="../images/nodata.jpg" class="img-responsive" alt="Responsive image">
-<?php
-  } else {
-?>
-          <div id="graphm" style="height: 180px;"></div>
-<?php
-    //Vérification des autorisations de l'utilisateur et des variables de session requises pour l'affichage des bilans de vente en première page:
-    if ($show_details) {
-?>
-          <a class="btn btn-default" href=" bilanv.php?date1=<?php echo date("d-m-Y")?>&date2=<?php echo date("d-m-Y")?>" role="button">Détails &raquo;</a>
-<?php
-    }
-  }
-?>
+       <div class="col-md-4">
+         <h3>Vendu aujourd'hui: <?php echo $quantity_sell ?> Pcs.</h3>
+          <div class="chart" id="chart_sells"></div>
+          <a hidden
+             role="button"
+             class="chart-details btn btn-default"
+             href="/ifaces/bilanv.php?date1=<?php echo date("d-m-Y")?>&date2=<?php echo date("d-m-Y")?>&numero=0"
+          >Détails &raquo;</a>
         </div>
       </div>
-      <hr>
-       </div> <!-- /container -->
-
-
-    <!-- Bootstrap core JavaScript+morris+raphael
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-      <script src="../js/jquery-2.0.3.min.js"></script>
-      <script src="../js/raphael.js"></script>
-      <script src="../js/morris/morris.js"></script>
+     </div> <!-- /container -->
 <?php
   // On recupère tout le contenu de la table affectations
   function export_data(PDOStatement $reponse) {
@@ -132,14 +98,7 @@ SELECT type_dechets.couleur color, type_dechets.nom label, sum(pesees_collectes.
 FROM type_dechets, pesees_collectes
 WHERE type_dechets.id = pesees_collectes.id_type_dechet AND DATE(pesees_collectes.timestamp) = CURDATE()
 GROUP BY nom');
-  $json_j = json_encode(export_data($reponse));
-
-  $reponse = $bdd->query(
-    'SELECT type_dechets.couleur color, type_dechets.nom label, sum(vendus.quantite) value
-    FROM type_dechets, vendus
-    WHERE type_dechets.id = vendus.id_type_dechet AND DATE(vendus.timestamp) = CURDATE() AND vendus.prix > 0
-    GROUP BY nom');
-  $json_m = json_encode(export_data($reponse));
+  $json_inputs = json_encode(export_data($reponse));
 
   $reponse = $bdd->query('SELECT type_dechets.couleur color,type_dechets.nom label, sum(pesees_sorties.masse) value
   FROM type_dechets,pesees_sorties
@@ -158,44 +117,69 @@ GROUP BY nom');
   WHERE type_dechets_evac.id=pesees_sorties.id_type_dechet_evac
   AND DATE(pesees_sorties.timestamp) = CURDATE()
   GROUP BY nom');
-  $json_a = json_encode(export_data($reponse));
-  // On affiche chaque entree une à une
+  $json_outputs = json_encode(export_data($reponse));
+
+  $reponse = $bdd->query(
+    'SELECT type_dechets.couleur color, type_dechets.nom label, sum(vendus.quantite) value
+    FROM type_dechets, vendus
+    WHERE type_dechets.id = vendus.id_type_dechet AND DATE(vendus.timestamp) = CURDATE() AND vendus.prix > 0
+    GROUP BY nom');
+  $json_sells = json_encode(export_data($reponse));
 ?>
-<script type="text/javascript">
+  <script type="text/javascript">
   "use strict";
 
   window.onload = function() {
-    const json_j = <?php echo($json_j); ?>;
-    Morris.Donut({
-    element: 'graphj',
-      data: json_j.data,
-      backgroundColor: '#ccc',
-      labelColor: '#060',
-      colors: json_j.colors,
-      formatter: function (x) { return x + " Kg."}
-    });
+    function make_chart(id, json, units) {
+      const len_data = Object.keys(json.data).length;
+      const len_colors = Object.keys(json.data).length;
+      if (len_data != 0 && len_colors != 0 ) {
+        Morris.Donut({
+        element: id,
+          data: json.data,
+          backgroundColor: '#ccc',
+          labelColor: '#060',
+          colors: json.colors,
+          formatter: function (x) { return x + units; }
+      });
+      } else {
+        // fetch is a standard on top of XHttpRequest.
+        fetch('/images/nodata.svg')
+          .then(function(response) {
+            return response.text()
+          }).then(function(raw_svg) {
+            // Somewhat complicated by it work.
+            const P = new DOMParser();
+            const svg = P.parseFromString(raw_svg, "image/svg+xml");
+            const importedSVG = document.importNode(svg.documentElement, true);
+            const div = document.getElementById(id);
+            div.appendChild(importedSVG);
 
-    const json_m = <?php echo($json_m); ?>;
-    Morris.Donut({
-    element: 'graphm',
-      data: json_m.data,
-      backgroundColor: '#ccc',
-      labelColor: '#060',
-      colors: json_m.colors,
-      formatter: function (x) { return x + " pcs."}
-    });
+          }).catch(function(ex) {
+            console.log(ex)
+          });
+      }
+    }
 
-    const json_a = <?php echo($json_a); ?>;
-    Morris.Donut({
-    element: 'grapha',
-      data: json_a.data,
-      backgroundColor: '#ccc',
-      labelColor: '#060',
-      colors: json_a.colors,
-      formatter: function (x) { return x + " Kg."}
-    });
+    const json_inputs = <?php echo($json_inputs); ?>;
+    make_chart('chart_inputs', json_inputs, "Kg.");
 
-    setTimeout(function(){
+    const json_outputs = <?php echo($json_outputs); ?>;
+    make_chart('chart_outputs', json_outputs, "Kg.");
+
+    const json_sells = <?php echo($json_sells); ?>;
+    make_chart('chart_sells', json_sells, "pcs.");
+
+    const show_details = <?php echo(json_encode($show_details));?>;
+    if (show_details) {
+      const details = document.getElementsByClassName('chart-details');
+      console.log(details);
+      for (var e of details) {
+        e.setAttribute('hidden', false);
+      }
+    };
+
+    setTimeout(function() {
       window.location.reload(true);
     }, 50000);
   };
