@@ -1207,6 +1207,7 @@ $reponse->closeCursor(); // Termine le traitement de la requête
       <th style="width:300px">Dons aux partenaires</th>
         <tr>
             <th  style="width:300px">Nom du partenaire</th>
+            <th>Nbr. de sorties</th>
             <th>masse</th>
             <th>%</th>
 
@@ -1216,7 +1217,7 @@ $reponse->closeCursor(); // Termine le traitement de la requête
     <tbody>
 
 <?php
- $reponse = $bdd->prepare('SELECT conventions_sorties.nom, sum(pesees_sorties.masse) somme
+ $reponse = $bdd->prepare('SELECT conventions_sorties.nom, sum(pesees_sorties.masse) somme, COUNT(sorties.id) nombre
 FROM conventions_sorties, pesees_sorties, sorties
 WHERE
 conventions_sorties.id=sorties.id_convention
@@ -1235,6 +1236,7 @@ GROUP BY nom');
 
         <tr>
             <td><?php echo $donnees['nom'] ?></td>
+            <td><?php echo $donnees['nombre'] ?></td>
             <td><?php echo $donnees['somme'] ?></td>
             <td><?php echo  round($donnees['somme']*100/$mtotcolo, 2)   ; ?></td>      
         </tr>
