@@ -40,15 +40,41 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
 
                <script type="text/javascript">
 "use strict";
+function $_GET(param) {
+  var vars = {};
+  window.location.href.replace( 
+    /[?&]+([^=&]+)=?([^&]*)?/gi, // regexp
+    function( m, key, value ) { // callback
+      vars[key] = value !== undefined ? value : '';
+    }
+  );
+
+  if ( param ) {
+    return vars[param] ? vars[param] : null;  
+  }
+  return vars;
+}
                $(document).ready(function() {
                   var cb = function(start, end, label) {
                     console.log(start.toISOString(), end.toISOString(), label);
                     $('#reportrange span').html(start.format('DD, MMMM, YYYY') + ' - ' + end.format('DD, MMMM, YYYY'));
                     //alert("Callback has fired: [" + start.format('MMMM D, YYYY') + " to " + end.format('MMMM D, YYYY') + ", label = " + label + "]");
                   }
+var dateuno = $_GET('date1');
+var jouruno = dateuno.substring(0,2);
+var moisuno = dateuno.substring(3,5);
+var anneeuno = dateuno.substring(6,10);
+var dateunogf = moisuno+'/'+jouruno+"/"+anneeuno;
+
+var datedos = $_GET('date2');
+var jourdos = datedos.substring(0,2);
+var moisdos = datedos.substring(3,5);
+var anneedos = datedos.substring(6,10);
+var datedosgf = moisdos+'/'+jourdos+"/"+anneedos;
+
                   var optionSet1 = {
-                    startDate: moment(),
-                    endDate: moment(),
+                    startDate: dateunogf,
+                    endDate: datedos,
                     minDate: '01/01/2010',
                     maxDate: '12/31/2020',
                     dateLimit: { days: 60 },
@@ -83,7 +109,7 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
                     }
                   };
                   
-                  $('#reportrange span').html(moment().format('D, MMMM, YYYY') + ' - ' + moment().format('D, MMMM, YYYY'));
+                   $('#reportrange span').html(dateuno + ' - ' + datedos);
                   $('#reportrange').daterangepicker(optionSet1, cb);
                   $('#reportrange').on('show.daterangepicker', function() { console.log("show event fired"); });
                   $('#reportrange').on('hide.daterangepicker', function() { console.log("hide event fired"); });

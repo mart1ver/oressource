@@ -84,7 +84,7 @@ function $_GET(param) {
                     //alert("Callback has fired: [" + start.format('MMMM D, YYYY') + " to " + end.format('MMMM D, YYYY') + ", label = " + label + "]");
                   }
 
-                  var dateuno = $_GET('date1');
+var dateuno = $_GET('date1');
 var jouruno = dateuno.substring(0,2);
 var moisuno = dateuno.substring(3,5);
 var anneeuno = dateuno.substring(6,10);
