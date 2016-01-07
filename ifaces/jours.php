@@ -11,9 +11,19 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
       <link rel="stylesheet" type="text/css" media="all" href="../css/daterangepicker-bs3.css" />
        <script type="text/javascript" src="../js/jquery-2.0.3.min.js"></script>
       <script type="text/javascript" src="../js/bootstrap.min.js"></script>
-      
       <script type="text/javascript" src="../js/moment.js"></script>
       <script type="text/javascript" src="../js/daterangepicker.js"></script>
+
+
+
+
+
+
+ <script src="../js/raphael.js"></script>
+ <script src="../js/morris/morris.min.js"></script>
+
+
+
    </head>
   
   <div class="container">
@@ -155,8 +165,48 @@ $txt2  = $_GET['date2'];
 $date2ft = DateTime::createFromFormat('d-m-Y', $txt2);
 $time_fin = $date2ft->format('Y-m-d');
 $time_fin = $time_fin." 23:59:59";
-  
+  ?>
 
+
+
+
+
+
+
+<div id="myfirstchart" style="height: 250px;"></div>
+
+
+
+<script>
+new Morris.Line({
+  // ID of the element in which to draw the chart.
+  element: 'myfirstchart',
+  // Chart data records -- each entry in this array corresponds to a point on
+  // the chart.
+  data: [
+    { year: '2008', value: 20 },
+    { year: '2009', value: 10 },
+    { year: '2010', value: 5 },
+    { year: '2011', value: 5 },
+    { year: '2012', value: 20 }
+  ],
+  // The name of the data record attribute that contains x-values.
+  xkey: 'year',
+  // A list of names of data record attributes that contain y-values.
+  ykeys: ['value'],
+  // Labels for the ykeys -- will be displayed when you hover over the
+  // chart.
+  labels: ['Value']
+});
+</script>
+
+
+
+
+
+
+
+<?php
  include "pied_bilan.php";
 }
     else
