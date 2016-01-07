@@ -197,7 +197,7 @@ ORDER BY TIMESTAMP');
            while ($donnees = $reponse->fetch())
            {
 
-            echo "{y:".$donnees['time'].", a:'".$donnees['nombre'].", b:'"."45"."'},";
+            echo "{y:".$donnees['time'].", a:".$donnees['nombre'].", b:"."45"."},";
 
 
              }
