@@ -173,14 +173,14 @@ $time_fin = $time_fin." 23:59:59";
 
 
 
-<div id="myfirstchart" style="height: 250px;"></div>
+<div id="collectes" style="height: 250px;"></div>
 
 
 
 <script>
 new Morris.Area({
   // ID of the element in which to draw the chart.
-  element: 'myfirstchart',
+  element: 'collectes',
   // Chart data records -- each entry in this array corresponds to a point on
   // the chart.
   data: [
@@ -191,6 +191,33 @@ new Morris.Area({
     { y: '2010', a: 50,  b: 40 },
     { y: '2011', a: 75,  b: 65 },
     { y: '2012', a: 100, b: 90 }
+
+
+
+
+
+<?php 
+            // On recupère tout le contenu de la table affectations
+            $reponse = $bdd->query('SELECT SUM(masse) AS nombre, date(timestamp) AS time
+
+FROM pesees_collectes
+GROUP BY  ,DATE_FORMAT(timestamp, "%Y-%m-%d") 
+
+ORDER BY timestamp');
+ 
+           // On affiche chaque entree une à une
+           while ($donnees = $reponse->fetch())
+           {
+
+            echo "{y:".$donnees['time'].", a:'".$donnees['nombre'].", b:'"."45"."'},";
+
+
+             }
+              $reponse->closeCursor(); // Termine le traitement de la requête
+                ?>
+
+
+
   ],
   xkey: 'y',
   ykeys: ['a', 'b'],
