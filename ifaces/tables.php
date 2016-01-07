@@ -1,5 +1,36 @@
 <html>
   <head>
+
+
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>DataTables example - Zero configuration</title>
+
+    
+    
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.10/css/jquery.dataTables.min.css">
+    <style type="text/css" class="init">
+    
+    </style>
+
+
+   
+    <script type="text/javascript" language="javascript" src="https://code.jquery.com/jquery-1.11.3.min.js">
+    </script>
+    <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.10.10/js/jquery.dataTables.min.js">
+    </script>
+
+   
+    <script type="text/javascript" class="init">
+    
+
+$(document).ready(function() {
+    $('#example').DataTable();
+} );
+
+
+    </script>
+
   </head>
 <body>
 <table id="table_id" class="display">
