@@ -54,6 +54,7 @@ require_once('../moteur/dbconfig.php');
                   <i class="fa fa-calendar"></i>
                   <span></span> <b class="caret"></b>
                </div>
+
 </div>
 
 
@@ -139,7 +140,7 @@ var datedosgf = moisdos+'/'+jourdos+"/"+anneedos;
 
                   
 
-                  $('#reportrange span').html(moment().format('D, MMMM, YYYY') + ' - ' + moment().format('D, MMMM, YYYY'));
+                  $('#reportrange span').html(dateuno + ' - ' + datedos);
 
                   $('#reportrange').daterangepicker(optionSet1, cb);
 
