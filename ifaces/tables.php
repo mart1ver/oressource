@@ -17,7 +17,7 @@
    
    <script src="../js/jquery-2.0.3.min.js"></script>
     <script src="../js/bootstrap.min.js"></script>
-    <script type="text/javascript" language="javascript" src="../js/jquery.dataTables.min.js">
+    <script type="text/javascript" language="javascript" src="../js/jquery.dataTables.js">
     </script>
 
    
