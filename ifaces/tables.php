@@ -15,8 +15,8 @@
 
 
    
-    <script type="text/javascript" language="javascript" src="https://code.jquery.com/jquery-1.11.3.min.js">
-    </script>
+   <script src="../js/jquery-2.0.3.min.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
     <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.10.10/js/jquery.dataTables.min.js">
     </script>
 
