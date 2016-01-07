@@ -93,7 +93,7 @@ var anneeuno = dateuno.substring(6,10);
 var dateunogf = moisuno+'/'+jouruno+"/"+anneeuno;
 console.log (dateunogf);
                   var optionSet1 = {
-                    startDate: '01/01/2010',
+                    startDate: dateunogf,
                     endDate: '03/04/2014',
                     minDate: '01/01/2010',
                     maxDate: '12/31/2020',
