@@ -135,32 +135,7 @@ var datedosgf = moisdos+'/'+jourdos+"/"+anneedos;
             </div>    
             </div>
       <hr/>
-      <div class="row">
-       <div class="col-md-8 col-md-offset-1" >
-        <h2> Bilan des ventes de la structure</h2>
-        <ul class="nav nav-tabs">
-        <?php      //on affiche un onglet par point de vente
-            // On recupère tout le contenu des visibles de la table points_vente
-            $reponse = $bdd->query('SELECT * FROM points_vente');
- 
-           // On affiche chaque entree une à une
-           while ($donnees = $reponse->fetch())
-           {
-                  // Si le Point de Vente n'est pas visible, on passe directement au prochain
-                  if ($donnees['visible'] != "oui") continue;
-           ?> 
-            <li<?php if ($_GET['numero'] == $donnees['id']){ echo ' class="active"';}?>><a href="<?php echo  "bilanv.php?numero=" . $donnees['id']."&date1=" . $_GET['date1']."&date2=" . $_GET['date2']?>"><?php echo$donnees['nom']?></a></li>
-           <?php }
-              $reponse->closeCursor(); // Termine le traitement de la requête
-              // sortisde la boucle on affiche un onglet special "touts les points"
-           ?>
-
-           <li<?php if ($_GET['numero'] == 0){ echo ' class="active"';}?>><a href="<?php echo  "bilanv.php?numero=0" ."&date1=" . $_GET['date1']."&date2=" . $_GET['date2']?>">Tous les points</a></li>
-       </ul>
-       <br>
-        <div class="row">
-        
- <td>
+      
          <h2>
          <?php
 // on affiche la période visée
@@ -169,7 +144,7 @@ var datedosgf = moisdos+'/'+jourdos+"/"+anneedos;
   }
   else
   {
-  echo' Du '.$_GET['date1']." au ".$_GET['date2']." : </h2></td>";  
+  echo' Du '.$_GET['date1']." au ".$_GET['date2']." : </h2>";  
 }
 
 
