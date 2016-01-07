@@ -83,9 +83,9 @@ function $_GET(param) {
                     //alert("Callback has fired: [" + start.format('MMMM D, YYYY') + " to " + end.format('MMMM D, YYYY') + ", label = " + label + "]");
                   }
 
-
+var dateuno = $_GET(date1)
 console.log( moment());
-console.log ($_GET(date1));
+console.log (dateuno);
                   var optionSet1 = {
                     startDate: moment(),
                     endDate: moment(),
