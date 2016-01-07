@@ -59,6 +59,22 @@ require_once('../moteur/dbconfig.php');
 
                <script type="text/javascript">
 "use strict";
+
+function $_GET(param) {
+  var vars = {};
+  window.location.href.replace( 
+    /[?&]+([^=&]+)=?([^&]*)?/gi, // regexp
+    function( m, key, value ) { // callback
+      vars[key] = value !== undefined ? value : '';
+    }
+  );
+
+  if ( param ) {
+    return vars[param] ? vars[param] : null;  
+  }
+  return vars;
+}
+
                $(document).ready(function() {
 
                   var cb = function(start, end, label) {
@@ -69,7 +85,7 @@ require_once('../moteur/dbconfig.php');
 
 
 console.log( moment());
-console.log ("fddfdf");
+console.log ($_GET(date1));
                   var optionSet1 = {
                     startDate: moment(),
                     endDate: moment(),
