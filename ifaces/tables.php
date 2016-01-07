@@ -216,7 +216,8 @@ if($donnees['nid'] > 0){ $req->closeCursor();
 
 
   <!-- Table -->
-      <table class="table">
+  <table id="verif" class="display">
+     
         <thead>
           <tr>
             <th>#</th>
@@ -408,5 +409,5 @@ header('Location: ../moteur/destroy.php') ;
 
 
 
-<table id="example" class="display">
+
    
