@@ -74,7 +74,7 @@ $time_debuta = $dateaft->format('DD/MM/YYYY');
 
 ?>DD/MM/YYYY
                   var optionSet1 = {
-                    startDate:<?php echo "'".$time_debuta."'" ?>,
+                    startDate: moment(),
                     endDate: moment(),
                     minDate: '01/01/2010',
                     maxDate: '12/31/2020',
