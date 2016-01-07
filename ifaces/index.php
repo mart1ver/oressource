@@ -1,107 +1,129 @@
-<?php
+<?php session_start(); 
 
-session_start();
+require_once("../moteur/dbconfig.php");
 
-if (isset($_SESSION['id'])
-  && $_SESSION['systeme'] = "oressource") {
-  require_once("../moteur/dbconfig.php");
+//Vérification du renseignement du champ "id" (dans le tableau $_SESSION) et du fait que la variable "système" de ce même tableau a bien la valeur "oressource" avant d'afficher quoique ce soit:    
+if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource")
+      
+{ include "tete_vente.php" ?>
 
-  // Vérification du renseignement du champ "id" (dans le tableau $_SESSION)
-  // et du fait que la variable "système" de ce même tableau a bien la valeur
-  // "oressource" avant d'afficher quoique ce soit:
-  //
 
-  include "tete_vente.php";
 
-  $show_details = (boolean) (isset($_SESSION['id'])
-    && $_SESSION['systeme'] = "oressource"
-    && (strpos($_SESSION['niveau'], 'bi')));
-    //on determine les masses collectés et evacuées ansi que le nombre d'objets vendus aujoud'hui
-  $reponse = $bdd->query('
-      SELECT SUM(vendus.quantite) quantity_sell,
-          SUM(pesees_collectes.masse) mass_input,
-          SUM(pesees_sorties.masse) mass_output
-          FROM vendus, pesees_collectes, pesees_sorties
-          WHERE DATE(vendus.timestamp) = CURDATE()
-      AND DATE(pesees_collectes.timestamp) = CURDATE()
-      AND DATE(pesees_sorties.timestamp) = CURDATE()
-          AND vendus.remboursement = 0');
 
-  $donnees = $reponse->fetch();
-  $quantity_sell = ($donnees['quantity_sell'] == NULL) ? "0" : $donnees['quantity_sell'];
-  $mass_input = ($donnees['mass_input'] == NULL) ? "0" : $donnees['mass_input'];
-  $mass_output = ($donnees['mass_output'] == NULL) ? "0" : $donnees['mass_output'];
-  $reponse->closeCursor(); // Termine le traitement de la requête
-?>
-
+    <!-- Main jumbotron for a primary marketing message or call to action -->
     <div class="page-header">
       <div class="container">
         <h1>Bienvenue à bord d'Oressource <?php echo $_SESSION['prenom']?>! </h1>
         <p>Oressource est un outil libre de quantification et de mise en bilan dédié aux structures du ré-emploi</p>
       </div>
     </div>
+
     <div class="container" id="actualise">
       <!-- Example row of columns -->
       <div class="row">
+
+
+
+
         <div class="col-md-4" >
-          <h3>Collecté aujourd'hui: <?php echo $mass_input; ?> Kgs.</h3>
-<?php
-  if ($mass_input == "0") {
-?>
-<img src="../img/nodata.jpg" class="img-responsive" alt="Responsive image">
-<?php
-} else {
-?>
-          <div id="graphj" style="height: 180px;"></div>
-<?php
-  //Vérification des autorisations de l'utilisateur et des variables de session requises pour l'affichage des bilans de collecte en première page:
-  if ($show_details) {
- ?>
-          <a href=" bilanc.php?date1=<?php echo date("d-m-Y")?>&date2=<?php echo date("d-m-Y")?>&numero=0" class="btn btn-default"  role="button">Détails &raquo;</a>
-<?php
-  }
+          <?php 
+//on determine les masses collectés et evacuées ansi que le nombre d'objets vendus aujoud'hui 
+
+
+           
+            $reponse = $bdd->query('SELECT SUM( vendus.quantite ) qv
+FROM vendus
+WHERE DATE( vendus.timestamp ) = CURDATE( ) 
+AND vendus.remboursement =0');
+ 
+           //on envoie la réponse dans trois variables distinctes
+           while ($donnees = $reponse->fetch())
+           {
+
+           $qv = $donnees['qv'];
+           if ($qv == NULL){$qv = "0";}
+           
+
 }
-?>
+        
+              $reponse->closeCursor(); // Termine le traitement de la requête
+
+               $reponse = $bdd->query('SELECT sum(pesees_collectes.masse) mc
+FROM pesees_collectes
+WHERE DATE(pesees_collectes.timestamp ) = CURDATE()');
+ 
+           //on envoie la réponse dans trois variables distinctes
+           while ($donnees = $reponse->fetch())
+           {
+
+           $mc = $donnees['mc'];
+           if ($mc == NULL){$mc = "0";}
+           
+
+}
+        
+              $reponse->closeCursor(); // Termine le traitement de la requête
+               $reponse = $bdd->query('SELECT sum(pesees_sorties.masse) me
+FROM pesees_sorties
+WHERE DATE(pesees_sorties.timestamp ) = CURDATE()');
+ 
+           //on envoie la réponse dans trois variables distinctes
+           while ($donnees = $reponse->fetch())
+           {
+
+           $me= $donnees['me'];
+           if ($me == NULL){$me = "0";}
+           
+
+}
+        
+              $reponse->closeCursor(); // Termine le traitement de la requête
+                
+          ?>
+          <h3>Collecté aujourd'hui: <?php echo $mc." Kgs.";?></h3>
+          <?php  if ($mc == "0"){?>
+<img src="../images/nodata.jpg" class="img-responsive" alt="Responsive image">
+
+          <?php }else{
+                    ?>
+          <p><div id="graphj" style="height: 180px;"></div></p>
+<?php 
+//Vérification des autorisations de l'utilisateur et des variables de session requises pour l'affichage des bilans de collecte en première page:
+if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 'bi') !== false))
+      { ?>
+          <p><a href=" bilanc.php?date1=<?php echo date("d-m-Y")?>&date2=<?php echo date("d-m-Y")?>&numero=0" class="btn btn-default"  role="button">Détails &raquo;</a></p>
+<?php } }?>
+
         </div>
         <div class="col-md-4">
-        <h3>Evacué aujourd'hui: <?php echo $mass_output;?> Kgs.</h3>
+          <h3>Evacué aujourd'hui: <?php echo $me." Kgs.";?></h3>
+           <?php  if ($me == "0"){?>
+<img src="../images/nodata.jpg" class="img-responsive" alt="Responsive image">
+
+          <?php }else{
+                    ?>
+          <p><div id="grapha" style="height: 180px;"></div></p>
 <?php
-  if ($mass_input == "0") {
-?>
-<img src="../img/nodata.jpg" class="img-responsive" alt="Responsive image">
-<?php
-  } else {
-?>
-          <div id="grapha" style="height: 180px;"></div>
-<?php
-    //Vérification des autorisations de l'utilisateur et des variables de session requises pour l'affichage des bilans de sortie hors-boutique en première page:
-    if ($show_details) {
- ?>
-          <a class="btn btn-default" href=" bilanhb.php?date1=<?php echo date("d-m-Y")?>&date2=<?php echo date("d-m-Y")?>" role="button">Détails &raquo;</a>
-<?php
-    }
-  }
-?>
+//Vérification des autorisations de l'utilisateur et des variables de session requises pour l'affichage des bilans de sortie hors-boutique en première page:
+          if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 'bi') !== false))
+      { ?>
+          <p><a class="btn btn-default" href=" bilanhb.php?date1=<?php echo date("d-m-Y")?>&date2=<?php echo date("d-m-Y")?>" role="button">Détails &raquo;</a></p>
+          <?php }} ?>
        </div>
         <div class="col-md-4">
-          <h3>Vendu aujourd'hui: <?php echo $quantity_sell ?> Pcs.</h3>
-<?php
-  if ($quantity_sell == "0") {
-?>
-<img src="../img/nodata.jpg" class="img-responsive" alt="Responsive image">
-<?php
-  } else {
-?>
-          <div id="graphm" style="height: 180px;"></div>
-<?php
-    //Vérification des autorisations de l'utilisateur et des variables de session requises pour l'affichage des bilans de vente en première page:
-    if ($show_details) {
-?>
-          <a class="btn btn-default" href=" bilanv.php?date1=<?php echo date("d-m-Y")?>&date2=<?php echo date("d-m-Y")?>" role="button">Détails &raquo;</a>
-<?php
-    }
-  }
-?>
+          <h3>Vendu aujourd'hui: <?php echo $qv." Pcs.";?></h3>
+           <?php  if ($qv == "0"){?>
+<img src="../images/nodata.jpg" class="img-responsive" alt="Responsive image">
+
+          <?php }else{
+                    ?>
+          <p><div id="graphm" style="height: 180px;"></div></p>
+          <?php
+//Vérification des autorisations de l'utilisateur et des variables de session requises pour l'affichage des bilans de vente en première page:
+if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 'bi') !== false))
+      { ?>
+          <p><a class="btn btn-default" href=" bilanv.php?date1=<?php echo date("d-m-Y")?>&date2=<?php echo date("d-m-Y")?>" role="button">Détails &raquo;</a></p>
+          <?php }} ?>
         </div>
       </div>
       <hr>
@@ -114,96 +136,204 @@ if (isset($_SESSION['id'])
       <script src="../js/jquery-2.0.3.min.js"></script>
       <script src="../js/raphael.js"></script>
       <script src="../js/morris/morris.js"></script>
-<?php
-  // On recupère tout le contenu de la table affectations
-  function export_data(PDOStatement $reponse) {
-    $colors = array();
-    $data = array();
-      while ($result = $reponse->fetch()) {
-      $colors[] = $result['color'];
-      $data[] = array("label" => $result['label'], "value" => $result['value']);
-    }
-    $reponse->closeCursor(); // Termine le traitement de la requête
-    return array('colors' => $colors, 'data' => $data);
-  }
+      <script type="text/javascript">
+"use strict";
+      function switchperiode(state) {
 
-  $reponse = $bdd->query('
-SELECT type_dechets.couleur color, type_dechets.nom label, sum(pesees_collectes.masse) value
-FROM type_dechets, pesees_collectes
-WHERE type_dechets.id = pesees_collectes.id_type_dechet AND DATE(pesees_collectes.timestamp) = CURDATE()
-GROUP BY nom');
-  $json_j = json_encode(export_data($reponse));
+  if (state == false){
+ 
+loadPage('http://www.google.be');
+}
+else
+{
+loadPage('http://www.google.be');
+}
+}
 
-  $reponse = $bdd->query(
-    'SELECT type_dechets.couleur color, type_dechets.nom label, sum(vendus.quantite) value
-    FROM type_dechets, vendus
-    WHERE type_dechets.id = vendus.id_type_dechet AND DATE(vendus.timestamp) = CURDATE() AND vendus.prix > 0
-    GROUP BY nom');
-  $json_m = json_encode(export_data($reponse));
 
-  $reponse = $bdd->query('SELECT type_dechets.couleur color,type_dechets.nom label, sum(pesees_sorties.masse) value
-  FROM type_dechets,pesees_sorties
-  WHERE type_dechets.id = pesees_sorties.id_type_dechet
-  AND DATE(pesees_sorties.timestamp) = CURDATE()
-  GROUP BY nom
-  UNION
-  SELECT types_poubelles.couleur color, types_poubelles.nom label, sum(pesees_sorties.masse) value
-  FROM types_poubelles,pesees_sorties
-  WHERE types_poubelles.id = pesees_sorties.id_type_poubelle
-  AND DATE(pesees_sorties.timestamp) = CURDATE()
-  GROUP BY nom
-  UNION
-  SELECT type_dechets_evac.couleur color, type_dechets_evac.nom label, sum(pesees_sorties.masse) value
-  FROM type_dechets_evac ,pesees_sorties
-  WHERE type_dechets_evac.id=pesees_sorties.id_type_dechet_evac
-  AND DATE(pesees_sorties.timestamp) = CURDATE()
-  GROUP BY nom');
-  $json_a = json_encode(export_data($reponse));
-  // On affiche chaque entree une à une
-?>
-<script type="text/javascript">
-  "use strict";
-
-  window.onload = function() {
-    const json_j = <?php echo($json_j); ?>;
-    Morris.Donut({
+      </script>
+  <script>       Morris.Donut({
     element: 'graphj',
-      data: json_j.data,
-      backgroundColor: '#ccc',
-      labelColor: '#060',
-      colors: json_j.colors,
-      formatter: function (x) { return x + " Kg."}
-    });
+    data: [
+<?php 
+            // On recupère tout le contenu de la table affectations
+            $reponse = $bdd->query('SELECT type_dechets.couleur,type_dechets.nom, sum(pesees_collectes.masse) somme FROM type_dechets,pesees_collectes WHERE type_dechets.id = pesees_collectes.id_type_dechet AND DATE(pesees_collectes.timestamp) = CURDATE()
+GROUP BY nom');
+ 
+           // On affiche chaque entree une à une
+           while ($donnees = $reponse->fetch())
+           {
 
-    const json_m = <?php echo($json_m); ?>;
-    Morris.Donut({
-    element: 'graphm',
-      data: json_m.data,
-      backgroundColor: '#ccc',
-      labelColor: '#060',
-      colors: json_m.colors,
-      formatter: function (x) { return x + " pcs."}
-    });
+            echo "{value:".$donnees['somme'].", label:'".$donnees['nom']."'},";
 
-    const json_a = <?php echo($json_a); ?>;
-    Morris.Donut({
-    element: 'grapha',
-      data: json_a.data,
-      backgroundColor: '#ccc',
-      labelColor: '#060',
-      colors: json_a.colors,
-      formatter: function (x) { return x + " Kg."}
-    });
 
-    setTimeout(function(){
-      window.location.reload(true);
-    }, 50000);
-  };
+             }
+              $reponse->closeCursor(); // Termine le traitement de la requête
+                ?>
+],
+    backgroundColor: '#ccc',
+    labelColor: '#060',
+    colors: [
+<?php 
+            // On recupère tout le contenu de la table affectations
+            $reponse = $bdd->query('SELECT type_dechets.couleur,type_dechets.nom, sum(pesees_collectes.masse) somme FROM type_dechets,pesees_collectes WHERE type_dechets.id = pesees_collectes.id_type_dechet AND DATE(pesees_collectes.timestamp) = CURDATE()
+GROUP BY nom');
+ 
+           // On affiche chaque entree une à une
+           while ($donnees = $reponse->fetch())
+           {
+
+            echo "'".$donnees['couleur']."'".",";
+
+
+             }
+              $reponse->closeCursor(); // Termine le traitement de la requête
+                ?>
+    ],
+    formatter: function (x) { return x + " Kg."}
+    });
 </script>
-<?php
-  include "pied.php";
-} else {
-  header('Location: login.php') ;
+
+<script>       Morris.Donut({
+    element: 'graphm',
+    data: [
+<?php 
+            // On recupère tout le contenu de la table affectations
+            $reponse = $bdd->query('SELECT type_dechets.couleur,type_dechets.nom, sum(vendus.quantite ) somme FROM type_dechets,vendus WHERE type_dechets.id = vendus.id_type_dechet AND DATE(vendus.timestamp) = CURDATE() AND vendus.prix > 0
+GROUP BY nom');
+ 
+           // On affiche chaque entree une à une
+           while ($donnees = $reponse->fetch())
+           {
+
+            echo "{value:".$donnees['somme'].", label:'".$donnees['nom']."'},";
+
+
+             }
+              $reponse->closeCursor(); // Termine le traitement de la requête
+                ?>
+],
+    backgroundColor: '#ccc',
+    labelColor: '#060',
+    colors: [
+<?php 
+ 
+            // On recupère tout le contenu de la table affectations
+            $reponse = $bdd->query('SELECT type_dechets.couleur,type_dechets.nom, sum(vendus.quantite ) somme FROM type_dechets,vendus WHERE type_dechets.id = vendus.id_type_dechet AND DATE(vendus.timestamp) = CURDATE() AND vendus.prix > 0
+GROUP BY nom');
+ 
+           // On affiche chaque entree une à une
+           while ($donnees = $reponse->fetch())
+           {
+
+            echo "'".$donnees['couleur']."'".",";
+
+
+             }
+              $reponse->closeCursor(); // Termine le traitement de la requête
+                ?>
+    ],
+    formatter: function (x) { return x + " pcs."}
+    });
+</script>
+
+<script>       Morris.Donut({
+    element: 'grapha',
+    data: [
+<?php 
+            // On recupère tout le contenu de la table affectations
+            $reponse = $bdd->query('SELECT type_dechets.couleur,type_dechets.nom, sum(pesees_sorties.masse) somme 
+FROM type_dechets,pesees_sorties 
+WHERE type_dechets.id = pesees_sorties.id_type_dechet 
+AND DATE(pesees_sorties.timestamp) = CURDATE()
+GROUP BY nom
+UNION
+SELECT types_poubelles.couleur,types_poubelles.nom, sum(pesees_sorties.masse) somme 
+FROM types_poubelles,pesees_sorties 
+WHERE types_poubelles.id = pesees_sorties.id_type_poubelle 
+AND DATE(pesees_sorties.timestamp) = CURDATE()
+GROUP BY nom
+UNION
+SELECT type_dechets_evac.couleur,type_dechets_evac.nom, sum(pesees_sorties.masse) somme 
+FROM type_dechets_evac ,pesees_sorties 
+WHERE type_dechets_evac.id=pesees_sorties.id_type_dechet_evac 
+AND DATE(pesees_sorties.timestamp) = CURDATE()
+GROUP BY nom');
+ 
+           // On affiche chaque entree une à une
+           while ($donnees = $reponse->fetch())
+           {
+
+            echo "{value:".$donnees['somme'].", label:'".$donnees['nom']."'},";
+
+
+             }
+              $reponse->closeCursor(); // Termine le traitement de la requête
+                ?>
+],
+    backgroundColor: '#ccc',
+    labelColor: '#060',
+    colors: [
+<?php 
+            // On recupère tout le contenu de la table affectations
+            $reponse = $bdd->query('SELECT type_dechets.couleur,type_dechets.nom, sum(pesees_sorties.masse) somme 
+FROM type_dechets,pesees_sorties 
+WHERE type_dechets.id = pesees_sorties.id_type_dechet 
+AND DATE(pesees_sorties.timestamp) = CURDATE()
+GROUP BY nom
+UNION
+SELECT types_poubelles.couleur,types_poubelles.nom, sum(pesees_sorties.masse) somme 
+FROM types_poubelles,pesees_sorties 
+WHERE types_poubelles.id = pesees_sorties.id_type_poubelle 
+AND DATE(pesees_sorties.timestamp) = CURDATE()
+GROUP BY nom
+UNION
+SELECT type_dechets_evac.couleur,type_dechets_evac.nom, sum(pesees_sorties.masse) somme 
+FROM type_dechets_evac ,pesees_sorties 
+WHERE type_dechets_evac.id=pesees_sorties.id_type_dechet_evac 
+AND DATE(pesees_sorties.timestamp) = CURDATE()
+GROUP BY nom');
+ 
+           // On affiche chaque entree une à une
+           while ($donnees = $reponse->fetch())
+           {
+
+            echo "'".$donnees['couleur']."'".",";
+
+
+             }
+              $reponse->closeCursor(); // Termine le traitement de la requête
+                ?>
+    ],
+    formatter: function (x) { return x + " Kg."}
+    });
+var temps_reload = 240
+for (var i = 1; i <= temps_reload; i++) {
+    var tick = function(i) {
+        return function() {
+            
+            if (i == temps_reload) {
+              window.location.reload();
+   
+}
+        }
+
+    };
+    setTimeout(tick(i), 500 * i);
+
+}
+
+</script>
+  
+
+
+
+<?php include "pied.php";
+}
+    else
+{
+     header('Location: login.php') ; 
 }
 ?>
+
 
