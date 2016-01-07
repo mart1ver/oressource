@@ -68,7 +68,7 @@ require_once('../moteur/dbconfig.php');
                   }
 
 
-console.log( momment());
+console.log( moment());
 console.log ("fddfdf");
                   var optionSet1 = {
                     startDate: moment(),
