@@ -89,7 +89,7 @@ console.log( moment());
 console.log (dateuno);
                   var optionSet1 = {
                     startDate: '01/01/2010',
-                    endDate: moment(),
+                    endDate: '03/04/2014',
                     minDate: '01/01/2010',
                     maxDate: '12/31/2020',
                     dateLimit: { days: 60 },
