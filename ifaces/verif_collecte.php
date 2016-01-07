@@ -146,10 +146,7 @@ console.log (dateuno);
                     $('#reportrange').data('daterangepicker').setOptions(optionSet1, cb);
                   });
 
-                  $('#options2').click(function() {
-                    $('#reportrange').data('daterangepicker').setOptions(optionSet2, cb);
-                  });
-
+                 
                   $('#destroy').click(function() {
                     $('#reportrange').data('daterangepicker').remove();
                   });
