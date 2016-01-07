@@ -194,8 +194,7 @@ $time_fin = $time_fin." 23:59:59";
 </div>
 
 <?php
-            // On recupère toute la liste des filieres de sortie
-            //   $reponse = $bdd->query('SELECT * FROM grille_objets');
+
           
 $req = $bdd->prepare('SELECT COUNT(id) nid
                         FROM `collectes` 

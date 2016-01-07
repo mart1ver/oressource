@@ -49,7 +49,7 @@ require_once('../moteur/dbconfig.php');
 
 <div class="row">
   <div class="col-md-3 col-md-offset-9" >
-  <label for="reportrange">Choisissez la période à inspecter::</label><br>
+  <label for="reportrange">Choisissez la période à inspecter:</label><br>
 <div id="reportrange" class="pull-left" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc">
                   <i class="fa fa-calendar"></i>
                   <span></span> <b class="caret"></b>
@@ -66,9 +66,15 @@ require_once('../moteur/dbconfig.php');
                     $('#reportrange span').html(start.format('DD, MMMM, YYYY') + ' - ' + end.format('DD, MMMM, YYYY'));
                     //alert("Callback has fired: [" + start.format('MMMM D, YYYY') + " to " + end.format('MMMM D, YYYY') + ", label = " + label + "]");
                   }
+<?php
 
+$txta  = $_GET['date1'];
+$dateaft = DateTime::createFromFormat('d-m-Y', $txta);
+$time_debuta = $dateaft->format('DD/MM/YYYY');
+
+?>DD/MM/YYYY
                   var optionSet1 = {
-                    startDate: moment(),
+                    startDate:<?php echo $time_debuta ?>,
                     endDate: moment(),
                     minDate: '01/01/2010',
                     maxDate: '12/31/2020',
