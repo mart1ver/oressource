@@ -66,16 +66,10 @@ require_once('../moteur/dbconfig.php');
                     $('#reportrange span').html(start.format('DD, MMMM, YYYY') + ' - ' + end.format('DD, MMMM, YYYY'));
                     //alert("Callback has fired: [" + start.format('MMMM D, YYYY') + " to " + end.format('MMMM D, YYYY') + ", label = " + label + "]");
                   }
-<?php
 
-$txta  = $_GET['date1'];
-$dateaft = DateTime::createFromFormat('d-m-Y', $txta);
-$time_debuta = $date1ft->format('DD/MM/YYYY');
 
-?>
-
-console.log momment();
-console.log "fddfdf";
+console.log( momment());
+console.log ("fddfdf");
                   var optionSet1 = {
                     startDate: moment(),
                     endDate: moment(),
