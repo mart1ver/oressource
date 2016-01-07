@@ -169,7 +169,25 @@ $time_fin = $time_fin." 23:59:59";
 
 
 
+<?php 
+            // On recupère tout le contenu de la table affectations
+            $reponse = $bdd->query('SELECT SUM(masse) AS nombre, date(timestamp) AS time
 
+FROM pesees_collectes
+GROUP BY  ,DATE_FORMAT(timestamp, "%Y-%m-%d") 
+
+ORDER BY timestamp');
+ 
+           // On affiche chaque entree une à une
+           while ($donnees = $reponse->fetch())
+           {
+
+            echo "{y:".$donnees['time'].", a:'".$donnees['nombre'].", b:'"."45"."'},";
+
+
+             }
+              $reponse->closeCursor(); // Termine le traitement de la requête
+                ?>
 
 
 
