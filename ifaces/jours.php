@@ -107,7 +107,7 @@ var datedosgf = moisdos+'/'+jourdos+"/"+anneedos;
                       + " to " 
                       + picker.endDate.format('DD MM, YYYY')                      
                     ); 
-                    window.location.href = "bilanv.php?date1="+picker.startDate.format('DD-MM-YYYY')+"&date2="+picker.endDate.format('DD-MM-YYYY')+"&numero=<?php echo $_GET['numero'] ?>";
+                    window.location.href = "lignes.php?date1="+picker.startDate.format('DD-MM-YYYY')+"&date2="+picker.endDate.format('DD-MM-YYYY')";
                   });
                   $('#reportrange').on('cancel.daterangepicker', function(ev, picker) { console.log("cancel event fired"); });
 
@@ -126,11 +126,7 @@ var datedosgf = moisdos+'/'+jourdos+"/"+anneedos;
                </script>
              </div>
        
-       <ul class="nav nav-tabs">
-        <li><a href="<?php echo  "bilanc.php?date1=" . $_GET['date1'].'&date2='.$_GET['date2'].'&numero=0'?>" >Collectes</a></li>
-        <li><a href="<?php echo  "bilanhb.php?date1=" . $_GET['date1'].'&date2='.$_GET['date2'].'&numero=0'?>">Sorties hors-boutique</a></li>
-        <li class="active"><a>Ventes</a></li>
-      </ul>
+      
             </div>
             </div>    
             </div>
