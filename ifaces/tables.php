@@ -33,7 +33,7 @@ $(document).ready(function() {
 
   </head>
 <body>
-<table id="table_id" class="display">
+<table id="example" class="display">
     <thead>
         <tr>
             <th>Column 1</th>
