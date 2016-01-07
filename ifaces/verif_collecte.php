@@ -70,11 +70,14 @@ require_once('../moteur/dbconfig.php');
 
 $txta  = $_GET['date1'];
 $dateaft = DateTime::createFromFormat('d-m-Y', $txta);
-$time_debuta = $dateaft->format('DD/MM/YYYY');
+$time_debuta = $date1ft->format('DD/MM/YYYY');
 
 ?>
+
+console.log momment();
+console.log "fddfdf";
                   var optionSet1 = {
-                    startDate:<?php echo "'".$time_debuta."'" ?>,
+                    startDate: moment(),
                     endDate: moment(),
                     minDate: '01/01/2010',
                     maxDate: '12/31/2020',
