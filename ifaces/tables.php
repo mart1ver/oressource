@@ -33,7 +33,7 @@ $(document).ready(function() {
 } );
 
 
-
+</script>
       
       <link rel="stylesheet" type="text/css" media="all" href="../css/daterangepicker-bs3.css" />
 
