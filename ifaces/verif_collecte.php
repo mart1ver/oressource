@@ -87,6 +87,11 @@ function $_GET(param) {
 var dateuno = $_GET('date1');
 console.log( moment());
 console.log (dateuno);
+var jouruno = dateuno.substring(0,2);
+var moisuno = dateuno.substring(3,5);
+var anneeuno = dateuno.substring(6,10);
+var dateunogf = moisuno+'/'+jouruno+"/"+anneeuno;
+console.log (dateunogf);
                   var optionSet1 = {
                     startDate: '01/01/2010',
                     endDate: '03/04/2014',
