@@ -72,9 +72,9 @@ $txta  = $_GET['date1'];
 $dateaft = DateTime::createFromFormat('d-m-Y', $txta);
 $time_debuta = $dateaft->format('DD/MM/YYYY');
 
-?>DD/MM/YYYY
+?>
                   var optionSet1 = {
-                    startDate: moment(),
+                    startDate:<?php echo "'".$time_debuta."'" ?>,
                     endDate: moment(),
                     minDate: '01/01/2010',
                     maxDate: '12/31/2020',
