@@ -88,7 +88,7 @@ var dateuno = $_GET('date1');
 console.log( moment());
 console.log (dateuno);
                   var optionSet1 = {
-                    startDate: dateuno,
+                    startDate: '01/01/2010',
                     endDate: moment(),
                     minDate: '01/01/2010',
                     maxDate: '12/31/2020',
