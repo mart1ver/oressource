@@ -73,12 +73,24 @@ require_once('../moteur/dbconfig.php');
                     //alert("Callback has fired: [" + start.format('MMMM D, YYYY') + " to " + end.format('MMMM D, YYYY') + ", label = " + label + "]");
                   }
 
+var dateuno = $_GET('date1');
+var jouruno = dateuno.substring(0,2);
+var moisuno = dateuno.substring(3,5);
+var anneeuno = dateuno.substring(6,10);
+var dateunogf = moisuno+'/'+jouruno+"/"+anneeuno;
+
+var datedos = $_GET('date2');
+var jourdos = datedos.substring(0,2);
+var moisdos = datedos.substring(3,5);
+var anneedos = datedos.substring(6,10);
+var datedosgf = moisdos+'/'+jourdos+"/"+anneedos;
+
                   var optionSet1 = {
-                    startDate: moment(),
-                    endDate: moment(),
+                    startDate: dateunogf,
+                    endDate: datedos,
                     minDate: '01/01/2010',
-                    maxDate: '12/31/2020',
-                    dateLimit: { days: 60 },
+                    maxDate: '12/31/2030',
+                    dateLimit: { days: 800 },
                     showDropdowns: true,
                     showWeekNumbers: true,
                     timePicker: false,
@@ -112,7 +124,7 @@ require_once('../moteur/dbconfig.php');
 
                   
 
-                  $('#reportrange span').html(moment().format('D, MMMM, YYYY') + ' - ' + moment().format('D, MMMM, YYYY'));
+                  $('#reportrange span').html(dateuno + ' - ' + datedos);
 
                   $('#reportrange').daterangepicker(optionSet1, cb);
 
