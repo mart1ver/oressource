@@ -207,7 +207,7 @@ ORDER BY TIMESTAMP');
 
 
   ],
-  xkey: 'day',
+  xkey: 'y',
   ykeys: ['a', 'b'],
   labels: ['Series A', 'Series B']
 });
