@@ -14,6 +14,9 @@ if(isset($_POST['adh']))
 
 
 
+
+
+
   if ($_SESSION['saisiec'] == "oui" AND (strpos($_SESSION['niveau'], 'e') !== false) )
    {
     
