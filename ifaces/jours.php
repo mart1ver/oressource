@@ -5,6 +5,7 @@ require_once('../moteur/dbconfig.php');
 //Vérification des autorisations de l'utilisateur et des variables de session requises pour l'affichage de cette page:
 if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 'bi') !== false))
       { include "tete.php";?>
+    
    <head>
       <link href="../css/bootstrap.min.css" rel="stylesheet">
        <link href="../fonts/font-awesome/css/font-awesome.min.css" rel="stylesheet">
@@ -32,6 +33,7 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
    <h1>Bilan global</h1>
     <div class="col-md-4 col-md-offset-8" >
      <label for="reportrange">Choisissez la période à inspecter:</label><br>
+
       <div id="reportrange" class="pull-left" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc">
        <i class="fa fa-calendar"></i>
        <span></span> <b class="caret"></b>
