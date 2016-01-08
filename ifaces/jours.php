@@ -67,15 +67,17 @@ var moisuno = dateuno.substring(3,5);
 var anneeuno = dateuno.substring(6,10);
 var dateunogf = moisuno+'/'+jouruno+"/"+anneeuno;
 
+
 var datedos = $_GET('date2');
 var jourdos = datedos.substring(0,2);
 var moisdos = datedos.substring(3,5);
 var anneedos = datedos.substring(6,10);
 var datedosgf = moisdos+'/'+jourdos+"/"+anneedos;
 
+
                   var optionSet1 = {
                      startDate: dateunogf,
-                    endDate: datedos,
+                    endDate: datedosgf,
                     minDate: '01/01/2010',
                     maxDate: '12/31/2020',
                     dateLimit: { days: 800 },
