@@ -76,7 +76,7 @@ var datedosgf = moisdos+'/'+jourdos+"/"+anneedos;
                     endDate: datedos,
                     minDate: '01/01/2010',
                     maxDate: '12/31/2020',
-                    dateLimit: { days: 60 },
+                    dateLimit: { days: 800 },
                     showDropdowns: true,
                     showWeekNumbers: true,
                     timePicker: false,
