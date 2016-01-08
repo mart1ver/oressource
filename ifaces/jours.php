@@ -5,7 +5,7 @@ require_once('../moteur/dbconfig.php');
 //Vérification des autorisations de l'utilisateur et des variables de session requises pour l'affichage de cette page:
 if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 'bi') !== false))
       { include "tete.php";?>
-    
+
    <head>
       <link href="../css/bootstrap.min.css" rel="stylesheet">
        <link href="../fonts/font-awesome/css/font-awesome.min.css" rel="stylesheet">
@@ -119,7 +119,7 @@ var datedosgf = moisdos+'/'+jourdos+"/"+anneedos;
                       + " to " 
                       + picker.endDate.format('DD MM, YYYY')                      
                     ); 
-                    window.location.href = "jours.php?date1="+picker.startDate.format('DD-MM-YYYY')+"&date2="+picker.endDate.format('DD-MM-YYYY')+"&numero=<?php echo $_GET['numero'] ?>";
+                    window.location.href = "jours.php?date1="+picker.startDate.format('DD-MM-YYYY')+"&date2="+picker.endDate.format('DD-MM-YYYY');
                   });
                   $('#reportrange').on('cancel.daterangepicker', function(ev, picker) { console.log("cancel event fired"); });
 
