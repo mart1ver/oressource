@@ -50,14 +50,15 @@ function $_GET(param) {
                    // alert("Callback has fired: [" + start.format('MMMM D, YYYY') + " to " + end.format('MMMM D, YYYY') + ", label = " + label + "]");
                   }
 var dateuno = $_GET('date1');
-var jouruno = dateuno.substring(0,2);
-var moisuno = dateuno.substring(3,5);
+var moisuno = dateuno.substring(0,2);
+var jouruno = dateuno.substring(3,5);
 var anneeuno = dateuno.substring(6,10);
 var dateunogf = moisuno+'/'+jouruno+"/"+anneeuno;
 
+
 var datedos = $_GET('date2');
-var jourdos = datedos.substring(0,2);
-var moisdos = datedos.substring(3,5);
+var moisdos = datedos.substring(0,2);
+var jourdos = datedos.substring(3,5);
 var anneedos = datedos.substring(6,10);
 var datedosgf = moisdos+'/'+jourdos+"/"+anneedos;
 
@@ -98,7 +99,7 @@ var datedosgf = moisdos+'/'+jourdos+"/"+anneedos;
                     }
                   };
                   $('#reportrange').daterangepicker(optionSet1, cb);
-                 $('#reportrange span').html(dateuno + ' - ' + datedos);
+                 $('#reportrange span').html($_GET('date1') + ' - ' + $_GET('date2'));
                   $('#reportrange').on('show.daterangepicker', function() { console.log("show event fired"); });
                   $('#reportrange').on('hide.daterangepicker', function() { console.log("hide event fired"); });
                   $('#reportrange').on('apply.daterangepicker', function(ev, picker) { 
