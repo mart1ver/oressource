@@ -188,10 +188,12 @@ new Morris.Area({
 
 <?php 
             // On recupère tout le contenu de la table affectations
-            $reponse = $bdd->query('SELECT SUM( masse ) AS nombre, DATE( TIMESTAMP ) AS time
+            $reponse = $bdd->prepare('SELECT SUM( masse ) AS nombre, DATE( TIMESTAMP ) AS time
 FROM pesees_collectes
+WHERE  DATE(pesees_collectes.timestamp) BETWEEN :du AND :au 
 GROUP BY id_type_dechet, DATE_FORMAT( TIMESTAMP,  "%Y-%m-%d" ) 
 ORDER BY TIMESTAMP');
+            $reponse->execute(array('du' => $time_debut,'au' => $time_fin ));
  
            // On affiche chaque entree une à une
            while ($donnees = $reponse->fetch())
