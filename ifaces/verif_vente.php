@@ -99,7 +99,7 @@ var datedosgf = moisdos+'/'+jourdos+"/"+anneedos;
 
                   var optionSet1 = {
                     startDate: dateunogf,
-                    endDate: datedos,
+                    endDate: datedosgf,
                     minDate: '01/01/2010',
                     maxDate: '12/31/2030',
                     dateLimit: { days: 800 },
