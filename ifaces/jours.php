@@ -176,9 +176,17 @@ $time_fin = $time_fin." 23:59:59";
 
 
 
+<h3>évolution des masses totales collectées</h3>
+<div id="collectes" style="height: 180px;"></div>
 
-<div id="collectes" style="height: 250px;"></div>
+<h3>évolution des masses totales évacuées hors boutique</h3>
+<div id="sorties" style="height: 180px;"></div>
 
+<h3>évolution des quantités d'objets vendus</h3>
+<div id="qv" style="height: 180px;"></div>
+
+<h3>évolution du C.A quotidien</h3>
+<div id="ca" style="height: 180px;"></div>
 
 
 <script>
@@ -195,15 +203,15 @@ new Morris.Area({
             $reponse = $bdd->prepare('SELECT SUM( masse ) AS nombre, DATE( timestamp ) AS time
 FROM pesees_collectes
 WHERE  DATE(pesees_collectes.timestamp) BETWEEN :du AND :au 
-GROUP BY DATE_FORMAT( timestamp,  "%Y-%m-%d" ) 
-ORDER BY timestamp');
+GROUP BY DATE_FORMAT( time,  "%Y-%m-%d" ) 
+ORDER BY time');
             $reponse->execute(array('du' => $time_debut,'au' => $time_fin ));
  
            // On affiche chaque entree une à une
            while ($donnees = $reponse->fetch())
            {
 
-            echo "{y:'".$donnees['time']."', a:".$donnees['nombre'].", b:"."45"."},";
+            echo "{y:'".$donnees['time']."', a:".$donnees['nombre']."},";
 
 
              }
@@ -214,15 +222,174 @@ ORDER BY timestamp');
 
   ],
   xkey: 'y',
-  ykeys: ['a', 'b'],
-  labels: ['Series A', 'Series B']
+  ykeys: ['a'],
+  labels: ['Masse collectée'],
+   xLabelFormat: function(d) {
+    return d.getDate()+'/'+(d.getMonth()+1)+'/'+d.getFullYear(); 
+  },
+dateFormat: function (ts) {
+    var d = new Date(ts);
+  return d.getDate()+'/'+(d.getMonth()+1)+'/'+d.getFullYear();
+  } ,
+resize: true,
+fillOpacity:"0.2",
+pointSize: 2 ,
+postUnits: "Kgs." ,
 });
 </script>
 
 
 
+<script>
+new Morris.Area({
+  // ID of the element in which to draw the chart.
+  element: 'sorties',
+  // Chart data records -- each entry in this array corresponds to a point on
+  // the chart.
+  data: [
+  
+
+<?php 
+            // On recupère tout le contenu de la table affectations
+            $reponse = $bdd->prepare('SELECT SUM( masse ) AS nombre, DATE( timestamp ) AS time
+FROM pesees_sorties
+WHERE  DATE(pesees_sorties.timestamp) BETWEEN :du AND :au 
+GROUP BY DATE_FORMAT( time,  "%Y-%m-%d" ) 
+ORDER BY time');
+            $reponse->execute(array('du' => $time_debut,'au' => $time_fin ));
+ 
+           // On affiche chaque entree une à une
+           while ($donnees = $reponse->fetch())
+           {
+
+            echo "{y:'".$donnees['time']."', a:".$donnees['nombre']."},";
 
 
+             }
+              $reponse->closeCursor(); // Termine le traitement de la requête
+                ?>
+
+
+
+  ],
+  xkey: 'y',
+  ykeys: ['a'],
+  labels: ['Masse évacuée hors boutique'],
+   xLabelFormat: function(d) {
+    return d.getDate()+'/'+(d.getMonth()+1)+'/'+d.getFullYear(); 
+  },
+dateFormat: function (ts) {
+    var d = new Date(ts);
+  return d.getDate()+'/'+(d.getMonth()+1)+'/'+d.getFullYear();
+  } ,
+resize: true,
+fillOpacity:"0.2",
+pointSize: 2 ,
+postUnits: "Kgs." ,
+
+});
+</script>
+
+
+<script>
+new Morris.Area({
+  // ID of the element in which to draw the chart.
+  element: 'qv',
+  // Chart data records -- each entry in this array corresponds to a point on
+  // the chart.
+  data: [
+  
+
+<?php 
+            // On recupère tout le contenu de la table affectations
+            $reponse = $bdd->prepare('SELECT SUM( quantite ) AS nombre, DATE( timestamp ) AS time
+FROM vendus
+WHERE  DATE(vendus.timestamp) BETWEEN :du AND :au 
+GROUP BY DATE_FORMAT( time,  "%Y-%m-%d" ) 
+ORDER BY time');
+            $reponse->execute(array('du' => $time_debut,'au' => $time_fin ));
+ 
+           // On affiche chaque entree une à une
+           while ($donnees = $reponse->fetch())
+           {
+
+            echo "{y:'".$donnees['time']."', a:".$donnees['nombre']."},";
+
+
+             }
+              $reponse->closeCursor(); // Termine le traitement de la requête
+                ?>
+
+
+
+  ],
+  xkey: 'y',
+  ykeys: ['a'],
+  labels: ['Q. vendue'],
+   xLabelFormat: function(d) {
+    return d.getDate()+'/'+(d.getMonth()+1)+'/'+d.getFullYear(); 
+  },
+dateFormat: function (ts) {
+    var d = new Date(ts);
+  return d.getDate()+'/'+(d.getMonth()+1)+'/'+d.getFullYear();
+  } ,
+resize: true,
+fillOpacity:"0.2",
+pointSize: 2 ,
+postUnits: "Pcs." ,
+
+});
+</script>
+
+
+<script>
+new Morris.Area({
+  // ID of the element in which to draw the chart.
+  element: 'ca',
+  // Chart data records -- each entry in this array corresponds to a point on
+  // the chart.
+  data: [
+  
+
+<?php 
+            // On recupère tout le contenu de la table affectations
+            $reponse = $bdd->prepare('SELECT SUM( prix*quantite ) AS nombre, DATE( timestamp ) AS time
+FROM vendus
+WHERE  DATE(vendus.timestamp) BETWEEN :du AND :au 
+GROUP BY DATE_FORMAT( time,  "%Y-%m-%d" ) 
+ORDER BY time');
+            $reponse->execute(array('du' => $time_debut,'au' => $time_fin ));
+ 
+           // On affiche chaque entree une à une
+           while ($donnees = $reponse->fetch())
+           {
+
+            echo "{y:'".$donnees['time']."', a:".$donnees['nombre']."},";
+
+
+             }
+              $reponse->closeCursor(); // Termine le traitement de la requête
+                ?>
+
+
+
+  ],
+  xkey: 'y',
+  ykeys: ['a'],
+  labels: ['C.A.'],
+   xLabelFormat: function(d) {
+    return d.getDate()+'/'+(d.getMonth()+1)+'/'+d.getFullYear(); 
+  },
+dateFormat: function (ts) {
+    var d = new Date(ts);
+  return d.getDate()+'/'+(d.getMonth()+1)+'/'+d.getFullYear();
+  } ,
+resize: true,
+fillOpacity:"0.2",
+pointSize: 2 ,
+postUnits: "€" ,
+});
+</script>
 
 
 <?php
