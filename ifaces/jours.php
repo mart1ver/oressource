@@ -235,6 +235,29 @@ resize: true,
 fillOpacity:"0.2",
 pointSize: 2 ,
 postUnits: "Kgs." ,
+<?php 
+ $interm = 0;
+ $cmpt = 0;
+            // On recupère tout le contenu de la table affectations
+            $reponse = $bdd->prepare('SELECT SUM(masse) AS nombre ,  DATE( timestamp ) AS time FROM pesees_collectes
+WHERE DATE(pesees_collectes.timestamp) BETWEEN :du AND :au
+GROUP BY DATE_FORMAT( time,  "%Y-%m-%d" ) 
+ORDER BY time');
+            $reponse->execute(array('du' => $time_debut,'au' => $time_fin ));
+ 
+           // On affiche chaque entree une à une
+           while ($donnees = $reponse->fetch())
+           {
+
+$interm = $interm + $donnees['nombre'];
+$cmpt = $cmpt + 1;
+           
+
+
+             }
+              $reponse->closeCursor(); // Termine le traitement de la requête
+echo "goals: [".$interm/$cmpt."],";
+             ?>
 });
 </script>
 
