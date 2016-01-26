@@ -1,18 +1,11 @@
 <?php session_start(); 
-
 require_once('../moteur/dbconfig.php');
-
-
 if($_SESSION['affsde'] !== "oui"){
-
    header("Location:sortiesp.php?numero=" . $_GET['numero']);
 }
-
-
 //Vérification des autorisations de l'utilisateur et des variables de session requises pour l'affichage de cette page:
 if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 's'.$_GET['numero']) !== false))
       { include "tete.php";
-
 //Oressource 2014, formulaire de sorties hors-boutique
 //Simple formulaire de saisie des matieres d'ouevres sortantes de la structure. (structures partenaires, conventiionnées)
 //Doit etre fonctionnel avec un ecran tactille.
@@ -33,16 +26,12 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
             }
             $reponse->closeCursor(); // Termine le traitement de la requête        
   ?>
-<script src="../js/utilitaire.js"></script>
 <script type="text/javascript">
-"use strict";
 function printdiv(divID)
     {
       
        if (parseInt(document.getElementById('najout').value) >= 1) 
           { 
-
-
             var mtot =<?php 
                       // On obtient tous les visibles de la table type_dechets de manière à cacluler mtot...
                       $reponse = $bdd->query('SELECT * FROM type_dechets_evac WHERE visible = "oui"' );
@@ -53,7 +42,6 @@ function printdiv(divID)
                       }
                       $reponse->closeCursor(); // Termine le traitement de la requête
                       ?>0; 
-
       var headstr = "<html><head><title></title></head><body><small><?php echo $_SESSION['structure'] ?><br><?php echo $_SESSION['adresse'] ?><br><label>Bon de sortie déchetterie</label><br>";
           var footstr = "<br>Masse totale : "+mtot+" Kgs.</body></small>";
       var newstr = document.all.item(divID).innerHTML;
@@ -68,7 +56,45 @@ function printdiv(divID)
       
           }
     }
-
+    function encaisse() {
+  if (parseInt(document.getElementById('najout').value) >= 1) 
+          { 
+         
+          document.getElementById("formulaire").submit();
+          }
+        }
+function submanut(x)
+          {
+            if ((document.getElementById("number").value - x) > 0 )
+            {
+            var text_box = document.getElementById("number");
+            text_box.value = text_box.value - x;
+          }
+          }
+function number_write(x)
+{
+  var text_box = document.getElementById("number");
+  text_box.value = text_box.value + x;
+}
+function number_clear()
+{
+  document.getElementById("number").value = "";
+}
+function recocom()
+{
+  document.getElementById("commentaire").value = document.getElementById("commentaireini").value;
+}
+function tdechet_write(y,z)
+ {
+          if (document.getElementById("number").value > 0 && document.getElementById("number").value < <?php echo $pesee_max;?>) 
+          {
+            document.getElementById("massetot").textContent = parseFloat(document.getElementById("massetot").textContent) + parseFloat(document.getElementById("number").value) ;
+            document.getElementById("najout").value = parseInt(document.getElementById("najout").value)+1;
+             document.getElementById(y).textContent = parseFloat(document.getElementById(y).textContent) + parseFloat(document.getElementById("number").value)  ;
+              document.getElementById(z).value = parseFloat(document.getElementById(z).value) + parseFloat(document.getElementById("number").value)  ;
+             document.getElementById("number").value = "";  
+          }
+          }
 function tdechet_clear()
 {
 <?php 
@@ -78,12 +104,10 @@ function tdechet_clear()
            // On affiche chaque entree une à une
            while ($donnees = $reponse->fetch())
            {
-
            ?>
     document.getElementById('<?php echo$donnees['nom']?>').textContent = "0"  ;
     document.getElementById(<?php echo$donnees['id']?>).value = "0" ; 
 <?php }
-
               $reponse->closeCursor(); // Termine le traitement de la requête
                 ?>  
 }
@@ -98,9 +122,16 @@ function tdechet_clear()
             $req->execute(array('id' => $_GET['numero']));
  
            // On affiche chaque entree une à une
-          $donnees = $req->fetch();
-          echo($donnees['nom']);
-          $reponse->closeCursor(); // Termine le traitement de la requête
+           while ($donnees = $req->fetch())
+           {
+            echo$donnees['nom'];
+            
+              
+            
+             
+   
+               }
+              $reponse->closeCursor(); // Termine le traitement de la requête
                 ?>
 
 
@@ -128,9 +159,9 @@ function tdechet_clear()
 </div>
 </div>          
 <div class="row">
-	  
+    
         <div class="col-md-3 col-md-offset-1" >
-        	
+          
           <form action="../moteur/sortiesd_post.php" method="post" id="formulaire">
         
           <input type="hidden" name ="id_point_sortie" id="id_point_sortie" value="<?php echo $_GET['numero']?>">
@@ -145,7 +176,7 @@ function tdechet_clear()
         
       </div>
       <div class="row">
-      	<br>
+        <br>
         <div class="col-md-3 col-md-offset-1" >
         
 
@@ -174,7 +205,6 @@ function tdechet_clear()
            // On affiche chaque entree une à une
            while ($donnees = $reponse->fetch())
            {
-
            ?>
     
             
@@ -198,7 +228,6 @@ function tdechet_clear()
 
    
               <?php }
-
               $reponse->closeCursor(); // Termine le traitement de la requête
                 ?>
 
@@ -224,15 +253,18 @@ function tdechet_clear()
         
   <div class="panel-body"> 
    
-   <div class="row">
-     <div class="input-group">
-      <input type="text" class="form-control" placeholder="Masse" id="number" name="num" style="margin-left:8px;">
+      <div class="row">
+      
+
+   <div class="input-group">
+      <input type="text" class="form-control" placeholder="Masse" id="number" name="num" style=" margin-left:8px; " >
       <div class="input-group-btn">
-        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" style="margin-right:8px;">
-          <span class="glyphicon glyphicon-minus"></span>
-          <span class="caret"></span>
-        </button>
+        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" style=" margin-right:8px; " > <span class="glyphicon glyphicon-minus"></span> <span class="caret"</span></button>
+        
+
+
         <ul class="dropdown-menu dropdown-menu-right" role="menu">
+        
   <?php 
             // On affiche une liste déroulante des localités visibles
             $reponse = $bdd->query('SELECT * FROM type_contenants WHERE visible = "oui"');
@@ -292,7 +324,7 @@ function tdechet_clear()
 
   </div>
  
-         	 </div> 
+           </div> 
          
 
 
@@ -304,28 +336,31 @@ function tdechet_clear()
         <div class="panel-heading">
     <h3 class="panel-title"><label>Matériaux et déchets:</label></h3>
   </div>
-  <div class="panel-body">
-<?php
-  // On recupère tout le contenu de la table point de collecte
-  $reponse = $bdd->query('SELECT * FROM type_dechets_evac WHERE visible = "oui"');
-  // On affiche chaque entree une à une
-  while ($donnees = $reponse->fetch()) {
-?>
+  <div class="panel-body"> 
+      
+
+
+            <?php 
+            // On recupère tout le contenu de la table point de collecte
+            $reponse = $bdd->query('SELECT * FROM type_dechets_evac WHERE visible = "oui"');
+ 
+           // On affiche chaque entree une à une
+           while ($donnees = $reponse->fetch())
+           {
+           ?>
       <div class="btn-group">
-      <button class="btn btn-default" style="margin-left:8px; margin-top:16px;"
-              onclick="masse_write(
-              document.getElementById('<?php echo$donnees['nom']?>'),
-              document.getElementById'<?php echo$donnees['id']?>'),
-               <?php echo($pesee_max); ?>
-              0.0);">
-<span class="badge" id="cool" style="background-color:<?php echo$donnees['couleur']?>"><?php echo$donnees['nom']?></span>
+      <button class="btn btn-default" style="margin-left:8px; margin-top:16px;" onclick="tdechet_write('<?php echo$donnees['nom']?>','<?php echo$donnees['id']?>');" ><span class="badge" id="cool" style="background-color:<?php echo$donnees['couleur']?>"><?php echo$donnees['nom']?></span>
  </button>
+      
     </div>
-<?php
-  }
-$reponse->closeCursor(); // Termine le traitement de la requête
-?>
-    </div>
+   
+                <?php }
+                $reponse->closeCursor(); // Termine le traitement de la requête
+                ?>
+    </div> 
+
+
+
     </div>
     <div class="panel panel-info">
        
@@ -345,7 +380,7 @@ $reponse->closeCursor(); // Termine le traitement de la requête
 
 
 
-<button class="btn btn-primary btn-lg"  onclick="verif_form_sortie();">C'est pesé!</button></form>
+<button class="btn btn-primary btn-lg"  onclick="encaisse();">C'est pesé!</button></form>
 <button class="btn btn-primary btn-lg"  align="center"  onclick="printdiv('divID');" value=" Print " ><span class="glyphicon glyphicon-print"></span></button>
         <button class="btn btn-warning btn-lg" onclick="tdechet_clear();"><span class="glyphicon glyphicon-refresh"></button>
       </div>
