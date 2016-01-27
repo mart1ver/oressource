@@ -190,7 +190,7 @@ $time_fin = $time_fin." 23:59:59";
 
 
 <script>
-new Morris.Area({
+new Morris.Line({
   // ID of the element in which to draw the chart.
   element: 'collectes',
   // Chart data records -- each entry in this array corresponds to a point on
@@ -260,6 +260,10 @@ echo "goals: [".$interm/$cmpt."],";
              ?>
 });
 </script>
+
+
+
+
 
 
 
