@@ -228,13 +228,29 @@ $time_fin = $time_fin." 23:59:59";
 
 
 
-  ?>
-  Masse collectée: <?php
+
 // on determine la masse totale collecté sur cette période (pour tous les points)
 
-
+//****************************************************************************************************************************************************************************************************************************************
            
 if ($_GET['numero'] == 0) {
+// On on verifie le chiffre total degagé
+  $req = $bdd->prepare("SELECT  SUM(vendus.prix*vendus.quantite) AS total   FROM vendus 
+   WHERE  DATE(vendus.timestamp) BETWEEN :du AND :au AND vendus.prix > 0  ");
+  $req->execute(array('du' => $time_debut,'au' => $time_fin ));
+  $donnees = $req->fetch();
+  $mtotcolo = $donnees['total'];
+  $req->closeCursor(); // Termine le traitement de la requête
+if ($mtotcolo == 0 )
+{
+?>
+<img src="../images/nodata.jpg" class="img-responsive" alt="Responsive image">
+<?php
+}else{
+
+
+    ?>
+  Masse collectée: <?php
             // On recupère tout le contenu de la table point de vente
 
 
@@ -380,7 +396,9 @@ ORDER BY somme DESC');
       <?php
            }
               $reponse->closeCursor(); // Termine le traitement de la requête
-               }else
+             }
+                     //********************************************************************************************************************************************************************************************************************
+               }else//*********************************************************************************************************************************************************************************************************************
 
                {
 
