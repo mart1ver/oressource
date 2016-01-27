@@ -202,7 +202,7 @@ if ($mtotcolo == 0 )
 ?>
 <img src="../images/nodata.jpg" class="img-responsive" alt="Responsive image">
 <?php
-}else{}
+}else{
 
 
   ?>
@@ -445,7 +445,7 @@ $req->closeCursor(); // Termine le traitement de la requête ?>
 </div>
 </div>
 <?php
-
+}
 
 
 
