@@ -190,7 +190,7 @@ if ($_GET['numero'] == 0) // si numero == 0 (pour tout les points de vente)*****
 {
 
 
-// On recupère tout le contenu de la table point de vente
+// On on verifie le chiffre total degagé
   $req = $bdd->prepare("SELECT  SUM(vendus.prix*vendus.quantite) AS total   FROM vendus 
    WHERE  DATE(vendus.timestamp) BETWEEN :du AND :au AND vendus.prix > 0  ");
   $req->execute(array('du' => $time_debut,'au' => $time_fin ));
@@ -452,6 +452,25 @@ $req->closeCursor(); // Termine le traitement de la requête ?>
 }
 else // si numero ==! 0*********************************************************************************************************************************************************
 {
+
+
+// On on verifie le chiffre total degagé
+  $req = $bdd->prepare("SELECT  SUM(vendus.prix*vendus.quantite) AS total   FROM vendus 
+   WHERE  DATE(vendus.timestamp) BETWEEN :du AND :au AND vendus.prix > 0  ");
+  $req->execute(array('du' => $time_debut,'au' => $time_fin ));
+  $donnees = $req->fetch();
+  $mtotcolo = $donnees['total'];
+  $req->closeCursor(); // Termine le traitement de la requête
+if ($mtotcolo == 0 )
+{
+?>
+<img src="../images/nodata.jpg" class="img-responsive" alt="Responsive image">
+<?php
+}else{
+
+
+  
+
 ?>
   <div class="row">
   <div class="col-md-6">
@@ -682,7 +701,7 @@ $req->closeCursor(); // Termine le traitement de la requête ?>
 </div>
 <?php
 
-
+}
 }
 ?>
 </div>
