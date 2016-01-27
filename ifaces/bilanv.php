@@ -153,7 +153,7 @@ var datedosgf = moisdos+'/'+jourdos+"/"+anneedos;
             <li<?php if ($_GET['numero'] == $donnees['id']){ echo ' class="active"';}?>><a href="<?php echo  "bilanv.php?numero=" . $donnees['id']."&date1=" . $_GET['date1']."&date2=" . $_GET['date2']?>"><?php echo$donnees['nom']?></a></li>
            <?php }
               $reponse->closeCursor(); // Termine le traitement de la requête
-              // sortisde la boucle on affiche un onglet special "touts les points"
+              // sortis de la boucle on affiche un onglet special "touts les points"
            ?>
 
            <li<?php if ($_GET['numero'] == 0){ echo ' class="active"';}?>><a href="<?php echo  "bilanv.php?numero=0" ."&date1=" . $_GET['date1']."&date2=" . $_GET['date2']?>">Tous les points</a></li>
@@ -186,14 +186,36 @@ $date2ft = DateTime::createFromFormat('d-m-Y', $txt2);
 $time_fin = $date2ft->format('Y-m-d');
 $time_fin = $time_fin." 23:59:59";
   
-if ($_GET['numero'] == 0) // si numero == 0*****************************************************************************************************************************************
+if ($_GET['numero'] == 0) // si numero == 0 (pour tout les points de vente)*****************************************************************************************************************************************
 {
+
+
+// On recupère tout le contenu de la table point de vente
+  $req = $bdd->prepare("SELECT  SUM(vendus.prix*vendus.quantite) AS total   FROM vendus 
+   WHERE  DATE(vendus.timestamp) BETWEEN :du AND :au AND vendus.prix > 0  ");
+  $req->execute(array('du' => $time_debut,'au' => $time_fin ));
+  $donnees = $req->fetch();
+  $mtotcolo = $donnees['total'];
+  $req->closeCursor(); // Termine le traitement de la requête
+if ($mtotcolo == 0 )
+{
+?>
+<img src="../images/nodata.jpg" class="img-responsive" alt="Responsive image">
+<?php
+}else{}
+
+
   ?>
   <div class="row">
   <div class="col-md-6">
 <table class='table table-hover'>
     <tbody><tr>
   <?php
+
+
+
+
+
   echo '<td>-nombre de points de vente : </td>';
   // on determine le nombre de points de vente à cet instant
             /*
