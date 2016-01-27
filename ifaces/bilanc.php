@@ -235,8 +235,8 @@ $time_fin = $time_fin." 23:59:59";
            
 if ($_GET['numero'] == 0) {
 // On on verifie le chiffre total degagé
-  $req = $bdd->prepare("SELECT  SUM(vendus.prix*vendus.quantite) AS total   FROM vendus 
-   WHERE  DATE(vendus.timestamp) BETWEEN :du AND :au AND vendus.prix > 0  ");
+  $req = $bdd->prepare("SELECT SUM(pesees_collectes.masse)AS total   FROM pesees_collectes 
+   WHERE  DATE(pesees_collectes.timestamp) BETWEEN :du AND :au  ");
   $req->execute(array('du' => $time_debut,'au' => $time_fin ));
   $donnees = $req->fetch();
   $mtotcolo = $donnees['total'];
@@ -246,8 +246,7 @@ if ($mtotcolo == 0 )
 ?>
 <img src="../images/nodata.jpg" class="img-responsive" alt="Responsive image">
 <?php
-}else{
-
+}else{}
 
     ?>
   Masse collectée: <?php
@@ -396,7 +395,7 @@ ORDER BY somme DESC');
       <?php
            }
               $reponse->closeCursor(); // Termine le traitement de la requête
-             }
+             
                      //********************************************************************************************************************************************************************************************************************
                }else//*********************************************************************************************************************************************************************************************************************
 
