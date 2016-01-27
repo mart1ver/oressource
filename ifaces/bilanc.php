@@ -246,7 +246,7 @@ if ($mtotcolo == 0 )
 ?>
 <img src="../images/nodata.jpg" class="img-responsive" alt="Responsive image">
 <?php
-}else{
+}else{}
 
     ?>
   Masse collectée: <?php
@@ -395,14 +395,15 @@ ORDER BY somme DESC');
       <?php
            }
               $reponse->closeCursor(); // Termine le traitement de la requête
-             }
+             
                      //********************************************************************************************************************************************************************************************************************
                }else//*********************************************************************************************************************************************************************************************************************
 
                {
 
 
-
+?>
+  Masse collectée: <?php
 // on determine les masses totales collèctés sur cete période(pour un point donné)
             // On recupère tout le contenu de la table affectations
 
