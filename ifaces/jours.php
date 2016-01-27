@@ -176,8 +176,11 @@ $time_fin = $time_fin." 23:59:59";
 
 
 
-<h3>évolution des masses totales collectées</h3>
+<h3>évolution de la masse totale collectée</h3>
 <div id="collectes" style="height: 180px;"></div>
+
+<h3>éclaté par type d'objets</h3>
+<div id="eclate" style="height: 180px;"></div>
 
 <h3>évolution des masses totales évacuées hors boutique</h3>
 <div id="sorties" style="height: 180px;"></div>
@@ -190,7 +193,7 @@ $time_fin = $time_fin." 23:59:59";
 
 
 <script>
-new Morris.Line({
+new Morris.Area({
   // ID of the element in which to draw the chart.
   element: 'collectes',
   // Chart data records -- each entry in this array corresponds to a point on
@@ -262,6 +265,55 @@ echo "goals: [0,".$interm/$cmpt."],";
 </script>
 
 
+<script>
+new Morris.Area({
+  // ID of the element in which to draw the chart.
+  element: 'eclate',
+  // Chart data records -- each entry in this array corresponds to a point on
+  // the chart.
+  data: [
+  
+
+<?php 
+            // On recupère tout le contenu de la table affectations
+            $reponse = $bdd->prepare('SELECT SUM( masse ) AS nombre, DATE( timestamp ) AS time
+FROM pesees_collectes
+WHERE  DATE(pesees_collectes.timestamp) BETWEEN :du AND :au 
+GROUP BY DATE_FORMAT( time,  "%Y-%m-%d" ) 
+ORDER BY time');
+            $reponse->execute(array('du' => $time_debut,'au' => $time_fin ));
+ 
+           // On affiche chaque entree une à une
+           while ($donnees = $reponse->fetch())
+           {
+
+            echo "{y:'".$donnees['time']."', a:".$donnees['nombre']."},";
+
+
+             }
+              $reponse->closeCursor(); // Termine le traitement de la requête
+                ?>
+
+
+
+  ],
+  xkey: 'y',
+  ykeys: ['a'],
+  labels: ['Masse collectée'],
+   xLabelFormat: function(d) {
+    return d.getDate()+'/'+(d.getMonth()+1)+'/'+d.getFullYear(); 
+  },
+dateFormat: function (ts) {
+    var d = new Date(ts);
+  return d.getDate()+'/'+(d.getMonth()+1)+'/'+d.getFullYear();
+  } ,
+resize: true,
+fillOpacity:"0.2",
+pointSize: 2 ,
+postUnits: "Kgs." ,
+
+});
+</script>
 
 
 
