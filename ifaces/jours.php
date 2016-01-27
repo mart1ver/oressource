@@ -256,7 +256,7 @@ $cmpt = $cmpt + 1;
 
              }
               $reponse->closeCursor(); // Termine le traitement de la requête
-echo "goals: [".$interm/$cmpt."],";
+echo "goals: [0,".$interm/$cmpt."],";
              ?>
 });
 </script>
