@@ -61,6 +61,7 @@ function $_GET(param) {
                     $('#reportrange span').html(start.format('DD, MMMM, YYYY') + ' - ' + end.format('DD, MMMM, YYYY'));
                    // alert("Callback has fired: [" + start.format('MMMM D, YYYY') + " to " + end.format('MMMM D, YYYY') + ", label = " + label + "]");
                   }
+
 var dateuno = $_GET('date1');
 var moisuno = dateuno.substring(0,2);
 var jouruno = dateuno.substring(3,5);
@@ -237,7 +238,6 @@ dateFormat: function (ts) {
 resize: true,
 fillOpacity:"0.2",
 pointSize: 2 ,
-postUnits: "Kgs." ,
 <?php 
  $interm = 0;
  $cmpt = 0;
@@ -261,6 +261,7 @@ $cmpt = $cmpt + 1;
               $reponse->closeCursor(); // Termine le traitement de la requête
 echo "goals: [0,".$interm/$cmpt."],";
              ?>
+             postUnits: "Kgs.<br> Masse moyenne par jours" ,
 });
 </script>
 
@@ -338,6 +339,7 @@ ORDER BY time');
             $reponse->execute(array('du' => $time_debut,'au' => $time_fin ));
  
            // On affiche chaque entree une à une
+
            while ($donnees = $reponse->fetch())
            {
 
@@ -381,11 +383,12 @@ new Morris.Area({
 
 <?php 
             // On recupère tout le contenu de la table affectations
-            $reponse = $bdd->prepare('SELECT SUM( quantite ) AS nombre, DATE( timestamp ) AS time
-FROM vendus
-WHERE  DATE(vendus.timestamp) BETWEEN :du AND :au 
-GROUP BY DATE_FORMAT( time,  "%Y-%m-%d" ) 
-ORDER BY time');
+            $reponse = $bdd->prepare(
+              'SELECT SUM( quantite ) AS nombre, DATE( timestamp ) AS time
+                FROM vendus
+                WHERE  DATE(vendus.timestamp) BETWEEN :du AND :au 
+                GROUP BY DATE_FORMAT( time,  "%Y-%m-%d" ) 
+                ORDER BY time');
             $reponse->execute(array('du' => $time_debut,'au' => $time_fin ));
  
            // On affiche chaque entree une à une
