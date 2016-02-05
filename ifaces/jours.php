@@ -177,7 +177,7 @@ $time_fin = $time_fin." 23:59:59";
 
 
 
-<h3>évolution de la masse totale collectée</h3>
+<h3>Évolution de la masse totale collectée</h3>
 <?php 
  $interm = 0;
  $cmpt = 0;
@@ -235,12 +235,13 @@ WHERE  DATE(pesees_collectes.timestamp) BETWEEN :du AND :au
 GROUP BY DATE_FORMAT( time,  "%Y-%m-%d" ) 
 ORDER BY time');
             $reponse->execute(array('du' => $time_debut,'au' => $time_fin ));
- 
-           // On affiche chaque entree une à une
+          $reponse->setFetchMode(PDO::FETCH_ASSOC);
+          var_dump($donnees);
+          // On affiche chaque entree une à une
            while ($donnees = $reponse->fetch())
            {
 
-            echo "{y:'".$donnees['time']."', a:".$donnees['nombre']."},";
+            echo "{ y: '".$donnees['time']."', a:".$donnees['nombre']."},";
 
 
              }
