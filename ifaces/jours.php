@@ -236,7 +236,9 @@ GROUP BY DATE_FORMAT( time,  "%Y-%m-%d" )
 ORDER BY time');
             $reponse->execute(array('du' => $time_debut,'au' => $time_fin ));
           $reponse->setFetchMode(PDO::FETCH_ASSOC);
+          $reponse->fetchAll();
           var_dump($donnees);
+          die();
           // On affiche chaque entree une à une
            while ($donnees = $reponse->fetch())
            {
