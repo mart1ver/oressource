@@ -234,9 +234,9 @@ FROM pesees_collectes
 WHERE  DATE(pesees_collectes.timestamp) BETWEEN :du AND :au 
 GROUP BY DATE_FORMAT( time,  "%Y-%m-%d" ) 
 ORDER BY time');
-            $reponse->execute(array('du' => $time_debut,'au' => $time_fin ));
+          $reponse->execute(array('du' => $time_debut,'au' => $time_fin ));
           $reponse->setFetchMode(PDO::FETCH_ASSOC);
-          $reponse->fetchAll();
+          $donnees = $reponse->fetchAll();
           var_dump($donnees);
           die();
           // On affiche chaque entree une à une
