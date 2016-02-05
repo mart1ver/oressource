@@ -1,4 +1,5 @@
 <?php session_start();
+error_reporting(E_ALL); ini_set('display_errors', '1');
 
 require_once('../moteur/dbconfig.php');
 
@@ -227,28 +228,21 @@ new Morris.Area({
   data: [
   
 
-<?php 
-            // On recupère tout le contenu de la table affectations
-            $reponse = $bdd->prepare('SELECT SUM( masse ) AS nombre, DATE( timestamp ) AS time
-FROM pesees_collectes
-WHERE  DATE(pesees_collectes.timestamp) BETWEEN :du AND :au 
-GROUP BY DATE_FORMAT( time,  "%Y-%m-%d" ) 
-ORDER BY time');
-          $reponse->execute(array('du' => $time_debut,'au' => $time_fin ));
-          $reponse->setFetchMode(PDO::FETCH_ASSOC);
-          $donnees = $reponse->fetchAll();
-          var_dump($donnees);
-          die();
-          // On affiche chaque entree une à une
-           while ($donnees = $reponse->fetch())
-           {
+<?php
+// On recupère tout le contenu de la table affectations
+$reponse = $bdd->prepare('SELECT SUM( masse ) AS masses, DATE( timestamp ) AS temps
+        FROM pesees_collectes
+        WHERE  DATE(pesees_collectes.timestamp) BETWEEN :du AND :au 
+        GROUP BY DATE_FORMAT(temps,  "%Y-%m-%d" ) 
+        ORDER BY temps');
+$reponse->execute(array('du' => $time_debut, 'au' => $time_fin ));
+$reponse->setFetchMode(PDO::FETCH_ASSOC);
+foreach ($reponse as $donnees) {
+        echo(json_encode($donnees, JSON_NUMERIC_CHECK) . ',');
+}
+$reponse->closeCursor(); // Termine le traitement de la requête
+?>
 
-            echo "{ y: '".$donnees['time']."', a:".$donnees['nombre']."},";
-
-
-             }
-              $reponse->closeCursor(); // Termine le traitement de la requête
-                ?>
 
 
 
