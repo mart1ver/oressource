@@ -261,7 +261,7 @@ $cmpt = $cmpt + 1;
               $reponse->closeCursor(); // Termine le traitement de la requête
 echo "goals: [0,".$interm/$cmpt."],";
              ?>
-             postUnits: "Kgs.<br> Masse moyenne par jours" ,
+             postUnits: "Kgs." ,
 });
 </script>
 
