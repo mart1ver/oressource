@@ -199,8 +199,9 @@ $cmpt = $cmpt + 1;
 
              }
               $reponse->closeCursor(); // Termine le traitement de la requête
-$masse_moy_jour = $interm/$cmpt;   
-echo "Moyenne journaliére:".$masse_moy_jour;           
+              
+$masse_moy_jour = round($interm/$cmpt,2);   
+echo "Moyenne journalière: ".$masse_moy_jour;           
              ?>
 <div id="collectes" style="height: 180px;"></div>
 
