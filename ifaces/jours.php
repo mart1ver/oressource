@@ -206,8 +206,7 @@ echo "Moyenne journalière: ".$masse_moy_jour;
              ?>
 <div id="collectes" style="height: 180px;"></div>
 
-<h3>éclaté par type d'objets</h3>
-<div id="eclate" style="height: 180px;"></div>
+
 
 <h3>évolution des masses totales évacuées hors boutique</h3>
 <div id="sorties" style="height: 180px;"></div>
@@ -219,58 +218,13 @@ echo "Moyenne journalière: ".$masse_moy_jour;
 <div id="ca" style="height: 180px;"></div>
 
 
-<script>
-new Morris.Area({
-  // ID of the element in which to draw the chart.
-  element: 'collectes',
-  // Chart data records -- each entry in this array corresponds to a point on
-  // the chart.
-  data: [
-  
 
-<?php
-// On recupère tout le contenu de la table affectations
-$reponse = $bdd->prepare('SELECT SUM( masse ) AS masses, DATE( timestamp ) AS temps
-        FROM pesees_collectes
-        WHERE  DATE(pesees_collectes.timestamp) BETWEEN :du AND :au 
-        GROUP BY DATE_FORMAT(temps,  "%Y-%m-%d" ) 
-        ORDER BY temps');
-$reponse->execute(array('du' => $time_debut, 'au' => $time_fin ));
-$reponse->setFetchMode(PDO::FETCH_ASSOC);
-foreach ($reponse as $donnees) {
-        echo(json_encode($donnees, JSON_NUMERIC_CHECK) . ',');
-}
-$reponse->closeCursor(); // Termine le traitement de la requête
-?>
-
-
-
-
-  ],
-  xkey: 'y',
-  ykeys: ['a'],
-  labels: ['Masse collectée'],
-   xLabelFormat: function(d) {
-    return d.getDate()+'/'+(d.getMonth()+1)+'/'+d.getFullYear(); 
-  },
-dateFormat: function (ts) {
-    var d = new Date(ts);
-  return d.getDate()+'/'+(d.getMonth()+1)+'/'+d.getFullYear();
-  } ,
-resize: true,
-fillOpacity:"0.2",
-pointSize: 2 ,           
-<?php echo "goals: [0,".$masse_moy_jour."],";
-?>
-             postUnits: "Kgs." ,
-});
-</script>
 
 
 <script>
 new Morris.Area({
   // ID of the element in which to draw the chart.
-  element: 'eclate',
+  element: 'collectes',
   // Chart data records -- each entry in this array corresponds to a point on
   // the chart.
   data: [
