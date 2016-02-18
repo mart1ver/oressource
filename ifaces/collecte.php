@@ -91,6 +91,7 @@ function encaisse() {
                       {?>
                document.getElementById("<?php echo$donnees['nom']?>").textContent = "0"  ;
                document.getElementById(<?php echo$donnees['id']?>).value = "0" ; 
+               document.getElementById("massetot").textContent = "0"  ;
                       <?php
                       }
                       $reponse->closeCursor(); // Termine le traitement de la requête
