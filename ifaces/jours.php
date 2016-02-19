@@ -247,9 +247,69 @@ echo "Moyenne journalière: ".$masse_moy_jour;
 <div id="sorties" style="height: 180px;"></div>
 
 <h3>évolution des quantités d'objets vendus</h3>
+<?php 
+ $interm = 0;
+ $cmpt = 0;
+      
+            $reponse = $bdd->prepare('SELECT SUM(quantite) AS nombre ,  DATE( timestamp ) AS time FROM vendus
+WHERE DATE(vendus.timestamp) BETWEEN :du AND :au
+GROUP BY DATE_FORMAT( time,  "%Y-%m-%d" ) 
+ORDER BY time');
+            $reponse->execute(array('du' => $time_debut,'au' => $time_fin ));
+ 
+           // On affiche chaque entree une à une
+           while ($donnees = $reponse->fetch())
+           {
+
+$interm = $interm + $donnees['nombre'];
+$cmpt = $cmpt + 1;
+           
+
+
+             }
+              $reponse->closeCursor(); // Termine le traitement de la requête
+              if($interm == 0){
+
+$masse_moy_jour = 0;   
+
+              }else{
+$masse_moy_jour = round($interm/$cmpt,2);   
+echo "Moyenne journalière: ".$masse_moy_jour;
+}           
+             ?>
 <div id="qv" style="height: 180px;"></div>
 
 <h3>évolution du C.A quotidien</h3>
+<?php 
+ $interm = 0;
+ $cmpt = 0;
+      
+            $reponse = $bdd->prepare('SELECT SUM(quantite*prix) AS nombre ,  DATE( timestamp ) AS time FROM vendus
+WHERE DATE(vendus.timestamp) BETWEEN :du AND :au
+GROUP BY DATE_FORMAT( time,  "%Y-%m-%d" ) 
+ORDER BY time');
+            $reponse->execute(array('du' => $time_debut,'au' => $time_fin ));
+ 
+           // On affiche chaque entree une à une
+           while ($donnees = $reponse->fetch())
+           {
+
+$interm = $interm + $donnees['nombre'];
+$cmpt = $cmpt + 1;
+           
+
+
+             }
+              $reponse->closeCursor(); // Termine le traitement de la requête
+              if($interm == 0){
+
+$masse_moy_jour = 0;   
+
+              }else{
+$masse_moy_jour = round($interm/$cmpt,2);   
+echo "Moyenne journalière: ".$masse_moy_jour;
+}           
+             ?>
 <div id="ca" style="height: 180px;"></div>
 
 
