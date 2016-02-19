@@ -214,6 +214,36 @@ echo "Moyenne journalière: ".$masse_moy_jour;
 
 
 <h3>évolution des masses totales évacuées hors boutique</h3>
+<?php 
+ $interm = 0;
+ $cmpt = 0;
+      
+            $reponse = $bdd->prepare('SELECT SUM(masse) AS nombre ,  DATE( timestamp ) AS time FROM pesees_sorties
+WHERE DATE(pesees_sorties.timestamp) BETWEEN :du AND :au
+GROUP BY DATE_FORMAT( time,  "%Y-%m-%d" ) 
+ORDER BY time');
+            $reponse->execute(array('du' => $time_debut,'au' => $time_fin ));
+ 
+           // On affiche chaque entree une à une
+           while ($donnees = $reponse->fetch())
+           {
+
+$interm = $interm + $donnees['nombre'];
+$cmpt = $cmpt + 1;
+           
+
+
+             }
+              $reponse->closeCursor(); // Termine le traitement de la requête
+              if($interm = 0){
+
+$masse_moy_jour = 0;   
+
+              }else{
+$masse_moy_jour = round($interm/$cmpt,2);   
+echo "Moyenne journalière: ".$masse_moy_jour;
+}           
+             ?>
 <div id="sorties" style="height: 180px;"></div>
 
 <h3>évolution des quantités d'objets vendus</h3>
@@ -273,6 +303,30 @@ fillOpacity:"0.2",
 pointSize: 2 ,
 postUnits: "Kgs." ,
 
+<?php 
+
+ $interm = 0;
+ $cmpt = 0;
+            // On recupère tout le contenu de la table affectations
+            $reponse = $bdd->prepare('SELECT SUM(masse) AS nombre ,  DATE( timestamp ) AS time FROM pesees_collectes
+WHERE DATE(pesees_collectes.timestamp) BETWEEN :du AND :au
+GROUP BY DATE_FORMAT( time,  "%Y-%m-%d" ) 
+ORDER BY time');
+            $reponse->execute(array('du' => $time_debut,'au' => $time_fin ));
+ 
+           // On affiche chaque entree une à une
+           while ($donnees = $reponse->fetch())
+           {
+
+$interm = $interm + $donnees['nombre'];
+$cmpt = $cmpt + 1;
+
+
+
+             }
+              $reponse->closeCursor(); // Termine le traitement de la requête
+echo "goals: [".$interm/$cmpt."],";
+                ?>
 });
 </script>
 
@@ -332,8 +386,8 @@ postUnits: "Kgs." ,
  $interm = 0;
  $cmpt = 0;
             // On recupère tout le contenu de la table affectations
-            $reponse = $bdd->prepare('SELECT SUM(masse) AS nombre ,  DATE( timestamp ) AS time FROM pesees_collectes
-WHERE DATE(pesees_collectes.timestamp) BETWEEN :du AND :au
+            $reponse = $bdd->prepare('SELECT SUM(masse) AS nombre ,  DATE( timestamp ) AS time FROM pesees_sorties
+WHERE DATE(pesees_sorties.timestamp) BETWEEN :du AND :au
 GROUP BY DATE_FORMAT( time,  "%Y-%m-%d" ) 
 ORDER BY time');
             $reponse->execute(array('du' => $time_debut,'au' => $time_fin ));
@@ -351,6 +405,7 @@ $cmpt = $cmpt + 1;
               $reponse->closeCursor(); // Termine le traitement de la requête
 echo "goals: [".$interm/$cmpt."],";
                 ?>
+
 
 });
 </script>
