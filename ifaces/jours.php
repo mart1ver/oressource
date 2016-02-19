@@ -205,10 +205,10 @@ $cmpt = $cmpt + 1;
 $masse_moy_jour = 0;   
 
               }else{
-$masse_moy_jour = round($interm/$cmpt,2);   
+$masse_moy_jour = round($interm/$cmpt,2);   }    
 echo "Moyenne journalière: ".$masse_moy_jour;
-}           
-             ?>
+
+             ?> Kgs.
 <div id="collectes" style="height: 180px;"></div>
 
 
@@ -240,10 +240,10 @@ $cmpt = $cmpt + 1;
 $masse_moy_jour = 0;   
 
               }else{
-$masse_moy_jour = round($interm/$cmpt,2);   
+$masse_moy_jour = round($interm/$cmpt,2);   }    
 echo "Moyenne journalière: ".$masse_moy_jour;
-}           
-             ?>
+
+             ?> Kgs.
 <div id="sorties" style="height: 180px;"></div>
 
 <h3>évolution des quantités d'objets vendus</h3>
@@ -274,9 +274,9 @@ $masse_moy_jour = 0;
 
               }else{
 $masse_moy_jour = round($interm/$cmpt,2);   
-echo "Moyenne journalière: ".$masse_moy_jour;
-}           
-             ?>
+echo "Moyenne journalière: ".$masse_moy_jour;}    
+           
+             ?> Pcs.
 <div id="qv" style="height: 180px;"></div>
 
 <h3>évolution du C.A quotidien</h3>
@@ -306,10 +306,10 @@ $cmpt = $cmpt + 1;
 $masse_moy_jour = 0;   
 
               }else{
-$masse_moy_jour = round($interm/$cmpt,2);   
+$masse_moy_jour = round($interm/$cmpt,2);   }    
 echo "Moyenne journalière: ".$masse_moy_jour;
-}           
-             ?>
+       
+             ?> €.
 <div id="ca" style="height: 180px;"></div>
 
 
