@@ -182,7 +182,7 @@ $time_fin = $time_fin." 23:59:59";
 <?php 
  $interm = 0;
  $cmpt = 0;
-            // On recupère tout le contenu de la table affectations
+      
             $reponse = $bdd->prepare('SELECT SUM(masse) AS nombre ,  DATE( timestamp ) AS time FROM pesees_collectes
 WHERE DATE(pesees_collectes.timestamp) BETWEEN :du AND :au
 GROUP BY DATE_FORMAT( time,  "%Y-%m-%d" ) 
@@ -200,9 +200,14 @@ $cmpt = $cmpt + 1;
 
              }
               $reponse->closeCursor(); // Termine le traitement de la requête
-              
+              if($interm = 0){
+
+$masse_moy_jour = 0;   
+
+              }else{
 $masse_moy_jour = round($interm/$cmpt,2);   
-echo "Moyenne journalière: ".$masse_moy_jour;           
+echo "Moyenne journalière: ".$masse_moy_jour;
+}           
              ?>
 <div id="collectes" style="height: 180px;"></div>
 
