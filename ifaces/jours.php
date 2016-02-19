@@ -200,7 +200,7 @@ $cmpt = $cmpt + 1;
 
              }
               $reponse->closeCursor(); // Termine le traitement de la requête
-              if($interm = 0){
+              if($interm == 0){
 
 $masse_moy_jour = 0;   
 
@@ -235,7 +235,7 @@ $cmpt = $cmpt + 1;
 
              }
               $reponse->closeCursor(); // Termine le traitement de la requête
-              if($interm = 0){
+              if($interm == 0){
 
 $masse_moy_jour = 0;   
 
