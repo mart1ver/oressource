@@ -1,8 +1,8 @@
-<?php
-session_start();
+
 //martin vert
 // Connexion à la base de données
 
+<?php
 try
 {
     include('dbconfig.php');
@@ -11,11 +11,32 @@ catch(Exception $e)
 {
         die('Erreur : '.$e->getMessage());
 }
+$req = $bdd->prepare('SELECT * FROM description_structure');
+$req->execute();
+    
+$resultat = $req->fetch();
+ 
+$session_timeout = $resultat['session_timeout'];
+
+  
+  
+
+$req->closeCursor();
+
+ini_set('session.gc_maxlifetime', $session_timeout);
+session_set_cookie_params($session_timeout);
+session_start();
+
+
+
  
 
 
 // extraction du nom de la structure
-
+if ($_POST['mail'])
+{
+    header ('location:../ifaces/login.php?err=Mauvais identifiant ou mot de passe !');
+}
 
 
 
@@ -24,7 +45,7 @@ $req->execute();
     
 $resultat = $req->fetch();
  
-
+$_SESSION['session_timeout'] = $resultat['session_timeout'];
 $_SESSION['tva_active'] = $resultat['tva_active'];
 $_SESSION['taux_tva'] = $resultat['taux_tva'];
 $_SESSION['structure'] = $resultat['nom'];
