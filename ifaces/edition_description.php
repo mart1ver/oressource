@@ -40,6 +40,7 @@ require_once('../moteur/dbconfig.php');
         <br>
         Permettre de dater formulaires (mode saisie):  <input name ="saisiec" id ="saisiec" type="checkbox" value = "oui" <?php if((strpos($donnees['saisiec'], 'oui') !== false)){ echo "checked";} ?> >
         <br>
+        timeout session: <?php echo $_SESSION['session_timeout'] ?> secondes
         <br>
         <br>
         <br>

@@ -32,11 +32,6 @@ session_start();
  
 
 
-// extraction du nom de la structure
-if ($_POST['mail'])
-{
-    header ('location:../ifaces/login.php?err=Mauvais identifiant ou mot de passe !');
-}
 
 
 
