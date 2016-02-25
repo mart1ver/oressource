@@ -1,4 +1,8 @@
 <?php
+session_start();
+//martin vert
+// Connexion à la base de données
+
 try
 {
     include('dbconfig.php');
@@ -7,12 +11,10 @@ catch(Exception $e)
 {
         die('Erreur : '.$e->getMessage());
 }
-session_start();
-
-
-
  
 
+
+// extraction du nom de la structure
 
 
 
