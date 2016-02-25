@@ -1,7 +1,3 @@
-
-//martin vert
-// Connexion à la base de données
-
 <?php
 try
 {
@@ -11,20 +7,6 @@ catch(Exception $e)
 {
         die('Erreur : '.$e->getMessage());
 }
-$req = $bdd->prepare('SELECT * FROM description_structure');
-$req->execute();
-    
-$resultat = $req->fetch();
- 
-$session_timeout = $resultat['session_timeout'];
-
-  
-  
-
-$req->closeCursor();
-
-ini_set('session.gc_maxlifetime', $session_timeout);
-session_set_cookie_params($session_timeout);
 session_start();
 
 

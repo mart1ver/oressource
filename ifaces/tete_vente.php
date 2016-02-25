@@ -39,6 +39,18 @@
 
 require_once('../moteur/dbconfig.php');
 
+
+$now = time();
+if (isset($_SESSION['session_timeout']) && $now > $_SESSION['session_timeout']) {
+    // this session has worn out its welcome; kill it and start a brand new one
+    header('Location: ../moteur/destroy.php') ;
+}
+
+// either new or old, it should live at most for another hour
+$_SESSION['discard_after'] = $now + 30;
+
+
+
     if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource")
       { ?> 
 <ul class="nav navbar-nav">
