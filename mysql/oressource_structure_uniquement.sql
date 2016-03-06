@@ -85,6 +85,11 @@ CREATE TABLE IF NOT EXISTS `description_structure` (
   `viz` text NOT NULL,
   `nb_viz` int(11) NOT NULL,
   `saisiec` text NOT NULL,
+  `affsp` text NOT NULL COMMENT 'Afficher Saisie Poubelles',                                                                                                                    
+  `affss` text NOT NULL COMMENT 'Afficher Saisie Sorties Partenaires',                                                                                                          
+  `affsr` text NOT NULL COMMENT 'Afficher Saisie Recyclage',                                                                                                                    
+  `affsd` text NOT NULL COMMENT 'Afficher Saisie Don',                                                                                                                          
+  `affsde` text NOT NULL COMMENT 'Afficher Saisie Dechetterie', 
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
