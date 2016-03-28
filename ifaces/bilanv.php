@@ -250,11 +250,11 @@ echo "<td>".$donnees['SUM(vendus.quantite)']."</td></tr>";
             /*
 
             */
- $req = $bdd->prepare("SELECT COUNT(ventes.id) FROM ventes ,vendus WHERE vendus.id_vente = ventes.id AND DATE(vendus.timestamp) BETWEEN :du AND :au  AND vendus.prix > 0 ");
+ $req = $bdd->prepare("SELECT COUNT(DISTINCT(ventes.id)) FROM ventes ,vendus WHERE vendus.id_vente = ventes.id AND DATE(vendus.timestamp) BETWEEN :du AND :au  AND vendus.prix > 0 ");
  $req->execute(array('du' => $time_debut,'au' => $time_fin ));
  $donnees = $req->fetch();
- $nventes = $donnees['COUNT(ventes.id)'];
-echo "<td>".$donnees['COUNT(ventes.id)']."</td></tr>";
+ $nventes = $donnees['COUNT(DISTINCT(ventes.id))'];
+echo "<td>".$donnees['COUNT(DISTINCT(ventes.id))']."</td></tr>";
 
 
  echo '<tr><td>-panier moyen : </td> <td>'.$mtotcolo/$nventes.' € </td></tr>';
@@ -273,10 +273,10 @@ echo "<td>".intval($donnees['SUM(vendus.quantite)'])."</td></tr>";
             /*
 
             */
- $req = $bdd->prepare("SELECT COUNT(ventes.id) FROM ventes ,vendus WHERE vendus.id_vente = ventes.id AND DATE(vendus.timestamp) BETWEEN :du AND :au   AND vendus.remboursement > 0 ");
+ $req = $bdd->prepare("SELECT COUNT(DISTINCT(ventes.id)) FROM ventes ,vendus WHERE vendus.id_vente = ventes.id AND DATE(vendus.timestamp) BETWEEN :du AND :au   AND vendus.remboursement > 0 ");
  $req->execute(array('du' => $time_debut,'au' => $time_fin ));
  $donnees = $req->fetch();
-echo "<td>".$donnees['COUNT(ventes.id)']."</td></tr>";
+echo "<td>".$donnees['COUNT(DISTINCT(ventes.id))']."</td></tr>";
 
   echo '<tr><td>-somme remboursée : </td> ';
   // On recupère tout le contenu de la table point de vente
@@ -504,21 +504,21 @@ echo "<tr><td>-nombre d'objets vendus : </td>";
             /*
 
             */
- $req = $bdd->prepare("SELECT COUNT(ventes.id) FROM ventes ,vendus WHERE vendus.id_vente = ventes.id AND DATE(vendus.timestamp) BETWEEN :du AND :au  AND vendus.prix > 0 AND ventes.id_point_vente  = :numero");
+ $req = $bdd->prepare("SELECT COUNT(DISTINCT(ventes.id)) FROM ventes ,vendus WHERE vendus.id_vente = ventes.id AND DATE(vendus.timestamp) BETWEEN :du AND :au  AND vendus.prix > 0 AND ventes.id_point_vente  = :numero");
  $req->execute(array('du' => $time_debut,'au' => $time_fin,'numero' => $_GET['numero'] ));
  $donnees = $req->fetch();
- echo "<td>".$donnees['COUNT(ventes.id)']."</td></tr>";
+ echo "<td>".$donnees['COUNT(DISTINCT(ventes.id))']."</td></tr>";
 
 echo '<tr><td>-nombre de ventes : </td>';
 // on determine le nombre de ventes
             /*
 
             */
- $req = $bdd->prepare("SELECT COUNT(ventes.id) FROM ventes ,vendus WHERE vendus.id_vente = ventes.id AND DATE(vendus.timestamp) BETWEEN :du AND :au  AND vendus.prix > 0 AND ventes.id_point_vente  = :numero ");
+ $req = $bdd->prepare("SELECT COUNT(DISTINCT(ventes.id)) FROM ventes ,vendus WHERE vendus.id_vente = ventes.id AND DATE(vendus.timestamp) BETWEEN :du AND :au  AND vendus.prix > 0 AND ventes.id_point_vente  = :numero ");
  $req->execute(array('du' => $time_debut,'au' => $time_fin,'numero' => $_GET['numero'] ));
  $donnees = $req->fetch();
- $nventes = $donnees['COUNT(ventes.id)'];
-echo "<td>".$donnees['COUNT(ventes.id)']."</td></tr>";
+ $nventes = $donnees['COUNT(DISTINCT(ventes.id))'];
+echo "<td>".$donnees['COUNT(DISTINCT(ventes.id))']."</td></tr>";
 echo '<tr><td>-panier moyen : </td> <td>'.$mtotcolo/$nventes.' € </td></tr>';
 echo "<tr><td>-nombre d'objets remboursés :  </td> ";
 // on determine le nombre d'objets remboursés
@@ -534,10 +534,10 @@ echo '<tr> <td>-nombre de remboursemments : </td>';
             /*
 
             */
- $req = $bdd->prepare("SELECT COUNT(ventes.id) FROM ventes ,vendus WHERE vendus.id_vente = ventes.id AND DATE(vendus.timestamp) BETWEEN :du AND :au   AND vendus.remboursement > 0 AND ventes.id_point_vente  = :numero ");
+ $req = $bdd->prepare("SELECT COUNT(DISTINCT(ventes.id)) FROM ventes ,vendus WHERE vendus.id_vente = ventes.id AND DATE(vendus.timestamp) BETWEEN :du AND :au   AND vendus.remboursement > 0 AND ventes.id_point_vente  = :numero ");
  $req->execute(array('du' => $time_debut,'au' => $time_fin,'numero' => $_GET['numero'] ));
  $donnees = $req->fetch();
-echo "<td>".$donnees['COUNT(ventes.id)']."</td></tr>";
+echo "<td>".$donnees['COUNT(DISTINCT(ventes.id))']."</td></tr>";
 echo '<tr><td>-somme remboursée : </td> ';
 
   // On recupère tout le contenu de la table point de vente

@@ -1,7 +1,7 @@
 SELECT 
 	ventes.id_moyen_paiement AS id_moyen, 
 	moyens_paiement.nom AS moyen,
-	COUNT(ventes.id) AS quantite_vendue, 
+	COUNT(DISTINCT(ventes.id)) AS quantite_vendue, 
 	SUM(vendus.prix*vendus.quantite) AS total, 
 	SUM(vendus.remboursement) AS remboursement 
 FROM 
