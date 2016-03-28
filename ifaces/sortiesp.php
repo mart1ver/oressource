@@ -24,7 +24,7 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
 //
         //on obtien la masse maximum suporté par la balance à ce point de sortie dans la variable $pesee_max
             //on obtient le nom du point de collecte designé par $GET['numero']
-            $req = $bdd->prepare("SELECT pesee_max FROM points_collecte WHERE id = :id ");
+            $req = $bdd->prepare("SELECT pesee_max FROM points_sortie WHERE id = :id ");
             $req->execute(array('id' => $_GET['numero']));
             // On affiche chaque entree une à une
             while ($donnees = $req->fetch())
