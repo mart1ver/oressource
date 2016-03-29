@@ -76,7 +76,7 @@ function ajout() {
 
     var massetemp = document.getElementById('masse').value;
     massetemp = massetemp.replace(",", ".");
-    document.getElementById('masse').value = massetemp;
+    document.getElementById('masse').value = parseFloat(massetemp);
 
     if (isNaN((parseFloat(document.getElementById('prix').value)*parseFloat(document.getElementById('quantite').value)).toFixed(2))) {
     } else {
