@@ -41,7 +41,6 @@ $_SESSION['affss'] = $resultat['affss'];
 $_SESSION['affsr'] = $resultat['affsr'];
 $_SESSION['affsd'] = $resultat['affsd'];
 $_SESSION['affsde'] = $resultat['affsde'];
-//$_SESSION['pes_vente'] = $resultat['pes_vente'];
   
   
 
