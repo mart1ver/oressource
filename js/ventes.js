@@ -54,16 +54,17 @@ function suprime(nsligne) {
 }
 
 function switchlot(state) {
-  function lot_or_unite(type, label, prix_string, bg_color) {
+  function lot_or_unite(type, label, prix_string, masse_string, bg_color) {
     document.getElementById('sul').value = type;
     document.getElementById('labellot').innerHTML = label;
     document.getElementById('labelpul').innerHTML = prix_string;
+    document.getElementById('labelmasse').innerHTML = masse_string;
     document.getElementById('panelcalc').style.backgroundColor = bg_color;
   }
   if (state == false) {
-    lot_or_unite("lot", "vente au: ", "Prix du lot: ", "#A18681");
+    lot_or_unite("lot", "vente au: ", "Prix du lot: ", "Masse du lot: ", "#A18681");
   } else {
-    lot_or_unite("unite", "vente à: ", "Prix unitaire: ", "white");
+    lot_or_unite("unite", "vente à: ", "Prix unitaire:", "Masse unitaire: " , "white");
   }
 }
 
