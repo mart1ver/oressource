@@ -153,6 +153,7 @@ function ajout() {
       document.getElementById('nom_objet').innerHTML = "<label>Objet:</label>";
       document.getElementById('quantite').value = "";
       document.getElementById('prix').value = "";
+      document.getElementById('masse').value = "";
       document.getElementById('id_type_objet').value = "";
       document.getElementById('id_objet').value = "";
       document.getElementById('nom_objet0').value = "";
