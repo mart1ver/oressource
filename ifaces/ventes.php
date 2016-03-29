@@ -116,10 +116,10 @@ $('input[name="my-checkbox"]').on('switchChange.bootstrapSwitch', function(event
 <input type="text" class="form-control" placeholder="Quantité" id="quantite" name="quantite" onfocus="fokus(this)" > 
 <b id = "labelpul">Prix unitaire:</b> 
 <input type="text" class="form-control" placeholder="€" id="prix" name="prix" onfocus="fokus(this)">
-<?php if ($_SESSION['pes_vente'] == 'oui'){ ?>
+<?//php if ($_SESSION['pes_vente'] == 'oui'){ ?>
 <b id = "labelmasse">Masse unitaire:</b> 
 <input type="text" class="form-control" placeholder="Kgs." id="masse" name="masse" onfocus="fokus(this)">
-<?php}?>
+<?//php }?>
 <input type="hidden"  id="id_type_objet" name="id_type_objet">
 <input type="hidden"  id="id_objet" name="id_objet">   
 <input type="hidden"  id="nom_objet0" name="nom_objet0">   
