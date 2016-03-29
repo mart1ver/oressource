@@ -41,6 +41,7 @@ $_SESSION['affss'] = $resultat['affss'];
 $_SESSION['affsr'] = $resultat['affsr'];
 $_SESSION['affsd'] = $resultat['affsd'];
 $_SESSION['affsde'] = $resultat['affsde'];
+$_SESSION['affsde'] = $resultat['affsde'];
   
   
 
@@ -71,7 +72,7 @@ $_SESSION['nom'] = $resultat['nom'];
 $_SESSION['prenom'] = $resultat['prenom'];
 $_SESSION['mail'] = $resultat['mail'];
 $_SESSION['systeme'] = "oressource";
-$_SESSION['momment'] =now();
+//$_SESSION['momment'] =now();
 
 $req->closeCursor();
     header ('location:../index.php');
