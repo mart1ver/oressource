@@ -24,7 +24,7 @@ $req->execute();
     
 $resultat = $req->fetch();
  
-
+$_SESSION['session_timeout'] = $resultat['session_timeout'];
 $_SESSION['tva_active'] = $resultat['tva_active'];
 $_SESSION['taux_tva'] = $resultat['taux_tva'];
 $_SESSION['structure'] = $resultat['nom'];
@@ -71,6 +71,7 @@ $_SESSION['nom'] = $resultat['nom'];
 $_SESSION['prenom'] = $resultat['prenom'];
 $_SESSION['mail'] = $resultat['mail'];
 $_SESSION['systeme'] = "oressource";
+$_SESSION['momment'] =now();
 
 $req->closeCursor();
     header ('location:../index.php');
