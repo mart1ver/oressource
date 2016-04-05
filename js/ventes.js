@@ -74,7 +74,7 @@ function ajout() {
     prixtemp = prixtemp.replace(",", ".");
     document.getElementById('prix').value = prixtemp;
    
-   if(document.getElementById('masse')&&(isNaN(document.getElementById('masse' == false))
+   if(document.getElementById('masse')&&(isNaN(document.getElementById('masse') == false)))
           {
     var massetemp = document.getElementById('masse').value;
     massetemp = massetemp.replace(",", ".");
@@ -101,7 +101,7 @@ function ajout() {
         document.getElementById('ptot').value=parseFloat(document.getElementById('ptot').value)+parseFloat(document.getElementById('prix').value*document.getElementById('quantite').value);
         document.getElementById('rendua').value = document.getElementById('ptot').value
       }
-        if(document.getElementById('masse')&&(isNaN(document.getElementById('masse' == false))))
+        if(document.getElementById('masse')&&(isNaN(document.getElementById('masse') == false)))
           {
       document.getElementById('liste').innerHTML += '<li class="list-group-item" name="ligne'+parseInt(document.getElementById('nlignes').value)+'" id="ligne'+parseInt(document.getElementById('nlignes').value)+'"><span class="badge">'+parseFloat(parseFloat(document.getElementById('prix').value)*parseFloat(document.getElementById('quantite').value)).toFixed(2)+'€'+'</span><span class="glyphicon glyphicon-remove" aria-hidden="true"    onclick="javascirpt:suprime('+"'ligne"+parseInt(document.getElementById('nlignes').value)+"');"+'"></span>&nbsp;&nbsp;'+document.getElementById('quantite').value+' * '+document.getElementById('nom_objet0').value+", "+parseFloat(document.getElementById('masse').value)+"Kgs."
         +'<input type="hidden"  id="tid_type_objet'+parseInt(document.getElementById('nlignes').value)+'" name="tid_type_objet'+parseInt(document.getElementById('nlignes').value)+'"value="'+document.getElementById('id_type_objet').value+'">'
@@ -140,7 +140,7 @@ function ajout() {
 
     prixtemp = prixtemp.replace(",", ".");
     document.getElementById('prix').value = prixtemp;
-    if(document.getElementById('masse')&&(isNaN(document.getElementById('masse' == false))))
+    if(document.getElementById('masse')&&(isNaN(document.getElementById('masse') == false)))
           {
     var massetemp = document.getElementById('masse').value;
     massetemp = massetemp.replace(",", ".");
@@ -167,7 +167,7 @@ function ajout() {
       } else {
         document.getElementById('ptot').value=parseFloat(document.getElementById('ptot').value)+parseFloat(document.getElementById('prix').value);
       }
-      if(document.getElementById('masse')&&(isNaN(document.getElementById('masse' == false))))
+      if(document.getElementById('masse')&&(isNaN(document.getElementById('masse') == false)))
           {
       document.getElementById('liste').innerHTML += '<li class="list-group-item" name="ligne'+parseInt(document.getElementById('nlignes').value)+'" id="ligne'+parseInt(document.getElementById('nlignes').value)+'"><span class="badge">'+parseFloat(document.getElementById('prix').value).toFixed(2)+'€'+'</span><span class="glyphicon glyphicon-remove" aria-hidden="true"    onclick="javascirpt:suprime('+"'ligne"+parseInt(document.getElementById('nlignes').value)+"');"+'"></span>&nbsp;&nbsp;'+document.getElementById('quantite').value+' * '+document.getElementById('nom_objet0').value+", "+parseFloat(document.getElementById('masse').value)+"Kgs."
         +'<input type="hidden"  id="tid_type_objet'+parseInt(document.getElementById('nlignes').value)+'" name="tid_type_objet'+parseInt(document.getElementById('nlignes').value)+'"value="'+document.getElementById('id_type_objet').value+'">'
