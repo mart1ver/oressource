@@ -73,10 +73,12 @@ function ajout() {
     var prixtemp = document.getElementById('prix').value;
     prixtemp = prixtemp.replace(",", ".");
     document.getElementById('prix').value = prixtemp;
-
-    var massetemp = document.getElementById('masse').value;
+   if($('masse'))
+          {
+    var massetemp = parseFloat(document.getElementById('masse').value);
     massetemp = massetemp.replace(",", ".");
     document.getElementById('masse').value = parseFloat(massetemp);
+          }
 
     if (isNaN((parseFloat(document.getElementById('prix').value)*parseFloat(document.getElementById('quantite').value)).toFixed(2))) {
     } else {
@@ -120,6 +122,10 @@ function ajout() {
 
     prixtemp = prixtemp.replace(",", ".");
     document.getElementById('prix').value = prixtemp;
+    
+    var massetemp = parseFloat(document.getElementById('masse').value);
+    massetemp = massetemp.replace(",", ".");
+    document.getElementById('masse').value = parseFloat(massetemp);
 
     if (isNaN((parseFloat(document.getElementById('prix').value)*parseFloat(document.getElementById('quantite').value)).toFixed(2))) {
     } else {
