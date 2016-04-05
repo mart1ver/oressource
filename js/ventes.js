@@ -73,9 +73,10 @@ function ajout() {
     var prixtemp = document.getElementById('prix').value;
     prixtemp = prixtemp.replace(",", ".");
     document.getElementById('prix').value = prixtemp;
+   
    if(document.getElementById('masse'))
           {
-    var massetemp = parseFloat(document.getElementById('masse').value);
+    var massetemp = document.getElementById('masse').value;
     massetemp = massetemp.replace(",", ".");
     document.getElementById('masse').value = parseFloat(massetemp);
           }
@@ -141,7 +142,7 @@ function ajout() {
     document.getElementById('prix').value = prixtemp;
     if(document.getElementById('masse'))
           {
-    var massetemp = parseFloat(document.getElementById('masse').value);
+    var massetemp = document.getElementById('masse').value;
     massetemp = massetemp.replace(",", ".");
     document.getElementById('masse').value = parseFloat(massetemp);
           }
