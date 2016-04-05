@@ -73,7 +73,7 @@ function ajout() {
     var prixtemp = document.getElementById('prix').value;
     prixtemp = prixtemp.replace(",", ".");
     document.getElementById('prix').value = prixtemp;
-   if($('masse'))
+   if(document.getElementById('masse'))
           {
     var massetemp = parseFloat(document.getElementById('masse').value);
     massetemp = massetemp.replace(",", ".");
