@@ -173,6 +173,7 @@ function ajout() {
           {
     var massetemp = document.getElementById('masse').value;
     massetemp = massetemp.replace(",", ".");
+    if (force_pes_vente == "oui" && isNaN(parseFloat(massetemp))) {return;}
     if (isNaN(parseFloat(massetemp))) {document.getElementById('masse').value = "";}else{ 
     document.getElementById('masse').value = parseFloat(massetemp);
   }
