@@ -70,6 +70,12 @@ if ($_POST['pes_vente'] == 'oui')
 
 	$pes_vente = 'oui' ;
 }
+$force_pes_vente = 'non' ;
+if ($_POST['force_pes_vente'] == 'oui')
+{
+
+	$force_pes_vente = 'oui' ;
+}
 //martin vert
 // Connexion à la base de données
 		try
@@ -108,12 +114,13 @@ $req = $bdd->prepare('UPDATE description_structure
 					  affsd=:affsd,
 					  affsde=:affsde,
 					  pes_vente=:pes_vente
+					  force_pes_vente=:force_pes_vente
 						
 					  WHERE id = :id');
 
 
 
-$req->execute(array('id' => 1,'nom' => $_POST['nom'], 'description' => $_POST['description'],'siret' => $_POST['siret'], 'mail' => $_POST['mail'], 'adresse' => $_POST['adresse'],'telephone' => $_POST['telephone'],'id_localite' => $_POST['localite'],'taux_tva' => $_POST['ttva'], 'tva_active' => $atva, 'lot' => $lot , 'viz' => $viz, 'saisiec' => $saisiec, 'nb_viz' => $_POST['nb_viz'],'cr' => $_POST['cr'],'affsp' => $_POST['affsp'],'affss' => $_POST['affss'],'affsr' => $_POST['affsr'],'affsd' => $_POST['affsd'],'affsde' => $_POST['affsde'],'pes_vente' => $pes_vente));
+$req->execute(array('id' => 1,'nom' => $_POST['nom'], 'description' => $_POST['description'],'siret' => $_POST['siret'], 'mail' => $_POST['mail'], 'adresse' => $_POST['adresse'],'telephone' => $_POST['telephone'],'id_localite' => $_POST['localite'],'taux_tva' => $_POST['ttva'], 'tva_active' => $atva, 'lot' => $lot , 'viz' => $viz, 'saisiec' => $saisiec, 'nb_viz' => $_POST['nb_viz'],'cr' => $_POST['cr'],'affsp' => $_POST['affsp'],'affss' => $_POST['affss'],'affsr' => $_POST['affsr'],'affsd' => $_POST['affsd'],'affsde' => $_POST['affsde'],'pes_vente' => $pes_vente,'force_pes_vente' => $force_pes_vente));
 
 
 
@@ -123,7 +130,7 @@ $req->execute(array('id' => 1,'nom' => $_POST['nom'], 'description' => $_POST['d
 
     $req->closeCursor();
 // Redirection du visiteur vers la page de gestion des points de collecte
-header('Location:../ifaces/edition_description.php');
+header('Location:../ifaces/edition_description.php?msg=Configuration sauvegardée.');
 }
 else { 
 header('Location:../moteur/destroy.php');

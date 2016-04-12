@@ -50,19 +50,22 @@ require_once('../moteur/dbconfig.php');
 <div class="panel panel-default">
   <label class="panel-title">formulaire de ventes</label>
   <div class="panel-body">
- Activer la TVA à la vente : <input name ="atva" id ="atva" type="checkbox" value = "oui" <?php if((strpos($donnees['tva_active'], 'oui') !== false)){ echo "checked";} ?> >
-<br>
-Taux en vigueur: <input type="text" value ="<?php echo $donnees['taux_tva']; ?>" name="ttva" id="ttva" class="form-control " required >
-<br>
+
 Code de remboursement à la caisse: <input type="text" value ="<?php echo $donnees['cr']; ?>" name="cr" id="cr" class="form-control " required > 
 <br>
 Activer la Pesée à la caisse: <input name ="pes_vente" id ="pes_vente" type="checkbox" value = "oui" <?php if((strpos($donnees['pes_vente'], 'oui') !== false)){ echo "checked";} ?> >
+<br>
+Interdire les ventes sans pesées: <input name ="force_pes_vente" id ="force_pes_vente" type="checkbox" value = "oui" <?php if((strpos($donnees['force_pes_vente'], 'oui') !== false)){ echo "checked";} ?> >
 <br>
 Activer la vente par lot à la caisse: <input name ="lot" id ="lot" type="checkbox" value = "oui" <?php if((strpos($donnees['lot'], 'oui') !== false)){ echo "checked";} ?> >
 <br>
 Activer la visualisation des ventes à la caisse: <input name ="viz" id ="viz" type="checkbox" value = "oui" <?php if((strpos($donnees['viz'], 'oui') !== false)){ echo "checked";} ?> >
 <br>
 Nombre de ventes anterieures visibles: <input type="text" value ="<?php echo $donnees['nb_viz']; ?>" name="nb_viz" id="nb_viz" class="form-control " required >
+<br>
+ Activer la TVA à la vente : <input name ="atva" id ="atva" type="checkbox" value = "oui" <?php if((strpos($donnees['tva_active'], 'oui') !== false)){ echo "checked";} ?> >
+<br>
+Taux en vigueur: <input type="text" value ="<?php echo $donnees['taux_tva']; ?>" name="ttva" id="ttva" class="form-control " required >
 <br>
 </div>
 </div>
