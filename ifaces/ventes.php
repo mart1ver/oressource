@@ -392,7 +392,18 @@ Somme due:
 <?php }?>
  <br><br><br>   
             <?php include "pied.php" ; ?> 
-
+<script>
+"use strict";
+var force_pes_vente = "non";
+<?php
+    if ($_SESSION['force_pes_vente'] == 'oui') 
+    {
+?>      
+      force_pes_vente = "oui";
+<?php
+    }
+?>
+</script>
 <script src="../js/ventes.js"></script>
 <script>
 "use strict";

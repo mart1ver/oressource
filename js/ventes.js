@@ -65,13 +65,15 @@ function switchlot(state) {
     } 
   }
   if (state == false) {
-    lot_or_unite("lot", "vente au: ", "Prix du lot: ", "Masse du lot: ", "#A18681");
+    lot_or_unite("lot", "vente au: ", "Prix du lot: ", "Masse du lot: ", "#E8E6BC");
   } else {
     lot_or_unite("unite", "vente à: ", "Prix unitaire:", "Masse unitaire: " , "white");
   }
 }
 
 function ajout() {
+  
+
   if (document.getElementById('sul').value == "unite") {
     var prixtemp = document.getElementById('prix').value;
     prixtemp = prixtemp.replace(",", ".");
@@ -81,6 +83,7 @@ function ajout() {
           {
     var massetemp = document.getElementById('masse').value;
     massetemp = massetemp.replace(",", ".");
+    if (force_pes_vente == "oui" && isNaN(parseFloat(massetemp))) {return;}
     if (isNaN(parseFloat(massetemp))) {document.getElementById('masse').value = "";}else{ 
     document.getElementById('masse').value = parseFloat(massetemp);
   }

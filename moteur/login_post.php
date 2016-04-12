@@ -33,6 +33,7 @@ $_SESSION['affsr'] = $resultat['affsr'];
 $_SESSION['affsd'] = $resultat['affsd'];
 $_SESSION['affsde'] = $resultat['affsde'];
 $_SESSION['pes_vente'] = $resultat['pes_vente'];
+$_SESSION['force_pes_vente'] = $resultat['force_pes_vente'];
   
   
 $req->closeCursor();
