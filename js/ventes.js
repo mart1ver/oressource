@@ -78,7 +78,9 @@ function ajout() {
           {
     var massetemp = document.getElementById('masse').value;
     massetemp = massetemp.replace(",", ".");
+    if (isNaN(parseFloat(massetemp))) {document.getElementById('masse').value = 0;}else{ 
     document.getElementById('masse').value = parseFloat(massetemp);
+  }
           }
 
     if (isNaN((parseFloat(document.getElementById('prix').value)*parseFloat(document.getElementById('quantite').value)).toFixed(2))) {
@@ -166,7 +168,9 @@ function ajout() {
           {
     var massetemp = document.getElementById('masse').value;
     massetemp = massetemp.replace(",", ".");
+    if (isNaN(parseFloat(massetemp))) {document.getElementById('masse').value = 0;}else{ 
     document.getElementById('masse').value = parseFloat(massetemp);
+  }
           }
 
     if (isNaN((parseFloat(document.getElementById('prix').value)*parseFloat(document.getElementById('quantite').value)).toFixed(2))) {
