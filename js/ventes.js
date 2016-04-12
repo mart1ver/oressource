@@ -78,7 +78,7 @@ function ajout() {
           {
     var massetemp = document.getElementById('masse').value;
     massetemp = massetemp.replace(",", ".");
-    if (isNaN(parseFloat(massetemp))) {document.getElementById('masse').value = 0;}else{ 
+    if (isNaN(parseFloat(massetemp))) {document.getElementById('masse').value = "";}else{ 
     document.getElementById('masse').value = parseFloat(massetemp);
   }
           }
@@ -135,7 +135,7 @@ function ajout() {
       document.getElementById('nom_objet').innerHTML = "<label>Objet:</label>";
       document.getElementById('quantite').value = "";
       document.getElementById('prix').value = "";
-      document.getElementById('masse').value = 0;
+      document.getElementById('masse').value = "";
       document.getElementById('id_type_objet').value = "";
       document.getElementById('id_objet').value = "";
       document.getElementById('nom_objet0').value = "";
@@ -225,7 +225,7 @@ function ajout() {
       document.getElementById('nom_objet').innerHTML = "<label>Objet:</label>";
       document.getElementById('quantite').value = "";
       document.getElementById('prix').value = "";
-      document.getElementById('masse').value = 0;
+      document.getElementById('masse').value = "";
       document.getElementById('id_type_objet').value = "";
       document.getElementById('id_objet').value = "";
       document.getElementById('nom_objet0').value = "";
