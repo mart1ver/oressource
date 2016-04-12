@@ -60,7 +60,28 @@ catch(Exception $e)
 }
 $req = $bdd->prepare('INSERT INTO vendus (timestamp, id_vente,  id_type_dechet, id_objet, quantite, prix, id_createur) VALUES(?, ?,?, ?, ?, ?, ?)');
 $req->execute(array($antidate, $id_vente ,  $_POST[$tid_type_objet] ,  $_POST[$tid_objet] ,  $_POST[$tquantite], $_POST[$tprix], $_SESSION['id']));
+  $id_vendu = $bdd->lastInsertId();
   $req->closeCursor();
+
+//puis on inserre les pesées_vendus si ils existent sur la ligne du ticket 
+
+  $tmasse = 'tmasse'.$i; 
+if(isset($_POST[$tmasse]))// si tmasse.$i present sur la ligne,
+    {
+      //on inserre
+try
+{
+include('dbconfig.php');
+}
+catch(Exception $e)
+{
+        die('Erreur : '.$e->getMessage());
+}
+$req = $bdd->prepare('INSERT INTO pesees_vendus (timestamp,id_vendu,  masse, id_createur) VALUES(?,?,?,?)');
+$req->execute(array($antidate,$id_vendu ,  $_POST[$tmasse] ,  $_SESSION['id']));
+  $req->closeCursor();
+
+    }
 }
     $i++;
 }
