@@ -170,7 +170,7 @@ function ajout() {
           {
     var massetemp = document.getElementById('masse').value;
     massetemp = massetemp.replace(",", ".");
-    if (isNaN(parseFloat(massetemp))) {document.getElementById('masse').value = 0;}else{ 
+    if (isNaN(parseFloat(massetemp))) {document.getElementById('masse').value = "";}else{ 
     document.getElementById('masse').value = parseFloat(massetemp);
   }
           }
