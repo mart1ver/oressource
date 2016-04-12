@@ -45,7 +45,7 @@ function suprime(nsligne) {
     document.getElementById('total').innerHTML = '<li class="list-group-item">Soit : '+document.getElementById('narticles').value+' article(s) pour : <span class="badge" style="float:right;">'+parseFloat(document.getElementById('ptot').value).toFixed(2)+'€</span></li>';
     document.getElementById('tquantite'+numero_ligne).value= "0";
     document.getElementById('tprix'+numero_ligne).value= "0";
-    //document.getElementById('nlignes').value = parseInt(document.getElementById('nlignes').value) - 1;
+    document.getElementById('nlignes').value = parseInt(document.getElementById('nlignes').value) - 1;
     document.getElementById(nsligne).remove();
     document.getElementById('rendua').value = document.getElementById('ptot').value;
   } else {
