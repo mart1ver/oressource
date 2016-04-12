@@ -58,8 +58,11 @@ function switchlot(state) {
     document.getElementById('sul').value = type;
     document.getElementById('labellot').innerHTML = label;
     document.getElementById('labelpul').innerHTML = prix_string;
-    document.getElementById('labelmasse').innerHTML = masse_string;
     document.getElementById('panelcalc').style.backgroundColor = bg_color;
+    if(document.getElementById('masse') )
+    {
+     document.getElementById('labelmasse').innerHTML = masse_string;
+    } 
   }
   if (state == false) {
     lot_or_unite("lot", "vente au: ", "Prix du lot: ", "Masse du lot: ", "#A18681");
