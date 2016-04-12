@@ -113,7 +113,7 @@ $req = $bdd->prepare('UPDATE description_structure
 					  affsr=:affsr,
 					  affsd=:affsd,
 					  affsde=:affsde,
-					  pes_vente=:pes_vente
+					  pes_vente=:pes_vente,
 					  force_pes_vente=:force_pes_vente
 						
 					  WHERE id = :id');
