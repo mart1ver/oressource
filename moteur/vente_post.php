@@ -19,7 +19,7 @@ if(isset($_POST['adh']))
 
   if ($_SESSION['saisiec'] == "oui" AND (strpos($_SESSION['niveau'], 'e') !== false) )
    {
-    
+    //avec antidate
 $antidate = $_POST['antidate'].date(" H:i:s");
     // Connexion à la base de données
     try
@@ -67,7 +67,7 @@ $req->execute(array($antidate, $id_vente ,  $_POST[$tid_type_objet] ,  $_POST[$t
 // Redirection du visiteur vers la page de ventes
  header("Location:../ifaces/ventes.php?numero=".$_POST['id_point_vente']);
   }else      {
-
+//sans antidate
 
 // Connexion à la base de données
 		try
@@ -108,10 +108,36 @@ catch(Exception $e)
 }
 $req = $bdd->prepare('INSERT INTO vendus (id_vente,  id_type_dechet, id_objet, quantite, prix, id_createur) VALUES(?,?, ?, ?, ?, ?)');
 $req->execute(array($id_vente ,  $_POST[$tid_type_objet] ,  $_POST[$tid_objet] ,  $_POST[$tquantite], $_POST[$tprix], $_SESSION['id']));
+$id_vendu = $bdd->lastInsertId();
   $req->closeCursor();
+
+//puis on inserre les pesées_vendus si ils existent sur la ligne du ticket 
+
+  $tmasse = 'tmasse'.$i; 
+if(isset($_POST[$tmasse]))// si tmasse.$i present sur la ligne,
+    {
+      //on inserre
+try
+{
+include('dbconfig.php');
 }
+catch(Exception $e)
+{
+        die('Erreur : '.$e->getMessage());
+}
+$req = $bdd->prepare('INSERT INTO pesees_vendus (id_vendu,  masse, id_createur) VALUES(?,?,?)');
+$req->execute(array($id_vendu ,  $_POST[$tmasse] ,  $_SESSION['id']));
+  $req->closeCursor();
+
+    }
+}
+
+
+
     $i++;
 }
+
+
 // Redirection du visiteur vers la page de gestion des affectation
 	header("Location:../ifaces/ventes.php?numero=".$_POST['id_point_vente']);
 }
