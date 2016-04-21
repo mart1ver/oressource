@@ -168,12 +168,15 @@ $req2->execute(array('id_vendu' => $donnees['id']));
 
 
            // On affiche chaque entree une à une
-           while ($donnees2 = $req->fetch())
+           while ($donnees2 = $req2->fetch())
            {
 $masse_vendu = $donnees2['masse'];
            }
            $req2->closeCursor(); // Termine le traitement de la requête 2
 ?>
+
+
+
 <td><?php echo $masse_vendu ?></td>
 <td><?php echo $donnees['mail']?></td>
 
