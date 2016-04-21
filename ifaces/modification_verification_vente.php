@@ -172,6 +172,7 @@ $req2->execute(array('id_vendu' => $donnees['id']));
            {
 $masse_vendu = $donnees2['masse'];
            }
+           $req2->closeCursor(); // Termine le traitement de la requête 2
 ?>
 <td><?php echo $masse_vendu ?></td>
 <td><?php echo $donnees['mail']?></td>
