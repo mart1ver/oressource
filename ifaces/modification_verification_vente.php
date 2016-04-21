@@ -192,7 +192,7 @@ $masse_vendu = $donnees2['masse'];
 
   <button  class="btn btn-warning btn-sm" >Modifier</button>
 <a href="verif_vente.php?date1=<?php echo $_POST['date1']?>&date2=<?php echo $_POST['date2']?>&numero=<?php echo $_POST['npoint']?>">
-<button name="creer" class="btn btn" style="float: right;">Retour</button>
+<button name="creer" class="btn btn" style="float: right;">Annuler</button>
 </a>
 
 </form>
