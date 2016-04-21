@@ -37,7 +37,7 @@
 <br><input type="text"       value ="<?php echo $_POST['prix']?>" name="prix" id="prix" class="form-control " required >
   
  </div>
-  </div>
+  
   <div class="col-md-2">
 
     <label for="prix">Masse:</label>
@@ -49,6 +49,7 @@
   
   <br>
 <button name="creer" class="btn btn-warning">Modifier</button>
+</div>
 </div>
 </form>
 </div>
