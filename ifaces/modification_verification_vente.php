@@ -107,6 +107,7 @@ require_once('../moteur/dbconfig.php');
             <th>Objet:</th>
             <th>Quantité</th>
             <th>Prix</th>
+            <th>masse</th>
             <th>Auteur de la ligne</th>
             <th></th>
             <th>Modifié par</th>
@@ -153,6 +154,26 @@ $req->execute(array('id_vente' => $_GET['nvente']));
 
 <td><?php echo $donnees['quantite']?></td>
 <td><?php echo $donnees['prix']?></td>
+<?php
+//si une masse correspond à ce vendu on l'affiche
+$masse_vendu = 0;
+
+$req2 = $bdd->prepare('SELECT 
+pesees_vendus.masse 
+FROM
+pesees_vendus
+WHERE 
+pesees_vendus.id_vendu = :id_vendu');
+$req2->execute(array('id_vendu' => $donnees['id']));
+
+
+           // On affiche chaque entree une à une
+           while ($donnees2 = $req->fetch())
+           {
+$masse_vendu = $donnees2['masse'];
+           }
+?>
+<td><?php echo $masse_vendu ?></td>
 <td><?php echo $donnees['mail']?></td>
 
 <td><form action="modification_verification_objet.php" method="post">
