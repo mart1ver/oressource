@@ -85,6 +85,9 @@ require_once('../moteur/dbconfig.php');
  
 <button name="creer" class="btn btn-warning">Modifier</button>
 </div>
+<a href="verif_vente.php?date1=<?php echo $_POST['date1']?>&date2=<?php echo $_POST['date2']?>&numero=<?php echo $_POST['npoint']?>">
+<button name="creer" class="btn btn" style="float: right;">Annuler</button>
+</a>
 </form>
 </div>
 
@@ -191,9 +194,7 @@ $masse_vendu = $donnees2['masse'];
 <input type="hidden" name ="npoint" id="npoint" value="<?php echo $_POST['npoint']?>">
 
   <button  class="btn btn-warning btn-sm" >Modifier</button>
-<a href="verif_vente.php?date1=<?php echo $_POST['date1']?>&date2=<?php echo $_POST['date2']?>&numero=<?php echo $_POST['npoint']?>">
-<button name="creer" class="btn btn" style="float: right;">Annuler</button>
-</a>
+
 
 </form>
 </td>
