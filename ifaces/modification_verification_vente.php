@@ -84,10 +84,11 @@ require_once('../moteur/dbconfig.php');
 
  
 <button name="creer" class="btn btn-warning">Modifier</button>
-</div>
 <a href="verif_vente.php?date1=<?php echo $_POST['date1']?>&date2=<?php echo $_POST['date2']?>&numero=<?php echo $_POST['npoint']?>">
 <button name="creer" class="btn btn" style="float: right;">Annuler</button>
 </a>
+</div>
+
 </form>
 </div>
 
