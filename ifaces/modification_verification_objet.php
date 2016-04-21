@@ -45,10 +45,13 @@
   
  </div>
 
-  <div class="col-md-1">
+  <div class="col-md-3">
   
   <br>
 <button name="creer" class="btn btn-warning">Modifier</button>
+<a href="verif_vente.php?date1=<?php echo $_POST['date1']?>&date2=<?php echo $_POST['date2']?>&numero=<?php echo $_POST['npoint']?>">
+<button name="creer" class="btn btn" style="float: right;">Annuler</button>
+</a>
 </div>
 </div>
 </form>
