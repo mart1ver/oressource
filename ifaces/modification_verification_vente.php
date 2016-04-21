@@ -185,6 +185,7 @@ $masse_vendu = $donnees2['masse'];
 <input type="hidden" name ="nvente" id="nvente" value="<?php echo $_GET['nvente']?>">
 <input type="hidden" name ="quantite" id="quantite" value="<?php echo $donnees['quantite']?>">
 <input type="hidden" name ="prix" id="prix" value="<?php echo $donnees['prix']?>">
+<input type="hidden" name ="masse" id="masse" value="<?php echo $masse_vendu?>">
 <input type="hidden" name ="date1" id="date1" value="<?php echo $_POST['date1']?>">
 <input type="hidden" name ="date2" id="date2" value="<?php echo $_POST['date2']?>">
 <input type="hidden" name ="npoint" id="npoint" value="<?php echo $_POST['npoint']?>">

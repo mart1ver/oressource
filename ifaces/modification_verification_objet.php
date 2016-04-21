@@ -37,6 +37,13 @@
 <br><input type="text"       value ="<?php echo $_POST['prix']?>" name="prix" id="prix" class="form-control " required >
   
  </div>
+  </div>
+  <div class="col-md-3">
+
+    <label for="prix">Masse:</label>
+<br><input type="text"       value ="<?php echo $_POST['masse']?>" name="masse" id="masse" class="form-control " required >
+  
+ </div>
 
   <div class="col-md-1">
   
