@@ -24,24 +24,24 @@
 
 
 
-<div class="col-md-3">
+<div class="col-md-2">
 
 <label for="quantite">Quantité:</label>
 <br><input type="text"       value ="<?php echo $_POST['quantite']?>" name="quantite" id="quantite" class="form-control " required >
 
       
   </div>
-  <div class="col-md-3">
+  <div class="col-md-2">
 
     <label for="prix">Prix:</label>
 <br><input type="text"       value ="<?php echo $_POST['prix']?>" name="prix" id="prix" class="form-control " required >
   
  </div>
   </div>
-  <div class="col-md-3">
+  <div class="col-md-2">
 
     <label for="prix">Masse:</label>
-<br><input type="text"       value ="<?php echo $_POST['masse']?>" name="masse" id="masse" class="form-control " required >
+<br><input type="text"       value ="<?php echo $_POST['masse']?>" name="masse" id="masse" class="form-control "  >
   
  </div>
 
