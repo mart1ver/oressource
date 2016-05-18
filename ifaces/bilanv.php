@@ -474,7 +474,7 @@ AND vendus.id_type_dechet = :id
 $Np = $donnees['COUNT(pesees_vendus.masse)'];
 $req->closeCursor(); // Termine le traitement de la requête
 //On determine Mtpe plus tot dans le tableau
-echo (($Mm*$Nt)-($Mm*$Mp))+$Mtpe;
+echo round((($Mm*$Nt)-($Mm*$Mp))+$Mtpe, 2);
 ?>
 
 
