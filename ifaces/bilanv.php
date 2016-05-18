@@ -389,6 +389,8 @@ GROUP BY type_dechets.nom
  $req->execute(array('du' => $time_debut,'au' => $time_fin ,'id' => $donnees2['id'] ));
  $donnees = $req->fetch();
 echo $donnees['SUM(vendus.quantite)'];
+$Nt = $donnees['SUM(vendus.quantite)'];
+
 $req->closeCursor(); // Termine le traitement de la requête ?>
             </td>
             <td>
@@ -429,6 +431,7 @@ $req->closeCursor(); // Termine le traitement de la requête ?>
  $req->execute(array('du' => $time_debut,'au' => $time_fin ,'id' => $donnees2['id'] ));
  $donnees = $req->fetch();
 echo intval($donnees['SUM(pesees_vendus.masse)']);
+$Mtpe = $donnees['SUM(pesees_vendus.masse)'];
 $req->closeCursor(); // Termine le traitement de la requête ?></td>
            
             <td>
@@ -440,7 +443,7 @@ nombre d'objets total sur la periode = Nt
 nombre d'objets pesées sur la periode = Np
 masse totale d'objets peses sur cette periode =Mtpe
 
-masse totalement estimée sur la periode:  mtemp= Mn*Nt
+masse totalement estimée sur la periode:  mtemp= Mm*Nt
 retrancher la masse de Mp objets:         mtemp = mtemp-(Mm*Mp)
 ajoute la masse réele de ces objets :     mtemp = mtemp + Mtpe
 
@@ -458,6 +461,20 @@ soit                                      mtemp = ((Mn*Nt)-(Mm*Mp))+Mtpe
 $Mm = $donnees['AVG(pesees_vendus.masse)'];
 echo $Mm;
 $req->closeCursor(); // Termine le traitement de la requête 
+// On determine Nt plus tot dans le tableau
+// On determine Np
+$req = $bdd->prepare("SELECT COUNT(pesees_vendus.masse) 
+FROM pesees_vendus, vendus
+WHERE pesees_vendus.id_vendu = vendus.id
+AND pesees_vendus.masse >0
+AND vendus.id_type_dechet = :id 
+  AND DATE(vendus.timestamp) BETWEEN :du AND :au ");
+ $req->execute(array('du' => $time_debut,'au' => $time_fin ,'id' => $donnees2['id'] ));
+ $donnees = $req->fetch();
+$Np = $donnees['COUNT(pesees_vendus.masse)']);
+$req->closeCursor(); // Termine le traitement de la requête
+//On determine Mtpe plus tot dans le tableau
+echo (($Mn*$Nt)-($Mm*$Mp))+$Mtpe;
 ?>
 
 
