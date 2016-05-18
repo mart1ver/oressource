@@ -346,7 +346,10 @@ $Np = $donnees['COUNT(pesees_vendus.masse)'];
 $req->closeCursor(); // Termine le traitement de la requête
 //On determine Mtpe plus tot dans le tableau
 //echo round((($Mm*$Nt)-($Mm*$Mp))+$Mtpe, 2);
-echo $Mm*$Nt ;
+echo $Mm."|" ;
+echo $Nt."|" ;
+echo $Np."|" ;
+echo $Mtpe ;
 ?> Kgs. </td></tr>
 
 </tr>
