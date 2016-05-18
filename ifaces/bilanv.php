@@ -430,7 +430,43 @@ $req->closeCursor(); // Termine le traitement de la requête ?>
  $donnees = $req->fetch();
 echo intval($donnees['SUM(pesees_vendus.masse)']);
 $req->closeCursor(); // Termine le traitement de la requête ?></td>
-            <td></td>       
+           
+            <td>
+<?php
+/*
+estimation de la masse totale vendue sur la periode pour tout les points de vente
+masse moyenne d'un objet dans toute la base = Mm
+nombre d'objets total sur la periode = Nt
+nombre d'objets pesées sur la periode = Np
+masse totale d'objets peses sur cette periode =Mtpe
+
+masse totalement estimée sur la periode:  mtemp= Mn*Nt
+retrancher la masse de Mp objets:         mtemp = mtemp-(Mm*Mp)
+ajoute la masse réele de ces objets :     mtemp = mtemp + Mtpe
+
+soit                                      mtemp = ((Mn*Nt)-(Mm*Mp))+Mtpe
+*/
+// on determine Mm
+
+                // on determine la masse d'objets pesés
+            /*
+
+            */
+ $req = $bdd->prepare("SELECT AVG(pesees_vendus.masse) 
+  FROM pesees_vendus , vendus 
+  WHERE pesees_vendus.id_vendu = vendus.id
+  AND pesees_vendus.masse > 0
+  AND vendus.id_type_dechet = :id 
+  AND DATE(vendus.timestamp) BETWEEN :du AND :au ");
+ $req->execute(array('du' => $time_debut,'au' => $time_fin ,'id' => $donnees2['id'] ));
+ $donnees = $req->fetch();
+$Mm = $donnees['AVG(pesees_vendus.masse)'];
+echo $Mm;
+$req->closeCursor(); // Termine le traitement de la requête 
+?>
+
+
+            </td>       
         </tr>
         
  <?php
