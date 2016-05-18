@@ -453,7 +453,7 @@ soit                                      mtemp = ((Mn*Nt)-(Mm*Mp))+Mtpe
   WHERE pesees_vendus.id_vendu = vendus.id
   AND pesees_vendus.masse > 0
   AND vendus.id_type_dechet = :id ");
- $req->execute(array('du' => $time_debut,'au' => $time_fin ,'id' => $donnees2['id'] ));
+ $req->execute(array('id' => $donnees2['id'] ));
  $donnees = $req->fetch();
 $Mm = $donnees['AVG(pesees_vendus.masse)'];
 echo $Mm;
