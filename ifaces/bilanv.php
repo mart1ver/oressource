@@ -471,10 +471,10 @@ AND vendus.id_type_dechet = :id
   AND DATE(vendus.timestamp) BETWEEN :du AND :au ");
  $req->execute(array('du' => $time_debut,'au' => $time_fin ,'id' => $donnees2['id'] ));
  $donnees = $req->fetch();
-$Np = $donnees['COUNT(pesees_vendus.masse)']);
+$Np = $donnees['COUNT(pesees_vendus.masse)'];
 $req->closeCursor(); // Termine le traitement de la requête
 //On determine Mtpe plus tot dans le tableau
-//echo (($Mn*$Nt)-($Mm*$Mp))+$Mtpe;
+echo (($Mn*$Nt)-($Mm*$Mp))+$Mtpe;
 ?>
 
 
