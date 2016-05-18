@@ -459,7 +459,7 @@ soit                                      mtemp = ((Mn*Nt)-(Mm*Mp))+Mtpe
  $req->execute(array('id' => $donnees2['id'] ));
  $donnees = $req->fetch();
 $Mm = $donnees['AVG(pesees_vendus.masse)'];
-echo $Mm;
+//echo $Mm;
 $req->closeCursor(); // Termine le traitement de la requête 
 // On determine Nt plus tot dans le tableau
 // On determine Np
