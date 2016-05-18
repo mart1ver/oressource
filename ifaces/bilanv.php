@@ -320,7 +320,7 @@ masse totalement estimée sur la periode:  mtemp= Mm*Nt
 retrancher la masse de Mp objets:         mtemp = mtemp-(Mm*Mp)
 ajoute la masse réele de ces objets :     mtemp = mtemp + Mtpe
 
-soit                                      mtemp = ((Mn*Nt)-(Mm*Mp))+Mtpe
+soit                                      mtemp = ((Mm*Nt)-(Mm*Mp))+Mtpe
 */
 // on determine Mm
                
@@ -345,7 +345,8 @@ AND DATE(vendus.timestamp) BETWEEN :du AND :au ");
 $Np = $donnees['COUNT(pesees_vendus.masse)'];
 $req->closeCursor(); // Termine le traitement de la requête
 //On determine Mtpe plus tot dans le tableau
-echo round((($Mm*$Nt)-($Mm*$Mp))+$Mtpe, 2);
+//echo round((($Mm*$Nt)-($Mm*$Mp))+$Mtpe, 2);
+echo $Mm*$Nt ;
 ?> Kgs. </td></tr>
 
 </tr>
