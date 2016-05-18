@@ -447,17 +447,12 @@ ajoute la masse réele de ces objets :     mtemp = mtemp + Mtpe
 soit                                      mtemp = ((Mn*Nt)-(Mm*Mp))+Mtpe
 */
 // on determine Mm
-
-                // on determine la masse d'objets pesés
-            /*
-
-            */
+               
  $req = $bdd->prepare("SELECT AVG(pesees_vendus.masse) 
   FROM pesees_vendus , vendus 
   WHERE pesees_vendus.id_vendu = vendus.id
   AND pesees_vendus.masse > 0
-  AND vendus.id_type_dechet = :id 
-  AND DATE(vendus.timestamp) BETWEEN :du AND :au ");
+  AND vendus.id_type_dechet = :id ");
  $req->execute(array('du' => $time_debut,'au' => $time_fin ,'id' => $donnees2['id'] ));
  $donnees = $req->fetch();
 $Mm = $donnees['AVG(pesees_vendus.masse)'];
