@@ -349,6 +349,8 @@ Récapitulatif par type d'objet
           <th>quantité vendue</th>
           <th>somme remboursée</th>
           <th>quantité remboursée</th>
+          <th>masse pésee</th>
+          <th>masse totale estimée</th>
           
         </tr>
       </thead>
@@ -414,6 +416,21 @@ $req->closeCursor(); // Termine le traitement de la requête ?>
 echo intval($donnees['SUM(vendus.quantite)']);
 $req->closeCursor(); // Termine le traitement de la requête ?>
             </td>
+            <td> <?php
+                // on determine la masse d'objets pesés
+            /*
+
+            */
+ $req = $bdd->prepare("SELECT SUM(pesees_vendus.masse) 
+  FROM pesees_vendus , vendus 
+  WHERE pesees_vendus.id_vendu = vendus.id
+  AND vendus.id_type_dechet = :id 
+  AND DATE(vendus.timestamp) BETWEEN :du AND :au ");
+ $req->execute(array('du' => $time_debut,'au' => $time_fin ,'id' => $donnees2['id'] ));
+ $donnees = $req->fetch();
+echo intval($donnees['SUM(vendus.quantite)']);
+$req->closeCursor(); // Termine le traitement de la requête ?></td>
+            <td></td>       
         </tr>
         
  <?php
@@ -433,7 +450,8 @@ $req->closeCursor(); // Termine le traitement de la requête ?>
     <tr>
       <td></td>
         <td></td>
-      
+       <td></td>
+      <td></td>
       <td></td>
       <td></td>
       <td></td>
