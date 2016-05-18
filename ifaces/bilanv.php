@@ -289,6 +289,21 @@ echo "<td>".$donnees['COUNT(DISTINCT(ventes.id))']."</td></tr>";
 
 
 ?>
+<tr><td>-masse pesée en caisse : </td><td>
+  <?php
+  $req = $bdd->prepare("SELECT SUM(pesees_vendus.masse) 
+  FROM pesees_vendus , vendus 
+  WHERE pesees_vendus.id_vendu = vendus.id
+  AND DATE(vendus.timestamp) BETWEEN :du AND :au ");
+ $req->execute(array('du' => $time_debut,'au' => $time_fin ));
+ $donnees = $req->fetch();
+echo intval($donnees['SUM(pesees_vendus.masse)']);
+
+$req->closeCursor(); // Termine le traitement de la requête
+
+?> Kgs.</td></tr>
+<tr><td>-masse totale estimée: </td><td>-Kgs. </td></tr>
+
 </tr>
 </tbody></table>
 <br>
