@@ -327,7 +327,7 @@ soit                                      mtemp = ((Mm*Nt)-(Mm*Mp))+Mtpe
  $req = $bdd->prepare("SELECT AVG(pesees_vendus.masse) 
   FROM pesees_vendus  
   WHERE pesees_vendus.masse > 0");
- $req->execute;
+ $req->execute();
  $donnees = $req->fetch();
 $Mm = $donnees['AVG(pesees_vendus.masse)'];
 //echo $Mm;
