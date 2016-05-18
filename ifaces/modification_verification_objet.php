@@ -41,7 +41,7 @@
   <div class="col-md-2">
 
     <label for="prix">Masse:</label>
-<br><input type="text"       value ="<?php echo $_POST['masse']?>" name="masse" id="masse" class="form-control "  >
+<br><input type="text"       value ="<?php echo $_POST['masse']?>" name="masse" id="masse" class="form-control <?php if($_POST['masse'] == 0){echo "disabled";} ?>"  >
   
  </div>
 
