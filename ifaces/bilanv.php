@@ -326,7 +326,7 @@ soit                                      mtemp = ((Mm*Nt)-(Mm*Mp))+Mtpe
                
  $req = $bdd->prepare("SELECT AVG(pesees_vendus.masse) 
   FROM pesees_vendus  
-  AND pesees_vendus.masse > 0");
+  WHERE pesees_vendus.masse > 0");
  $req->execute;
  $donnees = $req->fetch();
 $Mm = $donnees['AVG(pesees_vendus.masse)'];
@@ -336,7 +336,7 @@ $req->closeCursor(); // Termine le traitement de la requête
 // On determine Np
 $req = $bdd->prepare("SELECT COUNT(pesees_vendus.masse) 
 FROM pesees_vendus
-AND pesees_vendus.masse >0
+WHERE pesees_vendus.masse >0
 AND DATE(pesees_vendus.timestamp) BETWEEN :du AND :au ");
  $req->execute(array('du' => $time_debut,'au' => $time_fin ));
  $donnees = $req->fetch();
