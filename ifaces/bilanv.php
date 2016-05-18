@@ -340,7 +340,7 @@ FROM pesees_vendus, vendus
 WHERE pesees_vendus.id_vendu = vendus.id
 AND pesees_vendus.masse >0
 AND DATE(vendus.timestamp) BETWEEN :du AND :au ");
- $req->execute(array('du' => $time_debut,'au' => $time_fin ,'id' => $donnees2['id'] ));
+ $req->execute(array('du' => $time_debut,'au' => $time_fin ));
  $donnees = $req->fetch();
 $Np = $donnees['COUNT(pesees_vendus.masse)'];
 $req->closeCursor(); // Termine le traitement de la requête
