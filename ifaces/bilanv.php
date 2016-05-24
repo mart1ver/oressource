@@ -11,7 +11,8 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
       <link rel="stylesheet" type="text/css" media="all" href="../css/daterangepicker-bs3.css" />
        <script type="text/javascript" src="../js/jquery-2.0.3.min.js"></script>
       <script type="text/javascript" src="../js/bootstrap.min.js"></script>
-      
+            <script src="../js/raphael.js"></script>
+      <script src="../js/morris/morris.js"></script>
       <script type="text/javascript" src="../js/moment.js"></script>
       <script type="text/javascript" src="../js/daterangepicker.js"></script>
    </head>
