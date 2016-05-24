@@ -538,8 +538,106 @@ Récapitulatif des masses pesées à la caisse
           <th>prix au Kg. estimé</th>
         </tr>
       </thead>
-      <tbody>
-</tbody>
+           <tbody>
+<?php
+            // On recupère tout le contenu de la table affectations
+            $reponse2 = $bdd->prepare('SELECT type_dechets.id id,
+   type_dechets.nom ,SUM(vendus.prix*vendus.quantite) total 
+
+ FROM type_dechets , vendus, ventes
+
+WHERE vendus.id_vente = ventes.id 
+AND type_dechets.id = vendus.id_type_dechet 
+AND DATE(vendus.timestamp) BETWEEN :du AND :au 
+GROUP BY type_dechets.nom
+');
+  $reponse2->execute(array('du' => $time_debut,'au' => $time_fin));
+           // On affiche chaque entree une à une
+           while ($donnees2 = $reponse2->fetch())
+           {        
+            ?>
+
+            <tr>
+              <th scope="row"><?php echo $donnees2['nom']?></th>
+            <td  >
+              <?php echo $donnees2['total']." €" ?>
+            </td >
+            <td> <?php
+                // on determine la masse d'objets pesés
+            /*
+
+            */
+ $req = $bdd->prepare("SELECT SUM(pesees_vendus.masse) 
+  FROM pesees_vendus , vendus 
+  WHERE pesees_vendus.id_vendu = vendus.id
+  AND vendus.id_type_dechet = :id 
+  AND DATE(vendus.timestamp) BETWEEN :du AND :au ");
+ $req->execute(array('du' => $time_debut,'au' => $time_fin ,'id' => $donnees2['id'] ));
+ $donnees = $req->fetch();
+echo intval($donnees['SUM(pesees_vendus.masse)']);
+$Mtpe = $donnees['SUM(pesees_vendus.masse)'];
+$req->closeCursor(); // Termine le traitement de la requête ?></td>
+           
+            <td>
+<?php
+/*
+estimation de la masse totale vendue sur la periode pour tout les points de vente
+masse moyenne d'un objet dans toute la base = Mm
+nombre d'objets total sur la periode = Nt
+nombre d'objets pesées sur la periode = Np
+masse totale d'objets peses sur cette periode =Mtpe
+
+masse totalement estimée sur la periode:  mtemp= Mm*Nt
+retrancher la masse de Mp objets:         mtemp = mtemp-(Mm*Mp)
+ajoute la masse réele de ces objets :     mtemp = mtemp + Mtpe
+
+soit                                      mtemp = ((Mn*Nt)-(Mm*Mp))+Mtpe
+*/
+// on determine Mm
+               
+ $req = $bdd->prepare("SELECT AVG(pesees_vendus.masse) 
+  FROM pesees_vendus , vendus 
+  WHERE pesees_vendus.id_vendu = vendus.id
+  AND pesees_vendus.masse > 0
+  AND vendus.id_type_dechet = :id ");
+ $req->execute(array('id' => $donnees2['id'] ));
+ $donnees = $req->fetch();
+$Mm = $donnees['AVG(pesees_vendus.masse)'];
+//echo $Mm;
+$req->closeCursor(); // Termine le traitement de la requête 
+// On determine Nt plus tot dans le tableau
+// On determine Np
+$req = $bdd->prepare("SELECT COUNT(pesees_vendus.masse) 
+FROM pesees_vendus, vendus
+WHERE pesees_vendus.id_vendu = vendus.id
+AND pesees_vendus.masse >0
+AND vendus.id_type_dechet = :id 
+  AND DATE(vendus.timestamp) BETWEEN :du AND :au ");
+ $req->execute(array('du' => $time_debut,'au' => $time_fin ,'id' => $donnees2['id'] ));
+ $donnees = $req->fetch();
+$Np = $donnees['COUNT(pesees_vendus.masse)'];
+$req->closeCursor(); // Termine le traitement de la requête
+//On determine Mtpe plus tot dans le tableau
+echo round((($Mm*$Nt)-($Mm*$Mp))+$Mtpe, 2);
+?>
+
+
+            </td>       
+        </tr>
+        
+ <?php
+             }
+              $reponse2->closeCursor(); // Termine le traitement de la requête
+                ?>
+
+
+
+
+        
+          
+         
+        
+        </tbody>
         <tfoot>
     <tr>
       <td></td>
