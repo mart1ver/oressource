@@ -758,7 +758,7 @@ echo round(($cd/$mtee)*1000,2)." €";
 
 
 
-            $reponse = $bdd->prepare('SELECT type_dechets.couleur,type_dechets.nom, sum(vendus.prix ) somme FROM type_dechets,vendus WHERE type_dechets.id = vendus.id_type_dechet AND DATE(vendus.timestamp) BETWEEN :du AND :au AND vendus.prix > 0
+            $reponse = $bdd->prepare('SELECT type_dechets.couleur,type_dechets.nom, sum(pesees_vendus.masse ) somme FROM type_dechets,vendus,pesees_vendus WHERE type_dechets.id = vendus.id_type_dechet AND pesees_vendus.id_vendu = vendu.id AND DATE(vendus.timestamp) BETWEEN :du AND :au AND vendus.prix > 0
 GROUP BY nom');
  $reponse->execute(array('du' => $time_debut,'au' => $time_fin ));
            // On affiche chaque entree une à une
@@ -778,7 +778,7 @@ GROUP BY nom');
 <?php 
  
             // On recupère tout le contenu de la table affectations
-            $reponse = $bdd->prepare('SELECT type_dechets.couleur,type_dechets.nom, sum(vendus.prix ) somme FROM type_dechets,vendus WHERE type_dechets.id = vendus.id_type_dechet AND DATE(vendus.timestamp) BETWEEN :du AND :au AND vendus.prix > 0
+            $reponse = $bdd->prepare('SELECT type_dechets.couleur,type_dechets.nom, sum(pesees_vendus.masse) somme FROM type_dechets,vendus,pesees_vendus WHERE type_dechets.id = vendus.id_type_dechet AND pesees_vendus.id_vendu = vendu.id AND DATE(vendus.timestamp) BETWEEN :du AND :au AND vendus.prix > 0
 GROUP BY nom');
             $reponse->execute(array('du' => $time_debut,'au' => $time_fin ));
  
@@ -793,7 +793,7 @@ GROUP BY nom');
               $reponse->closeCursor(); // Termine le traitement de la requête
                 ?>
     ],
-    formatter: function (x) { return x + " €."}
+    formatter: function (x) { return x + " Kgs."}
     });
 </script>
           
