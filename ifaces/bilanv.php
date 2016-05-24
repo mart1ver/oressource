@@ -304,7 +304,7 @@ $Mtpe = $donnees['SUM(pesees_vendus.masse)'];
 $req->closeCursor(); // Termine le traitement de la requête
 
 ?> Kgs.</td></tr>
-<tr><td>-masse totale estimée pesée en caisse : </td><td>
+<tr><td>-masse totale estimée sortie par la boutique : </td><td>
 
 
 
@@ -344,10 +344,10 @@ $Np = $donnees['COUNT(pesees_vendus.masse)'];
 $req->closeCursor(); // Termine le traitement de la requête
 //On determine Mtpe plus tot dans le tableau
 echo round((($Mm*$Nt)-($Mm*$Mp))+$Mtpe, 2)."|";
-echo $Mm."|" ;
-echo $Nt."|" ;
-echo $Np."|" ;
-echo $Mtpe ;
+//echo $Mm."|" ;
+//echo $Nt."|" ;
+//echo $Np."|" ;
+//echo $Mtpe ;
 ?> Kgs. </td></tr>
 
 </tr>
@@ -567,6 +567,36 @@ echo round((($Mm*$Nt)-($Mm*$Mp))+$Mtpe, 2);
     </tr>
   </tfoot>
     </table>
+<h3>
+Récapitulatif des masses pesées à la caisse 
+</h3>
+<table class="table table-hover">
+
+      <thead>
+       
+        <tr>
+          <th>type d'objet</th>
+          <th>chiffre dégagé</th>
+          <th>masse pésee</th>
+          <th>masse totale estimée</th>
+          <th>prix au Kg. estimé</th>
+        </tr>
+      </thead>
+      <tbody>
+</tbody>
+        <tfoot>
+    <tr>
+      <td></td>
+        <td></td>
+       <td></td>
+      <td></td>
+      <td></td>
+      
+    </tr>
+  </tfoot>
+    </table>
+
+
 
 
 </div>
