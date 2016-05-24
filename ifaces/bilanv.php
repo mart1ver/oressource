@@ -304,51 +304,7 @@ $Mtpe = $donnees['SUM(pesees_vendus.masse)'];
 $req->closeCursor(); // Termine le traitement de la requête
 
 ?> Kgs.</td></tr>
-<tr><td>-masse totale estimée sortie par la boutique : </td><td>
 
-
-
-  <?php
-/*
-estimation de la masse totale vendue sur la periode pour tout les points de vente
-masse moyenne d'un objet dans toute la base = Mm
-nombre d'objets total sur la periode = Nt
-nombre d'objets pesées sur la periode = Np
-masse totale d'objets peses sur cette periode =Mtpe
-
-masse totalement estimée sur la periode:  mtemp= Mm*Nt
-retrancher la masse de Mp objets:         mtemp = mtemp-(Mm*Mp)
-ajoute la masse réele de ces objets :     mtemp = mtemp + Mtpe
-
-soit                                      mtemp = ((Mm*Nt)-(Mm*Mp))+Mtpe
-*/
-// on determine Mm
-               
- $req = $bdd->prepare("SELECT AVG(pesees_vendus.masse) 
-  FROM pesees_vendus  
-  WHERE pesees_vendus.masse > 0");
- $req->execute();
- $donnees = $req->fetch();
-$Mm = $donnees['AVG(pesees_vendus.masse)'];
-//echo $Mm;
-$req->closeCursor(); // Termine le traitement de la requête 
-// On determine Nt plus tot dans le tableau
-// On determine Np
-$req = $bdd->prepare("SELECT COUNT(pesees_vendus.masse) 
-FROM pesees_vendus
-WHERE pesees_vendus.masse >0
-AND DATE(pesees_vendus.timestamp) BETWEEN :du AND :au ");
- $req->execute(array('du' => $time_debut,'au' => $time_fin ));
- $donnees = $req->fetch();
-$Np = $donnees['COUNT(pesees_vendus.masse)'];
-$req->closeCursor(); // Termine le traitement de la requête
-//On determine Mtpe plus tot dans le tableau
-echo round((($Mm*$Nt)-($Mm*$Mp))+$Mtpe, 2)."|";
-//echo $Mm."|" ;
-//echo $Nt."|" ;
-//echo $Np."|" ;
-//echo $Mtpe ;
-?> Kgs. </td></tr>
 
 </tr>
 </tbody></table>
@@ -393,9 +349,9 @@ print "</table>";
 ?>
 </div>
 <div class="col-md-5 col-md-offset-1">
-  <h2>
+  <h3>
     chiffre de caisse : <?php echo  $mtotcolo- $mtotcolo2." €";?>
-  </h2>
+  </h3>
   <br>
 <h3>
 Récapitulatif par type d'objet
