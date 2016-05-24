@@ -628,7 +628,7 @@ echo $mtee;
             </td>   
             <td>
 <?php
-echo round($mtee/$cd,2);
+echo round($cd/$mtee,2);
 
  ?>
 
