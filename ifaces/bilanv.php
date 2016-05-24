@@ -447,7 +447,7 @@ $req->closeCursor(); // Termine le traitement de la requête ?>
   AND DATE(vendus.timestamp) BETWEEN :du AND :au ");
  $req->execute(array('du' => $time_debut,'au' => $time_fin ,'id' => $donnees2['id'] ));
  $donnees = $req->fetch();
-echo intval($donnees['SUM(pesees_vendus.masse)']);
+echo round($donnees['SUM(pesees_vendus.masse)'],2);" Kgs.";
 $Mtpe = $donnees['SUM(pesees_vendus.masse)'];
 $req->closeCursor(); // Termine le traitement de la requête ?></td>
            
@@ -491,7 +491,7 @@ AND vendus.id_type_dechet = :id
 $Np = $donnees['COUNT(pesees_vendus.masse)'];
 $req->closeCursor(); // Termine le traitement de la requête
 //On determine Mtpe plus tot dans le tableau
-echo round((($Mm*$Nt)-($Mm*$Mp))+$Mtpe, 2);
+echo round((($Mm*$Nt)-($Mm*$Mp))+$Mtpe, 2)." Kgs.";
 ?>
 
 
@@ -576,7 +576,7 @@ GROUP BY type_dechets.nom
   AND DATE(vendus.timestamp) BETWEEN :du AND :au ");
  $req->execute(array('du' => $time_debut,'au' => $time_fin ,'id' => $donnees2['id'] ));
  $donnees = $req->fetch();
-echo round($donnees['SUM(pesees_vendus.masse)'],2);
+echo round($donnees['SUM(pesees_vendus.masse)'],2)." Kgs.";
 $Mtpe = $donnees['SUM(pesees_vendus.masse)'];
 $req->closeCursor(); // Termine le traitement de la requête ?></td>
            
