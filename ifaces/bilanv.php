@@ -571,25 +571,7 @@ GROUP BY type_dechets.nom
             /*
 
             */
- $req = $bdd->prepare("SELECT SUM(DISTINCT(pesees_vendus.id)) 
-  FROM pesees_vendus , vendus 
-  WHERE pesees_vendus.id_vendu = vendus.id
-  AND vendus.id_type_dechet = :id 
-  AND DATE(vendus.timestamp) BETWEEN :du AND :au ");
- $req->execute(array('du' => $time_debut,'au' => $time_fin ,'id' => $donnees2['id'] ));
- $donnees = $req->fetch();
-echo round($donnees['SUM(pesees_vendus.masse)'],2)." Kgs.";
-$Ntpe = $donnees['SUM(DISTINCT(pesees_vendus.id))'];
-$req->closeCursor(); // Termine le traitement de la requête ?></td>
-           
-            <td>
-
-               <td> <?php
-                // on determine la masse d'objets pesés
-            /*
-
-            */
- $req = $bdd->prepare("SELECT COUNT(pesees_vendus.masse) 
+ $req = $bdd->prepare("SELECT SUM(pesees_vendus.masse) 
   FROM pesees_vendus , vendus 
   WHERE pesees_vendus.id_vendu = vendus.id
   AND vendus.id_type_dechet = :id 
@@ -598,6 +580,24 @@ $req->closeCursor(); // Termine le traitement de la requête ?></td>
  $donnees = $req->fetch();
 echo round($donnees['SUM(pesees_vendus.masse)'],2)." Kgs.";
 $Mtpe = $donnees['SUM(pesees_vendus.masse)'];
+$req->closeCursor(); // Termine le traitement de la requête ?></td>
+           
+            <td>
+
+               <td> <?php
+                // on determine le nombre d'objets pesés
+            /*
+
+            */
+ $req = $bdd->prepare("SELECT COUNT(DISTINCT(pesees_vendus.id)) 
+  FROM pesees_vendus , vendus 
+  WHERE pesees_vendus.id_vendu = vendus.id
+  AND vendus.id_type_dechet = :id 
+  AND DATE(vendus.timestamp) BETWEEN :du AND :au ");
+ $req->execute(array('du' => $time_debut,'au' => $time_fin ,'id' => $donnees2['id'] ));
+ $donnees = $req->fetch();
+echo round($donnees['COUNT(DISTINCT(pesees_vendus.id))'],2)." Kgs.";
+$Ntpe = $donnees['COUNT(DISTINCT(pesees_vendus.id))'];
 $req->closeCursor(); // Termine le traitement de la requête ?></td>
            
             <td>
