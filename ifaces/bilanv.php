@@ -576,7 +576,7 @@ GROUP BY type_dechets.nom
   AND DATE(vendus.timestamp) BETWEEN :du AND :au ");
  $req->execute(array('du' => $time_debut,'au' => $time_fin ,'id' => $donnees2['id'] ));
  $donnees = $req->fetch();
-echo intval($donnees['SUM(pesees_vendus.masse)']);
+echo $donnees['SUM(pesees_vendus.masse)'];
 $Mtpe = $donnees['SUM(pesees_vendus.masse)'];
 $req->closeCursor(); // Termine le traitement de la requête ?></td>
            
@@ -621,14 +621,14 @@ $Np = $donnees['COUNT(pesees_vendus.masse)'];
 $req->closeCursor(); // Termine le traitement de la requête
 //On determine Mtpe plus tot dans le tableau
 $mtee = round((($Mm*$Nt)-($Mm*$Mp))+$Mtpe, 2);
-echo $mtee;
+echo $mtee." Kgs.";
 ?>
 
 
             </td>   
             <td>
 <?php
-echo round(($cd/$mtee)*1000,2);
+echo round(($cd/$mtee)*1000,2)." €";
 
  ?>
 
