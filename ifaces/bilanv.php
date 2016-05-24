@@ -535,7 +535,7 @@ Récapitulatif des masses pesées à la caisse
           <th>chiffre dégagé</th>
           <th>masse pésee</th>
           <th>masse totale estimée</th>
-          <th>prix au Kg. estimé</th>
+          <th>prix à la tonne estimé</th>
         </tr>
       </thead>
            <tbody>
@@ -628,7 +628,7 @@ echo $mtee;
             </td>   
             <td>
 <?php
-echo round($cd/$mtee,2);
+echo round(($cd/$mtee)*1000,2);
 
  ?>
 
