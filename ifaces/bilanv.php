@@ -356,7 +356,6 @@ print "</table>";
   
           <div  id="graphPV" style="height: 180px;"></div>
           <br>
-          <div  id="graphMV" style="height: 180px;"></div>
           <script>       Morris.Donut({
     element: 'graphPV',
     data: [
@@ -743,7 +742,62 @@ echo round(($cd/$mtee)*1000,2)." €";
     </tr>
   </tfoot>
     </table>
+<br>
 
+
+  
+          <div  id="graphMV" style="height: 180px;"></div>
+          <br>
+          <script>       Morris.Donut({
+    element: 'graphMV',
+    data: [
+<?php 
+            // On recupère tout le contenu de la table affectations
+
+
+
+
+
+            $reponse = $bdd->prepare('SELECT type_dechets.couleur,type_dechets.nom, sum(vendus.prix ) somme FROM type_dechets,vendus WHERE type_dechets.id = vendus.id_type_dechet AND DATE(vendus.timestamp) BETWEEN :du AND :au AND vendus.prix > 0
+GROUP BY nom');
+ $reponse->execute(array('du' => $time_debut,'au' => $time_fin ));
+           // On affiche chaque entree une à une
+           while ($donnees = $reponse->fetch())
+           {
+
+            echo "{value:".$donnees['somme'].", label:'".$donnees['nom']."'},";
+
+
+             }
+              $reponse->closeCursor(); // Termine le traitement de la requête
+                ?>
+],
+    backgroundColor: '#ccc',
+    labelColor: '#060',
+    colors: [
+<?php 
+ 
+            // On recupère tout le contenu de la table affectations
+            $reponse = $bdd->prepare('SELECT type_dechets.couleur,type_dechets.nom, sum(vendus.prix ) somme FROM type_dechets,vendus WHERE type_dechets.id = vendus.id_type_dechet AND DATE(vendus.timestamp) BETWEEN :du AND :au AND vendus.prix > 0
+GROUP BY nom');
+            $reponse->execute(array('du' => $time_debut,'au' => $time_fin ));
+ 
+           // On affiche chaque entree une à une
+           while ($donnees = $reponse->fetch())
+           {
+
+            echo "'".$donnees['couleur']."'".",";
+
+
+             }
+              $reponse->closeCursor(); // Termine le traitement de la requête
+                ?>
+    ],
+    formatter: function (x) { return x + " €."}
+    });
+</script>
+          
+       <br>
 
 
 
