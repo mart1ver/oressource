@@ -582,7 +582,7 @@ echo round($donnees['SUM(pesees_vendus.masse)'],2)." Kgs.";
 $Mtpe = $donnees['SUM(pesees_vendus.masse)'];
 $req->closeCursor(); // Termine le traitement de la requête ?></td>
            
-            <td>
+            
 
                <td> <?php
                 // on determine le nombre d'objets pesés
@@ -596,7 +596,7 @@ $req->closeCursor(); // Termine le traitement de la requête ?></td>
   AND DATE(vendus.timestamp) BETWEEN :du AND :au ");
  $req->execute(array('du' => $time_debut,'au' => $time_fin ,'id' => $donnees2['id'] ));
  $donnees = $req->fetch();
-echo round($donnees['COUNT(DISTINCT(pesees_vendus.id))'],2)." Kgs.";
+echo round($donnees['COUNT(DISTINCT(pesees_vendus.id))'],2);
 $Ntpe = $donnees['COUNT(DISTINCT(pesees_vendus.id))'];
 $req->closeCursor(); // Termine le traitement de la requête ?></td>
            
