@@ -347,7 +347,7 @@ print "</tr>";
 print "</tbody>";
 print "</table>";
 ?>
-</div>
+
 
 <br>
 
@@ -400,6 +400,10 @@ GROUP BY nom');
 </script>
           
        <br>
+</div>
+
+
+
 <div class="col-md-6 ">
   <h3 style="text-align:center;">
     chiffre de caisse : <?php echo  $mtotcolo- $mtotcolo2." €";?>
