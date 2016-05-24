@@ -348,7 +348,7 @@ print "</tbody>";
 print "</table>";
 ?>
 </div>
-<div class="col-md-5 col-md-offset-1">
+<div class="col-md-6 col-md-offset-1">
   <h3>
     chiffre de caisse : <?php echo  $mtotcolo- $mtotcolo2." €";?>
   </h3>
