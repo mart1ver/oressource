@@ -576,7 +576,7 @@ GROUP BY type_dechets.nom
   AND DATE(vendus.timestamp) BETWEEN :du AND :au ");
  $req->execute(array('du' => $time_debut,'au' => $time_fin ,'id' => $donnees2['id'] ));
  $donnees = $req->fetch();
-echo $donnees['SUM(pesees_vendus.masse)'];
+echo round($donnees['SUM(pesees_vendus.masse)'],2);
 $Mtpe = $donnees['SUM(pesees_vendus.masse)'];
 $req->closeCursor(); // Termine le traitement de la requête ?></td>
            
