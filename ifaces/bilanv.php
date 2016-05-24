@@ -365,7 +365,7 @@ Récapitulatif par type d'objet
           <th>chiffre dégagé</th>
           <th>quantité vendue</th>
           <th>somme remboursée</th>
-          <th>q. remboursée</th>
+          <th>quantité rembour.</th>
           <th>masse pésee</th>
           <th>masse totale estimée</th>
           
@@ -522,7 +522,7 @@ echo round((($Mm*$Nt)-($Mm*$Mp))+$Mtpe, 2)." Kgs.";
       <td></td>
     </tr>
   </tfoot>
-  
+
     </table>
 <h3>
 Récapitulatif des masses pesées à la caisse 
