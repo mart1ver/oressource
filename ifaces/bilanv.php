@@ -560,7 +560,9 @@ GROUP BY type_dechets.nom
             <tr>
               <th scope="row"><?php echo $donnees2['nom']?></th>
             <td  >
-              <?php echo $donnees2['total']." €" ?>
+              <?php echo $donnees2['total']." €";
+              $cd = $donnees2['total'];
+               ?>
             </td >
             <td> <?php
                 // on determine la masse d'objets pesés
@@ -618,11 +620,19 @@ AND vendus.id_type_dechet = :id
 $Np = $donnees['COUNT(pesees_vendus.masse)'];
 $req->closeCursor(); // Termine le traitement de la requête
 //On determine Mtpe plus tot dans le tableau
-echo round((($Mm*$Nt)-($Mm*$Mp))+$Mtpe, 2);
+$mtee = round((($Mm*$Nt)-($Mm*$Mp))+$Mtpe, 2);
+echo $mtee;
 ?>
 
 
-            </td>       
+            </td>   
+            <td>
+<?php
+echo $mtee/$cd;
+
+ ?>
+
+            </td>    
         </tr>
         
  <?php
