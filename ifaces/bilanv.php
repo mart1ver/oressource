@@ -620,7 +620,10 @@ $req->closeCursor(); // Termine le traitement de la requête ?></td>
 echo round($donnees['COUNT(DISTINCT(pesees_vendus.id))'],2);
 $Ntpe = $donnees['COUNT(DISTINCT(pesees_vendus.id))'];
 $req->closeCursor(); // Termine le traitement de la requête ?></td>
+          
            <td><?php// on determine le nombre d'objets pesés
+
+
  $req = $bdd->prepare("SELECT SUM(pesees_vendus.quantite) 
   FROM pesees_vendus , vendus 
   WHERE pesees_vendus.id_vendu = vendus.id
@@ -628,11 +631,12 @@ $req->closeCursor(); // Termine le traitement de la requête ?></td>
   AND DATE(vendus.timestamp) BETWEEN :du AND :au ");
  $req->execute(array('du' => $time_debut,'au' => $time_fin ,'id' => $donnees2['id'] ));
  $donnees = $req->fetch();
-echo round($donnees['COUNT(DISTINCT(pesees_vendus.id))'],2);
-$Ntpe = $donnees['COUNT(DISTINCT(pesees_vendus.id))'];
+echo $donnees['SUM(pesees_vendus.quantite)'];
+//$Ntpe = $donnees['COUNT(DISTINCT(pesees_vendus.id))'];
 $req->closeCursor(); // Termine le traitement de la requête
 
             ?></td>
+
            <td><?php ?></td>
             <td>
 
