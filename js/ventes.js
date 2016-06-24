@@ -68,6 +68,8 @@ function switchlot(state) {
 }
 
 function ajout() {
+  if (document.getElementById('id_type_objet').value == ""){}else{
+    
   if (document.getElementById('sul').value == "unite") {
     var prixtemp = document.getElementById('prix').value;
 
@@ -156,7 +158,13 @@ function ajout() {
     document.getElementById('renduc').value = document.getElementById('rendub').value - document.getElementById('rendua').value;
   }
   document.getElementById('rendua').value = document.getElementById('ptot').value ;
+
+    
+    
 }
+
+}
+
 
 function edite(nom,prix,id_type_objet,id_objet) {
   document.getElementById('nom_objet').innerHTML = "<label>"+nom+"</label>";
