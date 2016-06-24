@@ -606,7 +606,7 @@ $req->closeCursor(); // Termine le traitement de la requête ?></td>
             
 
                <td> <?php
-                // on determine le nombre d'objets pesés
+                // on determine le nombre de pesés
             /*
 
             */
@@ -622,6 +622,10 @@ $Ntpe = $donnees['COUNT(DISTINCT(pesees_vendus.id))'];
 $req->closeCursor(); // Termine le traitement de la requête ?></td>
            
             <td>
+
+              <td></td>
+              <td></td>
+
 <?php
 /*
 estimation de la masse totale vendue sur la periode pour tout les points de vente
@@ -674,6 +678,7 @@ echo round(($cd/$mtee)*1000,2)." €";
  ?>
 
             </td>    
+            <td></td>
         </tr>
         
  <?php
