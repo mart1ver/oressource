@@ -554,8 +554,11 @@ Récapitulatif des masses pesées à la caisse
           <th>chiffre dégagé</th>
           <th>masse pésee</th>
           <th>nombre de pesées</th>
+          <th>nombre d'objets pesés</th>
+          <th>nombre d'objets vendus</th>
           <th>masse totale estimée</th>
           <th>prix à la tonne estimé</th>
+          <th>certitude de l'estimation</th>
         </tr>
       </thead>
            <tbody>
