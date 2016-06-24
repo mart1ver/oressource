@@ -636,7 +636,17 @@ $req->closeCursor(); // Termine le traitement de la requête
 
             ?></td>
 
-           <td><?php ?></td>
+           <td><?php
+                // on determine le nombre d'objets vendus
+            /*
+
+            */
+ $req = $bdd->prepare("SELECT SUM(vendus.quantite) FROM vendus,ventes WHERE prix > 0 
+  AND vendus.id_type_dechet = :id AND DATE(vendus.timestamp) BETWEEN :du AND :au  AND ventes.id = vendus.id_vente AND ventes.id_point_vente  = :numero");
+ $req->execute(array('du' => $time_debut,'au' => $time_fin ,'id' => $donnees2['id'],'numero' => $_GET['numero'] ));
+ $donnees = $req->fetch();
+echo $donnees['SUM(vendus.quantite)'];
+$req->closeCursor(); // Termine le traitement de la requête ?></td>
             <td>
 
               
@@ -956,7 +966,7 @@ Récapitulatif par type d'objet
       </thead>
       <tbody>
 <?php
-            // On recupère tout le contenu de la table affectations
+            // type d'objet.. et chiffre
             $reponse2 = $bdd->prepare('SELECT type_dechets.id id,
    type_dechets.nom ,SUM(vendus.prix*vendus.quantite) total 
 
