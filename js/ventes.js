@@ -72,7 +72,7 @@ function switchlot(state) {
 }
 
 function ajout() {
-  
+  if (document.getElementById('id_type_objet').value == ""){}else{
 
   if (document.getElementById('sul').value == "unite") {
     var prixtemp = document.getElementById('prix').value;
@@ -87,6 +87,8 @@ function ajout() {
     if (isNaN(parseFloat(massetemp))) {document.getElementById('masse').value = "";}else{ 
     document.getElementById('masse').value = parseFloat(massetemp);
   }
+
+
           }
 
     if (isNaN((parseFloat(document.getElementById('prix').value)*parseFloat(document.getElementById('quantite').value)).toFixed(2))) {
@@ -260,6 +262,10 @@ function ajout() {
     document.getElementById('renduc').value = document.getElementById('rendub').value - document.getElementById('rendua').value;
   }
   document.getElementById('rendua').value = document.getElementById('ptot').value ;
+
+
+}
+
 }
 
 
