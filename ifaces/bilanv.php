@@ -299,7 +299,7 @@ echo "<td>".$donnees['COUNT(DISTINCT(ventes.id))']."</td></tr>";
   AND DATE(vendus.timestamp) BETWEEN :du AND :au ");
  $req->execute(array('du' => $time_debut,'au' => $time_fin ));
  $donnees = $req->fetch();
-echo intval($donnees['SUM(pesees_vendus.masse)']);
+echo $donnees['SUM(pesees_vendus.masse)'];
 $Mtpe = $donnees['SUM(pesees_vendus.masse)'];
 
 $req->closeCursor(); // Termine le traitement de la requête
