@@ -146,8 +146,8 @@ catch(Exception $e)
 {
         die('Erreur : '.$e->getMessage());
 }
-$req = $bdd->prepare('INSERT INTO pesees_vendus (id_vendu,  masse, id_createur) VALUES(?,?,?)');
-$req->execute(array($id_vendu ,  $_POST[$tmasse] ,  $_SESSION['id']));
+$req = $bdd->prepare('INSERT INTO pesees_vendus (id_vendu,  masse,quantite, id_createur) VALUES(?,?,?,?)');
+$req->execute(array($id_vendu ,  $_POST[$tmasse],$_POST[$tquantite] ,  $_SESSION['id']));
   $req->closeCursor();
 
     }
