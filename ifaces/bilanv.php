@@ -642,8 +642,8 @@ $req->closeCursor(); // Termine le traitement de la requête
 
             */
  $req = $bdd->prepare("SELECT SUM(vendus.quantite) FROM vendus,ventes WHERE prix > 0 
-  AND vendus.id_type_dechet = :id AND DATE(vendus.timestamp) BETWEEN :du AND :au  AND ventes.id = vendus.id_vente AND ventes.id_point_vente  = :numero");
- $req->execute(array('du' => $time_debut,'au' => $time_fin ,'id' => $donnees2['id'],'numero' => $_GET['numero'] ));
+  AND vendus.id_type_dechet = :id AND DATE(vendus.timestamp) BETWEEN :du AND :au  AND ventes.id = vendus.id_vente ");
+ $req->execute(array('du' => $time_debut,'au' => $time_fin ,'id' => $donnees2['id']));
  $donnees = $req->fetch();
 echo $donnees['SUM(vendus.quantite)'];
 $req->closeCursor(); // Termine le traitement de la requête ?></td>
