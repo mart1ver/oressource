@@ -621,8 +621,7 @@ echo round($donnees['COUNT(DISTINCT(pesees_vendus.id))'],2);
 $Ntpe = $donnees['COUNT(DISTINCT(pesees_vendus.id))'];
 $req->closeCursor(); // Termine le traitement de la requête ?></td>
           
-           <td><?php// on determine le nombre d'objets pesés
-
+           <td> <?php
 
  $req = $bdd->prepare("SELECT SUM(pesees_vendus.quantite) 
   FROM pesees_vendus , vendus 
