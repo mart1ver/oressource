@@ -620,11 +620,11 @@ $req->closeCursor(); // Termine le traitement de la requête ?></td>
 echo round($donnees['COUNT(DISTINCT(pesees_vendus.id))'],2);
 $Ntpe = $donnees['COUNT(DISTINCT(pesees_vendus.id))'];
 $req->closeCursor(); // Termine le traitement de la requête ?></td>
-           
+           <td></td>
+              <td></td>
             <td>
 
-              <td></td>
-              <td></td>
+              
 
 <?php
 /*
