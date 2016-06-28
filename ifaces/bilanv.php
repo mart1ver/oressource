@@ -563,7 +563,7 @@ Récapitulatif des masses pesées à la caisse
       </thead>
            <tbody>
 <?php
-            // On recupère tout le contenu de la table affectations
+            // On recupère le nom du type d'objet et son C.A. lié
             $reponse2 = $bdd->prepare('SELECT type_dechets.id id,
    type_dechets.nom ,SUM(vendus.prix*vendus.quantite) total 
 
@@ -622,6 +622,7 @@ $Ntpe = $donnees['COUNT(DISTINCT(pesees_vendus.id))'];
 $req->closeCursor(); // Termine le traitement de la requête ?></td>
           
            <td> <?php
+            // on determine le nombre d'objets pesés
 
  $req = $bdd->prepare("SELECT SUM(pesees_vendus.quantite) 
   FROM pesees_vendus , vendus 
@@ -630,8 +631,8 @@ $req->closeCursor(); // Termine le traitement de la requête ?></td>
   AND DATE(vendus.timestamp) BETWEEN :du AND :au ");
  $req->execute(array('du' => $time_debut,'au' => $time_fin ,'id' => $donnees2['id'] ));
  $donnees = $req->fetch();
-echo $donnees['SUM(pesees_vendus.quantite)'];
-//$Ntpe = $donnees['COUNT(DISTINCT(pesees_vendus.id))'];
+$Notpe = $donnees['SUM(pesees_vendus.quantite)'];
+echo $Notpe ;
 $req->closeCursor(); // Termine le traitement de la requête
 
             ?></td>
@@ -645,27 +646,16 @@ $req->closeCursor(); // Termine le traitement de la requête
   AND vendus.id_type_dechet = :id AND DATE(vendus.timestamp) BETWEEN :du AND :au  AND ventes.id = vendus.id_vente ");
  $req->execute(array('du' => $time_debut,'au' => $time_fin ,'id' => $donnees2['id']));
  $donnees = $req->fetch();
-echo $donnees['SUM(vendus.quantite)'];
+$ov = $donnees['SUM(vendus.quantite)'];
+echo $ov;
 $req->closeCursor(); // Termine le traitement de la requête ?></td>
             <td>
 
               
 
 <?php
-/*
-estimation de la masse totale vendue sur la periode pour tout les points de vente
-masse moyenne d'un objet dans toute la base = Mm
-nombre d'objets total sur la periode = Nt
-nombre d'objets pesées sur la periode = Np
-masse totale d'objets peses sur cette periode =Mtpe
+// on determine la masse moyenne d'un objet dans toute la base (pour le type d'objet en cours) = $Mm
 
-masse totalement estimée sur la periode:  mtemp= Mm*Nt
-retrancher la masse de Mp objets:         mtemp = mtemp-(Mm*Mp)
-ajoute la masse réele de ces objets :     mtemp = mtemp + Mtpe
-
-soit                                      mtemp = ((Mn*Nt)-(Mm*Mp))+Mtpe
-*/
-// on determine Mm
                
  $req = $bdd->prepare("SELECT AVG(pesees_vendus.masse) 
   FROM pesees_vendus , vendus 
@@ -677,21 +667,35 @@ soit                                      mtemp = ((Mn*Nt)-(Mm*Mp))+Mtpe
 $Mm = $donnees['AVG(pesees_vendus.masse)'];
 //echo $Mm;
 $req->closeCursor(); // Termine le traitement de la requête 
-// On determine Nt plus tot dans le tableau
-// On determine Np
-$req = $bdd->prepare("SELECT COUNT(pesees_vendus.masse) 
-FROM pesees_vendus, vendus
-WHERE pesees_vendus.id_vendu = vendus.id
-AND pesees_vendus.masse >0
-AND vendus.id_type_dechet = :id 
-  AND DATE(vendus.timestamp) BETWEEN :du AND :au ");
- $req->execute(array('du' => $time_debut,'au' => $time_fin ,'id' => $donnees2['id'] ));
- $donnees = $req->fetch();
-$Np = $donnees['COUNT(pesees_vendus.masse)'];
-$req->closeCursor(); // Termine le traitement de la requête
-//On determine Mtpe plus tot dans le tableau
-$mtee = round((($Mm*$Nt)-($Mm*$Mp))+$Mtpe, 2);
-echo $mtee." Kgs.";
+
+/*
+estimation de la masse totale vendue sur la periode pour tout les points de vente
+
+masse moyenne d'un objet dans toute la base (pour le type d'objet en cours) = $Mm
+nombre d'objets vendus (tout types confondus) = $Nt
+nombre d'objets pesées sur la periode = $Np
+masse totale d'objets peses sur cette periode = $Mtpe
+nombre de pesées sur la periode pour le type d'objet = $ntpe
+nombre d'objets pesés sur la periode pour le type d'objet = $notpe
+nombre d'objets vendus sur la periode pour le type d'objet = $ov
+
+$mtee = 0 
+
+if($Nt == $notpe)
+{
+$mtee = $mtpe;
+$certitude = 100;
+}
+else
+{
+$mtee = $Mm*$Np  
+}
+*/
+
+
+
+//$mtee = round((($Mm*$Nt)-($Mm*$Mp))+$Mtpe, 2);
+//echo $mtee." Kgs.";
 ?>
 
 
