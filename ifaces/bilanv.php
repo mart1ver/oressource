@@ -675,7 +675,7 @@ masse moyenne d'un objet dans toute la base (pour le type d'objet en cours) = $M
 nombre d'objets vendus (tout types confondus) = $Nt
 nombre d'objets pesées sur la periode = $Np
 masse totale d'objets peses sur cette periode = $Mtpe
-nombre de pesées sur la periode pour le type d'objet = $ntpe
+nombre de pesées sur la periode pour le type d'objet = $Ntpe
 nombre d'objets pesés sur la periode pour le type d'objet = $Notpe
 nombre d'objets vendus sur la periode pour le type d'objet = $ov
 
@@ -683,7 +683,7 @@ nombre d'objets vendus sur la periode pour le type d'objet = $ov
 
 if($ov == $Notpe)
 {
-$mtee = $mtpe;
+$mtee = $Mtpe;
 $certitude = 100;
 }
 else
@@ -696,9 +696,9 @@ $certitude = 0;
 
 
 //$mtee = round((($Mm*$Nt)-($Mm*$Mp))+$Mtpe, 2);
-if($ov == $notpe)
+if($ov == $Notpe)
 {
-$mtee = $mtpe;
+$mtee = $Mtpe;
 $certitude = 100;
 }
 else
