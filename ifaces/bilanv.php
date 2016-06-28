@@ -681,7 +681,7 @@ nombre d'objets vendus sur la periode pour le type d'objet = $ov
 
 
 
-if($Nt == $notpe)
+if($ov == $notpe)
 {
 $mtee = $mtpe;
 $certitude = 100;
@@ -696,7 +696,7 @@ $certitude = 0;
 
 
 //$mtee = round((($Mm*$Nt)-($Mm*$Mp))+$Mtpe, 2);
-if($Nt == $notpe)
+if($ov == $notpe)
 {
 $mtee = $mtpe;
 $certitude = 100;
