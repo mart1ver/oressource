@@ -676,12 +676,12 @@ nombre d'objets vendus (tout types confondus) = $Nt
 nombre d'objets pesées sur la periode = $Np
 masse totale d'objets peses sur cette periode = $Mtpe
 nombre de pesées sur la periode pour le type d'objet = $ntpe
-nombre d'objets pesés sur la periode pour le type d'objet = $notpe
+nombre d'objets pesés sur la periode pour le type d'objet = $Notpe
 nombre d'objets vendus sur la periode pour le type d'objet = $ov
 
 
 
-if($ov == $notpe)
+if($ov == $Notpe)
 {
 $mtee = $mtpe;
 $certitude = 100;
