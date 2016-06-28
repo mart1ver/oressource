@@ -704,9 +704,9 @@ $certitude = 100;
 else
 {
 $mtee = (($Mm*$ov)-($Mm*$Np))+$Mtpe;
-$certitude = 0;
+$certitude = ($Notpe/$ov)*100;
 }
-echo $mtee." Kgs.";
+echo round($mtee,2)." Kgs.";
 ?>
 
 
