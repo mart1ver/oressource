@@ -679,7 +679,7 @@ nombre de pesées sur la periode pour le type d'objet = $ntpe
 nombre d'objets pesés sur la periode pour le type d'objet = $notpe
 nombre d'objets vendus sur la periode pour le type d'objet = $ov
 
-$mtee = 0 
+
 
 if($Nt == $notpe)
 {
@@ -688,14 +688,25 @@ $certitude = 100;
 }
 else
 {
-$mtee = $Mm*$Np  
+$mtee = (($Mm*$ov)-($Mm*$Np))+$Mtpe;
+$certitude = 0;
 }
 */
 
 
 
 //$mtee = round((($Mm*$Nt)-($Mm*$Mp))+$Mtpe, 2);
-//echo $mtee." Kgs.";
+if($Nt == $notpe)
+{
+$mtee = $mtpe;
+$certitude = 100;
+}
+else
+{
+$mtee = (($Mm*$ov)-($Mm*$Np))+$Mtpe;
+$certitude = 0;
+}
+echo $mtee." Kgs.";
 ?>
 
 
@@ -708,7 +719,7 @@ echo round(($cd/$mtee)*1000,2)." €";
 
             </td>    
             <td>
-              <?php ?>
+              <?php echo $certitude; ?>
             </td>
         </tr>
         
