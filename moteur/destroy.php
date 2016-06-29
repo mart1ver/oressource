@@ -8,7 +8,7 @@
 		setcookie('pass', '');
 		if($_GET['motif'] == 1)
 			{
-        header ('location:../ifaces/login.php?msg=Vous avez été deconnecté pour caouse de longue inactivité, votre saisie à tout de meme été prise en compte. ');
+        header ('location:../ifaces/login.php?msg=Vous avez été deconnecté pour cause de longue inactivité, votre saisie à tout de même été prise en compte. ');
 			}else{
 		header ('location:../ifaces/login.php');
 				}
