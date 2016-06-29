@@ -165,6 +165,9 @@ function tdechet_clear()
           <form action="../moteur/sortiesd_post.php" method="post" id="formulaire">
         
           <input type="hidden" name ="id_point_sortie" id="id_point_sortie" value="<?php echo $_GET['numero']?>">
+          <input type="hidden" id="id_user" name="id_user" value=<?php echo'"'.$_SESSION['id'].'"' ?>  >
+    <input type="hidden" id="saisiec_user" name="saisiec_user" value=<?php echo'"'.$_SESSION['saisiec'].'"' ?>  >
+    <input type="hidden" id="niveau_user" name="niveau_user" value=<?php echo'"'.$_SESSION['niveau'].'"' ?>  >
           <input type="hidden" name="commentaire" id="commentaire" >
           <input type="hidden" value="0" name ="najout" id="najout">
         </div>  

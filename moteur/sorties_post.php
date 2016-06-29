@@ -34,7 +34,7 @@ $antidate = $_POST['antidate'].date(" H:i:s");
 }
 // Insertion de la collecte (sans les pesées) l'aide d'une requête préparée
   $req = $bdd->prepare('INSERT INTO sorties (timestamp, id_type_sortie,  adherent, classe, id_point_sortie, commentaire , id_createur) VALUES(?,?, ?, ?, ?, ?, ?)');
-  $req->execute(array($antidate ,$_POST['type_sortie'],$adh,  "sorties" , $_POST['id_point_sortie'], $_POST['commentaire'], $_POST['saisiec_user']));
+  $req->execute(array($antidate ,$_POST['type_sortie'],$adh,  "sorties" , $_POST['id_point_sortie'], $_POST['commentaire'], $_POST['id_user']));
   $id_sortie = $bdd->lastInsertId();
     $req->closeCursor();
 
@@ -75,7 +75,7 @@ catch(Exception $e)
 }
 // Insertion du post à l'aide d'une requête préparée
 $req = $bdd->prepare('INSERT INTO pesees_sorties (timestamp, masse,  id_sortie, id_type_dechet, id_createur) VALUES(?,?, ?, ? ,?)');
-$req->execute(array($antidate,$_POST[$i],  $id_sortie , $i, $_POST['saisiec_user']));
+$req->execute(array($antidate,$_POST[$i],  $id_sortie , $i, $_POST['id_user']));
   $req->closeCursor();
 }
     $i++;
@@ -117,7 +117,7 @@ catch(Exception $e)
 }
 // Insertion du post à l'aide d'une requête préparée
 $req = $bdd->prepare('INSERT INTO pesees_sorties (masse,  id_sortie, id_type_dechet_evac, id_createur) VALUES(?,?, ?, ?)');
-$req->execute(array($_POST["d".$i],  $id_sortie , $i, $_POST['saisiec_user']));
+$req->execute(array($_POST["d".$i],  $id_sortie , $i, $_POST['id_user']));
   $req->closeCursor();
 }
     $i++;
@@ -154,7 +154,7 @@ else{
 }
 // Insertion de la collecte (sans les pesées) l'aide d'une requête préparée
 	$req = $bdd->prepare('INSERT INTO sorties (id_type_sortie,  adherent, classe, id_point_sortie, commentaire , id_createur) VALUES(?,?, ?, ?, ?, ?)');
-	$req->execute(array($_POST['type_sortie'],$adh,  "sorties" , $_POST['id_point_sortie'], $_POST['commentaire'], $_POST['saisiec_user']));
+	$req->execute(array($_POST['type_sortie'],$adh,  "sorties" , $_POST['id_point_sortie'], $_POST['commentaire'], $_POST['id_user']));
   $id_sortie = $bdd->lastInsertId();
     $req->closeCursor();
 
@@ -195,7 +195,7 @@ catch(Exception $e)
 }
 // Insertion du post à l'aide d'une requête préparée
 $req = $bdd->prepare('INSERT INTO pesees_sorties (masse,  id_sortie, id_type_dechet, id_createur) VALUES(?,?, ?, ?)');
-$req->execute(array($_POST[$i],  $id_sortie , $i, $_POST['saisiec_user']));
+$req->execute(array($_POST[$i],  $id_sortie , $i, $_POST['id_user']));
   $req->closeCursor();
 }
     $i++;
@@ -237,7 +237,7 @@ catch(Exception $e)
 }
 // Insertion du post à l'aide d'une requête préparée
 $req = $bdd->prepare('INSERT INTO pesees_sorties (masse,  id_sortie, id_type_dechet_evac, id_createur) VALUES(?,?, ?, ?)');
-$req->execute(array($_POST["d".$i],  $id_sortie , $i, $_POST['saisiec_user']));
+$req->execute(array($_POST["d".$i],  $id_sortie , $i, $_POST['id_user']));
   $req->closeCursor();
 }
     $i++;
@@ -262,6 +262,6 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
 {
 
 }
-else
- header('Location:../moteur/destroy.php?motif=1');
+else{
+ header('Location:../moteur/destroy.php?motif=1');}
 	 ?>

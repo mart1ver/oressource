@@ -2,9 +2,7 @@
 
 require_once('../moteur/dbconfig.php');
 
-//Vérification des autorisations de l'utilisateur et des variables de session requises pour l'affichage de cette page:
- if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 'c'.$_GET['numero']) !== false))
-      {include "tete.php";
+include "tete.php";
 //Oressource 2014, formulaire de collecte
 //Simple formulaire de saisie des types et quantités de matériel entrant dans la structure.
 //Pensé pour être fonctionnel sur ecran tactile.
@@ -358,7 +356,12 @@ style="background-color:<?php echo$donnees['couleur']?>"><?php echo$donnees['nom
 
 
 
-       <?php } else
+       <?php 
+     //Vérification des autorisations de l'utilisateur et des variables de session requises pour l'affichage de cette page:
+ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 'c'.$_GET['numero']) !== false))
+      {
+        
+      } else
       { 
-        header('Location:../moteur/destroy.php');
+         header('Location:../moteur/destroy.php?motif=1');}
       }?>
