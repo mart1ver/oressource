@@ -164,9 +164,12 @@ $req->execute(array($_POST[$i],  $id_collecte , $i , $_SESSION['id']));
 }
     $i++;
 }
-// Redirection du visiteur vers la page de gestion des affectation
+// Redirection du visiteur vers le formulaire descollectes
 	header("Location:../ifaces/collecte.php?numero=".$_POST['id_point_collecte']);
 }
+
+
+
 
 
 }
