@@ -269,7 +269,11 @@ echo "<td>".$donnees['COUNT(DISTINCT(ventes.id))']."</td></tr>";
  $req = $bdd->prepare("SELECT SUM(vendus.quantite) FROM vendus WHERE remboursement > 0 AND DATE(vendus.timestamp) BETWEEN :du AND :au ");
  $req->execute(array('du' => $time_debut,'au' => $time_fin ));
  $donnees = $req->fetch();
+ if($donnees['SUM(vendus.quantite)'] == 0){
+echo "<td>"."-"."</td></tr>";
+}else{
 echo "<td>".intval($donnees['SUM(vendus.quantite)'])."</td></tr>";
+}
   echo '<tr> <td>-nombre de remboursemments : </td>';
   // on determine le nombre de remboursements
             /*
@@ -278,15 +282,22 @@ echo "<td>".intval($donnees['SUM(vendus.quantite)'])."</td></tr>";
  $req = $bdd->prepare("SELECT COUNT(DISTINCT(ventes.id)) FROM ventes ,vendus WHERE vendus.id_vente = ventes.id AND DATE(vendus.timestamp) BETWEEN :du AND :au   AND vendus.remboursement > 0 ");
  $req->execute(array('du' => $time_debut,'au' => $time_fin ));
  $donnees = $req->fetch();
+ if($donnees['COUNT(DISTINCT(ventes.id))'] == 0){
+echo "<td>"."-"."</td></tr>";
+}else{
 echo "<td>".$donnees['COUNT(DISTINCT(ventes.id))']."</td></tr>";
-
+}
   echo '<tr><td>-somme remboursée : </td> ';
   // On recupère tout le contenu de la table point de vente
   $req = $bdd->prepare("SELECT  SUM(vendus.remboursement) AS total   FROM vendus  WHERE  DATE(vendus.timestamp) BETWEEN :du AND :au  ");
   $req->execute(array('du' => $time_debut,'au' => $time_fin ));
   $donnees = $req->fetch();
   $mtotcolo2 = $donnees['total'];
+  if($donnees['total'] == 0){
+echo "<td>"."-"."</td></tr>";
+}else{
   echo "<td>".$donnees['total']." €" ."</td></tr>";
+}
   $req->closeCursor(); // Termine le traitement de la requête
 
 
@@ -352,7 +363,7 @@ print "</table>";
 
 <br>
 <h4>
- Chiffre dégagé par type d'objet 
+ Chiffre dégagé par type d'objet:
 </h4>
 
 
@@ -754,7 +765,7 @@ echo round(($cd/$mtee)*1000,2)." €";
 <br>
 
 <h4>
- Masses pesées en caisse par type d'objet 
+ Masses pesées en caisse par type d'objet:
 </h4>
   
           <div  id="graphMV" style="height: 180px;"></div>
