@@ -488,19 +488,22 @@ $req->closeCursor(); // Termine le traitement de la requête ?>
             </td>
             <td>
               <?php 
-  // On recupère tout le contenu de la table point de vente
+  // On determinela somme totale remboursée pour ce type d'objet
   $req3 = $bdd->prepare("SELECT  SUM(vendus.remboursement) AS total   FROM vendus 
    WHERE  DATE(vendus.timestamp) BETWEEN :du AND :au AND vendus.id_type_dechet = :id  ");
   $req3->execute(array('du' => $time_debut,'au' => $time_fin ,'id' => $donnees2['id'] ));
   $donnees3 = $req3->fetch();
-
-  echo $donnees3['total']." €<br>";
+if($donnees3['total'] == 0){
+echo "-"."<br>";
+}else{
+echo $donnees3['total']." €";  
+}
   $req3->closeCursor(); // Termine le traitement de la requête ?>
             </td>  
             
             <td >
               <?php
-                // on determine le nombre d'objets remboursés
+                // on determine le nombre d'objets remboursés pour ce type d'objet
             /*
 
             */
@@ -508,7 +511,11 @@ $req->closeCursor(); // Termine le traitement de la requête ?>
   AND vendus.id_type_dechet = :id AND DATE(vendus.timestamp) BETWEEN :du AND :au ");
  $req->execute(array('du' => $time_debut,'au' => $time_fin ,'id' => $donnees2['id'] ));
  $donnees = $req->fetch();
+if($donnees3['total'] == 0){
+echo "-";
+}else{
 echo intval($donnees['SUM(vendus.quantite)']);
+}
 $req->closeCursor(); // Termine le traitement de la requête ?>
             </td>
             <td> <?php
@@ -570,7 +577,7 @@ Récapitulatif des masses pesées à la caisse
           <th>nombre de pesées</th>
           <th>nombre d'objets pesés</th>
           <th>nombre d'objets vendus</th>
-          <th>masse totale estimée</th>
+          <th>masse sortie totale estimée</th>
           <th>prix à la tonne estimé</th>
           <th>certitude de l'estimation</th>
         </tr>
