@@ -12,7 +12,7 @@ Internet Explorer ou Opera ne sont pas supportés à ce jour.
 
 ## Dépendances
 
-`sudo apt-get install apache2 php5-mysql mariadb-server libapache2-mod-php5`
+`sudo apt-get install apache2 php5-mysql libapache2-mod-php5`
 
 ## MariaDB/MySQL
 ### Créer un utilisateur
