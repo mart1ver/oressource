@@ -704,7 +704,7 @@ $certitude = 100;
 else
 {
 $mtee = (($Mm*$ov)-($Mm*$Np))+$Mtpe;
-$certitude = round(($Notpe/$ov)*100,2)."%";
+$certitude = round(($Notpe/$ov)*100,2);
 }
 echo round($mtee,2)." Kgs.";
 ?>
@@ -719,7 +719,7 @@ echo round(($cd/$mtee)*1000,2)." €";
 
             </td>    
             <td>
-              <?php echo $certitude; ?>
+              <?php echo $certitude."%"; ?>
             </td>
         </tr>
         
