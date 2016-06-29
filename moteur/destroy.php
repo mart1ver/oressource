@@ -6,5 +6,10 @@
 // Suppression des cookies de connexion automatique
 		setcookie('login', '');
 		setcookie('pass', '');
-		header ('location:../index.php');
+		if($_GET['motif'] == 1)
+			{
+        header ('location:../login.php?msg=Vous avez été deconnecté pour caouse de longue inactivité, votre saisie à tout de meme été prise en compte. ');
+			}else{
+		header ('location:../login.php');
+				}
 ?>

@@ -1,8 +1,6 @@
 <?php session_start();
 
-//Vérification des autorisations de l'utilisateur et des variables de session requises pour l'utilisation de cette requête:
- if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 'c'.$_GET['numero']) !== false))
-{
+
 //on definit $adh en fonction $_POST['adh']
 if(isset($_POST['adh']))
     {
@@ -18,7 +16,7 @@ if(isset($_POST['adh']))
 
 
 
-if ($_SESSION['saisiec'] == "oui" AND (strpos($_SESSION['niveau'], 'e') !== false) )
+if ($_POST['saisiec_user'] == "oui" AND (strpos($_POST['niveau_user'], 'e') !== false) )
 {
 $antidate = $_POST['antidate'].date(" H:i:s");
 
@@ -36,7 +34,7 @@ $antidate = $_POST['antidate'].date(" H:i:s");
 }
 // Insertion de la collecte (sans les pesées) l'aide d'une requête préparée
   $req = $bdd->prepare('INSERT INTO collectes (timestamp, id_type_collecte,  adherent, localisation, id_point_collecte, commentaire, id_createur) VALUES(?,?, ?, ?, ?, ?, ?)');
-  $req->execute(array($antidate, $_POST['id_type_collecte'],$adh,  $_POST['loc'] , $_POST['id_point_collecte'] , $_POST['comm'] , $_SESSION['id']));
+  $req->execute(array($antidate, $_POST['id_type_collecte'],$adh,  $_POST['loc'] , $_POST['id_point_collecte'] , $_POST['comm'] , $_POST['id_user']));
   $id_collecte = $bdd->lastInsertId();
     $req->closeCursor();
 
@@ -77,7 +75,7 @@ catch(Exception $e)
 }
 // Insertion du post à l'aide d'une requête préparée
 $req = $bdd->prepare('INSERT INTO pesees_collectes (timestamp, masse,  id_collecte, id_type_dechet,id_createur) VALUES(?,?,?, ?, ?)');
-$req->execute(array($antidate,$_POST[$i],  $id_collecte , $i , $_SESSION['id']));
+$req->execute(array($antidate,$_POST[$i],  $id_collecte , $i , $_POST['id_user']));
   $req->closeCursor();
 }
     $i++;
@@ -118,7 +116,7 @@ $req->execute(array($antidate,$_POST[$i],  $id_collecte , $i , $_SESSION['id']))
 }
 // Insertion de la collecte (sans les pesées) l'aide d'une requête préparée
 	$req = $bdd->prepare('INSERT INTO collectes (id_type_collecte,  adherent, localisation, id_point_collecte, commentaire, id_createur) VALUES(?, ?, ?, ?, ?, ?)');
-	$req->execute(array($_POST['id_type_collecte'],$adh,  $_POST['loc'] , $_POST['id_point_collecte'] , $_POST['comm'] , $_SESSION['id']));
+	$req->execute(array($_POST['id_type_collecte'],$adh,  $_POST['loc'] , $_POST['id_point_collecte'] , $_POST['comm'] , $_POST['id_user']));
   $id_collecte = $bdd->lastInsertId();
     $req->closeCursor();
 
@@ -159,7 +157,7 @@ catch(Exception $e)
 }
 // Insertion du post à l'aide d'une requête préparée
 $req = $bdd->prepare('INSERT INTO pesees_collectes (masse,  id_collecte, id_type_dechet,id_createur) VALUES(?,?, ?, ?)');
-$req->execute(array($_POST[$i],  $id_collecte , $i , $_SESSION['id']));
+$req->execute(array($_POST[$i],  $id_collecte , $i , $_POST['id_user']));
   $req->closeCursor();
 }
     $i++;
@@ -169,12 +167,11 @@ $req->execute(array($_POST[$i],  $id_collecte , $i , $_SESSION['id']));
 }
 
 
-
-
-
-}
+//Vérification des autorisations de l'utilisateur et des variables de session requises pour l'utilisation de cette requête:
+ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 'c'.$_GET['numero']) !== false))
+{}
 else {
-  header('Location:../moteur/destroy.php');
+  header('Location:../moteur/destroy.php?motif=1');
      }
 
 
