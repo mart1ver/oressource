@@ -1,8 +1,6 @@
 <?php session_start();
 
-//Vérification des autorisations de l'utilisateur et des variables de session requises pour l'utilisation de cette fonction:
-if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 's'.$_GET['numero']) !== false))
-{
+
 //on definit $adh en fonction $_POST['adh']
 if(isset($_POST['adh']))
     {
@@ -14,7 +12,7 @@ if(isset($_POST['adh']))
   }
 
 
-if ($_SESSION['saisiec'] == "oui" AND (strpos($_SESSION['niveau'], 'e') !== false) )
+if ($_POST['saisiec_user'] == "oui" AND (strpos($_POST['niveau_user'], 'e') !== false) )
 {
 $antidate = $_POST['antidate'].date(" H:i:s");
 
@@ -36,7 +34,7 @@ $antidate = $_POST['antidate'].date(" H:i:s");
 }
 // Insertion de la collecte (sans les pesées) l'aide d'une requête préparée
   $req = $bdd->prepare('INSERT INTO sorties (timestamp, id_type_sortie,  adherent, classe, id_point_sortie, commentaire , id_createur) VALUES(?,?, ?, ?, ?, ?, ?)');
-  $req->execute(array($antidate ,$_POST['type_sortie'],$adh,  "sorties" , $_POST['id_point_sortie'], $_POST['commentaire'], $_SESSION['id']));
+  $req->execute(array($antidate ,$_POST['type_sortie'],$adh,  "sorties" , $_POST['id_point_sortie'], $_POST['commentaire'], $_POST['saisiec_user']));
   $id_sortie = $bdd->lastInsertId();
     $req->closeCursor();
 
@@ -77,7 +75,7 @@ catch(Exception $e)
 }
 // Insertion du post à l'aide d'une requête préparée
 $req = $bdd->prepare('INSERT INTO pesees_sorties (timestamp, masse,  id_sortie, id_type_dechet, id_createur) VALUES(?,?, ?, ? ,?)');
-$req->execute(array($antidate,$_POST[$i],  $id_sortie , $i, $_SESSION['id']));
+$req->execute(array($antidate,$_POST[$i],  $id_sortie , $i, $_POST['saisiec_user']));
   $req->closeCursor();
 }
     $i++;
@@ -119,7 +117,7 @@ catch(Exception $e)
 }
 // Insertion du post à l'aide d'une requête préparée
 $req = $bdd->prepare('INSERT INTO pesees_sorties (masse,  id_sortie, id_type_dechet_evac, id_createur) VALUES(?,?, ?, ?)');
-$req->execute(array($_POST["d".$i],  $id_sortie , $i, $_SESSION['id']));
+$req->execute(array($_POST["d".$i],  $id_sortie , $i, $_POST['saisiec_user']));
   $req->closeCursor();
 }
     $i++;
@@ -156,7 +154,7 @@ else{
 }
 // Insertion de la collecte (sans les pesées) l'aide d'une requête préparée
 	$req = $bdd->prepare('INSERT INTO sorties (id_type_sortie,  adherent, classe, id_point_sortie, commentaire , id_createur) VALUES(?,?, ?, ?, ?, ?)');
-	$req->execute(array($_POST['type_sortie'],$adh,  "sorties" , $_POST['id_point_sortie'], $_POST['commentaire'], $_SESSION['id']));
+	$req->execute(array($_POST['type_sortie'],$adh,  "sorties" , $_POST['id_point_sortie'], $_POST['commentaire'], $_POST['saisiec_user']));
   $id_sortie = $bdd->lastInsertId();
     $req->closeCursor();
 
@@ -197,7 +195,7 @@ catch(Exception $e)
 }
 // Insertion du post à l'aide d'une requête préparée
 $req = $bdd->prepare('INSERT INTO pesees_sorties (masse,  id_sortie, id_type_dechet, id_createur) VALUES(?,?, ?, ?)');
-$req->execute(array($_POST[$i],  $id_sortie , $i, $_SESSION['id']));
+$req->execute(array($_POST[$i],  $id_sortie , $i, $_POST['saisiec_user']));
   $req->closeCursor();
 }
     $i++;
@@ -239,7 +237,7 @@ catch(Exception $e)
 }
 // Insertion du post à l'aide d'une requête préparée
 $req = $bdd->prepare('INSERT INTO pesees_sorties (masse,  id_sortie, id_type_dechet_evac, id_createur) VALUES(?,?, ?, ?)');
-$req->execute(array($_POST["d".$i],  $id_sortie , $i, $_SESSION['id']));
+$req->execute(array($_POST["d".$i],  $id_sortie , $i, $_POST['saisiec_user']));
   $req->closeCursor();
 }
     $i++;
@@ -259,9 +257,11 @@ $req->execute(array($_POST["d".$i],  $id_sortie , $i, $_SESSION['id']));
 
 
 
-
+//Vérification des autorisations de l'utilisateur et des variables de session requises pour l'utilisation de cette fonction:
+if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 's'.$_GET['numero']) !== false))
+{
 
 }
 else
-{header('Location:../moteur/destroy.php');}
+ header('Location:../moteur/destroy.php?motif=1');
 	 ?>
