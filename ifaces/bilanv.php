@@ -765,6 +765,9 @@ echo round(($cd/$mtee)*1000,2)." €";
       <td></td>
       <td></td>
       <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
       
     </tr>
   </tfoot>
