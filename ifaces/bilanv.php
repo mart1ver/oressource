@@ -351,6 +351,9 @@ print "</table>";
 
 
 <br>
+<h4>
+ Chiffre dégagé par type d'objet 
+</h4>
 
 
   
@@ -750,7 +753,9 @@ echo round(($cd/$mtee)*1000,2)." €";
     </table>
 <br>
 
-
+<h4>
+ Masses pesées en caisse par type d'objet 
+</h4>
   
           <div  id="graphMV" style="height: 180px;"></div>
           <br>
