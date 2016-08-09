@@ -252,7 +252,7 @@ echo "Moyenne journalière: ".$masse_moy_jour;
  $cmpt = 0;
       
             $reponse = $bdd->prepare('SELECT SUM(quantite) AS nombre ,  DATE( timestamp ) AS time FROM vendus
-WHERE DATE(vendus.timestamp) BETWEEN :du AND :au AND  vendus.id_type_dechet = 3
+WHERE DATE(vendus.timestamp) BETWEEN :du AND :au AND  vendus.id_type_dechet = :type
 GROUP BY DATE_FORMAT( time,  "%Y-%m-%d" ) 
 ORDER BY time');
             $reponse->execute(array('du' => $time_debut,'au' => $time_fin,'type' => $_GET['type'] ));
@@ -285,7 +285,7 @@ echo "Moyenne journalière: ".$masse_moy_jour;}
  $cmpt = 0;
       
             $reponse = $bdd->prepare('SELECT SUM(quantite*prix) AS nombre ,  DATE( timestamp ) AS time FROM vendus
-WHERE DATE(vendus.timestamp) BETWEEN :du AND :au AND  vendus.id_type_dechet = 3
+WHERE DATE(vendus.timestamp) BETWEEN :du AND :au AND  vendus.id_type_dechet = :type
 GROUP BY DATE_FORMAT( time,  "%Y-%m-%d" ) 
 ORDER BY time');
             $reponse->execute(array('du' => $time_debut,'au' => $time_fin,'type' => $_GET['type'] ));
@@ -329,7 +329,7 @@ new Morris.Area({
             // On recupère tout le contenu de la table affectations
             $reponse = $bdd->prepare('SELECT SUM( masse ) AS nombre, DATE( timestamp ) AS time
 FROM pesees_collectes
-WHERE  DATE(pesees_collectes.timestamp) BETWEEN :du AND :au AND  pesees_collectes.id_type_dechet = 3
+WHERE  DATE(pesees_collectes.timestamp) BETWEEN :du AND :au AND  pesees_collectes.id_type_dechet = :type
 GROUP BY DATE_FORMAT( time,  "%Y-%m-%d" ) 
 ORDER BY time');
             $reponse->execute(array('du' => $time_debut,'au' => $time_fin,'type' => $_GET['type'] ));
@@ -369,7 +369,7 @@ postUnits: "Kgs." ,
  $cmpt = 0;
             // On recupère tout le contenu de la table affectations
             $reponse = $bdd->prepare('SELECT SUM(masse) AS nombre ,  DATE( timestamp ) AS time FROM pesees_collectes
-WHERE DATE(pesees_collectes.timestamp) BETWEEN :du AND :au AND  pesees_collectes.id_type_dechet = 3
+WHERE DATE(pesees_collectes.timestamp) BETWEEN :du AND :au AND  pesees_collectes.id_type_dechet = :type
 GROUP BY DATE_FORMAT( time,  "%Y-%m-%d" ) 
 ORDER BY time');
             $reponse->execute(array('du' => $time_debut,'au' => $time_fin,'type' => $_GET['type'] ));
