@@ -187,7 +187,7 @@ $time_fin = $time_fin." 23:59:59";
 WHERE DATE(pesees_collectes.timestamp) BETWEEN :du AND :au AND  pesees_collectes.id_type_dechet = :type
 GROUP BY DATE_FORMAT( time,  "%Y-%m-%d" ) 
 ORDER BY time');
-            $reponse->execute(array('du' => $time_debut,'au' => $time_fin,'numero' => $_GET['type'] ));
+            $reponse->execute(array('du' => $time_debut,'au' => $time_fin,'type' => $_GET['type'] ));
  
            // On affiche chaque entree une à une
            while ($donnees = $reponse->fetch())
@@ -222,7 +222,7 @@ echo "Moyenne journalière: ".$masse_moy_jour;
 WHERE DATE(pesees_sorties.timestamp) BETWEEN :du AND :au AND  pesees_collectes.id_type_dechet = :type
 GROUP BY DATE_FORMAT( time,  "%Y-%m-%d" ) 
 ORDER BY time');
-            $reponse->execute(array('du' => $time_debut,'au' => $time_fin ,'numero' => $_GET['type'] ));
+            $reponse->execute(array('du' => $time_debut,'au' => $time_fin ,'type' => $_GET['type'] ));
  
            // On affiche chaque entree une à une
            while ($donnees = $reponse->fetch())
@@ -255,7 +255,7 @@ echo "Moyenne journalière: ".$masse_moy_jour;
 WHERE DATE(vendus.timestamp) BETWEEN :du AND :au AND  vendus.id_type_dechet = 3
 GROUP BY DATE_FORMAT( time,  "%Y-%m-%d" ) 
 ORDER BY time');
-            $reponse->execute(array('du' => $time_debut,'au' => $time_fin,'numero' => $_GET['type'] ));
+            $reponse->execute(array('du' => $time_debut,'au' => $time_fin,'type' => $_GET['type'] ));
  
            // On affiche chaque entree une à une
            while ($donnees = $reponse->fetch())
@@ -288,7 +288,7 @@ echo "Moyenne journalière: ".$masse_moy_jour;}
 WHERE DATE(vendus.timestamp) BETWEEN :du AND :au AND  vendus.id_type_dechet = 3
 GROUP BY DATE_FORMAT( time,  "%Y-%m-%d" ) 
 ORDER BY time');
-            $reponse->execute(array('du' => $time_debut,'au' => $time_fin,'numero' => $_GET['type'] ));
+            $reponse->execute(array('du' => $time_debut,'au' => $time_fin,'type' => $_GET['type'] ));
  
            // On affiche chaque entree une à une
            while ($donnees = $reponse->fetch())
@@ -332,7 +332,7 @@ FROM pesees_collectes
 WHERE  DATE(pesees_collectes.timestamp) BETWEEN :du AND :au AND  pesees_collectes.id_type_dechet = 3
 GROUP BY DATE_FORMAT( time,  "%Y-%m-%d" ) 
 ORDER BY time');
-            $reponse->execute(array('du' => $time_debut,'au' => $time_fin,'numero' => $_GET['type'] ));
+            $reponse->execute(array('du' => $time_debut,'au' => $time_fin,'type' => $_GET['type'] ));
  
            // On affiche chaque entree une à une
            while ($donnees = $reponse->fetch())
@@ -372,7 +372,7 @@ postUnits: "Kgs." ,
 WHERE DATE(pesees_collectes.timestamp) BETWEEN :du AND :au AND  pesees_collectes.id_type_dechet = 3
 GROUP BY DATE_FORMAT( time,  "%Y-%m-%d" ) 
 ORDER BY time');
-            $reponse->execute(array('du' => $time_debut,'au' => $time_fin,'numero' => $_GET['type'] ));
+            $reponse->execute(array('du' => $time_debut,'au' => $time_fin,'type' => $_GET['type'] ));
  
            // On affiche chaque entree une à une
            while ($donnees = $reponse->fetch())
@@ -410,7 +410,7 @@ FROM pesees_sorties
 WHERE  DATE(pesees_sorties.timestamp) BETWEEN :du AND :au AND  pesees_collectes.id_type_dechet = :type
 GROUP BY DATE_FORMAT( time,  "%Y-%m-%d" ) 
 ORDER BY time');
-            $reponse->execute(array('du' => $time_debut,'au' => $time_fin,'numero' => $_GET['type'] ));
+            $reponse->execute(array('du' => $time_debut,'au' => $time_fin,'type' => $_GET['type'] ));
  
            // On affiche chaque entree une à une
 
@@ -450,7 +450,7 @@ postUnits: "Kgs." ,
 WHERE DATE(pesees_sorties.timestamp) BETWEEN :du AND :au AND  pesees_collectes.id_type_dechet = :type
 GROUP BY DATE_FORMAT( time,  "%Y-%m-%d" ) 
 ORDER BY time');
-            $reponse->execute(array('du' => $time_debut,'au' => $time_fin,'numero' => $_GET['type'] ));
+            $reponse->execute(array('du' => $time_debut,'au' => $time_fin,'type' => $_GET['type'] ));
  
            // On affiche chaque entree une à une
            while ($donnees = $reponse->fetch())
@@ -488,7 +488,7 @@ new Morris.Area({
                 WHERE  DATE(vendus.timestamp) BETWEEN :du AND :au AND  vendus.id_type_dechet = :type
                 GROUP BY DATE_FORMAT( time,  "%Y-%m-%d" ) 
                 ORDER BY time');
-            $reponse->execute(array('du' => $time_debut,'au' => $time_fin,'numero' => $_GET['type'] ));
+            $reponse->execute(array('du' => $time_debut,'au' => $time_fin,'type' => $_GET['type'] ));
  
            // On affiche chaque entree une à une
            while ($donnees = $reponse->fetch())
@@ -527,7 +527,7 @@ postUnits: "Pcs." ,
 WHERE DATE(vendus.timestamp) BETWEEN :du AND :au AND  vendus.id_type_dechet = :type
 GROUP BY DATE_FORMAT( time,  "%Y-%m-%d" ) 
 ORDER BY time');
-            $reponse->execute(array('du' => $time_debut,'au' => $time_fin,'numero' => $_GET['type'] ));
+            $reponse->execute(array('du' => $time_debut,'au' => $time_fin,'type' => $_GET['type'] ));
  
            // On affiche chaque entree une à une
            while ($donnees = $reponse->fetch())
@@ -563,7 +563,7 @@ FROM vendus
 WHERE  DATE(vendus.timestamp) BETWEEN :du AND :au AND  vendus.id_type_dechet = :type
 GROUP BY DATE_FORMAT( time,  "%Y-%m-%d" ) 
 ORDER BY time');
-            $reponse->execute(array('du' => $time_debut,'au' => $time_fin,'numero' => $_GET['type'] ));
+            $reponse->execute(array('du' => $time_debut,'au' => $time_fin,'type' => $_GET['type'] ));
  
            // On affiche chaque entree une à une
            while ($donnees = $reponse->fetch())
@@ -602,7 +602,7 @@ postUnits: "€" ,
 WHERE DATE(vendus.timestamp) BETWEEN :du AND :au AND  vendus.id_type_dechet = :type
 GROUP BY DATE_FORMAT( time,  "%Y-%m-%d" ) 
 ORDER BY time');
-            $reponse->execute(array('du' => $time_debut,'au' => $time_fin,'numero' => $_GET['type'] ));
+            $reponse->execute(array('du' => $time_debut,'au' => $time_fin,'type' => $_GET['type'] ));
  
            // On affiche chaque entree une à une
            while ($donnees = $reponse->fetch())
