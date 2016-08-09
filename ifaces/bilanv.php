@@ -965,7 +965,7 @@ echo "<td>"."-"."</td></tr>";
   if(intval($donnees['SUM(pesees_vendus.masse)']) == 0){
 echo "<td>"."-"."</td></tr>";
 }else{
-echo $donnees['SUM(pesees_vendus.masse)']};
+echo $donnees['SUM(pesees_vendus.masse)'];}
 $Mtpe = $donnees['SUM(pesees_vendus.masse)'];
 
 $req->closeCursor(); // Termine le traitement de la requête
