@@ -1025,7 +1025,7 @@ print "</table>";
 
 
 
-            $reponse = $bdd->prepare('SELECT type_dechets.couleur,type_dechets.nom, sum(vendus.prix ) somme FROM type_dechets,vendus,ventes WHERE type_dechets.id = vendus.id_type_dechet AND vendus.id_vente = ventes.id AND DATE(vendus.timestamp) BETWEEN :du AND :au AND vendus.prix > 0
+            $reponse = $bdd->prepare('SELECT type_dechets.couleur,type_dechets.nom, sum(vendus.prix ) somme FROM type_dechets,vendus,ventes WHERE type_dechets.id = vendus.id_type_dechet AND vendus.id_vente = ventes.id AND DATE(vendus.timestamp) BETWEEN :du AND :au AND vendus.prix > 0 AND ventes.id_point_vente  = :numero
 GROUP BY nom');
  $reponse->execute(array('du' => $time_debut,'au' => $time_fin ,'numero' => $_GET['numero']));
            // On affiche chaque entree une à une
@@ -1045,7 +1045,7 @@ GROUP BY nom');
 <?php 
  
             // On recupère tout le contenu de la table affectations
-            $reponse = $bdd->prepare('SELECT type_dechets.couleur,type_dechets.nom, sum(vendus.prix ) somme FROM type_dechets,vendus,ventes WHERE type_dechets.id = vendus.id_type_dechet AND vendus.id_vente = ventes.id AND DATE(vendus.timestamp) BETWEEN :du AND :au AND vendus.prix > 0
+            $reponse = $bdd->prepare('SELECT type_dechets.couleur,type_dechets.nom, sum(vendus.prix ) somme FROM type_dechets,vendus,ventes WHERE type_dechets.id = vendus.id_type_dechet AND vendus.id_vente = ventes.id AND DATE(vendus.timestamp) BETWEEN :du AND :au AND vendus.prix > 0 AND ventes.id_point_vente  = :numero
 GROUP BY nom');
             $reponse->execute(array('du' => $time_debut,'au' => $time_fin ,'numero' => $_GET['numero']));
  
