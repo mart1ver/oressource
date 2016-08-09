@@ -73,7 +73,11 @@ function switchlot(state) {
 
 function ajout() {
   if (document.getElementById('id_type_objet').value == ""){}else{
+<<<<<<< HEAD
 
+=======
+    
+>>>>>>> 46a53f50733219976220410e19d6e565382121cd
   if (document.getElementById('sul').value == "unite") {
     var prixtemp = document.getElementById('prix').value;
     prixtemp = prixtemp.replace(",", ".");
@@ -267,7 +271,6 @@ function ajout() {
 }
 
 }
-
 
 
 

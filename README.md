@@ -12,7 +12,7 @@ Internet Explorer ou Opera ne sont pas supportés à ce jour.
 
 ## Dépendances
 
-`sudo apt-get install apache2 php5-mysql mariadb-server libapache2-mod-php5`
+`sudo apt-get install apache2 php5-mysql libapache2-mod-php5`
 
 ## MariaDB/MySQL
 ### Créer un utilisateur
@@ -72,6 +72,10 @@ Ajouter les lignes suivantes :
 sudo a2ensite oressource
 sudo apache2ctl graceful
 ```
+un petit redemarage du service apache2 semble oportun apres toute cette configuration
+```shell
+sudo service apache2 restart
+``` 
 # Licence
 
 Oressource est distribué sous les termes de la [License AGPLv3](https://www.gnu.org/licenses/agpl.html).
