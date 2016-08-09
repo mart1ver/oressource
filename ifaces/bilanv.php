@@ -1088,7 +1088,8 @@ Récapitulatif par type d'objet
           <th>chiffre dégagé</th>
           <th>quantité vendue</th>
           <th>somme remboursée</th>
-          <th>quantité remboursée</th>
+          <th>quantité rembour.</th>
+          <th>masse pésee</th>
           
         </tr>
       </thead>
@@ -1127,6 +1128,7 @@ GROUP BY type_dechets.nom
  $req->execute(array('du' => $time_debut,'au' => $time_fin ,'id' => $donnees2['id'],'numero' => $_GET['numero'] ));
  $donnees = $req->fetch();
 echo $donnees['SUM(vendus.quantite)'];
+$Nt = $donnees['SUM(vendus.quantite)'];
 $req->closeCursor(); // Termine le traitement de la requête ?>
             </td>
             <td>
@@ -1136,8 +1138,10 @@ $req->closeCursor(); // Termine le traitement de la requête ?>
    WHERE  DATE(vendus.timestamp) BETWEEN :du AND :au AND vendus.id_type_dechet = :id  AND ventes.id = vendus.id_vente AND ventes.id_point_vente  = :numero");
   $req3->execute(array('du' => $time_debut,'au' => $time_fin ,'id' => $donnees2['id'] ,'numero' => $_GET['numero'] ));
   $donnees3 = $req3->fetch();
-
-  echo $donnees3['total']." €<br>";
+if($donnees3['total'] == 0){
+echo "-"."<br>";
+}else{
+  echo $donnees3['total']." €";}
   $req3->closeCursor(); // Termine le traitement de la requête ?>
             </td>  
             
@@ -1151,9 +1155,38 @@ $req->closeCursor(); // Termine le traitement de la requête ?>
   AND vendus.id_type_dechet = :id AND DATE(vendus.timestamp) BETWEEN :du AND :au AND ventes.id_point_vente  = :numero AND ventes.id = vendus.id_vente  ");
  $req->execute(array('du' => $time_debut,'au' => $time_fin ,'id' => $donnees2['id'] ,'numero' => $_GET['numero'] ));
  $donnees = $req->fetch();
-echo intval ($donnees['SUM(vendus.quantite)']);
+ if($donnees3['total'] == 0){
+echo "-";
+}else{
+echo intval ($donnees['SUM(vendus.quantite)']);}
 $req->closeCursor(); // Termine le traitement de la requête ?>
             </td>
+
+
+
+
+<td> <?php
+                // on determine la masse d'objets pesés
+            /*
+
+            */
+ $req = $bdd->prepare("SELECT SUM(pesees_vendus.masse) 
+  FROM pesees_vendus , vendus ,ventes
+  WHERE pesees_vendus.id_vendu = vendus.id
+  AND vendus.id_type_dechet = :id 
+  AND DATE(vendus.timestamp) BETWEEN :du AND :au AND ventes.id_point_vente  = :numero AND ventes.id = vendus.id_vente  ");
+ $req->execute(array('du' => $time_debut,'au' => $time_fin ,'id' => $donnees2['id'] ,'numero' => $_GET['numero'] ));
+ $donnees = $req->fetch();
+echo round($donnees['SUM(pesees_vendus.masse)'],2)." Kgs.";
+$Mtpe = $donnees['SUM(pesees_vendus.masse)'];
+$req->closeCursor(); // Termine le traitement de la requête ?></td>
+
+
+
+
+
+
+
         </tr>
         
  <?php
