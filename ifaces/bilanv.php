@@ -1194,7 +1194,216 @@ $req->closeCursor(); // Termine le traitement de la requête ?></td>
               $reponse2->closeCursor(); // Termine le traitement de la requête
                 ?>
 
+<h3>
+Récapitulatif des masses pesées à la caisse 
+</h3>
+<table class="table table-hover">
 
+      <thead>
+       
+        <tr>
+          <th>type d'objet</th>
+          <th>chiffre dégagé</th>
+          <th>masse pésee</th>
+          <th>nombre de pesées</th>
+          <th>nombre d'objets pesés</th>
+          <th>nombre d'objets vendus</th>
+          <th>masse sortie totale estimée</th>
+          <th>prix à la tonne estimé</th>
+          <th>certitude de l'estimation</th>
+        </tr>
+      </thead>
+           <tbody>
+<?php
+            // On recupère le nom du type d'objet et son C.A. lié
+            $reponse2 = $bdd->prepare('SELECT type_dechets.id id,
+   type_dechets.nom ,SUM(vendus.prix*vendus.quantite) total 
+
+ FROM type_dechets , vendus, ventes
+
+WHERE vendus.id_vente = ventes.id 
+AND type_dechets.id = vendus.id_type_dechet 
+AND DATE(vendus.timestamp) BETWEEN :du AND :au AND ventes.id_point_vente  = :numero
+GROUP BY type_dechets.nom
+');
+  $reponse2->execute(array('du' => $time_debut,'au' => $time_fin ,'numero' => $_GET['numero']));
+           // On affiche chaque entree une à une
+           while ($donnees2 = $reponse2->fetch())
+           {        
+            ?>
+
+            <tr>
+              <th scope="row"><?php echo $donnees2['nom']?></th>
+            <td  >
+              <?php echo $donnees2['total']." €";
+              $cd = $donnees2['total'];
+               ?>
+            </td >
+            <td> <?php
+                // on determine la masse d'objets pesés
+            /*
+
+            */
+ $req = $bdd->prepare("SELECT SUM(pesees_vendus.masse) 
+  FROM pesees_vendus , vendus ,ventes
+  WHERE pesees_vendus.id_vendu = vendus.id
+  AND vendus.id_type_dechet = :id 
+  AND DATE(vendus.timestamp) BETWEEN :du AND :au AND vendus.id_vente = ventes.id AND ventes.id_point_vente  = :numero " );
+ $req->execute(array('du' => $time_debut,'au' => $time_fin ,'id' => $donnees2['id'] ,'numero' => $_GET['numero'] ));
+ $donnees = $req->fetch();
+echo round($donnees['SUM(pesees_vendus.masse)'],2)." Kgs.";
+$Mtpe = $donnees['SUM(pesees_vendus.masse)'];
+$req->closeCursor(); // Termine le traitement de la requête ?></td>
+           
+            
+
+               <td> <?php
+                // on determine le nombre de pesés
+            /*
+
+            */
+ $req = $bdd->prepare("SELECT COUNT(DISTINCT(pesees_vendus.id)) 
+  FROM pesees_vendus , vendus ,ventes
+  WHERE pesees_vendus.id_vendu = vendus.id
+  AND vendus.id_type_dechet = :id 
+  AND DATE(vendus.timestamp) BETWEEN :du AND :au AND vendus.id_vente = ventes.id AND ventes.id_point_vente  = :numero ");
+ $req->execute(array('du' => $time_debut,'au' => $time_fin ,'id' => $donnees2['id'],'numero' => $_GET['numero'] ));
+ $donnees = $req->fetch();
+echo round($donnees['COUNT(DISTINCT(pesees_vendus.id))'],2);
+$Ntpe = $donnees['COUNT(DISTINCT(pesees_vendus.id))'];
+$req->closeCursor(); // Termine le traitement de la requête ?></td>
+          
+           <td> <?php
+            // on determine le nombre d'objets pesés
+
+ $req = $bdd->prepare("SELECT SUM(pesees_vendus.quantite) 
+  FROM pesees_vendus , vendus ,ventes
+  WHERE pesees_vendus.id_vendu = vendus.id
+  AND vendus.id_type_dechet = :id 
+  AND DATE(vendus.timestamp) BETWEEN :du AND :au AND vendus.id_vente = ventes.id AND ventes.id_point_vente  = :numero ");
+ $req->execute(array('du' => $time_debut,'au' => $time_fin ,'id' => $donnees2['id'] ,'numero' => $_GET['numero'] ));
+ $donnees = $req->fetch();
+$Notpe = $donnees['SUM(pesees_vendus.quantite)'];
+echo $Notpe ;
+$req->closeCursor(); // Termine le traitement de la requête
+
+            ?></td>
+
+           <td><?php
+                // on determine le nombre d'objets vendus
+            /*
+
+            */
+ $req = $bdd->prepare("SELECT SUM(vendus.quantite) FROM vendus,ventes WHERE prix > 0 
+  AND vendus.id_type_dechet = :id AND DATE(vendus.timestamp) BETWEEN :du AND :au  AND ventes.id = vendus.id_vente  AND ventes.id_point_vente  = :numero ");
+ $req->execute(array('du' => $time_debut,'au' => $time_fin ,'id' => $donnees2['id'],'numero' => $_GET['numero']));
+ $donnees = $req->fetch();
+$ov = $donnees['SUM(vendus.quantite)'];
+echo $ov;
+$req->closeCursor(); // Termine le traitement de la requête ?></td>
+            <td>
+
+              
+
+<?php
+// on determine la masse moyenne d'un objet dans toute la base (pour le type d'objet en cours) = $Mm
+
+               
+ $req = $bdd->prepare("SELECT AVG(pesees_vendus.masse) 
+  FROM pesees_vendus , vendus 
+  WHERE pesees_vendus.id_vendu = vendus.id
+  AND pesees_vendus.masse > 0
+  AND vendus.id_type_dechet = :id ");
+ $req->execute(array('id' => $donnees2['id'] ));
+ $donnees = $req->fetch();
+$Mm = $donnees['AVG(pesees_vendus.masse)'];
+//echo $Mm;
+$req->closeCursor(); // Termine le traitement de la requête 
+
+/*
+estimation de la masse totale vendue sur la periode pour tout les points de vente
+
+masse moyenne d'un objet dans toute la base (pour le type d'objet en cours) = $Mm
+nombre d'objets vendus (tout types confondus) = $Nt
+nombre d'objets pesées sur la periode = $Np
+masse totale d'objets peses sur cette periode = $Mtpe
+nombre de pesées sur la periode pour le type d'objet = $Ntpe
+nombre d'objets pesés sur la periode pour le type d'objet = $Notpe
+nombre d'objets vendus sur la periode pour le type d'objet = $ov
+
+
+
+if($ov == $Notpe)
+{
+$mtee = $Mtpe;
+$certitude = 100;
+}
+else
+{
+$mtee = (($Mm*$ov)-($Mm*$Np))+$Mtpe;
+$certitude = 0;
+}
+*/
+
+
+
+//$mtee = round((($Mm*$Nt)-($Mm*$Mp))+$Mtpe, 2);
+if($ov == $Notpe)
+{
+$mtee = $Mtpe;
+$certitude = 100;
+}
+else
+{
+$mtee = (($Mm*$ov)-($Mm*$Np))+$Mtpe;
+$certitude = round(($Notpe/$ov)*100,2);
+}
+echo round($mtee,2)." Kgs.";
+?>
+
+
+            </td>   
+            <td>
+<?php
+echo round(($cd/$mtee)*1000,2)." €";
+
+ ?>
+
+            </td>    
+            <td>
+              <?php echo $certitude."%"; ?>
+            </td>
+        </tr>
+        
+ <?php
+             }
+              $reponse2->closeCursor(); // Termine le traitement de la requête
+                ?>
+
+
+
+
+        
+          
+         
+        
+        </tbody>
+        <tfoot>
+    <tr>
+      <td></td>
+        <td></td>
+       <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      
+    </tr>
+  </tfoot>
+    </table>
+<br>
 
 
        
