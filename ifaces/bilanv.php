@@ -310,7 +310,10 @@ echo "<td>"."-"."</td></tr>";
   AND DATE(vendus.timestamp) BETWEEN :du AND :au ");
  $req->execute(array('du' => $time_debut,'au' => $time_fin ));
  $donnees = $req->fetch();
-echo $donnees['SUM(pesees_vendus.masse)'];
+ if(intval($donnees['SUM(pesees_vendus.masse)']) == 0){
+echo "<td>"."-"."</td></tr>";
+}else{
+echo $donnees['SUM(pesees_vendus.masse)'];}
 $Mtpe = $donnees['SUM(pesees_vendus.masse)'];
 
 $req->closeCursor(); // Termine le traitement de la requête
