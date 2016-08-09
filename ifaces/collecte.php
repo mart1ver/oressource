@@ -364,4 +364,4 @@ style="background-color:<?php echo$donnees['couleur']?>"><?php echo$donnees['nom
       } else
       { 
          header('Location:../moteur/destroy.php?motif=1');}
-      }?>
+      ?>
