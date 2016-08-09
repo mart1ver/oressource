@@ -311,7 +311,7 @@ echo "<td>"."-"."</td></tr>";
  $req->execute(array('du' => $time_debut,'au' => $time_fin ));
  $donnees = $req->fetch();
  if(intval($donnees['SUM(pesees_vendus.masse)']) == 0){
-echo "<td>"."-"."</td></tr>";
+echo "<td>"."- ";
 }else{
 echo $donnees['SUM(pesees_vendus.masse)'];}
 $Mtpe = $donnees['SUM(pesees_vendus.masse)'];
