@@ -1412,6 +1412,62 @@ echo round(($cd/$mtee)*1000,2)." €";
         
         </tbody>
     </table>
+    <h4>
+ Masses pesées en caisse par type d'objet:
+</h4>
+  
+          <div  id="graphMV" style="height: 180px;"></div>
+          <br>
+          <script>       Morris.Donut({
+    element: 'graphMV',
+    data: [
+<?php 
+            // On recupère tout le contenu de la table affectations
+
+
+
+
+
+            $reponse = $bdd->prepare('SELECT type_dechets.couleur,type_dechets.nom, sum(pesees_vendus.masse ) somme FROM type_dechets,vendus,pesees_vendus ,ventes WHERE type_dechets.id = vendus.id_type_dechet AND vendus.id = pesees_vendus.id_vendu  AND DATE(vendus.timestamp) BETWEEN :du AND :au AND vendus.prix > 0 AND vendus.id_vente = ventes.id AND ventes.id_point_vente  = :numero
+GROUP BY nom');
+ $reponse->execute(array('du' => $time_debut,'au' => $time_fin,'numero' => $_GET['numero'] ));
+           // On affiche chaque entree une à une
+           while ($donnees = $reponse->fetch())
+           {
+
+            echo "{value:".$donnees['somme'].", label:'".$donnees['nom']."'},";
+
+
+             }
+              $reponse->closeCursor(); // Termine le traitement de la requête
+                ?>
+],
+    backgroundColor: '#ccc',
+    labelColor: '#060',
+    colors: [
+<?php 
+ 
+            // On recupère tout le contenu de la table affectations
+            $reponse = $bdd->prepare('SELECT type_dechets.couleur,type_dechets.nom, sum(pesees_vendus.masse) somme FROM type_dechets,vendus,pesees_vendus ,ventes WHERE type_dechets.id = vendus.id_type_dechet AND vendus.id = pesees_vendus.id_vendu AND DATE(vendus.timestamp) BETWEEN :du AND :au AND vendus.prix > 0 AND vendus.id_vente = ventes.id AND ventes.id_point_vente  = :numero
+GROUP BY nom');
+            $reponse->execute(array('du' => $time_debut,'au' => $time_fin,'numero' => $_GET['numero'] ));
+ 
+           // On affiche chaque entree une à une
+           while ($donnees = $reponse->fetch())
+           {
+
+            echo "'".$donnees['couleur']."'".",";
+
+
+             }
+              $reponse->closeCursor(); // Termine le traitement de la requête
+                ?>
+    ],
+    formatter: function (x) { return x + " Kgs."}
+    });
+</script>
+          
+       <br>
 
 </div>
 </div>
