@@ -126,6 +126,11 @@ CREATE TABLE IF NOT EXISTS `description_structure` (
   `viz` text NOT NULL,
   `nb_viz` int(11) NOT NULL,
   `saisiec` text NOT NULL,
+  `affsp` text NOT NULL COMMENT 'Afficher Saisie Poubelles',
+  `affss` text NOT NULL COMMENT 'Afficher Saisie Sorties Partenaires', 
+  `affsr` text NOT NULL COMMENT 'Afficher Saisie Recyclage',
+  `affsd` text NOT NULL COMMENT 'Afficher Saisie Don',
+  `affsde` text NOT NULL COMMENT 'Afficher Saisie Dechetterie',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -133,8 +138,8 @@ CREATE TABLE IF NOT EXISTS `description_structure` (
 -- Dumping data for table `description_structure`
 --
 
-INSERT INTO `description_structure` (`id`, `nom`, `adresse`, `description`, `siret`, `telephone`, `mail`, `id_localite`, `texte_adhesion`, `taux_tva`, `tva_active`, `id_createur`, `id_last_hero`, `last_hero_timestamp`, `cr`, `lot`, `viz`, `nb_viz`, `saisiec`) VALUES
-(1, 'La petite rockette', '125 rue du chemin vert', 'la petite rockette est une asso cool', '508 822 475 00010', '0155286118', 'lapetiterockette@gmail.com', '1', '  L''adhÃ©sion Ã  la ressourcerie formalise avant tout votre soutien aux valeurs Ã©cologiques et sociales dÃ©fendues par l''association. (Et peut, par ailleurs, s''avÃ©rer utile pour Ãªtre tenu informÃ© par courriel des diverses activitÃ©s, ponctuelles ou ordinaires, \r\ndÃ©veloppÃ©es la ressourcerie.)\r\n   AdhÃ©rer est donc surtout un geste politique, militant, d''engagement actif dans la lutte contre l''absurditÃ© consumÃ©riste et sa normalisation du gaspillage!!', '10', 'non', 0, 0, '2015-06-02 10:58:23', 1234, 'oui', 'oui', 10, 'oui');
+INSERT INTO `description_structure` (`id`, `nom`, `adresse`, `description`, `siret`, `telephone`, `mail`, `id_localite`, `texte_adhesion`, `taux_tva`, `tva_active`, `id_createur`, `id_last_hero`, `last_hero_timestamp`, `cr`, `lot`, `viz`, `nb_viz`, `saisiec`, `affsp`,`affss`,`affsr`,`affsd`,`affsde`) VALUES
+(1, 'La petite rockette', '125 rue du chemin vert', 'la petite rockette est une asso cool', '508 822 475 00010', '0155286118', 'lapetiterockette@gmail.com', '1', '  L''adhÃ©sion Ã  la ressourcerie formalise avant tout votre soutien aux valeurs Ã©cologiques et sociales dÃ©fendues par l''association. (Et peut, par ailleurs, s''avÃ©rer utile pour Ãªtre tenu informÃ© par courriel des diverses activitÃ©s, ponctuelles ou ordinaires, \r\ndÃ©veloppÃ©es la ressourcerie.)\r\n   AdhÃ©rer est donc surtout un geste politique, militant, d''engagement actif dans la lutte contre l''absurditÃ© consumÃ©riste et sa normalisation du gaspillage!!', '10', 'non', 0, 0, '2015-06-02 10:58:23', 1234, 'oui', 'oui', 10, 'oui','oui','oui','oui','oui','oui');
 
 -- --------------------------------------------------------
 
