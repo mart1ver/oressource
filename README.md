@@ -79,11 +79,11 @@ sudo service apache2 restart
 
 # Mise à jour / Upgrade
 
-Voir le fichier [UPGRADE.md]()
+Voir le fichier [UPGRADE.md](UPGRADE.md)
 
 # Sauvegarde et Restauration
 
-Voir le fichier [SAUVEGARDE.md]()
+Voir le fichier [SAUVEGARDE.md](SAUVEGARDE.md)
 
 
 # Licence
