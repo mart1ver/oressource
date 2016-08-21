@@ -76,6 +76,16 @@ un petit redemarage du service apache2 semble oportun apres toute cette configur
 ```shell
 sudo service apache2 restart
 ``` 
+
+# Mise à jour / Upgrade
+
+Voir le fichier [UPGRADE.md]()
+
+# Sauvegarde et Restauration
+
+Voir le fichier [SAUVEGARDE.md]()
+
+
 # Licence
 
 Oressource est distribué sous les termes de la [License AGPLv3](https://www.gnu.org/licenses/agpl.html).
