@@ -194,7 +194,7 @@ $type = $donnees['nom'];
 
 
 
-<h3>Évolution de la masse totale collectée au  <? echo $type; ?> </h3>
+<h3>Évolution de la masse totale collectée au  <?php echo $type; ?> </h3>
 <?php 
  $interm = 0;
  $cmpt = 0;
@@ -229,7 +229,7 @@ echo "Moyenne journalière: ".$masse_moy_jour;
 
 
 
-<h3>évolution des masses totales évacuées hors boutique en <? echo $type ?> </h3>
+<h3>évolution des masses totales évacuées hors boutique en <?php echo $type ?> </h3>
 <?php 
  $interm = 0;
  $cmpt = 0;
@@ -262,7 +262,7 @@ echo "Moyenne journalière: ".$masse_moy_jour;
              ?> Kgs.
 <div id="sorties" style="height: 180px;"></div>
 
-<h3>évolution des quantités de <? echo $type ?> vendues</h3>
+<h3>évolution des quantités de <?php echo $type ?> vendues</h3>
 <?php 
  $interm = 0;
  $cmpt = 0;
@@ -295,7 +295,7 @@ echo "Moyenne journalière: ".$masse_moy_jour;}
              ?> Pcs.
 <div id="qv" style="height: 180px;"></div>
 
-<h3>évolution du C.A quotidien <? echo $type ?></h3>
+<h3>évolution du C.A quotidien <?php echo $type ?></h3>
 <?php 
  $interm = 0;
  $cmpt = 0;
