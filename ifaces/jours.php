@@ -178,7 +178,7 @@ $time_fin = $time_fin." 23:59:59";
            // On affiche chaque entree une à une
            while ($donnees = $reponse->fetch())
            {
-$type = $donnees[nom]; 
+$type = $donnees['nom']; 
 
              }
               $reponse->closeCursor(); // Termine le traitement de la requête
