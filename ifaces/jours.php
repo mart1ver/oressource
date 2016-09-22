@@ -194,7 +194,7 @@ $type = $donnees['nom'];
 
 
 
-<h3>Évolution de la masse totale collectée au  <? echo $type ?> </h3>
+<h3>Évolution de la masse totale collectée au  <? echo $type; ?> </h3>
 <?php 
  $interm = 0;
  $cmpt = 0;
