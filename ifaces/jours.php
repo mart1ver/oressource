@@ -171,6 +171,13 @@ $txt2  = $_GET['date2'];
 $date2ft = DateTime::createFromFormat('d-m-Y', $txt2);
 $time_fin = $date2ft->format('Y-m-d');
 $time_fin = $time_fin." 23:59:59";
+//on determine le nom du type d'objet
+ $req = $bdd->prepare("SELECT nom FROM type_dechets WHERE id = :type ");
+ $req->execute(array('type' => $_GET['type'] ));
+                    $donnees = $req->fetch();
+                    $req->closeCursor();
+                    $type = $donnees[0]; 
+                    
   ?>
 
 
@@ -213,7 +220,7 @@ echo "Moyenne journalière: ".$masse_moy_jour;
 
 
 
-<h3>évolution des masses totales évacuées hors boutique en textile </h3>
+<h3>évolution des masses totales évacuées hors boutique en <? echo $type ?> </h3>
 <?php 
  $interm = 0;
  $cmpt = 0;
@@ -246,7 +253,7 @@ echo "Moyenne journalière: ".$masse_moy_jour;
              ?> Kgs.
 <div id="sorties" style="height: 180px;"></div>
 
-<h3>évolution des quantités de textile vendues</h3>
+<h3>évolution des quantités de <? echo $type ?> vendues</h3>
 <?php 
  $interm = 0;
  $cmpt = 0;
@@ -279,7 +286,7 @@ echo "Moyenne journalière: ".$masse_moy_jour;}
              ?> Pcs.
 <div id="qv" style="height: 180px;"></div>
 
-<h3>évolution du C.A quotidien textile</h3>
+<h3>évolution du C.A quotidien <? echo $type ?></h3>
 <?php 
  $interm = 0;
  $cmpt = 0;
