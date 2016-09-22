@@ -1,33 +1,33 @@
 <?php session_start();
 
-require_once('../moteur/dbconfig.php');
+require_once '../moteur/dbconfig.php';
 
 //Vérification des autorisations de l'utilisateur et des variables de session requises pour l'affichage de cette page:
-if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 'bi') !== false))
-      { include "tete.php";?>
-   <head>
-      <link href="../css/bootstrap.min.css" rel="stylesheet">
-       <link href="../fonts/font-awesome/css/font-awesome.min.css" rel="stylesheet">
-      <link rel="stylesheet" type="text/css" media="all" href="../css/daterangepicker-bs3.css" />
-       <script type="text/javascript" src="../js/jquery-2.0.3.min.js"></script>
-      <script type="text/javascript" src="../js/bootstrap.min.js"></script>
-            <script src="../js/raphael.js"></script>
-      <script src="../js/morris/morris.js"></script>
-      <script type="text/javascript" src="../js/moment.js"></script>
-      <script type="text/javascript" src="../js/daterangepicker.js"></script>
-   </head>
-  
+if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 'bi') !== false)) {
+  include "tete.php";?>
+  <head>
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../fonts/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" media="all" href="../css/daterangepicker-bs3.css" />
+    <script type="text/javascript" src="../js/jquery-2.0.3.min.js"></script>
+    <script type="text/javascript" src="../js/bootstrap.min.js"></script>
+    <script src="../js/raphael.js"></script>
+    <script src="../js/morris/morris.js"></script>
+    <script type="text/javascript" src="../js/moment.js"></script>
+    <script type="text/javascript" src="../js/daterangepicker.js"></script>
+  </head>
+
   <div class="container">
-  <div class="row">
-  <div class="col-md-11 " >
-   <h1>Bilan global</h1>
-    <div class="col-md-4 col-md-offset-8" >
-     <label for="reportrange">Choisissez la période à inspecter:</label><br>
-      <div id="reportrange" class="pull-left" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc">
-       <i class="fa fa-calendar"></i>
-       <span></span> <b class="caret"></b>
-      </div>
-     <script type="text/javascript">
+    <div class="row">
+      <div class="col-md-11" >
+        <h1>Bilan global</h1>
+        <div class="col-md-4 col-md-offset-8" >
+          <label for="reportrange">Choisissez la période à inspecter:</label><br>
+          <div id="reportrange" class="pull-left" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc">
+            <i class="fa fa-calendar"></i>
+            <span></span> <b class="caret"></b>
+          </div>
+          <script type="text/javascript">
 "use strict";
 function $_GET(param) {
   var vars = {};
@@ -126,206 +126,206 @@ var datedosgf = moisdos+'/'+jourdos+"/"+anneedos;
                   });
                });
                </script>
-             </div>
-       
-       <ul class="nav nav-tabs">
-        <li><a href="<?php echo  "bilanc.php?date1=" . $_GET['date1'].'&date2='.$_GET['date2'].'&numero=0'?>" >Collectes</a></li>
-        <li><a href="<?php echo  "bilanhb.php?date1=" . $_GET['date1'].'&date2='.$_GET['date2'].'&numero=0'?>">Sorties hors-boutique</a></li>
-        <li class="active"><a>Ventes</a></li>
-      </ul>
-            </div>
-            </div>    
-            </div>
-      <hr/>
-      <div class="row">
-       <div class="col-md-8 col-md-offset-1" >
-        <h2> Bilan des ventes de la structure</h2>
-        <ul class="nav nav-tabs">
-        <?php      //on affiche un onglet par point de vente
-            // On recupère tout le contenu des visibles de la table points_vente
-            $reponse = $bdd->query('SELECT * FROM points_vente');
- 
-           // On affiche chaque entree une à une
-           while ($donnees = $reponse->fetch())
-           {
-                  // Si le Point de Vente n'est pas visible, on passe directement au prochain
-                  if ($donnees['visible'] != "oui") continue;
-           ?> 
-            <li<?php if ($_GET['numero'] == $donnees['id']){ echo ' class="active"';}?>><a href="<?php echo  "bilanv.php?numero=" . $donnees['id']."&date1=" . $_GET['date1']."&date2=" . $_GET['date2']?>"><?php echo$donnees['nom']?></a></li>
-           <?php }
-              $reponse->closeCursor(); // Termine le traitement de la requête
-              // sortis de la boucle on affiche un onglet special "touts les points"
-           ?>
-
-           <li<?php if ($_GET['numero'] == 0){ echo ' class="active"';}?>><a href="<?php echo  "bilanv.php?numero=0" ."&date1=" . $_GET['date1']."&date2=" . $_GET['date2']?>">Tous les points</a></li>
-       </ul>
-       <br>
-        <div class="row">
+        </div>
         
- <td>
-         <h2>
-         <?php
-// on affiche la période visée
-  if($_GET['date1'] == $_GET['date2']){
-    echo' Le '.$_GET['date1']." : </h2>";
-  }
-  else
-  {
-  echo' Du '.$_GET['date1']." au ".$_GET['date2']." : </h2></td>";  
-}
-
-
-
-
-//on convertit les deux dates en un format compatible avec la bdd
-$txt1  = $_GET['date1'];
-$date1ft = DateTime::createFromFormat('d-m-Y', $txt1);
-$time_debut = $date1ft->format('Y-m-d');
-$time_debut = $time_debut." 00:00:00";
-$txt2  = $_GET['date2'];
-$date2ft = DateTime::createFromFormat('d-m-Y', $txt2);
-$time_fin = $date2ft->format('Y-m-d');
-$time_fin = $time_fin." 23:59:59";
-  
-if ($_GET['numero'] == 0) // si numero == 0 (pour tout les points de vente)*****************************************************************************************************************************************
-{
-
-
-// On on verifie le chiffre total degagé
-  $req = $bdd->prepare("SELECT  SUM(vendus.prix*vendus.quantite) AS total   FROM vendus 
-   WHERE  DATE(vendus.timestamp) BETWEEN :du AND :au AND vendus.prix > 0  ");
-  $req->execute(array('du' => $time_debut,'au' => $time_fin ));
-  $donnees = $req->fetch();
-  $mtotcolo = $donnees['total'];
-  $req->closeCursor(); // Termine le traitement de la requête
-if ($mtotcolo == 0 )
-{
-?>
-<img src="../images/nodata.jpg" class="img-responsive" alt="Responsive image">
-<?php
-}else{
-
-
-  ?>
+        <?php
+        $date1  = $_GET['date1'];
+        $date2  = $_GET['date2'];
+        ?>
+        
+        <ul class="nav nav-tabs">
+          <li><a href="bilanc.php?date1=<?=$date1?>&date2=<?=$date2?>&numero=0">Collectes</a></li>
+          <li><a href="bilanhb.php?date1=<?=$date1?>&date2=<?=$date2?>&numero=0">Sorties hors-boutique</a></li>
+          <li class="active"><a>Ventes</a></li>
+        </ul>
+      </div>
+    </div> <!-- row -->
+  </div> <!-- container -->
+  <hr/>
   <div class="row">
-  <div class="col-md-6">
-<table class='table table-hover'>
-    <tbody><tr>
-  <?php
+    <div class="col-md-8 col-md-offset-1" >
+    <h2>Bilan des ventes de la structure</h2>
+    <ul class="nav nav-tabs">
+    <?php //on affiche un onglet par point de vente
+    // On recupère tout le contenu des visibles de la table points_vente
+    $reponse = $bdd->query('SELECT * FROM points_vente');
 
+    // On affiche chaque entree une à une
+    while ($donnees = $reponse->fetch()) {
+      // Si le Point de Vente n'est pas visible, on passe directement au prochain
+      if ($donnees['visible'] != "oui") continue;
+    ?> 
+      <li<?php if ($_GET['numero'] == $donnees['id']){ echo ' class="active"';}?>><a href="<?php echo  "bilanv.php?numero=" . $donnees['id']."&date1=".$date1."&date2=" . $date2?>"><?=$donnees['nom']?></a></li>
+      <?php }
+    $reponse->closeCursor(); // Termine le traitement de la requête
+    // sortis de la boucle on affiche un onglet special "touts les points"
+      ?>
 
+      <li<?php if ($_GET['numero'] == 0){ echo ' class="active"';}?>><a href="<?php echo  "bilanv.php?numero=0" ."&date1=" . $date1."&date2=" . $date2?>">Tous les points</a></li>
+    </ul>
+    <br>
 
+    <div class="row">
+      <h2>
+      <?php
+      // on affiche la période visée
+      if($date1 == $date2)
+        echo 'Le '.$date1." :";
+      else
+        echo 'Du '.$date1." au ".$date2." :";
+      ?>
+      </h2>
 
+      <?php
+      //on convertit les deux dates en un format compatible avec la bdd
+      $date1ft = date_create_from_format('d-m-Y', $date1);
+      $time_debut = $date1ft->format('Y-m-d');
+      $time_debut = $time_debut." 00:00:00";
+      $date2ft = date_create_from_format('d-m-Y', $date2);
+      $time_fin = $date2ft->format('Y-m-d');
+      $time_fin = $time_fin." 23:59:59";
 
-  echo '<td>-nombre de points de vente : </td>';
-  // on determine le nombre de points de vente à cet instant
-            /*
+      if ($_GET['numero'] == 0) { // Pour tous les points de vente car numero == 0  ******************************************************
 
-            */
- $req = $bdd->prepare("SELECT COUNT(id) FROM points_vente");
- $req->execute();
- $donnees = $req->fetch();
-echo "<td>".$donnees['COUNT(id)']."</td> </tr>";
-
-  echo '<tr><td>-chiffre total dégagé  : </td>';
-  // On recupère tout le contenu de la table point de vente
-  $req = $bdd->prepare("SELECT  SUM(vendus.prix*vendus.quantite) AS total   FROM vendus 
-   WHERE  DATE(vendus.timestamp) BETWEEN :du AND :au AND vendus.prix > 0  ");
-  $req->execute(array('du' => $time_debut,'au' => $time_fin ));
-  $donnees = $req->fetch();
-  $mtotcolo = $donnees['total'];
-  echo   "<td>".$donnees['total']." €"."</td></tr>";
-  $req->closeCursor(); // Termine le traitement de la requête
-
- echo "<tr><td>-nombre d'objets vendus : </td>";
-// on determine le nombre d'objets vendus
-            /*
-
-            */
- $req = $bdd->prepare("SELECT SUM(vendus.quantite) FROM vendus WHERE prix > 0 AND DATE(vendus.timestamp) BETWEEN :du AND :au ");
- $req->execute(array('du' => $time_debut,'au' => $time_fin ));
- $donnees = $req->fetch();
-echo "<td>".$donnees['SUM(vendus.quantite)']."</td></tr>"; 
- echo '<tr><td>-nombre de ventes : </td>';
- $Nt = $donnees['SUM(vendus.quantite)'] ;
-// on determine le nombre de ventes
-            /*
-
-            */
- $req = $bdd->prepare("SELECT COUNT(DISTINCT(ventes.id)) FROM ventes ,vendus WHERE vendus.id_vente = ventes.id AND DATE(vendus.timestamp) BETWEEN :du AND :au  AND vendus.prix > 0 ");
- $req->execute(array('du' => $time_debut,'au' => $time_fin ));
- $donnees = $req->fetch();
- $nventes = $donnees['COUNT(DISTINCT(ventes.id))'];
-echo "<td>".$donnees['COUNT(DISTINCT(ventes.id))']."</td></tr>";
-
-
- echo '<tr><td>-panier moyen : </td> <td>'.$mtotcolo/$nventes.' € </td></tr>';
-
-  echo "<tr><td>-nombre d'objets remboursés :  </td> ";
-  // on determine le nombre d'objets remboursés
-            /*
-
-            */
- $req = $bdd->prepare("SELECT SUM(vendus.quantite) FROM vendus WHERE remboursement > 0 AND DATE(vendus.timestamp) BETWEEN :du AND :au ");
- $req->execute(array('du' => $time_debut,'au' => $time_fin ));
- $donnees = $req->fetch();
- if($donnees['SUM(vendus.quantite)'] == 0){
-echo "<td>"."-"."</td></tr>";
-}else{
-echo "<td>".intval($donnees['SUM(vendus.quantite)'])."</td></tr>";
-}
-  echo '<tr> <td>-nombre de remboursemments : </td>';
-  // on determine le nombre de remboursements
-            /*
-
-            */
- $req = $bdd->prepare("SELECT COUNT(DISTINCT(ventes.id)) FROM ventes ,vendus WHERE vendus.id_vente = ventes.id AND DATE(vendus.timestamp) BETWEEN :du AND :au   AND vendus.remboursement > 0 ");
- $req->execute(array('du' => $time_debut,'au' => $time_fin ));
- $donnees = $req->fetch();
- if($donnees['COUNT(DISTINCT(ventes.id))'] == 0){
-echo "<td>"."-"."</td></tr>";
-}else{
-echo "<td>".$donnees['COUNT(DISTINCT(ventes.id))']."</td></tr>";
-}
-  echo '<tr><td>-somme remboursée : </td> ';
-  // On recupère tout le contenu de la table point de vente
-  $req = $bdd->prepare("SELECT  SUM(vendus.remboursement) AS total   FROM vendus  WHERE  DATE(vendus.timestamp) BETWEEN :du AND :au  ");
-  $req->execute(array('du' => $time_debut,'au' => $time_fin ));
-  $donnees = $req->fetch();
-  $mtotcolo2 = $donnees['total'];
-  if($donnees['total'] == 0){
-echo "<td>"."-"."</td></tr>";
-}else{
-  echo "<td>".$donnees['total']." €" ."</td></tr>";
-}
-  $req->closeCursor(); // Termine le traitement de la requête
-
-
-?>
-<tr><td>-masse pesée en caisse : </td><td>
-  <?php
-  $req = $bdd->prepare("SELECT SUM(pesees_vendus.masse) 
-  FROM pesees_vendus , vendus 
-  WHERE pesees_vendus.id_vendu = vendus.id
-  AND DATE(vendus.timestamp) BETWEEN :du AND :au ");
- $req->execute(array('du' => $time_debut,'au' => $time_fin ));
- $donnees = $req->fetch();
- if(intval($donnees['SUM(pesees_vendus.masse)']) == 0){
-echo "<td>"."-"."</td></tr>";
-}else{
-echo $donnees['SUM(pesees_vendus.masse)'];}
-$Mtpe = $donnees['SUM(pesees_vendus.masse)'];
-
-$req->closeCursor(); // Termine le traitement de la requête
-
-?> Kgs.</td></tr>
-
-
-</tr>
-</tbody></table>
-<br>
-<br>
-<?php
+        // On on verifie le chiffre total degagé
+        $req = $bdd->prepare("SELECT SUM(vendus.prix*vendus.quantite) AS total FROM vendus 
+          WHERE DATE(vendus.timestamp) BETWEEN :du AND :au AND vendus.prix > 0");
+        $req->execute(array('du' => $time_debut,'au' => $time_fin));
+        $donnees = $req->fetch();
+        $req->closeCursor(); // Libère la connexion au serveur
+        $mtotcolo = $donnees['total'];
+        if ($mtotcolo == 0 ) {
+      ?>
+	  <img src="../images/nodata.jpg" class="img-responsive" alt="Responsive image">
+        <?php
+        } else {
+        ?>
+          <div class="row">
+            <div class="col-md-6">
+              <table class='table table-hover'>
+                <tbody>
+                  <tr>
+                    <td>- Nombre de points de vente :</td>
+                    <?php // on determine le nombre de points de vente à cet instant
+                    $req = $bdd->query("SELECT COUNT(id) FROM points_vente");
+                    $donnees = $req->fetch();
+                    $req->closeCursor();
+                    $nbPointV = $donnees[0]; 
+                    ?>
+                    <td><?=$nbPointV?></td>
+                  </tr>
+                  <tr>
+                    <td>- Chiffre total dégagé  :</td>
+                    <td><?=$mtotcolo?> €</td>
+                  </tr>
+                  <tr>
+                    <td>- Nombre d'objets vendus :</td>
+                    <?php // on determine le nombre d'objets vendus
+                    $req = $bdd->prepare("SELECT SUM(vendus.quantite) FROM vendus WHERE prix > 0 AND DATE(vendus.timestamp) BETWEEN :du AND :au ");
+                    $req->execute(array('du' => $time_debut,'au' => $time_fin ));
+                    $donnees = $req->fetch();
+                    $req->closeCursor();
+                    $nbObjV = $donnees[0];
+                    ?>
+                    <td><?=$nbObjV?></td>
+                  </tr>
+                  <tr>
+                    <td>- Nombre de ventes :</td>
+                    <?php // on determine le nombre de ventes
+                    $req = $bdd->prepare("SELECT COUNT(DISTINCT(ventes.id)) FROM ventes ,vendus
+                      WHERE vendus.id_vente = ventes.id AND DATE(vendus.timestamp) BETWEEN :du AND :au  AND vendus.prix > 0 ");
+                    $req->execute(array('du' => $time_debut,'au' => $time_fin ));
+                    $donnees = $req->fetch();
+                    $req->closeCursor();
+                    $nbVentes = $donnees[0];
+                    ?>
+                    <td><?=$nbVentes?></td>
+                  </tr>
+                  <tr>
+                    <td>- Panier moyen :</td>
+                    <td><?=$mtotcolo/$nbVentes?> €</td>
+                  </tr>
+                  <tr>
+                    <td>- Nombre d'objets remboursés :</td>
+                    <td>
+                      <?php // on determine le nombre d'objets remboursés
+                      $req = $bdd->prepare("SELECT SUM(vendus.quantite) FROM vendus
+                        WHERE remboursement > 0 AND DATE(vendus.timestamp) BETWEEN :du AND :au ");
+                      $req->execute(array('du' => $time_debut,'au' => $time_fin ));
+                      $donnees = $req->fetch();
+                      $req->closeCursor();
+                      $nbObjR = $donnees[0];
+                      if($nbObjR == 0)
+                        echo '-';
+                      else
+                        echo $nbObjR;
+                      ?>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>- Nombre de remboursemments :</td>
+                    <td>
+                      <?php // on determine le nombre de remboursement
+                      $req = $bdd->prepare("SELECT COUNT(DISTINCT(ventes.id)) FROM ventes ,vendus
+                        WHERE vendus.id_vente = ventes.id AND DATE(vendus.timestamp) BETWEEN :du AND :au   AND vendus.remboursement > 0 ");
+                      $req->execute(array('du' => $time_debut,'au' => $time_fin ));
+                      $donnees = $req->fetch();
+                      $req->closeCursor();
+                      $nbR = $donnees[0];
+                      if($nbR == 0)
+                        echo '-';
+                      else
+                        echo $nbR;
+                      ?>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>- Somme remboursée :</td>
+                    <td>
+                      <?php // On recupère tout le contenu de la table point de vente
+                      $req = $bdd->prepare("SELECT  SUM(vendus.remboursement) AS total FROM vendus
+                        WHERE  DATE(vendus.timestamp) BETWEEN :du AND :au  ");
+                      $req->execute(array('du' => $time_debut,'au' => $time_fin ));
+                      $totR = $req->fetch();
+                      $req->closeCursor();
+                      $mtotcolo2 = $totR['total'];
+                      if($mtotcolo2 == 0)
+                        echo '-';
+                      else
+                        echo $mtotcolo2.'€';
+                      ?>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>- Masse pesée en caisse :</td>
+                    <td>
+                      <?php
+                      $req = $bdd->prepare("SELECT SUM(pesees_vendus.masse) FROM pesees_vendus , vendus 
+                        WHERE pesees_vendus.id_vendu = vendus.id AND DATE(vendus.timestamp) BETWEEN :du AND :au ");
+                      $req->execute(array('du' => $time_debut,'au' => $time_fin ));
+                      $donnees = $req->fetch();
+                      $req->closeCursor();
+                      $Mtpe = $donnees[0];
+                      if(intval($Mtpe) == 0)
+                        echo '-';
+                      else
+                        echo $Mtpe. 'Kgs';
+                      ?>
+                    </td>
+                  </tr>
+                </tbody>
+                <tfoot>
+                  <tr>
+                    <td align=center colspan=3>
+                      <a href="../moteur/export_bilanv.php?numero=<?=$_GET['numero']?>&date1=<?=$date1?>&date2=<?=$date2?>">
+                        <button type="button" class="btn btn-default btn-xs">Exporter les ventes de cette période (.csv)</button>
+                      </a>
+                    </td>
+                  </tr>
+                </tfoot>
+              </table>
+              <br><br>
+              <?php
 // Tableau de recap du Chiffre d'Affaire par mode de paiement
 // Utile pour vérifier le fond de caisse en fin de vente
 // Equivalent de la touche 'Z' sur une caisse enregistreuse
