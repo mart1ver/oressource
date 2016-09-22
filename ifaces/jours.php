@@ -172,11 +172,20 @@ $date2ft = DateTime::createFromFormat('d-m-Y', $txt2);
 $time_fin = $date2ft->format('Y-m-d');
 $time_fin = $time_fin." 23:59:59";
 //on determine le nom du type d'objet
- $req = $bdd->prepare("SELECT nom FROM type_dechets WHERE id = :type ");
- $req->execute(array('type' => $_GET['type'] ));
-                    $donnees = $req->fetch();
-                    $req->closeCursor();
-                    $type = $donnees[0]; 
+  $reponse = $bdd->prepare('SELECT nom FROM type_dechets WHERE id = :type');
+            $reponse->execute(array('type' => $_GET['type'] ));
+ 
+           // On affiche chaque entree une à une
+           while ($donnees = $reponse->fetch())
+           {
+$type = $donnees[nom]; 
+
+             }
+              $reponse->closeCursor(); // Termine le traitement de la requête
+
+
+
+
                     
   ?>
 
@@ -185,7 +194,7 @@ $time_fin = $time_fin." 23:59:59";
 
 
 
-<h3>Évolution de la masse totale collectée au textille </h3>
+<h3>Évolution de la masse totale collectée au  <? echo $type ?> </h3>
 <?php 
  $interm = 0;
  $cmpt = 0;
