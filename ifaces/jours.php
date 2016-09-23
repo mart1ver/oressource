@@ -43,6 +43,7 @@ $type = $donnees['nom'];
   <div class="container">
   <div class="row">
   <div class="col-md-11 " >
+   <br>
        <div class="col-md-4 col-md-offset-8" >
      <label for="reportrange">Choisissez la période à inspecter:</label><br>
 
