@@ -231,7 +231,7 @@ $req->execute(array($_POST["d".$i],  $id_sortie , $i, $_POST['id_user']));
 
 }
 
-}
+
 //Vérification des autorisations de l'utilisateur et des variables de session requises pour l'utilisation de cette requête:
  if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 's'.$_GET['numero']) !== false))
 { }
