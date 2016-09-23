@@ -229,11 +229,12 @@ $req->execute(array($_POST["d".$i],  $id_sortie , $i, $_POST['id_user']));
 // Redirection du visiteur vers la page de gestion des affectation
 	header("Location:../ifaces/sortiesc.php?numero=".$_POST['id_point_sortie']);
 
+}
 
 }
 //Vérification des autorisations de l'utilisateur et des variables de session requises pour l'utilisation de cette requête:
  if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 's'.$_GET['numero']) !== false))
-{ 
+{ }
 else { 
  header('Location:../moteur/destroy.php?motif=1');
      }
