@@ -348,7 +348,7 @@ GROUP BY id_type_collecte');
       <?php 
  
             // On recupère tout le contenu de la table affectations
-            $reponse2 = $bdd->prepare('SELECT type_dechets.couleur,type_dechets.nom, sum(pesees_collectes.masse) somme
+            $reponse2 = $bdd->prepare('SELECT type_dechets.id,type_dechets.couleur,type_dechets.nom, sum(pesees_collectes.masse) somme
  FROM type_dechets,pesees_collectes ,type_collecte , collectes
 WHERE
 pesees_collectes.timestamp BETWEEN :du AND :au 
@@ -365,7 +365,8 @@ ORDER BY somme DESC');
 
     <tr class="collapse parmasse<?php echo $donnees['id']?> " >
             <td  >
-              <?php echo $donnees2['nom'] ?>
+             
+              <a href=" jours.php?date1=<?php echo date("d-m-Y")?>&date2=<?php echo date("d-m-Y")?>&type=<?php echo  $donnees2['id'] ?>" > <?php echo $donnees2['nom'] ?> </a>
             </td >
             <td >
                 <?php echo $donnees2['somme']." Kgs." ?>
