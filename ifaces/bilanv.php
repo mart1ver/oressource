@@ -743,7 +743,24 @@ echo round(($cd/$mtee)*1000,2)." €";
 
             </td>    
             <td>
-              <?php echo $certitude."%"; ?>
+              <?php 
+
+
+
+//on traduit le pourcentage en valeur de vert 100% = tout vert    
+$Gvalue = round($certitude * 2.55,0);      
+
+//on traduit le pourcentage en valeur de rouge 0% = tout rouge
+$Rvalue = round(255 - $Gvalue,0);
+
+               ?>
+
+
+ <span class='badge' id='Bcertitude' style='background-color: RGB(<?php echo $Rvalue ?>,<?php echo $Gvalue ?>,0);'>
+<?php echo $certitude."%"; ?>
+ </span>
+              
+
             </td>
         </tr>
         
