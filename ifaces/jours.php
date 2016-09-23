@@ -25,14 +25,25 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
  <script src="../js/morris/morris.min.js"></script>
 
 
+<?php 
+//on determine le nom du type d'objet
+  $reponse = $bdd->prepare('SELECT nom FROM type_dechets WHERE id = :type');
+            $reponse->execute(array('type' => $_GET['type'] ));
+ 
+           // On affiche chaque entree une à une
+           while ($donnees = $reponse->fetch())
+           {
+$type = $donnees['nom']; 
 
+             }
+              $reponse->closeCursor(); // Termine le traitement de la requête
+?>
    </head>
   
   <div class="container">
   <div class="row">
   <div class="col-md-11 " >
-   <h1>Bilan global</h1>
-    <div class="col-md-4 col-md-offset-8" >
+       <div class="col-md-4 col-md-offset-8" >
      <label for="reportrange">Choisissez la période à inspecter:</label><br>
 
       <div id="reportrange" class="pull-left" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc">
@@ -171,17 +182,7 @@ $txt2  = $_GET['date2'];
 $date2ft = DateTime::createFromFormat('d-m-Y', $txt2);
 $time_fin = $date2ft->format('Y-m-d');
 $time_fin = $time_fin." 23:59:59";
-//on determine le nom du type d'objet
-  $reponse = $bdd->prepare('SELECT nom FROM type_dechets WHERE id = :type');
-            $reponse->execute(array('type' => $_GET['type'] ));
- 
-           // On affiche chaque entree une à une
-           while ($donnees = $reponse->fetch())
-           {
-$type = $donnees['nom']; 
 
-             }
-              $reponse->closeCursor(); // Termine le traitement de la requête
 
 
 
