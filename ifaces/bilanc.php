@@ -436,7 +436,7 @@ ORDER BY somme DESC');
  <tr class="collapse parmasse<?php echo $donnees['id']?> active">
     
             <td class="hiddenRow">
-                <a href=" jours.php?date1=<?php echo date("d-m-Y")?>&date2=<?php echo date("d-m-Y")?>&type=<?php echo  $donnees2['id'] ?>" > <?php echo $donnees2['nom'] ?> </a>
+               <a href=" jours.php?date1=<?php echo $_GET['date1']?>&date2=<?php echo $_GET['date2']?>&type=<?php echo  $donnees2['id'] ?>" > <?php echo $donnees2['nom'] ?> </a>
             </td >
             <td class="hiddenRow">
                 <?php echo $donnees2['somme']." Kgs." ?>
@@ -568,7 +568,7 @@ ORDER BY somme DESC');
 
     <tr class="collapse parloc<?php echo $donnees['id']?> " >
             <td  >
-              <a href=" jours.php?date1=<?php echo date("d-m-Y")?>&date2=<?php echo date("d-m-Y")?>&type=<?php echo  $donnees2['id'] ?>" > <?php echo $donnees2['nom'] ?> </a>
+           <a href=" jours.php?date1=<?php echo $_GET['date1']?>&date2=<?php echo $_GET['date2']?>&type=<?php echo  $donnees2['id'] ?>" > <?php echo $donnees2['nom'] ?> </a>
             </td >
             <td >
                 <?php echo $donnees2['somme']." Kgs." ?>
@@ -636,7 +636,7 @@ ORDER BY somme DESC');
  <tr class="collapse parloc<?php echo $donnees['id']?> active">
     
             <td class="hiddenRow">
-                <a href=" jours.php?date1=<?php echo date("d-m-Y")?>&date2=<?php echo date("d-m-Y")?>&type=<?php echo  $donnees2['id'] ?>" > <?php echo $donnees2['nom'] ?> </a>
+               <a href=" jours.php?date1=<?php echo $_GET['date1']?>&date2=<?php echo $_GET['date2']?>&type=<?php echo  $donnees2['id'] ?>" > <?php echo $donnees2['nom'] ?> </a>
             </td >
             <td class="hiddenRow">
                 <?php echo $donnees2['somme']." Kgs." ?>
