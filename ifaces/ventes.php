@@ -1,59 +1,44 @@
 <?php session_start(); 
 
-require_once('../moteur/dbconfig.php');
+require_once '../moteur/dbconfig.php' ;
 
+$numero=htmlspecialchars($_GET['numero']);
 //Vérification des autorisations de l'utilisateur et des variables de session requises pour l'affichage de cette page:
-if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 'v'.$_GET['numero']) !== false))
-      {include "tete_vente.php";?>
+if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 'v'.$numero) !== false)) {
+  include "tete_vente.php";
+  
+  // on détermine la référence de la prochaine vente.
+  $req = $bdd->query("SHOW TABLE STATUS where name='ventes'");
+  $donnees = $req->fetch();
+  $req->closeCursor(); // Libère la connexion au serveur
+  $numero_vente = $donnees['Auto_increment'];
 
-
+  // On affiche le nom du point de vente
+  $req = $bdd->prepare("SELECT * FROM points_vente WHERE id = :id ");
+  $req->execute(array('id' => $numero));
+  $donnees = $req->fetch();
+  $req->closeCursor(); // Libère la connexion au serveur
+  $nom_pv = $donnees['nom'];
+  $adresse_pv = $donnees['adresse'];
+?>
 
 <div class="panel-body">
+  <fieldset>
+    <legend><?=$nom_pv?></legend> 
+  </fieldset>     
 
-      <fieldset>
-      <legend>
-        <?php 
-          // on determine le numero de la vente
-         $req = $bdd->prepare("SELECT max(id) FROM ventes WHERE id_point_vente = :id ");
-            $req->execute(array('id' => $_GET['numero']));
- 
-           // On affiche chaque entrée une à une
-           while ($donnees = $req->fetch())
-           {
-            $numero_vente = $donnees['max(id)'] + 1;
-           }
-              $req->closeCursor(); // Termine le traitement de la requête
-            //on affiche le nom du point de vente
-            // On recupère tout le contenu de la table point de collecte
-          
-            $req = $bdd->prepare("SELECT * FROM points_vente WHERE id = :id ");
-            $req->execute(array('id' => $_GET['numero']));
- 
-           // On affiche chaque entrée une à une
-           while ($donnees = $req->fetch())
-           {
-            echo$donnees['nom'];
-            $nom_pv = $donnees['nom'];
-            $adresse_pv = $donnees['adresse'];
-           }
-              $req->closeCursor(); // Termine le traitement de la requête
-        ?>
-      </legend> 
-      </fieldset>     
-    <div class="row">
-
+  <div class="row">
     <br>
-      <div class="col-md-2 col-md-offset-2" style="width: 330px;" >
-     
+    <div class="col-md-2 col-md-offset-2" style="width: 330px;" >
+      <div class="panel panel-info">
 
-       <div class="panel panel-info">
         <div class="panel-heading">
-    <label class="panel-title">Ticket de caisse:</label>
-    <span class ="badge" id="recaptotal"  style="float:right;">0€
-    </span>
-  </div>
-  <div class="panel-body" id="divID">
-     <form action="../moteur/vente_post.php" id="formulaire" method="post">
+          <label class="panel-title">Ticket de caisse:</label>
+          <span class ="badge" id="recaptotal" style="float:right;">0€</span>
+        </div>
+
+        <div class="panel-body" id="divID">
+          <form action="../moteur/vente_post.php" id="formulaire" method="post">
 
 <?php if ($_SESSION['saisiec'] == 'oui' AND (strpos($_SESSION['niveau'], 'e') !== false) ){ ?>
       Date de la vente:  <input type="date" id="antidate" name="antidate" style="height:20px;" value=<?php echo date("Y-m-d") ?>>
