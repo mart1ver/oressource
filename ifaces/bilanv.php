@@ -470,7 +470,7 @@ GROUP BY type_dechets.nom
             ?>
 
             <tr>
-              <th scope="row"><?php echo $donnees2['nom']?></th>
+              <th scope="row"> <a href=" jours.php?date1=<?php echo $_GET['date1']?>&date2=<?php echo $_GET['date2']?>&type=<?php echo  $donnees2['id'] ?>" > <?php echo $donnees2['nom'] ?> </a></th>
             <td  >
               <?php echo $donnees2['total']." €" ?>
             </td >
@@ -605,7 +605,7 @@ GROUP BY type_dechets.nom
             ?>
 
             <tr>
-              <th scope="row"><?php echo $donnees2['nom']?></th>
+              <th scope="row"> <a href=" jours.php?date1=<?php echo $_GET['date1']?>&date2=<?php echo $_GET['date2']?>&type=<?php echo  $donnees2['id'] ?>" > <?php echo $donnees2['nom'] ?> </a></th>
             <td  >
               <?php echo $donnees2['total']." €";
               $cd = $donnees2['total'];
@@ -1130,7 +1130,7 @@ GROUP BY type_dechets.nom
             ?>
 
             <tr>
-              <th scope="row"><?php echo $donnees2['nom']?></th>
+              <th scope="row"> <a href=" jours.php?date1=<?php echo $_GET['date1']?>&date2=<?php echo $_GET['date2']?>&type=<?php echo  $donnees2['id'] ?>" > <?php echo $donnees2['nom'] ?> </a></th>
             <td  >
               <?php echo $donnees2['total']." €" ?>
             </td >
@@ -1250,7 +1250,7 @@ GROUP BY type_dechets.nom
             ?>
 
             <tr>
-              <th scope="row"><?php echo $donnees2['nom']?></th>
+              <th scope="row"> <a href=" jours.php?date1=<?php echo $_GET['date1']?>&date2=<?php echo $_GET['date2']?>&type=<?php echo  $donnees2['id'] ?>" > <?php echo $donnees2['nom'] ?> </a></th>
             <td  >
               <?php echo $donnees2['total']." €";
               $cd = $donnees2['total'];
