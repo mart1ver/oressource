@@ -551,7 +551,7 @@ GROUP BY id');
       <?php 
  
             // On recupère tout le contenu de la table affectations
-            $reponse2 = $bdd->prepare('SELECT localites.id,type_dechets.couleur,type_dechets.nom, sum(pesees_collectes.masse) somme
+            $reponse2 = $bdd->prepare('SELECT type_dechets.id AS idd,localites.id,type_dechets.couleur,type_dechets.nom, sum(pesees_collectes.masse) somme
  FROM type_dechets,pesees_collectes ,localites , collectes
 WHERE
 pesees_collectes.timestamp BETWEEN :du AND :au 
@@ -568,7 +568,7 @@ ORDER BY somme DESC');
 
     <tr class="collapse parloc<?php echo $donnees['id']?> " >
             <td  >
-           <a href=" jours.php?date1=<?php echo $_GET['date1']?>&date2=<?php echo $_GET['date2']?>&type=<?php echo  $donnees2['id'] ?>" > <?php echo $donnees2['nom'] ?> </a>
+           <a href=" jours.php?date1=<?php echo $_GET['date1']?>&date2=<?php echo $_GET['date2']?>&type=<?php echo  $donnees2['idd'] ?>" > <?php echo $donnees2['nom'] ?> </a>
             </td >
             <td >
                 <?php echo $donnees2['somme']." Kgs." ?>
