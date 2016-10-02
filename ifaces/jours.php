@@ -26,14 +26,15 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
 
 
 <?php 
-//on determine le nom du type d'objet
-  $reponse = $bdd->prepare('SELECT nom FROM type_dechets WHERE id = :type');
+//on determine le nom et la couleur  du type d'objet
+  $reponse = $bdd->prepare('SELECT nom, couleur FROM type_dechets WHERE id = :type');
             $reponse->execute(array('type' => $_GET['type'] ));
  
            // On affiche chaque entree une à une
            while ($donnees = $reponse->fetch())
            {
 $type = $donnees['nom']; 
+$couleur = $donnees['couleur']; 
 
              }
               $reponse->closeCursor(); // Termine le traitement de la requête
@@ -385,6 +386,7 @@ dateFormat: function (ts) {
   } ,
 resize: true,
 fillOpacity:"0.2",
+fillOpacity:<?phpecho'"'.$couleur.'"'?>,
 pointSize: 2 ,
 postUnits: "Kgs." ,
 
