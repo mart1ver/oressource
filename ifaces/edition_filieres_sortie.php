@@ -39,7 +39,7 @@ require_once('../moteur/dbconfig.php');
             $reponse->closeCursor(); // Termine le traitement de la requête
             ?>
     </select>
-  </div>!!
+  </div>
 
     <div class="col-md-3"><label for="description">Description:</label> <input type="text" value ="<?php echo $_GET['description']?>" name="description" id="description" class="form-control " required >
       
