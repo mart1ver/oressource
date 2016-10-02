@@ -269,7 +269,7 @@ echo "<h3>Évolution des masses totales évacuées hors boutique en <?php echo $
              ?> Kgs.
 <div id="sorties" style="height: 180px;"></div>
 <?php } ?>
-<h3>Évolution des quantités de <?php echo $type ?> vendues</h3>
+
 <?php 
  $interm = 0;
  $cmpt = 0;
@@ -296,13 +296,14 @@ $cmpt = $cmpt + 1;
 $masse_moy_jour = 0;   
 
               }else{
-$masse_moy_jour = round($interm/$cmpt,2);   
-echo "Moyenne journalière: ".$masse_moy_jour;}    
+$masse_moy_jour = round($interm/$cmpt,2);  
+if($masse_moy_jour == 0){}else{  
+echo "<h3>Évolution des quantités de <?php echo $type ?> vendues</h3> Moyenne journalière: ".$masse_moy_jour;}    
            
              ?> Pcs.
 <div id="qv" style="height: 180px;"></div>
+<?php } ?>
 
-<h3>Évolution du C.A quotidien <?php echo $type ?></h3>
 <?php 
  $interm = 0;
  $cmpt = 0;
@@ -330,12 +331,13 @@ $masse_moy_jour = 0;
 
               }else{
 $masse_moy_jour = round($interm/$cmpt,2);   }    
-echo "Moyenne journalière: ".$masse_moy_jour;
+if($masse_moy_jour == 0){}else{  
+echo "<h3>Évolution du C.A quotidien <?php echo $type ?></h3> Moyenne journalière: ".$masse_moy_jour;
        
              ?> €.
 <div id="ca" style="height: 180px;"></div>
 
-
+<?php } ?>
 
 
 
