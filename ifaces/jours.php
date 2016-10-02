@@ -242,7 +242,7 @@ echo "<h3>Évolution de la masse totale collectée au ". $type .".</h3> Moyenne 
  $cmpt = 0;
       
             $reponse = $bdd->prepare('SELECT SUM(masse) AS nombre ,  DATE( timestamp ) AS time FROM pesees_sorties
-WHERE DATE(pesees_sorties.timestamp) BETWEEN :du AND :au AND  pesees_collectes.id_type_dechet = :type
+WHERE DATE(pesees_sorties.timestamp) BETWEEN :du AND :au AND  pesees_sorties.id_type_dechet = :type
 GROUP BY DATE_FORMAT( time,  "%Y-%m-%d" ) 
 ORDER BY time');
             $reponse->execute(array('du' => $time_debut,'au' => $time_fin ,'type' => $_GET['type'] ));
