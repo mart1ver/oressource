@@ -59,7 +59,7 @@ require_once('../moteur/dbconfig.php');
             // On affiche chaque entree une à une
            while ($donnees = $reponse->fetch())
            {?>
-                     <input type="checkbox" name="tde<?php echo $donnees['id']; ?>" id="tde<?php echo $donnees['id']; ?>"> <?php echo '<label for="niveaus'.$donnees['id'].'">'.$donnees['nom'].'</label>'; ?> <br><br>
+                     <input type="checkbox" name="tde<?php echo $donnees['id']; ?>" id="tde<?php echo $donnees['id']; ?>"> <?php echo '<label for="tde'.$donnees['id'].'">'.$donnees['nom'].'</label>'; ?> <br><br>
            
               <?php }
               $reponse->closeCursor(); // Termine le traitement de la requête
