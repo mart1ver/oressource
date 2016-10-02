@@ -48,7 +48,11 @@ require_once('../moteur/dbconfig.php');
   <div class="col-md-1"><label for="couleur">Couleur:</label> <input type="color"        value ="<?php echo "#".$_GET['couleur']?>" name="couleur" id="couleur" class="form-control " required ></div>
   <div class="col-md-1"><br><button name="creer" class="btn btn-default">Créer!</button></div>
   
-                                            <div class="alert alert-info"><label for="tde">Type de déchets enlevés:</label><br>
+                                    
+
+</div>
+<div class="row"> 
+        <div class="alert alert-info"><label for="tde">Type de déchets enlevés:</label><br>
           <?php 
             // On recupère tout le contenu de la table point de vente
             $reponse = $bdd->query('SELECT * FROM type_dechets');
@@ -73,8 +77,8 @@ require_once('../moteur/dbconfig.php');
 
 
         </div>
-</form>
 </div>
+</form>
       </div>
       <!-- Table -->
       <table class="table">
