@@ -52,7 +52,7 @@ require_once('../moteur/dbconfig.php');
 
 </div>
 <div class="row"> 
-  <div class="col-md-5">
+  <div class="col-md-7">
         <div class="alert alert-info"><label for="tde">Type de déchets enlevés:</label><br>
           <?php 
             // On recupère tout le contenu de la table point de vente
