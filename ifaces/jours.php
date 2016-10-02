@@ -385,7 +385,7 @@ dateFormat: function (ts) {
   return d.getDate()+'/'+(d.getMonth()+1)+'/'+d.getFullYear();
   } ,
 resize: true,
-fillOpacity:"0.2",
+
 pointSize: 2 ,
 postUnits: "Kgs." ,
 lineColors:"#ffffff",
