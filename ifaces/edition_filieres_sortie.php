@@ -52,7 +52,7 @@ require_once('../moteur/dbconfig.php');
 
 </div>
 <div class="row"> 
-  <div class="col-md-7">
+  <div class="col-md-8">
         <div class="alert alert-info"><label for="tde">Type de déchets enlevés:</label><br>
           <?php 
             // On recupère tout le contenu de la table point de vente
@@ -60,7 +60,7 @@ require_once('../moteur/dbconfig.php');
             // On affiche chaque entree une à une
            while ($donnees = $reponse->fetch())
            {?>
-                     <input type="checkbox" name="tde<?php echo $donnees['id']; ?>" id="tde<?php echo $donnees['id']; ?>"> <?php echo '<label for="tde'.$donnees['id'].'">'.$donnees['nom'].'</label>'; ?>
+                     <input type="checkbox" name="tde<?php echo $donnees['id']; ?>" id="tde<?php echo $donnees['id']; ?>"> <?php echo '<label for="tde'.$donnees['id'].'">'.$donnees['nom'].'.</label> '; ?>
            
               <?php }
               $reponse->closeCursor(); // Termine le traitement de la requête
