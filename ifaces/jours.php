@@ -265,7 +265,7 @@ $masse_moy_jour = 0;
               }else{
 $masse_moy_jour = round($interm/$cmpt,2);   } 
    if($masse_moy_jour == 0){}else{ 
-echo "<h3>Évolution des masses totales évacuées hors boutique en ". $type ."</h3> Moyenne journalière: ".$masse_moy_jour;
+echo "<h3>Évolution des masses totales évacuées hors boutique en ". $type .".</h3> Moyenne journalière: ".$masse_moy_jour;
 
              ?> Kgs.
 <div id="sorties" style="height: 180px;"></div>
