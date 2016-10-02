@@ -223,11 +223,15 @@ $cmpt = $cmpt + 1;
 $masse_moy_jour = 0;   
 
               }else{
-$masse_moy_jour = round($interm/$cmpt,2);   }    
+$masse_moy_jour = round($interm/$cmpt,2);   } 
+if($masse_moy_jour == 0){}else{   
 echo "Moyenne journalière: ".$masse_moy_jour;
 
              ?> Kgs.
 <div id="collectes" style="height: 180px;"></div>
+<?php } ?>
+
+
 
 
 
