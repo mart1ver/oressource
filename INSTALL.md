@@ -1,9 +1,11 @@
 
 # Installation
 
-## Dépendances
 
-`sudo apt-get install apache2 php5-mysql libapache2-mod-php5`
+## Dépendances
+```shell
+sudo apt-get install apache2 php5-mysql libapache2-mod-php5
+```
 
 ## MariaDB/MySQL
 ### Créer un utilisateur
