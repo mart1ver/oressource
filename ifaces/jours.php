@@ -226,7 +226,7 @@ $masse_moy_jour = 0;
               }else{
 $masse_moy_jour = round($interm/$cmpt,2);   } 
 if($masse_moy_jour == 0){}else{   
-echo "<h3>Évolution de la masse totale collectée au". $type ."</h3> Moyenne journalière: ".$masse_moy_jour;
+echo "<h3>Évolution de la masse totale collectée au ". $type .".</h3> Moyenne journalière: ".$masse_moy_jour;
 
              ?> Kgs.
 <div id="collectes" style="height: 180px;"></div>
@@ -299,7 +299,7 @@ $masse_moy_jour = 0;
               }else{
 $masse_moy_jour = round($interm/$cmpt,2);  
 if($masse_moy_jour == 0){}else{  
-echo "<h3>Évolution des quantités de ". $type ." vendues</h3> Moyenne journalière: ".$masse_moy_jour;}    
+echo "<h3>Évolution des quantités de ". $type ." vendues.</h3> Moyenne journalière: ".$masse_moy_jour;}    
            
              ?> Pcs.
 <div id="qv" style="height: 180px;"></div>
@@ -333,7 +333,7 @@ $masse_moy_jour = 0;
               }else{
 $masse_moy_jour = round($interm/$cmpt,2);   }    
 if($masse_moy_jour == 0){}else{  
-echo "<h3>Évolution du C.A quotidien ". $type ."</h3> Moyenne journalière: ".$masse_moy_jour;
+echo "<h3>Évolution du C.A quotidien, ". $type .".</h3> Moyenne journalière: ".$masse_moy_jour;
        
              ?> €.
 <div id="ca" style="height: 180px;"></div>
@@ -388,7 +388,7 @@ resize: true,
 fillOpacity:"0.2",
 pointSize: 2 ,
 postUnits: "Kgs." ,
-  lineColors: ['<?php echo $couleur ?>'],
+lineColors: ['<?php echo $couleur ?>'],
 
 <?php 
 
@@ -468,6 +468,7 @@ resize: true,
 fillOpacity:"0.2",
 pointSize: 2 ,
 postUnits: "Kgs." ,
+lineColors: ['<?php echo $couleur ?>'],
 <?php 
 
  $interm = 0;
@@ -545,6 +546,7 @@ resize: true,
 fillOpacity:"0.2",
 pointSize: 2 ,
 postUnits: "Pcs." ,
+lineColors: ['<?php echo $couleur ?>'],
 <?php 
 
  $interm = 0;
@@ -620,6 +622,7 @@ resize: true,
 fillOpacity:"0.2",
 pointSize: 2 ,
 postUnits: "€" ,
+lineColors: ['<?php echo $couleur ?>'],
 <?php 
 
  $interm = 0;
