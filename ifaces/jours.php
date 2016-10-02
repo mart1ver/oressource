@@ -386,7 +386,7 @@ dateFormat: function (ts) {
   } ,
 resize: true,
 fillOpacity:"0.2",
-fillOpacity:<?php echo'"'.$couleur.'"' ?>,
+lineColors:<?php echo'"'.$couleur.'"' ?>,
 pointSize: 2 ,
 postUnits: "Kgs." ,
 
