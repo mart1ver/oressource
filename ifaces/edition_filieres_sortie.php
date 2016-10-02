@@ -21,6 +21,33 @@ require_once('../moteur/dbconfig.php');
 
 
 
+
+
+
+
+<select name="id_dechet" id="id_dechet" class="form-control " required>
+            <?php 
+            // On affiche une liste déroulante des type de collecte visibles
+            $reponse = $bdd->query('SELECT * FROM type_dechets_evac WHERE visible = "oui"');
+            // On affiche chaque entrée une à une
+            while ($donnees = $reponse->fetch())
+            {
+            ?>
+
+      <option value = "<?php echo$donnees['id']?>" ><?php echo$donnees['nom']?></option>
+            <?php }
+            $reponse->closeCursor(); // Termine le traitement de la requête
+            ?>
+    </select>
+  </div>!!
+
+    <div class="col-md-3"><label for="description">Description:</label> <input type="text" value ="<?php echo $_GET['description']?>" name="description" id="description" class="form-control " required >
+      
+    
+    </div>
+  <div class="col-md-1"><label for="couleur">Couleur:</label> <input type="color"        value ="<?php echo "#".$_GET['couleur']?>" name="couleur" id="couleur" class="form-control " required ></div>
+  <div class="col-md-1"><br><button name="creer" class="btn btn-default">Créer!</button></div>
+  
                                             <div class="alert alert-info"><label for="tde">Type de déchets enlevés:</label><br>
           <?php 
             // On recupère tout le contenu de la table point de vente
@@ -46,31 +73,6 @@ require_once('../moteur/dbconfig.php');
 
 
         </div>
-
-
-
-
-<select name="id_dechet" id="id_dechet" class="form-control " required>
-            <?php 
-            // On affiche une liste déroulante des type de collecte visibles
-            $reponse = $bdd->query('SELECT * FROM type_dechets_evac WHERE visible = "oui"');
-            // On affiche chaque entrée une à une
-            while ($donnees = $reponse->fetch())
-            {
-            ?>
-
-      <option value = "<?php echo$donnees['id']?>" ><?php echo$donnees['nom']?></option>
-            <?php }
-            $reponse->closeCursor(); // Termine le traitement de la requête
-            ?>
-    </select>
-  </div>!!
-    <div class="col-md-3"><label for="description">Description:</label> <input type="text" value ="<?php echo $_GET['description']?>" name="description" id="description" class="form-control " required >
-      
-    
-    </div>
-  <div class="col-md-1"><label for="couleur">Couleur:</label> <input type="color"        value ="<?php echo "#".$_GET['couleur']?>" name="couleur" id="couleur" class="form-control " required ></div>
-  <div class="col-md-1"><br><button name="creer" class="btn btn-default">Créer!</button></div>
 </form>
 </div>
       </div>
