@@ -388,7 +388,7 @@ resize: true,
 fillOpacity:"0.2",
 pointSize: 2 ,
 postUnits: "Kgs." ,
-areaColors:"#ffffff",
+  lineColors: ['<?php echo $couleur ?>'],
 
 <?php 
 
