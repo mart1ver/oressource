@@ -270,7 +270,7 @@ echo "<h3>Évolution des masses totales évacuées hors boutique en ". $type ."<
              ?> Kgs.
 <div id="sorties" style="height: 180px;"></div>
 <?php }
-echo $masse_moy_jour." efsdf"; ?>
+ ?>
 
 <?php 
  $interm = 0;
