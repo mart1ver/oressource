@@ -18,6 +18,38 @@ require_once('../moteur/dbconfig.php');
         	<form action="../moteur/filiere_sortie_post.php" method="post">
   <div class="col-md-3"><label for="nom">Nom:</label> <input type="text"value ="<?php echo $_GET['nom']?>" name="nom" id="nom" class="form-control " required autofocus>
 <label>Type de déchets enlevés:</label>
+
+
+
+                                            <div class="alert alert-info"><label for="tde">Type de déchets enlevés:</label><br>
+          <?php 
+            // On recupère tout le contenu de la table point de vente
+            $reponse = $bdd->query('SELECT * FROM type_dechets');
+            // On affiche chaque entree une à une
+           while ($donnees = $reponse->fetch())
+           {?>
+                     <input type="checkbox" name="tde<?php echo $donnees['id']; ?>" id="tde<?php echo $donnees['id']; ?>"> <?php echo '<label for="niveaus'.$donnees['id'].'">'.$donnees['nom'].'</label>'; ?> <br><br>
+           
+              <?php }
+              $reponse->closeCursor(); // Termine le traitement de la requête
+                 ?>
+
+
+
+
+
+
+
+       
+
+
+
+
+        </div>
+
+
+
+
 <select name="id_dechet" id="id_dechet" class="form-control " required>
             <?php 
             // On affiche une liste déroulante des type de collecte visibles
