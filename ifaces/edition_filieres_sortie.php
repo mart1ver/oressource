@@ -31,7 +31,7 @@ require_once('../moteur/dbconfig.php');
 
 </div>
 <div class="row"> 
-  <div class="col-md-9">
+  <div class="col-md-9"><br>
     <label for="tde">Type de déchets enlevés:</label>
         <div class="alert alert-info">
           <?php 
