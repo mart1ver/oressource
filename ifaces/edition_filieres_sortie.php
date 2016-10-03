@@ -17,28 +17,7 @@ require_once('../moteur/dbconfig.php');
         <div class="row">
         	<form action="../moteur/filiere_sortie_post.php" method="post">
   <div class="col-md-3"><label for="nom">Nom:</label> <input type="text"value ="<?php echo $_GET['nom']?>" name="nom" id="nom" class="form-control " required autofocus>
-<label>Type de déchets enlevés:</label>
 
-
-
-
-
-
-
-<select name="id_dechet" id="id_dechet" class="form-control " required>
-            <?php 
-            // On affiche une liste déroulante des type de collecte visibles
-            $reponse = $bdd->query('SELECT * FROM type_dechets_evac WHERE visible = "oui"');
-            // On affiche chaque entrée une à une
-            while ($donnees = $reponse->fetch())
-            {
-            ?>
-
-      <option value = "<?php echo$donnees['id']?>" ><?php echo$donnees['nom']?></option>
-            <?php }
-            $reponse->closeCursor(); // Termine le traitement de la requête
-            ?>
-    </select>
   </div>
 
     <div class="col-md-4"><label for="description">Description:</label> <input type="text" value ="<?php echo $_GET['description']?>" name="description" id="description" class="form-control " required >
