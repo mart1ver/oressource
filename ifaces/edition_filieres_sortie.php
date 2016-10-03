@@ -64,7 +64,7 @@ require_once('../moteur/dbconfig.php');
                      <input type="checkbox" name="tde<?php echo $donnees['id']; ?>" id="tde<?php echo $donnees['id']; ?>"> <?php echo '<label for="tde'.$donnees['id'].'">'.$donnees['nom'].'.   </label>'; ?>
            
               <?php } ?>
-              <input type="text" name="counttype" id ="counttype">toto<input>
+              <input type="text" name="counttype" id ="counttype" text="toto">
               <?php
               $reponse->closeCursor(); // Termine le traitement de la requête
                  ?>
