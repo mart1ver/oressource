@@ -46,13 +46,13 @@ catch(Exception $e)
 {
         die('Erreur : '.$e->getMessage());
 }
-$reponses = $bdd->query('SELECT id FROM type_dechets_evac');
+$reponsesa = $bdd->query('SELECT id FROM type_dechets_evac');
             // On affiche chaque entree une à une
-           while ($donneess = $reponses->fetch())
+           while ($donneessa = $reponsesa->fetch())
        {
-            if( isset($_POST['tde'.$donneess['id']] ))
+            if( isset($_POST['tde'.$donneessa['id']] ))
            {
-            $id_dechets = $id_dechets."a".$donneess['id'];
+            $id_dechets = $id_dechets."a".$donneessa['id'];
            }
        }
 $reponses->closeCursor(); // Termine le traitement de la requête
