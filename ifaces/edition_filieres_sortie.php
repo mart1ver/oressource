@@ -58,8 +58,8 @@ require_once('../moteur/dbconfig.php');
           <?php 
         
             // On recupère tout le contenu de la table point de vente
-            $reponse = $bdd->query('SELECT * FROM type_dechets');
-            // On affiche chaque entree une à une
+            $reponse = $bdd->query('SELECT * FROM type_dechets_evac');
+            // On affiche chaque entree une à une$_POST
            while ($donnees = $reponse->fetch())
            {?>
                      <input type="checkbox" name="tde<?php echo $donnees['id']; ?>" id="tde<?php echo $donnees['id']; ?>"> <?php echo '<label for="tde'.$donnees['id'].'">'.$donnees['nom'].'.   </label>'; ?>
