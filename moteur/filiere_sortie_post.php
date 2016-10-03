@@ -52,7 +52,7 @@ $reponses = $bdd->query('SELECT id FROM type_dechets_evac');
        {
             if( isset($_POST['tde'.$donneess['id']] ))
            {
-            $id_dechets = $id_dechets."s".$donneess['id'];
+            $id_dechets = $id_dechets."a".$donneess['id'];
            }
        }
 $reponses->closeCursor(); // Termine le traitement de la requête
