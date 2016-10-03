@@ -31,10 +31,34 @@ $req->closeCursor(); // Termine le traitement de la requête
 
 else 
 {
+
+
+
 $req->closeCursor(); // Termine le traitement de la requête
-                
-//martin vert
-// Connexion à la base de données
+
+//on determine le nombre total de type dechets evac
+$id_dechets = "";
+try
+{
+include('dbconfig.php');
+}
+catch(Exception $e)
+{
+        die('Erreur : '.$e->getMessage());
+}
+$reponses = $bdd->query('SELECT id FROM type_dechets_evac');
+            // On affiche chaque entree une à une
+           while ($donneess = $reponses->fetch())
+       {
+            if( isset($_POST['tde'.$donneess['id']] ))
+           {
+            $id_dechets = $id_dechets."s".$donneess['id'];
+           }
+       }
+$reponses->closeCursor(); // Termine le traitement de la requête
+
+
+//on inssere la filiere de recyclage en base
 try
 {
 include('dbconfig.php');
@@ -49,7 +73,7 @@ catch(Exception $e)
 
 // Insertion du post à l'aide d'une requête préparée
 $req = $bdd->prepare('INSERT INTO filieres_sortie (nom,  couleur, description, id_type_dechet_evac, visible) VALUES(?, ?, ?,  ?, ?)');
-$req->execute(array($_POST['nom'],  $_POST['couleur'] , $_POST['description'], $_POST['id_dechet'], "oui"));
+$req->execute(array($_POST['nom'],  $_POST['couleur'] , $_POST['description'], $id_dechets, "oui"));
   $req->closeCursor();
 
 // Redirection du visiteur vers la page de gestion des affectation
