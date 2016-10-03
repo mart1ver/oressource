@@ -55,7 +55,7 @@ $reponsesa = $bdd->query('SELECT id FROM type_dechets_evac');
             $id_dechets = $id_dechets."a".$donneessa['id'];
            }
        }
-$reponses->closeCursor(); // Termine le traitement de la requête
+$reponsesa->closeCursor(); // Termine le traitement de la requête
 
 
 //on inssere la filiere de recyclage en base
