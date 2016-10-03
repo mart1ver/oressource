@@ -53,7 +53,8 @@ require_once('../moteur/dbconfig.php');
 </div>
 <div class="row"> 
   <div class="col-md-9">
-        <div class="alert alert-info"><label for="tde">Type de déchets enlevés:</label><br>
+    <label for="tde">Type de déchets enlevés:</label>
+        <div class="alert alert-info">
           <?php 
             // On recupère tout le contenu de la table point de vente
             $reponse = $bdd->query('SELECT * FROM type_dechets');
