@@ -56,7 +56,7 @@ require_once('../moteur/dbconfig.php');
     <label for="tde">Type de déchets enlevés:</label>
         <div class="alert alert-info">
           <?php 
-          var $counttype = 0;
+        
             // On recupère tout le contenu de la table point de vente
             $reponse = $bdd->query('SELECT * FROM type_dechets');
             // On affiche chaque entree une à une
@@ -64,9 +64,9 @@ require_once('../moteur/dbconfig.php');
            {?>
                      <input type="checkbox" name="tde<?php echo $donnees['id']; ?>" id="tde<?php echo $donnees['id']; ?>"> <?php echo '<label for="tde'.$donnees['id'].'">'.$donnees['nom'].'.   </label>'; ?>
            
+              <?php } ?>
+             
               <?php
-              
-               }
               $reponse->closeCursor(); // Termine le traitement de la requête
                  ?>
 
