@@ -114,8 +114,9 @@ require_once('../moteur/dbconfig.php');
 $req2 = $bdd->prepare("SELECT nom FROM type_dechets_evac WHERE id = :id ");
 $req2->execute(array('id' => $arrayElement));
 $donnees2 = $req2->fetch();
-echo $donnees2['nom']." ";
-
+if($donnees2['nom'] != ""){
+echo $donnees2['nom'].", ";
+}
               $req2->closeCursor(); // Termine le traitement de la requête
 
                        
