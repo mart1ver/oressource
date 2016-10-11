@@ -110,7 +110,16 @@ require_once('../moteur/dbconfig.php');
             <td><?php 
                        foreach (explode("a", $donnees['id_type_dechet_evac']) as $arrayElement)
                       {
-                        echo $arrayElement;
+
+    $req = $bdd->prepare("SELECT nom FROM type_dechet_evac WHERE id = :id ");
+    $req->execute(array('id' => $arrayElement));
+    $donnees = $req->fetch();
+
+
+              $req->closeCursor(); // Termine le traitement de la requête
+
+                       
+
                       }
             ?></td>
 
