@@ -113,10 +113,10 @@ require_once('../moteur/dbconfig.php');
 
 $req2 = $bdd->prepare("SELECT nom FROM type_dechet_evac WHERE id = :id ");
 $req2->execute(array('id' => $arrayElement));
-$donnees2 = $req->fetch();
+$donnees2 = $req2->fetch();
 echo $donnees2['nom'];
 
-              $req->closeCursor(); // Termine le traitement de la requête
+              $req2->closeCursor(); // Termine le traitement de la requête
 
                         echo $arrayElement;
 
