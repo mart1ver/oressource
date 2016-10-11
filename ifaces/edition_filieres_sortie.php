@@ -107,7 +107,7 @@ require_once('../moteur/dbconfig.php');
             <td><?php echo $donnees['nom']?></td>
             <td><?php echo $donnees['description']?></td>
 
-            <td><?php echo  explode("s", $donnees['id_type_dechet_evac']); 
+            <td><?php echo  print_r(explode("s", $donnees['id_type_dechet_evac'])); 
 
 
             ?></td>
