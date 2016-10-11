@@ -92,9 +92,9 @@ require_once('../moteur/dbconfig.php');
 
 
 
-                                             FROM filieres_sortie, type_dechets_evac
+                                             FROM filieres_sortie
 
-                                             WHERE filieres_sortie.id_type_dechet_evac = type_dechets_evac.id  ');
+                                               ');
  
            // On affiche chaque entrée une à une
            while ($donnees = $reponse->fetch())
@@ -107,7 +107,7 @@ require_once('../moteur/dbconfig.php');
             <td><?php echo $donnees['nom']?></td>
             <td><?php echo $donnees['description']?></td>
 
-            <td><?php echo $donnees['filieres_sortie.id_type_dechet_evac']
+            <td><?php echo $donnees['id_type_dechet_evac']
 
 
             ?></td>
