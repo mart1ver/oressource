@@ -86,7 +86,7 @@ require_once('../moteur/dbconfig.php');
                                            filieres_sortie.timestamp, 
                                            filieres_sortie.nom,
                                            filieres_sortie.description,
-                                           type_dechets_evac.nom AS id_type_dechet_evac,
+                                           filieres_sortie.id_type_dechet_evac,
                                            filieres_sortie.couleur,
                                            filieres_sortie.visible
 
@@ -106,7 +106,13 @@ require_once('../moteur/dbconfig.php');
             <td><?php echo $donnees['timestamp']?></td>
             <td><?php echo $donnees['nom']?></td>
             <td><?php echo $donnees['description']?></td>
-            <td><?php echo $donnees['id_type_dechet_evac']?></td>
+
+            <td><?php echo $donnees['filieres_sortie.id_type_dechet_evac']
+
+
+            ?></td>
+
+
            <td><span class="badge" style="background-color:<?php echo$donnees['couleur']?>"><?php echo$donnees['couleur']?></span></td> 
 <td>
 <form action="../moteur/filiere_sortie_visible.php" method="post">
