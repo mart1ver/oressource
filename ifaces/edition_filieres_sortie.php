@@ -107,9 +107,11 @@ require_once('../moteur/dbconfig.php');
             <td><?php echo $donnees['nom']?></td>
             <td><?php echo $donnees['description']?></td>
 
-            <td><?php echo(implode("", explode("a", $donnees['id_type_dechet_evac']))); 
-
-
+            <td><?php 
+                       foreach (explode("a", $donnees['id_type_dechet_evac']) as $arrayElement)
+                      {
+                        echo $arrayElement;
+                      }
             ?></td>
 
 
