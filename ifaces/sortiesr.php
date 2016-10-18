@@ -198,8 +198,8 @@ function tdechet_clear()
 
 <ul class="list-group">
   <li class="list-group-item">
-   <input type="hidden" value="0" name ="<?php echo "d".$donnees['id']?>" id="<?php echo "m".$donnees['id']?>">
-    <span class="badge" id="d.<?php echo$donnees['nom']?>"style="background-color:<?php echo$donnees['couleur']?>">0</span>
+   <input type="hidden" value="0" name ="<?php echo "d".$donnees['id']?>" id="<?php echo "d".$donnees['id']?>">
+    <span class="badge" id="d<?php echo$donnees['nom']?>"style="background-color:<?php echo$donnees['couleur']?>">0</span>
     <?php echo$donnees['nom']?>
 
   </li>
