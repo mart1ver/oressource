@@ -119,4 +119,9 @@ function tdechet_add(pesee_max) {
   ref.disabled = true;
   masse_write(document.getElementById(tabref[1]), document.getElementById("m"+tabref[1]), pesee_max, 0.0);
 }
+function aff_dechets_recycle() {
+  const ref2 = document.getElementById("sel_filiere");
+  const tabref2 = ref2.value.split('|');
+  ref.disabled = true;
 
+}

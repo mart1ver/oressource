@@ -233,7 +233,7 @@ function tdechet_clear()
   <div class="panel-body"> 
            
 
-          <select name ="sel_filiere" id ="sel_filiere" class="form-control " autofocus required>
+          <select name ="sel_filiere" id ="sel_filiere" class="form-control " onchange="if (this.selectedIndex) aff_dechets_recycle();" autofocus required>
             <option value = "0" disabled selected></option>
 
 
