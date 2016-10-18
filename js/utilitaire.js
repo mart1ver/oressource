@@ -58,6 +58,26 @@ function masse_write(nom, id, masse_max, masse_bac) {
   }
 }
 
+function aff_dechets_recycle() {
+  const ref2 = document.getElementById("sel_filiere");
+  const tabref2 = ref2.value.split('|');
+  ref2.disabled = true;
+    const id_filiere = document.getElementById("id_filiere");
+  id_filiere.value = tabref2[0];
+
+  
+
+  const type_dechet = document.getElementById("type_dechet");
+  type_dechet.value = tabref2[1];
+
+  const tabtyps = tabref2.value.split('a');
+  for (index = 0, len = tabtyps.length; index < len; ++index) {
+    console.log(tabtyps[index]);
+}
+
+}
+
+
 function masse_write_recycle(nom, id, masse_max, masse_bac) {
     const ref = document.getElementById("sel_filiere");
   const tabref = ref.value.split('|');
@@ -118,10 +138,4 @@ function tdechet_add(pesee_max) {
 
   ref.disabled = true;
   masse_write(document.getElementById(tabref[1]), document.getElementById("m"+tabref[1]), pesee_max, 0.0);
-}
-function aff_dechets_recycle() {
-  const ref2 = document.getElementById("sel_filiere");
-  const tabref2 = ref2.value.split('|');
-  ref2.disabled = true;
-
 }
