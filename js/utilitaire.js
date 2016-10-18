@@ -70,7 +70,7 @@ function aff_dechets_recycle() {
   const type_dechet = document.getElementById("type_dechet");
   type_dechet.value = tabref2[1];
 
-  const tabtyps = tabref2[1].value.split('a');
+  const tabtyps = type_dechet.value.split('a');
   for (index = 0, len = tabtyps.length; index < len; ++index) {
     console.log(tabtyps[index]);
 }
