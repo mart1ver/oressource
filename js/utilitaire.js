@@ -122,6 +122,6 @@ function tdechet_add(pesee_max) {
 function aff_dechets_recycle() {
   const ref2 = document.getElementById("sel_filiere");
   const tabref2 = ref2.value.split('|');
-  ref.disabled = true;
+  ref2.disabled = true;
 
 }
