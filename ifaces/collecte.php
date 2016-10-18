@@ -304,7 +304,7 @@ function encaisse() {
   </div>
   <div class="panel-body">
 <?php
-    // On recupère tout le contenu de la table point de collecte
+    // On recupère tout le contenu de la table type_dechets WHERE visible = "oui"
     $reponse = $bdd->query('SELECT * FROM type_dechets WHERE visible = "oui"');
     // On affiche chaque entree une à une
     while ($donnees = $reponse->fetch()) {
