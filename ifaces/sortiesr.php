@@ -239,12 +239,12 @@ function tdechet_clear()
 
 <?php 
           
-            // On recupère tout le contenu de la table point de collecte
-            $reponse = $bdd->query('SELECT filieres_sortie.id ,filieres_sortie.nom , filieres_sortie.id_type_dechet_evac, type_dechets_evac.nom AS type_dechet
+            // 
+            $reponse = $bdd->query('SELECT filieres_sortie.id ,filieres_sortie.nom , filieres_sortie.id_type_dechet_evac AS type_dechet
 
 FROM filieres_sortie , type_dechets_evac
 
-WHERE filieres_sortie.visible = "oui" AND filieres_sortie.id_type_dechet_evac = type_dechets_evac.id');
+WHERE filieres_sortie.visible = "oui" ');
  
            // On affiche chaque entree une à une
            while ($donnees = $reponse->fetch())
@@ -394,7 +394,7 @@ WHERE filieres_sortie.visible = "oui" AND filieres_sortie.id_type_dechet_evac = 
 <span class="badge" id="cool"
  style="background-color:<?php echo$donnees['couleur']?>"><?php echo $donnees['nom']?></span>
  </button>
- 
+
     </div>
                 <?php }
                 $reponse->closeCursor(); // Termine le traitement de la requête
