@@ -132,7 +132,7 @@ $req->execute(array('id_sortie' => $_GET['nsortie']));
             <tr> 
             <td><?php echo $donnees['id']?></td>
             <td><?php echo $donnees['timestamp']?></td>
-            <td><?php echo $donnees['nom']?></td>
+            <td><span class="badge" id="cool" style="background-color:<?php echo$donnees['couleur']?>"><?php echo$donnees['nom']?></span></td>
             <td><?php echo $donnees['masse']?></td>
            
 
