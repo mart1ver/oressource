@@ -75,7 +75,7 @@ function aff_dechets_recycle() {
   for (index = 0, len = tabtyps.length; index < len; ++index) {
     console.log(tabtyps[index]);
 
-    document.getElementById("bd"+tabtyps[index]).style.display = "block";
+    
 }
 
 }
