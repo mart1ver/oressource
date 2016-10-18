@@ -74,13 +74,13 @@ function aff_dechets_recycle() {
   
   for (index = 0, len = tabref2[1].split('a').length; index < len; ++index) {
     bname = tabref2[1].split('a');
-    console.log(bname);
+    
     
     
 
     if(parseInt(bname[index] > 0)){
-      
-document.getElementById(bname[index]).style.display = "block";
+      console.log(bname);
+      document.getElementById(bname[index]).style.display = "block";
     }
 }
 
