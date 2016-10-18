@@ -78,7 +78,7 @@ function aff_dechets_recycle() {
     
     
 
-    if(parseInt(bname[index]) > 0)){
+    if(parseInt(bname[index]) > 0){
       console.log(bname);
       document.getElementById(bname[index]).style.display = "block";
     }
