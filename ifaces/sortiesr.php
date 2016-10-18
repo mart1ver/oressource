@@ -383,7 +383,7 @@ WHERE filieres_sortie.visible = "oui" AND filieres_sortie.id_type_dechet_evac = 
       <div class="btn-group">
       <button class="btn btn-default" style="margin-left:8px; margin-top:16px;"
               onclick="if (parseInt(document.getElementById('sel_filiere').value) != 0){
-              masse_write(
+              masse_write_recycle(
                        document.getElementById('<?php echo"d".$donnees['nom']?>'),
                        document.getElementById('<?php echo "d".$donnees['id']?>'),
                        <?php echo($pesee_max); ?>,

@@ -58,6 +58,46 @@ function masse_write(nom, id, masse_max, masse_bac) {
   }
 }
 
+function masse_write_recycle(nom, id, masse_max, masse_bac) {
+    const ref = document.getElementById("sel_filiere");
+  const tabref = ref.value.split('|');
+
+  const id_filiere = document.getElementById("id_filiere");
+  id_filiere.value = tabref[0];
+
+  const id_type_dechet = document.getElementById("id_type_dechet");
+  id_type_dechet.value = tabref[1];
+
+  const type_dechet = document.getElementById("type_dechet");
+  type_dechet.value = tabref[2];
+
+
+  ref.disabled = true;
+  const input = document.getElementById("number");
+  const number_value = parseFloat(input.value);
+  const masse_reele = number_value - masse_bac;
+
+  if (masse_reele > 0.00) {
+    if (number_value <= masse_max) {
+      const masseTotale = document.getElementById("massetot");
+      masseTotale.textContent = (parseFloat(masseTotale.textContent) + masse_reele).toFixed(2);
+
+      id.value = (parseFloat(id.value) + masse_reele).toFixed(2);
+      nom.textContent = (parseFloat(nom.textContent) + masse_reele).toFixed(2);
+      input.value = "";
+
+      const nAjout = document.getElementById("najout");
+      nAjout.value = parseInt(nAjout.value) + 1;
+
+      number_clear();
+    } else {
+      input.setCustomValidity("Masse supérieure aux limites de pesée de la balance.");
+    }
+  } else {
+      input.setCustomValidity("Masse entrée inférieure au poids du conteneur ou inférieure ou égale à 0.");
+  }
+}
+
 function recocom() {
   document.getElementById("commentaire").value =
     document.getElementById("commentaireini").value;
