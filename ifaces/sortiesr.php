@@ -252,7 +252,7 @@ WHERE filieres_sortie.visible = "oui" ');
 
            ?>
 
-  <option value = "<?php echo$donnees['id']?>|<?php echo$donnees['id_type_dechet_evac']?>|<?php echo$donnees['type_dechet']?>" ><?php echo$donnees['nom']?></option>
+  <option value = "<?php echo$donnees['id']?>|<?php echo$donnees['type_dechet']?>" ><?php echo$donnees['nom']?></option>
  
 
      

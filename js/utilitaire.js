@@ -65,11 +65,10 @@ function masse_write_recycle(nom, id, masse_max, masse_bac) {
   const id_filiere = document.getElementById("id_filiere");
   id_filiere.value = tabref[0];
 
-  const id_type_dechet = document.getElementById("id_type_dechet");
-  id_type_dechet.value = tabref[1];
+  
 
   const type_dechet = document.getElementById("type_dechet");
-  type_dechet.value = tabref[2];
+  type_dechet.value = tabref[1];
 
 
   ref.disabled = true;
