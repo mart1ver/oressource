@@ -372,8 +372,7 @@ WHERE filieres_sortie.visible = "oui" AND filieres_sortie.id_type_dechet_evac = 
   <div class="panel-body" style:"text-align:center"> 
 
   
-  <button class="btn btn-default " onclick="if (parseInt(document.getElementById('sel_filiere').value) != 0){tdechet_add(<?php echo($pesee_max); ?>);}" style="width:260px;height:130px;" ><span class="glyphicon glyphicon-plus"></span></button>
-
+  
 <?php
     // On recupère tout le contenu de la table point de collecte
   $reponse = $bdd->query('SELECT * FROM type_dechets_evac WHERE visible = "oui"');
@@ -381,6 +380,7 @@ WHERE filieres_sortie.visible = "oui" AND filieres_sortie.id_type_dechet_evac = 
   while ($donnees = $reponse->fetch()) {
 ?>
       <div class="btn-group">
+
       <button class="btn btn-default" style="margin-left:8px; margin-top:16px;"
               onclick="if (parseInt(document.getElementById('sel_filiere').value) != 0){
               masse_write_recycle(
@@ -394,6 +394,7 @@ WHERE filieres_sortie.visible = "oui" AND filieres_sortie.id_type_dechet_evac = 
 <span class="badge" id="cool"
  style="background-color:<?php echo$donnees['couleur']?>"><?php echo $donnees['nom']?></span>
  </button>
+ 
     </div>
                 <?php }
                 $reponse->closeCursor(); // Termine le traitement de la requête

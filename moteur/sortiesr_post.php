@@ -20,14 +20,14 @@ $antidate = $_POST['antidate'].date(" H:i:s");
 {
         die('Erreur : '.$e->getMessage());
 }
-// Insertion de la collecte (sans les pesées) l'aide d'une requête préparée
+// Insertion de la sortie recycleurs (sans les pesées) l'aide d'une requête préparée
   $req = $bdd->prepare('INSERT INTO sorties (timestamp,id_filiere , classe, id_point_sortie, commentaire, id_createur) VALUES(?,?, ?, ?, ?, ?)');
   $req->execute(array($antidate,$_POST['id_filiere'], "sortiesr", $_POST['id_point_sortie'], $_POST['commentaire'], $_POST['id_user']));
   $id_sortie = $bdd->lastInsertId();
     $req->closeCursor();
 
 
-//insertion des pessés dans la table pesées_collectes
+//insertion des pessés 
 //on determine '$nombrecat' le nombre de categories maxi (soit l'id maximum)  
             try
             {
@@ -51,7 +51,7 @@ $antidate = $_POST['antidate'].date(" H:i:s");
 while ($i <= $nombrecat)
 {
    //on inserre les valeures pour chaque 'i' ($i = id_type dechet) si elles sonts superieures à 0  
-if ($_POST["m".$i] > 0) 
+if ($_POST["d".$i] > 0) 
 {
 try
 {
@@ -63,7 +63,7 @@ catch(Exception $e)
 }
 // Insertion du post à l'aide d'une requête préparée
 $req = $bdd->prepare('INSERT INTO pesees_sorties (timestamp,masse,  id_sortie, id_type_dechet_evac, id_createur) VALUES(?,?, ?, ?, ?)');
-$req->execute(array($antidate,$_POST["m".$i],  $id_sortie , $i, $_POST['id_user']));
+$req->execute(array($antidate,$_POST["d".$i],  $id_sortie , $i, $_POST['id_user']));
   $req->closeCursor();
 }
     $i++;
@@ -101,7 +101,7 @@ else{
     $req->closeCursor();
 
 
-//insertion des pessés dans la table pesées_collectes
+//insertion des pessés dans la table 
 //on determine '$nombrecat' le nombre de categories maxi (soit l'id maximum)  
             try
             {
@@ -137,7 +137,7 @@ catch(Exception $e)
 }
 // Insertion du post à l'aide d'une requête préparée
 $req = $bdd->prepare('INSERT INTO pesees_sorties (masse,  id_sortie, id_type_dechet_evac, id_createur) VALUES(?,?, ?, ?)');
-$req->execute(array($_POST["m".$i],  $id_sortie , $i, $_POST['id_user']));
+$req->execute(array($_POST["d".$i],  $id_sortie , $i, $_POST['id_user']));
   $req->closeCursor();
 }
     $i++;
