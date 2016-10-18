@@ -367,7 +367,7 @@ WHERE filieres_sortie.visible = "oui" ');
         
         <div class="panel panel-info">
         <div class="panel-heading">
-    <h3 class="panel-title"><label>Ajouter la pesée</label></h3>
+    <h3 class="panel-title"><label>Matériaux et déchets:</label></h3>
   </div>
   <div class="panel-body" style:"text-align:center"> 
 
