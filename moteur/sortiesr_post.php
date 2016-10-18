@@ -125,7 +125,7 @@ else{
 while ($i <= $nombrecat)
 {
    //on inserre les valeures pour chaque 'i' ($i = id_type dechet) si elles sonts superieures à 0  
-if ($_POST["m".$i] > 0) 
+if ($_POST["d".$i] > 0) 
 {
 try
 {
