@@ -92,7 +92,7 @@ require_once('../moteur/dbconfig.php');
           <tr>
             <th>#</th>
             <th>Date de création</th>
-           
+            <th>Type de déchet:</th>
             <th>Masse</th>
             <th></th>
             
@@ -132,7 +132,7 @@ $req->execute(array('id_sortie' => $_GET['nsortie']));
             <tr> 
             <td><?php echo $donnees['id']?></td>
             <td><?php echo $donnees['timestamp']?></td>
-           
+            <td><?php echo $donnees['nom']?></td>
             <td><?php echo $donnees['masse']?></td>
            
 
