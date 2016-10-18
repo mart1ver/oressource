@@ -242,7 +242,7 @@ function tdechet_clear()
             // 
             $reponse = $bdd->query('SELECT filieres_sortie.id ,filieres_sortie.nom , filieres_sortie.id_type_dechet_evac AS type_dechet
 
-FROM filieres_sortie , type_dechets_evac
+FROM filieres_sortie 
 
 WHERE filieres_sortie.visible = "oui" ');
  
