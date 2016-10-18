@@ -81,3 +81,20 @@ function tdechet_add(pesee_max) {
   masse_write(document.getElementById(tabref[1]), document.getElementById("m"+tabref[1]), pesee_max, 0.0);
 }
 
+function tdechet_add_evac(pesee_max) {
+  const ref = document.getElementById("sel_filiere");
+  const tabref = ref.value.split('|');
+
+  const id_filiere = document.getElementById("id_filiere");
+  id_filiere.value = tabref[0];
+
+  const id_type_dechet = document.getElementById("id_type_dechet");
+  id_type_dechet.value = tabref[1];
+
+  const type_dechet = document.getElementById("type_dechet");
+  type_dechet.value = tabref[2];
+
+
+  ref.disabled = true;
+  masse_write(document.getElementById(tabref[1]), document.getElementById("m"+tabref[1]), pesee_max, 0.0);
+}

@@ -388,7 +388,7 @@ WHERE filieres_sortie.visible = "oui" AND filieres_sortie.id_type_dechet_evac = 
                        <?php echo($pesee_max); ?>,
                        0.0);">
 <span class="badge" id="cool"
- style="background-color:<?php echo$donnees['couleur']?>"><?php echo$donnees['nom']?></span>
+ style="background-color:<?php echo$donnees['couleur']?>"><?php echo "d".$donnees['nom']?></span>
  </button>
     </div>
                 <?php }
