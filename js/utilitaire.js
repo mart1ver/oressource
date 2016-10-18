@@ -59,6 +59,7 @@ function masse_write(nom, id, masse_max, masse_bac) {
 }
 
 function aff_dechets_recycle() {
+  var index, len;
   const ref2 = document.getElementById("sel_filiere");
   const tabref2 = ref2.value.split('|');
   ref2.disabled = true;
