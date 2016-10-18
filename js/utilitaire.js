@@ -72,7 +72,7 @@ function aff_dechets_recycle() {
   type_dechet.value = tabref2[1];
 
   
-  for (index = 0, len = tabtyps.length; index < len; ++index) {
+  for (index = 0, len = tabref2[1].split('a').length; index < len; ++index) {
     
     console.log(tabref2[1].split('a'));
     
