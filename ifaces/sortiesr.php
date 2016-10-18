@@ -382,13 +382,17 @@ WHERE filieres_sortie.visible = "oui" AND filieres_sortie.id_type_dechet_evac = 
 ?>
       <div class="btn-group">
       <button class="btn btn-default" style="margin-left:8px; margin-top:16px;"
-              onclick="masse_write(
+              onclick="
+              masse_write(if (parseInt(document.getElementById('sel_filiere').value) != 0){
                        document.getElementById('<?php echo"d".$donnees['nom']?>'),
                        document.getElementById('<?php echo "d".$donnees['id']?>'),
                        <?php echo($pesee_max); ?>,
-                       0.0);">
+                       0.0);}
+
+
+                       ">
 <span class="badge" id="cool"
- style="background-color:<?php echo$donnees['couleur']?>"><?php echo "d".$donnees['nom']?></span>
+ style="background-color:<?php echo$donnees['couleur']?>"><?php echo $donnees['nom']?></span>
  </button>
     </div>
                 <?php }
