@@ -59,7 +59,7 @@ function masse_write(nom, id, masse_max, masse_bac) {
 }
 
 function aff_dechets_recycle() {
-  var index, len;
+  var index, len, bname;
   const ref2 = document.getElementById("sel_filiere");
   const tabref2 = ref2.value.split('|');
   ref2.disabled = true;
@@ -74,7 +74,8 @@ function aff_dechets_recycle() {
   const tabtyps = tabref2[1].split('a');
   for (index = 0, len = tabtyps.length; index < len; ++index) {
     console.log(tabtyps[index]);
-document.getElementById(tabtyps[index]).style.display = "block";
+    bname = tabtyps[index]
+document.getElementById(bname).style.display = "block";
     
 }
 
