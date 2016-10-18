@@ -77,8 +77,9 @@ function aff_dechets_recycle() {
     console.log(tabref2[1].split('a'));
     
     bname = tabtyps[index]
+    if(parseInt(bname > 0)){
 document.getElementById(bname).style.display = "block";
-    
+    }
 }
 
 }
