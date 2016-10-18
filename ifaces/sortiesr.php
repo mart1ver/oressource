@@ -375,22 +375,25 @@ WHERE filieres_sortie.visible = "oui" AND filieres_sortie.id_type_dechet_evac = 
   <button class="btn btn-default " onclick="if (parseInt(document.getElementById('sel_filiere').value) != 0){tdechet_add(<?php echo($pesee_max); ?>);}" style="width:260px;height:130px;" ><span class="glyphicon glyphicon-plus"></span></button>
 
 <?php
-    // On recupère tout le contenu de la table type_dechets_evac WHERE visible = "oui"
-    $reponse = $bdd->query('SELECT * FROM type_dechets_evac WHERE visible = "oui"');
-    // On affiche chaque entree une à une
-    while ($donnees = $reponse->fetch()) {
-    ?>
+    // On recupère tout le contenu de la table point de collecte
+  $reponse = $bdd->query('SELECT * FROM type_dechets_evac WHERE visible = "oui"');
+  // On affiche chaque entree une à une
+  while ($donnees = $reponse->fetch()) {
+?>
       <div class="btn-group">
       <button class="btn btn-default" style="margin-left:8px; margin-top:16px;"
-              onclick="tdechet_add(<?php echo($pesee_max); ?>);">
+              onclick="masse_write(
+                       document.getElementById('<?php echo"d".$donnees['nom']?>'),
+                       document.getElementById('<?php echo "d".$donnees['id']?>'),
+                       <?php echo($pesee_max); ?>,
+                       0.0);">
 <span class="badge" id="cool"
-style="background-color:<?php echo$donnees['couleur']?>"><?php echo$donnees['nom']?></span>
+ style="background-color:<?php echo$donnees['couleur']?>"><?php echo$donnees['nom']?></span>
  </button>
     </div>
-<?php
-    }
-    $reponse->closeCursor(); // Termine le traitement de la requête
-?>
+                <?php }
+                $reponse->closeCursor(); // Termine le traitement de la requête
+                ?>
 
 </div>
 </div>
