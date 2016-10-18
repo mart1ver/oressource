@@ -79,7 +79,8 @@ function aff_dechets_recycle() {
     
 
     if(parseInt(bname[index] > 0)){
-document.getElementById(bname).style.display = "block";
+      
+document.getElementById(bname[index]).style.display = "block";
     }
 }
 
