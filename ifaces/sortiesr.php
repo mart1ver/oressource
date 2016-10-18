@@ -382,11 +382,7 @@ WHERE filieres_sortie.visible = "oui" AND filieres_sortie.id_type_dechet_evac = 
     ?>
       <div class="btn-group">
       <button class="btn btn-default" style="margin-left:8px; margin-top:16px;"
-              onclick="masse_write(
-                document.getElementById('<?php echo$donnees['nom']?>'),
-                document.getElementById('<?php echo$donnees['id']?>'),
-                <?php echo($pesee_max); ?>,
-                0.0);">
+              onclick="tdechet_add(<?php echo($pesee_max); ?>);">
 <span class="badge" id="cool"
 style="background-color:<?php echo$donnees['couleur']?>"><?php echo$donnees['nom']?></span>
  </button>
