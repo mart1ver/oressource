@@ -24,7 +24,31 @@
     <input type="hidden" name ="npoint" id="npoint" value="<?php echo $_POST['npoint']?>">
 
 
+<div class="col-md-3">
 
+<label for="id_type_dechet">Type de dechet:</label>
+<select name="id_type_dechet" id="id_type_dechet" class="form-control " required>
+            <?php 
+            // On affiche une liste deroulante des type de collecte visibles
+            $reponse = $bdd->query('SELECT * FROM type_dechets_evac WHERE visible = "oui"');
+            // On affiche chaque entree une à une
+            while ($donnees = $reponse->fetch())
+            {
+              if ($_POST['nomtypo'] == $donnees['nom'])  // SI on a pas de message d'erreur
+{
+  ?>
+    <option value = "<?php echo$donnees['id']?>" selected ><?php echo$donnees['nom']?></option>
+<?php
+} else {
+            ?>
+
+      <option value = "<?php echo$donnees['id']?>" ><?php echo$donnees['nom']?></option>
+            <?php }}
+            $reponse->closeCursor(); // Termine le traitement de la requête
+            ?>
+    </select>
+      
+  </div>
 
 <div class="col-md-3">
 
