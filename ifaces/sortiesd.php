@@ -249,7 +249,7 @@ function tdechet_clear()
 
 <br><br>
 
-   <div class="col-md-3" style="width: 220px;" >
+   <div class="col-md-2" style="width: 220px;" >
 
 
   <div class="panel panel-info">
