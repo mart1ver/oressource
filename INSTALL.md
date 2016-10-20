@@ -7,6 +7,12 @@ Instalation sous linux (debian/ubuntu)
 sudo apt-get install apache2 php5-mysql libapache2-mod-php5
 ```
 
+## clone du projet
+```shell
+cd ~
+git clone http://github.com/mart1ver/oressouurce.git
+```
+
 ## MariaDB/MySQL
 ### Créer un utilisateur
 
