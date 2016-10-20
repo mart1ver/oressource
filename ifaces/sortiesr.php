@@ -85,7 +85,7 @@ function tdechet_clear()
            ?>
     document.getElementById('<?php echo$donnees['id']?>').textContent = "0"  ;
     document.getElementById('m'+<?php echo$donnees['id']?>).value = "0" ; 
-    document.getElementById(<?php echo$donnees['id']?>).style.display = "false";
+    document.getElementById('b'<?php echo$donnees['id']?>).style.display = "none";
 <?php }
 
               $reponse->closeCursor(); // Termine le traitement de la requête
@@ -383,8 +383,8 @@ WHERE filieres_sortie.visible = "oui" ');
       <div class="btn-group">
 
       <button class="btn btn-default" style="margin-left:8px; margin-top:16px;display: none;"
-              name="<?php echo $donnees['id']?>"
-              id="<?php echo $donnees['id']?>"      
+              name="<?php echo"b".$donnees['id']?>"
+              id="<?php echo "b".$donnees['id']?>"      
               onclick="if (parseInt(document.getElementById('sel_filiere').value) != 0){
               masse_write_recycle(
                        document.getElementById('<?php echo"d".$donnees['nom']?>'),
