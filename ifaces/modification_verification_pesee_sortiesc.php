@@ -32,7 +32,7 @@ require_once("../moteur/dbconfig.php");
       { ?>
   <div class="col-md-3">
   <label for="id_type_dechet">Type d'objet:</label>
-<select name="id_type_dechet" id="id_type_dechet" class="form-control " required>
+<select name="id_type_dechet_evac" id="id_type_dechet_evac" class="form-control " required>
             <?php 
             // On affiche une liste deroulante des type de collecte visibles
             $reponse = $bdd->query('SELECT * FROM type_dechets ');
