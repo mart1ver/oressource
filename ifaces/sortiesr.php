@@ -84,8 +84,8 @@ function tdechet_clear()
 
            ?>
     document.getElementById('<?php echo$donnees['id']?>').textContent = "0"  ;
-    document.getElementById('m'<?php echo$donnees['id']?>).value = "0" ; 
-    document.getElementById('b'<?php echo$donnees['id']?>).style.display = "none";
+    document.getElementById('m<?php echo$donnees['id']?>').value = "0" ; 
+    document.getElementById('b<?php echo$donnees['id']?>').style.display = "none";
 <?php }
 
               $reponse->closeCursor(); // Termine le traitement de la requête
