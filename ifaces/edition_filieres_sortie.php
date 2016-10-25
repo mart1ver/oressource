@@ -163,7 +163,7 @@ else // SINON
 <input type="hidden" name ="nom" id="nom" value="<?php echo $donnees['nom']?>">
 <input type="hidden" name ="description" id="description" value="<?php echo $donnees['description']?>">
 <input type="hidden" name ="couleur" id="couleur" value="<?php echo substr($_POST['couleur'],1)?>">
-<input type="hidden" name ="id_type_dechet_evac" id="id_type_dechet" value="<?php echo $donnees['id_type_dechet']?>">
+<input type="hidden" name ="id_type_dechet_evac" id="id_type_dechet" value="<?php echo $donnees['id_type_dechet_evac']?>">
   <button  class="btn btn-warning btn-sm" >Modifier!</button>
 
 
