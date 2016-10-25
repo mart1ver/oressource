@@ -84,7 +84,7 @@ function tdechet_clear()
 
            ?>
     document.getElementById('<?php echo$donnees['id']?>').textContent = "0"  ;
-    document.getElementById('m<?php echo$donnees['id']?>').value = "0" ; 
+    document.getElementById('d<?php echo$donnees['id']?>').value = "0" ; 
     document.getElementById('b<?php echo$donnees['id']?>').style.display = "none";
 <?php }
 
@@ -200,7 +200,7 @@ function tdechet_clear()
 <ul class="list-group">
   <li class="list-group-item">
    <input type="hidden" value="0" name ="<?php echo "d".$donnees['id']?>" id="<?php echo "d".$donnees['id']?>">
-    <span class="badge" id="d<?php echo$donnees['nom']?>"style="background-color:<?php echo$donnees['couleur']?>">0</span>
+    <span class="badge" id="d<?php echo$donnees['id']?>"style="background-color:<?php echo$donnees['couleur']?>">0</span>
     <?php echo$donnees['nom']?>
 
   </li>
