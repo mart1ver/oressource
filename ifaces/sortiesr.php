@@ -68,9 +68,9 @@ function printdiv(divID)
 
 function tdechet_clear()
 {
-  document.getElementById("id_filiere").value = ""
-   document.getElementById("id_type_dechet").value = ""
-    document.getElementById("type_dechet").value = ""
+  document.getElementById("id_filiere").value = "";
+   document.getElementById("id_type_dechet").value = "";
+    document.getElementById("type_dechet").value = "";
     document.getElementById("sel_filiere").disabled = false;
     document.getElementById("number").value = "";
 <?php 
