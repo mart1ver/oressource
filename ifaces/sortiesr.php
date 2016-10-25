@@ -72,6 +72,7 @@ function tdechet_clear()
    document.getElementById("id_type_dechet").value = "";
     document.getElementById("type_dechet").value = "";
     document.getElementById("sel_filiere").disabled = false;
+    document.getElementById("sel_filiere").value = "0";
     document.getElementById("number").value = "";
 <?php 
           
