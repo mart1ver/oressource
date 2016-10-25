@@ -214,8 +214,7 @@ function tdechet_clear()
 
         </div> 
          <div class="col-md-2">
-          <br>  
-         <br>
+         
          <br>
 
    <div class="col-md-3" style="width: 220px;" >
