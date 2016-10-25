@@ -84,7 +84,7 @@ function tdechet_clear()
            {
 
            ?>
-    document.getElementById('<?php echo$donnees['id']?>').textContent = "0"  ;
+    document.getElementById('d<?php echo$donnees['nom']?>').textContent = "0"  ;
     document.getElementById('d<?php echo$donnees['id']?>').value = "0" ; 
     document.getElementById('b<?php echo$donnees['id']?>').style.display = "none";
 <?php }
