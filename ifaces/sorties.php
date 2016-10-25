@@ -253,10 +253,10 @@ function tdechet_clear()
          <div class="col-md-3" >
 <div class="panel panel-info">
         <div class="panel-heading">
-     <h3 class="panel-title"><label>Informations :</label></h3>
+     <h3 class="panel-title"><label>Types de sortie:</label></h3>
   </div>
   <div class="panel-body"> 
- <label for="type_sortie">Types de sortie:</label>
+ 
           <select name ="type_sortie" id ="type_sortie" class="form-control" required autofocus>
             <option value = "0" disabled selected></option>
 <?php         
