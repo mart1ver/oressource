@@ -214,7 +214,7 @@ function tdechet_clear()
 
         </div> 
          <div class="col-md-2">
-          <p>La masse des différents bacs est automatiquement déduite.</p>  
+          <br>  
          <br>
          <br>
 
@@ -263,7 +263,7 @@ function tdechet_clear()
 </div>
 </div>
 
-
+<p>La masse des différents bacs est automatiquement déduite.</p>
 
   </div>
 
