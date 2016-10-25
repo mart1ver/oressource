@@ -16,6 +16,8 @@ $req->execute(array('id' => $_POST['id']));
 $donnees = $req->fetch();
 
 $couleur = $donnees['couleur'];
+$id_type_dechet_evac_current = $_POST['id_type_dechet_evac'];
+$id_type_dechet_evac_current_tab = explode("a", $id_type_dechet_evac_current);
             
               $reponse->closeCursor(); // Termine le traitement de la requête
                
@@ -60,8 +62,12 @@ $couleur = $donnees['couleur'];
             // On affiche chaque entree une à une$_POST
            while ($donnees = $reponse->fetch())
            {?>
-                     <input type="checkbox" name="tde<?php echo $donnees['id']; ?>" id="tde<?php echo $donnees['id']; ?>"> <?php echo '<label for="tde'.$donnees['id'].'">'.$donnees['nom'].'.   </label>'; ?>
+                     <input type="checkbox" name="tde<?php echo $donnees['id']; ?>" id="tde<?php echo $donnees['id']; ?>" <?php if (array_key_exists($donnees['id'], $id_type_dechet_evac_current_tab)) {echo "checked"; ?>> <?php echo '<label for="tde'.$donnees['id'].'">'.$donnees['nom'].'.   </label>'; ?>
            
+                      
+}
+
+
               <?php } ?>
              
               <?php
