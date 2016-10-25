@@ -6,7 +6,7 @@ require_once('../moteur/dbconfig.php');
     if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 'j') !== false))
       { include "tete.php" ?>
     <div class="container">
-        <h1>Gestions des localités</h1> 
+        <h1>Modifier un recycleur</h1> 
          <div class="panel-heading">Modifier les données concernant la filiere n° <?php echo $_POST['id']?>, <?php echo $_POST['nom']?>. </div>
 <?php
 //on obtient la couleur de la localité dans la base
@@ -34,45 +34,10 @@ $couleur = $donnees['couleur'];
 
   <div class="col-md-2"><label for="nom">Nom:</label> <input type="text"value ="<?php echo $_POST['nom']?>" name="nom" id="nom" class="form-control " required autofocus></div>
   <div class="col-md-3"><label for="description">Description:</label> <input type="text"value ="<?php echo $_POST['description']?>" name="description" id="description" class="form-control " required ></div>
-  <div class="col-md-3">
-
-
-
-<label>Type de dechets enlevé:</label>
-<select name="id_dechet" id="id_dechet" class="form-control " required>
-            <?php 
-            // On affiche une liste deroulante des type de collecte visibles
-            $reponse = $bdd->query('SELECT * FROM type_dechets_evac WHERE visible = "oui"');
-            // On affiche chaque entree une à une
-            while ($donnees = $reponse->fetch())
-            {
-              if ($_POST['id_type_dechet_evac'] == $donnees['nom']) // SI on a pas de message d'erreur
-{
-  ?>
-    <option value = "<?php echo$donnees['id']?>" selected ><?php echo$donnees['nom']?></option>
-<?php
-} else {
-            ?>
-
-      <option value = "<?php echo$donnees['id']?>" ><?php echo$donnees['nom']?></option>
-            <?php }}
-            $reponse->closeCursor(); // Termine le traitement de la requête
-            ?>
-    </select>
   
-
-
-
-
-
-
-
-
-
-  </div>
   <div class="col-md-1"><label for="couleur">Couleur:</label> <input type="color"value ="<?php echo $couleur ?>"name="couleur" id="couleur" class="form-control " required ></div>
   <div class="col-md-1"><br><button name="creer" class="btn btn-warning">Modifier</button></div>
-</form>
+
 <br> 
 
 
@@ -84,6 +49,43 @@ $couleur = $donnees['couleur'];
 </a>
 
 </div>
+<div class="row"> 
+  <div class="col-md-9"><br>
+    <label for="tde">Type de déchets enlevés:</label>
+        <div class="alert alert-info">
+          <?php 
+        
+            // On recupère tout le contenu de la table point de vente
+            $reponse = $bdd->query('SELECT * FROM type_dechets_evac');
+            // On affiche chaque entree une à une$_POST
+           while ($donnees = $reponse->fetch())
+           {?>
+                     <input type="checkbox" name="tde<?php echo $donnees['id']; ?>" id="tde<?php echo $donnees['id']; ?>"> <?php echo '<label for="tde'.$donnees['id'].'">'.$donnees['nom'].'.   </label>'; ?>
+           
+              <?php } ?>
+             
+              <?php
+              $reponse->closeCursor(); // Termine le traitement de la requête
+                 ?>
+
+
+</div>
+
+
+
+
+       
+
+
+
+
+        </div>
+</div>
+
+</form>
+
+
+
       </div>
      
       <br>
