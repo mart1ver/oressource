@@ -40,11 +40,8 @@ function often_stats(that) {
   if (document.getElementById('mtot').value > 0 && isNaN(parseInt(document.getElementById('id_type_objet').value))){
     what.value += that.value;
     document.getElementById('quantite').value ="";
-    document.getElementById('prix').value ="";
-    if (that.value == "c") { what.value = ""; }
-    if (document.getElementById('rendub').value > 0) {
-      document.getElementById('renduc').value = document.getElementById('rendub').value -  document.getElementById('rendua').value;
-    }
+        if (that.value == "c") { what.value = ""; }
+    
   }
   if (isNaN(parseInt(document.getElementById('id_type_objet').value))) {
   } else {
@@ -424,7 +421,7 @@ function ajout_stats() {
         document.getElementById('mtot').value = document.getElementById('masse').value;
        
       } else {
-        document.getElementById('mtot').value=parseFloat(document.getElementById('mtot').value)+parseFloat(document.getElementById('masse').value);
+        document.getElementById('mtot').value = parseFloat(document.getElementById('mtot').value) + parseFloat(document.getElementById('masse').value);
       }
       if(document.getElementById('masse'))
           {

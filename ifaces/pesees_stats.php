@@ -46,7 +46,7 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
 <input type="hidden" id="moyen" name="moyen" value="1"><br>
 <input type="hidden"  id="nlignes" name="nlignes">
 <input type="hidden"  id="narticles" name="narticles">
-<input type="hidden"  id="mtot" name="mtot">
+<input type="hidden"  id="mtot" name="mtot" value="0">
 <input type="hidden" id="id_user" name="id_user" value=<?php echo'"'.$_SESSION['id'].'"' ?>  >
 <input type="hidden" id="saisiec_user" name="saisiec_user" value=<?php echo'"'.$_SESSION['saisiec'].'"' ?>  >
 <input type="hidden" id="niveau_user" name="niveau_user" value=<?php echo'"'.$_SESSION['niveau'].'"' ?>  >
