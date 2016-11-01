@@ -320,11 +320,11 @@ function ajout_stats() {
         document.getElementById('narticles').value=parseInt(document.getElementById('narticles').value)+parseInt(document.getElementById('quantite').value);
       }
 
-      if (isNaN(parseInt(document.getElementById('ptot').value))) {
+      if (isNaN(parseInt(document.getElementById('mtot').value))) {
         
       } else {
-        document.getElementById('ptot').value=parseFloat(document.getElementById('ptot').value)+parseFloat(document.getElementById('prix').value*document.getElementById('quantite').value);
-        document.getElementById('rendua').value = document.getElementById('ptot').value
+        document.getElementById('mtot').value=parseFloat(document.getElementById('mtot').value)+parseFloat(document.getElementById('masse').value*document.getElementById('quantite').value);
+        
       }
         if(document.getElementById('masse') )
           {
@@ -400,11 +400,11 @@ function ajout_stats() {
         document.getElementById('narticles').value=parseInt(document.getElementById('narticles').value)+parseInt(document.getElementById('quantite').value);
       }
 
-      if (isNaN(parseInt(document.getElementById('ptot').value))) {
-        document.getElementById('ptot').value = document.getElementById('prix').value;
-        document.getElementById('rendua').value = document.getElementById('ptot').value ;
+      if (isNaN(parseInt(document.getElementById('mtot').value))) {
+        document.getElementById('mtot').value = document.getElementById('masse').value;
+       
       } else {
-        document.getElementById('ptot').value=parseFloat(document.getElementById('ptot').value)+parseFloat(document.getElementById('prix').value);
+        document.getElementById('mtot').value=parseFloat(document.getElementById('mtot').value)+parseFloat(document.getElementById('masse').value);
       }
       if(document.getElementById('masse'))
           {
