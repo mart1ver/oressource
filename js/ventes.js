@@ -483,6 +483,7 @@ function edite_stats(nom,prix,id_type_objet,id_objet) {
   document.getElementById('id_type_objet').value = parseFloat(id_type_objet);
   document.getElementById('id_objet').value = parseFloat(id_objet);
   document.getElementById('nom_objet0').value = nom;
+  document.getElementById("masse").focus();
 }
 
 function encaisse() {
