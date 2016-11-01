@@ -89,10 +89,9 @@ function switchlot(state) {
 }
 
 function switchlot_stats(state) {
-  function lot_or_unite(type, label, prix_string, masse_string, bg_color) {
+  function lot_or_unite(type, label, masse_string, bg_color) {
     document.getElementById('sul').value = type;
     document.getElementById('labellot').innerHTML = label;
-    document.getElementById('labelpul').innerHTML = prix_string;
     document.getElementById('panelcalc').style.backgroundColor = bg_color;
     if(document.getElementById('masse') )
     {
