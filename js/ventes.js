@@ -100,9 +100,9 @@ function switchlot_stats(state) {
     } 
   }
   if (state == false) {
-    lot_or_unite("lot", "Pesée au: ", "Prix du lot: ", "Masse du lot: ", "#E8E6BC");
+    lot_or_unite("lot", "Pesée au: ",  "Masse du lot: ", "#E8E6BC");
   } else {
-    lot_or_unite("unite", "Pesée à: ", "Prix unitaire:", "Masse unitaire: " , "white");
+    lot_or_unite("unite", "Pesée à: ",  "Masse unitaire: " , "white");
   }
 }
 
