@@ -2,7 +2,7 @@
     <script src="../js/bootstrap.min.js"></script>
 <div class="container">
   <footer>
-        <p class="text-left">Oressource 2014-2015</p>
+        <p class="text-left">Oressource 2014-2016</p>
         <p class="text-right">
 <?php
     if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource")
