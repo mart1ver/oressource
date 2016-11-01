@@ -306,7 +306,7 @@ function ajout_stats() {
 
           }
 
-    if (isNaN((parseFloat(document.getElementById('prix').value)*parseFloat(document.getElementById('quantite').value)).toFixed(2))) {
+    if (1 == 2 ) {
     } else {
       if (isNaN(parseInt(document.getElementById('nlignes').value))) {
         document.getElementById('nlignes').value = 1;
@@ -386,7 +386,7 @@ function ajout_stats() {
   }
           }
 
-    if (isNaN((parseFloat(document.getElementById('prix').value)*parseFloat(document.getElementById('quantite').value)).toFixed(2))) {
+    if (1 == 2) {
     } else {
       if (isNaN(parseInt(document.getElementById('nlignes').value))) {
         document.getElementById('nlignes').value = 1;
@@ -457,11 +457,7 @@ function ajout_stats() {
     }
   }
 
-  if (document.getElementById('rendub').value - document.getElementById('rendua').value > 0) {
-    document.getElementById('renduc').value = document.getElementById('rendub').value - document.getElementById('rendua').value;
-  }
-  document.getElementById('rendua').value = document.getElementById('ptot').value ;
-
+  
 
 }
 
