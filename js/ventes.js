@@ -36,6 +36,26 @@ function often(that) {
   }
 }
 
+function often_stats(that) {
+  if (document.getElementById('mtot').value > 0 && isNaN(parseInt(document.getElementById('id_type_objet').value))){
+    what.value += that.value;
+    document.getElementById('quantite').value ="";
+    document.getElementById('prix').value ="";
+    if (that.value == "c") { what.value = ""; }
+    if (document.getElementById('rendub').value > 0) {
+      document.getElementById('renduc').value = document.getElementById('rendub').value -  document.getElementById('rendua').value;
+    }
+  }
+  if (isNaN(parseInt(document.getElementById('id_type_objet').value))) {
+  } else {
+    if (that == null) {
+      document.getElementById('quantite').value ="" ; what = document.getElementById('quantite');
+    }
+    if (that.value == "c") { what.value = ""; }
+    else { what.value += that.value; }
+  }
+}
+
 function suprime(nsligne) {
   if (parseInt(document.getElementById('nlignes').value) > 1) {
     var numero_ligne = nsligne.substr(5); // sous_chaine = le numero uniquement

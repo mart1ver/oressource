@@ -112,24 +112,24 @@ $('input[name="my-checkbox"]').on('switchChange.bootstrapSwitch', function(event
     </div>
    
     <div class="row">
-        <button class="btn btn-default btn-lg" value="1" onclick="often(this);" style="margin-top:8px;">1</button>
-        <button class="btn btn-default btn-lg" value="2" onclick="often(this);" style="margin-left:8px; margin-top:8px;">2</button>
-        <button class="btn btn-default btn-lg" value="3" onclick="often(this);" style="margin-left:8px; margin-top:8px;">3</button>
+        <button class="btn btn-default btn-lg" value="1" onclick="often_stats(this);" style="margin-top:8px;">1</button>
+        <button class="btn btn-default btn-lg" value="2" onclick="often_stats(this);" style="margin-left:8px; margin-top:8px;">2</button>
+        <button class="btn btn-default btn-lg" value="3" onclick="often_stats(this);" style="margin-left:8px; margin-top:8px;">3</button>
     </div>
     <div class="row">
-        <button class="btn btn-default btn-lg" value="4" onclick="often(this);" style="margin-top:8px;">4</button>
-        <button class="btn btn-default btn-lg" value="5" onclick="often(this);" style="margin-left:8px; margin-top:8px;">5</button>
-        <button class="btn btn-default btn-lg" value="6" onclick="often(this);" style="margin-left:8px; margin-top:8px;">6</button>
+        <button class="btn btn-default btn-lg" value="4" onclick="often_stats(this);" style="margin-top:8px;">4</button>
+        <button class="btn btn-default btn-lg" value="5" onclick="often_stats(this);" style="margin-left:8px; margin-top:8px;">5</button>
+        <button class="btn btn-default btn-lg" value="6" onclick="often_stats(this);" style="margin-left:8px; margin-top:8px;">6</button>
     </div>
     <div class="row">
-        <button class="btn btn-default btn-lg" value="7" onclick="often(this);" style="margin-top:8px;">7</button>
-        <button class="btn btn-default btn-lg" value="8" onclick="often(this);" style="margin-left:8px; margin-top:8px;">8</button>
-        <button class="btn btn-default btn-lg" value="9" onclick="often(this);" style="margin-left:8px; margin-top:8px;">9</button>
+        <button class="btn btn-default btn-lg" value="7" onclick="often_stats(this);" style="margin-top:8px;">7</button>
+        <button class="btn btn-default btn-lg" value="8" onclick="often_stats(this);" style="margin-left:8px; margin-top:8px;">8</button>
+        <button class="btn btn-default btn-lg" value="9" onclick="often_stats(this);" style="margin-left:8px; margin-top:8px;">9</button>
     </div>
     <div class="row">
-        <button class="btn btn-default btn-lg" value="c" onclick="often(this);" style="margin-top:8px;">C</button>
-        <button class="btn btn-default btn-lg" value="0" onclick="often(this);" style="margin-left:8px; margin-top:8px;">0</button>
-        <button class="btn btn-default btn-lg" value="." onclick="often(this);" style="margin-left:8px; margin-top:8px;">,</button>
+        <button class="btn btn-default btn-lg" value="c" onclick="often_stats(this);" style="margin-top:8px;">C</button>
+        <button class="btn btn-default btn-lg" value="0" onclick="often_stats(this);" style="margin-left:8px; margin-top:8px;">0</button>
+        <button class="btn btn-default btn-lg" value="." onclick="often_stats(this);" style="margin-left:8px; margin-top:8px;">,</button>
     </div>
     </div>
 
