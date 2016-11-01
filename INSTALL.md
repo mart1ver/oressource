@@ -1,16 +1,16 @@
 
-# Installation
+# Installation du serveur
 Instalation sous linux (debian/ubuntu)
 
 ## Dépendances
 ```shell
-sudo apt-get install apache2 php5-mysql libapache2-mod-php5
+sudo apt-get install apache2 php5-mysql libapache2-mod-php5 git
 ```
 
 ## Clone du projet
 ```shell
 cd ~
-git clone http://github.com/mart1ver/oressouurce.git
+git clone http://github.com/mart1ver/oressource.git
 ```
 
 ## MariaDB/MySQL
@@ -71,7 +71,20 @@ Ajouter les lignes suivantes :
 sudo a2ensite oressource
 sudo apache2ctl graceful
 ```
-un petit redemarage du service apache2 semble oportun apres toute cette configuration
+Un petit redemarage du service apache2 semble oportun apres toute cette configuration.
 ```shell
 sudo service apache2 restart
-``` 
+```
+### acceder pour la première foi a Oressource
+
+Dans votre navigateur vous accederez à l'écran de connection dans votre navigateur via l'adresse :
+```shell
+http://localhost/oressource
+```
+Si votre serveur ne dispose pas d'une interface graphique, accedez à Oressource à l'aide d'un ordinateur client via l'adresse:
+```shell
+http://IP_DU_SERVEUR/oressource
+```
+L' adresse IP du serveur peut etre obtenue à l'aide d'une simple commande ifconfig sur le serveur. Il ne tient qu'à vous de configurer un adressage IP statique pour le serveur voir méme un petit nom de manière à accéder simplement à Oressource à partir de vos ordinateurs clients.  
+
+# Configuration coté client
