@@ -264,7 +264,6 @@ $dechets->closeCursor();
 <br>
 <ul id="boutons" class="list-group">
         <button class="btn btn-danger btn-lg" onclick="encaisse();" style="height:70px">C'est pesé</button>
-        <button class="btn btn-danger btn-lg" type="button"   align="center" onclick="printdiv('divID');" value=" Print "><span class="glyphicon glyphicon-print"></span></button>
         <button class="btn btn-warning btn-lg" onclick="javascript:window.location.reload()"><span class="glyphicon glyphicon-refresh"></button>
   
 <br><br>
@@ -285,59 +284,10 @@ $dechets->closeCursor();
             <?php include "pied.php" ; ?> 
 <script>
 "use strict";
-var force_pes_vente = "non";
-<?php
-    if ($_SESSION['force_pes_vente'] == 'oui') 
-    {
-?>      
-      force_pes_vente = "oui";
-<?php
-    }
-?>
+var force_pes_vente = "oui";
 </script>
 <script src="../js/ventes.js"></script>
-<script>
-"use strict";
-function printdiv(divID) {
-  if (parseInt(document.getElementById('nlignes').value) >= 1) {
-    var headstr = "<html><head><title></title></head><body><small>";
 
-<?php
-    if ($_SESSION['tva_active'] == 'oui') {
-?>
-    var prixtot =  parseFloat(document.getElementById('ptot').value).toFixed(2);
-    var prixht = parseFloat(prixtot).toFixed(2) / ( 1+parseFloat(<?php echo $_SESSION['taux_tva'] ?>).toFixed(2)/100 );
-    var ptva = parseFloat(prixtot).toFixed(2)-parseFloat(prixht).toFixed(2)
-      var footstr = "TVA à <?php echo $_SESSION['taux_tva'] ?>%"+" Prix H.T. ="+parseFloat(prixht).toFixed(2)+"€ TVA="+parseFloat(ptva).toFixed(2)+"€";
-<?php
-    } else {
-?>
-    var footstr = "Association non assujettie à la TVA.</body></small> ";
-<?php
-    }
-?>
-    var comstr = "<ul id='liste' class='list-group'><li class='list-group-item'><b>";
-    comstr += document.getElementById('commentaire').value;
-    comstr += "</b></li></ul>";
-    var newstr = document.all.item(divID).innerHTML;
-    var oldstr = document.body.innerHTML;
-    document.body.innerHTML = headstr+comstr+newstr+footstr;
-    window.print();
-    document.body.innerHTML = oldstr;
-    //return false;
-  }
-
-  //puis encaisse
-  if ((parseInt(document.getElementById('nlignes').value) >= 1)
-    && ((document.getElementById('quantite').value == "")
-    || (document.getElementById('quantite').value == "0"))
-    && ((document.getElementById('prix').value == "")
-    || (document.getElementById('prix').value == "0")) ) {
-    document.getElementById('comm').value = document.getElementById('commentaire').value;
-    document.getElementById("formulaire").submit();
-  }
-}
-</script>
 
             <?php 
 } 
