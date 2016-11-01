@@ -216,7 +216,7 @@ while ($d = $dechets->fetch())
 			$id_tarif=$t['id'];
 			$prix_tarif=$t['prix'];
 			$nom_tarif=$t['nom'];
-			$action_tarif="javascript:edite('$nom_tarif','$prix_tarif','$id_dechet',$id_tarif)";
+			$action_tarif="javascript:edite_stats('$nom_tarif','$prix_tarif','$id_dechet',$id_tarif)";
 
 			print "<li style='font-size:18px'>";
 			print "<a href=\"$action_tarif\">$nom_tarif</a>";
