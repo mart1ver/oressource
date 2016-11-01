@@ -151,6 +151,9 @@ if(strpos($_SESSION['niveau'], 'bi') !== false)
           <li><a href="grilles_prix.php?typo=1">Grille des prix</a></li>
           <li><a href="edition_types_contenants.php">Bacs et chariots</a></li>
           <li><a href="edition_types_poubelles.php">Types de poubelles</a></li>
+          <li><a href="pesees_stats.php">Pésées pour statistiques</a></li>
+          <li><a href="etiquettes.php">Étiquettes boutique</a></li>
+          <li><a href="gains recycleurs.php">Gains recycleurs</a></li>
           <li class="divider"></li>
 <?php } ?>
 <?php if(strpos($_SESSION['niveau'], 'h') !== false)//gestion verif

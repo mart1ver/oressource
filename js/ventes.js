@@ -71,6 +71,24 @@ function switchlot(state) {
   }
 }
 
+function switchlot_stats(state) {
+  function lot_or_unite(type, label, prix_string, masse_string, bg_color) {
+    document.getElementById('sul').value = type;
+    document.getElementById('labellot').innerHTML = label;
+    document.getElementById('labelpul').innerHTML = prix_string;
+    document.getElementById('panelcalc').style.backgroundColor = bg_color;
+    if(document.getElementById('masse') )
+    {
+     document.getElementById('labelmasse').innerHTML = masse_string;
+    } 
+  }
+  if (state == false) {
+    lot_or_unite("lot", "Pesée au: ", "Prix du lot: ", "Masse du lot: ", "#E8E6BC");
+  } else {
+    lot_or_unite("unite", "Pesée à: ", "Prix unitaire:", "Masse unitaire: " , "white");
+  }
+}
+
 function ajout() {
   if (document.getElementById('id_type_objet').value == ""){}else{
 
