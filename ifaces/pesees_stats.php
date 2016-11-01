@@ -92,7 +92,7 @@ $('input[name="my-checkbox"]').on('switchChange.bootstrapSwitch', function(event
 <b>Quantité:</b>
 <input type="text" class="form-control" placeholder="Quantité" id="quantite" name="quantite" onfocus="fokus(this)" > 
 <b id = "labelmasse">Masse unitaire:</b> 
-<input type="text" class="form-control" placeholder="Kgs." id="masse" name="masse" onfocus="fokus(this)" autofocus>
+<input type="text" class="form-control" placeholder="Kgs." id="masse" name="masse" onfocus="fokus(this)" >
 <input type="hidden"  id="id_type_objet" name="id_type_objet">
 <input type="hidden"  id="id_objet" name="id_objet">   
 <input type="hidden"  id="nom_objet0" name="nom_objet0">   
