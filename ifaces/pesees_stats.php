@@ -80,7 +80,7 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
 $("[name='my-checkbox']").bootstrapSwitch();
 $('input[name="my-checkbox"]').on('switchChange.bootstrapSwitch', function(event, state) {
 //console.log(state); // true | false
-  switchlot(state); // true | false
+  switchlot_stats(state); // true | false
 });
 </script>
 
@@ -91,12 +91,8 @@ $('input[name="my-checkbox"]').on('switchChange.bootstrapSwitch', function(event
 
 <b>Quantité:</b>
 <input type="text" class="form-control" placeholder="Quantité" id="quantite" name="quantite" onfocus="fokus(this)" > 
-<b id = "labelpul">Prix unitaire:</b> 
-<input type="text" class="form-control" placeholder="€" id="prix" name="prix" onfocus="fokus(this)">
-<?php if ($_SESSION['pes_vente'] == 'oui'){ ?>
 <b id = "labelmasse">Masse unitaire:</b> 
 <input type="text" class="form-control" placeholder="Kgs." id="masse" name="masse" onfocus="fokus(this)">
-<?php }; ?>
 <input type="hidden"  id="id_type_objet" name="id_type_objet">
 <input type="hidden"  id="id_objet" name="id_objet">   
 <input type="hidden"  id="nom_objet0" name="nom_objet0">   
@@ -105,7 +101,7 @@ $('input[name="my-checkbox"]').on('switchChange.bootstrapSwitch', function(event
 
    
 <br>
-    <button type="button" class="btn btn-default btn-lg" onclick="ajout_stas();">
+    <button type="button" class="btn btn-default btn-lg" onclick="ajout_stats();">
     Ajouter
     </button>
 

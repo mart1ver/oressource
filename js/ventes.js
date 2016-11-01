@@ -288,6 +288,204 @@ function ajout() {
 
 
 
+function ajout_stats() {
+  if (document.getElementById('id_type_objet').value == ""){}else{
+
+  if (document.getElementById('sul').value == "unite") {
+    var prixtemp = document.getElementById('prix').value;
+    prixtemp = prixtemp.replace(",", ".");
+    document.getElementById('prix').value = prixtemp;
+   
+   if(document.getElementById('masse') )
+          {
+    var massetemp = document.getElementById('masse').value;
+    massetemp = massetemp.replace(",", ".");
+    if (force_pes_vente == "oui" && isNaN(parseFloat(massetemp))) {return;}
+    if (isNaN(parseFloat(massetemp))) {document.getElementById('masse').value = "";}else{ 
+    document.getElementById('masse').value = parseFloat(massetemp);
+  }
+
+
+          }
+
+    if (isNaN((parseFloat(document.getElementById('prix').value)*parseFloat(document.getElementById('quantite').value)).toFixed(2))) {
+    } else {
+      if (isNaN(parseInt(document.getElementById('nlignes').value))) {
+        document.getElementById('nlignes').value = 1;
+      } else {
+        document.getElementById('nlignes').value=parseInt(document.getElementById('nlignes').value)+ 1;
+      }
+
+      if (isNaN(parseInt(document.getElementById('narticles').value))) {
+        document.getElementById('narticles').value = document.getElementById('quantite').value;
+      } else {
+        document.getElementById('narticles').value=parseInt(document.getElementById('narticles').value)+parseInt(document.getElementById('quantite').value);
+      }
+
+      if (isNaN(parseInt(document.getElementById('ptot').value))) {
+        document.getElementById('ptot').value = document.getElementById('prix').value*document.getElementById('quantite').value;
+      } else {
+        document.getElementById('ptot').value=parseFloat(document.getElementById('ptot').value)+parseFloat(document.getElementById('prix').value*document.getElementById('quantite').value);
+        document.getElementById('rendua').value = document.getElementById('ptot').value
+      }
+        if(document.getElementById('masse') )
+          {
+            var fait = "non" ;
+            if (isNaN(parseInt(document.getElementById('masse').value))) {
+
+            document.getElementById('liste').innerHTML += '<li class="list-group-item" name="ligne'+parseInt(document.getElementById('nlignes').value)+'" id="ligne'+parseInt(document.getElementById('nlignes').value)+'"><span class="badge">'+parseFloat(parseFloat(document.getElementById('prix').value)*parseFloat(document.getElementById('quantite').value)).toFixed(2)+'€'+'</span><span class="glyphicon glyphicon-remove" aria-hidden="true"    onclick="javascirpt:suprime('+"'ligne"+parseInt(document.getElementById('nlignes').value)+"');"+'"></span>&nbsp;&nbsp;'+document.getElementById('quantite').value+' * '+document.getElementById('nom_objet0').value
+        +'<input type="hidden"  id="tid_type_objet'+parseInt(document.getElementById('nlignes').value)+'" name="tid_type_objet'+parseInt(document.getElementById('nlignes').value)+'"value="'+document.getElementById('id_type_objet').value+'">'
+        +'<input type="hidden"  id="tid_objet'+parseInt(document.getElementById('nlignes').value)+'" name="tid_objet'+parseInt(document.getElementById('nlignes').value)+'"value="'+document.getElementById('id_objet').value+'">'
+        +'<input type="hidden"  id="tquantite'+parseInt(document.getElementById('nlignes').value)+'" name="tquantite'+parseInt(document.getElementById('nlignes').value)+'"value="'+document.getElementById('quantite').value+'">'
+        +'<input type="hidden"  id="tprix'+parseInt(document.getElementById('nlignes').value)+'" name="tprix'+parseInt(document.getElementById('nlignes').value)+'"value="'+document.getElementById('prix').value+'"></li>';
+        document.getElementById('total').innerHTML = '<li class="list-group-item">Soit : '+document.getElementById('narticles').value+' article(s) pour : <span class="badge" style="float:right;">'+parseFloat(document.getElementById('ptot').value).toFixed(2)+'€</span></li>';
+      document.getElementById('recaptotal').innerHTML = parseFloat(document.getElementById('ptot').value).toFixed(2)+'€';
+      document.getElementById('nom_objet').innerHTML = "<label>Objet:</label>";
+      document.getElementById('quantite').value = "";
+      document.getElementById('prix').value = "";
+      document.getElementById('id_type_objet').value = "";
+      document.getElementById('id_objet').value = "";
+      document.getElementById('nom_objet0').value = "";
+      fait = "oui";
+            }
+      if(fait == "non"){
+      document.getElementById('liste').innerHTML += '<li class="list-group-item" name="ligne'+parseInt(document.getElementById('nlignes').value)+'" id="ligne'+parseInt(document.getElementById('nlignes').value)+'"><span class="badge">'+parseFloat(parseFloat(document.getElementById('prix').value)*parseFloat(document.getElementById('quantite').value)).toFixed(2)+'€'+'</span><span class="glyphicon glyphicon-remove" aria-hidden="true"    onclick="javascirpt:suprime('+"'ligne"+parseInt(document.getElementById('nlignes').value)+"');"+'"></span>&nbsp;&nbsp;'+document.getElementById('quantite').value+' * '+document.getElementById('nom_objet0').value+", "+parseFloat(document.getElementById('masse').value*parseFloat(document.getElementById('quantite').value))+" Kgs."
+        +'<input type="hidden"  id="tid_type_objet'+parseInt(document.getElementById('nlignes').value)+'" name="tid_type_objet'+parseInt(document.getElementById('nlignes').value)+'"value="'+document.getElementById('id_type_objet').value+'">'
+        +'<input type="hidden"  id="tid_objet'+parseInt(document.getElementById('nlignes').value)+'" name="tid_objet'+parseInt(document.getElementById('nlignes').value)+'"value="'+document.getElementById('id_objet').value+'">'
+        +'<input type="hidden"  id="tquantite'+parseInt(document.getElementById('nlignes').value)+'" name="tquantite'+parseInt(document.getElementById('nlignes').value)+'"value="'+document.getElementById('quantite').value+'">'
+        +'<input type="hidden"  id="tprix'+parseInt(document.getElementById('nlignes').value)+'" name="tprix'+parseInt(document.getElementById('nlignes').value)+'"value="'+document.getElementById('prix').value+'">'
+        +'<input type="hidden"  id="tmasse'+parseInt(document.getElementById('nlignes').value)+'" name="tmasse'+parseInt(document.getElementById('nlignes').value)+'"value="'+document.getElementById('masse').value+'"></li>';
+      document.getElementById('total').innerHTML = '<li class="list-group-item">Soit : '+document.getElementById('narticles').value+' article(s) pour : <span class="badge" style="float:right;">'+parseFloat(document.getElementById('ptot').value).toFixed(2)+'€</span></li>';
+      document.getElementById('recaptotal').innerHTML = parseFloat(document.getElementById('ptot').value).toFixed(2)+'€';
+      document.getElementById('nom_objet').innerHTML = "<label>Objet:</label>";
+      document.getElementById('quantite').value = "";
+      document.getElementById('prix').value = "";
+      document.getElementById('masse').value = "";
+      document.getElementById('id_type_objet').value = "";
+      document.getElementById('id_objet').value = "";
+      document.getElementById('nom_objet0').value = "";
+      fait = "oui";}
+         }else
+         {
+          
+          document.getElementById('liste').innerHTML += '<li class="list-group-item" name="ligne'+parseInt(document.getElementById('nlignes').value)+'" id="ligne'+parseInt(document.getElementById('nlignes').value)+'"><span class="badge">'+parseFloat(parseFloat(document.getElementById('prix').value)*parseFloat(document.getElementById('quantite').value)).toFixed(2)+'€'+'</span><span class="glyphicon glyphicon-remove" aria-hidden="true"    onclick="javascirpt:suprime('+"'ligne"+parseInt(document.getElementById('nlignes').value)+"');"+'"></span>&nbsp;&nbsp;'+document.getElementById('quantite').value+' * '+document.getElementById('nom_objet0').value
+        +'<input type="hidden"  id="tid_type_objet'+parseInt(document.getElementById('nlignes').value)+'" name="tid_type_objet'+parseInt(document.getElementById('nlignes').value)+'"value="'+document.getElementById('id_type_objet').value+'">'
+        +'<input type="hidden"  id="tid_objet'+parseInt(document.getElementById('nlignes').value)+'" name="tid_objet'+parseInt(document.getElementById('nlignes').value)+'"value="'+document.getElementById('id_objet').value+'">'
+        +'<input type="hidden"  id="tquantite'+parseInt(document.getElementById('nlignes').value)+'" name="tquantite'+parseInt(document.getElementById('nlignes').value)+'"value="'+document.getElementById('quantite').value+'">'
+        +'<input type="hidden"  id="tprix'+parseInt(document.getElementById('nlignes').value)+'" name="tprix'+parseInt(document.getElementById('nlignes').value)+'"value="'+document.getElementById('prix').value+'"></li>';
+        document.getElementById('total').innerHTML = '<li class="list-group-item">Soit : '+document.getElementById('narticles').value+' article(s) pour : <span class="badge" style="float:right;">'+parseFloat(document.getElementById('ptot').value).toFixed(2)+'€</span></li>';
+      document.getElementById('recaptotal').innerHTML = parseFloat(document.getElementById('ptot').value).toFixed(2)+'€';
+      document.getElementById('nom_objet').innerHTML = "<label>Objet:</label>";
+      document.getElementById('quantite').value = "";
+      document.getElementById('prix').value = "";
+      document.getElementById('id_type_objet').value = "";
+      document.getElementById('id_objet').value = "";
+      document.getElementById('nom_objet0').value = "";
+      }
+    }
+  } else {
+    var prixtemp = document.getElementById('prix').value;
+
+    prixtemp = prixtemp.replace(",", ".");
+    document.getElementById('prix').value = prixtemp;
+    if(document.getElementById('masse') )
+          {
+    var massetemp = document.getElementById('masse').value;
+    massetemp = massetemp.replace(",", ".");
+    if (force_pes_vente == "oui" && isNaN(parseFloat(massetemp))) {return;}
+    if (isNaN(parseFloat(massetemp))) {document.getElementById('masse').value = "";}else{ 
+    document.getElementById('masse').value = parseFloat(massetemp);
+  }
+          }
+
+    if (isNaN((parseFloat(document.getElementById('prix').value)*parseFloat(document.getElementById('quantite').value)).toFixed(2))) {
+    } else {
+      if (isNaN(parseInt(document.getElementById('nlignes').value))) {
+        document.getElementById('nlignes').value = 1;
+      } else {
+        document.getElementById('nlignes').value=parseInt(document.getElementById('nlignes').value)+ 1;
+      }
+
+      if (isNaN(parseInt(document.getElementById('narticles').value))) {
+        document.getElementById('narticles').value = document.getElementById('quantite').value;
+      } else {
+        document.getElementById('narticles').value=parseInt(document.getElementById('narticles').value)+parseInt(document.getElementById('quantite').value);
+      }
+
+      if (isNaN(parseInt(document.getElementById('ptot').value))) {
+        document.getElementById('ptot').value = document.getElementById('prix').value;
+        document.getElementById('rendua').value = document.getElementById('ptot').value ;
+      } else {
+        document.getElementById('ptot').value=parseFloat(document.getElementById('ptot').value)+parseFloat(document.getElementById('prix').value);
+      }
+      if(document.getElementById('masse'))
+          {
+            var fait = "non" ;
+            if (isNaN(parseInt(document.getElementById('masse').value))) {
+
+              document.getElementById('liste').innerHTML += '<li class="list-group-item" name="ligne'+parseInt(document.getElementById('nlignes').value)+'" id="ligne'+parseInt(document.getElementById('nlignes').value)+'"><span class="badge">'+parseFloat(document.getElementById('prix').value).toFixed(2)+'€'+'</span><span class="glyphicon glyphicon-remove" aria-hidden="true"    onclick="javascirpt:suprime('+"'ligne"+parseInt(document.getElementById('nlignes').value)+"');"+'"></span>&nbsp;&nbsp;'+document.getElementById('quantite').value+' * '+document.getElementById('nom_objet0').value
+        +'<input type="hidden"  id="tid_type_objet'+parseInt(document.getElementById('nlignes').value)+'" name="tid_type_objet'+parseInt(document.getElementById('nlignes').value)+'"value="'+document.getElementById('id_type_objet').value+'">'
+        +'<input type="hidden"  id="tid_objet'+parseInt(document.getElementById('nlignes').value)+'" name="tid_objet'+parseInt(document.getElementById('nlignes').value)+'"value="'+document.getElementById('id_objet').value+'">'
+        +'<input type="hidden"  id="tquantite'+parseInt(document.getElementById('nlignes').value)+'" name="tquantite'+parseInt(document.getElementById('nlignes').value)+'"value="'+document.getElementById('quantite').value+'">'
+        +'<input type="hidden"  id="tprix'+parseInt(document.getElementById('nlignes').value)+'" name="tprix'+parseInt(document.getElementById('nlignes').value)+'"value="'+document.getElementById('prix').value/document.getElementById('quantite').value+'"></li>';
+      document.getElementById('total').innerHTML = '<li class="list-group-item">Soit : '+document.getElementById('narticles').value+' article(s) pour : <span class="badge" style="float:right;">'+parseFloat(document.getElementById('ptot').value).toFixed(2)+'€</span></li>';
+      document.getElementById('recaptotal').innerHTML = parseFloat(document.getElementById('ptot').value).toFixed(2)+'€';
+      document.getElementById('nom_objet').innerHTML = "<label>Objet:</label>";
+      document.getElementById('quantite').value = "";
+      document.getElementById('prix').value = "";
+      document.getElementById('id_type_objet').value = "";
+      document.getElementById('id_objet').value = "";
+      document.getElementById('nom_objet0').value = "";
+      fait = "oui";
+            }
+      if(fait == "non"){
+      document.getElementById('liste').innerHTML += '<li class="list-group-item" name="ligne'+parseInt(document.getElementById('nlignes').value)+'" id="ligne'+parseInt(document.getElementById('nlignes').value)+'"><span class="badge">'+parseFloat(document.getElementById('prix').value).toFixed(2)+'€'+'</span><span class="glyphicon glyphicon-remove" aria-hidden="true"    onclick="javascirpt:suprime('+"'ligne"+parseInt(document.getElementById('nlignes').value)+"');"+'"></span>&nbsp;&nbsp;'+document.getElementById('quantite').value+' * '+document.getElementById('nom_objet0').value+", "+parseFloat(document.getElementById('masse').value)+"Kgs."
+        +'<input type="hidden"  id="tid_type_objet'+parseInt(document.getElementById('nlignes').value)+'" name="tid_type_objet'+parseInt(document.getElementById('nlignes').value)+'"value="'+document.getElementById('id_type_objet').value+'">'
+        +'<input type="hidden"  id="tid_objet'+parseInt(document.getElementById('nlignes').value)+'" name="tid_objet'+parseInt(document.getElementById('nlignes').value)+'"value="'+document.getElementById('id_objet').value+'">'
+        +'<input type="hidden"  id="tquantite'+parseInt(document.getElementById('nlignes').value)+'" name="tquantite'+parseInt(document.getElementById('nlignes').value)+'"value="'+document.getElementById('quantite').value+'">'
+        +'<input type="hidden"  id="tprix'+parseInt(document.getElementById('nlignes').value)+'" name="tprix'+parseInt(document.getElementById('nlignes').value)+'"value="'+document.getElementById('prix').value/document.getElementById('quantite').value+'">'
+        +'<input type="hidden"  id="tmasse'+parseInt(document.getElementById('nlignes').value)+'" name="tmasse'+parseInt(document.getElementById('nlignes').value)+'"value="'+document.getElementById('masse').value+'"></li>';
+      document.getElementById('total').innerHTML = '<li class="list-group-item">Soit : '+document.getElementById('narticles').value+' article(s) pour : <span class="badge" style="float:right;">'+parseFloat(document.getElementById('ptot').value).toFixed(2)+'€</span></li>';
+      document.getElementById('recaptotal').innerHTML = parseFloat(document.getElementById('ptot').value).toFixed(2)+'€';
+      document.getElementById('nom_objet').innerHTML = "<label>Objet:</label>";
+      document.getElementById('quantite').value = "";
+      document.getElementById('prix').value = "";
+      document.getElementById('masse').value = "";
+      document.getElementById('id_type_objet').value = "";
+      document.getElementById('id_objet').value = "";
+      document.getElementById('nom_objet0').value = "";
+      fait = "oui"}
+         }else
+         {
+          
+          document.getElementById('liste').innerHTML += '<li class="list-group-item" name="ligne'+parseInt(document.getElementById('nlignes').value)+'" id="ligne'+parseInt(document.getElementById('nlignes').value)+'"><span class="badge">'+parseFloat(document.getElementById('prix').value).toFixed(2)+'€'+'</span><span class="glyphicon glyphicon-remove" aria-hidden="true"    onclick="javascirpt:suprime('+"'ligne"+parseInt(document.getElementById('nlignes').value)+"');"+'"></span>&nbsp;&nbsp;'+document.getElementById('quantite').value+' * '+document.getElementById('nom_objet0').value
+        +'<input type="hidden"  id="tid_type_objet'+parseInt(document.getElementById('nlignes').value)+'" name="tid_type_objet'+parseInt(document.getElementById('nlignes').value)+'"value="'+document.getElementById('id_type_objet').value+'">'
+        +'<input type="hidden"  id="tid_objet'+parseInt(document.getElementById('nlignes').value)+'" name="tid_objet'+parseInt(document.getElementById('nlignes').value)+'"value="'+document.getElementById('id_objet').value+'">'
+        +'<input type="hidden"  id="tquantite'+parseInt(document.getElementById('nlignes').value)+'" name="tquantite'+parseInt(document.getElementById('nlignes').value)+'"value="'+document.getElementById('quantite').value+'">'
+        +'<input type="hidden"  id="tprix'+parseInt(document.getElementById('nlignes').value)+'" name="tprix'+parseInt(document.getElementById('nlignes').value)+'"value="'+document.getElementById('prix').value/document.getElementById('quantite').value+'"></li>';
+      document.getElementById('total').innerHTML = '<li class="list-group-item">Soit : '+document.getElementById('narticles').value+' article(s) pour : <span class="badge" style="float:right;">'+parseFloat(document.getElementById('ptot').value).toFixed(2)+'€</span></li>';
+      document.getElementById('recaptotal').innerHTML = parseFloat(document.getElementById('ptot').value).toFixed(2)+'€';
+      document.getElementById('nom_objet').innerHTML = "<label>Objet:</label>";
+      document.getElementById('quantite').value = "";
+      document.getElementById('prix').value = "";
+      document.getElementById('id_type_objet').value = "";
+      document.getElementById('id_objet').value = "";
+      document.getElementById('nom_objet0').value = "";
+         }
+    }
+  }
+
+  if (document.getElementById('rendub').value - document.getElementById('rendua').value > 0) {
+    document.getElementById('renduc').value = document.getElementById('rendub').value - document.getElementById('rendua').value;
+  }
+  document.getElementById('rendua').value = document.getElementById('ptot').value ;
+
+
+}
+
+}
+
+
 
 
 
