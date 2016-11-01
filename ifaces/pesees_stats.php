@@ -27,7 +27,7 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
       <div class="panel panel-info">
 
         <div class="panel-heading">
-          <label class="panel-title">Bon de peséée:</label>
+          <label class="panel-title">Bon de pesée:</label>
           <span class ="badge" id="recaptotal" style="float:right;">0€</span>
         </div>
 
@@ -71,7 +71,7 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
 
      <?php if ($_SESSION['lot_caisse'] == 'oui'){ ?>
 <p align="right">
-  <b id="labellot">vente à:  </b>
+  <b id="labellot">Pesée à:  </b>
 <input type="checkbox" name="my-checkbox"   checked  data-on-text="l'unité" data-off-text="lot" data-handle-width="45" data-size="small" >
 <p>
 <?php }?>
@@ -105,7 +105,7 @@ $('input[name="my-checkbox"]').on('switchChange.bootstrapSwitch', function(event
 
    
 <br>
-    <button type="button" class="btn btn-default btn-lg" onclick="ajout();">
+    <button type="button" class="btn btn-default btn-lg" onclick="ajout_stas();">
     Ajouter
     </button>
 
@@ -179,7 +179,7 @@ while ($d = $dechets->fetch())
       	$couleur_dechet=$d['couleur'];
        	$id_dechet=$d['id'];
        	$nom_dechet=$d['nom'];
-	$action_dechet="javascript:edite('$nom_dechet','0','$id_dechet','0')";
+	$action_dechet="javascript:edite_stats('$nom_dechet','0','$id_dechet','0')";
 
 	print "<div class='btn-group'>";
 		
@@ -263,7 +263,7 @@ $dechets->closeCursor();
 </div>
 <br>
 <ul id="boutons" class="list-group">
-        <button class="btn btn-danger btn-lg" onclick="encaisse();" style="height:70px">C'est pesé</button>
+        <button class="btn btn-danger btn-lg" onclick="encaisse_stats();" style="height:70px">C'est pesé</button>
         <button class="btn btn-warning btn-lg" onclick="javascript:window.location.reload()"><span class="glyphicon glyphicon-refresh"></button>
   
 <br><br>
