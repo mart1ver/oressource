@@ -81,7 +81,8 @@ Dans votre navigateur vous accederez à l'écran de connection dans votre naviga
 ```shell
 http://localhost/oressource
 ```
-Si votre serveur ne dispose pas d'une interface graphique:
+Si votre serveur ne dispose pas d'une interface graphique, accedez à Oressource à l'aide d'un ordinateur client via l'adresse:
 ```shell
 http://IP_DU_SERVEUR/oressource
 ```
+L' adresse IP du serveur peut etre obtenue à l'aide d'une simple commande ifconfig sur le serveur. Il ne tient qu'à vous de configurer un adressage IP statique pour le serveur voir méme un petit nom de manière à accéder simplement à Oressource à partir de vos ordinateurs clients.  
