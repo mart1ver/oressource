@@ -72,7 +72,7 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
      <?php if ($_SESSION['lot_caisse'] == 'oui'){ ?>
 <p align="right">
   <b id="labellot">Pesée à:  </b>
-<input type="checkbox" name="my-checkbox"   checked  data-on-text="l'unité" data-off-text="lot" data-handle-width="45" data-size="small" >
+<input type="checkbox" name="my-checkbox"   checked  data-on-text="l'unité" data-off-text="lot" data-handle-width="40" data-size="small" >
 <p>
 <?php }?>
 <script type="text/javascript">
