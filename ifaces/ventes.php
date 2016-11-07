@@ -227,9 +227,9 @@ while ($d = $dechets->fetch())
 	// Alors on affiche un bouton tout simple 	
 	if ($tarifs->rowCount() == 0 )
 	{
-		print "<button type='button' class='btn btn-default' onclick=\"$action_dechet\" style='margin-left:8px; margin-top:16px;'>";
+		print "<button type='button' class='btn btn-default' onclick='"$action_dechet"' style='margin-left:8px; margin-top:16px;'>";
 		print "<span class='badge' id='cool' style='background-color:$couleur_dechet'>";
-		//print "<a href=\"$action_dechet\" style='color:#ffffff;'>$nom_dechet</a>";
+		print $nom_dechet;
 		print "</span>";
       		print "</button>";
 	} else {
