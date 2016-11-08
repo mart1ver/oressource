@@ -683,8 +683,8 @@ $req->closeCursor(); // Termine le traitement de la requête ?></td>
                
  $req = $bdd->prepare("SELECT AVG(pesees_vendus.masse) 
   FROM pesees_vendus , vendus 
-  WHERE pesees_vendus.id_vendu = vendus.id
-  AND pesees_vendus.masse > 0
+  
+  WHERE pesees_vendus.masse > 0
   AND vendus.id_type_dechet = :id ");
  $req->execute(array('id' => $donnees2['id'] ));
  $donnees = $req->fetch();
