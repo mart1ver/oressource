@@ -17,6 +17,22 @@ if(isset($_POST['adh']))
 $antidate = $_POST['antidate'].date(" H:i:s");
     // Connexion à la base de données
 
+
+
+
+
+  $i = 1;
+while ($i <= $_POST['nlignes'])
+{
+   //on inserre les valeures pour chaque 'i' ($i = une ligne dans le ticket)   
+   // Insertion du post à l'aide d'une requête préparée
+
+$tid_type_objet = 'tid_type_objet'.$i;
+if(isset($_POST[$tid_type_objet]))
+    {
+$tid_objet ='tid_objet'.$i;
+$tquantite = 'tquantite'.$i;
+$tprix = 'tprix'.$i;
 try
 {
 include('dbconfig.php');
@@ -56,6 +72,26 @@ $req->execute(array($antidate,$id_vendu ,  $_POST[$tmasse] ,$_POST[$tquantite], 
  header("Location:../ifaces/pesees_stats.php");
   }else      {
 //sans antidate
+
+
+
+
+
+
+  $i = 1;
+while ($i <= $_POST['nlignes'])
+{
+   //on inserre les valeures pour chaque 'i' ($i = une ligne dans le ticket)   
+   // Insertion du post à l'aide d'une requête préparée
+
+$tid_type_objet = 'tid_type_objet'.$i;
+if(isset($_POST[$tid_type_objet]))
+    {
+$tid_objet ='tid_objet'.$i;
+$tquantite = 'tquantite'.$i;
+$tprix = 'tprix'.$i;
+
+
 
 
 try
