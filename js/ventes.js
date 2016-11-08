@@ -512,3 +512,15 @@ function encaisse() {
     document.getElementById("formulaire").submit();
   }
 }
+
+
+function encaisse_stats() {
+  if ((parseInt(document.getElementById('nlignes').value) >= 1)
+      && ((document.getElementById('quantite').value == "")
+        || (document.getElementById('quantite').value == "0"))
+      && ((document.getElementById('masse').value == "")
+        || (document.getElementById('masse').value == "0"))) {
+    document.getElementById('comm').value = document.getElementById('commentaire').value;
+    document.getElementById("formulaire").submit();
+  }
+}

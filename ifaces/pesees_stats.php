@@ -4,7 +4,7 @@ require_once '../moteur/dbconfig.php' ;
 
 
 //Vérification des autorisations de l'utilisateur et des variables de session requises pour l'affichage de cette page:
-if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 'v'.$numero) !== false)) {
+if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 'g'.$numero) !== false)) {
   include "tete_vente.php";
   
   // on détermine la référence de la prochaine vente.
@@ -32,7 +32,7 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
         </div>
 
         <div class="panel-body" id="divID">
-          <form action="../moteur/vente_post.php" id="formulaire" method="post">
+          <form action="../moteur/stats_post.php" id="formulaire" method="post">
 
 
 
@@ -187,11 +187,11 @@ while ($d = $dechets->fetch())
 	// Alors on affiche un bouton tout simple 	
 	if ($tarifs->rowCount() == 0 )
 	{
-		print "<button type='button' class='btn btn-default' style='margin-left:8px; margin-top:16px;'>";
-		print "<span class='badge' id='cool' style='background-color:$couleur_dechet'>";
-		print "<a href=\"$action_dechet\" style='color:#ffffff;'>$nom_dechet</a>";
-		print "</span>";
-      		print "</button>";
+		print "<button type='button' class='btn btn-default' onclick=".'"'.substr($action_dechet, 11).';"'." style='margin-left:8px; margin-top:16px;'>";
+    print "<span class='badge' id='cool' style='background-color:$couleur_dechet'>";
+    print $nom_dechet ;
+    print "</span>";
+          print "</button>";
 	} else {
 
 	// S'il y a une grille de tarif pour ce type 
