@@ -689,7 +689,7 @@ $req->closeCursor(); // Termine le traitement de la requête ?></td>
  $req->execute(array('id' => $donnees2['id'] ));
  $donnees = $req->fetch();
 $Mm = $donnees['AVG(pesees_vendus.masse)'];
-echo $Mm;
+echo "toto".$Mm."toto";
 $req->closeCursor(); // Termine le traitement de la requête 
 
 /*
