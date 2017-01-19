@@ -38,7 +38,7 @@ CREATE TABLE IF NOT EXISTS `collectes` (
   `id_last_hero` int(11) NOT NULL,
   `last_hero_timestamp` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -57,7 +57,7 @@ CREATE TABLE IF NOT EXISTS `conventions_sorties` (
   `id_last_hero` int(11) NOT NULL,
   `last_hero_timestamp` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
 
 --
 -- Dumping data for table `conventions_sorties`
@@ -66,7 +66,7 @@ CREATE TABLE IF NOT EXISTS `conventions_sorties` (
 INSERT INTO `conventions_sorties` (`id`, `timestamp`, `nom`, `description`, `couleur`, `visible`, `id_createur`, `id_last_hero`, `last_hero_timestamp`) VALUES
 (1, '2014-07-10 13:28:10', 'la maison de la plage', 'mozaique', '#828fe4', 'oui', 0, 0, '0000-00-00 00:00:00'),
 (2, '2014-07-10 13:29:44', 'action froid', 'maraudes sdf et autres', '#626ac2', 'oui', 0, 0, '0000-00-00 00:00:00'),
-(3, '2014-07-23 11:48:09', 'dÃ©chetterie ', 'porte des lilas', '#89b029', 'oui', 0, 0, '0000-00-00 00:00:00'),
+(3, '2014-07-23 11:48:09', 'déchetterie ', 'porte des lilas', '#89b029', 'oui', 0, 0, '0000-00-00 00:00:00'),
 (4, '2016-09-21 11:24:16', 'po', 'o', '#000000', 'oui', 0, 0, '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
@@ -104,14 +104,14 @@ CREATE TABLE IF NOT EXISTS `description_structure` (
   `pes_vente` text NOT NULL,
   `force_pes_vente` text NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `description_structure`
 --
 
 INSERT INTO `description_structure` (`id`, `session_timeout`, `nom`, `adresse`, `description`, `siret`, `telephone`, `mail`, `id_localite`, `texte_adhesion`, `taux_tva`, `tva_active`, `id_createur`, `id_last_hero`, `last_hero_timestamp`, `cr`, `lot`, `viz`, `nb_viz`, `saisiec`, `affsp`, `affss`, `affsr`, `affsd`, `affsde`, `pes_vente`, `force_pes_vente`) VALUES
-(1, 30, 'La petite rockette', '125 rue du chemin vert', 'la petite rockette est une asso cool', '508 822 475 00010', '0155286118', 'lapetiterockette@gmail.com', '1', '  L''adhÃ©sion Ã  la ressourcerie formalise avant tout votre soutien aux valeurs Ã©cologiques et sociales dÃ©fendues par l''association. (Et peut, par ailleurs, s''avÃ©rer utile pour Ãªtre tenu informÃ© par courriel des diverses activitÃ©s, ponctuelles ou ordinaires, \r\ndÃ©veloppÃ©es la ressourcerie.)\r\n   AdhÃ©rer est donc surtout un geste politique, militant, d''engagement actif dans la lutte contre l''absurditÃ© consumÃ©riste et sa normalisation du gaspillage!!', '10', 'non', 0, 0, '2016-06-28 11:48:45', 3216, 'oui', 'oui', 10, 'oui', 'oui', 'oui', 'oui', 'oui', 'oui', 'oui', 'non');
+(1, 30, 'La petite rockette', '125 rue du chemin vert', 'la petite rockette est une asso cool', '508 822 475 00010', '0155286118', 'lapetiterockette@gmail.com', '1', '  L''adhésion à  la ressourcerie formalise avant tout votre soutien aux valeurs écologiques et sociales défendues par l''association. (Et peut, par ailleurs, s''avérer utile pour être tenu informé par courriel des diverses activités, ponctuelles ou ordinaires, \ndéveloppées la ressourcerie.)\r\n   Adherer est donc surtout un geste politique, militant, d''engagement actif dans la lutte contre l''absurdite consumériste et sa normalisation du gaspillage!!', '10', 'non', 0, 0, '2016-06-28 11:48:45', 3216, 'oui', 'oui', 10, 'oui', 'oui', 'oui', 'oui', 'oui', 'oui', 'oui', 'non');
 
 -- --------------------------------------------------------
 
@@ -131,7 +131,7 @@ CREATE TABLE IF NOT EXISTS `filieres_sortie` (
   `id_last_hero` int(11) NOT NULL,
   `last_hero_timestamp` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=14 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=14 ;
 
 --
 -- Dumping data for table `filieres_sortie`
@@ -162,7 +162,7 @@ CREATE TABLE IF NOT EXISTS `grille_objets` (
   `id_last_hero` int(11) NOT NULL,
   `last_hero_timestamp` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=44 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=44 ;
 
 --
 -- Dumping data for table `grille_objets`
@@ -228,7 +228,7 @@ CREATE TABLE IF NOT EXISTS `localites` (
   `id_last_hero` int(11) NOT NULL,
   `last_hero_timestamp` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=23 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=23 ;
 
 --
 -- Dumping data for table `localites`
@@ -242,20 +242,20 @@ INSERT INTO `localites` (`id`, `timestamp`, `nom`, `couleur`, `relation_openstre
 (5, '2014-12-13 00:01:22', '3° arr.', '#1e8199', '', 'deuxiemme arrondissement de paris', 'oui', 0, 0, '0000-00-00 00:00:00'),
 (6, '2014-12-13 00:01:50', '4° arr.', '#0f8e90', '', 'quatrieme arrondissement de paris', 'oui', 0, 0, '0000-00-00 00:00:00'),
 (7, '2014-12-13 00:02:29', '5° arr.', '#b63c3c', 'http://www.google.fr', 'cinquieme arrondissement de paris', 'oui', 0, 0, '0000-00-00 00:00:00'),
-(8, '2014-12-13 00:04:11', '6° arr.', '#000000', '', '6Â° arr.', 'oui', 0, 0, '0000-00-00 00:00:00'),
-(9, '2014-12-13 00:04:21', '7° arr.', '#000000', '', '7Â° arr.', 'oui', 0, 0, '0000-00-00 00:00:00'),
-(10, '2014-12-13 00:04:29', '8° arr.', '#000000', '', '8Â° arr.', 'oui', 0, 0, '0000-00-00 00:00:00'),
-(11, '2014-12-13 00:04:38', '9° arr.', '#000000', '', '9Â° arr.', 'oui', 0, 0, '0000-00-00 00:00:00'),
-(12, '2014-12-13 00:04:50', '10° arr.', '#000000', '', '10Â° arr.', 'oui', 0, 0, '0000-00-00 00:00:00'),
-(13, '2014-12-13 00:05:06', '12° arr.', '#000000', '', '12Â° arrondissement de paris ', 'oui', 0, 0, '0000-00-00 00:00:00'),
-(14, '2014-12-13 00:05:37', '13° arr.', '#000000', '', '13Â° arrondissement de paris ', 'oui', 0, 0, '0000-00-00 00:00:00'),
-(15, '2014-12-13 00:06:51', '14° arr.', '#000000', '', '14Â° arrondissement de paris ', 'oui', 0, 0, '0000-00-00 00:00:00'),
-(16, '2014-12-13 00:07:02', '15° arr.', '#000000', '', '15Â° arrondissement de paris ', 'oui', 0, 0, '0000-00-00 00:00:00'),
-(17, '2014-12-13 00:07:10', '16° arr.', '#000000', '', '16Â° arrondissement de paris ', 'oui', 0, 0, '0000-00-00 00:00:00'),
-(18, '2014-12-13 00:07:19', '17° arr.', '#000000', '', '17Â° arrondissement de paris ', 'oui', 0, 0, '0000-00-00 00:00:00'),
-(19, '2014-12-13 00:07:27', '18° arr.', '#000000', '', '18Â° arrondissement de paris ', 'oui', 0, 0, '0000-00-00 00:00:00'),
-(20, '2014-12-13 00:07:36', '19° arr.', '#000000', '', '19Â° arrondissement de paris ', 'oui', 0, 0, '0000-00-00 00:00:00'),
-(21, '2014-12-13 00:07:46', '20° arr.', '#000000', '', '20Â° arrondissement de paris ', 'oui', 0, 0, '0000-00-00 00:00:00'),
+(8, '2014-12-13 00:04:11', '6° arr.', '#000000', '', '6° arr.', 'oui', 0, 0, '0000-00-00 00:00:00'),
+(9, '2014-12-13 00:04:21', '7° arr.', '#000000', '', '7° arr.', 'oui', 0, 0, '0000-00-00 00:00:00'),
+(10, '2014-12-13 00:04:29', '8° arr.', '#000000', '', '8° arr.', 'oui', 0, 0, '0000-00-00 00:00:00'),
+(11, '2014-12-13 00:04:38', '9° arr.', '#000000', '', '9° arr.', 'oui', 0, 0, '0000-00-00 00:00:00'),
+(12, '2014-12-13 00:04:50', '10° arr.', '#000000', '', '10° arr.', 'oui', 0, 0, '0000-00-00 00:00:00'),
+(13, '2014-12-13 00:05:06', '12° arr.', '#000000', '', '12° arrondissement de paris ', 'oui', 0, 0, '0000-00-00 00:00:00'),
+(14, '2014-12-13 00:05:37', '13° arr.', '#000000', '', '13° arrondissement de paris ', 'oui', 0, 0, '0000-00-00 00:00:00'),
+(15, '2014-12-13 00:06:51', '14° arr.', '#000000', '', '14° arrondissement de paris ', 'oui', 0, 0, '0000-00-00 00:00:00'),
+(16, '2014-12-13 00:07:02', '15° arr.', '#000000', '', '15° arrondissement de paris ', 'oui', 0, 0, '0000-00-00 00:00:00'),
+(17, '2014-12-13 00:07:10', '16° arr.', '#000000', '', '16° arrondissement de paris ', 'oui', 0, 0, '0000-00-00 00:00:00'),
+(18, '2014-12-13 00:07:19', '17° arr.', '#000000', '', '17° arrondissement de paris ', 'oui', 0, 0, '0000-00-00 00:00:00'),
+(19, '2014-12-13 00:07:27', '18° arr.', '#000000', '', '18° arrondissement de paris ', 'oui', 0, 0, '0000-00-00 00:00:00'),
+(20, '2014-12-13 00:07:36', '19° arr.', '#000000', '', '19° arrondissement de paris ', 'oui', 0, 0, '0000-00-00 00:00:00'),
+(21, '2014-12-13 00:07:46', '20° arr.', '#000000', '', '20° arrondissement de paris ', 'oui', 0, 0, '0000-00-00 00:00:00'),
 (22, '2016-06-06 13:37:12', 'fleurac', '#0460f3', '', 'ccvh', 'oui', 0, 0, '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
@@ -275,7 +275,7 @@ CREATE TABLE IF NOT EXISTS `moyens_paiement` (
   `id_last_hero` int(11) NOT NULL,
   `last_hero_timestamp` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
 
 --
 -- Dumping data for table `moyens_paiement`
@@ -302,7 +302,7 @@ CREATE TABLE IF NOT EXISTS `pesees_collectes` (
   `id_last_hero` int(11) NOT NULL,
   `last_hero_timestamp` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -322,7 +322,7 @@ CREATE TABLE IF NOT EXISTS `pesees_sorties` (
   `id_last_hero` int(11) NOT NULL,
   `last_hero_timestamp` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -340,7 +340,7 @@ CREATE TABLE IF NOT EXISTS `pesees_vendus` (
   `id_last_hero` int(11) NOT NULL,
   `last_hero_timestamp` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -361,7 +361,7 @@ CREATE TABLE IF NOT EXISTS `points_collecte` (
   `id_last_hero` int(11) NOT NULL,
   `last_hero_timestamp` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
 
 --
 -- Dumping data for table `points_collecte`
@@ -391,7 +391,7 @@ CREATE TABLE IF NOT EXISTS `points_sortie` (
   `id_last_hero` int(11) NOT NULL,
   `last_hero_timestamp` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
 
 --
 -- Dumping data for table `points_sortie`
@@ -419,7 +419,7 @@ CREATE TABLE IF NOT EXISTS `points_vente` (
   `id_last_hero` int(11) NOT NULL,
   `last_hero_timestamp` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
 
 --
 -- Dumping data for table `points_vente`
@@ -450,7 +450,7 @@ CREATE TABLE IF NOT EXISTS `sorties` (
   `id_last_hero` int(11) NOT NULL,
   `last_hero_timestamp` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -471,7 +471,7 @@ CREATE TABLE IF NOT EXISTS `types_poubelles` (
   `id_last_hero` int(11) NOT NULL,
   `last_hero_timestamp` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=8 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=8 ;
 
 --
 -- Dumping data for table `types_poubelles`
@@ -503,17 +503,17 @@ CREATE TABLE IF NOT EXISTS `type_collecte` (
   `id_last_hero` int(11) NOT NULL,
   `last_hero_timestamp` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6 ;
 
 --
 -- Dumping data for table `type_collecte`
 --
 
 INSERT INTO `type_collecte` (`id`, `timestamp`, `nom`, `description`, `couleur`, `visible`, `id_createur`, `id_last_hero`, `last_hero_timestamp`) VALUES
-(1, '2014-07-02 13:21:10', 'apport volontaire', 'quand une personne apporte d''elle mÃªme un ou des objets Ã  la boutique', '#cb2323', 'oui', 0, 0, '0000-00-00 00:00:00'),
-(2, '2014-07-02 13:21:40', 'collecte à domicile', 'collecte chez l''habitant en tournÃ©e camion', '#7b1f1f', 'oui', 0, 0, '0000-00-00 00:00:00'),
-(3, '2014-07-02 13:21:53', 'collecte en pied d''immeuble', 'collecte demandÃ©e par un bailleur ', '#934a4a', 'oui', 0, 0, '0000-00-00 00:00:00'),
-(4, '2014-07-02 13:22:48', 'collecte en brocante', 'collecte effectuÃ©e en fin de brocantes', '#a26b6b', 'oui', 0, 0, '0000-00-00 00:00:00'),
+(1, '2014-07-02 13:21:10', 'apport volontaire', 'quand une personne apporte d''elle màªme un ou des objets à  la boutique', '#cb2323', 'oui', 0, 0, '0000-00-00 00:00:00'),
+(2, '2014-07-02 13:21:40', 'collecte à domicile', 'collecte chez l''habitant en tournée camion', '#7b1f1f', 'oui', 0, 0, '0000-00-00 00:00:00'),
+(3, '2014-07-02 13:21:53', 'collecte en pied d''immeuble', 'collecte demandée par un bailleur ', '#934a4a', 'oui', 0, 0, '0000-00-00 00:00:00'),
+(4, '2014-07-02 13:22:48', 'collecte en brocante', 'collecte effectuée en fin de brocantes', '#a26b6b', 'oui', 0, 0, '0000-00-00 00:00:00'),
 (5, '2014-07-10 18:59:22', 'collecte en hopital psychiatrique ', 'collecte en hopital psychiatrique ^^', '#ff88c9', 'non', 0, 0, '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
@@ -534,7 +534,7 @@ CREATE TABLE IF NOT EXISTS `type_contenants` (
   `id_last_hero` int(11) NOT NULL,
   `last_hero_timestamp` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=9 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=9 ;
 
 --
 -- Dumping data for table `type_contenants`
@@ -566,7 +566,7 @@ CREATE TABLE IF NOT EXISTS `type_dechets` (
   `id_last_hero` int(11) NOT NULL,
   `last_hero_timestamp` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=18 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=18 ;
 
 --
 -- Dumping data for table `type_dechets`
@@ -575,15 +575,15 @@ CREATE TABLE IF NOT EXISTS `type_dechets` (
 INSERT INTO `type_dechets` (`id`, `timestamp`, `nom`, `description`, `couleur`, `visible`, `id_createur`, `id_last_hero`, `last_hero_timestamp`) VALUES
 (1, '2014-04-08 18:21:16', 'matériel électrique', 'matériel électrique', '#e87702', 'oui', 0, 0, '0000-00-00 00:00:00'),
 (2, '2014-04-08 18:21:40', 'mobilier', 'mobilier', '#e83c02', 'oui', 0, 0, '0000-00-00 00:00:00'),
-(3, '2014-04-08 18:22:10', 'textiles, accessoires ', 'textile,accessoires la masse de bijoux Ã©tant nÃ©gligeable ', '#db20df', 'oui', 0, 0, '0000-00-00 00:00:00'),
-(4, '2014-06-22 20:00:31', 'jouets', 'jeux, jouets , comprend aussi les jeux de societÃ©s', '#80ffff', 'oui', 0, 0, '0000-00-00 00:00:00'),
-(5, '2014-06-22 20:34:38', 'informatique', 'ordis, ecrans , claviers , autres pÃ©riphÃ©riques info. DEEE. en fait ... ', '#e902ff', 'oui', 0, 0, '0000-00-00 00:00:00'),
-(6, '2014-07-02 14:00:33', 'vaisselle', 'vaisselle ,tout Ã©tats touts materiaux', '#c0c0c0', 'oui', 0, 0, '0000-00-00 00:00:00'),
+(3, '2014-04-08 18:22:10', 'textiles, accessoires ', 'textile,accessoires la masse de bijoux étant négligeable ', '#db20df', 'oui', 0, 0, '0000-00-00 00:00:00'),
+(4, '2014-06-22 20:00:31', 'jouets', 'jeux, jouets , comprend aussi les jeux de societés', '#80ffff', 'oui', 0, 0, '0000-00-00 00:00:00'),
+(5, '2014-06-22 20:34:38', 'informatique', 'ordis, ecrans , claviers , autres périphériques info. DEEE. en fait ... ', '#e902ff', 'oui', 0, 0, '0000-00-00 00:00:00'),
+(6, '2014-07-02 14:00:33', 'vaisselle', 'vaisselle ,tout états touts materiaux', '#c0c0c0', 'oui', 0, 0, '0000-00-00 00:00:00'),
 (7, '2014-07-02 22:04:57', 'livres', 'livres magazines journaux ', '#3a02e8', 'oui', 0, 0, '0000-00-00 00:00:00'),
 (8, '2014-07-02 22:06:25', 'supports media', 'cd dvd vinyles cassets minidiscs et consors', '#0b28ff', 'oui', 0, 0, '0000-00-00 00:00:00'),
-(9, '2014-07-02 22:07:24', 'bibelots ', 'bibelots divers objets dÃ©co ', '#c0c0c0', 'oui', 0, 0, '0000-00-00 00:00:00'),
+(9, '2014-07-02 22:07:24', 'bibelots ', 'bibelots divers objets déco ', '#c0c0c0', 'oui', 0, 0, '0000-00-00 00:00:00'),
 (10, '2014-07-02 22:08:36', 'autres', 'autres', '#02d4ff', 'oui', 0, 0, '0000-00-00 00:00:00'),
-(11, '2014-07-10 19:29:38', 'bijoux', 'bijoux en tout genre , pese peut mais trÃ¨s bien valorisÃ©', '#3fbf9f', 'oui', 0, 0, '0000-00-00 00:00:00'),
+(11, '2014-07-10 19:29:38', 'bijoux', 'bijoux en tout genre , pese peut mais trà¨s bien valorisé', '#3fbf9f', 'oui', 0, 0, '0000-00-00 00:00:00'),
 (12, '2014-10-09 10:10:59', 'mobilier en service', 'mobilier en service', '#bb2222', 'non', 0, 0, '0000-00-00 00:00:00'),
 (13, '2014-10-09 10:11:16', 'mobilier hs', 'mobilier hs', '#bd2d2d', 'non', 0, 0, '0000-00-00 00:00:00'),
 (14, '2016-06-14 13:42:57', 'la réserve des arts', 'petit matériel', '#00ff40', 'non', 0, 0, '0000-00-00 00:00:00'),
@@ -608,7 +608,7 @@ CREATE TABLE IF NOT EXISTS `type_dechets_evac` (
   `id_last_hero` int(11) NOT NULL,
   `last_hero_timestamp` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=9 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=9 ;
 
 --
 -- Dumping data for table `type_dechets_evac`
@@ -616,7 +616,7 @@ CREATE TABLE IF NOT EXISTS `type_dechets_evac` (
 
 INSERT INTO `type_dechets_evac` (`id`, `timestamp`, `nom`, `description`, `couleur`, `visible`, `id_createur`, `id_last_hero`, `last_hero_timestamp`) VALUES
 (1, '2014-11-23 16:31:40', 'metaux', 'ferraille alu ect...', '#8e33ae', 'oui', 0, 0, '0000-00-00 00:00:00'),
-(2, '2014-11-30 15:00:35', 'deee', 'dÃ©chets dâ€™Ã©quipements Ã©lectroniques et Ã©lectromÃ©nagers ', '#000000', 'oui', 0, 0, '0000-00-00 00:00:00'),
+(2, '2014-11-30 15:00:35', 'deee', 'déchets d\'équipements électroniques et électroménagers ', '#000000', 'oui', 0, 0, '0000-00-00 00:00:00'),
 (3, '2014-11-30 15:00:57', 'livres non vendus', 'livres non vendus en boutique, invendables sur place', '#9b4848', 'oui', 0, 0, '0000-00-00 00:00:00'),
 (4, '2014-11-30 15:01:13', 'piles', 'piles', '#925555', 'oui', 0, 0, '0000-00-00 00:00:00'),
 (5, '2014-11-30 15:01:40', 'lampes eco/neons', 'lampes eco/neons', '#000000', 'oui', 0, 0, '0000-00-00 00:00:00'),
@@ -641,18 +641,18 @@ CREATE TABLE IF NOT EXISTS `type_sortie` (
   `id_last_hero` int(11) NOT NULL,
   `last_hero_timestamp` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=8 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=8 ;
 
 --
 -- Dumping data for table `type_sortie`
 --
 
 INSERT INTO `type_sortie` (`id`, `timestamp`, `nom`, `description`, `couleur`, `visible`, `id_createur`, `id_last_hero`, `last_hero_timestamp`) VALUES
-(1, '2014-07-09 12:10:42', 'don Ã  un particulier', 'don d''un objet invendable en boutique Ã  un particulier', '#84a8c6', 'oui', 0, 0, '0000-00-00 00:00:00'),
-(2, '2014-07-09 12:13:45', 'don Ã  une association', 'don d''objets Ã  une asso. sans convention', '#c6a13d', 'oui', 0, 0, '0000-00-00 00:00:00'),
-(3, '2014-07-09 12:14:35', 'don Ã  un artiste', 'objets, materiaux donnÃ©s Ã  un artiste', '#bf6b1f', 'oui', 0, 0, '0000-00-00 00:00:00'),
-(4, '2014-08-06 16:51:49', 'don Ã  un salariÃ©', 'don Ã  un salariÃ©', '#bb3333', 'oui', 0, 0, '0000-00-00 00:00:00'),
-(5, '2014-08-06 16:52:10', 'don Ã  un bÃ©nÃ©vole', 'don Ã  un bÃ©nÃ©vole', '#155175', 'oui', 0, 0, '0000-00-00 00:00:00'),
+(1, '2014-07-09 12:10:42', 'don à  un particulier', 'don d''un objet invendable en boutique à  un particulier', '#84a8c6', 'oui', 0, 0, '0000-00-00 00:00:00'),
+(2, '2014-07-09 12:13:45', 'don à  une association', 'don d''objets à  une asso. sans convention', '#c6a13d', 'oui', 0, 0, '0000-00-00 00:00:00'),
+(3, '2014-07-09 12:14:35', 'don à  un artiste', 'objets, materiaux donnés à  un artiste', '#bf6b1f', 'oui', 0, 0, '0000-00-00 00:00:00'),
+(4, '2014-08-06 16:51:49', 'don à  un salarié', 'don à  un salarié', '#bb3333', 'oui', 0, 0, '0000-00-00 00:00:00'),
+(5, '2014-08-06 16:52:10', 'don à  un bénévole', 'don à  un bénévole', '#155175', 'oui', 0, 0, '0000-00-00 00:00:00'),
 (6, '2016-06-06 14:02:22', 'aménagement des locaux', 'aménagement des locaux', '#da4747', 'oui', 0, 0, '0000-00-00 00:00:00'),
 (7, '2016-06-06 14:03:46', 'ateliers d''animation', 'ateliers d''animation', '#9a15e3', 'oui', 0, 0, '0000-00-00 00:00:00');
 
@@ -674,7 +674,7 @@ CREATE TABLE IF NOT EXISTS `utilisateurs` (
   `id_last_hero` int(11) NOT NULL,
   `last_hero_timestamp` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=9 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=9 ;
 
 --
 -- Dumping data for table `utilisateurs`
@@ -704,7 +704,7 @@ CREATE TABLE IF NOT EXISTS `vendus` (
   `id_last_hero` int(11) NOT NULL,
   `last_hero_timestamp` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -723,7 +723,7 @@ CREATE TABLE IF NOT EXISTS `ventes` (
   `id_last_hero` int(11) NOT NULL,
   `last_hero_timestamp` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
