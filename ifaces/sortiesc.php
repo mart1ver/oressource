@@ -1,37 +1,29 @@
-<?php session_start();
-
+<?php
+session_start();
 require_once('../moteur/dbconfig.php');
 
-
-
-if($_SESSION['affss'] !== "oui"){
-
+if ($_SESSION['affss'] !== "oui") {
    header("Location:sortiesr.php?numero=" . $_GET['numero']);
 }
 
-//Vérification des autorisations de l'utilisateur et des variables de session requises pour l'affichage de cette page: 
-if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 's'.$_GET['numero']) !== false))
-      {include "tete.php";
-//Oressource 2014, formulaire de sorties hors-boutique
-//Simple formulaire de saisie des matieres d'ouevres sortantes de la structure. (structures partenaires, conventiionnées)
-//Doit etre fonctionnel avec un ecran tactille.
-//Du javascript permet l'interactivité du keypad et des boutons centraux avec le bon de collecte 
-//
-//
-//
-//
-//
-        //on obtient la masse maximum suporté par la balance à ce point de sortie dans la variable $pesee_max
-            //on obtient le nom du point de collecte designé par $GET['numero']
-            $req = $bdd->prepare("SELECT pesee_max FROM points_sortie WHERE id = :id ");
-            $req->execute(array('id' => $_GET['numero']));
-            // On affiche chaque entree une à une
-            while ($donnees = $req->fetch())
-            {
-            $pesee_max = $donnees['pesee_max'];
-            }
-            $reponse->closeCursor(); // Termine le traitement de la requête        
+// Vérification des autorisations de l'utilisateur et des variables de session requises pour l'affichage de cette page:
+if (isset($_SESSION['id'])
+  && $_SESSION['systeme'] === "oressource"
+  && (strpos($_SESSION['niveau'], 's' . $_GET['numero']) !== false)) {
+  include "tete.php";
+
+  // Oressource 2014, formulaire de sorties hors-boutique
+  // Simple formulaire de saisie des matieres d'ouevres sortantes de la structure. (structures partenaires, conventiionnées)
+  // Doit etre fonctionnel avec un ecran tactille.
+  // Du javascript permet l'interactivité du keypad et des boutons centraux avec le bon de collecte
+  // On obtient la masse maximum suporté par la balance à ce point de sortie dans la variable $pesee_max
+  // On obtient le nom du point de collecte designé par $GET['numero']
+  $req = $bdd->prepare("SELECT pesee_max FROM points_sortie WHERE id = :id LIMIT 1");
+  $req->bindValue(':id', $_GET['numero'], PDO::PARAM_INT);
+  $req->execute();
+  $pesee_max = $req->fetch(PDO::FETCH_ASSOC)['pesee_max'];
   ?>
+
 <script src="../js/utilitaire.js"></script>
 <script type="text/javascript">
 "use strict";
