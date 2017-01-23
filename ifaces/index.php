@@ -93,10 +93,10 @@ if (is_valid_session()) {
         <?php if ($masse_collectes > 0.000) { ?>
           <div id="graphj" style="height: 180px;"></div>
           <?php if ($validUser) { ?>
-            <p><a href="/ifaces/bilanc.php?date1=<?php echo date("d-m-Y") ?>&date2=<?php echo date("d-m-Y") ?>&numero=0" class="btn btn-default"  role="button">Détails &raquo;</a></p>
+            <p><a href="../ifaces/bilanc.php?date1=<?php echo date("d-m-Y") ?>&date2=<?php echo date("d-m-Y") ?>&numero=0" class="btn btn-default"  role="button">Détails &raquo;</a></p>
           <?php } ?>
         <?php } else { ?>
-          <img src="/images/nodata.jpg" class="img-responsive" alt="Responsive image">
+          <img src="../images/nodata.jpg" class="img-responsive" alt="Responsive image">
         <?php } ?>
       </div>
       <div class="col-md-4">
@@ -104,10 +104,10 @@ if (is_valid_session()) {
         <?php if ($masse_sorties > 0.000) { ?>
           <div id="grapha" style="height: 180px;"></div>
           <?php if ($validUser) { ?>
-            <p><a class="btn btn-default" href="/ifaces/bilanhb.php?date1=<?php echo date("d-m-Y") ?>&date2=<?php echo date("d-m-Y") ?>" role="button">Détails &raquo;</a></p>
+            <p><a class="btn btn-default" href="../ifaces/bilanhb.php?date1=<?php echo date("d-m-Y") ?>&date2=<?php echo date("d-m-Y") ?>" role="button">Détails &raquo;</a></p>
           <?php } ?>
         <?php } else { ?>
-          <img src="/images/nodata.jpg" class="img-responsive" alt="Responsive image">
+          <img src="../images/nodata.jpg" class="img-responsive" alt="Responsive image">
         <?php } ?>
       </div>
       <div class="col-md-4">
@@ -115,10 +115,10 @@ if (is_valid_session()) {
         <?php if ($quantite_vendu > 0) { ?>
           <div id="graphm" style="height: 180px;"></div>
           <?php if ($validUser) { ?>
-            <p><a class="btn btn-default" href="/ifaces/bilanv.php?date1=<?php echo date("d-m-Y") ?>&date2=<?php echo date("d-m-Y") ?>" role="button">Détails &raquo;</a></p>
+            <p><a class="btn btn-default" href="../ifaces/bilanv.php?date1=<?php echo date("d-m-Y") ?>&date2=<?php echo date("d-m-Y") ?>" role="button">Détails &raquo;</a></p>
           <?php } ?>
         <?php } else { ?>
-          <img src="/images/nodata.jpg" class="img-responsive" alt="Responsive image">
+          <img src="../images/nodata.jpg" class="img-responsive" alt="Responsive image">
         <?php } ?>
       </div>
     </div> <!-- /row -->
@@ -127,9 +127,9 @@ if (is_valid_session()) {
   <!-- Bootstrap core JavaScript + morris + raphael
   ================================================== -->
   <!-- Placed at the end of the document so the pages load faster -->
-  <script src="/js/jquery-2.0.3.min.js"></script>
-  <script src="/js/raphael.js"></script>
-  <script src="/js/morris/morris.js"></script>
+  <script src="../js/jquery-2.0.3.min.js"></script>
+  <script src="../js/raphael.js"></script>
+  <script src="../js/morris/morris.js"></script>
   <script type="text/javascript">
     'use strict';
     // FIXME: Recuperer les donnees en AJAX au lieu de recalculer toute la page a chaque fois.

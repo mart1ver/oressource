@@ -10,12 +10,12 @@ require_once('../core/session.php');
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="shortcut icon" href="/images/favicon.ico">
+    <link rel="shortcut icon" href="../images/favicon.ico">
     <title>Oressource</title>
-    <link href="/css/bootstrap.min.css" type="text/css" rel="stylesheet">
-    <link href="/css/oressource.css" type="text/css" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="/js/morris/morris.css">
-    <link rel="stylesheet" type="text/css" media="all" href="/css/daterangepicker-bs3.css" />
+    <link href="../css/bootstrap.min.css" type="text/css" rel="stylesheet">
+    <link href="../css/oressource.css" type="text/css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="../js/morris/morris.css">
+    <link rel="stylesheet" type="text/css" media="all" href="../css/daterangepicker-bs3.css" />
   </head>
 
   <body>
@@ -49,7 +49,7 @@ require_once('../core/session.php');
                         $url_query = "{$point_collecte['id']}&nom={$nom}&adresse={$point_collecte['adresse']}";
                         ?>
                         <li>
-                          <a href="/ifaces/collecte.php?numero=<?php echo $url_query; ?>"><?php echo $nom; ?></a>
+                          <a href="../ifaces/collecte.php?numero=<?php echo $url_query; ?>"><?php echo $nom; ?></a>
                         </li>
                         <?php
                       }
@@ -74,7 +74,7 @@ require_once('../core/session.php');
                         $url_query = "numero={$point_sortie['id']}&nom={$nom}&adresse={$point_sortie['adresse']}";
                         ?>
                         <li>
-                          <a href="/ifaces/sortiesc.php?<?php echo $url_query; ?>"><?php echo $nom; ?></a>
+                          <a href="../ifaces/sortiesc.php?<?php echo $url_query; ?>"><?php echo $nom; ?></a>
                         </li>
                         <?php
                       }
@@ -100,7 +100,7 @@ require_once('../core/session.php');
                           $url_query = "numero={$point_vente['id']}&nom={$nom}&adresse={$point_vente['adresse']}";
                           ?>
                         <li>
-                          <a href="/ifaces/ventes.php?<?php echo $url_query; ?>"><?php echo $nom; ?></a>
+                          <a href="../ifaces/ventes.php?<?php echo $url_query; ?>"><?php echo $nom; ?></a>
                         </li>
                         <?php
                       }
@@ -115,7 +115,7 @@ require_once('../core/session.php');
 
               if (is_allowed_bilan()) {
                 ?>
-                <li><a href="/ifaces/bilanc.php?date1=<?php echo $now_date ?>&date2=<?php echo $now_date ?>&numero=0">Bilans</a></li>
+                <li><a href="../ifaces/bilanc.php?date1=<?php echo $now_date ?>&date2=<?php echo $now_date ?>&numero=0">Bilans</a></li>
                 <?php
               }
 
@@ -137,9 +137,9 @@ require_once('../core/session.php');
                     //Grille des prix et masse des bacs(gestion quotidienne)
                     if ($can_gestion) {
                       ?>
-                      <li><a href="/ifaces/grilles_prix.php?typo=1">Grille des prix</a></li>
-                      <li><a href="/ifaces/edition_types_contenants.php">Bacs et chariots</a></li>
-                      <li><a href="/ifaces/edition_types_poubelles.php">Types de poubelles</a></li>
+                      <li><a href="../ifaces/grilles_prix.php?typo=1">Grille des prix</a></li>
+                      <li><a href="../ifaces/edition_types_contenants.php">Bacs et chariots</a></li>
+                      <li><a href="../ifaces/edition_types_poubelles.php">Types de poubelles</a></li>
                       <li class="divider"></li>
                       <?php
                     }
@@ -147,9 +147,9 @@ require_once('../core/session.php');
                     //gestion verif
                     if ($can_verif) {
                       ?>
-                      <li><a href="/ifaces/verif_collecte.php?date1=<?php echo $now_date ?>&date2=<?php echo $now_date ?>&numero=1">Vérifier les collectes</a></li>
-                      <li><a href="/ifaces/verif_sorties.php?date1=<?php echo $now_date ?>&date2=<?php echo $now_date ?>&numero=1">Vérifier les sorties hors-boutique</a></li>
-                      <li><a href="/ifaces/verif_vente.php?date1=<?php echo $now_date ?>&date2=<?php echo $now_date ?>&numero=1">Vérifier les ventes</a></li>
+                      <li><a href="../ifaces/verif_collecte.php?date1=<?php echo $now_date ?>&date2=<?php echo $now_date ?>&numero=1">Vérifier les collectes</a></li>
+                      <li><a href="../ifaces/verif_sorties.php?date1=<?php echo $now_date ?>&date2=<?php echo $now_date ?>&numero=1">Vérifier les sorties hors-boutique</a></li>
+                      <li><a href="../ifaces/verif_vente.php?date1=<?php echo $now_date ?>&date2=<?php echo $now_date ?>&numero=1">Vérifier les ventes</a></li>
                       <li class="divider"></li>
                       <?php
                     }
@@ -157,7 +157,7 @@ require_once('../core/session.php');
                     //utilisateurs
                     if ($can_users) {
                       ?>
-                      <li><a href="/ifaces/utilisateurs.php">Utilisateurs</a></li>
+                      <li><a href="../ifaces/utilisateurs.php">Utilisateurs</a></li>
                       <li class="divider"></li>
                       <?php
                     }
@@ -165,8 +165,8 @@ require_once('../core/session.php');
                     //recycleur et conventions de sortie
                     if ($can_parners) {
                       ?>
-                      <li><a href="/ifaces/edition_filieres_sortie.php">Entreprises de recyclage</a></li>
-                      <li><a href="/ifaces/edition_conventions_sortie.php">Conventions avec les partenaires</a></li>
+                      <li><a href="../ifaces/edition_filieres_sortie.php">Entreprises de recyclage</a></li>
+                      <li><a href="../ifaces/edition_conventions_sortie.php">Conventions avec les partenaires</a></li>
                       <li class="divider"></li>
                       <?php
                     }
@@ -174,19 +174,19 @@ require_once('../core/session.php');
                     //configuration de oressource
                     if ($can_config) {
                       ?>
-                      <li><a href="/ifaces/edition_types_sortie.php">Types de sorties hors-boutique</a></li>
-                      <li><a href="/ifaces/types_collecte.php">Types de collectes</a></li>
+                      <li><a href="../ifaces/edition_types_sortie.php">Types de sorties hors-boutique</a></li>
+                      <li><a href="../ifaces/types_collecte.php">Types de collectes</a></li>
                       <li class="divider"></li>
-                      <li><a href="/ifaces/types_dechets.php">Types d'objets collectés</a></li>
-                      <li><a href="/ifaces/types_dechets_evac.php">Types de déchets evacués</a></li>
+                      <li><a href="../ifaces/types_dechets.php">Types d'objets collectés</a></li>
+                      <li><a href="../ifaces/types_dechets_evac.php">Types de déchets evacués</a></li>
                       <li class="divider"></li>
-                      <li><a href="/ifaces/edition_points_collecte.php">Points de collecte</a></li>
-                      <li><a href="/ifaces/edition_points_sorties.php">Points de sortie hors-boutique</a></li>
-                      <li><a href="/ifaces/edition_points_vente.php">Points de vente</a></li>
+                      <li><a href="../ifaces/edition_points_collecte.php">Points de collecte</a></li>
+                      <li><a href="../ifaces/edition_points_sorties.php">Points de sortie hors-boutique</a></li>
+                      <li><a href="../ifaces/edition_points_vente.php">Points de vente</a></li>
                       <li class="divider"></li>
-                      <li><a href="/ifaces/moyens_paiment.php">Moyens de paiment</a></li>
-                      <li><a href="/ifaces/edition_localites.php">Localités</a></li>
-                      <li><a href="/ifaces/edition_description.php">Configuration de Oressource</a></li>
+                      <li><a href="../ifaces/moyens_paiment.php">Moyens de paiment</a></li>
+                      <li><a href="../ifaces/edition_localites.php">Localités</a></li>
+                      <li><a href="../ifaces/edition_description.php">Configuration de Oressource</a></li>
                     <?php } ?>
                   </ul>
                 </li>
@@ -194,8 +194,8 @@ require_once('../core/session.php');
               <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-user"></span><b class="caret"></b></a>
                 <ul class="dropdown-menu">
-                  <li><a href="/ifaces/edition_mdp_utilisateur.php">Mot de passe</a></li>
-                  <li><a href="/moteur/destroy.php">Déconnexion</a></li>
+                  <li><a href="../ifaces/edition_mdp_utilisateur.php">Mot de passe</a></li>
+                  <li><a href="../moteur/destroy.php">Déconnexion</a></li>
                 </ul>
               </li>
             <?php } ?>
