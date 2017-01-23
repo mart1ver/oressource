@@ -1,24 +1,7 @@
 <?php
 session_start();
 require_once("../moteur/dbconfig.php");
-
-/**
- * Renvoie `true` si la session est valide.
- */
-function is_valid_session() {
-// FIXME: Pourquoi pas mettre la session en parametre?
-  return (isset($_SESSION['id'])
-    && $_SESSION['systeme'] === "oressource");
-}
-
-/**
- * Renvoie `true` si la session est autorisee a voir les bilans.
- */
-function is_allowed_bilan() {
-  // FIXME: Pourquoi pas mettre la session en parametre?
-  return (is_valid_session()
-    && (strpos($_SESSION['niveau'], 'bi') !== false));
-}
+require_once('../core/session.php');
 
 /**
  * Renvoie les donnees neccessaire a moris.js pour le tableau de bord.
