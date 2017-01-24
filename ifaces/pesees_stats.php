@@ -8,7 +8,7 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
   include "tete_vente.php";
   
   // on détermine la référence de la prochaine vente.
-  $req = $bdd->query("SHOW TABLE STATUS where name='ventes'");
+  $req = $bdd->query("SHOW TABLE STATUS where name='pesees_vendus'");
   $donnees = $req->fetch();
   $req->closeCursor(); // Libère la connexion au serveur
   $numero_vente = $donnees['Auto_increment'];
@@ -27,9 +27,8 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
       <div class="panel panel-info">
 
         <div class="panel-heading">
-          <label class="panel-title">Bon de pesée:</label>
-          <span class ="badge" id="recaptotal" style="float:right;">0€</span>
-        </div>
+          <label class="panel-title">Pesées pour statistiques:</label>
+           </div>
 
         <div class="panel-body" id="divID">
           <form action="../moteur/stats_post.php" id="formulaire" method="post">
@@ -37,7 +36,7 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
 
 
 <ul id="liste" class="list-group">
-   <li class="list-group-item">Vente: <?php echo $_GET['numero']?>#<?php echo $numero_vente?>, date: <?php echo date("d-m-Y") ?><br><?php echo $nom_pv;?><br><?php echo $adresse_pv;?>,<br>siret: <?php echo$_SESSION['siret'];?></li>
+   <li class="list-group-item">Pesée: <?php echo $_GET['numero']?>#<?php echo $numero_vente?>, date: <?php echo date("d-m-Y") ?><br><?php echo $nom_pv;?></li>
   
 </ul>
  <ul class="list-group" id="total">
