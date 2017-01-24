@@ -29,11 +29,11 @@ function is_valid_session() {
 
 /**
  * Renvoie `true` si la session est autorisee a voir les bilans.
+ * On suppose que la session a deja ete verifiee avant.
  */
 function is_allowed_bilan() {
   // FIXME: Pourquoi pas mettre la session en parametre?
-  return (is_valid_session()
-    && (strpos($_SESSION['niveau'], 'bi') !== false));
+  return (strpos($_SESSION['niveau'], 'bi') !== false);
 }
 
 function is_allowed_vente() {
