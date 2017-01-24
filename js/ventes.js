@@ -58,7 +58,7 @@ function suprime(nsligne) {
     var numero_ligne = nsligne.substr(5); // sous_chaine = le numero uniquement
     document.getElementById('narticles').value = parseInt(document.getElementById('narticles').value) - parseInt(document.getElementById('tquantite'+numero_ligne).value);
     document.getElementById('ptot').value = parseFloat(document.getElementById('ptot').value) - (parseFloat(document.getElementById('tprix'+numero_ligne).value)*parseFloat(document.getElementById('tquantite'+numero_ligne).value));
-    document.getElementById('recaptotal').innerHTML = parseFloat(document.getElementById('ptot').value).toFixed(2)+'€';
+    document.getElementById('recaptotal').innerHTML = parseFloat(document.getElementById('ptot').value).toFixed(2)+' €';
     document.getElementById('total').innerHTML = '<li class="list-group-item">Soit : '+document.getElementById('narticles').value+' article(s) pour : <span class="badge" style="float:right;">'+parseFloat(document.getElementById('ptot').value).toFixed(2)+'€</span></li>';
     document.getElementById('tquantite'+numero_ligne).value= "0";
     document.getElementById('tprix'+numero_ligne).value= "0";
@@ -156,7 +156,7 @@ function ajout() {
         +'<input type="hidden"  id="tquantite'+parseInt(document.getElementById('nlignes').value)+'" name="tquantite'+parseInt(document.getElementById('nlignes').value)+'"value="'+document.getElementById('quantite').value+'">'
         +'<input type="hidden"  id="tprix'+parseInt(document.getElementById('nlignes').value)+'" name="tprix'+parseInt(document.getElementById('nlignes').value)+'"value="'+document.getElementById('prix').value+'"></li>';
         document.getElementById('total').innerHTML = '<li class="list-group-item">Soit : '+document.getElementById('narticles').value+' article(s) pour : <span class="badge" style="float:right;">'+parseFloat(document.getElementById('ptot').value).toFixed(2)+'€</span></li>';
-      document.getElementById('recaptotal').innerHTML = parseFloat(document.getElementById('ptot').value).toFixed(2)+'€';
+      document.getElementById('recaptotal').innerHTML = parseFloat(document.getElementById('ptot').value).toFixed(2)+' €';
       document.getElementById('nom_objet').innerHTML = "<label>Objet:</label>";
       document.getElementById('quantite').value = "";
       document.getElementById('prix').value = "";
@@ -173,7 +173,7 @@ function ajout() {
         +'<input type="hidden"  id="tprix'+parseInt(document.getElementById('nlignes').value)+'" name="tprix'+parseInt(document.getElementById('nlignes').value)+'"value="'+document.getElementById('prix').value+'">'
         +'<input type="hidden"  id="tmasse'+parseInt(document.getElementById('nlignes').value)+'" name="tmasse'+parseInt(document.getElementById('nlignes').value)+'"value="'+document.getElementById('masse').value+'"></li>';
       document.getElementById('total').innerHTML = '<li class="list-group-item">Soit : '+document.getElementById('narticles').value+' article(s) pour : <span class="badge" style="float:right;">'+parseFloat(document.getElementById('ptot').value).toFixed(2)+'€</span></li>';
-      document.getElementById('recaptotal').innerHTML = parseFloat(document.getElementById('ptot').value).toFixed(2)+'€';
+      document.getElementById('recaptotal').innerHTML = parseFloat(document.getElementById('ptot').value).toFixed(2)+' €';
       document.getElementById('nom_objet').innerHTML = "<label>Objet:</label>";
       document.getElementById('quantite').value = "";
       document.getElementById('prix').value = "";
@@ -191,7 +191,7 @@ function ajout() {
         +'<input type="hidden"  id="tquantite'+parseInt(document.getElementById('nlignes').value)+'" name="tquantite'+parseInt(document.getElementById('nlignes').value)+'"value="'+document.getElementById('quantite').value+'">'
         +'<input type="hidden"  id="tprix'+parseInt(document.getElementById('nlignes').value)+'" name="tprix'+parseInt(document.getElementById('nlignes').value)+'"value="'+document.getElementById('prix').value+'"></li>';
         document.getElementById('total').innerHTML = '<li class="list-group-item">Soit : '+document.getElementById('narticles').value+' article(s) pour : <span class="badge" style="float:right;">'+parseFloat(document.getElementById('ptot').value).toFixed(2)+'€</span></li>';
-      document.getElementById('recaptotal').innerHTML = parseFloat(document.getElementById('ptot').value).toFixed(2)+'€';
+      document.getElementById('recaptotal').innerHTML = parseFloat(document.getElementById('ptot').value).toFixed(2)+' €';
       document.getElementById('nom_objet').innerHTML = "<label>Objet:</label>";
       document.getElementById('quantite').value = "";
       document.getElementById('prix').value = "";
@@ -246,7 +246,7 @@ function ajout() {
         +'<input type="hidden"  id="tquantite'+parseInt(document.getElementById('nlignes').value)+'" name="tquantite'+parseInt(document.getElementById('nlignes').value)+'"value="'+document.getElementById('quantite').value+'">'
         +'<input type="hidden"  id="tprix'+parseInt(document.getElementById('nlignes').value)+'" name="tprix'+parseInt(document.getElementById('nlignes').value)+'"value="'+document.getElementById('prix').value/document.getElementById('quantite').value+'"></li>';
       document.getElementById('total').innerHTML = '<li class="list-group-item">Soit : '+document.getElementById('narticles').value+' article(s) pour : <span class="badge" style="float:right;">'+parseFloat(document.getElementById('ptot').value).toFixed(2)+'€</span></li>';
-      document.getElementById('recaptotal').innerHTML = parseFloat(document.getElementById('ptot').value).toFixed(2)+'€';
+      document.getElementById('recaptotal').innerHTML = parseFloat(document.getElementById('ptot').value).toFixed(2)+' €';
       document.getElementById('nom_objet').innerHTML = "<label>Objet:</label>";
       document.getElementById('quantite').value = "";
       document.getElementById('prix').value = "";
@@ -263,7 +263,7 @@ function ajout() {
         +'<input type="hidden"  id="tprix'+parseInt(document.getElementById('nlignes').value)+'" name="tprix'+parseInt(document.getElementById('nlignes').value)+'"value="'+document.getElementById('prix').value/document.getElementById('quantite').value+'">'
         +'<input type="hidden"  id="tmasse'+parseInt(document.getElementById('nlignes').value)+'" name="tmasse'+parseInt(document.getElementById('nlignes').value)+'"value="'+document.getElementById('masse').value+'"></li>';
       document.getElementById('total').innerHTML = '<li class="list-group-item">Soit : '+document.getElementById('narticles').value+' article(s) pour : <span class="badge" style="float:right;">'+parseFloat(document.getElementById('ptot').value).toFixed(2)+'€</span></li>';
-      document.getElementById('recaptotal').innerHTML = parseFloat(document.getElementById('ptot').value).toFixed(2)+'€';
+      document.getElementById('recaptotal').innerHTML = parseFloat(document.getElementById('ptot').value).toFixed(2)+' €';
       document.getElementById('nom_objet').innerHTML = "<label>Objet:</label>";
       document.getElementById('quantite').value = "";
       document.getElementById('prix').value = "";
@@ -281,7 +281,7 @@ function ajout() {
         +'<input type="hidden"  id="tquantite'+parseInt(document.getElementById('nlignes').value)+'" name="tquantite'+parseInt(document.getElementById('nlignes').value)+'"value="'+document.getElementById('quantite').value+'">'
         +'<input type="hidden"  id="tprix'+parseInt(document.getElementById('nlignes').value)+'" name="tprix'+parseInt(document.getElementById('nlignes').value)+'"value="'+document.getElementById('prix').value/document.getElementById('quantite').value+'"></li>';
       document.getElementById('total').innerHTML = '<li class="list-group-item">Soit : '+document.getElementById('narticles').value+' article(s) pour : <span class="badge" style="float:right;">'+parseFloat(document.getElementById('ptot').value).toFixed(2)+'€</span></li>';
-      document.getElementById('recaptotal').innerHTML = parseFloat(document.getElementById('ptot').value).toFixed(2)+'€';
+      document.getElementById('recaptotal').innerHTML = parseFloat(document.getElementById('ptot').value).toFixed(2)+' €';
       document.getElementById('nom_objet').innerHTML = "<label>Objet:</label>";
       document.getElementById('quantite').value = "";
       document.getElementById('prix').value = "";
@@ -352,7 +352,7 @@ function ajout_stats() {
         +'<input type="hidden"  id="tid_objet'+parseInt(document.getElementById('nlignes').value)+'" name="tid_objet'+parseInt(document.getElementById('nlignes').value)+'"value="'+document.getElementById('id_objet').value+'">'
         +'<input type="hidden"  id="tquantite'+parseInt(document.getElementById('nlignes').value)+'" name="tquantite'+parseInt(document.getElementById('nlignes').value)+'"value="'+document.getElementById('quantite').value+'">';
         document.getElementById('total').innerHTML = '<li class="list-group-item">Soit : '+document.getElementById('narticles').value+' article(s) pour : <span class="badge" style="float:right;">'+parseFloat(document.getElementById('mtot').value).toFixed(2)+'Kgs.</span></li>';
-      document.getElementById('recaptotal').innerHTML = parseFloat(document.getElementById('mtot').value).toFixed(2)+'Kgs.';
+      document.getElementById('recaptotal').innerHTML = parseFloat(document.getElementById('mtot').value).toFixed(2)+' Kgs.';
       document.getElementById('nom_objet').innerHTML = "<label>Objet:</label>";
       document.getElementById('quantite').value = "";
       document.getElementById('id_type_objet').value = "";
@@ -367,7 +367,7 @@ function ajout_stats() {
         +'<input type="hidden"  id="tquantite'+parseInt(document.getElementById('nlignes').value)+'" name="tquantite'+parseInt(document.getElementById('nlignes').value)+'"value="'+document.getElementById('quantite').value+'">'
         +'<input type="hidden"  id="tmasse'+parseInt(document.getElementById('nlignes').value)+'" name="tmasse'+parseInt(document.getElementById('nlignes').value)+'"value="'+document.getElementById('masse').value+'"></li>';
       document.getElementById('total').innerHTML = '<li class="list-group-item">Soit : '+document.getElementById('narticles').value+' article(s) pour : <span class="badge" style="float:right;">'+parseFloat(document.getElementById('mtot').value).toFixed(2)+'Kgs.</span></li>';
-      document.getElementById('recaptotal').innerHTML = parseFloat(document.getElementById('mtot').value).toFixed(2)+'Kgs.';
+      document.getElementById('recaptotal').innerHTML = parseFloat(document.getElementById('mtot').value).toFixed(2)+' Kgs.';
       document.getElementById('nom_objet').innerHTML = "<label>Objet:</label>";
       document.getElementById('quantite').value = "";
       document.getElementById('masse').value = "";
@@ -383,7 +383,7 @@ function ajout_stats() {
         +'<input type="hidden"  id="tid_objet'+parseInt(document.getElementById('nlignes').value)+'" name="tid_objet'+parseInt(document.getElementById('nlignes').value)+'"value="'+document.getElementById('id_objet').value+'">'
         +'<input type="hidden"  id="tquantite'+parseInt(document.getElementById('nlignes').value)+'" name="tquantite'+parseInt(document.getElementById('nlignes').value)+'"value="'+document.getElementById('quantite').value+'">';
         document.getElementById('total').innerHTML = '<li class="list-group-item">Soit : '+document.getElementById('narticles').value+' article(s) pour : <span class="badge" style="float:right;">'+parseFloat(document.getElementById('mtot').value).toFixed(2)+'Kgs.</span></li>';
-      document.getElementById('recaptotal').innerHTML = parseFloat(document.getElementById('mtot').value).toFixed(2)+'Kgs.';
+      document.getElementById('recaptotal').innerHTML = parseFloat(document.getElementById('mtot').value).toFixed(2)+' Kgs.';
       document.getElementById('nom_objet').innerHTML = "<label>Objet:</label>";
       document.getElementById('quantite').value = "";
       document.getElementById('id_type_objet').value = "";
@@ -432,7 +432,7 @@ function ajout_stats() {
         +'<input type="hidden"  id="tid_objet'+parseInt(document.getElementById('nlignes').value)+'" name="tid_objet'+parseInt(document.getElementById('nlignes').value)+'"value="'+document.getElementById('id_objet').value+'">'
         +'<input type="hidden"  id="tquantite'+parseInt(document.getElementById('nlignes').value)+'" name="tquantite'+parseInt(document.getElementById('nlignes').value)+'"value="'+document.getElementById('quantite').value+'">';
       document.getElementById('total').innerHTML = '<li class="list-group-item">Soit : '+document.getElementById('narticles').value+' article(s) pour : <span class="badge" style="float:right;">'+parseFloat(document.getElementById('mtot').value).toFixed(2)+'Kgs.</span></li>';
-      document.getElementById('recaptotal').innerHTML = parseFloat(document.getElementById('mtot').value).toFixed(2)+'Kgs.';
+      document.getElementById('recaptotal').innerHTML = parseFloat(document.getElementById('mtot').value).toFixed(2)+' Kgs.';
       document.getElementById('nom_objet').innerHTML = "<label>Objet:</label>";
       document.getElementById('quantite').value = "";
       document.getElementById('id_type_objet').value = "";
@@ -447,7 +447,7 @@ function ajout_stats() {
         +'<input type="hidden"  id="tquantite'+parseInt(document.getElementById('nlignes').value)+'" name="tquantite'+parseInt(document.getElementById('nlignes').value)+'"value="'+document.getElementById('quantite').value+'">'
         +'<input type="hidden"  id="tmasse'+parseInt(document.getElementById('nlignes').value)+'" name="tmasse'+parseInt(document.getElementById('nlignes').value)+'"value="'+document.getElementById('masse').value+'"></li>';
       document.getElementById('total').innerHTML = '<li class="list-group-item">Soit : '+document.getElementById('narticles').value+' article(s) pour : <span class="badge" style="float:right;">'+parseFloat(document.getElementById('mtot').value).toFixed(2)+'Kgs.</span></li>';
-      document.getElementById('recaptotal').innerHTML = parseFloat(document.getElementById('mtot').value).toFixed(2)+'Kgs.';
+      document.getElementById('recaptotal').innerHTML = parseFloat(document.getElementById('mtot').value).toFixed(2)+' Kgs.';
       document.getElementById('nom_objet').innerHTML = "<label>Objet:</label>";
       document.getElementById('quantite').value = "";
       document.getElementById('masse').value = "";
@@ -463,7 +463,7 @@ function ajout_stats() {
         +'<input type="hidden"  id="tid_objet'+parseInt(document.getElementById('nlignes').value)+'" name="tid_objet'+parseInt(document.getElementById('nlignes').value)+'"value="'+document.getElementById('id_objet').value+'">'
         +'<input type="hidden"  id="tquantite'+parseInt(document.getElementById('nlignes').value)+'" name="tquantite'+parseInt(document.getElementById('nlignes').value)+'"value="'+document.getElementById('quantite').value+'">';
       document.getElementById('total').innerHTML = '<li class="list-group-item">Soit : '+document.getElementById('narticles').value+' article(s) pour : <span class="badge" style="float:right;">'+parseFloat(document.getElementById('mtot').value).toFixed(2)+'Kgs.</span></li>';
-      document.getElementById('recaptotal').innerHTML = parseFloat(document.getElementById('mtot').value).toFixed(2)+'Kgs.';
+      document.getElementById('recaptotal').innerHTML = parseFloat(document.getElementById('mtot').value).toFixed(2)+' Kgs.';
       document.getElementById('nom_objet').innerHTML = "<label>Objet:</label>";
       document.getElementById('quantite').value = "";
       document.getElementById('id_type_objet').value = "";
