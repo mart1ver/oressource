@@ -142,7 +142,7 @@ require_once('../core/session.php');
                       <li><a href="../ifaces/edition_types_poubelles.php">Types de poubelles</a></li>
                       <li><a href="pesees_stats.php">Pésées pour statistiques</a></li>
                       <li><a href="etiquettes.php">Étiquettes boutique</a></li>
-                      <li><a href="gains recycleurs.php">Gains recycleurs</a></li>
+                      <li><a href="gains_recycleurs.php">Gains recycleurs</a></li>
                       <li class="divider"></li>
                       <?php
                     }
