@@ -28,6 +28,7 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
 
         <div class="panel-heading">
           <label class="panel-title">Pesées pour statistiques:</label>
+           <span class ="badge" id="recaptotal" style="float:right;">0€</span>
            </div>
 
         <div class="panel-body" id="divID">
