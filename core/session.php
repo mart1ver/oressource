@@ -29,11 +29,11 @@ function is_valid_session() {
 
 /**
  * Renvoie `true` si la session est autorisee a voir les bilans.
+ * On suppose que la session a deja ete verifiee avant.
  */
 function is_allowed_bilan() {
   // FIXME: Pourquoi pas mettre la session en parametre?
-  return (is_valid_session()
-    && (strpos($_SESSION['niveau'], 'bi') !== false));
+  return (strpos($_SESSION['niveau'], 'bi') !== false);
 }
 
 function is_allowed_vente() {
@@ -68,6 +68,14 @@ function is_allowed_verifications() {
   return strpos($_SESSION['niveau'], 'h') !== false;
 }
 
+function is_allowed_edit_date() {
+  return strpos($_SESSION['niveau'], 'e') !== false;
+}
+
+function is_allowed_saisie_collecte() {
+  return $_SESSION['saisiec'] === 'oui';
+}
+
 function is_collecte_visible($point_collecte) {
   return (strpos($_SESSION['niveau'], 'c' . $point_collecte['id']) !== false
     && $point_collecte['visible'] === "oui");
@@ -78,6 +86,6 @@ function is_sortie_visible($point_sortie) {
           && $point_sortie['visible'] === "oui");
 }
 function is_vente_visible($point_vente) {
-  return (strpos($_SESSION['niveau'], 'v' . $point_vente['id']) !== false 
+  return (strpos($_SESSION['niveau'], 'v' . $point_vente['id']) !== false
     && $point_vente['visible'] === "oui");
 }

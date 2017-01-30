@@ -23,7 +23,7 @@ function data_graphs($sql) {
 }
 
 if (is_valid_session()) {
-  include "tete_vente.php";
+  include_once 'tete_vente.php';
   // On determine les masses collectés...
   $stmt = $bdd->query('SELECT COALESCE(SUM(vendus.quantite), 0) qv
                               FROM vendus
