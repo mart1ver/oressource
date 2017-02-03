@@ -122,7 +122,7 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === "oressource"
                   <ul class="dropdown-menu dropdown-menu-right" role="menu">
                     <!-- need style sur les boutons mais OK -->
                     <?php foreach ($conteneurs as $conteneur) { ?>
-                    <li><button onClick="submanut(<?php echo((float) $conteneur['masse']); ?>);"><?php echo $conteneur['nom']; ?></button></li>
+                    <li onClick="submanut(<?php echo((float) $conteneur['masse']); ?>);"><?php echo $conteneur['nom']; ?></li>
                     <?php } ?>
                   </ul>
                 </div><!-- /btn-group -->
