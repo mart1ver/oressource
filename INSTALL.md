@@ -7,6 +7,10 @@ Instalation sous linux (debian/ubuntu)
 sudo apt-get install mysql-server apache2 php5-mysql libapache2-mod-php5 git
 ```
 
+Note:
+Il est aussi possible d'installer `php7` avec le mod apache ou bien via `php7.0-fpm` ou d'utiliser un autre
+serveur web tel que `ngnix`. De même `mariadb` remplace très bien `mysql`.
+
 ## Clone du projet
 ```shell
 cd ~
@@ -33,6 +37,7 @@ mysql --user=oressource --host=localhost --password=mot_de_passe_a_changer \
 ```
 
 ## Apache
+
 ### Préparer le virtual host
 
 ```shell
@@ -71,20 +76,38 @@ Ajouter les lignes suivantes :
 sudo a2ensite oressource
 sudo apache2ctl graceful
 ```
+
 Un petit redemarage du service apache2 semble oportun apres toute cette configuration.
+
 ```shell
 sudo service apache2 restart
 ```
-### acceder pour la première foi a Oressource
 
-Dans votre navigateur vous accederez à l'écran de connection dans votre navigateur via l'adresse :
+### Acceder pour la première foi Oressource
+
+Si vous avez mis en place Oressource sur le même ordinateur sur le même ordinateur que votre navigateur web,
+Vous pourrez avec le navigateur accedez à l'écran de connection  via l'URL :
 ```shell
 http://localhost/oressource
 ```
-Si votre serveur ne dispose pas d'une interface graphique, accedez à Oressource à l'aide d'un ordinateur client via l'adresse:
+
+Si votre installation est sur autre ordinateur qui ne dispose pas d'un nom de domaine, accedez à Oressource à l'aide d'un ordinateur client via l'adresse:
+
 ```shell
 http://IP_DU_SERVEUR/oressource
 ```
-L' adresse IP du serveur peut etre obtenue à l'aide d'une simple commande ifconfig sur le serveur. Il ne tient qu'à vous de configurer un adressage IP statique pour le serveur voir méme un petit nom de manière à accéder simplement à Oressource à partir de vos ordinateurs clients.  
+
+L' adresse IP du serveur peut etre obtenue à l'aide d'une simple commande `ifconfig` ou `ip a` sur le serveur.
+
+Il ne tient qu'à vous de configurer un adressage IP statique pour le serveur voir méme un nom de domaine 
+de manière à accéder simplement à Oressource à partir de vos ordinateurs clients.  
 
 # Configuration coté client
+
+(À venir)
+
+
+# Developement
+
+Si vous souhaitez develloper ou debugger Oressource pensez à modifier le bon fichier de configuration
+de PHP (`php.ini`) afin de pouvoir traquer les erreurs plus facilement.
