@@ -1,14 +1,35 @@
 <?php
+/*
+  Oressource
+  Copyright (C) 2014-2017  Martin Vert and Oressource devellopers
+
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU Affero General Public License as
+  published by the Free Software Foundation, either version 3 of the
+  License, or (at your option) any later version.
+
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU Affero General Public License for more details.
+
+  You should have received a copy of the GNU Affero General Public License
+  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 namespace collecte;
 
+use Datetime;
 use PDO;
 
 global $bdd;
 
 session_start();
+
+$numero = filter_input(INPUT_GET, 'numero', FILTER_VALIDATE_INT);
+
 if (isset($_SESSION['id']) && $_SESSION['systeme'] === "oressource"
-  && (strpos($_SESSION['niveau'], 'c' . $_GET['numero']) !== false)) {
+  && (strpos($_SESSION['niveau'], 'c' . $numero) !== false)) {
   require_once('../moteur/dbconfig.php');
 
   include_once "tete.php";
@@ -22,7 +43,7 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === "oressource"
                       FROM points_collecte
                       WHERE id = :id
                       LIMIT 1');
-  $req->bindValue(':id', $_GET['numero'], PDO::PARAM_INT);
+  $req->bindValue(':id', $numero, PDO::PARAM_INT);
   $req->execute();
   $point_collecte = $req->fetch(PDO::FETCH_ASSOC);
   $pesee_max = (float) $point_collecte['pesee_max'];
@@ -31,42 +52,38 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === "oressource"
   $types_dechet = $reponse->fetchAll(PDO::FETCH_ASSOC);
 
   $reponse = $bdd->query('SELECT id, nom FROM type_collecte WHERE visible = "oui"');
-  $types_collecte = $reponse->fetchAll(PDO::FETCH_ASSOC);
+  $types_action = $reponse->fetchAll(PDO::FETCH_ASSOC);
 
   $reponse = $bdd->query('SELECT masse, nom FROM type_contenants WHERE visible = "oui"');
   $conteneurs = $reponse->fetchAll(PDO::FETCH_ASSOC);
 
   $reponse = $bdd->query('SELECT id, nom FROM localites WHERE visible = "oui"');
   $localites = $reponse->fetchAll(PDO::FETCH_ASSOC);
+
+  $date = new Datetime('now');
   ?>
-  <h2><?php echo($point_collecte['nom']);?></h2>
+  <div class="panel-body">
+  <h2 class="ui-title"><?php echo($point_collecte['nom']); ?></h2>
   <div class="row">
     <div class="col-md-3 col-md-offset-2" >
-      <!--startprint-->
       <div class="panel panel-info" >
-        <form action="../moteur/collecte_post.php" method="post" id="formulaire">
-          <!--<legend>
-  </legend>-->
           <div class="panel-heading">
-            <h3 class="panel-title"><label>Bon d'apport: <span id="massetot" >0</span> Kgs.</label></h3>
+            <h3 class="panel-title"><label id="massetot">Bon d'apport: 0 Kg.</label></h3>
           </div>
-          <?php if (is_allowed_saisie_collecte() && is_allowed_edit_date()) { ?>
-            <label>Date de l'apport: <input type="date" id="antidate" name="antidate" style="width:130px; height:20px;" value=<?php echo date("Y-m-d"); ?>></label>
-          <?php } ?>
           <div class="panel-body">
-            <ul class="list-group" id="transaction">
-              <!-- Remplis via JavaScript voir push_item -->
-            </ul>
-            <input type="hidden" value="0" name ="najout" id="najout">
-            <input type="hidden" id="id_user" name="id_user" value="<?php echo($_SESSION['id']);?>">
-            <input type="hidden" id="saisiec_user" name="saisiec_user" value="<?php echo($_SESSION['saisiec']);?>">
-            <input type="hidden" id="niveau_user" name="niveau_user" value="<?php echo($_SESSION['niveau']);?>">
+            <form id="formulaire">
+          <?php if (is_allowed_saisie_collecte() && is_allowed_edit_date()) { ?>
+            <label  for="antidate">Date de l'apport: </label>
+            <input type="date" id="antidate" name="antidate" style="width:130px; height:20px;" value="<?php echo($date->format('Y-m-d')); ?>">
+          <?php } ?>
+            <ul class="list-group" id="transaction">  <!--start Ticket Caisse -->
+            <!-- Remplis via JavaScript voir script de la page -->
+            </ul> <!--end TicketCaisse -->
+            </form>
           </div>
-        </form>
       </div>
-      <!--endprint-->
-
     </div>
+
     <div class="col-md-2" >
       <div class="panel panel-info">
         <div class="panel-heading">
@@ -74,17 +91,14 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === "oressource"
         </div>
         <div class="panel-body">
           <label for="id_type_collecte">Type de collecte:</label>
-          <select name ="id_type_collecte" id ="id_type_collecte" class="form-control" style="
-                  font-size : 12pt" autofocus required>
-            <option value="0" selected="selected"></option>
-            <?php foreach ($types_collecte as $type_collecte) { ?>
+          <select name ="id_type_collecte" form="formulaire" id ="id_type_collecte" class="form-control" style="font-size: 12pt" autofocus required>
+            <?php foreach ($types_action as $type_collecte) { ?>
               <option value="<?php echo $type_collecte['id'] ?>"><?php echo $type_collecte['nom'] ?></option>
             <?php } ?>
           </select>
 
           <label for="loc">Localité :</label>
-          <select name ="loc" id ="loc" class="form-control" STYLE="font-size : 12pt" required>
-            <option value="0" selected="selected"></option>
+          <select name="localite" id="loc" form="formulaire" class="form-control" style="font-size: 12pt" required>
             <?php foreach ($localites as $localite) { ?>
               <option value="<?php echo $localite['id'] ?>"><?php echo $localite['nom'] ?></option>
             <?php } ?>
@@ -99,16 +113,16 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === "oressource"
           <div class="panel-body">
             <div class="row">
               <div class="input-group">
-                <input type="text" class="form-control" autofocus placeholder="Masse" id="number" name="num" style="margin-left:8px;">
+                <input type="text" class="form-control" placeholder="Masse" id="number" name="num" style="margin-left:8px;">
                 <div class="input-group-btn">
                   <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" style=" margin-right:8px;">
                     <span class="glyphicon glyphicon-minus"></span>
                     <span class="caret"></span>
                   </button>
                   <ul class="dropdown-menu dropdown-menu-right" role="menu">
-                    <?php foreach ($conteneurs as $conteneur) { ?>
                     <!-- need style sur les boutons mais OK -->
-                      <li><button onClick="submanut(<?php echo((float) $conteneur['masse']); ?>);"><?php echo $conteneur['nom']; ?></button></li>
+                    <?php foreach ($conteneurs as $conteneur) { ?>
+                    <li><button onClick="submanut(<?php echo((float) $conteneur['masse']); ?>);"><?php echo $conteneur['nom']; ?></button></li>
                     <?php } ?>
                   </ul>
                 </div><!-- /btn-group -->
@@ -156,141 +170,79 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === "oressource"
           <input type="text" form="formulaire" class="form-control" name="commentaire" id="commentaire" placeholder="Commentaire">
         </div>
       </div>
-      <button class="btn btn-primary btn-lg" onclick="encaisse();">C'est pesé!</button>
-      <button class="btn btn-primary btn-lg" onclick="printdiv('divID');" value=" Print " ><span class="glyphicon glyphicon-print"></span></button>
-      <button class="btn btn-warning btn-lg" onclick="tdechet_clear();"><span class="glyphicon glyphicon-refresh"></button>
+      <button id="encaissement" class="btn btn-primary btn-lg">C'est pesé!</button>
+      <button id="impression" class="btn btn-primary btn-lg" value="Print" ><span class="glyphicon glyphicon-print"></span></button>
+      <button id="reset" class="btn btn-warning btn-lg"><span class="glyphicon glyphicon-refresh"></button>
     </div>
-  </div>
+  </div> <!-- row -->
+  </div> <!--class="pannel-body"-->
 
-  <script src="../js/utilitaire.js" type="text/javascript"></script>
   <script type="text/javascript">
-  'use strict';
-  const structure = <?php echo(json_encode($_SESSION['structure'])); ?>;
-  const adresse = <?php echo(json_encode($_SESSION['adresse'])); ?>;
-  const user_id = <?php echo(json_encode($_SESSION['id'], JSON_NUMERIC_CHECK)); ?>;
-  const saisie_collecte = <?php echo json_encode($_SESSION['saisiec'], JSON_FORCE_OBJECT); ?>;
-  const user_rights = <?php echo json_encode($_SESSION['niveau']); ?>;
-  const id_point_collecte = <?php echo json_encode($_GET['numero'], JSON_NUMERIC_CHECK); ?>;
-  const types_collecte = <?php echo(json_encode($types_collecte, JSON_NUMERIC_CHECK & JSON_FORCE_OBJECT));?>;
-  const types_dechet = <?php echo(json_encode($types_dechet, JSON_NUMERIC_CHECK & JSON_FORCE_OBJECT));?>;
-  const masse_max = <?php echo(json_encode($point_collecte['pesee_max'], JSON_NUMERIC_CHECK)); ?>;
+  // Variables d'environnement de Oressource.
+    'use scrict';
+    window.OressourceEnv = {
+      structure: <?php echo(json_encode($_SESSION['structure'])); ?>,
+      adresse: <?php echo(json_encode($_SESSION['adresse'])); ?>,
+      id_user: <?php echo(json_encode($_SESSION['id'], JSON_NUMERIC_CHECK)); ?>,
+      saisie_collecte: <?php echo json_encode(is_allowed_saisie_collecte()); ?>,
+      user_droit: <?php echo json_encode($_SESSION['niveau']); ?>,
+      id_point_collecte: <?php echo json_encode(filter_input(INPUT_GET, 'numero', FILTER_VALIDATE_INT), JSON_NUMERIC_CHECK); ?>,
+      types_collecte: <?php echo(json_encode($types_action, JSON_NUMERIC_CHECK &JSON_FORCE_OBJECT)) ?>,
+      types_dechet: <?php echo(json_encode($types_dechet, JSON_NUMERIC_CHECK & JSON_FORCE_OBJECT)); ?>,
+      masse_max: <?php echo(json_encode($point_collecte['pesee_max'], JSON_NUMERIC_CHECK)); ?>,
+    };
+  </script>
+  <script src="../js/ticket.js" type="text/javascript"></script>
+  <script src="../js/numpad.js" type="text/javascript"></script>
 
-  const commit = {
-    total: 0.0,
-    items: [],
-    comment: "",
-  };
-  // Classe pour manipuler le numPad de facon sure.
-  //        class NumPad(id) {
-  //          constructor() {
-  //            this.input = document.getElementById('number');
-  //          }
-  //           value() {
-  //
-  //          }
-  //
-  //          setCustomValidity(msg) {
-  //            this.input.setCustomValidity();
-  //          }
-  //
-  //          clear() {
-  //            this.input.value = '';
-  //            num_pad.setCustomValidity('');
-  //          }
-  //        }
+  <script type="text/javascript">
+    'use strict';
 
-  document.addEventListener('DOMContentLoaded', () => {
-    const num_pad = document.getElementById('number');
-    const ul_transact = document.getElementById('transaction');
-    const span_massetot = document.getElementById('massetot');
+    document.addEventListener('DOMContentLoaded', () => {
+      const ul_transact = document.getElementById('transaction');
+      const span_total = document.getElementById('massetot');
+      const numpad = new NumPad(document.getElementById('number'));
 
-    function push_item() {
-      const value = parseFloat(num_pad.value);
-      if (value > 0.00) {
-        if (value <= masse_max) {
-          // Update de la commission en cours.
-          commit.items.push({
-            mass: value,
-            type: this.id,
-          });
-          const total = commit.total;
-          const new_total = value + total;
-          commit.total = new_total;
+      // Passer ticket en param aux evenements?
+      // object global attention!
+      window.ticket = new Ticket();
+      // TODO: separer la logique de l'UI.
+      function ticket_push_item() {
+        const value = numpad.value;
+        if (value > 0.00) {
+          if (value <= window.OressourceEnv.masse_max) {
+            // Update du ticket en cours.
+            window.ticket.push({
+              masse: value,
+              type: parseInt(this.id, 10),
+            });
 
-          // Update de l'UI pour la masse du panier.
-          span_massetot.textContent = new_total;
+            // Update UI pour du ticket
+            const type_dechet = OressourceEnv.types_dechet[parseInt(this.id) - 1];
+            ticket_update_ui(ul_transact, span_total, type_dechet, value, window.ticket.total);
 
-          // Update UI pour le panier
-          // Constitution du panier
-          // FIXME: types_dechets devrait etre une Map pas un Array...
-          const {_, nom, couleur} = types_dechet[parseInt(this.id) - 1];
-          const li = document.createElement('li');
-          li.setAttribute('class', 'list-group-item');
-          li.innerHTML = `<span class="badge" style="background-color:${couleur}">${value}</span>${nom}`;
-          ul_transact.appendChild(li);
-
-          // Update nombre d'items du commit.
-          document.getElementById("najout").value = commit.items.length;
-
-          // Clear du numpad.
-          num_pad.value = '';
-          num_pad.setCustomValidity('');
+            // Clear du numpad.
+            numpad.reset_numpad();
+          } else {
+            numpad.error('Masse supérieure aux limites de pesée de la balance.');
+          }
         } else {
-          num_pad.setCustomValidity("Masse supérieure aux limites de pesée de la balance.");
+          numpad.error('Masse entrée inférieure au poids du conteneur ou inférieure ou égale à 0.');
         }
-      } else {
-        num_pad.setCustomValidity("Masse entrée inférieure au poids du conteneur ou inférieure ou égale à 0.");
       }
-    }
 
-    const div_list_item = document.getElementById('list_item');
-    types_dechet.forEach(({ id, nom, couleur }) => {
-      const button = document.createElement('button');
-      button.setAttribute('id', id);
-      button.setAttribute('class', 'btn btn-default');
-      button.setAttribute('style', 'margin-left:8px; margin-top:16px;');
-      button.innerHTML = `<span class="badge" id="cool" style="background-color:${couleur}">${nom}</span>`;
-      div_list_item.appendChild(button);
-      button.addEventListener('click', push_item, false);
-    });
-  }, false);
+      const div_list_item = document.getElementById('list_item');
+      window.OressourceEnv.types_dechet.forEach((item) => {
+        const button = html_saisie_item(item, ticket_push_item);
+        div_list_item.appendChild(button);
+      });
 
-  function encaisse() {
-    if (commit.items.length > 0
-            && document.getElementById("id_type_collecte").value > 0
-            && document.getElementById("loc").value > 0) {
-      document.getElementById("formulaire").submit();
-    }
-  }
-
-  function printdiv(divID) {
-    if (parseInt(document.getElementById('najout').value) >= 1
-            && document.getElementById("id_type_collecte").value > 0
-            && document.getElementById("loc").value > 0) {
-
-      const headstr = `<html><head><title></title></head><body><small>${structure}<br>${adresse}<br><label>Bon d'apport:</label><br>`;
-      const footstr = `<br>Masse totale : " + commit.items.total + " Kgs.</body></small>`;
-      const newstr = document.all.item(divID).innerHTML;
-      const oldstr = document.body.innerHTML;
-      // Verif si le commentaire est casse
-      // document.getElementById('comm').value = document.getElementById('commentaire').value;
-      document.getElementById("formulaire").submit();
-      document.body.innerHTML = headstr + newstr + footstr;
-      window.print();
-      document.body.innerHTML = oldstr;
-    }
-  }
-
-  function tdechet_clear() {
-    // On obtient tous les visibles de la table type_dechets de manière à remettre à zéro tout les items du bon d'apport volontaire
-    const range = document.createRange();
-    range.selectNodeContents(document.getElementById('transaction'));
-    range.deleteContents();
-    commit.items = [];
-    commit.total = 0.0;
-  }
-</script>
-<?php
+      document.getElementById('encaissement').addEventListener('click', encaisse, false);
+      document.getElementById('impression').addEventListener('click', impression_ticket, false);
+      document.getElementById('reset').addEventListener('click', ticket_clear, false);
+    }, false);
+  </script>
+  <?php
   include_once "pied.php";
 } else {
   header('Location:../moteur/destroy.php?motif=1');
