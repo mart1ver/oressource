@@ -35,7 +35,7 @@ class Ticket {
 
   push(item) {
     this.items.set(this.id_interne, item);
-    this._total += item.masse + this._total;
+    this._total += item.masse ;
     this.id_interne += 1;
     return this.id_interne;
   }
