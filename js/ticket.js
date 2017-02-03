@@ -90,7 +90,7 @@ function ticket_clear() {
   range.selectNodeContents(document.getElementById('transaction'));
   range.deleteContents();
   document.getElementById('commentaire').textContent = '';
-  totalUI.textContent = `Bon d'apport: 0 Kg.`;
+  document.getElementById('massetot').textContent = `Bon d'apport: 0 Kg.`;
   // HACK: On devrait plutot recree un nouveau ticket... Et pas avoir ticket en global...
   window.ticket.reset();
 }
