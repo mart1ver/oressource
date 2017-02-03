@@ -105,7 +105,7 @@ function impression_ticket() {
 
     const headstr = `<html><head><title></title></head><body><small>${structure}<br>${adresse}<br><label>Bon d'apport:</label><br>`;
     const footstr = `<br>Masse totale : " + ${window.ticket.total} + " Kg.</body></small>`;
-    const newstr = ul_transact.innerHTML;
+    const newstr = document.getElementById('transaction').innerHTML;
     const oldstr = document.body.innerHTML;
     encaisse();
     document.body.innerHTML = headstr + newstr + footstr;

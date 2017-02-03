@@ -19,13 +19,17 @@
 
 namespace collecte;
 
+use Datetime;
 use PDO;
 
 global $bdd;
 
 session_start();
+
+$numero = filter_input(INPUT_GET, 'numero', FILTER_VALIDATE_INT);
+
 if (isset($_SESSION['id']) && $_SESSION['systeme'] === "oressource"
-  && (strpos($_SESSION['niveau'], 'c' . $_GET['numero']) !== false)) {
+  && (strpos($_SESSION['niveau'], 'c' . $numero) !== false)) {
   require_once('../moteur/dbconfig.php');
 
   include_once "tete.php";
@@ -39,7 +43,7 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === "oressource"
                       FROM points_collecte
                       WHERE id = :id
                       LIMIT 1');
-  $req->bindValue(':id', $_GET['numero'], PDO::PARAM_INT);
+  $req->bindValue(':id', $numero, PDO::PARAM_INT);
   $req->execute();
   $point_collecte = $req->fetch(PDO::FETCH_ASSOC);
   $pesee_max = (float) $point_collecte['pesee_max'];
@@ -48,37 +52,38 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === "oressource"
   $types_dechet = $reponse->fetchAll(PDO::FETCH_ASSOC);
 
   $reponse = $bdd->query('SELECT id, nom FROM type_collecte WHERE visible = "oui"');
-  $types_collecte = $reponse->fetchAll(PDO::FETCH_ASSOC);
+  $types_action = $reponse->fetchAll(PDO::FETCH_ASSOC);
 
   $reponse = $bdd->query('SELECT masse, nom FROM type_contenants WHERE visible = "oui"');
   $conteneurs = $reponse->fetchAll(PDO::FETCH_ASSOC);
 
   $reponse = $bdd->query('SELECT id, nom FROM localites WHERE visible = "oui"');
   $localites = $reponse->fetchAll(PDO::FETCH_ASSOC);
+
+  $date = new Datetime('now');
   ?>
-  <h2><?php echo($point_collecte['nom']); ?></h2>
+  <div class="panel-body">
+  <h2 class="ui-title"><?php echo($point_collecte['nom']); ?></h2>
   <div class="row">
     <div class="col-md-3 col-md-offset-2" >
-      <!--startprint-->
       <div class="panel panel-info" >
-        <form id="formulaire">
-          <!--<legend></legend>-->
           <div class="panel-heading">
             <h3 class="panel-title"><label id="massetot">Bon d'apport: 0 Kg.</label></h3>
           </div>
-          <?php if (is_allowed_saisie_collecte() && is_allowed_edit_date()) { ?>
-            <label>Date de l'apport: <input type="date" id="antidate" name="antidate" style="width:130px; height:20px;" value="<?php echo date("Y-m-d"); ?>"></label>
-          <?php } ?>
           <div class="panel-body">
-            <ul class="list-group" id="transaction">
-              <!-- Remplis via JavaScript voir script de la page -->
-            </ul>
+            <form id="formulaire">
+          <?php if (is_allowed_saisie_collecte() && is_allowed_edit_date()) { ?>
+            <label  for="antidate">Date de l'apport: </label>
+            <input type="date" id="antidate" name="antidate" style="width:130px; height:20px;" value="<?php echo($date->format('Y-m-d')); ?>">
+          <?php } ?>
+            <ul class="list-group" id="transaction">  <!--start Ticket Caisse -->
+            <!-- Remplis via JavaScript voir script de la page -->
+            </ul> <!--end TicketCaisse -->
+            </form>
           </div>
-        </form>
       </div>
-      <!--endprint-->
-
     </div>
+
     <div class="col-md-2" >
       <div class="panel panel-info">
         <div class="panel-heading">
@@ -87,7 +92,7 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === "oressource"
         <div class="panel-body">
           <label for="id_type_collecte">Type de collecte:</label>
           <select name ="id_type_collecte" form="formulaire" id ="id_type_collecte" class="form-control" style="font-size: 12pt" autofocus required>
-            <?php foreach ($types_collecte as $type_collecte) { ?>
+            <?php foreach ($types_action as $type_collecte) { ?>
               <option value="<?php echo $type_collecte['id'] ?>"><?php echo $type_collecte['nom'] ?></option>
             <?php } ?>
           </select>
@@ -115,9 +120,9 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === "oressource"
                     <span class="caret"></span>
                   </button>
                   <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                    <!-- need style sur les boutons mais OK -->
                     <?php foreach ($conteneurs as $conteneur) { ?>
-                      <!-- need style sur les boutons mais OK -->
-                      <li><button onClick="submanut(<?php echo((float) $conteneur['masse']); ?>);"><?php echo $conteneur['nom']; ?></button></li>
+                    <li><button onClick="submanut(<?php echo((float) $conteneur['masse']); ?>);"><?php echo $conteneur['nom']; ?></button></li>
                     <?php } ?>
                   </ul>
                 </div><!-- /btn-group -->
@@ -169,7 +174,8 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === "oressource"
       <button id="impression" class="btn btn-primary btn-lg" value="Print" ><span class="glyphicon glyphicon-print"></span></button>
       <button id="reset" class="btn btn-warning btn-lg"><span class="glyphicon glyphicon-refresh"></button>
     </div>
-  </div>
+  </div> <!-- row -->
+  </div> <!--class="pannel-body"-->
 
   <script type="text/javascript">
   // Variables d'environnement de Oressource.
@@ -181,14 +187,12 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === "oressource"
       saisie_collecte: <?php echo json_encode(is_allowed_saisie_collecte()); ?>,
       user_droit: <?php echo json_encode($_SESSION['niveau']); ?>,
       id_point_collecte: <?php echo json_encode(filter_input(INPUT_GET, 'numero', FILTER_VALIDATE_INT), JSON_NUMERIC_CHECK); ?>,
-      types_collecte: <?php echo(json_encode($types_collecte, JSON_NUMERIC_CHECK &
-                    JSON_FORCE_OBJECT)) ?>,
+      types_collecte: <?php echo(json_encode($types_action, JSON_NUMERIC_CHECK &JSON_FORCE_OBJECT)) ?>,
       types_dechet: <?php echo(json_encode($types_dechet, JSON_NUMERIC_CHECK & JSON_FORCE_OBJECT)); ?>,
       masse_max: <?php echo(json_encode($point_collecte['pesee_max'], JSON_NUMERIC_CHECK)); ?>,
     };
   </script>
   <script src="../js/ticket.js" type="text/javascript"></script>
-  <script src="../js/utilitaire.js" type="text/javascript"></script>
   <script src="../js/numpad.js" type="text/javascript"></script>
 
   <script type="text/javascript">

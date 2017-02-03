@@ -22,6 +22,26 @@
  * Le design actuel est minimaliste a terme cela serait pratique d'en faire un
  * widget a la Morris.js.
  */
+
+function number_write(x) {
+  const text_box = document.getElementById("number");
+  text_box.value = text_box.value + x;
+}
+
+function number_clear() {
+  const input = document.getElementById("number");
+  input.value = "";
+  input.setCustomValidity("");
+}
+
+function submanut(x) {
+  var number = document.getElementById("number");
+
+  if ((number.value - x) > 0 ) {
+    number.value = (number.value - x).toFixed(2);
+  }
+}
+
 class NumPad {
   /*
    * Cree un Numpad cote JS on lui passe l'element input HTML associee au numpad.
