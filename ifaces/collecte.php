@@ -74,7 +74,7 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === "oressource"
             <form id="formulaire">
           <?php if (is_allowed_saisie_collecte() && is_allowed_edit_date()) { ?>
             <label  for="antidate">Date de l'apport: </label>
-            <input type="date" id="antidate" name="antidate" style="width:130px; height:20px;" value="<?php echo($date->format('Y-m-d')); ?>">
+            <input type="date" id="antidate" name="antidate" style="width:120px; height:20px;" value="<?php echo($date->format('Y-m-d')); ?>">
           <?php } ?>
             <ul class="list-group" id="transaction">  <!--start Ticket Caisse -->
             <!-- Remplis via JavaScript voir script de la page -->
@@ -84,7 +84,7 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === "oressource"
       </div>
     </div>
 
-    <div class="col-md-2" >
+    <div class="col-md-2" style="width: 230px;" >
       <div class="panel panel-info">
         <div class="panel-heading">
           <h3 class="panel-title"><label>Informations :</label></h3>
