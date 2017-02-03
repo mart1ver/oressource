@@ -18,13 +18,43 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+// Appellee au login.
+function set_session($user, $structure) {
+  global $_SESSION;
+  $_SESSION['systeme'] = 'oressource';
+
+  $_SESSION['id'] = $user['id'];
+  $_SESSION['niveau'] = $user['niveau'];
+  $_SESSION['nom'] = $user['nom'];
+  $_SESSION['prenom'] = $user['prenom'];
+  $_SESSION['mail'] = $user['mail'];
+
+  $_SESSION['tva_active'] = $structure['tva_active'];
+  $_SESSION['taux_tva'] = $structure['taux_tva'];
+  $_SESSION['structure'] = $structure['nom'];
+  $_SESSION['siret'] = $structure['siret'];
+  $_SESSION['adresse'] = $structure['adresse'];
+  $_SESSION['texte_adhesion'] = $structure['texte_adhesion'];
+  $_SESSION['lot_caisse'] = $structure['lot'];
+  $_SESSION['viz_caisse'] = $structure['viz'];
+  $_SESSION['nb_viz_caisse'] = $structure['nb_viz'];
+  $_SESSION['saisiec'] = $structure['saisiec'];
+  $_SESSION['affsp'] = $structure['affsp'];
+  $_SESSION['affss'] = $structure['affss'];
+  $_SESSION['affsr'] = $structure['affsr'];
+  $_SESSION['affsd'] = $structure['affsd'];
+  $_SESSION['affsde'] = $structure['affsde'];
+  $_SESSION['pes_vente'] = $structure['pes_vente'];
+  $_SESSION['force_pes_vente'] = $structure['force_pes_vente'];
+}
+
 /**
  * Renvoie `true` si la session est valide.
  */
 function is_valid_session() {
 // FIXME: Pourquoi pas mettre la session en parametre?
   return (isset($_SESSION['id'])
-    && $_SESSION['systeme'] === "oressource");
+    && $_SESSION['systeme'] === 'oressource');
 }
 
 /**
@@ -44,8 +74,18 @@ function is_allowed_sortie() {
   return strpos($_SESSION['niveau'], 's') !== false;
 }
 
+// Test si l'utilisateur a les droits sur un point de collecte donnee.
+function is_allowed_sortie_id($id) {
+  return strpos($_SESSION['niveau'], 's' . ((string) $id)) !== false;
+}
+
 function is_allowed_gestion() {
   return strpos($_SESSION['niveau'], 'g') !== false;
+}
+
+// Test si l'utilisateur a les droits sur un point de collecte donnee.
+function is_allowed_collecte_id($id) {
+  return strpos($_SESSION['niveau'], 'c' . ((string) $id)) !== false;
 }
 
 function is_allowed_collecte() {
@@ -83,8 +123,9 @@ function is_collecte_visible($point_collecte) {
 
 function is_sortie_visible($point_sortie) {
   return (strpos($_SESSION['niveau'], 's' . $point_sortie['id']) !== false
-          && $point_sortie['visible'] === "oui");
+    && $point_sortie['visible'] === "oui");
 }
+
 function is_vente_visible($point_vente) {
   return (strpos($_SESSION['niveau'], 'v' . $point_vente['id']) !== false
     && $point_vente['visible'] === "oui");

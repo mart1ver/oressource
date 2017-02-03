@@ -1,4 +1,8 @@
 <?php
+namespace tete;
+use PDO;
+global $bdd;
+
 //session_start(); déjà inclu dans chacun des fichiers appelant ce fichier
 require_once('../moteur/dbconfig.php');
 require_once('../core/session.php');
