@@ -209,11 +209,10 @@ require_once('../core/session.php');
 
     <?php if (isset($_GET['err'])) { ?>
       <div class='alert alert-danger' style='width:80%;margin:auto;'><?php echo $_GET['err']; ?></div>
-    <?php } ?>
-
-    <?php if (isset($_GET['msg'])) { ?>
+    <?php }
+     if (isset($_GET['msg'])) { ?>
       <div class='alert alert-success alert-dismissable' style='width:80%;margin:auto;'>
-        <button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;><?php echo $_GET['msg']; ?></button>
+        <button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;</button>
+        <?php echo $_GET['msg']; ?>
       </div>
-      <?php
-    }
+    <?php }
