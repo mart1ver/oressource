@@ -34,8 +34,7 @@
       }).then(status)
         .then((json) => {
           // redirection vers l'index en attendant de pouvoir faire mieux.
-          const url = new URL('index.php', window.location.origin);
-          window.location.href = url.href;
+          window.location.href = '../ifaces/index.php';
          }).catch((ex) => {
            div.setAttribute('style', 'width:80%; margin:auto; visibility: visible; display: block');
        });
