@@ -24,12 +24,15 @@ use PDO;
 
 global $bdd;
 
+require_once('../core/session.php');
+
 session_start();
 
 $numero = filter_input(INPUT_GET, 'numero', FILTER_VALIDATE_INT);
 
-if (isset($_SESSION['id']) && $_SESSION['systeme'] === "oressource"
-  && (strpos($_SESSION['niveau'], 'c' . $numero) !== false)) {
+if (isset($_SESSION['id'])
+  && $_SESSION['systeme'] === "oressource"
+  && is_allowed_collecte_id($numero)) {
   require_once('../moteur/dbconfig.php');
 
   include_once "tete.php";
@@ -90,9 +93,9 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === "oressource"
           <h3 class="panel-title"><label>Informations :</label></h3>
         </div>
         <div class="panel-body">
-          <label for="id_type_collecte">Type de collecte:</label>
-          <select name ="id_type_collecte" form="formulaire" id ="id_type_collecte" class="form-control" style="font-size: 12pt" autofocus required>
-            <?php foreach ($types_action as $type_collecte) { ?>
+          <label for="id_type_action">Type de collecte:</label>
+            <select name ="id_type_action" form="formulaire" id ="id_type_action" class="form-control" style="font-size: 12pt" required>
+              <?php foreach ($types_action as $type_collecte) { ?>
               <option value="<?php echo $type_collecte['id'] ?>"><?php echo $type_collecte['nom'] ?></option>
             <?php } ?>
           </select>
@@ -113,7 +116,7 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === "oressource"
           <div class="panel-body">
             <div class="row">
               <div class="input-group">
-                <input type="text" class="form-control" placeholder="Masse" id="number" name="num" style="margin-left:8px;">
+                <input type="text" class="form-control" placeholder="Masse" id="number" name="num" style="z-index: 0;margin-left:8px;">
                 <div class="input-group-btn">
                   <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" style=" margin-right:8px;">
                     <span class="glyphicon glyphicon-minus"></span>
@@ -184,64 +187,44 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === "oressource"
       structure: <?php echo(json_encode($_SESSION['structure'])); ?>,
       adresse: <?php echo(json_encode($_SESSION['adresse'])); ?>,
       id_user: <?php echo(json_encode($_SESSION['id'], JSON_NUMERIC_CHECK)); ?>,
-      saisie_collecte: <?php echo json_encode(is_allowed_saisie_collecte()); ?>,
-      user_droit: <?php echo json_encode($_SESSION['niveau']); ?>,
-      id_point_collecte: <?php echo json_encode(filter_input(INPUT_GET, 'numero', FILTER_VALIDATE_INT), JSON_NUMERIC_CHECK); ?>,
-      types_collecte: <?php echo(json_encode($types_action, JSON_NUMERIC_CHECK &JSON_FORCE_OBJECT)) ?>,
+      // saisie_collecte: <?php echo json_encode(is_allowed_saisie_collecte()); ?>,
+      // user_droit: <?php echo json_encode($_SESSION['niveau']); ?>,
+      id_point: <?php echo json_encode(filter_input(INPUT_GET, 'numero', FILTER_VALIDATE_INT), JSON_NUMERIC_CHECK); ?>,
+      id_type_action: <?php echo(json_encode($types_action, JSON_NUMERIC_CHECK &JSON_FORCE_OBJECT)) ?>,
       types_dechet: <?php echo(json_encode($types_dechet, JSON_NUMERIC_CHECK & JSON_FORCE_OBJECT)); ?>,
       masse_max: <?php echo(json_encode($point_collecte['pesee_max'], JSON_NUMERIC_CHECK)); ?>,
     };
   </script>
   <script src="../js/ticket.js" type="text/javascript"></script>
   <script src="../js/numpad.js" type="text/javascript"></script>
-
   <script type="text/javascript">
     'use strict';
 
     document.addEventListener('DOMContentLoaded', () => {
-      const ul_transact = document.getElementById('transaction');
-      const span_total = document.getElementById('massetot');
       const numpad = new NumPad(document.getElementById('number'));
-
       // Passer ticket en param aux evenements?
       // object global attention!
-      window.ticket = new Ticket();
-      // TODO: separer la logique de l'UI.
-      function ticket_push_item() {
-        const value = numpad.value;
-        if (value > 0.00) {
-          if (value <= window.OressourceEnv.masse_max) {
-            // Update du ticket en cours.
-            window.ticket.push({
-              masse: value,
-              type: parseInt(this.id, 10),
-            });
 
-            // Update UI pour du ticket
-            const type_dechet = OressourceEnv.types_dechet[parseInt(this.id) - 1];
-            ticket_update_ui(ul_transact, span_total, type_dechet, value, window.ticket.total);
-
-            // Clear du numpad.
-            numpad.reset_numpad();
-          } else {
-            numpad.error('Masse supérieure aux limites de pesée de la balance.');
-          }
-        } else {
-          numpad.error('Masse entrée inférieure au poids du conteneur ou inférieure ou égale à 0.');
-        }
-      }
+      const typesItems = window.OressourceEnv.types_dechet;
+      const ticketsItem = new Ticket();
+      const pushItems = connection_UI_ticket(numpad, ticketsItem, typesItems);
 
       const div_list_item = document.getElementById('list_item');
-      window.OressourceEnv.types_dechet.forEach((item) => {
-        const button = html_saisie_item(item, ticket_push_item);
+      typesItems.forEach((item) => {
+        const button = html_saisie_item(item, pushItems);
         div_list_item.appendChild(button);
       });
 
+      const encaisse = make_encaissement('../moteur/collecte_post.php', { items: ticketsItem });
+
       document.getElementById('encaissement').addEventListener('click', encaisse, false);
       document.getElementById('impression').addEventListener('click', impression_ticket, false);
-      document.getElementById('reset').addEventListener('click', ticket_clear, false);
+      document.getElementById('reset').addEventListener('click', tickets_clear, false);
+
+      window.tickets = [ ticketsItem ];
     }, false);
   </script>
+
   <?php
   include_once "pied.php";
 } else {

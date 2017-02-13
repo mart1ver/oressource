@@ -1,267 +1,84 @@
-<?php session_start();
+<?php
+
+/*
+  Oressource
+  Copyright (C) 2014-2017  Martin Vert and Oressource devellopers
+
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU Affero General Public License as
+  published by the Free Software Foundation, either version 3 of the
+  License, or (at your option) any later version.
+
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU Affero General Public License for more details.
+
+  You should have received a copy of the GNU Affero General Public License
+  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+namespace sorties_post;
+
+require_once('../core/session.php');
+require_once('../core/validation.php');
+require_once('../core/requetes.php');
+
+use PDO;
+use DateTime;
+
+global $bdd;
+
+session_start();
 
 
-//on definit $adh en fonction $_POST['adh']
-if(isset($_POST['adh']))
-    {
-    $adh = "oui";
-    }
-  else
-  {
-   $adh = "non";
+header("content-type:application/json");
+$json_raw = file_get_contents('php://input');
+$unsafe_json = json_decode($json_raw, true);
+$json = validate_json_sorties($unsafe_json);
+
+$numero = filter_input(INPUT_GET, 'numero', FILTER_VALIDATE_INT);
+//Vérification des autorisations de l'utilisateur et des variables de session requises pour l'utilisation de cette fonction:
+if (isset($_SESSION['id'])
+  && $_SESSION['systeme'] = "oressource") {
+  if (!is_allowed_sortie_id($numero)) {
+    http_response_code(403); // Forbiden.
+    echo(json_encode(['error' => 'Action interdite.'], JSON_FORCE_OBJECT));
+    die();
   }
 
+  include_once('dbconfig.php');
 
-if ($_POST['saisiec_user'] == "oui" AND (strpos($_POST['niveau_user'], 'e') !== false) )
-{
-$antidate = $_POST['antidate'].date(" H:i:s");
+  $timestamp = (is_allowed_edit_date() ? parseDate($json['antidate']) : new DateTime('now'));
+  $sortie = [
+      'timestamp' => $timestamp,
+      'type_sortie' => $json['id_type_action'],
+      'localite' => $json['localite'],
+      'classe' => 'sorties',
+      'id_point_sortie' => $json['id_point'],
+      'commentaire' => $json['commentaire'],
+      'id_user' => $json['id_user'],
+  ];
 
-
-
-
-
-
-
-
-// Connexion à la base de données
-    try
-{
-    include('dbconfig.php');
+  $id_sortie = insert_sortie($bdd, $sortie);
+  // TODO: Faire une transaction SQL
+  try {
+    if (count($json['items'])) {
+      insert_items_sorties($bdd, $id_sortie, $sortie, $json['items']);
+    }
+    if (count($json['evacs'])) {
+      insert_evac_sorties($bdd, $id_sortie, $sortie, $json['evacs']);
+    }
+    http_response_code(200); // Created
+    // TODO: Valider la transaction.
+    // Note: Renvoyer l'url d'acces a la ressource
+    echo(json_encode(['id_sortie' => $id_sortie], JSON_NUMERIC_CHECK));
+  } catch (InvalidArgumentException $e) {
+    http_response_code(400); // Bad Request
+    echo(json_encode(['error' => 'masse <= 0.0 ou type item inconnu.'], JSON_FORCE_OBJECT));
+    // TODO: Invalider la transaction
+  }
+} else {
+  http_response_code(401); // Unauthorized.
+// header('Location:../moteur/destroy.php?motif=1');
 }
-    catch(Exception $e)
-{
-        die('Erreur : '.$e->getMessage());
-}
-// Insertion de la collecte (sans les pesées) l'aide d'une requête préparée
-  $req = $bdd->prepare('INSERT INTO sorties (timestamp, id_type_sortie,  adherent, classe, id_point_sortie, commentaire , id_createur) VALUES(?,?, ?, ?, ?, ?, ?)');
-  $req->execute(array($antidate ,$_POST['type_sortie'],$adh,  "sorties" , $_POST['id_point_sortie'], $_POST['commentaire'], $_POST['id_user']));
-  $id_sortie = $bdd->lastInsertId();
-    $req->closeCursor();
-
-
-//insertion des pessés dans la table pesées_collectes
-//on determine '$nombrecat' le nombre de categories maxi (soit l'id maximum)  
-            try
-            {
-            // On se connecte à MySQL
-            include('../moteur/dbconfig.php');
-            }
-            catch(Exception $e)
-            {
-            // En cas d'erreur, on affiche un message et on arrête tout
-            die('Erreur : '.$e->getMessage());
-            }
-            // On ecrit le nombre de categories maxi dans la varialble $nombrecat 
-            $reponse = $bdd->query('SELECT MAX(id) AS nombrecat FROM type_dechets');
-            // On affiche chaque entree une à une
-            while ($donnees = $reponse->fetch())
-            {      
-            $nombrecat = $donnees['nombrecat'];
-             }
-            $reponse->closeCursor(); // Termine le traitement de la requête
-         $i = 1;
-while ($i <= $nombrecat)
-{
-   //on inserre les valeures pour chaque 'i' ($i = id_type dechet) si elles sonts superieures à 0  
-if ($_POST[$i] > 0) 
-{
-try
-{
-include('dbconfig.php');
-}
-catch(Exception $e)
-{
-        die('Erreur : '.$e->getMessage());
-}
-// Insertion du post à l'aide d'une requête préparée
-$req = $bdd->prepare('INSERT INTO pesees_sorties (timestamp, masse,  id_sortie, id_type_dechet, id_createur) VALUES(?,?, ?, ? ,?)');
-$req->execute(array($antidate,$_POST[$i],  $id_sortie , $i, $_POST['id_user']));
-  $req->closeCursor();
-}
-    $i++;
-}
-
-//insertion des pessés dechets et materiaux dans la table pesées_collectes
-//on determine '$nombrecat' le nombre de categories maxi (soit l'id maximum)  
-            try
-            {
-            // On se connecte à MySQL
-            include('../moteur/dbconfig.php');
-            }
-            catch(Exception $e)
-            {
-            // En cas d'erreur, on affiche un message et on arrête tout
-            die('Erreur : '.$e->getMessage());
-            }
-            // On ecrit le nombre de categories maxi dans la varialble $nombrecat 
-            $reponse = $bdd->query('SELECT MAX(id) AS nombrecat FROM type_dechets_evac');
-            // On affiche chaque entree une à une
-            while ($donnees = $reponse->fetch())
-            {      
-            $nombrecat = $donnees['nombrecat'];
-             }
-            $reponse->closeCursor(); // Termine le traitement de la requête
-         $i = 1;
-while ($i <= $nombrecat)
-{
-   //on inserre les valeures pour chaque 'i' ($i = id_type dechet) si elles sonts superieures à 0  
-if ($_POST["d".$i] > 0) 
-{
-try
-{
-include('dbconfig.php');
-}
-catch(Exception $e)
-{
-        die('Erreur : '.$e->getMessage());
-}
-// Insertion du post à l'aide d'une requête préparée
-$req = $bdd->prepare('INSERT INTO pesees_sorties (masse,  id_sortie, id_type_dechet_evac, id_createur) VALUES(?,?, ?, ?)');
-$req->execute(array($_POST["d".$i],  $id_sortie , $i, $_POST['id_user']));
-  $req->closeCursor();
-}
-    $i++;
-}
-
-
-// Redirection du visiteur vers la page de gestion des affectation
-  header("Location:../ifaces/sorties.php?numero=".$_POST['id_point_sortie']);
-
-
-
-
-
-
-
-
-
-}
-else{
-
-
-
-
-
-
-// Connexion à la base de données
-		try
-{
-		include('dbconfig.php');
-}
-		catch(Exception $e)
-{
-        die('Erreur : '.$e->getMessage());
-}
-// Insertion de la collecte (sans les pesées) l'aide d'une requête préparée
-	$req = $bdd->prepare('INSERT INTO sorties (id_type_sortie,  adherent, classe, id_point_sortie, commentaire , id_createur) VALUES(?,?, ?, ?, ?, ?)');
-	$req->execute(array($_POST['type_sortie'],$adh,  "sorties" , $_POST['id_point_sortie'], $_POST['commentaire'], $_POST['id_user']));
-  $id_sortie = $bdd->lastInsertId();
-    $req->closeCursor();
-
-
-//insertion des pessés dans la table pesées_collectes
-//on determine '$nombrecat' le nombre de categories maxi (soit l'id maximum)  
-            try
-            {
-            // On se connecte à MySQL
-            include('../moteur/dbconfig.php');
-            }
-            catch(Exception $e)
-            {
-            // En cas d'erreur, on affiche un message et on arrête tout
-            die('Erreur : '.$e->getMessage());
-            }
-            // On ecrit le nombre de categories maxi dans la varialble $nombrecat 
-            $reponse = $bdd->query('SELECT MAX(id) AS nombrecat FROM type_dechets');
-            // On affiche chaque entree une à une
-            while ($donnees = $reponse->fetch())
-            {      
-            $nombrecat = $donnees['nombrecat'];
-             }
-            $reponse->closeCursor(); // Termine le traitement de la requête
-         $i = 1;
-while ($i <= $nombrecat)
-{
-   //on inserre les valeures pour chaque 'i' ($i = id_type dechet) si elles sonts superieures à 0  
-if ($_POST[$i] > 0) 
-{
-try
-{
-include('dbconfig.php');
-}
-catch(Exception $e)
-{
-        die('Erreur : '.$e->getMessage());
-}
-// Insertion du post à l'aide d'une requête préparée
-$req = $bdd->prepare('INSERT INTO pesees_sorties (masse,  id_sortie, id_type_dechet, id_createur) VALUES(?,?, ?, ?)');
-$req->execute(array($_POST[$i],  $id_sortie , $i, $_POST['id_user']));
-  $req->closeCursor();
-}
-    $i++;
-}
-
-//insertion des pessés dechets et materiaux dans la table pesées_collectes
-//on determine '$nombrecat' le nombre de categories maxi (soit l'id maximum)  
-            try
-            {
-            // On se connecte à MySQL
-            include('../moteur/dbconfig.php');
-            }
-            catch(Exception $e)
-            {
-            // En cas d'erreur, on affiche un message et on arrête tout
-            die('Erreur : '.$e->getMessage());
-            }
-            // On ecrit le nombre de categories maxi dans la varialble $nombrecat 
-            $reponse = $bdd->query('SELECT MAX(id) AS nombrecat FROM type_dechets_evac');
-            // On affiche chaque entree une à une
-            while ($donnees = $reponse->fetch())
-            {      
-            $nombrecat = $donnees['nombrecat'];
-             }
-            $reponse->closeCursor(); // Termine le traitement de la requête
-         $i = 1;
-while ($i <= $nombrecat)
-{
-   //on inserre les valeures pour chaque 'i' ($i = id_type dechet) si elles sonts superieures à 0  
-if ($_POST["d".$i] > 0) 
-{
-try
-{
-include('dbconfig.php');
-}
-catch(Exception $e)
-{
-        die('Erreur : '.$e->getMessage());
-}
-// Insertion du post à l'aide d'une requête préparée
-$req = $bdd->prepare('INSERT INTO pesees_sorties (masse,  id_sortie, id_type_dechet_evac, id_createur) VALUES(?,?, ?, ?)');
-$req->execute(array($_POST["d".$i],  $id_sortie , $i, $_POST['id_user']));
-  $req->closeCursor();
-}
-    $i++;
-}
-
-
-// Redirection du visiteur vers la page de gestion des affectation
-	header("Location:../ifaces/sorties.php?numero=".$_POST['id_point_sortie']);
-
-}
-
-
-
-
-
-
-
-
-
-//Vérification des autorisations de l'utilisateur et des variables de session requises pour l'utilisation de cette fonction:
-if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 's'.$_GET['numero']) !== false))
-{
-
-}
-else{
- header('Location:../moteur/destroy.php?motif=1');}
-	 ?>
