@@ -165,3 +165,20 @@ function login_user(PDO $bdd, $email, $password) {
     throw new Exception('Mot de passe ou nom de compte invalide.');
   }
 }
+
+/**
+ * Renvoie les donnees neccessaire a moris.js pour le tableau de bord.
+ * @global type $bdd  Connection PDO valide.
+ * @param string $sql Requete sql valide sql
+ * @return array Correspondant aux donnees pour morris.js.
+ */
+function data_graphs(PDOStatement $stmt) {
+  $stmt->execute();
+  $data = array();
+  $colors = array();
+  foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $iter) {
+    array_push($data, ['value' => $iter['somme'], 'label' => $iter['nom']]);
+    array_push($colors, $iter['couleur']);
+  }
+  return ['data' => $data, 'colors' => $colors];
+}
