@@ -217,16 +217,16 @@ function login(onSuccess = undefined) {
   container.setAttribute('style', 'visibility: visible; opacity: 1;');
 
   document.getElementById('formLogin').addEventListener('submit', (event) => {
-      event.preventDefault();
+    event.preventDefault();
     const form = new FormData(document.getElementById('formLogin'));
-    const pass = form.get('pass');
-    const mail = form.get('mail');
+    const username = form.get('mail');
+    const password = form.get('pass');
     const fetchPromise = fetch('../moteur/login_post.php', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({username: mail, password: pass})
+      body: JSON.stringify({ username, password }),
     }).then(status)
       .then((json) => {
         container.setAttribute('style', 'visibility: hidden;  opacity: 0;');

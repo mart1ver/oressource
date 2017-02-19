@@ -23,8 +23,28 @@ global $bdd;
 require_once('../core/requetes.php');
 require_once('../core/session.php');
 require_once('../core/validation.php');
-include_once('dbconfig.php');
+require_once('dbconfig.php');
 
+/*
+ * On reponds en JSON a la requete POST qui nous est envoyer.
+ * Si le login est valide on renvoie un code 200 et un json qui a terme sera
+ * classe qui represente un utilisateur.
+ *
+ * Sinon on renvoie une 401 Unauthorized et un petit document JSON qui explique l'erreur.
+ *
+ * On attends un JSON du schema suivant:
+ * login.json
+ * {
+ *   'username': FILTER_VALIDATE_EMAIL, // A terme on pourrais etre moins restrictif.
+ *   'password': octets bruts va etre hasher aucune validation/sanitizitation.
+ * }
+ * Reponse:
+ * HTTPS Status code: 200 - OK
+ * { 'status': 'Accepted' }
+ * Ou en cas d'echec.
+ * HTTP Status code: 401 - Unauthorized
+ * { 'error': 'Mauvais identifiant ou mot de passe' }
+ */
 header("content-type:application/json");
 $json_raw = file_get_contents('php://input');
 $unsafe_json = json_decode($json_raw, true);
@@ -38,10 +58,10 @@ try {
   $structure = structure($bdd);
   set_session($user, $structure);
   http_response_code(200); // OK
-  echo(json_encode(['Accepted' => 'TODO: Envoyer utilisateur.'], JSON_FORCE_OBJECT));
+  echo(json_encode(['status' => 'OK'], JSON_FORCE_OBJECT));
+  // A terme on revera un document json decrivant l'utilisateur connecter.
   // echo(json_encode($user, JSON_NUMERIC_CHECK | JSON_FORCE_OBJECT));
 } catch (Exception $e) {
   http_response_code(401); // Unauthorized
-  var_dump($e);
   echo(json_encode(['error' => 'Mauvais identifiant ou mot de passe !'], JSON_FORCE_OBJECT));
 }

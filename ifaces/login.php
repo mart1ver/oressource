@@ -21,16 +21,16 @@
     document.getElementById('formLogin').addEventListener('submit', (event) => {
       event.preventDefault();
       const form = new FormData(document.getElementById('formLogin'));
-      const pass = form.get('pass');
-      const mail = form.get('mail');
-      const fetchPromise = fetch('../moteur/login_post.php', {
+      const username = form.get('mail');
+      const password = form.get('pass');
+      fetch('../moteur/login_post.php', {
         method: 'POST',
         credentials: 'include',
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json; charset=utf-8',
         },
-        body: JSON.stringify({username: mail, password: pass})
+        body: JSON.stringify({ username, password }),
       }).then(status)
         .then((json) => {
           // redirection vers l'index en attendant de pouvoir faire mieux.
@@ -41,4 +41,4 @@
     }, false);
   }, false);
 </script>
-<?php include "pied.php"; ?>
+<?php include "pied.php";
