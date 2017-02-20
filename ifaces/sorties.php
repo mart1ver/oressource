@@ -27,50 +27,34 @@ namespace sorties;
 use DateTime;
 use PDO;
 
+require_once('../core/requetes.php');
 require_once('../core/session.php');
+require_once('../moteur/dbconfig.php');
 
 session_start();
 
 $numero = filter_input(INPUT_GET, 'numero', FILTER_VALIDATE_INT);
 
-if ($_SESSION['affsd'] !== "oui") {
-  header("Location:sortiesd.php?numero=" . $numero);
-}
-
 if (isset($_SESSION['id'])
   && $_SESSION['systeme'] === "oressource"
   && is_allowed_sortie_id($numero)) {
-  require_once('../moteur/dbconfig.php');
-  include_once "tete.php";
-  $req = $bdd->prepare('SELECT pesee_max, nom
-                      FROM points_sortie
-                      WHERE id = :id
-                      LIMIT 1');
-  $req->bindValue(':id', $numero, PDO::PARAM_INT);
-  $req->execute();
-  $point_sortie = $req->fetch(PDO::FETCH_ASSOC);
-  $pesee_max = (float) $point_sortie['pesee_max'];
+  
+  if ($_SESSION['affsd'] !== "oui") {
+    header("Location:sortiesd.php?numero=" . $numero);
+    die();
+  }
+  
+  require_once('tete.php');
 
-  $reponse = $bdd->query('SELECT id, nom, couleur FROM type_dechets WHERE visible = "oui"');
-  $types_dechet = $reponse->fetchAll(PDO::FETCH_ASSOC);
-
-  $reponse = $bdd->query('SELECT id, nom FROM type_sortie WHERE visible = "oui"');
-  $types_action = $reponse->fetchAll(PDO::FETCH_ASSOC);
-
-  $reponse = $bdd->query('SELECT masse, nom FROM type_contenants WHERE visible = "oui"');
-  $conteneurs = $reponse->fetchAll(PDO::FETCH_ASSOC);
-
-  $reponse = $bdd->query('SELECT id, nom FROM localites WHERE visible = "oui"');
-  $localites = $reponse->fetchAll(PDO::FETCH_ASSOC);
-
-
-  $reponse = $bdd->query('SELECT * FROM type_dechets_evac WHERE visible = "oui"');
-  $evacs = $reponse->fetchAll(PDO::FETCH_ASSOC);
+  $point_sortie = point_sorties_id($bdd, $numero);
+  $types_action = types_sorties($bdd);
 
   $date = new Datetime('now');
   ?>
 
-  <div class="panel-body">
+
+    <h2 class="ui-title"><?php echo($point_sortie['nom']); ?></h2>
+      
     <div class="row">
       <div class="col-md-7 col-md-offset-1" >
         <ul class="nav nav-tabs">
@@ -82,26 +66,27 @@ if (isset($_SESSION['id'])
           </ul>
         </div>
     </div>
-    <h2 class="ui-title"><?php echo($point_sortie['nom']); ?></h2>
-    <div class="row">
-      <div class="col-md-3 col-md-offset-2" >
-        <div class="panel panel-info" >
-          <div class="panel-heading">
-            <h3 class="panel-title"><label id="massetot">Bon de sortie hors-boutique: 0 Kg.</label></h3>
+
+    <div class="panel-body">
+      <div class="row">
+          <div class="col-md-3 col-md-offset-2">
+            <div class="panel panel-info" >
+              <div class="panel-heading">
+                <h3 class="panel-title"><label id="massetot">Bon de sortie hors-boutique: 0 Kg.</label></h3>
+              </div>
+              <div class="panel-body">
+                <form id="formulaire">
+                  <?php if (is_allowed_edit_date()) { ?>
+                    <label for="antidate">Date de la sortie: </label>
+                    <input type="date" id="antidate" name="antidate" style="width:130px; height:20px;" value="<?php echo($date->format('Y-m-d')); ?>">
+                  <?php } ?>
+                  <ul class="list-group" id="transaction">  <!--start Ticket Caisse -->
+                    <!-- Remplis via JavaScript voir script de la page -->
+                  </ul> <!--end TicketCaisse -->
+                </form>
+              </div>
+            </div>
           </div>
-          <div class="panel-body">
-            <form id="formulaire">
-              <?php if (is_allowed_saisie_collecte() && is_allowed_edit_date()) { ?>
-                <label for="antidate">Date de la sortie: </label>
-                <input type="date" id="antidate" name="antidate" style="width:130px; height:20px;" value="<?php echo($date->format('Y-m-d')); ?>">
-              <?php } ?>
-              <ul class="list-group" id="transaction">  <!--start Ticket Caisse -->
-                <!-- Remplis via JavaScript voir script de la page -->
-              </ul> <!--end TicketCaisse -->
-            </form>
-          </div>
-        </div>
-      </div>
 
     <div class="col-md-2" >
       <div class="panel panel-info">
@@ -110,14 +95,14 @@ if (isset($_SESSION['id'])
         </div>
         <div class="panel-body">
           <label for="id_type_action">Type de collecte:</label>
-            <select name ="id_type_action" form="formulaire" id="type_action" class="form-control" style="font-size: 12pt" required>
-              <?php foreach ($types_action as $type_action) { ?>
+            <select name="id_type_action" form="formulaire" id="type_action" class="form-control" style="font-size: 12pt" required>
+            <?php foreach ($types_action as $type_action) { ?>
               <option value="<?php echo $type_action['id'] ?>"><?php echo $type_action['nom'] ?></option>
             <?php } ?>
           </select>
           <label for="loc">Localité :</label>
           <select name="localite" id="loc" form="formulaire" class="form-control" style="font-size: 12pt" required>
-            <?php foreach ($localites as $localite) { ?>
+            <?php foreach (localites($bdd) as $localite) { ?>
               <option value="<?php echo $localite['id'] ?>"><?php echo $localite['nom'] ?></option>
             <?php } ?>
           </select>
@@ -139,7 +124,7 @@ if (isset($_SESSION['id'])
                   </button>
                   <ul class="dropdown-menu dropdown-menu-right" role="menu">
                     <!-- need style sur les boutons mais OK -->
-                    <?php foreach ($conteneurs as $conteneur) { ?>
+                    <?php foreach (types_contenants($bdd) as $conteneur) { ?>
                       <li><button onclick="submanut(<?php echo((float) $conteneur['masse']); ?>);"><?php echo $conteneur['nom']; ?></button></li>
                     <?php } ?>
                   </ul>
@@ -206,7 +191,6 @@ if (isset($_SESSION['id'])
     </div> <!-- row -->
   </div> <!--class="pannel-body"-->
 
-
   <script type="text/javascript">
     // Variables d'environnement de Oressource.
     'use scrict';
@@ -218,9 +202,9 @@ if (isset($_SESSION['id'])
       user_droit: <?php echo json_encode($_SESSION['niveau']); ?>,
       id_point: <?php echo json_encode($numero, JSON_NUMERIC_CHECK); ?>,
       id_type_action: <?php echo(json_encode($types_action, JSON_NUMERIC_CHECK & JSON_FORCE_OBJECT)); ?>,
-      types_dechet: <?php echo(json_encode($types_dechet, JSON_NUMERIC_CHECK & JSON_FORCE_OBJECT)); ?>,
+      types_dechet: <?php echo(json_encode(types_dechets($bdd), JSON_NUMERIC_CHECK & JSON_FORCE_OBJECT)); ?>,
       masse_max: <?php echo(json_encode($point_sortie['pesee_max'], JSON_NUMERIC_CHECK)); ?>,
-      types_evac: <?php echo(json_encode($evacs, JSON_NUMERIC_CHECK)); ?>
+      types_evac: <?php echo(json_encode(types_dechets_evac($bdd), JSON_NUMERIC_CHECK)); ?>
     };
   </script>
   <script src="../js/ticket.js" type="text/javascript"></script>

@@ -185,9 +185,8 @@ function impression_ticket() {
   if (window.ticket.size > 0
           && document.getElementById("id_type_action").value > 0
           && document.getElementById("loc").value > 0) {
-
-    const headstr = `<html><head><title></title></head><body><small>${window.OressourceEnv.structure}<br>${window.OressourceEnv.adresse}<br><label>Bon d'apport:</label><br>`;
-    const footstr = `<br>Masse totale : " + ${window.ticket.total} + " Kg.</body></small>`;
+    const headstr = `<html><head><title></title></head><body><small><p>${window.OressourceEnv.structure}</p><p>${window.OressourceEnv.adresse}</p>`;
+    const footstr = `<br>Masse totale : ${window.ticket.total} Kg.</body></small>`;
     const newstr = document.getElementById('transaction').innerHTML;
     const oldstr = document.body.innerHTML;
     encaisse();
