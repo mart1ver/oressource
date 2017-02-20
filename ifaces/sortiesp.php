@@ -58,16 +58,13 @@ if (isset($_SESSION['id'])
         </ul>
       </div>
     </div>
-    <div class="row">
-      <div class="col-md-4 col-md-offset-1" >
-        <input form="formulaire" type="hidden" name ="id_point_sortie" id="id_point_sortie" value="<?php echo $numero; ?>">
-        <input form="formulaire" type="hidden" id="id_user" name="id_user" value="<?php echo $_SESSION['id']; ?>">
-        <input form="formulaire" type="hidden" value="0" name ="najout" id="najout">
-      </div>
-      <div class="col-md-4" >
-      </div>
-    </div>
 
+    <input form="formulaire" type="hidden" name ="id_point_sortie" id="id_point_sortie" value="<?php echo $numero; ?>">
+    <input form="formulaire" type="hidden" id="id_user" name="id_user" value="<?php echo $_SESSION['id']; ?>">
+    <input form="formulaire" type="hidden" value="0" name ="najout" id="najout">
+
+
+    <div class="panel-body">
     <div class="row">
       <div class="col-md-3 col-md-offset-1" >
         <div class="panel panel-info">
