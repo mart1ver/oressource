@@ -61,27 +61,30 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === "oressource") {
         'id_user' => $json['id_user'],
     ];
 
-    include_once('dbconfig.php');
-
+    require_once('dbconfig.php');
+    $bdd->beginTransaction();
     $id_collecte = insert_collecte($bdd, $collecte);
 
-    // TODO: Faire une transaction la rollback et crash si donnee invalide.
     try {
+      if (count($json['items'])) {
       insert_items_collecte($bdd, $id_collecte, $collecte, $json['items']);
+      $bdd->commit();
+      } else {
+        throw new InvalidArgumentException("Collecte sans pesees abbandon!");
+      }
       http_response_code(200); // Created
-      // TODO: Valider la transaction.
       // Note: Renvoyer l'url d'acces a la ressource
-      echo(json_encode(['id_collecte' => $id_collecte], JSON_FORCE_OBJECT | JSON_NUMERIC_CHECK));
+      echo(json_encode(['id_collecte' => $id_collecte], JSON_NUMERIC_CHECK));
     } catch (InvalidArgumentException $e) {
+      $bdd->rollback();
       http_response_code(400); // Bad Request
-      echo(json_encode(['error' => 'masse <= 0.0 ou type item inconnu.'], JSON_FORCE_OBJECT));
-      // TODO: Invalider la transaction
+      echo(json_encode(['error' => $e->msg]));
     }
   } else {
     http_response_code(403); // Forbidden.
-    echo(json_encode(['error' => 'Action interdite pour cet utilisateur.'], JSON_FORCE_OBJECT));
+    echo(json_encode(['error' => 'Action interdite pour cet utilisateur.']));
   }
 } else {
   http_response_code(401); // Unauthorized.
-  echo(json_encode(['error' => 'Session Timed out or invalid.'], JSON_FORCE_OBJECT));
+  echo(json_encode(['error' => 'Session Timed out or invalid.']));
 }

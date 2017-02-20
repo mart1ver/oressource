@@ -60,22 +60,33 @@ if (isset($_SESSION['id'])
       'id_user' => $json['id_user'],
   ];
 
+  $bdd->beginTransaction();
   $id_sortie = insert_sortie($bdd, $sortie);
   // TODO: Faire une transaction SQL
   try {
+    $requete_OK = false;
     if (count($json['items'])) {
       insert_items_sorties($bdd, $id_sortie, $sortie, $json['items']);
+      $requete_OK = true;
     }
     if (count($json['evacs'])) {
       insert_evac_sorties($bdd, $id_sortie, $sortie, $json['evacs']);
+      $requete_OK = true;
     }
-    http_response_code(200); // Created
-    // TODO: Valider la transaction.
-    // Note: Renvoyer l'url d'acces a la ressource
-    echo(json_encode(['id_sortie' => $id_sortie], JSON_NUMERIC_CHECK));
-  } catch (InvalidArgumentException $e) {
+
+    if ($requete_OK) {
+      $bdd->commit();
+      http_response_code(200); // Created
+      // TODO: Valider la transaction.
+      // Note: Renvoyer l'url d'acces a la ressource
+      echo(json_encode(['id_sortie' => $id_sortie], JSON_NUMERIC_CHECK));
+    } else {
+      throw new UnexpectedValueException("insertion sans objet ni evac abbandon.");
+    }
+  } catch (UnexpectedValueException $e) {
+    $bdd->rollback();
     http_response_code(400); // Bad Request
-    echo(json_encode(['error' => 'masse <= 0.0 ou type item inconnu.'], JSON_FORCE_OBJECT));
+    echo(json_encode(['error' => $e->msg], JSON_FORCE_OBJECT));
     // TODO: Invalider la transaction
   }
 } else {
