@@ -1,26 +1,10 @@
 <?php
+
 session_start();
+
 require_once("../moteur/dbconfig.php");
 require_once('../core/session.php');
-
-/**
- * Renvoie les donnees neccessaire a moris.js pour le tableau de bord.
- * @global type $bdd  Connection PDO valide.
- * @param string $sql Requete sql valide sql
- * @return array Correspondant aux donnees pour morris.js.
- */
-function data_graphs($sql) {
-  global $bdd; // Variable globale definie dans dbconfig.php
-  $stmt = $bdd->prepare($sql);
-  $stmt->execute();
-  $data = array();
-  $colors = array();
-  foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $iter) {
-    array_push($data, ['value' => $iter['somme'], 'label' => $iter['nom']]);
-    array_push($colors, $iter['couleur']);
-  }
-  return ['data' => $data, 'colors' => $colors];
-}
+require_once('../core/requetes.php');
 
 if (is_valid_session()) {
   include_once 'tete_vente.php';
@@ -48,13 +32,13 @@ if (is_valid_session()) {
   // l'affichage des bilans de collecte, sortie hors-boutique et bilans de vente
   $validUser = is_allowed_bilan();
 
-  $graphm = data_graphs('SELECT type_dechets.couleur,type_dechets.nom, sum(vendus.quantite ) somme
+  $graphm = data_graphs($bdd->prepare('SELECT type_dechets.couleur,type_dechets.nom, sum(vendus.quantite ) somme
                   FROM type_dechets, vendus
                   WHERE type_dechets.id = vendus.id_type_dechet
                   AND DATE(vendus.timestamp) = CURDATE() AND vendus.prix > 0
-                  GROUP BY nom');
+                  GROUP BY nom'));
 
-  $grapha = data_graphs('SELECT type_dechets.couleur,type_dechets.nom, sum(pesees_sorties.masse) somme
+  $grapha = data_graphs($bdd->prepare('SELECT type_dechets.couleur,type_dechets.nom, sum(pesees_sorties.masse) somme
                       FROM type_dechets,pesees_sorties
                       WHERE type_dechets.id = pesees_sorties.id_type_dechet
                       AND DATE(pesees_sorties.timestamp) = CURDATE()
@@ -70,13 +54,13 @@ if (is_valid_session()) {
                       FROM type_dechets_evac ,pesees_sorties
                       WHERE type_dechets_evac.id=pesees_sorties.id_type_dechet_evac
                       AND DATE(pesees_sorties.timestamp) = CURDATE()
-                      GROUP BY nom');
+                      GROUP BY nom'));
 
-  $graphj = data_graphs('SELECT type_dechets.couleur, type_dechets.nom, sum(pesees_collectes.masse) somme
+  $graphj = data_graphs($bdd->prepare('SELECT type_dechets.couleur, type_dechets.nom, sum(pesees_collectes.masse) somme
                   FROM type_dechets, pesees_collectes
                   WHERE type_dechets.id = pesees_collectes.id_type_dechet
                   AND DATE(pesees_collectes.timestamp) = CURDATE()
-                  GROUP BY nom');
+                  GROUP BY nom'));
   ?>
 
   <div class="page-header">
@@ -127,7 +111,7 @@ if (is_valid_session()) {
   <!-- Bootstrap core JavaScript + morris + raphael
   ================================================== -->
   <!-- Placed at the end of the document so the pages load faster -->
-  <script src="../js/jquery-2.0.3.min.js"></script>
+  <script src="../js/jquery-2.1.1.min.js"></script>
   <script src="../js/raphael.js"></script>
   <script src="../js/morris/morris.js"></script>
   <script type="text/javascript">
