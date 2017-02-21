@@ -93,10 +93,10 @@ if (isset($_SESSION['id'])
                 </h3>
               </div>
               <div class="panel-body">
-                <select id="sel_filiere" form="formulaire" name="sel_filiere" class="form-control" required>
-                  <option value = "0" disabled selected></option>
+                <select id="id_type_action" form="formulaire" name="id_type_action" class="form-control" required>
+                  <option value="0" selected disabled>Clickez pour selectioner un recycleur</option>
                   <?php foreach ($filieres_sorties as $filiere_sortie) { ?>
-                    <option value="<?php echo $filiere_sortie['id']; ?>|<?php echo $filiere_sortie['type_dechet']; ?>"><?php echo $filiere_sortie['nom']; ?></option>
+                    <option value="<?php echo $filiere_sortie['id']; ?>"><?php echo $filiere_sortie['nom']; ?></option>
                   <?php } ?>
                 </select>
                 <input type="text" class="form-control" name="commentaireini" id="commentaireini" placeholder="Commentaire">
@@ -152,7 +152,9 @@ if (isset($_SESSION['id'])
           <div class="col-md-3" >
             <div class="panel panel-info">
               <div class="panel-heading">
-                <h3 class="panel-title"><label>Materiaux et déchets:</label></h3>
+                <h3 class="panel-title">
+                  <label>Materiaux et déchets:</label>
+                </h3>
               </div>
               <div class="panel-body">
                 <div id="list_evac" class="btn-group">
@@ -194,9 +196,6 @@ if (isset($_SESSION['id'])
 
     document.addEventListener('DOMContentLoaded', () => {
       const numpad = new NumPad(document.getElementById('number'));
-      // Passer ticket en param aux evenements?
-      // object global attention!
-
       const typesItems = window.OressourceEnv.types_evac;
       const ticketsItem = new Ticket();
       const pushItems = connection_UI_ticket(numpad, ticketsItem, typesItems);
@@ -204,33 +203,58 @@ if (isset($_SESSION['id'])
       const div_list_item = document.getElementById('list_evac');
       typesItems.forEach((item) => {
         const button = html_saisie_item(item, pushItems);
+        button.setAttribute('style', 'display: none; visibility: hidden');
         div_list_item.appendChild(button);
       });
 
-      const encaisse = make_encaissement('../moteur/sortiesr_post.php', {items: ticketsItem});
+      const metadata = { classe: 'sortier' };
+      const encaisse = make_encaissement('../api/sorties.php', {
+        evacs: ticketsItem
+      }, metadata);
 
       document.getElementById('encaissement').addEventListener('click', encaisse, false);
       document.getElementById('impression').addEventListener('click', impression_ticket, false);
       document.getElementById('reset').addEventListener('click', tickets_clear, false);
 
-      const recycleur_choix = ((ui, filieres, /*filiere_select*/) => {
+      function make_choix_recycleur(ui, filieres) {
         return (event) => {
-          console.log(event);
-          const select = event.target;
-          const id = select.value;
-          const accept = filieres[id];
+          if (event.target.selectedIndex > 0) {
+            console.log(event);
+            event.preventDefault();
+            const select = event.target;
+            const id_recycleur = parseInt(select.value, 10);
 
-          select.value = id;
-          select.disabled = true;
+            select[0].removeAttribute('selected', false);
+            select.setAttribute('value', id_recycleur);
+            select[select.selectedIndex].setAttribute('selected', true);
 
-          const list = accept.split('a');
-          list.forEach((type_dechet) => {
-            document.getElementById(type_dechet).style.display = "block";
-          });
+            // On desactive tout sauf ce qui viens d'etre choisi.
+            select.querySelectorAll(':not([selected])').forEach((e) => {
+              e.setAttribute('disabled', true);
+            });
+
+            // On recupere le bon recycleur.
+            const recycleur = filieres.filter(({id}) => {
+                return id === id_recycleur;
+            })[0];
+
+            // On selectione les boutons qui correspondent au possiblites du recyleur.
+            const accepte = recycleur.accepte_type_dechet;
+            const btnList = Array.from(ui.children).filter((e) => {
+              return accepte.reduce((acc, id) => {
+                return acc || parseInt(e.id, 10) === id;
+              }, false);
+            });
+            btnList.forEach((button) => {
+              button.setAttribute('style', 'display: block; visibility: visible');
+            });
+          }
         };
-      })(div_list_item, window.OressourceEnv.id_type_action);
+      };
+      
+      const recycleur_choix = make_choix_recycleur(div_list_item, window.OressourceEnv.id_type_action);
 
-      document.getElementById('sel_filiere').addEventListener('change', recycleur_choix, false);
+      document.getElementById('id_type_action').addEventListener('change', recycleur_choix, false);
 
       window.tickets = [ticketsItem];
     }, false);

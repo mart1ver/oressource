@@ -106,7 +106,6 @@ if (isset($_SESSION['id'])
               <option value="<?php echo $localite['id'] ?>"><?php echo $localite['nom'] ?></option>
             <?php } ?>
           </select>
-          <br>
         </div>
       </div>
 
@@ -239,10 +238,11 @@ if (isset($_SESSION['id'])
         div_list_evac.appendChild(button);
       });
 
-      const encaisse = make_encaissement('../moteur/sorties_post.php', {
+      const metadata = { classe: 'sortie' };
+      const encaisse = make_encaissement('../api/sorties.php', {
         items: ticketItems,
         evacs: ticketEvac,
-      });
+      }, metadata);
 
       document.getElementById('encaissement').addEventListener('click', encaisse, false);
       document.getElementById('impression').addEventListener('click', impression_ticket, false);

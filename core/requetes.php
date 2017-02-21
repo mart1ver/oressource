@@ -114,19 +114,29 @@ function filieres_sorties(PDO $bdd) {
           WHERE filieres_sortie.visible = "oui"';
   $stmt = $bdd->prepare($sql);
   $stmt->execute();
-  return $stmt->fetchAll(PDO::FETCH_ASSOC);
+  $filieres_sorties = $stmt->fetchAll(PDO::FETCH_ASSOC);
+  return array_map(function($filiere) {
+    $filiere['accepte_type_dechet'] = explode('a', $filiere['type_dechet']);
+    return $filiere;
+  }, $filieres_sorties);
 }
 
 function nb_categories_dechets_evac(PDO $bdd) {
-  return (int) $bdd->query('SELECT MAX(id) AS nombrecat FROM type_dechets_evac LIMIT 1')['nombrecat'];
+  $stmt = $bdd->prepare('SELECT MAX(id) AS nombrecat FROM type_dechets_evac LIMIT 1');
+  $stmt->execute();
+  return (int) $stmt->fetch(PDO::FETCH_ASSOC)['nombrecat'];
 }
 
 function nb_categories_dechets_item(PDO $bdd) {
-  return (int) $bdd->query('SELECT MAX(id) AS nombrecat FROM type_dechets LIMIT 1')['nombrecat'];
+  $stmt = $bdd->prepare('SELECT MAX(id) AS nombrecat FROM type_dechets LIMIT 1');
+  $stmt->execute();
+  return (int) $stmt->fetch(PDO::FETCH_ASSOC)['nombrecat'];
 }
 
 function nb_categories_poubelles(PDO $bdd) {
-  return (int) $bdd->query('SELECT MAX(id) AS nombrecat FROM types_poubelles LIMIT 1')['nombrecat'];
+  $stmt = $bdd->prepare('SELECT MAX(id) AS nombrecat FROM types_poubelles LIMIT 1')['nombrecat'];
+  $stmt->execute();
+  return (int) $stmt->fetch(PDO::FETCH_ASSOC)['nombrecat'];
 }
 
 // Insere une collecte dans la base.
