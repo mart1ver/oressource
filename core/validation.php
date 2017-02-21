@@ -27,12 +27,13 @@ function validate_json_sorties($unsafe_json) {
   $filters = [
       'id_type_action' => FILTER_VALIDATE_INT,
       'antidate' => FILTER_DEFAULT,
-      'localite' => FILTER_REQUIRE_SCALAR, // PEux etre NULL.
+      'localite' => FILTER_REQUIRE_SCALAR, // Peux etre NULL.
       'id_point' => FILTER_VALIDATE_INT,
       'id_user' => FILTER_VALIDATE_INT,
       'items' => FILTER_DEFAULT,
       'evacs' => FILTER_DEFAULT,
-      'commentaire' => FILTER_SANITIZE_STRING
+      'commentaire' => FILTER_SANITIZE_STRING,
+      'classe' => FILTER_SANITIZE_STRING // TODO: remplacer par une regex sortie|sortier...
   ];
   $flag = ['flags' => FILTER_NULL_ON_FAILURE];
   $flags = [];

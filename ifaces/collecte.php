@@ -17,6 +17,12 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
+// Oressource 2014, formulaire de collecte
+// Simple formulaire de saisie des types et quantités de matériel entrant dans la structure.
+// Pensé pour être fonctionnel sur ecran tactile.
+// Du javascript permet l'interactivité du keypad et des boutons centraux avec le bon de collecte.
+
 namespace collecte;
 
 use Datetime;
@@ -25,6 +31,8 @@ use PDO;
 global $bdd;
 
 require_once('../core/session.php');
+require_once('../core/requetes.php');
+require_once('../moteur/dbconfig.php');
 
 session_start();
 
@@ -33,38 +41,15 @@ $numero = filter_input(INPUT_GET, 'numero', FILTER_VALIDATE_INT);
 if (isset($_SESSION['id'])
   && $_SESSION['systeme'] === "oressource"
   && is_allowed_collecte_id($numero)) {
-  require_once('../moteur/dbconfig.php');
 
-  include_once "tete.php";
-  // Oressource 2014, formulaire de collecte
-  // Simple formulaire de saisie des types et quantités de matériel entrant dans la structure.
-  // Pensé pour être fonctionnel sur ecran tactile.
-  // Du javascript permet l'interactivité du keypad et des boutons centraux avec le bon de collecte.
-  // On obtient la masse maximum suportée par la balance de ce point de collecte dans la variable $pesee_max
-  // On obtient le nom du point de collecte designé par $GET['numero'].
-  $req = $bdd->prepare('SELECT pesee_max, nom
-                      FROM points_collecte
-                      WHERE id = :id
-                      LIMIT 1');
-  $req->bindValue(':id', $numero, PDO::PARAM_INT);
-  $req->execute();
-  $point_collecte = $req->fetch(PDO::FETCH_ASSOC);
-  $pesee_max = (float) $point_collecte['pesee_max'];
+  require_once('tete.php');
 
-  $reponse = $bdd->query('SELECT id, nom, couleur FROM type_dechets WHERE visible = "oui"');
-  $types_dechet = $reponse->fetchAll(PDO::FETCH_ASSOC);
-
-  $reponse = $bdd->query('SELECT id, nom FROM type_collecte WHERE visible = "oui"');
-  $types_action = $reponse->fetchAll(PDO::FETCH_ASSOC);
-
-  $reponse = $bdd->query('SELECT masse, nom FROM type_contenants WHERE visible = "oui"');
-  $conteneurs = $reponse->fetchAll(PDO::FETCH_ASSOC);
-
-  $reponse = $bdd->query('SELECT id, nom FROM localites WHERE visible = "oui"');
-  $localites = $reponse->fetchAll(PDO::FETCH_ASSOC);
-
+  $point_collecte = point_collecte_id($bdd, $numero);
+  $types_action = types_collectes($bdd);
   $date = new Datetime('now');
   ?>
+
+
   <div class="panel-body">
   <h2 class="ui-title"><?php echo($point_collecte['nom']); ?></h2>
   <div class="row">
@@ -102,7 +87,7 @@ if (isset($_SESSION['id'])
 
           <label for="loc">Localité :</label>
           <select name="localite" id="loc" form="formulaire" class="form-control" style="font-size: 12pt" required>
-            <?php foreach ($localites as $localite) { ?>
+            <?php foreach (localites($bdd) as $localite) { ?>
               <option value="<?php echo $localite['id'] ?>"><?php echo $localite['nom'] ?></option>
             <?php } ?>
           </select>
@@ -124,7 +109,7 @@ if (isset($_SESSION['id'])
                   </button>
                   <ul class="dropdown-menu dropdown-menu-right" role="menu">
                     <!-- need style sur les boutons mais OK -->
-                    <?php foreach ($conteneurs as $conteneur) { ?>
+                    <?php foreach (types_conteneurs($bdd) as $conteneur) { ?>
                     <li onClick="submanut(<?php echo((float) $conteneur['masse']); ?>);"><?php echo $conteneur['nom']; ?></li>
                     <?php } ?>
                   </ul>
@@ -187,11 +172,9 @@ if (isset($_SESSION['id'])
       structure: <?php echo(json_encode($_SESSION['structure'])); ?>,
       adresse: <?php echo(json_encode($_SESSION['adresse'])); ?>,
       id_user: <?php echo(json_encode($_SESSION['id'], JSON_NUMERIC_CHECK)); ?>,
-      // saisie_collecte: <?php echo json_encode(is_allowed_saisie_collecte()); ?>,
-      // user_droit: <?php echo json_encode($_SESSION['niveau']); ?>,
       id_point: <?php echo json_encode(filter_input(INPUT_GET, 'numero', FILTER_VALIDATE_INT), JSON_NUMERIC_CHECK); ?>,
       id_type_action: <?php echo(json_encode($types_action, JSON_NUMERIC_CHECK &JSON_FORCE_OBJECT)) ?>,
-      types_dechet: <?php echo(json_encode($types_dechet, JSON_NUMERIC_CHECK & JSON_FORCE_OBJECT)); ?>,
+      types_dechet: <?php echo(json_encode(types_dechets($bdd), JSON_NUMERIC_CHECK & JSON_FORCE_OBJECT)); ?>,
       masse_max: <?php echo(json_encode($point_collecte['pesee_max'], JSON_NUMERIC_CHECK)); ?>,
     };
   </script>

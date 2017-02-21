@@ -185,9 +185,8 @@ function impression_ticket() {
   if (window.ticket.size > 0
           && document.getElementById("id_type_action").value > 0
           && document.getElementById("loc").value > 0) {
-
-    const headstr = `<html><head><title></title></head><body><small>${window.OressourceEnv.structure}<br>${window.OressourceEnv.adresse}<br><label>Bon d'apport:</label><br>`;
-    const footstr = `<br>Masse totale : " + ${window.ticket.total} + " Kg.</body></small>`;
+    const headstr = `<html><head><title></title></head><body><small><p>${window.OressourceEnv.structure}</p><p>${window.OressourceEnv.adresse}</p>`;
+    const footstr = `<br>Masse totale : ${window.ticket.total} Kg.</body></small>`;
     const newstr = document.getElementById('transaction').innerHTML;
     const oldstr = document.body.innerHTML;
     encaisse();
@@ -281,7 +280,7 @@ function post_data(url, data) {
  * @param {string} url Url de la requete post.
  * @param {Objects} tickets Mixin de tickets la clef servira a les reconnaitre cote serveur.
  */
-function make_encaissement(url, tickets) {
+function make_encaissement(url, tickets, metadata={}) {
   return () => {
 
     // On recupere les sommes de differents tickets.
@@ -291,9 +290,9 @@ function make_encaissement(url, tickets) {
 
     const form = new FormData(document.getElementById('formulaire'));
     const id_type_action = parseInt(form.get('id_type_action'), 10);
-    const localite = parseInt(form.get('localite'), 10);
+    const localite = form.get('localite');
 
-    if (sum > 0 && id_type_action > 0 && localite > 0) {
+    if (sum > 0 && id_type_action > 0) {
 
       const commentaire = form.get('commentaire').trim(); //.On enleve les espaces inutiles.
       const antidate = form.get('antidate');
@@ -318,7 +317,7 @@ function make_encaissement(url, tickets) {
         return Object.assign({}, acc, {[type]: ticket.to_array()});
       }, {});
       // Object.assign sert a mixer des Objets Javascript.
-      post_data(url, Object.assign({}, data, items));
+      post_data(url, Object.assign({}, data, items, metadata));
     }
   };
 }

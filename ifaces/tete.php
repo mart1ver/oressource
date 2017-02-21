@@ -1,11 +1,30 @@
 <?php
-namespace tete;
-use PDO;
+
+/*
+  Oressource
+  Copyright (C) 2014-2017  Martin Vert and Oressource devellopers
+
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU Affero General Public License as
+  published by the Free Software Foundation, either version 3 of the
+  License, or (at your option) any later version.
+
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU Affero General Public License for more details.
+
+  You should have received a copy of the GNU Affero General Public License
+  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+require_once('../core/requetes.php');
+require_once('../core/session.php');
+require_once('../moteur/dbconfig.php');
+
 global $bdd;
 
-//session_start(); déjà inclu dans chacun des fichiers appelant ce fichier
-require_once('../moteur/dbconfig.php');
-require_once('../core/session.php');
+$now_date = date("d-m-Y");
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -19,7 +38,7 @@ require_once('../core/session.php');
     <link href="../css/bootstrap.min.css" type="text/css" rel="stylesheet">
     <link href="../css/oressource.css" type="text/css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="../js/morris/morris.css">
-    <link rel="stylesheet" type="text/css" media="all" href="../css/daterangepicker-bs3.css" />
+    <link rel="stylesheet" type="text/css" media="all" href="../css/daterangepicker-bs3.css">
   </head>
 
   <body>
@@ -44,78 +63,50 @@ require_once('../core/session.php');
                 <li class="nav navbar-nav dropdown">
                   <a href="#" class="dropdown-toggle" data-toggle="dropdown">Points de collecte<b class="caret"></b></a>
                   <ul class="dropdown-menu">
-                    <?php
-                    // On recupère tout le contenu de la table point de collecte
-                    $stmt = $bdd->query('SELECT id, nom, adresse, visible FROM points_collecte');
-                    foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $point_collecte) {
-                      if (is_collecte_visible($point_collecte)) {
-                        $nom = $point_collecte['nom'];
-                        $url_query = "{$point_collecte['id']}&nom={$nom}&adresse={$point_collecte['adresse']}";
-                        ?>
-                        <li>
-                          <a href="../ifaces/collecte.php?numero=<?php echo $url_query; ?>"><?php echo $nom; ?></a>
-                        </li>
-                        <?php
-                      }
-                    }
-                    ?>
+                    <?php foreach (points_collectes($bdd) as $point_collecte) { ?>
+                    <li>
+                      <a href="../ifaces/collecte.php?numero=
+                        <?php echo("{$point_collecte['id']}&nom={$point_collecte['nom']}&adresse={$point_collecte['adresse']}");
+                        ?>"><?php echo $point_collecte['nom']; ?></a>
+                    </li>
+                    <?php } ?>
                   </ul>
                 </li>
                 <?php
               }
 
-              if (is_allowed_sortie()) {
-                ?>
+              if (is_allowed_sortie()) { ?>
                 <li class="nav navbar-nav dropdown">
                   <a href="#" class="dropdown-toggle" data-toggle="dropdown">Sorties hors-boutique<b class="caret"></b></a>
                   <ul class="dropdown-menu">
-                    <?php
-                    // On recupère tout le contenu de la table point de vente
-                    $stmt = $bdd->query('SELECT id, nom, adresse, visible FROM points_sortie');
-                    foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $point_sortie) {
-                      if (is_sortie_visible($point_sortie)) {
-                        $nom = $point_sortie['nom'];
-                        $url_query = "numero={$point_sortie['id']}&nom={$nom}&adresse={$point_sortie['adresse']}";
-                        ?>
-                        <li>
-                          <a href="../ifaces/sortiesc.php?<?php echo $url_query; ?>"><?php echo $nom; ?></a>
-                        </li>
-                        <?php
-                      }
-                    }
-                    ?>
+                    <?php foreach (points_sorties($bdd) as $point_sortie) {?>
+                    <li>
+                      <a href="../ifaces/sortiesc.php?numero=<?php
+                      echo("{$point_sortie['id']}&nom={$point_sortie['nom']}&adresse={$point_sortie['adresse']}");
+                      ?>"><?php echo $point_sortie['nom']; ?></a>
+                    </li>
+                    <?php } ?>
                   </ul>
                 </li>
                 <?php
               }
 
-              if (is_allowed_vente()) {
-                ?>
+              if (is_allowed_vente()) { ?>
                 <li class="nav navbar-nav dropdown">
                   <a href="#" class="dropdown-toggle" data-toggle="dropdown">Points de vente<b class="caret"></b></a>
                   <ul class="dropdown-menu">
-                    <li>
-                      <?php
-                      // On recupère tout le contenu de la table point de vente
-                      $stmt = $bdd->query('SELECT id, nom, adresse, visible FROM points_vente');
-                      foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $point_vente) {
-                        if (is_vente_visible($point_vente)) {
-                          $nom = $point_vente['nom'];
-                          $url_query = "numero={$point_vente['id']}&nom={$nom}&adresse={$point_vente['adresse']}";
-                          ?>
-                        <li>
-                          <a href="../ifaces/ventes.php?<?php echo $url_query; ?>"><?php echo $nom; ?></a>
-                        </li>
-                        <?php
-                      }
-                    }
-                    ?>
+                      <?php foreach (points_ventes($bdd) as $point_vente) { ?>
+                      <li>
+                        <a href="../ifaces/ventes.php?numero=<?php
+                        echo("{$point_vente['id']}&nom={$point_vente['nom']}&adresse={$point_vente['adresse']}");
+                        ?>"><?php echo $point_vente['nom']; ?></a>
+                      </li>
+                      <?php } ?>
                   </ul>
                 </li>
                 <?php
               }
 
-              $now_date = date("d-m-Y");
 
               if (is_allowed_bilan()) {
                 ?>
