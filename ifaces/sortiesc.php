@@ -1,27 +1,46 @@
 <?php
+/*
+  Oressource
+  Copyright (C) 2014-2017  Martin Vert and Oressource devellopers
+
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU Affero General Public License as
+  published by the Free Software Foundation, either version 3 of the
+  License, or (at your option) any later version.
+
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU Affero General Public License for more details.
+
+  You should have received a copy of the GNU Affero General Public License
+  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 session_start();
+
+require_once('../core/requetes.php');
+require_once('../core/session.php');
 require_once('../moteur/dbconfig.php');
 
-if ($_SESSION['affss'] !== "oui") {
-   header("Location:sortiesr.php?numero=" . $_GET['numero']);
-}
+$numero = filter_input(INPUT_GET, 'numero', FILTER_VALIDATE_INT);
 
 // Vérification des autorisations de l'utilisateur et des variables de session requises pour l'affichage de cette page:
 if (isset($_SESSION['id'])
   && $_SESSION['systeme'] === "oressource"
-  && (strpos($_SESSION['niveau'], 's' . $_GET['numero']) !== false)) {
-  include "tete.php";
+  && is_allowed_sortie_id($numero)) {
 
-  // Oressource 2014, formulaire de sorties hors-boutique
+  if ($_SESSION['affss'] !== "oui") {
+    header("Location:sortiesr.php?numero=" . $numero);
+    die();
+  }
+  require_once('tete.php');
+
   // Simple formulaire de saisie des matieres d'ouevres sortantes de la structure. (structures partenaires, conventiionnées)
   // Doit etre fonctionnel avec un ecran tactille.
-  // Du javascript permet l'interactivité du keypad et des boutons centraux avec le bon de collecte
-  // On obtient la masse maximum suporté par la balance à ce point de sortie dans la variable $pesee_max
-  // On obtient le nom du point de collecte designé par $GET['numero']
-  $req = $bdd->prepare("SELECT pesee_max FROM points_sortie WHERE id = :id LIMIT 1");
-  $req->bindValue(':id', $_GET['numero'], PDO::PARAM_INT);
-  $req->execute();
-  $pesee_max = $req->fetch(PDO::FETCH_ASSOC)['pesee_max'];
+
+  $point_sortie = point_sorties_id($bdd, $numero);
+  $pesee_max = (float) $point_sortie['pesee_max'];
   ?>
 
 <script src="../js/utilitaire.js"></script>
@@ -50,8 +69,6 @@ var mtot =<?php
                       }
                       $reponse->closeCursor(); // Termine le traitement de la requête
                       ?>0; 
-
-
 
 
       var headstr = "<html><head><title></title></head><body><small><?php echo $_SESSION['structure'] ?><br><?php echo $_SESSION['adresse'] ?><br><label>Bon de sorties au partenaires</label><br>";
@@ -106,40 +123,19 @@ function tdechet_clear()
 }
 </script>
 <div class="panel-body">
-          <fieldset>
-       <legend>
-        <?php 
-            // On recupère tout le contenu de la table point de collecte
-          
-            $req = $bdd->prepare("SELECT * FROM points_sortie WHERE id = :id ");
-            $req->execute(array('id' => $_GET['numero']));
- 
-           // On affiche chaque entree une à une
-           $donnees = $req->fetch();
-           echo$donnees['nom'];
-           $reponse->closeCursor(); // Termine le traitement de la requête
-                ?>
-
-
-
-
-       </legend>
-      
-        
-         
-     
-        
-      </fieldset>   
+  <fieldset>
+    <legend><?php echo($point_sortie['nom']); ?></legend>
+  </fieldset>
 <div class="row">
     
         <div class="col-md-7 col-md-offset-1" >
 
  <ul class="nav nav-tabs">
-  <?php if ($_SESSION['affsp'] == "oui"){ ?><li><a href="<?php echo  "sortiesp.php?numero=" . $_GET['numero']?>">Poubelles</a></li><?php } ?>
+  <?php if ($_SESSION['affsp'] == "oui"){ ?><li><a href="<?php echo  "sortiesp.php?numero=" . $numero?>">Poubelles</a></li><?php } ?>
   <?php if ($_SESSION['affss'] == "oui"){ ?><li class="active"><a>Sorties partenaires</a></li><?php } ?>
-  <?php if ($_SESSION['affsr'] == "oui"){ ?><li><a href="<?php echo  "sortiesr.php?numero=" . $_GET['numero']?>">Recyclage</a></li><?php } ?>
-  <?php if ($_SESSION['affsd'] == "oui"){ ?> <li><a href="<?php echo  "sorties.php?numero=" . $_GET['numero']?>">Don</a></li><?php } ?>
-  <?php if ($_SESSION['affsde'] == "oui"){ ?><li><a href="<?php echo  "sortiesd.php?numero=" . $_GET['numero']?>">Déchetterie</a></li><?php } ?>
+  <?php if ($_SESSION['affsr'] == "oui"){ ?><li><a href="<?php echo  "sortiesr.php?numero=" . $numero?>">Recyclage</a></li><?php } ?>
+  <?php if ($_SESSION['affsd'] == "oui"){ ?> <li><a href="<?php echo  "sorties.php?numero=" . $numero?>">Don</a></li><?php } ?>
+  <?php if ($_SESSION['affsde'] == "oui"){ ?><li><a href="<?php echo  "sortiesd.php?numero=" . $numero?>">Déchetterie</a></li><?php } ?>
 </ul>
     <br>   
 </div>
@@ -150,7 +146,7 @@ function tdechet_clear()
         	
           <form action="../moteur/sortiesc_post.php" method="post" id="formulaire">
         
-          <input type="hidden" name ="id_point_sortie" id="id_point_sortie" value="<?php echo $_GET['numero']?>">
+          <input type="hidden" name ="id_point_sortie" id="id_point_sortie" value="<?php echo $numero?>">
           <input type="hidden" id="id_user" name="id_user" value=<?php echo'"'.$_SESSION['id'].'"' ?>  >
     <input type="hidden" id="saisiec_user" name="saisiec_user" value=<?php echo'"'.$_SESSION['saisiec'].'"' ?>  >
     <input type="hidden" id="niveau_user" name="niveau_user" value=<?php echo'"'.$_SESSION['niveau'].'"' ?>  >

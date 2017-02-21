@@ -18,16 +18,125 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * $id est un entier.
+ */
+function point_collecte_id(PDO $bdd, $id) {
+  $sql = 'SELECT pesee_max, nom
+          FROM points_collecte
+          WHERE id = :id
+          LIMIT 1';
+  $stmt = $bdd->prepare($sql);
+  $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+  $stmt->execute();
+  return $stmt->fetch(PDO::FETCH_ASSOC);
+}
+
+function point_sorties_id(PDO $bdd, $id) {
+  $sql = 'SELECT pesee_max, nom FROM points_sortie WHERE id = :id LIMIT 1';
+  $stmt = $bdd->prepare($sql);
+  $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+  $stmt->execute();
+  return $stmt->fetch(PDO::FETCH_ASSOC);
+}
+
+function points_collectes(PDO $bdd) {
+  $stmt = $bdd->prepare('SELECT id, nom, adresse FROM points_collecte WHERE visible = "oui"');
+  $stmt->execute();
+  return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+function points_sorties(PDO $bdd) {
+  $stmt = $bdd->prepare('SELECT id, nom, adresse FROM points_sortie WHERE visible = "oui"');
+  $stmt->execute();
+  return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+function points_ventes(PDO $bdd) {
+  $stmt = $bdd->prepare('SELECT id, nom, adresse FROM points_vente WHERE visible = "oui"');
+  $stmt->execute();
+  return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+function types_contenants(PDO $bdd) {
+  $stmt = $bdd->prepare('SELECT masse, nom FROM type_contenants WHERE visible = "oui"');
+  $stmt->execute();
+  return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+function localites(PDO $bdd) {
+  $stmt = $bdd->prepare('SELECT id, nom FROM localites WHERE visible = "oui"');
+  $stmt->execute();
+  return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+function types_poubelles(PDO $bdd) {
+  $stmt = $bdd->prepare('SELECT id, nom, masse_bac, couleur FROM types_poubelles WHERE visible = "oui"');
+  $stmt->execute();
+  return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+function types_conteneurs(PDO $bdd) {
+  $sql = 'SELECT masse, nom FROM type_contenants WHERE visible = "oui"';
+  $stmt = $bdd->prepare($sql);
+  $stmt->execute();
+  $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+function types_dechets_evac(PDO $bdd) {
+  $stmt = $bdd->prepare('SELECT id, nom, couleur FROM type_dechets_evac WHERE visible = "oui"');
+  $stmt->execute();
+  return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+function types_dechets(PDO $bdd) {
+  $stmt = $bdd->prepare('SELECT id, nom, couleur FROM type_dechets WHERE visible = "oui"');
+  $stmt->execute();
+  return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+function types_sorties(PDO $bdd) {
+  $stmt = $bdd->prepare('SELECT id, nom FROM type_sortie WHERE visible = "oui"');
+  $stmt->execute();
+  return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+function types_collectes(PDO $bdd) {
+  $sql = 'SELECT id, nom FROM type_collecte WHERE visible = "oui"';
+  $stmt = $bdd->prepare($sql);
+  $stmt->execute();
+  return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+function filieres_sorties(PDO $bdd) {
+  $sql = 'SELECT filieres_sortie.id, filieres_sortie.nom, filieres_sortie.id_type_dechet_evac AS type_dechet
+          FROM filieres_sortie
+          WHERE filieres_sortie.visible = "oui"';
+  $stmt = $bdd->prepare($sql);
+  $stmt->execute();
+  $filieres_sorties = $stmt->fetchAll(PDO::FETCH_ASSOC);
+  return array_map(function($filiere) {
+    $filiere['accepte_type_dechet'] = explode('a', $filiere['type_dechet']);
+    return $filiere;
+  }, $filieres_sorties);
+}
+
 function nb_categories_dechets_evac(PDO $bdd) {
-  return (int) $bdd->query('SELECT MAX(id) AS nombrecat FROM type_dechets_evac LIMIT 1')['nombrecat'];
+  $stmt = $bdd->prepare('SELECT MAX(id) AS nombrecat FROM type_dechets_evac LIMIT 1');
+  $stmt->execute();
+  return (int) $stmt->fetch(PDO::FETCH_ASSOC)['nombrecat'];
 }
 
 function nb_categories_dechets_item(PDO $bdd) {
-  return (int) $bdd->query('SELECT MAX(id) AS nombrecat FROM type_dechets LIMIT 1')['nombrecat'];
+  $stmt = $bdd->prepare('SELECT MAX(id) AS nombrecat FROM type_dechets LIMIT 1');
+  $stmt->execute();
+  return (int) $stmt->fetch(PDO::FETCH_ASSOC)['nombrecat'];
 }
 
 function nb_categories_poubelles(PDO $bdd) {
-  return (int) $bdd->query('SELECT MAX(id) AS nombrecat FROM types_poubelles LIMIT 1')['nombrecat'];
+  $stmt = $bdd->prepare('SELECT MAX(id) AS nombrecat FROM types_poubelles LIMIT 1')['nombrecat'];
+  $stmt->execute();
+  return (int) $stmt->fetch(PDO::FETCH_ASSOC)['nombrecat'];
 }
 
 // Insere une collecte dans la base.
