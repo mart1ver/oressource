@@ -39,15 +39,11 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND ( strpos(
                       <i class="fa fa-calendar"></i>
                       <span></span> <b class="caret"></b>
                   </div>
-                  
+
               </div>
               <div class="col-md-4" >
-                  <label for="reportrange">Choisissez la période à inspecter:</label><br>
-                  <div id="reportrange" class="pull-left" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc">
-                      <i class="fa fa-calendar"></i>
-                      <span></span> <b class="caret"></b>
-                  </div>
-                  
+                  <label>Choisissez le type d'objet ou de dechet:</label><br>
+                  <?php echo($_GET['type']); ?>
               </div>
           </div>
       </div>    
@@ -302,10 +298,10 @@ ORDER BY time');
 // On recupère tout le contenu de la table affectations
   $reponse = $bdd->prepare(
           'SELECT SUM( quantite ) AS nombre, DATE( timestamp ) AS time
-              FROM vendus
-              WHERE  DATE(vendus.timestamp) BETWEEN :du AND :au AND  vendus.id_type_dechet = :type
-              GROUP BY DATE_FORMAT( time,  "%Y-%m-%d" ) 
-              ORDER BY time');
+            FROM vendus
+            WHERE  DATE(vendus.timestamp) BETWEEN :du AND :au AND  vendus.id_type_dechet = :type
+            GROUP BY DATE_FORMAT( time,  "%Y-%m-%d" ) 
+            ORDER BY time');
   $reponse->execute(array('du' => $time_debut, 'au' => $time_fin, 'type' => $_GET['type']));
 // On affiche chaque entree une à une
   while ($donnees = $reponse->fetch()) {
