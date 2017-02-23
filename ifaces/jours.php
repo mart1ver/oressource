@@ -44,6 +44,25 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND ( strpos(
               <div class="col-md-4" >
                   <label>Choisissez le type d'objet ou de dechet:</label><br>
                   <?php echo($_GET['type']); ?>
+                  <select name="select">
+
+                      <?php
+//on on liste les types d'objets
+                      $reponse = $bdd->prepare('SELECT nom, id FROM type_dechets WHERE id = :type');
+                      $reponse->execute(array('type' => $_GET['type']));
+                      // On affiche chaque entree une à une
+                      while ($donnees = $reponse->fetch()) {
+                        ?>
+                        <option value="<?php echo($donnees['id']); ?>" <?php
+                        if ($donnees['id'] === $_GET['type']) {
+                          echo ('selected');
+                        }
+                        ?> > <?php echo ($donnees['nom']); ?> </option>
+                                <?php
+                              }
+                              $reponse->closeCursor(); // Termine le traitement de la requête
+                              ?>
+                  </select>
               </div>
           </div>
       </div>    
@@ -168,7 +187,7 @@ ORDER BY time');
         echo "<h3>Évolution du C.A quotidien, " . $type . ".</h3> Moyenne journalière: " . $masse_moy_jour;
         ?> €.
         <div id="ca" style="height: 180px;"></div>
-      <?php } ?>
+  <?php } ?>
       <script>
         new Morris.Area({
             // ID of the element in which to draw the chart.
@@ -298,10 +317,10 @@ ORDER BY time');
 // On recupère tout le contenu de la table affectations
   $reponse = $bdd->prepare(
           'SELECT SUM( quantite ) AS nombre, DATE( timestamp ) AS time
-            FROM vendus
-            WHERE  DATE(vendus.timestamp) BETWEEN :du AND :au AND  vendus.id_type_dechet = :type
-            GROUP BY DATE_FORMAT( time,  "%Y-%m-%d" ) 
-            ORDER BY time');
+        FROM vendus
+        WHERE  DATE(vendus.timestamp) BETWEEN :du AND :au AND  vendus.id_type_dechet = :type
+        GROUP BY DATE_FORMAT( time,  "%Y-%m-%d" ) 
+        ORDER BY time');
   $reponse->execute(array('du' => $time_debut, 'au' => $time_fin, 'type' => $_GET['type']));
 // On affiche chaque entree une à une
   while ($donnees = $reponse->fetch()) {
