@@ -48,7 +48,7 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND ( strpos(
 
                       <?php
 //on on liste les types d'objets
-                      $reponse = $bdd->prepare('SELECT nom, id FROM type_dechets WHERE id = :type');
+                      $reponse = $bdd->prepare('SELECT nom, id FROM type_dechets');
                       $reponse->execute(array('type' => $_GET['type']));
                       // On affiche chaque entree une à une
                       while ($donnees = $reponse->fetch()) {
