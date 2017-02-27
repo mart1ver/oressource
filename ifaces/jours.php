@@ -218,7 +218,7 @@ ORDER BY time');
             ],
             xkey: 'y',
             ykeys: ['a'],
-            labels: ['Masse collectée']
+            labels: ['Masse collectée'],
             resize: true,
                      
            
