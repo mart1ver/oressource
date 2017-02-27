@@ -31,8 +31,7 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND ( strpos(
   </head>
   <div class="container">
       <div class="row">
-          <div class="col-md-11 " >
-              <br>
+          
               <div class="col-md-4 col-md-offset-7" >
                   <label for="reportrange">Choisissez la période à inspecter:</label><br>
                   <div id="reportrange" class="pull-left" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc">
@@ -69,7 +68,7 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND ( strpos(
                               ?>
                   </select>
               </div>
-          </div>
+          
       </div>    
   </div>
   <hr/>
