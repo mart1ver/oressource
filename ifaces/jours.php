@@ -41,10 +41,9 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND ( strpos(
                   </div>
 
               </div>
-              <div class="col-md-4" >
+              <div class="col-md-4 col-md-offset-7" >
                   <label>Choisissez le type d'objet ou de dechet:</label><br>
-                  <?php echo($_GET['type']); ?>
-                  <select name="select">
+                  <select name="select" onchange="location = this.value;">
 
                       <?php
 //on on liste les types d'objets
@@ -53,7 +52,13 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND ( strpos(
                       // On affiche chaque entree une à une
                       while ($donnees = $reponse->fetch()) {
                         ?>
-                        <option value="<?php echo($donnees['id']); ?>" <?php
+                        <option value=
+
+                        <?php 
+                         echo('"jours.php?date1='.$_GET['date1'].'&date2='.$_GET['date2'].'&type='.$donnees['id'].'"'); 
+
+
+                         
                         if ($donnees['id'] === $_GET['type']) {
                           echo ('selected');
                         }
