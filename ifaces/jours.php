@@ -221,7 +221,7 @@ ORDER BY time');
             labels: ['Masse collectée'],
             postUnits: "Kgs.",
             resize: true,
-            lineColors: ['<?php echo $couleur ?>'],
+            barColors: ['<?php echo $couleur ?>'],
                     });
       </script>
       <script>
