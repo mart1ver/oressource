@@ -221,10 +221,10 @@ ORDER BY time');
             labels: ['Masse collectée'],
             postUnits: "Kgs.",
             resize: true,
-              xLabelFormat: function (d) {
+            dateFormat: function (ts) {
+                var d = new Date(ts);
                 return d.getDate() + '/' + (d.getMonth() + 1) + '/' + d.getFullYear();
             },
-            
            
  
         });
