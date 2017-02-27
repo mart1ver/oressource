@@ -194,7 +194,7 @@ ORDER BY time');
         <div id="ca" style="height: 180px;"></div>
   <?php } ?>
       <script>
-        new Morris.Area({
+        new Morris.Bar({
             // ID of the element in which to draw the chart.
             element: 'collectes',
             // Chart data records -- each entry in this array corresponds to a point on
