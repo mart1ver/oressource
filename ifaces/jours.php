@@ -221,13 +221,8 @@ ORDER BY time');
             labels: ['Masse collectée'],
             postUnits: "Kgs.",
             resize: true,
-            dateFormat: function (ts) {
-                var d = new Date(ts);
-                return d.getDate() + '/' + (d.getMonth() + 1) + '/' + d.getFullYear();
-            },
-           
- 
-        });
+            lineColors: ['<?php echo $couleur ?>'],
+                    });
       </script>
       <script>
         new Morris.Area({
