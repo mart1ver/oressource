@@ -219,8 +219,15 @@ ORDER BY time');
             xkey: 'y',
             ykeys: ['a'],
             labels: ['Masse collectée'],
+
+          
+            dateFormat: function (ts) {
+                var d = new Date(ts);
+                return d.getDate() + '/' + (d.getMonth() + 1) + '/' + d.getFullYear();
+            },
             resize: true,
-                     
+            
+            
            
  
         });
