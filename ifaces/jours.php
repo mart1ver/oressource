@@ -219,8 +219,10 @@ ORDER BY time');
             xkey: 'y',
             ykeys: ['a'],
             labels: ['Masse collectée'],
-
-          
+            
+            xLabelFormat: function (d) {
+                return d.getDate() + '/' + (d.getMonth() + 1) + '/' + d.getFullYear();
+            },
             dateFormat: function (ts) {
                 var d = new Date(ts);
                 return d.getDate() + '/' + (d.getMonth() + 1) + '/' + d.getFullYear();
