@@ -25,7 +25,7 @@ function validate_json_login($unsafe_json) {
 
 function validate_json_sorties($unsafe_json) {
   $filters = [
-      'id_type_action' => FILTER_VALIDATE_INT,
+      'id_type_action' => FILTER_REQUIRE_SCALAR, // Peux etre NULL
       'antidate' => FILTER_DEFAULT,
       'localite' => FILTER_REQUIRE_SCALAR, // Peux etre NULL.
       'id_point' => FILTER_VALIDATE_INT,

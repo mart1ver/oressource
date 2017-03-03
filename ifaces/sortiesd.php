@@ -40,362 +40,169 @@ if (isset($_SESSION['id'])
   $point_sortie = point_sorties_id($bdd, $numero);
   $pesee_max = (float) $point_sortie['pesee_max'];
   ?>
-<script type="text/javascript">
-function printdiv(divID)
-    {
-      
-       if (parseInt(document.getElementById('najout').value) >= 1) 
-          { 
-            var mtot =<?php 
-                      // On obtient tous les visibles de la table type_dechets de manière à cacluler mtot...
-                      $reponse = $bdd->query('SELECT * FROM type_dechets_evac WHERE visible = "oui"' );
-                      // On affiche chaque entrée une à une
-                      while ($donnees = $reponse->fetch())
-                      {
-                        ?> parseFloat(document.getElementById('<?php echo$donnees['id']?>').value) + <?php
-                      }
-                      $reponse->closeCursor(); // Termine le traitement de la requête
-                      ?>0; 
-      var headstr = "<html><head><title></title></head><body><small><?php echo $_SESSION['structure'] ?><br><?php echo $_SESSION['adresse'] ?><br><label>Bon de sortie déchetterie</label><br>";
-          var footstr = "<br>Masse totale : "+mtot+" Kgs.</body></small>";
-      var newstr = document.all.item(divID).innerHTML;
-      var oldstr = document.body.innerHTML;
-      
-            
-          document.getElementById("formulaire").submit();
-      document.body.innerHTML = headstr+newstr+footstr;
-      window.print();
-      document.body.innerHTML = oldstr;
-      return false;
-      
-          }
-    }
-    function encaisse() {
-  if (parseInt(document.getElementById('najout').value) >= 1) 
-          { 
-         
-          document.getElementById("formulaire").submit();
-          }
-        }
-function submanut(x)
-          {
-            if ((document.getElementById("number").value - x) > 0 )
-            {
-            var text_box = document.getElementById("number");
-            text_box.value = text_box.value - x;
-          }
-          }
-function number_write(x)
-{
-  var text_box = document.getElementById("number");
-  text_box.value = text_box.value + x;
-}
-function number_clear()
-{
-  document.getElementById("number").value = "";
-}
-function recocom()
-{
-  document.getElementById("commentaire").value = document.getElementById("commentaireini").value;
-}
-function tdechet_write(y,z)
- {
-          if (document.getElementById("number").value > 0 && document.getElementById("number").value < <?php echo $pesee_max;?>) 
-          {
-            document.getElementById("massetot").textContent = parseFloat(document.getElementById("massetot").textContent) + parseFloat(document.getElementById("number").value) ;
-            document.getElementById("najout").value = parseInt(document.getElementById("najout").value)+1;
-             document.getElementById(y).textContent = parseFloat(document.getElementById(y).textContent) + parseFloat(document.getElementById("number").value)  ;
-              document.getElementById(z).value = parseFloat(document.getElementById(z).value) + parseFloat(document.getElementById("number").value)  ;
-             document.getElementById("number").value = "";  
-          }
-          }
-function tdechet_clear()
-{
-<?php 
-            // On recupère tout le contenu de la table point de collecte
-            $reponse = $bdd->query('SELECT * FROM type_dechets_evac WHERE visible = "oui"');
- 
-           // On affiche chaque entree une à une
-           while ($donnees = $reponse->fetch())
-           {
-           ?>
-    document.getElementById('<?php echo$donnees['nom']?>').textContent = "0"  ;
-    document.getElementById(<?php echo$donnees['id']?>).value = "0" ; 
-<?php }
-              $reponse->closeCursor(); // Termine le traitement de la requête
-                ?>  
-}
-</script>
-<div class="panel-body">
-  <fieldset>
-    <legend><?php echo $point_sortie['nom']; ?></legend>
-  </fieldset>
-<div class="row">
-    
-        <div class="col-md-7 col-md-offset-1" >
 
- <ul class="nav nav-tabs">
-   <?php if ($_SESSION['affsp'] == "oui"){ ?><li><a href="<?php echo  "sortiesp.php?numero=" . $numero?>">Poubelles</a></li><?php } ?>
-  <?php if ($_SESSION['affss'] == "oui"){ ?><li><a href="<?php echo  "sortiesc.php?numero=" . $numero?>">Sorties partenaires</a></li><?php } ?>
-  <?php if ($_SESSION['affsr'] == "oui"){ ?><li><a href="<?php echo  "sortiesr.php?numero=" . $numero?>">Recyclage</a></li><?php } ?>
-  <?php if ($_SESSION['affsd'] == "oui"){ ?><li><a href="<?php echo  "sorties.php?numero=" . $numero?>">Don</a></li><?php } ?>
- <?php if ($_SESSION['affsde'] == "oui"){ ?> <li class="active"><a>Déchetterie</a></li><?php } ?>
-</ul>
-    <br>   
-</div>
-</div>          
-<div class="row">
-    
-        <div class="col-md-3 col-md-offset-1" >
-          
-          <form action="../moteur/sortiesd_post.php" method="post" id="formulaire">
-        
-          <input type="hidden" name ="id_point_sortie" id="id_point_sortie" value="<?php echo $numero?>">
-          <input type="hidden" id="id_user" name="id_user" value=<?php echo'"'.$_SESSION['id'].'"' ?>  >
-    <input type="hidden" id="saisiec_user" name="saisiec_user" value=<?php echo'"'.$_SESSION['saisiec'].'"' ?>  >
-    <input type="hidden" id="niveau_user" name="niveau_user" value=<?php echo'"'.$_SESSION['niveau'].'"' ?>  >
-          <input type="hidden" name="commentaire" id="commentaire" >
-          <input type="hidden" value="0" name ="najout" id="najout">
-        </div>  
-        <div class="col-md-4" >
-          
-         
-         
+  <div class="container">
+
+    <nav class="navbar">
+      <div class="header-header">
+        <h1><?= $point_sortie['nom'] ?></h1>
+      </div>
+      <ul class="nav nav-tabs">
+        <?php if ($_SESSION['affsp'] === "oui") { ?><li><a href="sortiesp.php?numero=<?= $numero ?>">Poubelles</a></li><?php } ?>
+        <?php if ($_SESSION['affss'] === "oui") { ?><li><a href="sortiesc.php?numero=<?= $numero ?>">Sorties partenaires</a></li><?php } ?>
+        <?php if ($_SESSION['affsr'] === "oui") { ?><li><a href="sortiesr.php?numero=<?= $numero ?>">Recyclage</a></li><?php } ?>
+        <?php if ($_SESSION['affsd'] === "oui") { ?><li><a href="sorties.php?numero=<?= $numero ?>">Don</a></li><?php } ?>
+        <li class="active"><a>Déchetterie</a></li>
+      </ul>
+    </nav>
+
+    <div class="col-md-4">
+      <div id="ticket" class="panel panel-info" >
+        <div class="panel-heading">
+          <h3 class="panel-title">
+            <label id="massetot">Masse totale: 0 Kg.</label>
+          </h3>
         </div>
-        
+        <div class="panel-body">
+          <form id="formulaire">
+            <?php if (is_allowed_edit_date()) { ?>
+              <label for="antidate">Date de la sortie: </label>
+              <input type="date" id="antidate" name="antidate" style="width:130px; height:20px;" value="<?= $date->format('Y-m-d') ?>">
+            <?php } ?>
+            <ul class="list-group" id="transaction">  <!--start Ticket Caisse -->
+              <!-- Remplis via JavaScript voir script de la page -->
+            </ul> <!--end TicketCaisse -->
+          </form>
+        </div>
+        <div class="panel-footer">
+          <input type="text" form="formulaire" class="form-control" name="commentaire" id="commentaire" placeholder="Commentaire">
+        </div>
       </div>
-      <div class="row">
-        <br>
-        <div class="col-md-3 col-md-offset-1" >
-        
+    </div> <!-- .col-md-4 -->
 
+    <div class="col-md-4" style="width: 220px;">
+      <div class="panel panel-info">
+        <div class="panel-body">
+          <div class="row">
+            <div class="input-group">
+              <input type="text" class="form-control" placeholder="Masse" id="number" name="num" style="margin-left:8px;">
+              <div class="input-group-btn">
+                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" style="margin-right:8px;">
+                  <span class="glyphicon glyphicon-minus"></span>
+                  <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                  <!-- need style sur les boutons mais OK -->
+                  <?php foreach (types_contenants($bdd) as $conteneur) { ?>
+                    <li>
+                      <a onclick="submanut(<?= (float) $conteneur['masse'] ;?>);"><?php echo $conteneur['nom']; ?></a>
+                    </li>
+                  <?php } ?>
+                </ul>
+              </div><!-- /btn-group -->
+            </div><!-- /input-group -->
+          </div>
 
-<div class="panel panel-info">
+          <div class="row">
+            <button class="btn btn-default btn-lg" onclick="number_write('1');" data-value="1" style="margin-left:8px; margin-top:8px;">1</button>
+            <button class="btn btn-default btn-lg" onclick="number_write('2');" data-value="2" style="margin-left:8px; margin-top:8px;">2</button>
+            <button class="btn btn-default btn-lg" onclick="number_write('3');" data-value="3" style="margin-left:8px; margin-top:8px;">3</button>
+          </div>
+          <div class="row">
+            <button class="btn btn-default btn-lg" onclick="number_write('4');" data-value="4" style="margin-left:8px; margin-top:8px;">4</button>
+            <button class="btn btn-default btn-lg" onclick="number_write('5');" data-value="5" style="margin-left:8px; margin-top:8px;">5</button>
+            <button class="btn btn-default btn-lg" onclick="number_write('6');" data-value="6" style="margin-left:8px; margin-top:8px;">6</button>
+          </div>
+          <div class="row">
+            <button class="btn btn-default btn-lg" onclick="number_write('7');" data-value="7" style="margin-left:8px; margin-top:8px;">7</button>
+            <button class="btn btn-default btn-lg" onclick="number_write('8');" data-value="8" style="margin-left:8px; margin-top:8px;">8</button>
+            <button class="btn btn-default btn-lg" onclick="number_write('9');" data-value="9" style="margin-left:8px; margin-top:8px;">9</button>
+          </div>
+          <div class="row">
+            <button class="btn btn-default btn-lg" onclick="number_clear();" data-value="C" style="margin-left:8px; margin-top:8px;">C</button>
+            <button class="btn btn-default btn-lg" onclick="number_write('0');" data-value="0" style="margin-left:8px; margin-top:8px;">0</button>
+            <button class="btn btn-default btn-lg" onclick="number_write('.');" data-value="," style="margin-left:8px; margin-top:8px;">,</button>
+          </div>
+        </div>
+      </div>
+    </div> <!-- .col-md-4 -->
+
+    <div class="col-md-4">
+      <div class="panel panel-info">
         <div class="panel-heading">
-    <h3 class="panel-title"><label>Bon de sortie déchetterie: <span id="massetot" >0</span> Kgs.</label></h3>
-  </div>
-  <?php if ($_SESSION['saisiec'] == 'oui' AND (strpos($_SESSION['niveau'], 'e') !== false) ){ ?>
-  <br>
-      <p align="center">   Date de la sortie:  <input type="date" id="antidate" name="antidate" style="width: 130px;height:20px;" value=<?php echo date("Y-m-d") ?>>
-<br>
-</p>
-<?php }?>
-  <div class="panel-body" id="divID"> 
-
-
-
-
-
-
-<?php 
-            // On recupère tout le contenu de la table point de collecte
-            $reponse = $bdd->query('SELECT * FROM type_dechets_evac WHERE visible = "oui"');
- 
-           // On affiche chaque entree une à une
-           while ($donnees = $reponse->fetch())
-           {
-           ?>
-    
-            
-
-
-
-
-
-<ul class="list-group">
-  <li class="list-group-item">
-    <input type="hidden" value="0" name ="<?php echo$donnees['id']?>" id="<?php echo$donnees['id']?>">
-    <span class="badge" id="<?php echo$donnees['nom']?>" style="background-color:<?php echo$donnees['couleur']?>">0</span>
-    <?php echo$donnees['nom']?>
-
-  </li>
-
-
-
-
-
-
-   
-              <?php }
-              $reponse->closeCursor(); // Termine le traitement de la requête
-                ?>
-
-</ul>
- </form>
- 
-           
-        <br>
-</div>
-</div>
-
-
-        </div> 
-         <div class="col-md-2" >
-           
-
-<br><br>
-
-   <div class="col-md-2" style="width: 220px;" >
-
-
-  <div class="panel panel-info">
-        
-  <div class="panel-body"> 
-   
-      <div class="row">
-      
-
-   <div class="input-group">
-      <input type="text" class="form-control" placeholder="Masse" id="number" name="num" style=" margin-left:8px; " >
-      <div class="input-group-btn">
-        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" style=" margin-right:8px; " > <span class="glyphicon glyphicon-minus"></span> <span class="caret"</span></button>
-        
-
-
-        <ul class="dropdown-menu dropdown-menu-right" role="menu">
-        
-  <?php 
-            // On affiche une liste déroulante des localités visibles
-            $reponse = $bdd->query('SELECT * FROM type_contenants WHERE visible = "oui"');
-            // On affiche chaque entrée une à une
-            while ($donnees = $reponse->fetch())
-            {
-            ?>
-      <li><a href="#"  onClick="submanut('<?php echo$donnees['masse']?>');"><?php echo$donnees['nom']?></a></li>
-     
-           
-            <?php }
-            $reponse->closeCursor(); // Termine le traitement de la requête
-            ?>
-
-
-          
-                
-
-
-
-
-                  </ul>
-      </div><!-- /btn-group -->
-    </div><!-- /input-group -->
-
-
-
-      </div>
-      <br>
-    <div class="row">
-      <button class="btn btn-default btn-lg" onclick="number_write('1');" data-value="1" style="margin-left:8px; margin-top:8px;">1</button>
-      <button class="btn btn-default btn-lg" onclick="number_write('2');" data-value="2" style="margin-left:8px; margin-top:8px;">2</button>
-      <button class="btn btn-default btn-lg" onclick="number_write('3');" data-value="3" style="margin-left:8px; margin-top:8px;">3</button>
-    </div>
-    <div class="row">
-      <button class="btn btn-default btn-lg" onclick="number_write('4');" data-value="4" style="margin-left:8px; margin-top:8px;">4</button>
-      <button class="btn btn-default btn-lg" onclick="number_write('5');" data-value="5" style="margin-left:8px; margin-top:8px;">5</button>
-      <button class="btn btn-default btn-lg" onclick="number_write('6');" data-value="6" style="margin-left:8px; margin-top:8px;">6</button>
-    </div>
-    <div class="row">
-      <button class="btn btn-default btn-lg" onclick="number_write('7');" data-value="7" style="margin-left:8px; margin-top:8px;">7</button>
-      <button class="btn btn-default btn-lg" onclick="number_write('8');" data-value="8" style="margin-left:8px; margin-top:8px;">8</button>
-      <button class="btn btn-default btn-lg" onclick="number_write('9');" data-value="9" style="margin-left:8px; margin-top:8px;">9</button>
-    </div>
-    <div class="row">
-      <button class="btn btn-default btn-lg" onclick="number_clear();" data-value="C" style="margin-left:8px; margin-top:8px;">C</button>
-      <button class="btn btn-default btn-lg" onclick="number_write('0');" data-value="0" style="margin-left:8px; margin-top:8px;">0</button>
-      <button class="btn btn-default btn-lg" onclick="number_write('.');" data-value="," style="margin-left:8px; margin-top:8px;">,</button>
-    </div>
-
- 
-
-</div>
-</div>
-
-
-
-  </div>
- 
-           </div> 
-         
-
-
-<div class="col-md-3 col-md-offset-1" >
-          
-
-<div class="row" >
-<div class="panel panel-info">
-        <div class="panel-heading">
-    <h3 class="panel-title"><label>Matériaux et déchets:</label></h3>
-  </div>
-  <div class="panel-body"> 
-      
-
-
-            <?php 
-            // On recupère tout le contenu de la table point de collecte
-            $reponse = $bdd->query('SELECT * FROM type_dechets_evac WHERE visible = "oui"');
- 
-           // On affiche chaque entree une à une
-           while ($donnees = $reponse->fetch())
-           {
-           ?>
-      <div class="btn-group">
-      <button class="btn btn-default" style="margin-left:8px; margin-top:16px;" onclick="tdechet_write('<?php echo$donnees['nom']?>','<?php echo$donnees['id']?>');" ><span class="badge" id="cool" style="background-color:<?php echo$donnees['couleur']?>"><?php echo$donnees['nom']?></span>
- </button>
-      
-    </div>
-   
-                <?php }
-                $reponse->closeCursor(); // Termine le traitement de la requête
-                ?>
-    </div> 
-
-
-
-    </div>
-    <div class="panel panel-info">
-       
-  <div class="panel-body"> 
-
- <input type="text" class="form-control" name="commentaireini" id="commentaireini" placeholder="Commentaire" onchange="recocom()">
-
-</div>
-</div>
-
-
-<div class="row">
-  <br>&nbsp;&nbsp;&nbsp;&nbsp;
-
-
-
-
-
-
-<button class="btn btn-primary btn-lg"  onclick="encaisse();">C'est pesé!</button></form>
-<button class="btn btn-primary btn-lg"  align="center"  onclick="printdiv('divID');" value=" Print " ><span class="glyphicon glyphicon-print"></span></button>
-        <button class="btn btn-warning btn-lg" onclick="tdechet_clear();"><span class="glyphicon glyphicon-refresh"></button>
-      </div>
-
-
-
-
-
-  </div>
-
-
+          <h3 class="panel-title">
+            <label>Materiaux et déchets:</label>
+          </h3>
         </div>
 
-
+        <div class="panel-body">
+          <div id="list_evac" class="btn-group">
+            <!-- Rempli via JS -->
+          </div>
+        </div>
       </div>
-      <br><br><br>
-      
-       
+
+      <div class="btn-group" role="group">
+        <button id="encaissement" class="btn btn-success btn-lg">C'est pesé!</button>
+        <button id="impression" class="btn btn-primary btn-lg" value="Print"><span class="glyphicon glyphicon-print"></span></button>
+        <button id="reset" class="btn btn-warning btn-lg"><span class="glyphicon glyphicon-refresh"></button>
       </div>
-<br>
+    </div> <!-- .col-md-4 -->
+
+  </div> <!-- .container -->
+
+  <script type="text/javascript">
+    // Variables d'environnement de Oressource.
+    'use scrict';
+    window.OressourceEnv = {
+      structure: <?= json_encode($_SESSION['structure']) ?>,
+      adresse: <?php echo(json_encode($_SESSION['adresse'])); ?>,
+      id_user: <?php echo(json_encode($_SESSION['id'], JSON_NUMERIC_CHECK)); ?>,
+      saisie_collecte: <?php echo json_encode(is_allowed_saisie_collecte()); ?>,
+      user_droit: <?php echo json_encode($_SESSION['niveau']); ?>,
+      id_point: <?php echo json_encode($numero, JSON_NUMERIC_CHECK); ?>,
+      masse_max: <?php echo(json_encode($point_sortie['pesee_max'], JSON_NUMERIC_CHECK)); ?>,
+      types_evac: <?php echo(json_encode(types_dechets_evac($bdd), JSON_NUMERIC_CHECK)); ?>
+    };
+  </script>
+  <script src="../js/ticket.js" type="text/javascript"></script>
+  <script src="../js/numpad.js" type="text/javascript"></script>
+  <script type="text/javascript">
+    'use strict';
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const numpad = new NumPad(document.getElementById('number'));
+
+      // Hack en attendant de trouver une solution pour gerer differament les dechets
+      // et les objets qui ont les memes id...
+      // On retourne une closure avec connection_UI_ticket du coup...
 
 
-      <?php include "pied.php";  
-} 
-else
-{ 
-        header('Location:../moteur/destroy.php');
-      }
-?>
+      const typesEvacs = window.OressourceEnv.types_evac;
+      const ticketEvac = new Ticket();
+      const pushEvac = connection_UI_ticket(numpad, ticketEvac, typesEvacs);
+
+      const div_list_evac = document.getElementById('list_evac');
+      typesEvacs.forEach((item) => {
+        const button = html_saisie_item(item, pushEvac);
+        div_list_evac.appendChild(button);
+      });
+
+      const metadata = {classe: 'sortiesd'};
+      const encaisse = make_encaissement('../api/sorties.php', {
+        evacs: ticketEvac
+      }, metadata);
+
+      document.getElementById('encaissement').addEventListener('click', encaisse, false);
+      document.getElementById('impression').addEventListener('click', impression_ticket, false);
+      document.getElementById('reset').addEventListener('click', tickets_clear, false);
+
+      window.tickets = [ticketEvac];
+    }, false);
+  </script>
+
+  <?php
+  include "pied.php";
+} else {
+  header('Location:../moteur/destroy.php');
+}

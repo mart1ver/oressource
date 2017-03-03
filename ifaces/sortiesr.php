@@ -45,136 +45,133 @@ if (isset($_SESSION['id'])
   $date = new Datetime('now');
   ?>
 
-  <div class="panel-body">
-    <fieldset>
-      <legend><?php echo ($point_sortie['nom']); ?></legend>
-    </fieldset>
+  <div class="container">
 
-    <div class="row">
-      <div class="col-md-7 col-md-offset-1" >
-        <ul class="nav nav-tabs">
-          <?php if ($_SESSION['affsp'] === "oui") { ?><li><a href="sortiesp.php?numero=<?php echo $numero; ?>">Poubelles</a></li><?php } ?>
-          <?php if ($_SESSION['affss'] === "oui") { ?><li><a href="sortiesc.php?numero=<?php echo $numero; ?>">Sorties partenaires</a></li><?php } ?>
-          <?php if ($_SESSION['affsr'] === "oui") { ?><li class="active"><a>Recyclage</a></li><?php } ?>
-          <?php if ($_SESSION['affsd'] === "oui") { ?><li><a href="sorties.php?numero=<?php echo $numero; ?>">Don</a></li><?php } ?>
-          <?php if ($_SESSION['affsde'] === "oui") { ?><li><a href="sortiesd.php?numero=<?php echo $numero; ?>">Déchetterie</a></li><?php } ?>
-        </ul>
+    <nav class="navbar">
+      <div class="header-header">
+        <h1><?= $point_sortie['nom'] ?></h1>
+      </div>
+      <ul class="nav nav-tabs">
+        <?php if ($_SESSION['affsp'] === "oui") { ?><li><a href="sortiesp.php?numero=<?= $numero; ?>">Poubelles</a></li><?php } ?>
+        <?php if ($_SESSION['affss'] === "oui") { ?><li><a href="sortiesc.php?numero=<?= $numero; ?>">Sorties partenaires</a></li><?php } ?>
+        <li class="active"><a href="#">Recyclage</a></li>
+        <?php if ($_SESSION['affsd'] === "oui") { ?><li><a href="sorties.php?numero=<?= $numero; ?>">Don</a></li><?php } ?>
+        <?php if ($_SESSION['affsde'] === "oui") { ?><li><a href="sortiesd.php?numero=<?= $numero; ?>">Déchetterie</a></li><?php } ?>
+      </ul>
+    </nav>
+
+
+    <div class="col-md-4">
+      <div id="ticket" class="panel panel-info" >
+        <div class="panel-heading">
+          <h3 class="panel-title">
+            <label id="massetot">Masse totale: 0 Kg.</label>
+          </h3>
+        </div>
+        <div class="panel-body">
+          <form id="formulaire"> <!-- ONSUBMIT="EnableControl(true)" -->
+            <?php if (is_allowed_edit_date()) { ?>
+              <label for="antidate">Date de la sortie: </label>
+              <input type="date" id="antidate" name="antidate" style="width:130px; height:20px;" value="<?= $date->format('Y-m-d') ?>">
+            <?php } ?>
+            <ul class="list-group" id="transaction">  <!--start Ticket Caisse -->
+              <!-- Remplis via JavaScript voir script de la page -->
+            </ul> <!--end TicketCaisse -->
+          </form>
+        </div>
+        <div class="panel-footer">
+          <input type="text" form="formulaire" class="form-control" name="commentaire" id="commentaire" placeholder="Commentaire">
+        </div>
       </div>
     </div>
 
-      <div class="panel-body">
-        <div class="row">
-          <div class="col-md-3 col-md-offset-2">
-            <div class="panel panel-info" >
-              <div class="panel-heading">
-                <h3 class="panel-title">
-                  <label id="massetot">Bon de sortie hors-boutique: 0 Kg.</label>
-                </h3>
-              </div>
-              <div class="panel-body">
-                <form id="formulaire"> <!-- ONSUBMIT="EnableControl(true)" -->
-              <?php if (is_allowed_edit_date()) { ?>
-                <label for="antidate">Date de la sortie: </label>
-                <input type="date" id="antidate" name="antidate" style="width:130px; height:20px;" value="<?php echo($date->format('Y-m-d')); ?>">
-              <?php } ?>
-              <ul class="list-group" id="transaction">  <!--start Ticket Caisse -->
-                <!-- Remplis via JavaScript voir script de la page -->
-              </ul> <!--end TicketCaisse -->
-            </form>
+    <div class="col-md-4">
+      <div class="panel panel-info">
+        <div class="panel-heading">
+          <h3 class="panel-title">
+            <label for="sel_filiere">Nom de l'entreprise de recyclage:</label>
+          </h3>
+        </div>
+        <div class="panel-body">
+          <select id="id_type_action" form="formulaire" name="id_type_action" class="form-control" required>
+            <option value="0" selected disabled>Clickez pour selectioner un recycleur</option>
+            <?php foreach ($filieres_sorties as $filiere_sortie) { ?>
+              <option value="<?= $filiere_sortie['id']; ?>"><?= $filiere_sortie['nom']; ?></option>
+            <?php } ?>
+          </select>
+        </div>
+      </div>
+
+     <div class="col-md-8 col-md-offset-2" style="width: 220px;">
+        <div class="panel panel-info">
+          <div class="panel-body">
+            <div class="row">
+              <div class="input-group">
+                <input type="text" class="form-control" placeholder="Masse" id="number" name="num" style="margin-left:8px;">
+                <div class="input-group-btn">
+                  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" style="margin-right:8px;">
+                    <span class="glyphicon glyphicon-minus"></span>
+                    <span class="caret"></span>
+                  </button>
+                  <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                    <!-- need style sur les boutons mais OK -->
+                    <?php foreach (types_contenants($bdd) as $conteneur) { ?>
+                      <li>
+                        <a onclick="submanut(<?= (float) $conteneur['masse']; ?>);"><?php echo $conteneur['nom']; ?></a>
+                      </li>
+                    <?php } ?>
+                  </ul>
+                </div><!-- /btn-group -->
+              </div><!-- /input-group -->
+            </div>
+
+            <div class="row">
+              <button class="btn btn-default btn-lg" onclick="number_write('1');" data-value="1" style="margin-left:8px; margin-top:8px;">1</button>
+              <button class="btn btn-default btn-lg" onclick="number_write('2');" data-value="2" style="margin-left:8px; margin-top:8px;">2</button>
+              <button class="btn btn-default btn-lg" onclick="number_write('3');" data-value="3" style="margin-left:8px; margin-top:8px;">3</button>
+            </div>
+            <div class="row">
+              <button class="btn btn-default btn-lg" onclick="number_write('4');" data-value="4" style="margin-left:8px; margin-top:8px;">4</button>
+              <button class="btn btn-default btn-lg" onclick="number_write('5');" data-value="5" style="margin-left:8px; margin-top:8px;">5</button>
+              <button class="btn btn-default btn-lg" onclick="number_write('6');" data-value="6" style="margin-left:8px; margin-top:8px;">6</button>
+            </div>
+            <div class="row">
+              <button class="btn btn-default btn-lg" onclick="number_write('7');" data-value="7" style="margin-left:8px; margin-top:8px;">7</button>
+              <button class="btn btn-default btn-lg" onclick="number_write('8');" data-value="8" style="margin-left:8px; margin-top:8px;">8</button>
+              <button class="btn btn-default btn-lg" onclick="number_write('9');" data-value="9" style="margin-left:8px; margin-top:8px;">9</button>
+            </div>
+            <div class="row">
+              <button class="btn btn-default btn-lg" onclick="number_clear();" data-value="C" style="margin-left:8px; margin-top:8px;">C</button>
+              <button class="btn btn-default btn-lg" onclick="number_write('0');" data-value="0" style="margin-left:8px; margin-top:8px;">0</button>
+              <button class="btn btn-default btn-lg" onclick="number_write('.');" data-value="," style="margin-left:8px; margin-top:8px;">,</button>
+            </div>
+          </div>
+        </div>
+      </div> <!-- .col-md-4 -->
+    </div>
+
+    <div class="col-md-4" >
+      <div class="panel panel-info">
+        <div class="panel-heading">
+          <h3 class="panel-title">
+            <label>Materiaux et déchets:</label>
+          </h3>
+        </div>
+        <div class="panel-body">
+          <div id="list_evac" class="btn-group">
+            <!-- Rempli via JS -->
           </div>
         </div>
       </div>
 
-          <div class="col-md-3">
-            <div class="panel panel-info">
-              <div class="panel-heading">
-                <h3 class="panel-title">
-                  <label for="sel_filiere">Nom de l'entreprise de recyclage:</label>
-                </h3>
-              </div>
-              <div class="panel-body">
-                <select id="id_type_action" form="formulaire" name="id_type_action" class="form-control" required>
-                  <option value="0" selected disabled>Clickez pour selectioner un recycleur</option>
-                  <?php foreach ($filieres_sorties as $filiere_sortie) { ?>
-                    <option value="<?php echo $filiere_sortie['id']; ?>"><?php echo $filiere_sortie['nom']; ?></option>
-                  <?php } ?>
-                </select>
-                <input type="text" class="form-control" name="commentaireini" id="commentaireini" placeholder="Commentaire">
-              </div>
-            </div>
+      <div class="btn-group" role="group">
+        <button id="encaissement" class="btn btn-success btn-lg">C'est pesé!</button>
+        <button id="impression" class="btn btn-primary btn-lg" value="Print"><span class="glyphicon glyphicon-print"></span></button>
+        <button id="reset" class="btn btn-warning btn-lg"><span class="glyphicon glyphicon-refresh"></button>
+      </div>
 
-            <div class="col-md-3" style="width: 220px;" >
-              <div class="panel panel-info">
-                <div class="panel-body">
-                  <div class="row">
-                    <div class="input-group">
-                      <input type="text" class="form-control" placeholder="Masse" id="number" name="num" style="margin-left:8px;">
-                      <div class="input-group-btn">
-                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" style="margin-right:8px;">
-                          <span class="glyphicon glyphicon-minus"></span>
-                          <span class="caret"></span>
-                        </button>
-                        <ul class="dropdown-menu dropdown-menu-right" role="menu">
-                          <?php foreach (types_contenants($bdd) as $conteneur) { ?>
-                            <li>
-                              <a href="#" onClick="submanut('<?php echo $conteneur['masse']; ?>');"><?php echo $conteneur['nom']; ?></a>
-                            </li>
-                          <?php } ?>
-                        </ul>
-                      </div><!-- /btn-group -->
-                    </div><!-- /input-group -->
-                  </div>
-                  <div class="row">
-                    <button class="btn btn-default btn-lg" onclick="number_write('1');" data-value="1" style="margin-left:8px; margin-top:8px;">1</button>
-                    <button class="btn btn-default btn-lg" onclick="number_write('2');" data-value="2" style="margin-left:8px; margin-top:8px;">2</button>
-                    <button class="btn btn-default btn-lg" onclick="number_write('3');" data-value="3" style="margin-left:8px; margin-top:8px;">3</button>
-                  </div>
-                  <div class="row">
-                    <button class="btn btn-default btn-lg" onclick="number_write('4');" data-value="4" style="margin-left:8px; margin-top:8px;">4</button>
-                    <button class="btn btn-default btn-lg" onclick="number_write('5');" data-value="5" style="margin-left:8px; margin-top:8px;">5</button>
-                    <button class="btn btn-default btn-lg" onclick="number_write('6');" data-value="6" style="margin-left:8px; margin-top:8px;">6</button>
-                  </div>
-                  <div class="row">
-                    <button class="btn btn-default btn-lg" onclick="number_write('7');" data-value="7" style="margin-left:8px; margin-top:8px;">7</button>
-                    <button class="btn btn-default btn-lg" onclick="number_write('8');" data-value="8" style="margin-left:8px; margin-top:8px;">8</button>
-                    <button class="btn btn-default btn-lg" onclick="number_write('9');" data-value="9" style="margin-left:8px; margin-top:8px;">9</button>
-                  </div>
-                  <div class="row">
-                    <button class="btn btn-default btn-lg" onclick="number_clear();" data-value="C" style="margin-left:8px; margin-top:8px;">C</button>
-                    <button class="btn btn-default btn-lg" onclick="number_write('0');" data-value="0" style="margin-left:8px; margin-top:8px;">0</button>
-                    <button class="btn btn-default btn-lg" onclick="number_write('.');" data-value="," style="margin-left:8px; margin-top:8px;">,</button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-md-3" >
-            <div class="panel panel-info">
-              <div class="panel-heading">
-                <h3 class="panel-title">
-                  <label>Materiaux et déchets:</label>
-                </h3>
-              </div>
-              <div class="panel-body">
-                <div id="list_evac" class="btn-group">
-                  <!-- Rempli via JS -->
-                </div>
-              </div>
-            </div>
-
-            <div class="panel panel-info">
-              <div class="panel-body">
-                <input type="text" form="formulaire" class="form-control" name="commentaire" id="commentaire" placeholder="Commentaire">
-              </div>
-            </div>
-
-            <button id="encaissement" class="btn btn-primary btn-lg">C'est pesé!</button>
-            <button id="impression" class="btn btn-primary btn-lg" value="Print" ><span class="glyphicon glyphicon-print"></span></button>
-            <button id="reset" class="btn btn-warning btn-lg"><span class="glyphicon glyphicon-refresh"></button>
-          </div> <!-- col-md-3 -->
-        </div> <!-- row -->
-      </div> <!--class="pannel-body"-->
+    </div><!-- .col-md-4 -->
+  </div>
 
   <script type="text/javascript">
     // Variables d'environnement de Oressource.
@@ -207,7 +204,7 @@ if (isset($_SESSION['id'])
         div_list_item.appendChild(button);
       });
 
-      const metadata = { classe: 'sortier' };
+      const metadata = {classe: 'sortier'};
       const encaisse = make_encaissement('../api/sorties.php', {
         evacs: ticketsItem
       }, metadata);
@@ -235,7 +232,7 @@ if (isset($_SESSION['id'])
 
             // On recupere le bon recycleur.
             const recycleur = filieres.filter(({id}) => {
-                return id === id_recycleur;
+              return id === id_recycleur;
             })[0];
 
             // On selectione les boutons qui correspondent au possiblites du recyleur.
@@ -250,8 +247,8 @@ if (isset($_SESSION['id'])
             });
           }
         };
-      };
-      
+      }
+
       const recycleur_choix = make_choix_recycleur(div_list_item, window.OressourceEnv.id_type_action);
 
       document.getElementById('id_type_action').addEventListener('change', recycleur_choix, false);
