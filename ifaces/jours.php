@@ -294,7 +294,7 @@ ORDER BY time');
         });
       </script>
       <script>
-        new Morris.Area({
+        new Morris.Bar({
             // ID of the element in which to draw the chart.
             element: 'qv',
             // Chart data records -- each entry in this array corresponds to a point on
@@ -319,17 +319,8 @@ ORDER BY time');
             xkey: 'y',
             ykeys: ['a'],
             labels: ['Q. vendue'],
-            xLabelFormat: function (d) {
-                return d.getDate() + '/' + (d.getMonth() + 1) + '/' + d.getFullYear();
-            },
-            dateFormat: function (ts) {
-                var d = new Date(ts);
-                return d.getDate() + '/' + (d.getMonth() + 1) + '/' + d.getFullYear();
-            },
             resize: true,
-            fillOpacity: "0.2",
-            pointSize: 2,
-            postUnits: "Pcs.",
+             postUnits: "Pcs.",
             lineColors: ['<?php echo $couleur ?>'],
   <?php
   $interm = 0;
@@ -351,7 +342,7 @@ ORDER BY time');
         });
       </script>
       <script>
-        new Morris.Area({
+        new Morris.Bar({
             // ID of the element in which to draw the chart.
             element: 'ca',
             // Chart data records -- each entry in this array corresponds to a point on
@@ -377,16 +368,7 @@ ORDER BY time');
             xkey: 'y',
             ykeys: ['a'],
             labels: ['C.A.'],
-            xLabelFormat: function (d) {
-                return d.getDate() + '/' + (d.getMonth() + 1) + '/' + d.getFullYear();
-            },
-            dateFormat: function (ts) {
-                var d = new Date(ts);
-                return d.getDate() + '/' + (d.getMonth() + 1) + '/' + d.getFullYear();
-            },
             resize: true,
-            fillOpacity: "0.2",
-            pointSize: 2,
             postUnits: "€",
             lineColors: ['<?php echo $couleur ?>'],
   <?php
