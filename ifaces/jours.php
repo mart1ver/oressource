@@ -244,7 +244,7 @@ echo "goals: [".$interm/$cmpt."],";
                     });
       </script>
       <script>
-        new Morris.Area({
+        new Morris.Bar({
             // ID of the element in which to draw the chart.
             element: 'sorties',
             // Chart data records -- each entry in this array corresponds to a point on
@@ -271,18 +271,9 @@ ORDER BY time');
             xkey: 'y',
             ykeys: ['a'],
             labels: ['Masse évacuée hors boutique'],
-            xLabelFormat: function (d) {
-                return d.getDate() + '/' + (d.getMonth() + 1) + '/' + d.getFullYear();
-            },
-            dateFormat: function (ts) {
-                var d = new Date(ts);
-                return d.getDate() + '/' + (d.getMonth() + 1) + '/' + d.getFullYear();
-            },
             resize: true,
-            fillOpacity: "0.2",
-            pointSize: 2,
             postUnits: "Kgs.",
-            lineColors: ['<?php echo $couleur ?>'],
+            barColors: ['<?php echo $couleur ?>'],
   <?php
   $interm = 0;
   $cmpt = 0;
