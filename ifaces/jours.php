@@ -321,7 +321,7 @@ ORDER BY time');
             labels: ['Q. vendue'],
             resize: true,
              postUnits: "Pcs.",
-            lineColors: ['<?php echo $couleur ?>'],
+            barColors: ['<?php echo $couleur ?>'],
   <?php
   $interm = 0;
   $cmpt = 0;
@@ -370,7 +370,7 @@ ORDER BY time');
             labels: ['C.A.'],
             resize: true,
             postUnits: "€",
-            lineColors: ['<?php echo $couleur ?>'],
+            barColors: ['<?php echo $couleur ?>'],
   <?php
   $interm = 0;
   $cmpt = 0;
