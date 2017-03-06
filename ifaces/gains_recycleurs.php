@@ -1,0 +1,1 @@
+<?php echo('ici nous declarerons le gains liés aux recycleurs de maniere à perfectionner nos bilans') ?>

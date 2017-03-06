@@ -135,7 +135,7 @@ $req = $bdd->prepare('SELECT pesees_collectes.id ,pesees_collectes.timestamp  ,t
                        WHERE type_dechets.id = pesees_collectes.id_type_dechet 
                        AND utilisateurs.id = pesees_collectes.id_createur
                        AND pesees_collectes.id_collecte = :id_collecte
-GROUP BY nom');
+GROUP BY id');
 $req->execute(array('id_collecte' => $_GET['ncollecte']));
 
 

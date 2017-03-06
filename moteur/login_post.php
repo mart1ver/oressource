@@ -1,65 +1,67 @@
 <?php
-session_start();
-//martin vert
-// Connexion à la base de données
-try
-{
-    include('dbconfig.php');
+
+/*
+  Oressource
+  Copyright (C) 2014-2017  Martin Vert and Oressource devellopers
+
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU Affero General Public License as
+  published by the Free Software Foundation, either version 3 of the
+  License, or (at your option) any later version.
+
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU Affero General Public License for more details.
+
+  You should have received a copy of the GNU Affero General Public License
+  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+global $bdd;
+
+require_once('../core/requetes.php');
+require_once('../core/session.php');
+require_once('../core/validation.php');
+require_once('dbconfig.php');
+
+/*
+ * On reponds en JSON a la requete POST qui nous est envoyer.
+ * Si le login est valide on renvoie un code 200 et un json qui a terme sera
+ * classe qui represente un utilisateur.
+ *
+ * Sinon on renvoie une 401 Unauthorized et un petit document JSON qui explique l'erreur.
+ *
+ * On attends un JSON du schema suivant:
+ * login.json
+ * {
+ *   'username': FILTER_VALIDATE_EMAIL, // A terme on pourrais etre moins restrictif.
+ *   'password': octets bruts va etre hasher aucune validation/sanitizitation.
+ * }
+ * Reponse:
+ * HTTPS Status code: 200 - OK
+ * { 'status': 'Accepted' }
+ * Ou en cas d'echec.
+ * HTTP Status code: 401 - Unauthorized
+ * { 'error': 'Mauvais identifiant ou mot de passe' }
+ */
+header("content-type:application/json");
+$json_raw = file_get_contents('php://input');
+$unsafe_json = json_decode($json_raw, true);
+$json = validate_json_login($unsafe_json);
+
+try {
+  $email = $json['username'];
+  $pass = $json['password']; // NE PAS FILTRER on utile le hash pas la valeur directe.
+  $user = login_user($bdd, $email, $pass);
+  session_start();
+  $structure = structure($bdd);
+  set_session($user, $structure);
+  http_response_code(200); // OK
+  echo(json_encode(['status' => 'OK'], JSON_FORCE_OBJECT));
+  // A terme on revera un document json decrivant l'utilisateur connecter.
+  // echo(json_encode($user, JSON_NUMERIC_CHECK | JSON_FORCE_OBJECT));
+} catch (Exception $e) {
+  http_response_code(401); // Unauthorized
+  echo(json_encode(['error' => 'Mauvais identifiant ou mot de passe !'], JSON_FORCE_OBJECT));
 }
-catch(Exception $e)
-{
-        die('Erreur : '.$e->getMessage());
-}
- 
-// extraction du nom de la structure
-$req = $bdd->prepare('SELECT * FROM description_structure');
-$req->execute();
-    
-$resultat = $req->fetch();
- 
-$_SESSION['tva_active'] = $resultat['tva_active'];
-$_SESSION['taux_tva'] = $resultat['taux_tva'];
-$_SESSION['structure'] = $resultat['nom'];
-$_SESSION['siret'] = $resultat['siret'];
-$_SESSION['adresse'] = $resultat['adresse'];
-$_SESSION['texte_adhesion'] = $resultat['texte_adhesion'];
-$_SESSION['lot_caisse'] = $resultat['lot'];
-$_SESSION['viz_caisse'] = $resultat['viz'];
-$_SESSION['nb_viz_caisse'] = $resultat['nb_viz'];
-$_SESSION['saisiec'] = $resultat['saisiec'];
-$_SESSION['affsp'] = $resultat['affsp'];
-$_SESSION['affss'] = $resultat['affss'];
-$_SESSION['affsr'] = $resultat['affsr'];
-$_SESSION['affsd'] = $resultat['affsd'];
-$_SESSION['affsde'] = $resultat['affsde'];
-$_SESSION['pes_vente'] = $resultat['pes_vente'];
-$_SESSION['force_pes_vente'] = $resultat['force_pes_vente'];
-  
-  
-$req->closeCursor();
- 
-// Vérification des identifiants
-$req = $bdd->prepare('SELECT * FROM utilisateurs WHERE mail = :mail AND pass = :pass');
-$req->execute(array(
-    'mail' => $_POST['mail'],
-    'pass' => md5($_POST['pass'])));
-    
-$resultat = $req->fetch();
- 
-if (!$resultat)
-{
-    header ('location:../ifaces/login.php?err=Mauvais identifiant ou mot de passe !');
-}
-else
-{
-$_SESSION['id'] =$resultat['id'];
-$_SESSION['niveau'] = $resultat['niveau'];
-$_SESSION['nom'] = $resultat['nom'];
-$_SESSION['prenom'] = $resultat['prenom'];
-$_SESSION['mail'] = $resultat['mail'];
-$_SESSION['systeme'] = "oressource";
-$req->closeCursor();
-    header ('location:../index.php');
-}
- 
-?>

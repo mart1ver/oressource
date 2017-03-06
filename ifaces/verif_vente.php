@@ -211,6 +211,7 @@ $time_fin = $time_fin." 23:59:59";
             <th>Débit</th>
             <th>Nombre d'objets</th>
             <th>Moyen de paiement</th>
+            <th>Masse pesée</th>
             <th>Commentaire</th>
             <th>Auteur de la ligne</th>
             <th></th>
@@ -323,6 +324,26 @@ $req4->execute(array('id_vente' => $donnees['id']));
 
 
             <td> <span class="badge" style="background-color:<?php echo$donnees['coul']?>"><?php echo $donnees['moyen']?></span></td>
+            <td><?php 
+$req5 = $bdd->prepare('SELECT SUM(pesees_vendus.masse) mto
+                       FROM vendus,pesees_vendus
+                       WHERE   vendus.id_vente = :id_vente AND pesees_vendus.id_vendu =  vendus.id
+                       ');
+$req5->execute(array('id_vente' => $donnees['id']));
+
+
+           // On affiche chaque entree une à une
+           while ($donnees5 = $req5->fetch())
+           { ?>
+
+
+
+<?php if ( $donnees5['mto'] > 0){echo $donnees5['mto'];}?>
+
+
+         <?php }
+            
+                ?></td>
             <td style="width:100px"><?php echo $donnees['commentaire']?></td>
             <td><?php 
  
