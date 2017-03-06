@@ -22,11 +22,6 @@
 // Doit etre fonctionnel avec un ecran tactille.
 // Du javascript permet l'interactivité du keypad et des boutons centraux avec le bon de collecte
 
-namespace sorties;
-
-use DateTime;
-use PDO;
-
 require_once('../core/requetes.php');
 require_once('../core/session.php');
 require_once('../moteur/dbconfig.php');
@@ -38,12 +33,12 @@ $numero = filter_input(INPUT_GET, 'numero', FILTER_VALIDATE_INT);
 if (isset($_SESSION['id'])
   && $_SESSION['systeme'] === "oressource"
   && is_allowed_sortie_id($numero)) {
-  
+
   if ($_SESSION['affsd'] !== "oui") {
     header("Location:sortiesd.php?numero=" . $numero);
     die();
   }
-  
+
   require_once('tete.php');
 
   $point_sortie = point_sorties_id($bdd, $numero);
@@ -52,79 +47,85 @@ if (isset($_SESSION['id'])
   $date = new Datetime('now');
   ?>
 
+  <div class="container">
 
-    <h2 class="ui-title"><?php echo($point_sortie['nom']); ?></h2>
-      
-    <div class="row">
-      <div class="col-md-7 col-md-offset-1" >
-        <ul class="nav nav-tabs">
-          <?php if ($_SESSION['affsp'] === "oui") { ?><li><a href="sortiesp.php?numero=<?php echo $numero ?>">Poubelles</a></li><?php } ?>
-          <?php if ($_SESSION['affss'] === "oui") { ?><li><a href="sortiesc.php?numero=<?php echo $numero ?>">Sorties partenaires</a></li><?php } ?>
-          <?php if ($_SESSION['affsr'] === "oui") { ?><li><a href="sortiesr.php?numero=<?php echo $numero ?>">Recyclage</a></li><?php } ?>
-          <?php if ($_SESSION['affsd'] === "oui") { ?><li class="active"><a>Don</a></li><?php } ?>
-          <?php if ($_SESSION['affsde'] == "oui") { ?><li><a href="sortiesd.php?numero=<?php echo $numero ?>">Déchetterie</a></li><?php } ?>
-          </ul>
-        </div>
-    </div>
+    <nav class="navbar">
+      <div class="header-header">
+        <h1><?= $point_sortie['nom'] ?></h1>
+      </div>
+      <ul class="nav nav-tabs">
+        <?php if ($_SESSION['affsp'] === "oui") { ?><li><a href="sortiesp.php?numero=<?php echo $numero ?>">Poubelles</a></li><?php } ?>
+        <?php if ($_SESSION['affss'] === "oui") { ?><li><a href="sortiesc.php?numero=<?php echo $numero ?>">Sorties partenaires</a></li><?php } ?>
+        <?php if ($_SESSION['affsr'] === "oui") { ?><li><a href="sortiesr.php?numero=<?php echo $numero ?>">Recyclage</a></li><?php } ?>
+        <li class="active"><a href="#">Don</a></li>
+        <?php if ($_SESSION['affsde'] == "oui") { ?><li><a href="sortiesd.php?numero=<?php echo $numero ?>">Déchetterie</a></li><?php } ?>
+      </ul>
+    </nav>
 
-    <div class="panel-body">
-      <div class="row">
-          <div class="col-md-3 col-md-offset-2">
-            <div class="panel panel-info" >
-              <div class="panel-heading">
-                <h3 class="panel-title"><label id="massetot">Bon de sortie hors-boutique: 0 Kg.</label></h3>
-              </div>
-              <div class="panel-body">
-                <form id="formulaire">
-                  <?php if (is_allowed_edit_date()) { ?>
-                    <label for="antidate">Date de la sortie: </label>
-                    <input type="date" id="antidate" name="antidate" style="width:130px; height:20px;" value="<?php echo($date->format('Y-m-d')); ?>">
-                  <?php } ?>
-                  <ul class="list-group" id="transaction">  <!--start Ticket Caisse -->
-                    <!-- Remplis via JavaScript voir script de la page -->
-                  </ul> <!--end TicketCaisse -->
-                </form>
-              </div>
-            </div>
-          </div>
-
-    <div class="col-md-2" >
-      <div class="panel panel-info">
+    <div class="col-md-4">
+      <div id="ticket" class="panel panel-info" >
         <div class="panel-heading">
-          <h3 class="panel-title"><label>Informations :</label></h3>
+          <h3 class="panel-title">
+            <label id="massetot">Masse totale: 0 Kg.</label>
+          </h3>
         </div>
         <div class="panel-body">
-          <label for="id_type_action">Type de collecte:</label>
-            <select name="id_type_action" form="formulaire" id="type_action" class="form-control" style="font-size: 12pt" required>
+          <form id="formulaire">
+            <?php if (is_allowed_edit_date()) { ?>
+              <label for="antidate">Date de la sortie: </label>
+              <input type="date" id="antidate" name="antidate" style="width:130px; height:20px;" value="<?= $date->format('Y-m-d') ?>">
+            <?php } ?>
+            <ul class="list-group" id="transaction">  <!--start Ticket Caisse -->
+              <!-- Remplis via JavaScript voir script de la page -->
+            </ul> <!--end TicketCaisse -->
+          </form>
+        </div>
+        <div class="panel-footer">
+          <input type="text" form="formulaire" class="form-control" name="commentaire" id="commentaire" placeholder="Commentaire">
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4" >
+      <div class="panel panel-info">
+        <div class="panel-heading">
+          <h3 class="panel-title">
+            <label>Informations :</label>
+          </h3>
+        </div>
+        <div class="panel-body">
+          <label for="id_type_action">Type de donnation:</label>
+          <select name="id_type_action" form="formulaire" id="type_action" class="form-control" style="font-size: 12pt" required>
             <?php foreach ($types_action as $type_action) { ?>
-              <option value="<?php echo $type_action['id'] ?>"><?php echo $type_action['nom'] ?></option>
+              <option value="<?= $type_action['id'] ?>"><?= $type_action['nom'] ?></option>
             <?php } ?>
           </select>
           <label for="loc">Localité :</label>
           <select name="localite" id="loc" form="formulaire" class="form-control" style="font-size: 12pt" required>
             <?php foreach (localites($bdd) as $localite) { ?>
-              <option value="<?php echo $localite['id'] ?>"><?php echo $localite['nom'] ?></option>
+              <option value="<?= $localite['id'] ?>"><?= $localite['nom'] ?></option>
             <?php } ?>
           </select>
         </div>
       </div>
 
-      <!-- Pavee de saisie numerique. -->
-      <div class="col-md-3" style="width: 220px;" >
+
+      <div class="col-md-8 col-md-offset-2" style="width: 220px;">
         <div class="panel panel-info">
           <div class="panel-body">
             <div class="row">
               <div class="input-group">
                 <input type="text" class="form-control" placeholder="Masse" id="number" name="num" style="margin-left:8px;">
                 <div class="input-group-btn">
-                  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" style=" margin-right:8px;">
+                  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" style="margin-right:8px;">
                     <span class="glyphicon glyphicon-minus"></span>
                     <span class="caret"></span>
                   </button>
                   <ul class="dropdown-menu dropdown-menu-right" role="menu">
-                    <!-- need style sur les boutons mais OK -->
                     <?php foreach (types_contenants($bdd) as $conteneur) { ?>
-                      <li><button onclick="submanut(<?php echo((float) $conteneur['masse']); ?>);"><?php echo $conteneur['nom']; ?></button></li>
+                      <li>
+                        <a onclick="submanut(<?= (float) $conteneur['masse'] ?>);"><?= $conteneur['nom'] ?></a>
+                      </li>
                     <?php } ?>
                   </ul>
                 </div><!-- /btn-group -->
@@ -156,10 +157,12 @@ if (isset($_SESSION['id'])
       </div>
     </div>
 
-    <div class="col-md-3" >
+    <div class="col-md-4">
       <div class="panel panel-info">
         <div class="panel-heading">
-          <h3 class="panel-title"><label>Type d'objet:</label></h3>
+          <h3 class="panel-title">
+            <label>Type d'objet:</label>
+          </h3>
         </div>
         <div class="panel-body">
           <div id="list_item" class="btn-group" >
@@ -167,15 +170,12 @@ if (isset($_SESSION['id'])
           </div>
         </div>
       </div>
-      <div class="panel panel-info">
-        <div class="panel-body">
-          <input type="text" form="formulaire" class="form-control" name="commentaire" id="commentaire" placeholder="Commentaire">
-        </div>
 
-      </div>
       <div class="panel panel-info">
         <div class="panel-heading">
-          <h3 class="panel-title"><label>Materiaux et déchets:</label></h3>
+          <h3 class="panel-title">
+            <label>Materiaux et déchets:</label>
+          </h3>
         </div>
         <div class="panel-body">
           <div id="list_evac" class="btn-group">
@@ -183,27 +183,30 @@ if (isset($_SESSION['id'])
           </div>
         </div>
       </div>
-      <button id="encaissement" class="btn btn-primary btn-lg">C'est pesé!</button>
-      <button id="impression" class="btn btn-primary btn-lg" value="Print" ><span class="glyphicon glyphicon-print"></span></button>
-      <button id="reset" class="btn btn-warning btn-lg"><span class="glyphicon glyphicon-refresh"></button>
-    </div> <!-- col-md-3 -->
-    </div> <!-- row -->
-  </div> <!--class="pannel-body"-->
+
+      <div class="btn-group" role="group">
+        <button id="encaissement" class="btn btn-success btn-lg">C'est pesé!</button>
+        <button id="impression" class="btn btn-primary btn-lg" value="Print"><span class="glyphicon glyphicon-print"></span></button>
+        <button id="reset" class="btn btn-warning btn-lg"><span class="glyphicon glyphicon-refresh"></button>
+      </div>
+    </div> <!-- .col-md-4 -->
+  </div> <!-- container -->
+
 
   <script type="text/javascript">
     // Variables d'environnement de Oressource.
     'use scrict';
     window.OressourceEnv = {
-      structure: <?php echo(json_encode($_SESSION['structure'])); ?>,
-      adresse: <?php echo(json_encode($_SESSION['adresse'])); ?>,
-      id_user: <?php echo(json_encode($_SESSION['id'], JSON_NUMERIC_CHECK)); ?>,
-      saisie_collecte: <?php echo json_encode(is_allowed_saisie_collecte()); ?>,
-      user_droit: <?php echo json_encode($_SESSION['niveau']); ?>,
-      id_point: <?php echo json_encode($numero, JSON_NUMERIC_CHECK); ?>,
-      id_type_action: <?php echo(json_encode($types_action, JSON_NUMERIC_CHECK & JSON_FORCE_OBJECT)); ?>,
-      types_dechet: <?php echo(json_encode(types_dechets($bdd), JSON_NUMERIC_CHECK & JSON_FORCE_OBJECT)); ?>,
-      masse_max: <?php echo(json_encode($point_sortie['pesee_max'], JSON_NUMERIC_CHECK)); ?>,
-      types_evac: <?php echo(json_encode(types_dechets_evac($bdd), JSON_NUMERIC_CHECK)); ?>
+      structure: <?= json_encode($_SESSION['structure'])?>,
+      adresse: <?= json_encode($_SESSION['adresse']) ?>,
+      id_user: <?= json_encode($_SESSION['id'], JSON_NUMERIC_CHECK) ?>,
+      saisie_collecte: <?= json_encode(is_allowed_saisie_collecte()) ?>,
+      user_droit: <?= json_encode($_SESSION['niveau']) ?>,
+      id_point: <?= json_encode($numero, JSON_NUMERIC_CHECK) ?>,
+      id_type_action: <?= json_encode($types_action, JSON_NUMERIC_CHECK) ?>,
+      types_dechet: <?= json_encode(types_dechets($bdd), JSON_NUMERIC_CHECK) ?>,
+      masse_max: <?= json_encode($point_sortie['pesee_max'], JSON_NUMERIC_CHECK) ?>,
+      types_evac: <?= json_encode(types_dechets_evac($bdd), JSON_NUMERIC_CHECK) ?>
     };
   </script>
   <script src="../js/ticket.js" type="text/javascript"></script>
@@ -220,7 +223,7 @@ if (isset($_SESSION['id'])
 
       const typesItems = window.OressourceEnv.types_dechet;
       const ticketItems = new Ticket();
-      const pushItem = connection_UI_ticket(numpad, ticketItems, typesItems );
+      const pushItem = connection_UI_ticket(numpad, ticketItems, typesItems);
 
       const div_list_item = document.getElementById('list_item');
       typesItems.forEach((item) => {
@@ -238,7 +241,7 @@ if (isset($_SESSION['id'])
         div_list_evac.appendChild(button);
       });
 
-      const metadata = { classe: 'sortie' };
+      const metadata = {classe: 'sortie'};
       const encaisse = make_encaissement('../api/sorties.php', {
         items: ticketItems,
         evacs: ticketEvac,
@@ -248,7 +251,7 @@ if (isset($_SESSION['id'])
       document.getElementById('impression').addEventListener('click', impression_ticket, false);
       document.getElementById('reset').addEventListener('click', tickets_clear, false);
 
-      window.tickets = [ ticketItems, ticketEvac ];
+      window.tickets = [ticketItems, ticketEvac];
     }, false);
   </script>
 

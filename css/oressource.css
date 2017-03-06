@@ -1,7 +1,12 @@
-/* Move down content because we have a fixed navbar that is 50px tallles textarea ne sont plus resizables */
+/* Move down content because we have a fixed navbar that is 50px tallles
+ * textarea ne sont plus resizables */
 body {
   padding-top: 50px;
   padding-bottom: 20px;
+}
+
+h1 {
+  font-size: 25px;
 }
 
 textarea {

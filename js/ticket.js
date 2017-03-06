@@ -115,7 +115,7 @@ function connection_UI_ticket(numpad, ticket, typesItems) {
         const id = parseInt(event.currentTarget.id, 10);
         ticket.push({
           masse: value,
-          type: id,
+          type: id
         });
 
         // Update UI pour du ticket
@@ -158,7 +158,7 @@ function ticket_update_ui(container, totalUI, type_item, value, total) {
   li.innerHTML = `<span class="badge" style="background-color:${couleur}">${value}</span>${nom}`;
   container.appendChild(li);
   // Update de l'UI pour la masse du panier.
-  totalUI.textContent = `Bon d'apport: ${total} Kg.`;
+  totalUI.textContent = `Masse totale: ${total} Kg.`;
 }
 
 function tickets_clear() {
@@ -168,8 +168,7 @@ function tickets_clear() {
   range.deleteContents();
 
   document.getElementById('commentaire').textContent = '';
-  document.getElementById('massetot').textContent = `Bon d'apport: 0 Kg.`;
-
+  document.getElementById('massetot').textContent = 'Masse totale: 0 Kg.';
 
   // On reset TOUT les tickets. En general il y en aura qu'un...
   window.tickets.forEach((ticket) => {
@@ -181,20 +180,24 @@ function tickets_clear() {
 // Faire une Feuille de style minimaliste plutot que ce hack.
 // Avec pour media: printer
 // Ou construire une page en arriere plan.
-function impression_ticket() {
-  if (window.ticket.size > 0
-          && document.getElementById("id_type_action").value > 0
-          && document.getElementById("loc").value > 0) {
-    const headstr = `<html><head><title></title></head><body><small><p>${window.OressourceEnv.structure}</p><p>${window.OressourceEnv.adresse}</p>`;
-    const footstr = `<br>Masse totale : ${window.ticket.total} Kg.</body></small>`;
-    const newstr = document.getElementById('transaction').innerHTML;
+function impression_ticket(encaisse) {
+  const print_html = `
+    <body>
+      <p>${document.querySelector('.active a').innerHTML}</p>
+      <p>${window.OressourceEnv.structure}</p>
+      <p>${window.OressourceEnv.adresse}</p>
+      <p>---------------------------------------------------------------------</p>
+      <p>${document.getElementById('massetot').innerHTML}</p>
+      <p>---------------------------------------------------------------------</p>
+      <p>${document.getElementById('transaction').innerHTML}<p>
+    </body>`;
     const oldstr = document.body.innerHTML;
-    encaisse();
-    document.body.innerHTML = headstr + newstr + footstr;
+    document.body.innerHTML = print_html;
     window.print();
     document.body.innerHTML = oldstr;
+    encaisse();
     tickets_clear();
-  }
+ 
 }
 
 function login(onSuccess = undefined) {
@@ -222,10 +225,12 @@ function login(onSuccess = undefined) {
     const password = form.get('pass');
     const fetchPromise = fetch('../moteur/login_post.php', {
       method: 'POST',
+      credidentials: 'include',
       headers: {
-        'Content-Type': 'application/json'
+      'Accept': 'application/json',
+      'Content-Type': 'application/json; charset=utf-8'
       },
-      body: JSON.stringify({ username, password }),
+      body: JSON.stringify({ username, password })
     }).then(status)
       .then((json) => {
         container.setAttribute('style', 'visibility: hidden;  opacity: 0;');
@@ -257,7 +262,8 @@ function post_data(url, data) {
     credentials: 'same-origin',
     method: 'POST',
     headers: {
-      'Content-Type': 'application/json'
+      'Accept': 'application/json',
+      'Content-Type': 'application/json; charset=utf-8'
     },
     body: JSON.stringify(data)
   }).then(status)
@@ -292,7 +298,7 @@ function make_encaissement(url, tickets, metadata={}) {
     const id_type_action = parseInt(form.get('id_type_action'), 10);
     const localite = form.get('localite');
 
-    if (sum > 0 && id_type_action > 0) {
+    if (sum > 0 && (isNaN(id_type_action) || id_type_action > 0)) {
 
       const commentaire = form.get('commentaire').trim(); //.On enleve les espaces inutiles.
       const antidate = form.get('antidate');
@@ -301,14 +307,10 @@ function make_encaissement(url, tickets, metadata={}) {
         id_point: window.OressourceEnv.id_point,
         // Ok
         id_user: window.OressourceEnv.id_user,
-        // Pas utile recuperable cote serveur.
-        // saisie_collecte: window.OressourceEnv.saisie_collecte,
-        // Pas utile recuperable cote serveur.
-        // user_droit: window.OressourceEnv.user_droit,
         localite,
         id_type_action,
         commentaire,
-        antidate,
+        antidate
       };
 
       // Petit hack pour merger differents types d'objets a envoyer.

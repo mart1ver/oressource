@@ -38,7 +38,7 @@ $unsafe_json = json_decode($json_raw, true);
 // Parsing et filtrage des entrees pour eviter les failles et injections.
 $json = validate_json_collecte($unsafe_json);
 
-if (isset($_SESSION['id']) && $_SESSION['systeme'] === "oressource") {
+if (is_valid_session()) {
 
   if (count($json['items']) < 0) {
     http_response_code(400); // Bad Request
@@ -49,7 +49,7 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === "oressource") {
   if (is_allowed_collecte_id($json['id_point'])
     && is_allowed_saisie_collecte()) {
 
-    // Si l'utilisateur peux editer la date on Essaye de l'extraire
+    // Si l'utilisateur peux editer la date on essaye de l'extraire
     // Sinon on prends la date cote serveur.
     $timestamp = (is_allowed_edit_date() ? parseDate($json['antidate']) : new DateTime('now'));
     $collecte = [
@@ -61,7 +61,7 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === "oressource") {
         'id_user' => $json['id_user'],
     ];
 
-    require_once('dbconfig.php');
+    require_once('../moteur/dbconfig.php');
     $bdd->beginTransaction();
     $id_collecte = insert_collecte($bdd, $collecte);
 

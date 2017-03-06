@@ -28,9 +28,9 @@
         credentials: 'include',
         headers: {
           'Accept': 'application/json',
-          'Content-Type': 'application/json; charset=utf-8',
+          'Content-Type': 'application/json; charset=utf-8'
         },
-        body: JSON.stringify({ username, password }),
+        body: JSON.stringify({ username, password })
       }).then(status)
         .then((json) => {
           // redirection vers l'index en attendant de pouvoir faire mieux.

@@ -198,7 +198,7 @@ if (isset($_SESSION['id'])
         div_list_item.appendChild(button);
       });
 
-      const encaisse = make_encaissement('../moteur/collecte_post.php', { items: ticketsItem });
+      const encaisse = make_encaissement('../api/collectes.php', { items: ticketsItem });
 
       document.getElementById('encaissement').addEventListener('click', encaisse, false);
       document.getElementById('impression').addEventListener('click', impression_ticket, false);
