@@ -140,19 +140,24 @@ function filieres_sorties(PDO $bdd) {
 function nb_categories_dechets_evac(PDO $bdd) {
   $stmt = $bdd->prepare('SELECT MAX(id) AS nombrecat FROM type_dechets_evac LIMIT 1');
   $stmt->execute();
-  return (int) $stmt->fetch(PDO::FETCH_ASSOC)['nombrecat'];
+  $nombre_categories = (int) $stmt->fetch(PDO::FETCH_ASSOC)['nombrecat'];
+  $stmt->closeCursor();
+  return $nombre_categories;
 }
 
 function nb_categories_dechets_item(PDO $bdd) {
-  $stmt = $bdd->prepare('SELECT MAX(id) AS nombrecat FROM type_dechets LIMIT 1');
+  $stmt = $bdd->prepare('SELECT MAX(id) AS nombrecat FROM type_dechets');
   $stmt->execute();
-  return (int) $stmt->fetch(PDO::FETCH_ASSOC)['nombrecat'];
+  $nombre_categories = (int) $stmt->fetch(PDO::FETCH_ASSOC)['nombrecat'];
+  $stmt->closeCursor();
+  return (int) $nombre_categories;
 }
 
 function nb_categories_poubelles(PDO $bdd) {
   $stmt = $bdd->prepare('SELECT MAX(id) AS nombrecat FROM types_poubelles LIMIT 1')['nombrecat'];
-  $stmt->execute();
-  return (int) $stmt->fetch(PDO::FETCH_ASSOC)['nombrecat'];
+  $nombre_categories = (int) $stmt->fetch(PDO::FETCH_ASSOC)['nombrecat'];
+  $stmt->closeCursor();
+  return (int) $nombre_categories;
 }
 
 // Insere une collecte dans la base.
@@ -162,8 +167,7 @@ function nb_categories_poubelles(PDO $bdd) {
 // Mais d'un cote niveau tracabilite ils devraient pas supprimer de categories...
 // genere une exception si les masses sont inferieurs a 0.
 function insert_items_collecte(PDO $bdd, $id_collecte, $collecte, $items) {
-  $reponse = nb_categories_dechets_item($bdd);
-  $nombreCategories = (int) $reponse->fetch()['nombrecat'];
+  $nombreCategories = nb_categories_dechets_item($bdd);
   $req = $bdd->prepare('INSERT INTO pesees_collectes
                             (timestamp, masse, id_collecte, id_type_dechet, id_createur)
                         VALUES (:timestamp, :masse, :id_collecte, :id_type_dechet, :id_createur)');

@@ -30,15 +30,17 @@ require_once('../core/requetes.php');
 
 session_start();
 
-header("content-type:application/json");
-$json_raw = file_get_contents('php://input');
-$unsafe_json = json_decode($json_raw, true);
 
-// TODO: Revenir sur la validation plus tard c'est pas parfait maintenant.
-// Parsing et filtrage des entrees pour eviter les failles et injections.
-$json = validate_json_collecte($unsafe_json);
 
 if (is_valid_session()) {
+
+  header("content-type:application/json");
+  $json_raw = file_get_contents('php://input');
+  $unsafe_json = json_decode($json_raw, true);
+
+  // TODO: Revenir sur la validation plus tard c'est pas parfait maintenant.
+  // Parsing et filtrage des entrees pour eviter les failles et injections.
+  $json = validate_json_collecte($unsafe_json);
 
   if (count($json['items']) < 0) {
     http_response_code(400); // Bad Request
@@ -49,26 +51,25 @@ if (is_valid_session()) {
   if (is_allowed_collecte_id($json['id_point'])
     && is_allowed_saisie_collecte()) {
 
-    // Si l'utilisateur peux editer la date on essaye de l'extraire
-    // Sinon on prends la date cote serveur.
-    $timestamp = (is_allowed_edit_date() ? parseDate($json['antidate']) : new DateTime('now'));
-    $collecte = [
-        'timestamp' => $timestamp,
-        'id_type_action' => $json['id_type_action'],
-        'localite' => $json['localite'],
-        'id_point' => $json['id_point'],
-        'commentaire' => $json['commentaire'],
-        'id_user' => $json['id_user'],
-    ];
-
-    require_once('../moteur/dbconfig.php');
-    $bdd->beginTransaction();
-    $id_collecte = insert_collecte($bdd, $collecte);
-
     try {
+      // Si l'utilisateur peux editer la date on essaye de l'extraire
+      // Sinon on prends la date cote serveur.
+      $timestamp = (is_allowed_edit_date() ? parseDate($json['antidate']) : new DateTime('now'));
+      $collecte = [
+          'timestamp' => $timestamp,
+          'id_type_action' => $json['id_type_action'],
+          'localite' => $json['localite'],
+          'id_point' => $json['id_point'],
+          'commentaire' => $json['commentaire'],
+          'id_user' => $json['id_user'],
+      ];
+
+      require_once('../moteur/dbconfig.php');
+      $bdd->beginTransaction();
+      $id_collecte = insert_collecte($bdd, $collecte);
       if (count($json['items'])) {
-      insert_items_collecte($bdd, $id_collecte, $collecte, $json['items']);
-      $bdd->commit();
+        insert_items_collecte($bdd, $id_collecte, $collecte, $json['items']);
+        $bdd->commit();
       } else {
         throw new InvalidArgumentException("Collecte sans pesees abbandon!");
       }
