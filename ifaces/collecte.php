@@ -98,7 +98,7 @@ if (isset($_SESSION['id'])
       </div>
 
       <!-- Pavee de saisie numerique. -->
-      <div class="col-md-4" >
+      <div class="col-md-8 col-md-offset-2" style="width: 220px;">
         <div class="panel panel-info">
           <div class="panel-body">
             <div class="row">
