@@ -147,7 +147,7 @@ if (isset($_SESSION['id'])
       </div>
     </div>
 
-    <div class="col-md-3" >
+    <div class="col-md-4" >
       <div class="panel panel-info">
         <div class="panel-heading">
           <h3 class="panel-title"><label>Type d'objet:</label></h3>
