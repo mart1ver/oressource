@@ -51,8 +51,8 @@ if (isset($_SESSION['id'])
       </div>
       <ul class="nav nav-tabs">
         <li class="active"><a href="#">Poubelles</a></li>
-        <?php if ($_SESSION['affss'] === "oui") { ?><li><a href="sortiesr.php?numero=<?php echo $numero; ?>">Sorties partenaires</a></li><?php } ?>
-        <?php if ($_SESSION['affsr'] === "oui") { ?><li><a href="sortiesc.php?numero=<?php echo $numero; ?>">Recyclage</a></li><?php } ?>
+        <?php if ($_SESSION['affss'] === "oui") { ?><li><a href="sortiesc.php?numero=<?php echo $numero; ?>">Sorties partenaires</a></li><?php } ?>
+        <?php if ($_SESSION['affsr'] === "oui") { ?><li><a href="sortiesr.php?numero=<?php echo $numero; ?>">Recyclage</a></li><?php } ?>
         <?php if ($_SESSION['affsd'] === "oui") { ?><li><a href="sorties.php?numero=<?php echo $numero; ?>">Don</a></li><?php } ?>
         <?php if ($_SESSION['affsde'] === "oui") { ?><li><a href="sortiesd.php?numero=<?php echo $numero; ?>">Déchetterie</a></li><?php } ?>
       </ul>
