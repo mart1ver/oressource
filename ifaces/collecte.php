@@ -55,7 +55,7 @@ if (isset($_SESSION['id'])
         <h1><?php echo($point_collecte['nom']); ?></h1>
       </div>
     <div class="row">
-    <div class="col-md-3 col-md-offset-2" >
+    <div class="col-md-4 " >
       <div class="panel panel-info" >
           <div class="panel-heading">
             <h3 class="panel-title"><label id="massetot">Bon d'apport: 0 Kg.</label></h3>
@@ -74,7 +74,7 @@ if (isset($_SESSION['id'])
       </div>
     </div>
 
-    <div class="col-md-2" style="width: 230px;" >
+    <div class="col-md-4"  >
       <div class="panel panel-info">
         <div class="panel-heading">
           <h3 class="panel-title"><label>Informations :</label></h3>
@@ -98,7 +98,7 @@ if (isset($_SESSION['id'])
       </div>
 
       <!-- Pavee de saisie numerique. -->
-      <div class="col-md-3" style="width: 220px;" >
+      <div class="col-md-4" >
         <div class="panel panel-info">
           <div class="panel-body">
             <div class="row">
