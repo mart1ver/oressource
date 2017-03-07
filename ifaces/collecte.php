@@ -71,6 +71,9 @@ if (isset($_SESSION['id'])
             </ul> <!--end TicketCaisse -->
             </form>
           </div>
+          <div class="panel-footer">
+          <input type="text" form="formulaire" class="form-control" name="commentaire" id="commentaire" placeholder="Commentaire">
+        </div>
       </div>
     </div>
 
@@ -153,11 +156,6 @@ if (isset($_SESSION['id'])
           <div class="btn-group" id="list_item">
             <!-- Cree via JS -->
           </div>
-        </div>
-      </div>
-      <div class="panel panel-info">
-        <div class="panel-body">
-          <input type="text" form="formulaire" class="form-control" name="commentaire" id="commentaire" placeholder="Commentaire">
         </div>
       </div>
       <button id="encaissement" class="btn btn-primary btn-lg">C'est pesé!</button>
