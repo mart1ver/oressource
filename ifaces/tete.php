@@ -65,9 +65,8 @@ $now_date = date("d-m-Y");
                   <ul class="dropdown-menu">
                     <?php foreach (points_collectes($bdd) as $point_collecte) { ?>
                     <li>
-                      <a href="../ifaces/collecte.php?numero=
-                        <?php echo("{$point_collecte['id']}&nom={$point_collecte['nom']}&adresse={$point_collecte['adresse']}");
-                        ?>"><?php echo $point_collecte['nom']; ?></a>
+                      <a href="../ifaces/collecte.php?numero=<?= "{$point_collecte['id']}&nom={$point_collecte['nom']}&adresse={$point_collecte['adresse']}";
+                        ?>"><?= $point_collecte['nom']; ?></a>
                     </li>
                     <?php } ?>
                   </ul>
@@ -81,9 +80,8 @@ $now_date = date("d-m-Y");
                   <ul class="dropdown-menu">
                     <?php foreach (points_sorties($bdd) as $point_sortie) {?>
                     <li>
-                      <a href="../ifaces/sortiesc.php?numero=<?php
-                      echo("{$point_sortie['id']}&nom={$point_sortie['nom']}&adresse={$point_sortie['adresse']}");
-                      ?>"><?php echo $point_sortie['nom']; ?></a>
+                      <a href="../ifaces/sortiesc.php?numero=<?= "{$point_sortie['id']}&nom={$point_sortie['nom']}&adresse={$point_sortie['adresse']}";
+                      ?>"><?= $point_sortie['nom']; ?></a>
                     </li>
                     <?php } ?>
                   </ul>
@@ -97,9 +95,8 @@ $now_date = date("d-m-Y");
                   <ul class="dropdown-menu">
                       <?php foreach (points_ventes($bdd) as $point_vente) { ?>
                       <li>
-                        <a href="../ifaces/ventes.php?numero=<?php
-                        echo("{$point_vente['id']}&nom={$point_vente['nom']}&adresse={$point_vente['adresse']}");
-                        ?>"><?php echo $point_vente['nom']; ?></a>
+                        <a href="../ifaces/ventes.php?numero=<?=("{$point_vente['id']}&nom={$point_vente['nom']}&adresse={$point_vente['adresse']}");
+                        ?>"><?= $point_vente['nom']; ?></a>
                       </li>
                       <?php } ?>
                   </ul>
@@ -107,10 +104,9 @@ $now_date = date("d-m-Y");
                 <?php
               }
 
-
               if (is_allowed_bilan()) {
                 ?>
-                <li><a href="../ifaces/bilanc.php?date1=<?php echo $now_date ?>&date2=<?php echo $now_date ?>&numero=0">Bilans</a></li>
+                <li><a href="../ifaces/bilanc.php?date1=<?= $now_date ?>&date2=<?= $now_date ?>&numero=0">Bilans</a></li>
                 <?php
               }
 
@@ -145,9 +141,9 @@ $now_date = date("d-m-Y");
                     //gestion verif
                     if ($can_verif) {
                       ?>
-                      <li><a href="../ifaces/verif_collecte.php?date1=<?php echo $now_date ?>&date2=<?php echo $now_date ?>&numero=1">Vérifier les collectes</a></li>
-                      <li><a href="../ifaces/verif_sorties.php?date1=<?php echo $now_date ?>&date2=<?php echo $now_date ?>&numero=1">Vérifier les sorties hors-boutique</a></li>
-                      <li><a href="../ifaces/verif_vente.php?date1=<?php echo $now_date ?>&date2=<?php echo $now_date ?>&numero=1">Vérifier les ventes</a></li>
+                      <li><a href="../ifaces/verif_collecte.php?date1=<?= $now_date ?>&date2=<?= $now_date ?>&numero=1">Vérifier les collectes</a></li>
+                      <li><a href="../ifaces/verif_sorties.php?date1=<?= $now_date ?>&date2=<?= $now_date ?>&numero=1">Vérifier les sorties hors-boutique</a></li>
+                      <li><a href="../ifaces/verif_vente.php?date1=<?= $now_date ?>&date2=<?= $now_date ?>&numero=1">Vérifier les ventes</a></li>
                       <li class="divider"></li>
                       <?php
                     }
@@ -203,11 +199,11 @@ $now_date = date("d-m-Y");
     </div>
 
     <?php if (isset($_GET['err'])) { ?>
-      <div class='alert alert-danger' style='width:80%;margin:auto;'><?php echo $_GET['err']; ?></div>
+      <div class='alert alert-danger' style='width:80%;margin:auto;'><?= $_GET['err']; ?></div>
     <?php }
      if (isset($_GET['msg'])) { ?>
       <div class='alert alert-success alert-dismissable' style='width:80%;margin:auto;'>
         <button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;</button>
-        <?php echo $_GET['msg']; ?>
+        <?= $_GET['msg']; ?>
       </div>
     <?php }
