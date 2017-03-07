@@ -50,9 +50,11 @@ if (isset($_SESSION['id'])
   ?>
 
 
-  <div class="panel-body">
-  <h2 class="ui-title"><?php echo($point_collecte['nom']); ?></h2>
-  <div class="row">
+  <div class="container">
+      <div class="header-header">
+        <h1><?php echo($point_collecte['nom']); ?></h1>
+      </div>
+    <div class="row">
     <div class="col-md-3 col-md-offset-2" >
       <div class="panel panel-info" >
           <div class="panel-heading">
@@ -163,7 +165,7 @@ if (isset($_SESSION['id'])
       <button id="reset" class="btn btn-warning btn-lg"><span class="glyphicon glyphicon-refresh"></button>
     </div>
   </div> <!-- row -->
-  </div> <!--class="pannel-body"-->
+  </div> <!--container-->
 
   <script type="text/javascript">
   // Variables d'environnement de Oressource.
