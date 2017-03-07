@@ -234,7 +234,7 @@ if (isset($_SESSION['id'])
         div_list_evac.appendChild(button);
       });
 
-      const metadata = {classe: 'sortiec'};
+      const metadata = {classe: 'sortiesc'};
       const encaisse = make_encaissement('../api/sorties.php', {
         items: ticketItems,
         evacs: ticketEvac

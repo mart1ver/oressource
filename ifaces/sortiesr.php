@@ -204,7 +204,7 @@ if (isset($_SESSION['id'])
         div_list_item.appendChild(button);
       });
 
-      const metadata = {classe: 'sortier'};
+      const metadata = {classe: 'sortiesr'};
       const encaisse = make_encaissement('../api/sorties.php', {
         evacs: ticketsItem
       }, metadata);
@@ -256,35 +256,7 @@ if (isset($_SESSION['id'])
       window.tickets = [ticketsItem];
     }, false);
   </script>
-
   <script defer src="../js/utilitaire.js"></script>
-  <script defer type="text/javascript">
-    "use strict";
-    /*
-     const headstr = "<html><head><title></title></head><body><small><?php echo $_SESSION['structure']; ?><br><?php echo $_SESSION['adresse']; ?><br><label>Bon de sortie recyclage</label><br>";
-     const footstr = "<br>Masse totale : " + mtot + " Kgs.</body></small>";
-     const newstr = document.all.item(divID).innerHTML;
-     const oldstr = document.body.innerHTML;
-
-     document.getElementById("formulaire").submit();
-     document.body.innerHTML = headstr + newstr + footstr;
-     window.print();
-     document.body.innerHTML = oldstr;
-     return false;
-
-     function tdechet_clear() {
-     document.getElementById("id_filiere").value = "";
-     document.getElementById("id_type_dechet").value = "";
-     document.getElementById("type_dechet").value = "";
-     document.getElementById("sel_filiere").disabled = false;
-     document.getElementById("sel_filiere").value = "0";
-     document.getElementById("number").value = "";
-     document.getElementById('d<?php echo $evac['nom']; ?>').textContent = "0";
-     document.getElementById('d<?php echo $evac['id']; ?>').value = "0";
-     document.getElementById('b<?php echo $evac['id']; ?>').style.display = "none";
-     }
-     */
-  </script>
   <?php
   include "pied.php";
 } else {

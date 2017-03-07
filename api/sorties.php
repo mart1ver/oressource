@@ -77,9 +77,9 @@ if (isset($_SESSION['id'])
     $bdd->beginTransaction();
     $id_sortie = insert_sortie($bdd, $sortie);
     $requete_OK = false;
-    
+
     if ($sortie['classe'] === 'sorties'
-      || $sortie['classe'] === 'sortiec') {
+      || $sortie['classe'] === 'sortiesc') {
       if (count($json['items'])) {
         insert_items_sorties($bdd, $id_sortie, $sortie, $json['items']);
         $requete_OK = true;
@@ -88,7 +88,8 @@ if (isset($_SESSION['id'])
         insert_evac_sorties($bdd, $id_sortie, $sortie, $json['evacs']);
         $requete_OK = true;
       }
-    } elseif ($sortie['classe'] === 'sortier' || $sortie['classe'] === 'sortiesd') {
+    } elseif ($sortie['classe'] === 'sortiesr'
+      || $sortie['classe'] === 'sortiesd') {
       if (count($json['evacs'])) {
         insert_evac_sorties($bdd, $id_sortie, $sortie, $json['evacs']);
         $requete_OK = true;
