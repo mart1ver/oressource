@@ -1,23 +1,28 @@
-
 # Installation du serveur
+
 Instalation sous linux (debian/ubuntu)
 
 ## Dépendances
+
 ```shell
-sudo apt-get install mysql-server apache2 php5-mysql libapache2-mod-php5 git
+sudo apt-get install mysql-server apache2 php7.0-mysql libapache2-mod-php7.0 git
 ```
 
 Note:
-Il est aussi possible d'installer `php7` avec le mod apache ou bien via `php7.0-fpm` ou d'utiliser un autre
-serveur web tel que `ngnix`. De même `mariadb` remplace très bien `mysql`.
+Il est aussi possible d'utiliser `php7.0-fpm` ou d'utiliser un autre serveur 
+web tel que `ngnix`. De même `mariadb` remplace très bien `mysql`.
+
+Ou bien d'utiliser `php5`.
 
 ## Clone du projet
+
 ```shell
 cd ~
 git clone http://github.com/mart1ver/oressource.git
 ```
 
 ## MariaDB/MySQL
+
 ### Créer un utilisateur
 
 Créer l'utilisateur oressource
@@ -87,6 +92,7 @@ sudo service apache2 restart
 
 Si vous avez mis en place Oressource sur le même ordinateur sur le même ordinateur que votre navigateur web,
 Vous pourrez avec le navigateur accedez à l'écran de connection  via l'URL :
+
 ```shell
 http://localhost/oressource
 ```
@@ -102,12 +108,7 @@ L' adresse IP du serveur peut etre obtenue à l'aide d'une simple commande `ifco
 Il ne tient qu'à vous de configurer un adressage IP statique pour le serveur voir méme un nom de domaine 
 de manière à accéder simplement à Oressource à partir de vos ordinateurs clients.  
 
-# Configuration coté client
+## Configuration coté client
 
 (À venir)
 
-
-# Developement
-
-Si vous souhaitez develloper ou debugger Oressource pensez à modifier le bon fichier de configuration
-de PHP (`php.ini`) afin de pouvoir traquer les erreurs plus facilement.
