@@ -158,9 +158,11 @@ if (isset($_SESSION['id'])
           </div>
         </div>
       </div>
-      <button id="encaissement" class="btn btn-primary btn-lg">C'est pesé!</button>
+<div class="btn-group" role="group">
+      <button id="encaissement" class="btn btn-success btn-lg">C'est pesé!</button>
       <button id="impression" class="btn btn-primary btn-lg" value="Print" ><span class="glyphicon glyphicon-print"></span></button>
-      <button id="reset" class="btn btn-warning btn-lg"><span class="glyphicon glyphicon-refresh"></button>
+      <button id="reset" class="btn btn-warning btn-lg"><span class="glyphicon glyphicon-refresh"></button></div>
+
     </div>
   </div> <!-- row -->
   </div> <!--container-->
