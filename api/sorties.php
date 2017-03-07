@@ -78,7 +78,7 @@ if (isset($_SESSION['id'])
     $id_sortie = insert_sortie($bdd, $sortie);
     $requete_OK = false;
     
-    if ($sortie['classe'] === 'sortie'
+    if ($sortie['classe'] === 'sorties'
       || $sortie['classe'] === 'sortiec') {
       if (count($json['items'])) {
         insert_items_sorties($bdd, $id_sortie, $sortie, $json['items']);
