@@ -96,7 +96,7 @@ if (isset($_SESSION['id'])
               <option value="<?php echo $localite['id'] ?>"><?php echo $localite['nom'] ?></option>
             <?php } ?>
           </select>
-          <br>
+         
         </div>
       </div>
 
