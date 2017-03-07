@@ -270,7 +270,7 @@ function insert_poubelle_sorties(PDO $bdd, $id_sorties, $sortie, $items) {
 function specialise_sortie(PDOStatement $stmt, $sortie) {
   $classe = $sortie['classe'];
   // Sorties Dons
-  if  ($classe === 'sortie') {
+  if  ($classe === 'sorties') {
     $stmt->bindvalue(':type_sortie', $sortie['type_sortie'], PDO::PARAM_INT);
     $stmt->bindvalue(':id_filiere', 0, PDO::PARAM_INT);
     $stmt->bindvalue(':id_convention', 0, PDO::PARAM_INT);
