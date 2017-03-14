@@ -102,7 +102,7 @@ if (isset($_SESSION['id'])
         </div>
       </div>
 
-     <div class="col-md-8 col-md-offset-2" style="width: 220px;">
+      <div class="col-md-8 col-md-offset-2" style="width: 220px;">
         <div class="panel panel-info">
           <div class="panel-body">
             <div class="row">
@@ -190,6 +190,58 @@ if (isset($_SESSION['id'])
   <script src="../js/numpad.js" type="text/javascript"></script>
   <script type="text/javascript">
     'use strict';
+    function make_choix_recycleur(ui, filieres) {
+      return (event) => {
+        if (event.target.selectedIndex > 0) {
+          event.preventDefault();
+          const select = event.target;
+
+          select[0].removeAttribute('selected', false);
+          // select.value = id_recycleur;
+          const option = select[select.selectedIndex];
+          option.setAttribute('selected', true);
+
+          // On desactive tout sauf ce qui viens d'etre choisi.
+          select.querySelectorAll(':not([selected])').forEach((element) => {
+            element.setAttribute('disabled', true);
+          });
+
+          const id_recycleur = parseInt(select.value, 10);
+          // On recupere le bon recycleur.
+          const recycleur = filieres.filter(({id}) => {
+            return id === id_recycleur;
+          })[0];
+
+          // On selectione les boutons qui correspondent au possiblites du recyleur.
+          const accepte = recycleur.accepte_type_dechet;
+          const btnList = Array.from(ui.children).filter((e) => {
+            return accepte.reduce((acc, id) => {
+              return acc || parseInt(e.id, 10) === id;
+            }, false);
+          });
+          btnList.forEach((button) => {
+            button.setAttribute('style', 'display: block; visibility: visible');
+          });
+        }
+      };
+    }
+    function recycleur_reset() {
+      const select = document.getElementById('id_type_action');
+      // Reactivation des options du select
+      Array.from(select.children).forEach((element) => {
+        element.removeAttribute('disabled', false);
+        element.removeAttribute('selected', false);
+      });
+
+      select.value = 0;
+      select[0].setAttribute('selected', true); // first option
+
+      const ui = document.getElementById('list_evac');
+      // On pourrais juste cacher ceux qui sont visibles.
+      const btnList = Array.from(ui.children).forEach((button) => {
+        button.setAttribute('style', 'display: none; visibility: hidden');
+      });
+    }
 
     document.addEventListener('DOMContentLoaded', () => {
       const numpad = new NumPad(document.getElementById('number'));
@@ -211,43 +263,10 @@ if (isset($_SESSION['id'])
 
       document.getElementById('encaissement').addEventListener('click', encaisse, false);
       document.getElementById('impression').addEventListener('click', impression_ticket, false);
-      document.getElementById('reset').addEventListener('click', tickets_clear, false);
-
-      function make_choix_recycleur(ui, filieres) {
-        return (event) => {
-          if (event.target.selectedIndex > 0) {
-            console.log(event);
-            event.preventDefault();
-            const select = event.target;
-            const id_recycleur = parseInt(select.value, 10);
-
-            select[0].removeAttribute('selected', false);
-            select.setAttribute('value', id_recycleur);
-            select[select.selectedIndex].setAttribute('selected', true);
-
-            // On desactive tout sauf ce qui viens d'etre choisi.
-            select.querySelectorAll(':not([selected])').forEach((e) => {
-              e.setAttribute('disabled', true);
-            });
-
-            // On recupere le bon recycleur.
-            const recycleur = filieres.filter(({id}) => {
-              return id === id_recycleur;
-            })[0];
-
-            // On selectione les boutons qui correspondent au possiblites du recyleur.
-            const accepte = recycleur.accepte_type_dechet;
-            const btnList = Array.from(ui.children).filter((e) => {
-              return accepte.reduce((acc, id) => {
-                return acc || parseInt(e.id, 10) === id;
-              }, false);
-            });
-            btnList.forEach((button) => {
-              button.setAttribute('style', 'display: block; visibility: visible');
-            });
-          }
-        };
-      }
+      document.getElementById('reset').addEventListener('click', () => {
+        recycleur_reset();
+        tickets_clear();
+      }, false);
 
       const recycleur_choix = make_choix_recycleur(div_list_item, window.OressourceEnv.id_type_action);
 
