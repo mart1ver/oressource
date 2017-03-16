@@ -114,7 +114,7 @@ if (isset($_SESSION['id'])
                   </button>
                   <ul class="dropdown-menu dropdown-menu-right" role="menu">
                     <!-- need style sur les boutons mais OK -->
-                    <?php foreach (types_conteneurs($bdd) as $conteneur) { ?>
+                    <?php foreach (types_contenants($bdd) as $conteneur) { ?>
                     <li onClick="submanut(<?php echo((float) $conteneur['masse']); ?>);"><?php echo $conteneur['nom']; ?></li>
                     <?php } ?>
                   </ul>
