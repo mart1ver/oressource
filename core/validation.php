@@ -25,21 +25,25 @@ function validate_json_login($unsafe_json) {
 
 function validate_json_sorties($unsafe_json) {
   $filters = [
-      'id_type_action' => FILTER_REQUIRE_SCALAR, // Peux etre NULL
-      'antidate' => FILTER_DEFAULT,
-      'localite' => FILTER_REQUIRE_SCALAR, // Peux etre NULL.
+      'id_type_action' => FILTER_DEFAULT, // Peux etre NULL
+      'antidate' => FILTER_DEFAULT,       // Peux etre NULL validation faite plus tard.
+      'localite' => FILTER_DEFAULT,       // Peux etre NULL
       'id_point' => FILTER_VALIDATE_INT,
       'id_user' => FILTER_VALIDATE_INT,
       'items' => FILTER_DEFAULT,
       'evacs' => FILTER_DEFAULT,
       'commentaire' => FILTER_SANITIZE_STRING,
-      'classe' => FILTER_SANITIZE_STRING // TODO: remplacer par une regex sortie|sortier...
+      // TODO: remplacer par une regex sortie|sortier...
+      // Ou remplacer par des id.
+      'classe' => FILTER_SANITIZE_STRING
   ];
   $flag = ['flags' => FILTER_NULL_ON_FAILURE];
   $flags = [];
   foreach ($filters as $key => $_v) {
     $flags[$key] = $flag;
   }
+  $flags['id_type_action'] = FILTER_REQUIRE_SCALAR;
+  $flags['localite'] = FILTER_REQUIRE_SCALAR;
   $flags['items'] = FILTER_REQUIRE_ARRAY | FILTER_NULL_ON_FAILURE;
   $flags['evacs'] = FILTER_REQUIRE_ARRAY | FILTER_NULL_ON_FAILURE;
   $flags['commentaire'] = ['flags' => FILTER_FLAG_STRIP_BACKTICK];
