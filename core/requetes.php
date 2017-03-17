@@ -34,9 +34,6 @@ function convention_sortie_by_id(PDO $bdd, $id) {
   return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
-/**
- * $id est un entier.
- */
 function point_collecte_id(PDO $bdd, $id) {
   $sql = 'SELECT pesee_max, nom
           FROM points_collecte
@@ -45,7 +42,9 @@ function point_collecte_id(PDO $bdd, $id) {
   $stmt = $bdd->prepare($sql);
   $stmt->bindValue(':id', $id, PDO::PARAM_INT);
   $stmt->execute();
-  return $stmt->fetch(PDO::FETCH_ASSOC);
+  $point_collecte = $stmt->fetch(PDO::FETCH_ASSOC);
+  $stmt->closeCursor();
+  return $point_collecte;
 }
 
 function point_sorties_id(PDO $bdd, $id) {
@@ -53,7 +52,9 @@ function point_sorties_id(PDO $bdd, $id) {
   $stmt = $bdd->prepare($sql);
   $stmt->bindValue(':id', $id, PDO::PARAM_INT);
   $stmt->execute();
-  return $stmt->fetch(PDO::FETCH_ASSOC);
+  $point_sortie = $stmt->fetch(PDO::FETCH_ASSOC);
+  $stmt->closeCursor();
+  return $point_sortie;
 }
 
 function points_collectes(PDO $bdd) {
@@ -274,7 +275,7 @@ function insert_poubelle_sorties(PDO $bdd, $id_sorties, $sortie, $items) {
 function specialise_sortie(PDOStatement $stmt, $sortie) {
   $classe = $sortie['classe'];
   // Sorties Dons
-  if  ($classe === 'sorties') {
+  if ($classe === 'sorties') {
     $stmt->bindvalue(':type_sortie', $sortie['type_sortie'], PDO::PARAM_INT);
     $stmt->bindvalue(':id_filiere', 0, PDO::PARAM_INT);
     $stmt->bindvalue(':id_convention', 0, PDO::PARAM_INT);
@@ -299,8 +300,8 @@ function specialise_sortie(PDOStatement $stmt, $sortie) {
 }
 
 function insert_sortie(PDO $bdd, $sortie) {
-  $sql = 'INSERT INTO sorties (timestamp, id_filiere, id_convention, 
-                                id_type_sortie, classe, 
+  $sql = 'INSERT INTO sorties (timestamp, id_filiere, id_convention,
+                                id_type_sortie, classe,
                                 id_point_sortie, commentaire, id_createur)
           VALUES(:timestamp, :id_filiere, :id_convention,
                  :type_sortie, :classe,
@@ -326,7 +327,9 @@ function structure(PDO $bdd) {
           FROM description_structure LIMIT 1';
   $req = $bdd->prepare($sql);
   $req->execute();
-  return $req->fetch(PDO::FETCH_ASSOC);
+  $result = $req->fetch(PDO::FETCH_ASSOC);
+  $req->closeCursor();
+  return $result;
 }
 
 // Return a valid user or an exception.
@@ -339,6 +342,7 @@ function login_user(PDO $bdd, $email, $password) {
   $req->bindValue(':pass', $passmd5, PDO::PARAM_INT);
   $req->execute();
   $user = $req->fetch(PDO::FETCH_ASSOC);
+  $req->closeCursor();
   if ($user) {
     return $user;
   } else {
@@ -349,7 +353,7 @@ function login_user(PDO $bdd, $email, $password) {
 /**
  * Renvoie les donnees neccessaire a moris.js pour le tableau de bord.
  * @global type $bdd  Connection PDO valide.
- * @param string $sql Requete sql valide sql
+ * @param string $sql Requete sql valide
  * @return array Correspondant aux donnees pour morris.js.
  */
 function data_graphs(PDOStatement $stmt) {
@@ -361,4 +365,330 @@ function data_graphs(PDOStatement $stmt) {
     array_push($colors, $iter['couleur']);
   }
   return ['data' => $data, 'colors' => $colors];
+}
+
+function data_graphs_from_bilan($bilan, $key) {
+  $data = [];
+  $colors = [];
+  foreach ($bilan as $_ => $iter) {
+    array_push($data, ['value' => $iter[$key], 'label' => $iter['nom']]);
+    array_push($colors, $iter['couleur']);
+  }
+  return ['data' => $data, 'colors' => $colors];
+}
+
+// Tableau de recap du Chiffre d'Affaire par mode de paiement
+// Utile pour vérifier le fond de caisse en fin de vente
+// Equivalent de la touche 'Z' sur une caisse enregistreuse
+// Affichage du tableau
+function chiffre_affaire_par_mode_paiement(PDO $bdd, $start, $stop) {
+  $sql = 'SELECT
+    ventes.id_moyen_paiement AS id_moyen,
+    moyens_paiement.nom AS moyen,
+    COUNT(DISTINCT(ventes.id)) AS quantite_vendue,
+    SUM(vendus.prix * vendus.quantite) AS total,
+    SUM(vendus.remboursement) AS remboursement
+  FROM
+    ventes,
+    vendus,
+    moyens_paiement
+  WHERE
+    vendus.id_vente = ventes.id
+     AND moyens_paiement.id = ventes.id_moyen_paiement
+     AND DATE(vendus.timestamp)
+     BETWEEN :du AND :au
+    GROUP BY ventes.id_moyen_paiement';
+  $stmt = $bdd->prepare($sql);
+  $stmt->bindValue(':du', $start, PDO::PARAM_STR);
+  $stmt->bindValue(':au', $stop, PDO::PARAM_STR);
+  $stmt->execute();
+  return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+function chiffre_affaire_mode_paiement_point_vente(PDO $bdd, $start, $stop, $id_point_vente) {
+  $sql = 'SELECT
+    ventes.id_moyen_paiement AS id_moyen,
+    moyens_paiement.nom AS moyen,
+    COUNT(DISTINCT(ventes.id)) AS quantite_vendue,
+    SUM(vendus.prix * vendus.quantite) AS total,
+    SUM(vendus.remboursement) AS remboursement
+  FROM
+    ventes,
+    vendus,
+    moyens_paiement
+  WHERE
+    vendus.id_vente = ventes.id
+     AND moyens_paiement.id = ventes.id_moyen_paiement
+     AND DATE(vendus.timestamp) BETWEEN :du AND :au
+     AND ventes.id_point_vente = :id_point_vente
+  GROUP BY ventes.id_moyen_paiement';
+  $stmt = $bdd->prepare($sql);
+  $stmt->bindValue(':du', $start, PDO::PARAM_STR);
+  $stmt->bindValue(':au', $stop, PDO::PARAM_STR);
+  $stmt->bindValue(':id_point_vente', $id_point_vente, PDO::PARAM_INT);
+  $stmt->execute();
+  return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+function nb_points_ventes($bdd) {
+  $sql = 'SELECT COUNT(id) as nb_points_ventes
+                          FROM points_vente LIMIT 1';
+  $stmt = $bdd->query($sql);
+  $nb_point_ventes = (int) $stmt->fetch(PDO::FETCH_ASSOC)['nb_points_ventes'];
+  $stmt->closeCursor();
+  return $nb_point_ventes;
+}
+
+function nb_ventes(PDO $bdd, $start, $stop) {
+  $sql = 'SELECT
+    COUNT(DISTINCT(ventes.id)) as nb_ventes
+    FROM ventes, vendus
+    WHERE vendus.id_vente = ventes.id
+    AND DATE(vendus.timestamp)
+    BETWEEN :du AND :au
+    AND vendus.prix > 0';
+  $stmt = $bdd->prepare($sql);
+  $stmt->bindValue(':du', $start, PDO::PARAM_STR);
+  $stmt->bindValue(':au', $stop, PDO::PARAM_STR);
+  $stmt->execute();
+  $nb_ventes = (int) $stmt->fetch(PDO::FETCH_ASSOC)['nb_ventes'];
+  $stmt->closeCursor();
+  return $nb_ventes;
+}
+
+function nb_ventes_point_vente(PDO $bdd, $start, $stop, $id_point_vente) {
+  $sql = 'SELECT
+    COUNT(DISTINCT(ventes.id)) as nb_ventes
+    FROM ventes
+    INNER JOIN vendus
+    ON ventes.id_point_vente = :id_point_vente
+      AND vendus.id_vente = ventes.id
+    AND DATE(vendus.timestamp)
+    BETWEEN :du AND :au
+    AND vendus.prix > 0';
+  $stmt = $bdd->prepare($sql);
+  $stmt->bindValue(':du', $start, PDO::PARAM_STR);
+  $stmt->bindValue(':au', $stop, PDO::PARAM_STR);
+  $stmt->bindValue(':id_point_vente', $id_point_vente, PDO::PARAM_INT);
+  $stmt->execute();
+  $nb_ventes = (int) $stmt->fetch(PDO::FETCH_ASSOC)['nb_ventes'];
+  $stmt->closeCursor();
+  return $nb_ventes;
+}
+
+function nb_remboursements_point_vente(PDO $bdd, $start, $stop, $id_point_vente) {
+  $sql = 'SELECT
+    COUNT(DISTINCT(ventes.id)) as nb_remb
+    FROM ventes
+    INNER JOIN vendus
+    ON ventes.id_point_vente = :id_point_vente
+      AND vendus.id_vente = ventes.id
+    AND DATE(vendus.timestamp)
+    BETWEEN :du AND :au
+    AND vendus.remboursement > 0';
+  $stmt = $bdd->prepare($sql);
+  $stmt->bindValue(':du', $start, PDO::PARAM_STR);
+  $stmt->bindValue(':au', $stop, PDO::PARAM_STR);
+  $stmt->bindValue(':id_point_vente', $id_point_vente, PDO::PARAM_INT);
+  $stmt->execute();
+  $result = (int) $stmt->fetch(PDO::FETCH_ASSOC)['nb_remb'];
+  $stmt->closeCursor();
+  return $result;
+}
+
+function nb_remboursements(PDO $bdd, $start, $stop) {
+  $sql = 'SELECT
+    COUNT(DISTINCT(ventes.id)) as nb_remb
+    FROM ventes, vendus
+    WHERE vendus.id_vente = ventes.id
+    AND DATE(vendus.timestamp)
+    BETWEEN :du AND :au
+    AND vendus.remboursement > 0';
+  $stmt = $bdd->prepare($sql);
+  $stmt->bindValue(':du', $start, PDO::PARAM_STR);
+  $stmt->bindValue(':au', $stop, PDO::PARAM_STR);
+  $stmt->execute();
+  $result = (int) $stmt->fetch(PDO::FETCH_ASSOC)['nb_remb'];
+  $stmt->closeCursor();
+  return $result;
+}
+
+function bilan_ventes_par_type(PDO $bdd, $start, $stop) {
+  $sql = '
+    SELECT
+      type_dechets.id as id,
+      type_dechets.couleur as couleur,
+      type_dechets.nom as nom,
+      SUM(vendus.prix * vendus.quantite) as chiffre_degage,
+      SUM(vendus.quantite) as vendu_quantite,
+      SUM(vendus.remboursement) as remb_somme,
+      SUM(case when vendus.remboursement > 0 then 1 else 0 end) as remb_quantite
+    FROM vendus
+    INNER JOIN type_dechets
+    ON vendus.id_type_dechet = type_dechets.id
+    WHERE DATE(vendus.timestamp)
+    BETWEEN :du AND :au
+    GROUP BY type_dechets.id';
+  $stmt = $bdd->prepare($sql);
+  $stmt->bindValue(':du', $start, PDO::PARAM_STR);
+  $stmt->bindValue(':au', $stop, PDO::PARAM_STR);
+  $stmt->execute();
+
+  $result = [];
+  while ($data = $stmt->fetch(PDO::FETCH_ASSOC)) {
+    $id = $data['id'];
+    unset($data['id']);
+    $result[$id] = $data;
+  }
+  $stmt->closeCursor();
+  return $result;
+}
+
+function bilan_ventes_par_type_point_vente(PDO $bdd, $start, $stop, $id_point_vente) {
+  $sql = '
+    SELECT
+      type_dechets.id as id,
+      type_dechets.couleur as couleur,
+      type_dechets.nom as nom,
+      SUM(vendus.prix * vendus.quantite) as chiffre_degage,
+      SUM(vendus.quantite) as vendu_quantite,
+      SUM(vendus.remboursement) as remb_somme,
+      SUM(case when vendus.remboursement > 0 then 1 else 0 end) as remb_quantite
+    FROM vendus
+    INNER JOIN type_dechets
+    ON vendus.id_type_dechet = type_dechets.id
+    INNER JOIN ventes
+    ON vendus.id_vente = ventes.id
+      AND ventes.id_point_vente = :id_point_vente
+    WHERE DATE(vendus.timestamp)
+    BETWEEN :du AND :au
+    GROUP BY type_dechets.id';
+  $stmt = $bdd->prepare($sql);
+  $stmt->bindValue(':du', $start, PDO::PARAM_STR);
+  $stmt->bindValue(':au', $stop, PDO::PARAM_STR);
+  $stmt->bindValue(':id_point_vente', $id_point_vente, PDO::PARAM_INT);
+  $stmt->execute();
+
+  $result = [];
+  while ($data = $stmt->fetch(PDO::FETCH_ASSOC)) {
+    $id = $data['id'];
+    unset($data['id']);
+    $result[$id] = $data;
+  }
+  $stmt->closeCursor();
+  return $result;
+}
+
+function bilan_ventes_pesees(PDO $bdd, $start, $stop) {
+  $sql = 'SELECT
+      type_dechets.id as id,
+      type_dechets.nom as nom,
+      type_dechets.couleur as couleur,
+      COUNT(DISTINCT(pesees_vendus.id)) as nb_pesees_ventes,
+      COALESCE(SUM(pesees_vendus.quantite), 0) as quantite_pesee_vendu,
+      COALESCE(SUM(pesees_vendus.masse), 0) as vendu_masse,
+      COALESCE(AVG(pesees_vendus.masse), 0) as moy_masse_vente
+    FROM pesees_vendus
+    INNER JOIN vendus
+    ON vendus.id = pesees_vendus.id_vendu
+    INNER JOIN type_dechets
+    ON vendus.id_type_dechet = type_dechets.id
+    WHERE DATE(pesees_vendus.timestamp)
+    BETWEEN :du AND :au
+    GROUP BY type_dechets.id';
+  $stmt = $bdd->prepare($sql);
+  $stmt->bindValue(':du', $start, PDO::PARAM_STR);
+  $stmt->bindValue(':au', $stop, PDO::PARAM_STR);
+  $stmt->execute();
+  $result = [];
+  while ($data = $stmt->fetch(PDO::FETCH_ASSOC)) {
+    $id = $data['id'];
+    unset($data['id']);
+    $result[$id] = $data;
+  }
+  $stmt->closeCursor();
+  return $result;
+}
+
+function bilan_ventes_pesees_point_vente(PDO $bdd, $start, $stop, $id_point_vente) {
+  $sql = 'SELECT
+      type_dechets.id as id,
+      type_dechets.nom as nom,
+      type_dechets.couleur as couleur,
+      COUNT(DISTINCT(pesees_vendus.id)) as nb_pesees_ventes,
+      COALESCE(SUM(pesees_vendus.quantite), 0) as quantite_pesee_vendu,
+      COALESCE(SUM(pesees_vendus.masse), 0) as vendu_masse,
+      COALESCE(AVG(pesees_vendus.masse), 0) as moy_masse_vente
+    FROM pesees_vendus
+    INNER JOIN vendus
+    ON vendus.id = pesees_vendus.id_vendu
+    INNER JOIN type_dechets
+    ON vendus.id_type_dechet = type_dechets.id
+    INNER JOIN ventes
+    ON vendus.id_vente = ventes.id
+      AND ventes.id_point_vente = :id_point_vente
+    WHERE DATE(pesees_vendus.timestamp)
+    BETWEEN :du AND :au
+    GROUP BY type_dechets.id';
+  $stmt = $bdd->prepare($sql);
+  $stmt->bindValue(':du', $start, PDO::PARAM_STR);
+  $stmt->bindValue(':au', $stop, PDO::PARAM_STR);
+  $stmt->bindValue(':id_point_vente', $id_point_vente, PDO::PARAM_INT);
+  $stmt->execute();
+  $result = [];
+  while ($data = $stmt->fetch(PDO::FETCH_ASSOC)) {
+    $id = $data['id'];
+    unset($data['id']);
+    $result[$id] = $data;
+  }
+  $stmt->closeCursor();
+  return $result;
+}
+
+function bilan_ventes(PDO $bdd, $start, $stop) {
+  $sql = '
+    SELECT
+      (select count(*) from ventes) as nb_ventes,
+      SUM(vendus.prix * vendus.quantite) as chiffre_degage,
+      SUM(vendus.quantite) as vendu_quantite,
+      SUM(vendus.remboursement) as remb_somme,
+      SUM(case when vendus.remboursement > 0 then 1 else 0 end) as remb_quantite,
+      COALESCE(SUM(pesees_vendus.masse), 0) as vendu_masse
+    FROM vendus
+    LEFT JOIN pesees_vendus
+    ON vendus.id = pesees_vendus.id_vendu
+    WHERE DATE(vendus.timestamp)
+    BETWEEN :du AND :au';
+  $stmt = $bdd->prepare($sql);
+  $stmt->bindValue(':du', $start, PDO::PARAM_STR);
+  $stmt->bindValue(':au', $stop, PDO::PARAM_STR);
+  $stmt->execute();
+  $bilan = $stmt->fetch(PDO::FETCH_ASSOC);
+  $stmt->closeCursor();
+  return $bilan;
+}
+
+function bilan_ventes_point_vente(PDO $bdd, $start, $stop, $id_point_vente) {
+  $sql = '
+    SELECT
+      (select count(*) from ventes) as nb_ventes,
+      SUM(vendus.prix * vendus.quantite) as chiffre_degage,
+      SUM(vendus.quantite) as vendu_quantite,
+      SUM(vendus.remboursement) as remb_somme,
+      SUM(case when vendus.remboursement > 0 then 1 else 0 end) as remb_quantite,
+      COALESCE(SUM(pesees_vendus.masse), 0) as vendu_masse
+    FROM vendus
+    LEFT JOIN pesees_vendus
+    ON vendus.id = pesees_vendus.id_vendu
+    WHERE DATE(vendus.timestamp)
+    BETWEEN :du AND :au
+    AND ventes.id_point_vente = :id_point_vente';
+  $stmt = $bdd->prepare($sql);
+  $stmt->bindValue(':du', $start, PDO::PARAM_STR);
+  $stmt->bindValue(':au', $stop, PDO::PARAM_STR);
+  $stmt->bindValue(':id_point_vente', $id_point_vente, PDO::PARAM_INT);
+  $stmt->execute();
+  $bilan = $stmt->fetch(PDO::FETCH_ASSOC);
+  $stmt->closeCursor();
+  return $bilan;
 }
