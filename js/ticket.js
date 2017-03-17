@@ -167,7 +167,7 @@ function tickets_clear() {
   range.selectNodeContents(document.getElementById('transaction'));
   range.deleteContents();
 
-  document.getElementById('commentaire').textContent = '';
+  document.getElementById('commentaire').value = '';
   document.getElementById('massetot').textContent = 'Masse totale: 0 Kg.';
 
   // On reset TOUT les tickets. En general il y en aura qu'un...
