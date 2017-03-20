@@ -134,3 +134,13 @@ input:valid {
   max-height: 30%;
   overflow: auto;
 }
+
+.numpad {
+  width: 100%;
+  padding: 2px 5px 2px 5px;
+}
+
+.numkey {
+  width: 45px;
+  height: 45px;
+}

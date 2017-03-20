@@ -109,52 +109,8 @@ if (isset($_SESSION['id'])
         </div>
       </div>
 
-
-      <div class="col-md-8 col-md-offset-2" style="width: 220px;">
-        <div class="panel panel-info">
-          <div class="panel-body">
-            <div class="row">
-              <div class="input-group">
-                <input type="text" class="form-control" placeholder="Masse" id="number" name="num" style="margin-left:8px;">
-                <div class="input-group-btn">
-                  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" style="margin-right:8px;">
-                    <span class="glyphicon glyphicon-minus"></span>
-                    <span class="caret"></span>
-                  </button>
-                  <ul class="dropdown-menu dropdown-menu-right" role="menu">
-                    <?php foreach (types_contenants($bdd) as $conteneur) { ?>
-                      <li>
-                        <a onclick="submanut(<?= (float) $conteneur['masse'] ?>);"><?= $conteneur['nom'] ?></a>
-                      </li>
-                    <?php } ?>
-                  </ul>
-                </div><!-- /btn-group -->
-              </div><!-- /input-group -->
-            </div>
-
-            <div class="row">
-              <button class="btn btn-default btn-lg" onclick="number_write('1');" data-value="1" style="margin-left:8px; margin-top:8px;">1</button>
-              <button class="btn btn-default btn-lg" onclick="number_write('2');" data-value="2" style="margin-left:8px; margin-top:8px;">2</button>
-              <button class="btn btn-default btn-lg" onclick="number_write('3');" data-value="3" style="margin-left:8px; margin-top:8px;">3</button>
-            </div>
-            <div class="row">
-              <button class="btn btn-default btn-lg" onclick="number_write('4');" data-value="4" style="margin-left:8px; margin-top:8px;">4</button>
-              <button class="btn btn-default btn-lg" onclick="number_write('5');" data-value="5" style="margin-left:8px; margin-top:8px;">5</button>
-              <button class="btn btn-default btn-lg" onclick="number_write('6');" data-value="6" style="margin-left:8px; margin-top:8px;">6</button>
-            </div>
-            <div class="row">
-              <button class="btn btn-default btn-lg" onclick="number_write('7');" data-value="7" style="margin-left:8px; margin-top:8px;">7</button>
-              <button class="btn btn-default btn-lg" onclick="number_write('8');" data-value="8" style="margin-left:8px; margin-top:8px;">8</button>
-              <button class="btn btn-default btn-lg" onclick="number_write('9');" data-value="9" style="margin-left:8px; margin-top:8px;">9</button>
-            </div>
-            <div class="row">
-              <button class="btn btn-default btn-lg" onclick="number_clear();" data-value="C" style="margin-left:8px; margin-top:8px;">C</button>
-              <button class="btn btn-default btn-lg" onclick="number_write('0');" data-value="0" style="margin-left:8px; margin-top:8px;">0</button>
-              <button class="btn btn-default btn-lg" onclick="number_write('.');" data-value="," style="margin-left:8px; margin-top:8px;">,</button>
-            </div>
-          </div>
-        </div>
-      </div>
+      <!-- Pavee de saisie numerique vcir numpad.js -->
+      <div id="numpad" class="col-md-8 col-md-offset-2" style="width: 220px;"></div>
     </div>
 
     <div class="col-md-4">
@@ -197,7 +153,7 @@ if (isset($_SESSION['id'])
     // Variables d'environnement de Oressource.
     'use scrict';
     window.OressourceEnv = {
-      structure: <?= json_encode($_SESSION['structure'])?>,
+      structure: <?= json_encode($_SESSION['structure']) ?>,
       adresse: <?= json_encode($_SESSION['adresse']) ?>,
       id_user: <?= json_encode($_SESSION['id'], JSON_NUMERIC_CHECK) ?>,
       saisie_collecte: <?= json_encode(is_allowed_saisie_collecte()) ?>,
@@ -206,7 +162,8 @@ if (isset($_SESSION['id'])
       id_type_action: <?= json_encode($types_action, JSON_NUMERIC_CHECK) ?>,
       types_dechet: <?= json_encode(types_dechets($bdd), JSON_NUMERIC_CHECK) ?>,
       masse_max: <?= json_encode($point_sortie['pesee_max'], JSON_NUMERIC_CHECK) ?>,
-      types_evac: <?= json_encode(types_dechets_evac($bdd), JSON_NUMERIC_CHECK) ?>
+      types_evac: <?= json_encode(types_dechets_evac($bdd), JSON_NUMERIC_CHECK) ?>,
+      conteneurs: <?= json_encode(types_contenants($bdd), JSON_NUMERIC_CHECK) ?>
     };
   </script>
   <script src="../js/ticket.js" type="text/javascript"></script>
@@ -215,7 +172,8 @@ if (isset($_SESSION['id'])
     'use strict';
 
     document.addEventListener('DOMContentLoaded', () => {
-      const numpad = new NumPad(document.getElementById('number'));
+      const numpad = new NumPad(document.getElementById('numpad'),
+              window.OressourceEnv.conteneurs);
 
       // Hack en attendant de trouver une solution pour gerer differament les dechets
       // et les objets qui ont les memes id...

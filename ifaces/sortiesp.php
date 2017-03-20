@@ -82,38 +82,10 @@ if (isset($_SESSION['id'])
       </div>
     </div> <!-- .col-md-4 -->
 
-    <div class="col-md-4" style="width: 220px;">
+    
+    <div id="numpad" class="col-md-4" style="width: 220px;">
       <p>La masse des différents bacs est automatiquement déduite.</p>
-      <div class="panel panel-info">
-        <div class="panel-body">
-          <div class="row">
-            <div class="input-group">
-              <input type="text" class="form-control" placeholder="Masse" id="number" name="num" style="margin-left:8px;" size="12">
-            </div>
-          </div>
-          <div class="row">
-            <button class="btn btn-default btn-lg" onclick="number_write('1');" data-value="1" style="margin-left:8px; margin-top:8px;">1</button>
-            <button class="btn btn-default btn-lg" onclick="number_write('2');" data-value="2" style="margin-left:8px; margin-top:8px;">2</button>
-            <button class="btn btn-default btn-lg" onclick="number_write('3');" data-value="3" style="margin-left:8px; margin-top:8px;">3</button>
-          </div>
-          <div class="row">
-            <button class="btn btn-default btn-lg" onclick="number_write('4');" data-value="4" style="margin-left:8px; margin-top:8px;">4</button>
-            <button class="btn btn-default btn-lg" onclick="number_write('5');" data-value="5" style="margin-left:8px; margin-top:8px;">5</button>
-            <button class="btn btn-default btn-lg" onclick="number_write('6');" data-value="6" style="margin-left:8px; margin-top:8px;">6</button>
-          </div>
-          <div class="row">
-            <button class="btn btn-default btn-lg" onclick="number_write('7');" data-value="7" style="margin-left:8px; margin-top:8px;">7</button>
-            <button class="btn btn-default btn-lg" onclick="number_write('8');" data-value="8" style="margin-left:8px; margin-top:8px;">8</button>
-            <button class="btn btn-default btn-lg" onclick="number_write('9');" data-value="9" style="margin-left:8px; margin-top:8px;">9</button>
-          </div>
-          <div class="row">
-            <button class="btn btn-default btn-lg" onclick="number_clear();" data-value="C" style="margin-left:8px; margin-top:8px;">C</button>
-            <button class="btn btn-default btn-lg" onclick="number_write('0');" data-value="0" style="margin-left:8px; margin-top:8px;">0</button>
-            <button class="btn btn-default btn-lg" onclick="number_write('.');" data-value="," style="margin-left:8px; margin-top:8px;">,</button>
-          </div>
-        </div>
-      </div>
-    </div> <!-- .col-md-4 -->
+    </div>
 
     <div class="col-md-4">
       <div class="panel panel-info">
@@ -144,13 +116,13 @@ if (isset($_SESSION['id'])
     'use scrict';
     window.OressourceEnv = {
       structure: <?= json_encode($_SESSION['structure']) ?>,
-      adresse: <?= (json_encode($_SESSION['adresse'])); ?>,
-      id_user: <?= (json_encode($_SESSION['id'], JSON_NUMERIC_CHECK)); ?>,
-      saisie_collecte: <?= json_encode(is_allowed_saisie_collecte()); ?>,
-      user_droit: <?= json_encode($_SESSION['niveau']); ?>,
+      adresse: <?= json_encode($_SESSION['adresse']) ?>,
+      id_user: <?= json_encode($_SESSION['id'], JSON_NUMERIC_CHECK) ?>,
+      saisie_collecte: <?= json_encode(is_allowed_saisie_collecte()) ?>,
+      user_droit: <?= json_encode($_SESSION['niveau']) ?>,
       id_point: <?= json_encode($numero, JSON_NUMERIC_CHECK); ?>,
-      masse_max: <?= (json_encode($point_sortie['pesee_max'], JSON_NUMERIC_CHECK)); ?>,
-      types_evac: <?= (json_encode(types_poubelles($bdd), JSON_NUMERIC_CHECK)); ?>
+      masse_max: <?= json_encode($point_sortie['pesee_max'], JSON_NUMERIC_CHECK) ?>,
+      types_evac: <?= json_encode(types_poubelles($bdd), JSON_NUMERIC_CHECK) ?>
     };
   </script>
   <script src="../js/ticket.js" type="text/javascript"></script>
@@ -159,7 +131,7 @@ if (isset($_SESSION['id'])
     'use strict';
 
     document.addEventListener('DOMContentLoaded', () => {
-      const numpad = new NumPad(document.getElementById('number'));
+      const numpad = new NumPad(document.getElementById('numpad'), []);
 
       // Hack en attendant de trouver une solution pour gerer differament les dechets
       // et les objets qui ont les memes id...
