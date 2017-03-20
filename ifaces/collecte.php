@@ -51,133 +51,91 @@ if (isset($_SESSION['id'])
 
 
   <div class="container">
-      <div class="header-header">
-        <h1><?php echo($point_collecte['nom']); ?></h1>
-      </div>
+    <div class="header-header">
+      <h1><?= $point_collecte['nom'] ?></h1>
+    </div>
     <div class="row">
-    <div class="col-md-4 " >
-      <div class="panel panel-info" >
+      <div class="col-md-4 " >
+        <div class="panel panel-info" >
           <div class="panel-heading">
             <h3 class="panel-title"><label id="massetot">Bon d'apport: 0 Kg.</label></h3>
           </div>
           <div class="panel-body">
             <form id="formulaire">
-          <?php if (is_allowed_saisie_collecte() && is_allowed_edit_date()) { ?>
-            <label  for="antidate">Date de l'apport: </label>
-            <input type="date" id="antidate" name="antidate" style="width:120px; height:20px;" value="<?php echo($date->format('Y-m-d')); ?>">
-          <?php } ?>
-            <ul class="list-group" id="transaction">  <!--start Ticket Caisse -->
-            <!-- Remplis via JavaScript voir script de la page -->
-            </ul> <!--end TicketCaisse -->
+              <?php if (is_allowed_saisie_collecte() && is_allowed_edit_date()) { ?>
+                <label  for="antidate">Date de l'apport: </label>
+                <input type="date" id="antidate" name="antidate" style="width:120px; height:20px;" value="<?= $date->format('Y-m-d') ?>">
+              <?php } ?>
+              <ul class="list-group" id="transaction">  <!--start Ticket Caisse -->
+                <!-- Remplis via JavaScript voir script de la page -->
+              </ul> <!--end TicketCaisse -->
             </form>
           </div>
           <div class="panel-footer">
-          <input type="text" form="formulaire" class="form-control" name="commentaire" id="commentaire" placeholder="Commentaire">
+            <input type="text" form="formulaire" class="form-control" name="commentaire" id="commentaire" placeholder="Commentaire">
+          </div>
         </div>
       </div>
-    </div>
 
-    <div class="col-md-4"  >
-      <div class="panel panel-info">
-        <div class="panel-heading">
-          <h3 class="panel-title"><label>Informations :</label></h3>
-        </div>
-        <div class="panel-body">
-          <label for="id_type_action">Type de collecte:</label>
+      <div class="col-md-4"  >
+        <div class="panel panel-info">
+          <div class="panel-heading">
+            <h3 class="panel-title"><label>Informations :</label></h3>
+          </div>
+          <div class="panel-body">
+            <label for="id_type_action">Type de collecte:</label>
             <select name ="id_type_action" form="formulaire" id ="id_type_action" class="form-control" style="font-size: 12pt" required>
               <?php foreach ($types_action as $type_collecte) { ?>
-              <option value="<?php echo $type_collecte['id'] ?>"><?php echo $type_collecte['nom'] ?></option>
-            <?php } ?>
-          </select>
+                <option value="<?= $type_collecte['id'] ?>"><?= $type_collecte['nom'] ?></option>
+              <?php } ?>
+            </select>
 
-          <label for="loc">Localité :</label>
-          <select name="localite" id="loc" form="formulaire" class="form-control" style="font-size: 12pt" required>
-            <?php foreach (localites($bdd) as $localite) { ?>
-              <option value="<?php echo $localite['id'] ?>"><?php echo $localite['nom'] ?></option>
-            <?php } ?>
-          </select>
-         
+            <label for="loc">Localité :</label>
+            <select name="localite" id="loc" form="formulaire" class="form-control" style="font-size: 12pt" required>
+              <?php foreach (localites($bdd) as $localite) { ?>
+                <option value="<?= $localite['id'] ?>"><?= $localite['nom'] ?></option>
+              <?php } ?>
+            </select>
+
+          </div>
         </div>
+
+        <!-- Pavee de saisie numerique vcir numpad.js -->
+        <div id="numpad" class="col-md-8 col-md-offset-2" style="width: 220px;"></div>
       </div>
 
-      <!-- Pavee de saisie numerique. -->
-      <div class="col-md-8 col-md-offset-2" style="width: 220px;">
+      <div class="col-md-4" >
         <div class="panel panel-info">
+          <div class="panel-heading">
+            <h3 class="panel-title"><label>Type d'objet:</label></h3>
+          </div>
           <div class="panel-body">
-            <div class="row">
-              <div class="input-group">
-                <input type="text" class="form-control" placeholder="Masse" id="number" name="num" style="z-index: 0;margin-left:8px;">
-                <div class="input-group-btn">
-                  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" style=" margin-right:8px;">
-                    <span class="glyphicon glyphicon-minus"></span>
-                    <span class="caret"></span>
-                  </button>
-                  <ul class="dropdown-menu dropdown-menu-right" role="menu">
-                    <!-- need style sur les boutons mais OK -->
-                    <?php foreach (types_contenants($bdd) as $conteneur) { ?>
-                    <li onClick="submanut(<?php echo((float) $conteneur['masse']); ?>);"><?php echo $conteneur['nom']; ?></li>
-                    <?php } ?>
-                  </ul>
-                </div><!-- /btn-group -->
-              </div><!-- /input-group -->
-            </div>
-
-            <div class="row">
-              <button class="btn btn-default btn-lg" onclick="number_write('1');" data-value="1" style="margin-left:8px; margin-top:8px;">1</button>
-              <button class="btn btn-default btn-lg" onclick="number_write('2');" data-value="2" style="margin-left:8px; margin-top:8px;">2</button>
-              <button class="btn btn-default btn-lg" onclick="number_write('3');" data-value="3" style="margin-left:8px; margin-top:8px;">3</button>
-            </div>
-            <div class="row">
-              <button class="btn btn-default btn-lg" onclick="number_write('4');" data-value="4" style="margin-left:8px; margin-top:8px;">4</button>
-              <button class="btn btn-default btn-lg" onclick="number_write('5');" data-value="5" style="margin-left:8px; margin-top:8px;">5</button>
-              <button class="btn btn-default btn-lg" onclick="number_write('6');" data-value="6" style="margin-left:8px; margin-top:8px;">6</button>
-            </div>
-            <div class="row">
-              <button class="btn btn-default btn-lg" onclick="number_write('7');" data-value="7" style="margin-left:8px; margin-top:8px;">7</button>
-              <button class="btn btn-default btn-lg" onclick="number_write('8');" data-value="8" style="margin-left:8px; margin-top:8px;">8</button>
-              <button class="btn btn-default btn-lg" onclick="number_write('9');" data-value="9" style="margin-left:8px; margin-top:8px;">9</button>
-            </div>
-            <div class="row">
-              <button class="btn btn-default btn-lg" onclick="number_clear();" data-value="C" style="margin-left:8px; margin-top:8px;">C</button>
-              <button class="btn btn-default btn-lg" onclick="number_write('0');" data-value="0" style="margin-left:8px; margin-top:8px;">0</button>
-              <button class="btn btn-default btn-lg" onclick="number_write('.');" data-value="," style="margin-left:8px; margin-top:8px;">,</button>
+            <div class="btn-group" id="list_item">
+              <!-- Cree via JS -->
             </div>
           </div>
         </div>
-      </div>
-    </div>
+        <div class="btn-group" role="group">
+          <button id="encaissement" class="btn btn-success btn-lg">C'est pesé!</button>
+          <button id="impression" class="btn btn-primary btn-lg" value="Print" ><span class="glyphicon glyphicon-print"></span></button>
+          <button id="reset" class="btn btn-warning btn-lg"><span class="glyphicon glyphicon-refresh"></button></div>
 
-    <div class="col-md-4" >
-      <div class="panel panel-info">
-        <div class="panel-heading">
-          <h3 class="panel-title"><label>Type d'objet:</label></h3>
-        </div>
-        <div class="panel-body">
-          <div class="btn-group" id="list_item">
-            <!-- Cree via JS -->
-          </div>
-        </div>
       </div>
-<div class="btn-group" role="group">
-      <button id="encaissement" class="btn btn-success btn-lg">C'est pesé!</button>
-      <button id="impression" class="btn btn-primary btn-lg" value="Print" ><span class="glyphicon glyphicon-print"></span></button>
-      <button id="reset" class="btn btn-warning btn-lg"><span class="glyphicon glyphicon-refresh"></button></div>
-
-    </div>
-  </div> <!-- row -->
+    </div> <!-- row -->
   </div> <!--container-->
 
   <script type="text/javascript">
-  // Variables d'environnement de Oressource.
+    // Variables d'environnement de Oressource.
     'use scrict';
     window.OressourceEnv = {
-      structure: <?php echo(json_encode($_SESSION['structure'])); ?>,
-      adresse: <?php echo(json_encode($_SESSION['adresse'])); ?>,
-      id_user: <?php echo(json_encode($_SESSION['id'], JSON_NUMERIC_CHECK)); ?>,
-      id_point: <?php echo json_encode(filter_input(INPUT_GET, 'numero', FILTER_VALIDATE_INT), JSON_NUMERIC_CHECK); ?>,
-      id_type_action: <?php echo(json_encode($types_action, JSON_NUMERIC_CHECK &JSON_FORCE_OBJECT)) ?>,
-      types_dechet: <?php echo(json_encode(types_dechets($bdd), JSON_NUMERIC_CHECK & JSON_FORCE_OBJECT)); ?>,
-      masse_max: <?php echo(json_encode($point_collecte['pesee_max'], JSON_NUMERIC_CHECK)); ?>,
+      structure: <?= json_encode($_SESSION['structure']) ?>,
+      adresse: <?= json_encode($_SESSION['adresse']) ?>,
+      id_user: <?= json_encode($_SESSION['id'], JSON_NUMERIC_CHECK) ?>,
+      id_point: <?= json_encode($numero, JSON_NUMERIC_CHECK) ?>,
+      id_type_action: <?= json_encode($types_action, JSON_NUMERIC_CHECK) ?>,
+      types_dechet: <?= json_encode(types_dechets($bdd), JSON_NUMERIC_CHECK) ?>,
+      masse_max: <?= json_encode($point_collecte['pesee_max'], JSON_NUMERIC_CHECK) ?>,
+      conteneurs: <?= json_encode(types_contenants($bdd), JSON_NUMERIC_CHECK) ?>
     };
   </script>
   <script src="../js/ticket.js" type="text/javascript"></script>
@@ -186,7 +144,8 @@ if (isset($_SESSION['id'])
     'use strict';
 
     document.addEventListener('DOMContentLoaded', () => {
-      const numpad = new NumPad(document.getElementById('number'));
+      const numpad = new NumPad(document.getElementById('numpad'),
+              window.OressourceEnv.conteneurs);
       // Passer ticket en param aux evenements?
       // object global attention!
 
@@ -200,13 +159,13 @@ if (isset($_SESSION['id'])
         div_list_item.appendChild(button);
       });
 
-      const encaisse = make_encaissement('../api/collectes.php', { items: ticketsItem });
+      const encaisse = make_encaissement('../api/collectes.php', {items: ticketsItem});
 
       document.getElementById('encaissement').addEventListener('click', encaisse, false);
       document.getElementById('impression').addEventListener('click', impression_ticket, false);
       document.getElementById('reset').addEventListener('click', tickets_clear, false);
 
-      window.tickets = [ ticketsItem ];
+      window.tickets = [ticketsItem];
     }, false);
   </script>
 
