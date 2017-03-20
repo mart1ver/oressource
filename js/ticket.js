@@ -102,17 +102,20 @@ class Ticket {
 // TODO: separer la logique de l'UI.
 // Gros Hack pour pouvoir gerer les sorties... On revoie une
 // fonction specialisee.
-function connection_UI_ticket(numpad, ticket, typesItems) {
+// Attention pretrairement ne fait que retourner la masse sauf si on est une sortie poubelles.
+function connection_UI_ticket(numpad, ticket, typesItems, pretraitement=((a, ..._) => a)) {
   const totalUI = document.getElementById('massetot');
   const transaction = document.getElementById('transaction');
 
   // Ne bind pas this... A explorer.
   return (event) => {
-    const value = numpad.value;
+    const id = parseInt(event.currentTarget.id, 10);
+    const type_dechet = typesItems[id - 1];
+
+    const value = pretraitement(numpad.value, type_dechet.masse_bac); // retourne la masse sauf pour les poubelles.
     if (value > 0.00) {
       if (value <= window.OressourceEnv.masse_max) {
 
-        const id = parseInt(event.currentTarget.id, 10);
         ticket.push({
           masse: value,
           type: id

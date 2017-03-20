@@ -168,15 +168,25 @@ if (isset($_SESSION['id'])
 
       const typesEvacs = window.OressourceEnv.types_evac;
       const ticketEvac = new Ticket();
-      //TODO prendre en compte la masse des bacs!!
-      const pushEvac = connection_UI_ticket(numpad, ticketEvac, typesEvacs);
+      // TODO prendre en compte la masse des bacs!!
+      const sub_masse_poubelle = (masse, masse_poubelle) => {
+        return masse - masse_poubelle;
+      }
+      const pushEvac = connection_UI_ticket(numpad, ticketEvac, typesEvacs, sub_masse_poubelle);
 
       const div_list_evac = document.getElementById('list_poubelle');
-      typesEvacs.forEach((item) => {
-        const button = html_saisie_item(item, pushEvac);
-        div_list_evac.appendChild(button);
+      const fragment = document.createDocumentFragment();
+      typesEvacs.forEach(({ id, nom, couleur, masse_bac }) => {
+          const button = document.createElement('button');
+          button.setAttribute('id', id);
+          button.setAttribute('class', 'btn btn-default');
+          button.setAttribute('style', 'padding: 8px 3px 8px 3px; margin: 4px 0px 4px 2px');
+          button.innerHTML = `<span class="badge" id="cool" style="background-color:${couleur}">${nom}: ${masse_bac}kg</span>`;
+          button.addEventListener('click', pushEvac, false);
+          fragment.appendChild(button);
       });
-
+      div_list_evac.appendChild(fragment);
+      
       const metadata = {classe: 'sortiesp'};
       const encaisse = make_encaissement('../api/sorties.php', {
         evacs: ticketEvac
