@@ -18,6 +18,13 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+function grilles_objets_id($bdd, $id_dechet) {
+  $req = $bdd->prepare("SELECT * FROM grille_objets WHERE id_type_dechet = :id_type_dechet");
+  $req->bindValue(':id_type_dechet', $id_dechet, PDO::PARAM_INT);
+  $req->execute();
+  return $req->fetchAll(PDO::FETCH_ASSOC);
+}
+
 function convention_sortie(PDO $bdd) {
   $sql = 'SELECT id, nom FROM conventions_sorties WHERE visible = "oui"';
   $stmt = $bdd->prepare($sql);
