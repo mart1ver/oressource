@@ -19,7 +19,7 @@ $couleur = $donnees['couleur'];
 $id_type_dechet_evac_current = $_POST['id_type_dechet_evac'];
 $id_type_dechet_evac_current_tab = explode("a", $id_type_dechet_evac_current);
             
-              $reponse->closeCursor(); // Termine le traitement de la requête
+              $req->closeCursor(); // Termine le traitement de la requête
                
 
 
