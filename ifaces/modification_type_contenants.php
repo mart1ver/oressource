@@ -19,7 +19,7 @@ $donnees = $req->fetch();
 
 $couleur = $donnees['couleur'];
             
-              $reponse->closeCursor(); // Termine le traitement de la requête
+              $req->closeCursor(); // Termine le traitement de la requête
 
 
 ?>
