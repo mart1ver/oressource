@@ -18,7 +18,7 @@
  */
 
 
-// Oressource 2014, formulaire de collecte
+// Oressource 2017, formulaire de collecte
 // Simple formulaire de saisie des types et quantités de matériel entrant dans la structure.
 // Pensé pour être fonctionnel sur ecran tactile.
 // Du javascript permet l'interactivité du keypad et des boutons centraux avec le bon de collecte.

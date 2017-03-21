@@ -43,7 +43,7 @@ if (isset($_SESSION['id'])
     <ul class="nav nav-tabs">
       <?php foreach ($type_dechets as $type_dechet) { ?>
         <li class="<?= ($type_obj === $type_dechet['id'] ? 'active' : '') ?>">
-          <a href="les_prix.php?typo=<?= $type_dechet['id'] ?>"><?= $type_dechet['nom'] ?></a>
+          <a href="grilles_prix.php?typo=<?= $type_dechet['id'] ?>"><?= $type_dechet['nom'] ?></a>
         </li>
       <?php } ?>
     </ul>
