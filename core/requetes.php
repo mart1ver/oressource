@@ -18,11 +18,57 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-function grilles_objets_id($bdd, $id_dechet) {
+function objet_id_dechet($bdd, $id_dechet) {
   $req = $bdd->prepare("SELECT * FROM grille_objets WHERE id_type_dechet = :id_type_dechet");
   $req->bindValue(':id_type_dechet', $id_dechet, PDO::PARAM_INT);
   $req->execute();
   return $req->fetchAll(PDO::FETCH_ASSOC);
+}
+
+function objet_id($bdd, $id_obj) {
+  $req = $bdd->prepare("SELECT * FROM grille_objets WHERE id = :id_obj");
+  $req->bindValue(':id_obj', $id_obj, PDO::PARAM_INT);
+  $req->execute();
+  $result = $req->fetch(PDO::FETCH_ASSOC);
+  $req->closeCursor();
+  return $result;
+}
+
+function objet_update_visible($bdd, $id, $visible) {
+  $req = $bdd->prepare('update grille_objets set visible = :visible where id = :id');
+  $req->bindValue(':id', $id, PDO::PARAM_INT);
+  $req->bindValue(':visible', $visible, PDO::PARAM_STR);
+  $req->execute();
+  $req->closeCursor();
+}
+
+function objet_update_nom($bdd, $id, $nom) {
+  $req = $bdd->prepare('update grille_objets set nom = :nom where id = :id');
+  $req->bindValue(':id', $id, PDO::PARAM_INT);
+  $req->bindValue(':nom', $nom, PDO::PARAM_STR);
+  $req->execute();
+  $req->closeCursor();
+}
+
+function objet_update($bdd, $id, $prix, $nom, $description) {
+  $req = $bdd->prepare('
+      update grille_objets
+      set nom = :nom1,
+          description = :description,
+          prix = :prix
+      where BINARY nom <> :nom2
+      and id = :id');
+  $req->bindValue(':id', $id, PDO::PARAM_INT);
+  $req->bindValue(':prix', $prix);
+  $req->bindParam(':nom1', $nom, PDO::PARAM_STR);
+  $req->bindParam(':nom2', $nom, PDO::PARAM_STR);
+  $req->bindParam(':description', $description, PDO::PARAM_STR);
+  $req->execute();
+  if ($req->rowCount() === 0) {
+    $req->closeCursor();
+    throw new UnexpectedValueException('Un objet avec le meme nom existe deja.');
+  }
+  $req->closeCursor();
 }
 
 function convention_sortie(PDO $bdd) {
@@ -80,6 +126,15 @@ function points_ventes(PDO $bdd) {
   $stmt = $bdd->prepare('SELECT id, nom, adresse FROM points_vente WHERE visible = "oui"');
   $stmt->execute();
   return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+function points_ventes_id(PDO $bdd, $id_point_vente) {
+  $stmt = $bdd->prepare('SELECT id, nom, adresse FROM points_vente WHERE id = :id');
+  $stmt->bindValue(':id', $id_point_vente, PDO::PARAM_INT);
+  $stmt->execute();
+  $point_sortie = $stmt->fetch(PDO::FETCH_ASSOC);
+  $stmt->closeCursor();
+  return $point_sortie;
 }
 
 function types_contenants(PDO $bdd) {

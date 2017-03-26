@@ -18,6 +18,19 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+// TODO a virer une fois la base nettoyee des oui et non.
+function oui_non_to_bool($s) {
+  if ($s === 'oui') { return true; }
+  else if ($s === 'non') { return false; }
+  else { throw new InvalidArgumentException('$s different de oui ou non.'); }
+}
+
+// TODO a virer une fois la base nettoyee des oui et non.
+function bool_to_oui_non($b) {
+  if ($b === true) { return 'oui'; }
+  else { return 'non'; }
+}
+
 function validate_json_login($unsafe_json) {
   $unsafe_json['username'] = filter_var($unsafe_json['username'], FILTER_VALIDATE_EMAIL);
   return $unsafe_json;
