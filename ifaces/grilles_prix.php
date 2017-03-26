@@ -1,5 +1,4 @@
 <?php
-
 /*
   Oressource
   Copyright (C) 2014-2017  Martin Vert and Oressource devellopers
@@ -24,8 +23,9 @@ require_once('../moteur/dbconfig.php');
 require_once('../core/requetes.php');
 require_once('../core/session.php');
 
+require_once('../core/validation.php'); // pour oui/non -> bool vis-versa
 
-$type_obj = filter_input(INPUT_GET, 'typo', FILTER_VALIDATE_INT);
+$type_obj = filter_input(INPUT_GET, 'id_type_dechet', FILTER_VALIDATE_INT);
 
 if (isset($_SESSION['id'])
   && $_SESSION['systeme'] === "oressource"
@@ -33,9 +33,12 @@ if (isset($_SESSION['id'])
   && $type_obj !== false) {
   require_once("tete.php");
 
+  if ($type_obj === null) {
+    $type_obj = 1;
+  }
 
   $type_dechets = types_dechets($bdd);
-  $grille = grilles_objets_id($bdd, $type_obj);
+  $grille = objet_id_dechet($bdd, $type_obj);
   ?>
 
   <div class="container">
@@ -43,7 +46,7 @@ if (isset($_SESSION['id'])
     <ul class="nav nav-tabs">
       <?php foreach ($type_dechets as $type_dechet) { ?>
         <li class="<?= ($type_obj === $type_dechet['id'] ? 'active' : '') ?>">
-          <a href="grilles_prix.php?typo=<?= $type_dechet['id'] ?>"><?= $type_dechet['nom'] ?></a>
+          <a href="grilles_prix.php?id_type_dechet=<?= $type_dechet['id'] ?>"><?= $type_dechet['nom'] ?></a>
         </li>
       <?php } ?>
     </ul>
@@ -53,7 +56,7 @@ if (isset($_SESSION['id'])
         <div class="row input-group">
           <div class="col-lg-3">
             <label for="nom">Nom:</label>
-            <input id="nom" class="form-control" type="text" placeholder="nom" name="nom"  required autofocus>
+            <input id="nom" class="form-control" type="text" placeholder="nom" name="nom" required autofocus>
           </div>
           <div class="col-lg-3">
             <label for="description">Description:</label>
@@ -61,12 +64,12 @@ if (isset($_SESSION['id'])
           </div>
           <div class="col-lg-3">
             <label for="prix">Prix:</label>
-            <input id="prix" class="form-control" type="text" placeholder="prix" name="prix" required >
+            <input id="prix" class="form-control" type="text" placeholder="prix" name="prix" required>
             <input class="form-control" type="hidden" value="<?= $type_obj ?>" name="typo">
           </div>
           <div class="col-lg-3">
             <br> <!-- TODO: trouver plus elegant en CSS que ce hack... -->
-            <button name="creer" class="btn btn-default">créer</button>
+            <button name="creer" class="btn btn-default">Créer</button>
           </div>
         </div>
       </form>
@@ -75,6 +78,7 @@ if (isset($_SESSION['id'])
     <table class="table">
       <thead>
         <tr>
+          <th>identifiant</th>
           <th>Nom</th>
           <th>Date de création</th>
           <th>Description</th>
@@ -88,6 +92,7 @@ if (isset($_SESSION['id'])
       <tbody>
         <?php foreach ($grille as $item) { ?>
           <tr>
+            <td><?= $item['id'] ?></td>
             <td><?= $item['nom'] ?></td>
             <td><?= $item['timestamp'] ?></td>
             <td><?= $item['description'] ?></td>
@@ -102,28 +107,20 @@ if (isset($_SESSION['id'])
 
             <td>
               <form action="../moteur/objet_visible.php" method="post">
-                <input type="hidden" name="typo" value="<?= $type_obj ?>">
                 <input type="hidden" name="id" value="<?= $item['id'] ?>">
-                <input type="hidden" name="visible" value="<?=
-          ($item['visible'] === 'oui' ? 'non' : 'oui')
-          ?>">
-                       <?php if ($item['visible'] === 'oui') { ?>
-                  <button class="btn btn-info btn-sm"><?= $item['visible'] ?></button>
+                <input type="hidden" name="visible" value="<?= oui_non_to_bool($item['visible']) ?>">
+                <?php if ($item['visible'] === 'oui') { ?>
+                  <button class="btn btn-sm btn-info "><?= $item['visible'] ?></button>
                 <?php } else { ?>
-                  <button class="btn btn-danger btn-sm"><?= $item['visible'] ?></button>
+                  <button class="btn btn-sm btn-danger "><?= $item['visible'] ?></button>
                 <?php } ?>
               </form>
             </td>
 
             <td>
-              <form action="modification_objet.php" method="post">
-                <input type="hidden" name="typo" value="<?= $type_obj ?>">
-                <input type="hidden" name="id" value="<?= $item['id'] ?>">
-                <input type="hidden" name="nom" value="<?= $item['nom'] ?>">
-                <input type="hidden" name="description" value="<?= $item['description'] ?>">
-                <input type="hidden" name="prix" value="<?= $item['prix'] ?>">
-                <button class="btn btn-warning btn-sm">Modifier</button>
-              </form>
+              <!-- TODO faire avec une infobulle JS -->
+              <a class="btn btn-warning btn-sm"
+                 href="modification_objet.php?id_obj=<?= $item['id'] ?>">Modifier</a>
             </td>
           </tr>
         <?php } ?>
@@ -132,7 +129,7 @@ if (isset($_SESSION['id'])
   </div><!-- /.container -->
 
   <?php
-  include "pied.php";
+  require_once "pied.php";
 } else {
   header('Location: ../moteur/destroy.php');
 }
