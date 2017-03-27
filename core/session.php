@@ -83,6 +83,10 @@ function is_allowed_gestion() {
   return strpos($_SESSION['niveau'], 'g') !== false;
 }
 
+function is_allowed_gestion_id($id) {
+  return strpos($_SESSION['niveau'], 'g' . ((string) $id)) !== false;
+}
+
 // Test si l'utilisateur a les droits sur un point de collecte donnee.
 function is_allowed_collecte_id($id) {
   return strpos($_SESSION['niveau'], 'c' . ((string) $id)) !== false;
