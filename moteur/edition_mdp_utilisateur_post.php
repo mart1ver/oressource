@@ -1,4 +1,5 @@
-<?php session_start();
+<?php
+session_start();
 
 //Vérification des autorisations de l'utilisateur et des variables de session requises pour l'utilisation de cette requête:
  if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource")
