@@ -41,6 +41,7 @@ if (isset($_SESSION['id'])
   $point_sortie = point_sorties_id($bdd, $numero);
   $pesee_max = (float) $point_sortie['pesee_max'];
   $types_poubelles = types_poubelles($bdd);
+  $date = new Datetime('now');
   ?>
 
   <div class="container">
