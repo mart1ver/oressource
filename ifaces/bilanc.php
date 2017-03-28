@@ -21,10 +21,16 @@
 +// Oressource 2017,bilan des collectes
 
 require_once('../moteur/dbconfig.php');
+require_once('../core/session.php');
+require_once('../core/requetes.php');
 
-//Vérification des autorisations de l'utilisateur et des variables de session requises pour l'affichage de cette page:
-if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 'bi') !== false))
-      { include "tete.php";?>
+if (isset($_SESSION['id'])
+  && $_SESSION['systeme'] === "oressource"
+  && is_allowed_bilan()) {
+
+  require_once('./tete.php');
+
+?>
 
    <head>
       
@@ -50,7 +56,7 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
 <h1>Bilan global</h1>
 
    <div class="col-md-4 col-md-offset-8" >
-<label for="reportrange">Choisissez la période à inspecter::</label><br>
+<label for="reportrange">Choisissez la période à inspecter:</label><br>
 <div id="reportrange" class="pull-left" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc">
                   <i class="fa fa-calendar"></i>
                   <span></span> <b class="caret"></b>
