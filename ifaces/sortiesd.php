@@ -39,6 +39,7 @@ if (isset($_SESSION['id'])
 
   $point_sortie = point_sorties_id($bdd, $numero);
   $pesee_max = (float) $point_sortie['pesee_max'];
+  $date = new Datetime('now');
   ?>
 
   <div class="container">
