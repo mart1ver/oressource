@@ -20,35 +20,30 @@
 
 session_start();
 
-error_reporting(E_ALL);
-ini_set('display_errors', '1');
-require_once('../moteur/dbconfig.php');
 //Vérification des autorisations de l'utilisateur et des variables de session requises pour l'affichage de cette page:
 if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND ( strpos($_SESSION['niveau'], 'bi') !== false)) {
-  include "tete.php";
+
+  require_once('../moteur/dbconfig.php');
+  require_once "tete.php";
+
+
+  $reponse = $bdd->prepare('SELECT id, nom, couleur FROM type_dechets WHERE id = :type');
+  $reponse->execute(['type' => $_GET['type']]);
+  $donnees = $reponse->fetch(PDO::FETCH_ASSOC);
+  $nom = $donnees['nom'];
+  $couleur = $donnees['couleur'];
+  $reponse->closeCursor();
+
+  $reponse = $bdd->prepare('SELECT nom, id FROM type_dechets');
+  $reponse->execute();
+  $types_dechets = $reponse->fetchAll(PDO::FETCH_ASSOC);
+
   ?>
-  <head>
-      <link href="../css/bootstrap.min.css" rel="stylesheet">
-      <link href="../fonts/font-awesome/css/font-awesome.min.css" rel="stylesheet">
-      <link rel="stylesheet" type="text/css" media="all" href="../css/daterangepicker-bs3.css" />
-      <script type="text/javascript" src="../js/jquery-2.0.3.min.js"></script>
-      <script type="text/javascript" src="../js/bootstrap.min.js"></script>
-      <script type="text/javascript" src="../js/moment.js"></script>
-      <script type="text/javascript" src="../js/daterangepicker.js"></script>
-      <script src="../js/raphael.js"></script>
-      <script src="../js/morris/morris.min.js"></script>
-      <?php
-//on determine le nom et la couleur  du type d'objet
-      $reponse = $bdd->prepare('SELECT nom, couleur FROM type_dechets WHERE id = :type');
-      $reponse->execute(array('type' => $_GET['type']));
-      // On affiche chaque entree une à une
-      while ($donnees = $reponse->fetch()) {
-        $type = $donnees['nom'];
-        $couleur = $donnees['couleur'];
-      }
-      $reponse->closeCursor(); // Termine le traitement de la requête
-      ?>
-  </head>
+
+  <script type="text/javascript" src="../js/moment.js"></script>
+  <script type="text/javascript" src="../js/daterangepicker.js"></script>
+  <script src="../js/raphael.js"></script>
+  <script src="../js/morris/morris.min.js"></script>
   <div class="container">
       <div class="row">
 
@@ -64,29 +59,11 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND ( strpos(
               <div class="col-md-4" >
                   <label>Choisissez le type d'objet ou de dechet:</label><br>
                   <select name="select" onchange="location = this.value;">
-
-                      <?php
-//on on liste les types d'objets
-                      $reponse = $bdd->prepare('SELECT nom, id FROM type_dechets');
-                      $reponse->execute(array('type' => $_GET['type']));
-                      // On affiche chaque entree une à une
-                      while ($donnees = $reponse->fetch()) {
-                        ?>
-                        <option value=
-
-                        <?php 
-                         echo('"jours.php?date1='.$_GET['date1'].'&date2='.$_GET['date2'].'&type='.$donnees['id'].'"'); 
-
-
-                         
-                        if ($donnees['id'] === $_GET['type']) {
-                          echo ('selected');
-                        }
-                        ?> > <?php echo ($donnees['nom']); ?> </option>
-                                <?php
-                              }
-                              $reponse->closeCursor(); // Termine le traitement de la requête
-                              ?>
+                      <?php foreach ($types_dechets as $type) {?>
+                        <option value="jours.php?date1='.<?= $_GET['date1'].'&date2='.$_GET['date2'].'&type='.$type['id'] ?>"
+                         <?= ($type['id'] === $_GET['type']) ? 'selected' : '' ?>
+                                ><?= $type['nom'] ?></option>
+                      <?php } ?>
                   </select>
               </div>
           
@@ -131,7 +108,7 @@ ORDER BY time');
       if ($masse_moy_jour == 0) {
         
       } else {
-        echo "<h3>Évolution de la masse totale collectée au " . $type . ".</h3> Moyenne journalière: " . $masse_moy_jour;
+        echo "<h3>Évolution de la masse totale collectée au " . $nom . ".</h3> Moyenne journalière: " . $masse_moy_jour;
         ?> Kgs.
         <div id="collectes" style="height: 180px;"></div>
         <?php
@@ -157,7 +134,7 @@ ORDER BY time');
       if ($masse_moy_jour == 0) {
         
       } else {
-        echo "<h3>Évolution des masses totales évacuées hors boutique en " . $type . ".</h3> Moyenne journalière: " . $masse_moy_jour;
+        echo "<h3>Évolution des masses totales évacuées hors boutique en " . $nom . ".</h3> Moyenne journalière: " . $masse_moy_jour;
         ?> Kgs.
         <div id="sorties" style="height: 180px;"></div>
         <?php
@@ -182,7 +159,7 @@ ORDER BY time');
         if ($masse_moy_jour == 0) {
           
         } else {
-          echo "<h3>Évolution des quantités de " . $type . " vendues.</h3> Moyenne journalière: " . $masse_moy_jour;
+          echo "<h3>Évolution des quantités de " . $nom . " vendues.</h3> Moyenne journalière: " . $masse_moy_jour;
         }
         ?> Pcs.
         <div id="qv" style="height: 180px;"></div>
@@ -209,7 +186,7 @@ ORDER BY time');
       if ($masse_moy_jour == 0) {
         
       } else {
-        echo "<h3>Évolution du C.A quotidien, " . $type . ".</h3> Moyenne journalière: " . $masse_moy_jour;
+        echo "<h3>Évolution du C.A quotidien, " . $nom . ".</h3> Moyenne journalière: " . $masse_moy_jour;
         ?> €.
         <div id="ca" style="height: 180px;"></div>
   <?php } ?>
@@ -508,7 +485,7 @@ ORDER BY time');
         });
       </script>
       <?php
-      include "pied_bilan.php";
+      include "pied.php";
     } else {
       header('Location: ../moteur/destroy.php');
     }

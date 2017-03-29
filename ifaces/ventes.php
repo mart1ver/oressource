@@ -1,5 +1,4 @@
 <?php
-
 /*
   Oressource
   Copyright (C) 2014-2017  Martin Vert and Oressource devellopers
@@ -20,14 +19,16 @@
 
 session_start();
 
-require_once '../moteur/dbconfig.php';
+require_once('../core/session.php');
 
 $numero = filter_input(INPUT_GET, 'numero', FILTER_VALIDATE_INT);
 
 if (isset($_SESSION['id'])
-  && $_SESSION['systeme'] = "oressource"
-  && (strpos($_SESSION['niveau'], 'v' . $numero) !== false)) {
-  require_once "tete_vente.php";
+  && $_SESSION['systeme'] === "oressource"
+  && is_allowed_vente_id($numero)) {
+
+  require_once "tete.php";
+  require_once '../moteur/dbconfig.php';
 
   // on détermine la référence de la prochaine vente.
   $req = $bdd->query("SHOW TABLE STATUS where name='ventes'");
@@ -59,10 +60,7 @@ if (isset($_SESSION['id'])
 
           <div class="panel-body" id="divID">
             <form action="../moteur/vente_post.php" id="formulaire" method="post">
-              <?php
-              if ($_SESSION['saisiec'] === 'oui'
-                && (strpos($_SESSION['niveau'], 'e') !== false)) {
-                ?>
+              <?php if (is_allowed_saisie_collecte() && is_allowed_edit_date()) { ?>
                 Date de la vente:  <input type="date" id="antidate" name="antidate" style="height:20px;" value="<?= date("Y-m-d") ?>">
               <?php } ?>
 
@@ -76,7 +74,7 @@ if (isset($_SESSION['id'])
               <input type="hidden" id="nlignes" name="nlignes">
               <input type="hidden" id="narticles" name="narticles">
               <input type="hidden" id="ptot" name="ptot">
-              <input type="hidden" id="id_user" name="id_user" value="<?= '"' . $_SESSION['id'] . '"' ?>">
+              <input type="hidden" id="id_user" name="id_user" value="<?= $_SESSION['id'] ?>">
               <input type="hidden" id="saisiec_user" name="saisiec_user" value="<?= $_SESSION['saisiec'] ?>">
               <input type="hidden" id="niveau_user" name="niveau_user" value="<?= $_SESSION['niveau'] ?>">
               <input type="hidden" name ="id_point_vente" id="id_point_vente" value="<?= $_GET['numero'] ?>">
@@ -92,10 +90,13 @@ if (isset($_SESSION['id'])
           </div>
 
           <div class="panel-body" id="panelcalc">
-            <?php if ($_SESSION['lot_caisse'] == 'oui') { ?>
+            <?php if ($_SESSION['lot_caisse']) { ?>
               <p align="right">
-                <b id="labellot">vente à:  </b>
-                <input type="checkbox" name="my-checkbox" checked data-on-text="l'unité" data-off-text="lot" data-handle-width="45" data-size="small" >
+                <b id="labellot">vente à: </b>
+                <input class="make-switch" id="typeVente" type="checkbox"
+                       name="my-checkbox" checked data-on-text="l'unité"
+                       data-off-text="lot" data-handle-width="45"
+                       data-size="small">
               <p>
               <?php } ?>
 
@@ -103,7 +104,7 @@ if (isset($_SESSION['id'])
               <input type="text" class="form-control" placeholder="Quantité" id="quantite" name="quantite" onfocus="fokus(this)" >
               <b id = "labelpul">Prix unitaire:</b>
               <input type="text" class="form-control" placeholder="€" id="prix" name="prix" onfocus="fokus(this)">
-              <?php if ($_SESSION['pes_vente'] === 'oui') { ?>
+              <?php if ($_SESSION['pes_vente']) { ?>
                 <b id = "labelmasse">Masse unitaire:</b>
                 <input type="text" class="form-control" placeholder="Kgs." id="masse" name="masse" onfocus="fokus(this)">
               <?php }; ?>
@@ -309,7 +310,7 @@ if (isset($_SESSION['id'])
 
           <div class="collapse" id="collapserembou">
             <div class="well">
-              <form action="../moteur/verif_remb_post.php?numero=<?php echo $_GET['numero'] ?>" id="champpassrmb" method="post">
+              <form action="../moteur/verif_remb_post.php?numero=<?= $_GET['numero'] ?>" id="champpassrmb" method="post">
                 <div class="input-group">
                   <input name="passrmb" id="passrmb" type="password" class="form-control" placeholder="Mot de passe...">
                   <span class="input-group-btn">
@@ -324,57 +325,57 @@ if (isset($_SESSION['id'])
     </div>
   </div>
 
-  <?php if ($_SESSION['viz_caisse'] == 'oui') { ?>
+  <?php if ($_SESSION['viz_caisse']) { ?>
     <div class="col-md-2 col-md-offset-2" style="width: 330px;" >
       <a href="viz_caisse.php?numero=<?= $numero ?>" target="_blank">visualiser les <?= $_SESSION['nb_viz_caisse'] ?> dernieres ventes</a>
     </div>
   <?php } ?>
+
+  <script defer type="text/javascript" src="../js/bootstrap-switch.js"></script>
   <script src="../js/ventes.js"></script>
   <script>
-            "use strict";
-            const force_pes_vente = <?=
-  json_encode($_SESSION['force_pes_vente'] === 'oui')
-  ?>;
+    'use strict';
+    const force_pes_vente = <?= json_encode($_SESSION['force_pes_vente']) ?>;
+    const tva_active = <?= json_encode($_SESSION['tva_active']) ?>;
+    const taux_tva = <?= json_encode($_SESSION['taux_tva'], JSON_NUMERIC_CHECK) ?>;
 
-            $("[name='my-checkbox']").bootstrapSwitch();
-            $('input[name="my-checkbox"]').on('switchChange.bootstrapSwitch', function (event, state) {
-              //console.log(state); // true | false
-              switchlot(state); // true | false
-            });
+    document.addEventListener('DOMContentLoaded', () => {
+      $("#typeVente").bootstrapSwitch();
+      $("#typeVente").on('switchChange.bootstrapSwitch', (event, state) => {
+        switchlot(state); // true | false
+      });
+    }, false);
 
-            function printdiv(divID) {
-              if (parseInt(document.getElementById('nlignes').value) >= 1) {
-                var headstr = "<html><head><title></title></head><body><small>";
+    function printdiv(divID) {
+      if (parseInt(document.getElementById('nlignes').value) >= 1) {
+        const headstr = "<html><head><title></title></head><body><small>";
+        if (tva_active) {
+          const prixtot = parseFloat(document.getElementById('ptot').value).toFixed(2);
+          const prixht = (prixtot / (1 + taux_tva.toFixed(2) / 100)).toFixed(2);
+          const ptva = (prixtot - prixht).toFixed(2);
+          const footstr = `TVA à ${taux_tva}% Prix H.T. = ${prixht} + € TVA=  ${ptva} €`;
+        } else {
+          const footstr = "Association non assujettie à la TVA.</body></small> ";
+        }
+        const commentaire = document.getElementById('commentaire').value.strip();
+        const comstr = `<ul id='liste' class='list-group'><li class='list-group-item'><b>${commentaire}</b></li></ul>`;
+        const newstr = document.all.item(divID).innerHTML;
+        const oldstr = document.body.innerHTML;
+        document.body.innerHTML = headstr + comstr + newstr + footstr;
+        window.print();
+        document.body.innerHTML = oldstr;
+      }
 
-  <?php if ($_SESSION['tva_active'] == 'oui') { ?>
-                  var prixtot = parseFloat(document.getElementById('ptot').value).toFixed(2);
-                  var prixht = parseFloat(prixtot).toFixed(2) / (1 + parseFloat(<?php echo $_SESSION['taux_tva'] ?>).toFixed(2) / 100);
-                  var ptva = parseFloat(prixtot).toFixed(2) - parseFloat(prixht).toFixed(2)
-                  var footstr = "TVA à <?php echo $_SESSION['taux_tva'] ?>%" + " Prix H.T. =" + parseFloat(prixht).toFixed(2) + "€ TVA=" + parseFloat(ptva).toFixed(2) + "€";
-  <?php } else { ?>
-                  var footstr = "Association non assujettie à la TVA.</body></small> ";
-  <?php } ?>
-                var comstr = "<ul id='liste' class='list-group'><li class='list-group-item'><b>";
-                comstr += document.getElementById('commentaire').value;
-                comstr += "</b></li></ul>";
-                var newstr = document.all.item(divID).innerHTML;
-                var oldstr = document.body.innerHTML;
-                document.body.innerHTML = headstr + comstr + newstr + footstr;
-                window.print();
-                document.body.innerHTML = oldstr;
-                //return false;
-              }
-
-              //puis encaisse
-              if ((parseInt(document.getElementById('nlignes').value) >= 1)
-                      && ((document.getElementById('quantite').value == "")
-                              || (document.getElementById('quantite').value == "0"))
-                      && ((document.getElementById('prix').value == "")
-                              || (document.getElementById('prix').value == "0"))) {
-                document.getElementById('comm').value = document.getElementById('commentaire').value;
-                document.getElementById("formulaire").submit();
-              }
-            }
+      //puis encaisse
+      if ((parseInt(document.getElementById('nlignes').value) >= 1)
+              && ((document.getElementById('quantite').value == "")
+                      || (document.getElementById('quantite').value == "0"))
+              && ((document.getElementById('prix').value == "")
+                      || (document.getElementById('prix').value == "0"))) {
+        document.getElementById('comm').value = document.getElementById('commentaire').value;
+        document.getElementById("formulaire").submit();
+      }
+    }
   </script>
 
   <?php

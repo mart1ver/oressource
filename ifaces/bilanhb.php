@@ -25,27 +25,15 @@ require_once('../moteur/dbconfig.php');
 
 //Vérification des autorisations de l'utilisateur et des variables de session requises pour l'affichage de cette page:
 if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 'bi') !== false))
-      { include "tete.php";?>
+      {
+  require_once "tete.php";
+  ?>
 
-   <head>
-      
-      <link href="../css/bootstrap.min.css" rel="stylesheet">
-      
-      <link href="../fonts/font-awesome/css/font-awesome.min.css" rel="stylesheet">
-      <link rel="stylesheet" type="text/css" media="all" href="../css/daterangepicker-bs3.css" />
+  <script type="text/javascript" src="../js/moment.js"></script>
+  <script type="text/javascript" src="../js/daterangepicker.js"></script>
+  <div class="container">
 
-      <script type="text/javascript" src="../js/jquery-2.0.3.min.js"></script>
-      
-      <script type="text/javascript" src="../js/bootstrap.min.js"></script>
-      <script type="text/javascript" src="../js/moment.js"></script>
-      <script type="text/javascript" src="../js/daterangepicker.js"></script>
-   </head>
- 
 
-      <div class="container">
-         
-
-          
 <div class="row">
   <div class="col-md-11 " >
 <h1>Bilan global</h1>
@@ -1365,7 +1353,7 @@ $reponse->closeCursor(); // Termine le traitement de la requête
    </div>
      </div>
   
-<?php include "pied_bilan.php"; ?>
+<?php include "pied.php"; ?>
 
 <?php
 }

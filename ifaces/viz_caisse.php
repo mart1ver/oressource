@@ -1,5 +1,4 @@
 <?php
-
 /*
   Oressource
   Copyright (C) 2014-2017  Martin Vert and Oressource devellopers
@@ -20,264 +19,79 @@
 
 session_start();
 
-?>
-<head>
-      
-      <link href="../css/bootstrap.min.css" rel="stylesheet">
-      
-      
-      <link rel="stylesheet" type="text/css" media="all" href="../css/daterangepicker-bs3.css" />
+require_once('../core/session.php');
+require_once('../core/requetes.php');
 
-      <script type="text/javascript" src="../js/jquery-2.0.3.min.js"></script>
-      
-      <script type="text/javascript" src="../js/bootstrap.min.js"></script>
-      <script type="text/javascript" src="../js/moment.js"></script>
-      <script type="text/javascript" src="../js/daterangepicker.js"></script>
-   </head>
+$numero = filter_input(INPUT_GET, 'numero', FILTER_VALIDATE_INT);
 
-<?php
-//Vérification des autorisations de l'utilisateur et des variables de session requises pour l'affichage de cette page:
- if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND $_SESSION['viz_caisse'] = "oui" AND (strpos($_SESSION['niveau'], 'v'.$_GET['numero']) !== false)  )
-      {  include "tete.php" ?>
-   <div class="container">
-        <h1>Visualisation des <?php echo $_SESSION['nb_viz_caisse'] ?> derniere ventes</h1> 
-        <p align="right">
-        <input class="btn btn-default btn-lg" type='button'name='quitter' value='Quitter' OnClick="window.close();"/></p>
+if (isset($_SESSION['id'])
+  && $_SESSION['systeme'] === 'oressource'
+  && $_SESSION['viz_caisse']
+  && is_allowed_vente_id($_GET['numero'])) {
+  require_once "tete.php";
 
- <div class="panel-body">
+  $nb_viz_caisse = intval($_SESSION['nb_viz_caisse']);
+  ?>
 
+  <script type="text/javascript" src="../js/moment.js"></script>
+  <script type="text/javascript" src="../js/daterangepicker.js"></script>
+  <div class="container">
+    <h1>Visualisation des <?= $nb_viz_caisse ?> derniere ventes</h1>
+    <p align="right">
+      <input class="btn btn-default btn-lg" type='button'name='quitter' value='Quitter' OnClick="window.close();"/></p>
+    <div class="panel-body">
+      <br>
+    </div>
 
-<br>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Date de création</th>
+          <th>Crédit</th>
+          <th>Débit</th>
+          <th>Nombre d'objets</th>
+          <th>Moyen de paiement</th>
+          <th>Commentaire</th>
+          <th>Auteur de la ligne</th>
+          <th>Visualisation</th>
+        </tr>
+      </thead>
 
-
-
-
-</div>
-
-
-  <!-- Table -->
-      <table class="table">
-        <thead>
+      <tbody>
+        <?php foreach (viz_caisse($bdd, $numero, $nb_viz_caisse) as $vente) { ?>
           <tr>
-            <th>#</th>
-            <th>Date de création</th>
-            <th>Crédit</th>
-            <th>Débit</th>
-            <th>Nombre d'objets</th>
-            <th>Moyen de paiement</th>
-            <th>Commentaire</th>
-            <th>Auteur de la ligne</th>
-            <th></th>
-           
-            
-          </tr>
-        </thead>
-        <tbody>
-        <?php 
-        $offset = intval($_SESSION['nb_viz_caisse']);
-/*
-'SELECT type_dechets.couleur,type_dechets.nom, sum(pesees_collectes.masse) somme 
-FROM type_dechets,pesees_collectes 
-WHERE type_dechets.id = pesees_collectes.id_type_dechet AND DATE(pesees_collectes.timestamp) = CURDATE()
-GROUP BY nom'
-*/
-
-
- 
-            // On recupère toute la liste des filieres de sortie
-            //   $reponse = $bdd->query('SELECT * FROM grille_objets');
-          
-$req = $bdd->prepare('SELECT ventes.id,ventes.timestamp ,moyens_paiement.nom moyen, moyens_paiement.couleur coul, ventes.commentaire ,ventes.last_hero_timestamp lht 
-                       FROM ventes ,moyens_paiement 
-                       WHERE ventes.id_point_vente = :id_point_vente 
-                       AND ventes.id_moyen_paiement = moyens_paiement.id AND DATE(ventes.timestamp) =DATE(CURRENT_TIMESTAMP())
-                       ORDER BY ventes.timestamp DESC
-                       LIMIT 0,:offset ');
-
-$req->bindValue('id_point_vente' , $_GET['numero'] , PDO::PARAM_INT );
-$req->bindValue('offset' , $offset , PDO::PARAM_INT );
-$req->execute();
-
-
-           // On affiche chaque entree une à une
-           while ($donnees = $req->fetch())
-           {
-
-           ?>
-            <tr> 
-            <td><?php echo $donnees['id']?></td>
-            <td><?php echo $donnees['timestamp']?></td>
-
-
-            <td> <?php 
-$req2 = $bdd->prepare('SELECT SUM(vendus.prix*vendus.quantite) pto
-                       FROM vendus
-                       WHERE  vendus.id_vente = :id_vente 
-                       ');
-$req2->execute(array('id_vente' => $donnees['id']));
-
-
-           // On affiche chaque entree une à une
-           while ($donnees2 = $req2->fetch())
-           { ?>
-
-
-
-<?php if ( $donnees2['pto'] > 0){echo $donnees2['pto'];
-$rembo = 'non';
-}?>
-
-
-         <?php }
-            
-                ?></td>
-            <td><?php 
-$req3 = $bdd->prepare('SELECT SUM(vendus.remboursement*vendus.quantite) pto
-                       FROM vendus
-                       WHERE  vendus.id_vente = :id_vente 
-                       ');
-$req3->execute(array('id_vente' => $donnees['id']));
-
-
-           // On affiche chaque entree une à une
-           while ($donnees3 = $req3->fetch())
-           { ?>
-
-
-
-<?php if ( $donnees3['pto'] > 0){echo $donnees3['pto'];
-$rembo = 'oui';
-}?>
-
-
-         <?php }
-            
-                ?></td>
-            <td><?php 
-$req4 = $bdd->prepare('SELECT SUM(vendus.quantite) pto
-                       FROM vendus
-                       WHERE  vendus.id_vente = :id_vente 
-                       ');
-$req4->execute(array('id_vente' => $donnees['id']));
-
-
-           // On affiche chaque entree une à une
-           while ($donnees4 = $req4->fetch())
-           { ?>
-
-
-
-<?php if ( $donnees4['pto'] > 0){echo $donnees4['pto'];}?>
-
-
-         <?php }
-            
-                ?></td>
-
-
-
-            <td> <span class="badge" style="background-color:<?php echo$donnees['coul']?>"><?php echo $donnees['moyen']?></span></td>
-            <td style="width:100px"><?php echo $donnees['commentaire']?></td>
-            <td><?php 
-$req5 = $bdd->prepare('SELECT utilisateurs.mail mail
-                       FROM utilisateurs, ventes
-                       WHERE  ventes.id = :id_vente 
-                       AND utilisateurs.id = ventes.id_createur');
-$req5->execute(array('id_vente' => $donnees['id']));
-
-
-           // On affiche chaque entree une à une
-           while ($donnees5 = $req5->fetch())
-           { ?>
-
-
-
-<?php echo $donnees5['mail']?>
-
-
-         <?php }
-           
-                ?></td> 
+            <td><?= $vente['id'] ?></td>
+            <td><?= $vente['date_creation'] ?></td>
+            <td><?= $vente['credit'] ?></td>
+            <td><?= $vente['debit'] ?></td>
+            <td><?= $vente['quantite'] ?></td>
+            <td><span class="badge" style="background-color: <?= $vente['coul'] ?>"><?= $vente['moyen'] ?></span></td>
+            <td style="width:100px"><?= $vente['commentaire'] ?></td>
+            <td><?= $vente['mail'] ?></td>
             <td>
-
-
-<?php echo $donnees3['pto'];
-echo $donnees4['pto'];
-
- if ( $rembo == 'non'){?>
-
-              <form action="viz_vente.php?nvente=<?php echo $donnees['id']?>" method="post">
-
-<input type="hidden" name ="id" id="id" value="<?php echo $donnees['id']?>">
-<input type="hidden" name ="date1" id="date1" value="<?php echo $_GET['date1']?>">
-<input type="hidden" name ="date2" id="date2" value="<?php echo $_GET['date2']?>">
-<input type="hidden" name ="npoint" id="npoint" value="<?php echo $_GET['numero']?>">
-  <button  class="btn btn-warning btn-sm" >Visualiser</button>
-
-
-</form>
-
-
-<?php } if (  $rembo == 'oui'){?>
-
-              <form action="viz_remboursement.php?nvente=<?php echo $donnees['id']?>" method="post">
-
-<input type="hidden" name ="id" id="id" value="<?php echo $donnees['id']?>">
-<input type="hidden" name ="date1" id="date1" value="<?php echo $_GET['date1']?>">
-<input type="hidden" name ="date2" id="date2" value="<?php echo $_GET['date2']?>">
-<input type="hidden" name ="npoint" id="npoint" value="<?php echo $_GET['numero']?>">
-  <button  class="btn btn-warning btn-sm" >Visualiser</button>
-
-
-</form>
-
-
-<?php } ?>
-
+              <?php if ($vente['credit'] > 0 && !($vente['debit'] > 0)) { ?>
+                <form action="viz_vente.php?nvente=<?= $vente['id'] ?>" method="post">
+                  <input type="hidden" name="id" id="id" value="<?= $vente['id'] ?>">
+                  <input type="hidden" name="npoint" id="npoint" value="<?= $numero ?>">
+                  <button class="btn btn-warning btn-sm" >Remboursement</button>
+                </form>
+              <?php } else { ?>
+                <form action="viz_remboursement.php?nvente=<?= $vente['id'] ?>" method="post">
+                  <input type="hidden" name="id" id="id" value="<?= $vente['id'] ?>">
+                  <input type="hidden" name="npoint" id="npoint" value="<?= $numero ?>">
+                  <button class="btn btn-warning btn-sm">Vente</button>
+                </form>
+              <?php } ?>
             </td>
-            
-
-
-
-
-
-
           </tr>
-           <?php }
-                $req->closeCursor(); // Termine le traitement de la requête
-                $req2->closeCursor(); // Termine le traitement de la requête2
-                $req3->closeCursor(); // Termine le traitement de la requête3
-                $req4->closeCursor(); // Termine le traitement de la requête4
-                          ?>
-       </tbody>
-        <tfoot>
-          <tr>
-            <th></th>
-            <th></th>
-            <th></th>
-            <th></th>
-            <th></th>
-            <th></th>
-            <th></th>
-            <th></th>
-            <th></th>
-           
-            
-          </tfoot>
-        
-      </table>
-
-
-
-
-
+        <?php } ?>
+      </tbody>
+    </table>
   </div><!-- /.container -->
-<?php include "pied_bilan.php";
+  <?php
+  $reqVentes->closeCursor();
+  require_once "pied.php";
+} else {
+  header('Location: ../moteur/destroy.php');
 }
-    else
-{
-header('Location: ../moteur/destroy.php') ;
-}
-?>
-       
-      

@@ -575,6 +575,37 @@ function nb_remboursements(PDO $bdd, $start, $stop) {
   return $result;
 }
 
+ function viz_caisse(PDO $bdd, int $id_point_vente, int $offset): array {
+  $reqVentes = $bdd->prepare('
+    select
+      ventes.id as id,
+      ventes.timestamp as date_creation,
+      moyens_paiement.nom as moyen,
+      moyens_paiement.couleur as coul,
+      ventes.commentaire as commentaire,
+      ventes.last_hero_timestamp as lht,
+      utilisateurs.mail as mail,
+      SUM(vendus.prix * vendus.quantite) as credit,
+      SUM(vendus.remboursement * vendus.quantite) as debit,
+      SUM(vendus.quantite) as quantite
+    from ventes
+    inner join vendus
+      on vendus.id_vente = ventes.id
+    inner join moyens_paiement
+      on ventes.id_moyen_paiement = moyens_paiement.id
+    inner join utilisateurs
+      on utilisateurs.id = ventes.id_createur
+    and ventes.id_point_vente = :id_point_vente
+    and date(ventes.timestamp) = date(current_timestamp())
+    group by ventes.id
+    order by ventes.timestamp desc
+    limit 0, :offset');
+  $reqVentes->bindValue('id_point_vente', $id_point_vente, PDO::PARAM_INT);
+  $reqVentes->bindValue('offset', $offset, PDO::PARAM_INT);
+  $reqVentes->execute();
+  return $reqVentes->fetchAll(PDO::FETCH_ASSOC);
+  }
+
 function bilan_ventes_par_type(PDO $bdd, $start, $stop) {
   $sql = '
     SELECT
