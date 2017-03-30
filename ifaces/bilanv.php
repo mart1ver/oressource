@@ -97,7 +97,8 @@ if (isset($_SESSION['id'])
                style="background: #fff; cursor: pointer;
                padding: 5px 10px; border: 1px solid #ccc">
             <i class="fa fa-calendar"></i>
-            <span></span> <b class="caret"></b>
+            <span></span>
+            <b class="caret"></b>
           </div>
         </div>
 
@@ -140,41 +141,41 @@ if (isset($_SESSION['id'])
                 <tbody>
                   <?php if ($numero === 0) { ?>
                     <tr>
-                      <td>- Nombre de points de vente :</td>
+                      <td>Nombre de points de vente :</td>
                       <td><?= nb_points_ventes($bdd) ?></td>
                     </tr>
                   <?php } ?>
                   <tr>
-                    <td>- Chiffre total dégagé  :</td>
+                    <td>Chiffre total dégagé  :</td>
                     <td><?= $bilans['chiffre_degage'] ?> €</td>
                   </tr>
                   <tr>
-                    <td>- Nombre d'objets vendus :</td>
+                    <td>Nombre d'objets vendus :</td>
                     <td><?= $bilans['vendu_quantite'] ?></td>
                   </tr>
                   <tr>
-                    <td>- Nombre de ventes :</td>
+                    <td>Nombre de ventes :</td>
                     <td><?= $nb_ventes ?></td>
                   </tr>
                   <tr>
-                    <td>- Panier moyen :</td>
+                    <td>Panier moyen :</td>
                     <td><?= $bilans['chiffre_degage'] / $nb_ventes ?> €</td>
                   </tr>
                   <tr>
-                    <td>- Nombre d'objets remboursés :</td>
+                    <td>Nombre d'objets remboursés :</td>
                     <td><?= $bilans['remb_quantite'] ?>
                     </td>
                   </tr>
                   <tr>
-                    <td>- Nombre de remboursemments :</td>
+                    <td>Nombre de remboursemments :</td>
                     <td><?= $remb_nb ?></td>
                   </tr>
                   <tr>
-                    <td>- Somme remboursée :</td>
+                    <td>Somme remboursée :</td>
                     <td><?= $bilans['remb_somme'] ?> €</td>
                   </tr>
                   <tr>
-                    <td>- Masse pesée en caisse :</td>
+                    <td>Masse pesée en caisse :</td>
                     <td><?= $bilans['vendu_masse'] ?> Kgs</td>
                   </tr>
                 </tbody>
@@ -197,8 +198,8 @@ if (isset($_SESSION['id'])
                   <tr>
                     <th>Moyen de Paiement</th>
                     <th>Nombre de Ventes</th>
-                    <th>Chiffre Dégagé</th>
-                    <th>Somme remboursée</th>
+                    <th>Chiffre Dégagé en €</th>
+                    <th>Somme remboursée en €</th>
                   </tr>
                 </thead>
 
@@ -207,8 +208,8 @@ if (isset($_SESSION['id'])
                     <tr>
                       <td><?= $ligne['moyen'] ?></td>
                       <td><?= $ligne['quantite_vendue'] ?></td>
-                      <td><?= $ligne['total'] ?> €</td>
-                      <td><?= $ligne['remboursement'] ?> €</td>
+                      <td><?= $ligne['total'] ?></td>
+                      <td><?= $ligne['remboursement'] ?></td>
                     </tr>
                   <?php } ?>
                 </tbody>
@@ -221,15 +222,15 @@ if (isset($_SESSION['id'])
               <h3 style="text-align:center;">Chiffre de caisse : <?=
                 $bilans['chiffre_degage'] - $bilans['remb_somme']
                 ?> €</h3>
-              <h4>=Récapitulatif par type d'objet=</h4>
+              <h4>Récapitulatif par type d'objet</h4>
               <table class="table table-hover">
                 <thead>
                   <tr>
-                    <th>type d'objet</th>
-                    <th>chiffre dégagé</th>
-                    <th>quantité vendue</th>
-                    <th>somme remboursée</th>
-                    <th>quantité rembour.</th>
+                    <th>Type d'objet</th>
+                    <th>Chiffre dégagé en €</th>
+                    <th>Quantité vendue</th>
+                    <th>Somme remboursée en €</th>
+                    <th>Quantité remboursée</th>
                   </tr>
                 </thead>
 
@@ -239,9 +240,9 @@ if (isset($_SESSION['id'])
                       <th scope="row">
                         <a href="./jours.php?<?= $date_query ?>&type=<?= $id ?>"><?= $bilan_type['nom'] ?></a>
                       </th>
-                      <td><?= $bilan_type['chiffre_degage'] ?> €</td>
+                      <td><?= $bilan_type['chiffre_degage'] ?></td>
                       <td><?= $bilan_type['vendu_quantite'] ?></td>
-                      <td><?= $bilan_type['remb_somme'] ?> €</td>
+                      <td><?= $bilan_type['remb_somme'] ?></td>
                       <td><?= $bilan_type['remb_quantite'] ?></td>
                     </tr>
                   <?php } ?>
@@ -254,12 +255,12 @@ if (isset($_SESSION['id'])
                 <thead>
                   <tr>
                     <th>type d'objet</th>
-                    <th>masse pésee</th>
+                    <th>masse pésee en kg</th>
                     <th>nombre de pesées</th>
                     <th>nombre d'objets pesés</th>
                     <th>nombre d'objets vendus</th>
-                    <th>masse sortie totale estimée</th>
-                    <th>prix à la tonne estimé</th>
+                    <th>masse sortie totale estimée en kg</th>
+                    <th>prix à la tonne estimé en €</th>
                     <th>certitude de l'estimation</th>
                   </tr>
                 </thead>
@@ -298,12 +299,12 @@ if (isset($_SESSION['id'])
                       <th scope="row">
                         <a href="./jours.php?date1=<?= $date_query ?>&type=<?= $id ?>"><?= $bilan_mix['nom'] ?></a>
                       </th>
-                      <td><?= round($Mtpe, 2) ?> Kgs.</td>
+                      <td><?= round($Mtpe, 2) ?></td>
                       <td><?= round($Ntpe, 2) ?></td>
                       <td><?= $Notpe ?></td>
                       <td><?= $obj_vendu ?></td>
-                      <td><?= round($prix_tonne_estime, 2) ?> Kgs</td>
-                      <td><?= round(($chiffre_degage / $prix_tonne_estime) * 1000, 2); ?> €</td>
+                      <td><?= round($prix_tonne_estime, 2) ?></td>
+                      <td><?= round(($chiffre_degage / $prix_tonne_estime) * 1000, 2); ?></td>
                       <td>
                         <span class='badge'
                               id='Bcertitude'
@@ -343,97 +344,72 @@ if (isset($_SESSION['id'])
     }
 
     function cb(start, end, label) {
-      console.log(start.toISOString(), end.toISOString(), label);
       $('#reportrange span').html(`${start.format('DD, MMMM, YYYY')} - ${end.format('DD, MMMM, YYYY')}`);
     }
 
-    const get = process_get();
-    const startDate = moment(get.date1, 'DD-MM-YYYY');
-    const endDate = moment(get.date1, 'DD-MM-YYYY');
-
-    const now = moment();
-    const optionSet1 = {
-      startDate: startDate.format('DD/MM/YYYY'),
-      endDate: endDate.format('DD/MM/YYYY'),
-      minDate: '01/01/2010',
-      maxDate: '12/31/2020',
-      dateLimit: {days: 800},
-      showDropdowns: true,
-      showWeekNumbers: true,
-      timePicker: false,
-      timePickerIncrement: 1,
-      timePicker12Hour: true,
-      ranges: {
-        "Aujoud'hui": [now, now],
-        'hier': [now.subtract(1, 'days'), now.subtract(1, 'days')],
-        '7 derniers jours': [now.subtract(6, 'days'), now],
-        '30 derniers jours': [now.subtract(29, 'days'), now],
-        'Ce mois': [
-          now.startOf('month'),
-          now.endOf('month')
-        ],
-        'Le mois deriner': [
-          now.subtract(1, 'month').startOf('month'),
-          now.subtract(1, 'month').endOf('month')
-        ]
-      },
-      opens: 'left',
-      buttonClasses: ['btn btn-default'],
-      applyClass: 'btn-small btn-primary',
-      cancelClass: 'btn-small',
-      format: 'DD/MM/YYYY',
-      separator: ' to ',
-      locale: {
-        applyLabel: 'Appliquer',
-        cancelLabel: 'Anuler',
-        fromLabel: 'Du',
-        toLabel: 'Au',
-        customRangeLabel: 'Période libre',
-        daysOfWeek: ['Di', 'Lu', 'Ma', 'Me', 'Je', 'Ve', 'Sa'],
-        monthNames: ['Janvier', 'Fevrier', 'Mars'
-                  , 'Avril', 'Mai', 'Juin'
-                  , 'Juillet', 'Aout', 'Septembre'
-                  , 'Octobre', 'Novembre', 'Decembre'],
-        firstDay: 1
-      }
-    };
-
     $(document).ready(() => {
       {
+      const get = process_get();
+      const startDate = moment(get.date1, 'DD-MM-YYYY');
+      const endDate = moment(get.date2, 'DD-MM-YYYY');
+
+      const now = moment();
+      const optionSet1 = {
+        startDate: startDate.format('DD/MM/YYYY'),
+        endDate: endDate.format('DD/MM/YYYY'),
+        minDate: '01/01/2010',
+        maxDate: '12/31/2020',
+        dateLimit: {days: 800},
+        showDropdowns: true,
+        showWeekNumbers: true,
+        timePicker: false,
+        timePickerIncrement: 1,
+        timePicker12Hour: true,
+        ranges: {
+          "Aujoud'hui": [now, now],
+          'hier': [now.subtract(1, 'days'), now.subtract(1, 'days')],
+          '7 derniers jours': [now.subtract(6, 'days'), now],
+          '30 derniers jours': [now.subtract(29, 'days'), now],
+          'Ce mois': [
+            now.startOf('month'),
+            now.endOf('month')
+          ],
+          'Le mois deriner': [
+            now.subtract(1, 'month').startOf('month'),
+            now.subtract(1, 'month').endOf('month')
+          ]
+        },
+        opens: 'left',
+        buttonClasses: ['btn btn-default'],
+        applyClass: 'btn-small btn-primary',
+        cancelClass: 'btn-small',
+        format: 'DD/MM/YYYY',
+        separator: ' to ',
+        locale: {
+          applyLabel: 'Appliquer',
+          cancelLabel: 'Annuler',
+          fromLabel: 'Du',
+          toLabel: 'Au',
+          customRangeLabel: 'Période libre',
+          daysOfWeek: ['Di', 'Lu', 'Ma', 'Me', 'Je', 'Ve', 'Sa'],
+          monthNames: ['Janvier', 'Fevrier', 'Mars'
+                    , 'Avril', 'Mai', 'Juin'
+                    , 'Juillet', 'Aout', 'Septembre'
+                    , 'Octobre', 'Novembre', 'Decembre'],
+          firstDay: 1
+        }
+      };
+
         const picker_element = $('#reportrange');
         picker_element.daterangepicker(optionSet1, cb);
+
         $('#reportrange span').html(`${startDate.format('DD/MM/YYYY')} - ${endDate.format('DD/MM/YYYY')}`);
-
-        picker_element.on('show.daterangepicker', () => {
-          console.log("show event fired");
-        });
-
-        picker_element.on('hide.daterangepicker', () => {
-          console.log("hide event fired");
-        });
 
         picker_element.on('apply.daterangepicker',
                 (ev, picker) => {
-          console.log(`apply event fired, start/end dates are ${picker.startDate.format('DD MM, YYYY')} to ${picker.endDate.format('DD MM, YYYY')}`);
           const start = picker.startDate.format('DD-MM-YYYY');
           const end = picker.endDate.format('DD-MM-YYYY');
           window.location.href = `./bilanv.php?date1=${start}&date2=${end}&numero=${get.numero}`;
-        });
-
-        picker_element.on('cancel.daterangepicker', (ev, picker) => {
-          console.log("cancel event fired");
-        });
-
-        $('#options1').click(() => {
-          picker_element.data('daterangepicker').setOptions(optionSet1, cb);
-        });
-
-        $('#options2').click(() => {
-          picker_element.data('daterangepicker').setOptions(optionSet2, cb);
-        });
-
-        $('#destroy').click(() => {
-          picker_element.data('daterangepicker').remove();
         });
       }
 
