@@ -25,7 +25,7 @@ require_once '../moteur/dbconfig.php' ;
 
 //Vérification des autorisations de l'utilisateur et des variables de session requises pour l'affichage de cette page:
 if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 'g'.$numero) !== false)) {
-  include "tete_vente.php";
+  require_once "tete.php";
   
   // on détermine la référence de la prochaine vente.
   $req = $bdd->query("SHOW TABLE STATUS where name='pesees_vendus'");
@@ -95,14 +95,7 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
 <input type="checkbox" name="my-checkbox"   checked  data-on-text="l'unité" data-off-text="lot" data-handle-width="40" data-size="small" >
 <p>
 <?php }?>
-<script type="text/javascript">
-"use strict";
-$("[name='my-checkbox']").bootstrapSwitch();
-$('input[name="my-checkbox"]').on('switchChange.bootstrapSwitch', function(event, state) {
-//console.log(state); // true | false
-  switchlot_stats(state); // true | false
-});
-</script>
+
 
 
 
@@ -294,6 +287,15 @@ $dechets->closeCursor();
 <script>
 "use strict";
 var force_pes_vente = "oui";
+"use strict";
+$("[name='my-checkbox']").bootstrapSwitch();
+$('input[name="my-checkbox"]').on('switchChange.bootstrapSwitch', function(event, state) {
+//console.log(state); // true | false
+  switchlot_stats(state); // true | false
+});
+</script>
+<script type="text/javascript">
+
 </script>
 <script src="../js/ventes.js"></script>
 

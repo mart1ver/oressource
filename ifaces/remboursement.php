@@ -243,7 +243,7 @@ if (parseInt(document.getElementById('nlignes').value) >= 1)
       
       var headstr = "<html><head><title></title></head><body><small>";
       
- <?php if ($_SESSION['tva_active'] == 'oui'){?>
+ <?php if ($_SESSION['tva_active']){?>
   var prixtot =  parseFloat(document.getElementById('ptot').value).toFixed(2);
   var prixht = parseFloat(prixtot).toFixed(2) / ( 1+parseFloat(<?php echo $_SESSION['taux_tva'] ?>).toFixed(2)/100 );
   var ptva = parseFloat(prixtot).toFixed(2)-parseFloat(prixht).toFixed(2)

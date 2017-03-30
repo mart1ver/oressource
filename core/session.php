@@ -29,14 +29,14 @@ function set_session($user, $structure) {
   $_SESSION['prenom'] = $user['prenom'];
   $_SESSION['mail'] = $user['mail'];
 
-  $_SESSION['tva_active'] = $structure['tva_active'];
+  $_SESSION['tva_active'] = $structure['tva_active'] === 'oui';
   $_SESSION['taux_tva'] = $structure['taux_tva'];
   $_SESSION['structure'] = $structure['nom'];
   $_SESSION['siret'] = $structure['siret'];
   $_SESSION['adresse'] = $structure['adresse'];
   $_SESSION['texte_adhesion'] = $structure['texte_adhesion'];
-  $_SESSION['lot_caisse'] = $structure['lot'];
-  $_SESSION['viz_caisse'] = $structure['viz'];
+  $_SESSION['lot_caisse'] = $structure['lot'] === 'oui';
+  $_SESSION['viz_caisse'] = $structure['viz'] === 'oui';
   $_SESSION['nb_viz_caisse'] = $structure['nb_viz'];
   $_SESSION['saisiec'] = $structure['saisiec'];
   $_SESSION['affsp'] = $structure['affsp'];
@@ -44,8 +44,15 @@ function set_session($user, $structure) {
   $_SESSION['affsr'] = $structure['affsr'];
   $_SESSION['affsd'] = $structure['affsd'];
   $_SESSION['affsde'] = $structure['affsde'];
-  $_SESSION['pes_vente'] = $structure['pes_vente'];
-  $_SESSION['force_pes_vente'] = $structure['force_pes_vente'];
+  $_SESSION['pes_vente'] = $structure['pes_vente'] === 'oui';
+  $_SESSION['force_pes_vente'] = $structure['force_pes_vente'] === 'oui';
+}
+
+function destroy_session() {
+  session_unset();
+  session_destroy();
+  setcookie('login', '');
+  setcookie('pass', '');
 }
 
 /**
@@ -68,6 +75,10 @@ function is_allowed_bilan() {
 
 function is_allowed_vente() {
   return strpos($_SESSION['niveau'], 'v') !== false;
+}
+
+function is_allowed_vente_id(int $id): bool {
+  return strpos($_SESSION['niveau'], 'v' . $id) !== false;
 }
 
 function is_allowed_sortie() {

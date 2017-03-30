@@ -21,25 +21,15 @@
 session_start();
 require_once('../moteur/dbconfig.php');
 
-?>
-<head>
-      
-      <link href="../css/bootstrap.min.css" rel="stylesheet">
-      
-      
-      <link rel="stylesheet" type="text/css" media="all" href="../css/daterangepicker-bs3.css" />
-
-      <script type="text/javascript" src="../js/jquery-2.0.3.min.js"></script>
-      
-      <script type="text/javascript" src="../js/bootstrap.min.js"></script>
-      <script type="text/javascript" src="../js/moment.js"></script>
-      <script type="text/javascript" src="../js/daterangepicker.js"></script>
-   </head>
-
-<?php
 //Vérification des autorisations de l'utilisateur et des variables de session requises pour l'affichage de cette page:
  if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 'h') !== false))
-      {  include "tete.php" ?>
+      {
+   require_once "tete.php";
+
+   ?>
+
+      <script type="text/javascript" src="../js/moment.js"></script>
+      <script type="text/javascript" src="../js/daterangepicker.js"></script>
    <div class="container">
         <h1>verification des ventes</h1> 
  <div class="panel-body">
@@ -484,7 +474,7 @@ $req5->execute(array('id_vente' => $donnees['id']));
 
 
   </div><!-- /.container -->
-<?php include "pied_bilan.php";
+<?php include "pied.php";
 }
     else
 {

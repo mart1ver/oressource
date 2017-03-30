@@ -20,37 +20,24 @@
 
 session_start();
 
-require_once('../moteur/dbconfig.php');
 require_once('../core/session.php');
 require_once('../core/requetes.php');
+
+// Bilan des collectes
 
 if (isset($_SESSION['id'])
   && $_SESSION['systeme'] === "oressource"
   && is_allowed_bilan()) {
 
   require_once('./tete.php');
+  require_once('../moteur/dbconfig.php');
 
 ?>
 
-   <head>
-      
-      <link href="../css/bootstrap.min.css" rel="stylesheet">
-      
-      <link href="../fonts/font-awesome/css/font-awesome.min.css" rel="stylesheet">
-      <link rel="stylesheet" type="text/css" media="all" href="../css/daterangepicker-bs3.css" />
+  <script type="text/javascript" src="../js/moment.js"></script>
+  <script type="text/javascript" src="../js/daterangepicker.js"></script>
+  <div class="container">
 
-      <script type="text/javascript" src="../js/jquery-2.0.3.min.js"></script>
-      
-      <script type="text/javascript" src="../js/bootstrap.min.js"></script>
-      <script type="text/javascript" src="../js/moment.js"></script>
-      <script type="text/javascript" src="../js/daterangepicker.js"></script>
-   </head>
- 
-
-      <div class="container">
-         
-
-          
 <div class="row">
   <div class="col-md-11 " >
 <h1>Bilan global</h1>
@@ -1107,7 +1094,7 @@ GROUP BY nom');
    
 
 
-<?php include "pied_bilan.php";
+<?php include "pied.php";
 }
     else
     {header('Location: ../moteur/destroy.php') ;}

@@ -25,7 +25,9 @@ require_once('../core/session.php');
 require_once('../core/requetes.php');
 
 if (is_valid_session()) {
-  include_once 'tete_vente.php';
+
+  require_once 'tete.php';
+
   // On determine les masses collectés...
   $stmt = $bdd->query('SELECT COALESCE(SUM(vendus.quantite), 0) qv
                               FROM vendus
@@ -129,7 +131,6 @@ if (is_valid_session()) {
   <!-- Bootstrap core JavaScript + morris + raphael
   ================================================== -->
   <!-- Placed at the end of the document so the pages load faster -->
-  <script src="../js/jquery-2.1.1.min.js"></script>
   <script src="../js/raphael.js"></script>
   <script src="../js/morris/morris.js"></script>
   <script type="text/javascript">
@@ -180,7 +181,7 @@ if (is_valid_session()) {
     });
   </script>
   <?php
-  include "pied.php";
+  require_once "pied.php";
 } else {
-  header('Location: login.php');
+  header('Location: ./login.html');
 }
