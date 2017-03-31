@@ -132,17 +132,6 @@ $can_config = is_allowed_config();
                     <li>
                       <a href="../ifaces/edition_types_poubelles.php">Types de poubelles</a>
                     </li>
-                    <!-- Retirées en attendant d'être finalisées.
-                    <li>
-                      <a href="pesees_stats.php">Pésées pour statistiques</a>
-                    </li>
-                    <li>
-                      <a href="etiquettes.php">Étiquettes boutique</a>
-                    </li
-                    <li>
-                      <a href="gains_recycleurs.php">Gains recycleurs</a>
-                    </li>
-                    -->
                     <li class="divider"></li>
                   <?php } ?>
 
