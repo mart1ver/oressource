@@ -91,11 +91,11 @@ if (isset($_SESSION['id'])
 
           <div class="panel-body" id="panelcalc">
             <?php if ($_SESSION['lot_caisse']) { ?>
-              <p align="right">
-                <b id="labellot">vente à: </b>
+              <p align="center">
+                <b id="labellot">vente à:</b>
                 <input class="make-switch" id="typeVente" type="checkbox"
                        name="my-checkbox" checked data-on-text="l'unité"
-                       data-off-text="lot" data-handle-width="45"
+                       data-off-text="lot" data-handle-width="28"
                        data-size="small">
               <p>
               <?php } ?>
