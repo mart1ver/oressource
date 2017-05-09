@@ -91,11 +91,11 @@ if (isset($_SESSION['id'])
 
           <div class="panel-body" id="panelcalc">
             <?php if ($_SESSION['lot_caisse']) { ?>
-              <p align="right">
-                <b id="labellot">vente à: </b>
+              <p align="center">
+                <b id="labellot">vente à:</b>
                 <input class="make-switch" id="typeVente" type="checkbox"
                        name="my-checkbox" checked data-on-text="l'unité"
-                       data-off-text="lot" data-handle-width="45"
+                       data-off-text="lot" data-handle-width="28"
                        data-size="small">
               <p>
               <?php } ?>
@@ -149,15 +149,15 @@ if (isset($_SESSION['id'])
           <ul class="list-group list-group-item-warning">
             <li class="list-group-item">
               Somme due:
-              <input type="text" class="form-control " style=" height:22px;"  placeholder="€" name="rendua" id="rendua"  disabled>
+              <input type="text" class="form-control "   placeholder="€" name="rendua" id="rendua"  disabled>
             </li>
             <li class="list-group-item list-group-item-success">
               <b>Réglement</b>
-              <input type="text" class="form-control" style=" height:25px;"  placeholder="€" name="rendub" id="rendub"  onfocus="fokus(this)" oninput="rendu()">
+              <input type="text" class="form-control"   placeholder="€" name="rendub" id="rendub"  onfocus="fokus(this)" oninput="rendu()">
             </li>
             <li class="list-group-item list-group-item-danger">
               <b>A rendre</b>
-              <input type="text" class="form-control" style=" height:22px;" placeholder="€"  name="renduc" id="renduc"  disabled>
+              <input type="text" class="form-control"  placeholder="€"  name="renduc" id="renduc"  disabled>
             </li>
           </ul>
         </div>
