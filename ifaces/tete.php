@@ -245,5 +245,5 @@ $can_config = is_allowed_config();
     <?php } ?>
 
     <!-- Pour les menus deroulants de bootstrap -->
-    <script defer src="../js/jquery-2.1.1.min.js"></script>
-    <script defer src="../js/bootstrap.min.js"></script>
+    <script  src="../js/jquery-2.1.1.min.js"></script>
+    <script  src="../js/bootstrap.min.js"></script>
