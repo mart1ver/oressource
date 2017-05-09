@@ -301,7 +301,7 @@ function make_encaissement(url, tickets, metadata={}) {
     const id_type_action = parseInt(form.get('id_type_action'), 10);
     const localite = form.get('localite');
 
-    if (sum > 0 && (isNaN(id_type_action) || id_type_action > 0)) {
+    if (sum > 0 && (isNaN(id_type_action) || id_type_action > 0)&& localite > 0 && id_type_action) {
 
       const commentaire = form.get('commentaire').trim(); //.On enleve les espaces inutiles.
       const antidate = form.get('antidate');
@@ -323,6 +323,9 @@ function make_encaissement(url, tickets, metadata={}) {
       }, {});
       // Object.assign sert a mixer des Objets Javascript.
       post_data(url, Object.assign({}, data, items, metadata));
+      // Remet le sondage à son etat initial
+      document.getElementById("loc").selectedIndex = "0";
+      document.getElementById("id_type_action").selectedIndex = "0";
     }
   };
 }
