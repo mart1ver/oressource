@@ -60,7 +60,7 @@ if (isset($_SESSION['id'])
           <div class="panel-heading">
             <h3 class="panel-title"><label id="massetot">Bon d'apport: 0 Kg.</label></h3>
           </div>
-          <div class="panel-body">
+          <div class="panel-body" style="padding-top:5px">
             <form id="formulaire">
               <?php if (is_allowed_saisie_collecte() && is_allowed_edit_date()) { ?>
                 <label  for="antidate">Date de l'apport: </label>
@@ -82,9 +82,10 @@ if (isset($_SESSION['id'])
           <div class="panel-heading">
             <h3 class="panel-title"><label>Informations :</label></h3>
           </div>
-          <div class="panel-body">
+          <div class="panel-body" style="padding-top:5px">
             <label for="id_type_action">Type de collecte:</label>
             <select name ="id_type_action" form="formulaire" id ="id_type_action" class="form-control" style="font-size: 12pt" required>
+            <option value="0" disabled selected>Selectionez un type de collecte</option>
               <?php foreach ($types_action as $type_collecte) { ?>
                 <option value="<?= $type_collecte['id'] ?>"><?= $type_collecte['nom'] ?></option>
               <?php } ?>
@@ -92,6 +93,7 @@ if (isset($_SESSION['id'])
 
             <label for="loc">Localité :</label>
             <select name="localite" id="loc" form="formulaire" class="form-control" style="font-size: 12pt" required>
+            <option value="0" disabled selected>Selectionez une localité</option>
               <?php foreach (localites($bdd) as $localite) { ?>
                 <option value="<?= $localite['id'] ?>"><?= $localite['nom'] ?></option>
               <?php } ?>
@@ -109,7 +111,7 @@ if (isset($_SESSION['id'])
           <div class="panel-heading">
             <h3 class="panel-title"><label>Type d'objet:</label></h3>
           </div>
-          <div class="panel-body">
+          <div class="panel-body" style="padding-top:0px">
             <div class="btn-group" id="list_item">
               <!-- Cree via JS -->
             </div>

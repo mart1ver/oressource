@@ -97,7 +97,7 @@ class NumPad {
       conteneurs.forEach((c) => {
         const li = document.createElement('li');
         const a = document.createElement('a');
-        a.innerText = `${c.nom}: ${c.masse} kg`;
+        a.innerText = `${c.nom}: -${c.masse} kg`;
         a.addEventListener('click', () => {
           this.substract_manutention(c.masse);
         }, false);
