@@ -34,9 +34,9 @@ CREATE TABLE IF NOT EXISTS `collectes` (
   `localisation` int(11) NOT NULL,
   `id_point_collecte` int(11) NOT NULL,
   `commentaire` text NOT NULL,
-  `id_createur` int(11) NOT NULL,
-  `id_last_hero` int(11) NOT NULL,
-  `last_hero_timestamp` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `id_createur` int(11) NOT NULL DEFAULT 0,
+  `id_last_hero` int(11) NOT NULL DEFAULT 0,
+  `last_hero_timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
@@ -52,10 +52,10 @@ CREATE TABLE IF NOT EXISTS `conventions_sorties` (
   `nom` text NOT NULL,
   `description` text NOT NULL,
   `couleur` text NOT NULL,
-  `visible` text NOT NULL,
-  `id_createur` int(11) NOT NULL,
-  `id_last_hero` int(11) NOT NULL,
-  `last_hero_timestamp` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `visible` varchar(255) NOT NULL DEFAULT 'non',
+  `id_createur` int(11) NOT NULL DEFAULT 0,
+  `id_last_hero` int(11) NOT NULL DEFAULT 0,
+  `last_hero_timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
 
@@ -85,8 +85,8 @@ CREATE TABLE IF NOT EXISTS `description_structure` (
   `texte_adhesion` text NOT NULL,
   `taux_tva` text NOT NULL,
   `tva_active` text NOT NULL,
-  `id_createur` int(11) NOT NULL,
-  `id_last_hero` int(11) NOT NULL,
+  `id_createur` int(11) NOT NULL DEFAULT 0,
+  `id_last_hero` int(11) NOT NULL DEFAULT 0,
   `last_hero_timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `cr` int(11) NOT NULL,
   `lot` text NOT NULL,
@@ -124,9 +124,9 @@ CREATE TABLE IF NOT EXISTS `filieres_sortie` (
   `couleur` text NOT NULL,
   `description` text NOT NULL,
   `visible` text NOT NULL,
-  `id_createur` int(11) NOT NULL,
-  `id_last_hero` int(11) NOT NULL,
-  `last_hero_timestamp` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `id_createur` int(11) NOT NULL DEFAULT 0,
+  `id_last_hero` int(11) NOT NULL DEFAULT 0,
+  `last_hero_timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
 
@@ -151,9 +151,9 @@ CREATE TABLE IF NOT EXISTS `grille_objets` (
   `id_type_dechet` int(11) NOT NULL,
   `visible` text NOT NULL,
   `prix` text NOT NULL,
-  `id_createur` int(11) NOT NULL,
-  `id_last_hero` int(11) NOT NULL,
-  `last_hero_timestamp` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `id_createur` int(11) NOT NULL DEFAULT 0,
+  `id_last_hero` int(11) NOT NULL DEFAULT 0,
+  `last_hero_timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=47 ;
 
@@ -219,9 +219,9 @@ CREATE TABLE IF NOT EXISTS `localites` (
   `relation_openstreetmap` text NOT NULL,
   `commentaire` text NOT NULL,
   `visible` text NOT NULL,
-  `id_createur` int(11) NOT NULL,
-  `id_last_hero` int(11) NOT NULL,
-  `last_hero_timestamp` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `id_createur` int(11) NOT NULL DEFAULT 0,
+  `id_last_hero` int(11) NOT NULL DEFAULT 0,
+  `last_hero_timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
 
@@ -245,9 +245,9 @@ CREATE TABLE IF NOT EXISTS `moyens_paiement` (
   `description` text NOT NULL,
   `couleur` text NOT NULL,
   `visible` text NOT NULL,
-  `id_createur` int(11) NOT NULL,
-  `id_last_hero` int(11) NOT NULL,
-  `last_hero_timestamp` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `id_createur` int(11) NOT NULL DEFAULT 0,
+  `id_last_hero` int(11) NOT NULL DEFAULT 0,
+  `last_hero_timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
 
@@ -272,9 +272,9 @@ CREATE TABLE IF NOT EXISTS `pesees_collectes` (
   `masse` decimal(11,3) NOT NULL,
   `id_collecte` int(11) NOT NULL,
   `id_type_dechet` int(11) NOT NULL,
-  `id_createur` int(11) NOT NULL,
-  `id_last_hero` int(11) NOT NULL,
-  `last_hero_timestamp` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `id_createur` int(11) NOT NULL DEFAULT 0,
+  `id_last_hero` int(11) NOT NULL DEFAULT 0,
+  `last_hero_timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
@@ -292,9 +292,9 @@ CREATE TABLE IF NOT EXISTS `pesees_sorties` (
   `id_type_dechet` int(11) NOT NULL,
   `id_type_poubelle` int(11) NOT NULL,
   `id_type_dechet_evac` int(11) NOT NULL,
-  `id_createur` int(11) NOT NULL,
-  `id_last_hero` int(11) NOT NULL,
-  `last_hero_timestamp` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `id_createur` int(11) NOT NULL DEFAULT 0,
+  `id_last_hero` int(11) NOT NULL DEFAULT 0,
+  `last_hero_timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
@@ -310,9 +310,9 @@ CREATE TABLE IF NOT EXISTS `pesees_vendus` (
   `masse` decimal(11,3) NOT NULL,
   `quantite` int(11) NOT NULL,
   `id_vendu` int(11) NOT NULL,
-  `id_createur` int(11) NOT NULL,
-  `id_last_hero` int(11) NOT NULL,
-  `last_hero_timestamp` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `id_createur` int(11) NOT NULL DEFAULT 0,
+  `id_last_hero` int(11) NOT NULL DEFAULT 0,
+  `last_hero_timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
@@ -331,9 +331,9 @@ CREATE TABLE IF NOT EXISTS `points_collecte` (
   `commentaire` text NOT NULL,
   `pesee_max` text NOT NULL,
   `visible` text NOT NULL,
-  `id_createur` int(11) NOT NULL,
-  `id_last_hero` int(11) NOT NULL,
-  `last_hero_timestamp` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `id_createur` int(11) NOT NULL DEFAULT 0,
+  `id_last_hero` int(11) NOT NULL DEFAULT 0,
+  `last_hero_timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
 
@@ -359,9 +359,9 @@ CREATE TABLE IF NOT EXISTS `points_sortie` (
   `commentaire` text NOT NULL,
   `pesee_max` text NOT NULL,
   `visible` text NOT NULL,
-  `id_createur` int(11) NOT NULL,
-  `id_last_hero` int(11) NOT NULL,
-  `last_hero_timestamp` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `id_createur` int(11) NOT NULL DEFAULT 0,
+  `id_last_hero` int(11) NOT NULL DEFAULT 0,
+  `last_hero_timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
 
@@ -387,9 +387,9 @@ CREATE TABLE IF NOT EXISTS `points_vente` (
   `commentaire` text NOT NULL,
   `surface_vente` text NOT NULL,
   `visible` text NOT NULL,
-  `id_createur` int(11) NOT NULL,
-  `id_last_hero` int(11) NOT NULL,
-  `last_hero_timestamp` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `id_createur` int(11) NOT NULL DEFAULT 0,
+  `id_last_hero` int(11) NOT NULL DEFAULT 0,
+  `last_hero_timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
 
@@ -416,9 +416,9 @@ CREATE TABLE IF NOT EXISTS `sorties` (
   `id_type_sortie` int(11) NOT NULL,
   `id_point_sortie` int(11) NOT NULL,
   `commentaire` text NOT NULL,
-  `id_createur` int(11) NOT NULL,
-  `id_last_hero` int(11) NOT NULL,
-  `last_hero_timestamp` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `id_createur` int(11) NOT NULL DEFAULT 0,
+  `id_last_hero` int(11) NOT NULL DEFAULT 0,
+  `last_hero_timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
 
@@ -437,9 +437,9 @@ CREATE TABLE IF NOT EXISTS `types_poubelles` (
   `ultime` text NOT NULL,
   `couleur` text NOT NULL,
   `visible` text NOT NULL,
-  `id_createur` int(11) NOT NULL,
-  `id_last_hero` int(11) NOT NULL,
-  `last_hero_timestamp` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `id_createur` int(11) NOT NULL DEFAULT 0,
+  `id_last_hero` int(11) NOT NULL DEFAULT 0,
+  `last_hero_timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=8 ;
 
@@ -469,9 +469,9 @@ CREATE TABLE IF NOT EXISTS `type_collecte` (
   `description` text NOT NULL,
   `couleur` text NOT NULL,
   `visible` text NOT NULL,
-  `id_createur` int(11) NOT NULL,
-  `id_last_hero` int(11) NOT NULL,
-  `last_hero_timestamp` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `id_createur` int(11) NOT NULL DEFAULT 0,
+  `id_last_hero` int(11) NOT NULL DEFAULT 0,
+  `last_hero_timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
 
@@ -496,9 +496,9 @@ CREATE TABLE IF NOT EXISTS `type_contenants` (
   `masse` text NOT NULL,
   `couleur` text NOT NULL,
   `visible` text NOT NULL,
-  `id_createur` int(11) NOT NULL,
-  `id_last_hero` int(11) NOT NULL,
-  `last_hero_timestamp` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `id_createur` int(11) NOT NULL DEFAULT 0,
+  `id_last_hero` int(11) NOT NULL DEFAULT 0,
+  `last_hero_timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=9 ;
 
@@ -528,9 +528,9 @@ CREATE TABLE IF NOT EXISTS `type_dechets` (
   `description` text NOT NULL,
   `couleur` text NOT NULL,
   `visible` text NOT NULL,
-  `id_createur` int(11) NOT NULL,
-  `id_last_hero` int(11) NOT NULL,
-  `last_hero_timestamp` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `id_createur` int(11) NOT NULL DEFAULT 0,
+  `id_last_hero` int(11) NOT NULL DEFAULT 0,
+  `last_hero_timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=18 ;
 
@@ -570,9 +570,9 @@ CREATE TABLE IF NOT EXISTS `type_dechets_evac` (
   `description` text NOT NULL,
   `couleur` text NOT NULL,
   `visible` text NOT NULL,
-  `id_createur` int(11) NOT NULL,
-  `id_last_hero` int(11) NOT NULL,
-  `last_hero_timestamp` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `id_createur` int(11) NOT NULL DEFAULT 0,
+  `id_last_hero` int(11) NOT NULL DEFAULT 0,
+  `last_hero_timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=12 ;
 
@@ -606,9 +606,9 @@ CREATE TABLE IF NOT EXISTS `type_sortie` (
   `description` text NOT NULL,
   `couleur` text NOT NULL,
   `visible` text NOT NULL,
-  `id_createur` int(11) NOT NULL,
-  `id_last_hero` int(11) NOT NULL,
-  `last_hero_timestamp` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `id_createur` int(11) NOT NULL DEFAULT 0,
+  `id_last_hero` int(11) NOT NULL DEFAULT 0,
+  `last_hero_timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=8 ;
 
@@ -639,9 +639,9 @@ CREATE TABLE IF NOT EXISTS `utilisateurs` (
   `prenom` text NOT NULL,
   `mail` text NOT NULL,
   `pass` text NOT NULL,
-  `id_createur` int(11) NOT NULL,
-  `id_last_hero` int(11) NOT NULL,
-  `last_hero_timestamp` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `id_createur` int(11) NOT NULL DEFAULT 0,
+  `id_last_hero` int(11) NOT NULL DEFAULT 0,
+  `last_hero_timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=10 ;
 
@@ -667,9 +667,9 @@ CREATE TABLE IF NOT EXISTS `vendus` (
   `quantite` int(11) NOT NULL,
   `prix` decimal(9,2) NOT NULL,
   `remboursement` decimal(9,2) NOT NULL,
-  `id_createur` int(11) NOT NULL,
-  `id_last_hero` int(11) NOT NULL,
-  `last_hero_timestamp` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `id_createur` int(11) NOT NULL DEFAULT 0,
+  `id_last_hero` int(11) NOT NULL DEFAULT 0,
+  `last_hero_timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
@@ -686,9 +686,9 @@ CREATE TABLE IF NOT EXISTS `ventes` (
   `adherent` text NOT NULL,
   `commentaire` text NOT NULL,
   `id_point_vente` int(11) NOT NULL,
-  `id_createur` int(11) NOT NULL,
-  `id_last_hero` int(11) NOT NULL,
-  `last_hero_timestamp` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `id_createur` int(11) NOT NULL DEFAULT 0,
+  `id_last_hero` int(11) NOT NULL DEFAULT 0,
+  `last_hero_timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
