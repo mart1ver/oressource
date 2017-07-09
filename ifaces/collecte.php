@@ -84,16 +84,16 @@ if (isset($_SESSION['id'])
           </div>
           <div class="panel-body" style="padding-top:5px">
             <label for="id_type_action">Type de collecte:</label>
-            <select name ="id_type_action" form="formulaire" id ="id_type_action" class="form-control" style="font-size: 12pt" required>
-            <option value="0" disabled selected>Selectionez un type de collecte</option>
+            <select name="id_type_action" form="formulaire" id="id_type_action" class="form-control" style="font-size: 12pt" required>
+            <option value="" hidden disabled selected>Selectionez un type de collecte</option>
               <?php foreach ($types_action as $type_collecte) { ?>
                 <option value="<?= $type_collecte['id'] ?>"><?= $type_collecte['nom'] ?></option>
               <?php } ?>
             </select>
 
-            <label for="loc">Localité :</label>
-            <select name="localite" id="loc" form="formulaire" class="form-control" style="font-size: 12pt" required>
-            <option value="0" disabled selected>Selectionez une localité</option>
+            <label for="localite">Localité :</label>
+            <select name="localite" id="localite" form="formulaire" class="form-control" style="font-size: 12pt" required>
+            <option value="" hidden disabled selected>Selectionez une localité</option>
               <?php foreach (localites($bdd) as $localite) { ?>
                 <option value="<?= $localite['id'] ?>"><?= $localite['nom'] ?></option>
               <?php } ?>
@@ -161,7 +161,9 @@ if (isset($_SESSION['id'])
         div_list_item.appendChild(button);
       });
 
-      const encaisse = make_encaissement('../api/collectes.php', {items: ticketsItem});
+      const encaisse = make_encaissement('../api/collectes.php',
+                                          {items: ticketsItem},
+                                          {classe: 'collecte'});
 
       document.getElementById('encaissement').addEventListener('click', encaisse, false);
       document.getElementById('impression').addEventListener('click', impression_ticket, false);

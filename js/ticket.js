@@ -164,7 +164,10 @@ function ticket_update_ui(container, totalUI, type_item, value, total) {
   totalUI.textContent = `Masse totale: ${total} Kg.`;
 }
 
-function tickets_clear() {
+/* Fonction de remise à zéro de l'interface graphique et des tickets en cours.
+ * @return {undefined}
+ */
+function tickets_clear(data) {
   // On supprime tout le ticket en cours.
   const range = document.createRange();
   range.selectNodeContents(document.getElementById('transaction'));
@@ -172,6 +175,14 @@ function tickets_clear() {
 
   document.getElementById('commentaire').value = '';
   document.getElementById('massetot').textContent = 'Masse totale: 0 Kg.';
+
+  const type = data.classe;
+  if (type === 'collecte' || type === 'sorties') {
+    document.getElementById('localite').selectedIndex = '0';
+  }
+  if (type !== 'sortiesp' || type !== 'sortiesd') {
+    document.getElementById('id_type_action').selectedIndex = '0';
+  }
 
   // On reset TOUT les tickets. En general il y en aura qu'un...
   window.tickets.forEach((ticket) => {
@@ -200,7 +211,7 @@ function impression_ticket(encaisse) {
     document.body.innerHTML = oldstr;
     encaisse();
     tickets_clear();
- 
+
 }
 
 function login(onSuccess = undefined) {
@@ -273,12 +284,23 @@ function post_data(url, data) {
     .then((json) => {
       // TODO Vrai gestion de la reponse... (future mise en attente...)
       // console.log('response in Json:', json);
-      tickets_clear();
+      tickets_clear(data);
   }).catch((ex) => {
     // Reloging and resending!
     login(() => { post_data(url, data); });
     console.log('Error:', ex);
   });
+}
+
+function strategie_validation(metadata) {
+  const classe = metadata.classe;
+  if (classe === 'sortiesp' || classe === 'sortiesd') {
+    return (_) => true;
+  } else if (classe === 'collecte' || classe === 'sorties') {
+    return (obj) => obj.id_type_action > 0 && obj.localite > 0;
+  } else { // Reste des cas.
+    return (obj) => obj.id_type_action > 0;
+  }
 }
 
 /*
@@ -289,7 +311,7 @@ function post_data(url, data) {
  * @param {string} url Url de la requete post.
  * @param {Objects} tickets Mixin de tickets la clef servira a les reconnaitre cote serveur.
  */
-function make_encaissement(url, tickets, metadata={}) {
+function make_encaissement(url, tickets, metadata) {
   return () => {
 
     // On recupere les sommes de differents tickets.
@@ -298,20 +320,21 @@ function make_encaissement(url, tickets, metadata={}) {
     }, 0);
 
     const form = new FormData(document.getElementById('formulaire'));
-    const id_type_action = parseInt(form.get('id_type_action'), 10);
-    const localite = form.get('localite');
+    const formdata = {
+      localite: parseInt(form.get('localite'), 10),
+      id_type_action: parseInt(form.get('id_type_action'), 10),
+    };
 
-    if (sum > 0 && (isNaN(id_type_action) || id_type_action > 0)&& localite > 0 && id_type_action) {
 
-      const commentaire = form.get('commentaire').trim(); //.On enleve les espaces inutiles.
+    const test = strategie_validation(metadata);
+    if (sum > 0 && test(formdata)) {
+      const commentaire = form.get('commentaire').trim(); // On enleve les espaces inutiles.
       const antidate = form.get('antidate');
       const data = {
         // Ok
         id_point: window.OressourceEnv.id_point,
         // Ok
         id_user: window.OressourceEnv.id_user,
-        localite,
-        id_type_action,
         commentaire,
         antidate
       };
@@ -322,10 +345,7 @@ function make_encaissement(url, tickets, metadata={}) {
         return Object.assign({}, acc, {[type]: ticket.to_array()});
       }, {});
       // Object.assign sert a mixer des Objets Javascript.
-      post_data(url, Object.assign({}, data, items, metadata));
-      // Remet le sondage à son etat initial
-      document.getElementById("loc").selectedIndex = "0";
-      document.getElementById("id_type_action").selectedIndex = "0";
+      post_data(url, Object.assign({}, data, formdata, items, metadata));
     }
   };
 }
