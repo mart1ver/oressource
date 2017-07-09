@@ -217,7 +217,8 @@ function nb_categories_dechets_item(PDO $bdd) {
 }
 
 function nb_categories_poubelles(PDO $bdd) {
-  $stmt = $bdd->prepare('SELECT MAX(id) AS nombrecat FROM types_poubelles LIMIT 1')['nombrecat'];
+  $stmt = $bdd->prepare('SELECT MAX(id) AS nombrecat FROM types_poubelles LIMIT 1');
+  $stmt->execute();
   $nombre_categories = (int) $stmt->fetch(PDO::FETCH_ASSOC)['nombrecat'];
   $stmt->closeCursor();
   return (int) $nombre_categories;
@@ -314,7 +315,7 @@ function insert_evac_sorties(PDO $bdd, $id_sorties, $sortie, $items) {
 }
 
 function insert_poubelle_sorties(PDO $bdd, $id_sorties, $sortie, $items) {
-  $nombreCategories = nb_categories_dechets_poubelles($bdd);
+  $nombreCategories = nb_categories_poubelles($bdd);
   $req = $bdd->prepare('INSERT INTO pesees_sorties (timestamp, masse, id_sortie, id_type_poubelle, id_createur)
                             VALUES(:timestamp, :masse, :id_sortie, :id_type_poubelle, :id_createur)');
   $req->bindValue(':timestamp', $sortie['timestamp']->format('Y-m-d H:i:s'), PDO::PARAM_STR);
