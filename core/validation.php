@@ -80,7 +80,8 @@ function validate_json_collecte($unsafe_json) {
       'id_point' => FILTER_VALIDATE_INT,
       'id_user' => FILTER_VALIDATE_INT,
       'items' => FILTER_DEFAULT,
-      'commentaire' => FILTER_SANITIZE_STRING
+      'commentaire' => FILTER_SANITIZE_STRING,
+      'classe' => FILTER_SANITIZE_STRING
   ];
   $flag = ['flags' => FILTER_NULL_ON_FAILURE];
   $flags = [];
