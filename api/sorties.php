@@ -20,15 +20,11 @@
 
 // TODO: Verifier que les objets correspondent bien possibilites du recycleur.
 
+global $bdd;
+
 require_once('../core/session.php');
 require_once('../core/validation.php');
 require_once('../core/requetes.php');
-
-global $bdd;
-
-session_start();
-
-header("content-type:application/json");
 
 /*
  * Gestion des sorties de Oressource:
@@ -48,56 +44,69 @@ header("content-type:application/json");
  * SI un des champs est invalide le serveur reponds 400 Bad request avec un objet json
  * detaillant l'erreur.
  */
-if (isset($_SESSION['id'])
-  && $_SESSION['systeme'] = "oressource") {
-  if (!is_allowed_sortie()) {
-    http_response_code(403); // Forbiden.
-    echo(json_encode(['error' => 'Action interdite.'], JSON_FORCE_OBJECT));
-    die();
-  }
 
-  require_once('../moteur/dbconfig.php');
+session_start();
+header("content-type:application/json");
+
+if (is_valid_session() && is_allowed_sortie()) {
 
   try {
     $json_raw = file_get_contents('php://input');
     $unsafe_json = json_decode($json_raw, true);
-    $json = validate_json_sorties($unsafe_json);
+
+    try {
+      $json = validate_json_sorties($unsafe_json);
+    } catch (UnexpectedValueException $e) {
+      http_response_code(400); // Bad Request
+      echo(json_encode(['error' => $e->getMessage()]));
+      die();
+    }
+
+    if (!is_allowed_sortie_id($json['id_point'])) {
+      http_response_code(403); // Forbiden.
+      echo(json_encode(['error' => 'Action interdite.'], JSON_FORCE_OBJECT));
+      die();
+    }
 
     $timestamp = (is_allowed_edit_date() ? parseDate($json['antidate']) : new DateTime('now'));
     $sortie = [
-        'timestamp' => $timestamp,
-        'type_sortie' => $json['id_type_action'],
-        'localite' => $json['localite'],
-        'classe' => $json['classe'],
-        'id_point_sortie' => $json['id_point'],
-        'commentaire' => $json['commentaire'],
-        'id_user' => $json['id_user'],
+      'timestamp' => $timestamp,
+      'type_sortie' => $json['id_type_action'],
+      'localite' => $json['localite'],
+      'classe' => $json['classe'],
+      'id_point_sortie' => $json['id_point'],
+      'commentaire' => $json['commentaire'],
+      'id_user' => $json['id_user'],
     ];
+
+    require_once('../moteur/dbconfig.php');
 
     $bdd->beginTransaction();
     $id_sortie = insert_sortie($bdd, $sortie);
     $requete_OK = false;
 
     if ($sortie['classe'] === 'sorties'
-      || $sortie['classe'] === 'sortiesc') {
-      if (count($json['items'])) {
+            || $sortie['classe'] === 'sortiesc'
+            || $sortie['classe'] === 'sortiesr') {
+      if (count($json['items']) > 0) {
         insert_items_sorties($bdd, $id_sortie, $sortie, $json['items']);
         $requete_OK = true;
       }
-      if (count($json['evacs'])) {
+      if (count($json['evacs']) > 0) {
         insert_evac_sorties($bdd, $id_sortie, $sortie, $json['evacs']);
         $requete_OK = true;
       }
-    } elseif ($sortie['classe'] === 'sortiesr'
-      || $sortie['classe'] === 'sortiesd') {
-      if (count($json['evacs'])) {
+    } elseif ($sortie['classe'] === 'sortiesd') {
+      if (count($json['evacs']) > 0) {
         insert_evac_sorties($bdd, $id_sortie, $sortie, $json['evacs']);
         $requete_OK = true;
       }
     } elseif ($sortie['classe'] === 'sortiesp') {
-      $sortie['commentaire'] = '';
-      insert_poubelle_sorties($bdd, $id_sortie, $sortie, $json['evacs']);
-      $requete_OK = true;
+      if (count($json['evacs']) > 0) {
+        $sortie['commentaire'] = '';
+        insert_poubelle_sortie($bdd, $id_sortie, $sortie, $json['evacs']);
+        $requete_OK = true;
+      }
     } else {
       throw new UnexpectedValueException("Classe de sortie inconnue");
     }
