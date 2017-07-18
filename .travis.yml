@@ -3,4 +3,9 @@ language: php
 php:
 - 7.0
 - 7.1
-script: phpunit .
+- hhvm
+before_script:
+  - npm install -g eslint
+script:
+  - phpunit .
+  - eslint **/*.js
