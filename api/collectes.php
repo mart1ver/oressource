@@ -33,7 +33,6 @@ session_start();
 header("content-type:application/json");
 
 if (is_valid_session() && is_allowed_saisie_collecte()) {
-
   $json_raw = file_get_contents('php://input');
   $unsafe_json = json_decode($json_raw, true);
 

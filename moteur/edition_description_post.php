@@ -89,5 +89,5 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($
   $req->closeCursor();
   header('Location:../ifaces/edition_description.php?msg=Configuration sauvegardée.');
 } else {
-  header('Location:../moteur/destroy.php');
+    header('Location:../moteur/destroy.php');
 }
