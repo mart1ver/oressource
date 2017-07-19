@@ -24,10 +24,10 @@ La manière la plus **automatisé** de sauvegarder la base, c'est d'ouvrir la
 console et lancer la commande:
 
 ```shell
-mysqldump -h localhost -u oressource -pZZZ oressource > /tmp/sauvegarde_oressource.sql
+mysqldump -h localhost -u oressource -p XXX oressource > /tmp/sauvegarde_oressource.sql
 ```
 
-(en remplaçant ZZZ par le vrai mot de passe de la base de données, voir dans le
+(en remplaçant XXX par le vrai mot de passe de la base de données, voir dans le
 fichier `moteur/dbconfig.php` si vous ne vous souvenez plus de mot de passe)
 
 Ensuite il faut récupérer le fichier sauvegarde_oressource.sql dans le dossier
@@ -70,8 +70,8 @@ Ensuite éditer le fichier et copier-coller le script suivant :
 ```shell
 #! /bin/bash
 
-# Remplacer ZZZ par le mot de passe de la base
-mysqldump -h localhost -u oressource -pZZZ oressource > /var/backups/sauvegarde_oressource.daily.sql
+# Remplacer XXX par le mot de passe de la base
+mysqldump -h localhost -u oressource -p XXX oressource > /var/backups/sauvegarde_oressource.daily.sql
 
 # Sauvegarde des fichiers
 tar cvzf /var/backups/sauvegarde_oressource.daily.tgz /var/www/oressource
@@ -98,5 +98,5 @@ Aller sur l'onglet "Importer" et uploader le fichier sauvegarde_oressource.sql
 **Avec la console** :
 
 ```shell
-mysql -h localhost -u oressource -pZZZ oressource < /tmp/sauvegarde_oressource.sql
+mysql -h localhost -u oressource -p XXX oressource < /tmp/sauvegarde_oressource.sql
 ```
