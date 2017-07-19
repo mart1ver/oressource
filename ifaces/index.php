@@ -81,11 +81,12 @@ if (is_valid_session()) {
                   WHERE type_dechets.id = pesees_collectes.id_type_dechet
                   AND DATE(pesees_collectes.timestamp) = CURDATE()
                   GROUP BY nom'));
+  $user = $_SESSION['user'];
   ?>
 
   <div class="page-header">
     <div class="container">
-      <h1>Bienvenue à bord d'Oressource <?php echo $_SESSION['prenom'] ?>!</h1>
+      <h1>Bienvenue à bord d'Oressource <?= $user['prenom'] ?>!</h1>
       <p>Oressource est un outil libre de quantification et de mise en bilan dédié aux structures du ré-emploi</p>
     </div>
   </div> <!-- /container -->
@@ -93,33 +94,36 @@ if (is_valid_session()) {
   <div class="container" id="actualise">
     <div class="row">
       <div class="col-md-4" >
-        <h3>Collecté aujourd'hui: <?php echo $masse_collectes . " Kgs."; ?></h3>
+        <h3>Collecté aujourd'hui: <?= $masse_collectes . " Kgs."; ?></h3>
         <?php if ($masse_collectes > 0.000) { ?>
           <div id="graphj" style="height: 180px;"></div>
           <?php if ($validUser) { ?>
-            <p><a href="../ifaces/bilanc.php?date1=<?php echo date("d-m-Y") ?>&date2=<?php echo date("d-m-Y") ?>&numero=0" class="btn btn-default"  role="button">Détails &raquo;</a></p>
+            <p><a href="../ifaces/bilanc.php?date1=<?= date("d-m-Y") ?>&date2=<?= date("d-m-Y") ?>&numero=0"
+                  class="btn btn-default" role="button">Détails &raquo;</a></p>
           <?php } ?>
         <?php } else { ?>
           <img src="../images/nodata.jpg" class="img-responsive" alt="Responsive image">
         <?php } ?>
       </div>
       <div class="col-md-4">
-        <h3>Evacué aujourd'hui: <?php echo $masse_sorties . " Kgs."; ?></h3>
+        <h3>Evacué aujourd'hui: <?= $masse_sorties . " Kgs."; ?></h3>
         <?php if ($masse_sorties > 0.000) { ?>
           <div id="grapha" style="height: 180px;"></div>
           <?php if ($validUser) { ?>
-            <p><a class="btn btn-default" href="../ifaces/bilanhb.php?date1=<?php echo date("d-m-Y") ?>&date2=<?php echo date("d-m-Y") ?>" role="button">Détails &raquo;</a></p>
+            <p><a class="btn btn-default" href="../ifaces/bilanhb.php?date1=<?= date("d-m-Y") ?>&date2=<?= date("d-m-Y") ?>"
+                  role="button">Détails &raquo;</a></p>
           <?php } ?>
         <?php } else { ?>
           <img src="../images/nodata.jpg" class="img-responsive" alt="Responsive image">
         <?php } ?>
       </div>
       <div class="col-md-4">
-        <h3>Vendu aujourd'hui: <?php echo $quantite_vendu . " Pcs."; ?></h3>
+        <h3>Vendu aujourd'hui: <?= $quantite_vendu . " Pcs."; ?></h3>
         <?php if ($quantite_vendu > 0) { ?>
           <div id="graphm" style="height: 180px;"></div>
           <?php if ($validUser) { ?>
-            <p><a class="btn btn-default" href="../ifaces/bilanv.php?date1=<?php echo date("d-m-Y") ?>&date2=<?php echo date("d-m-Y") ?>" role="button">Détails &raquo;</a></p>
+            <p><a class="btn btn-default" href="../ifaces/bilanv.php?date1=<?= date("d-m-Y") ?>&date2=<?= date("d-m-Y") ?>"
+                  role="button">Détails &raquo;</a></p>
           <?php } ?>
         <?php } else { ?>
           <img src="../images/nodata.jpg" class="img-responsive" alt="Responsive image">
@@ -139,7 +143,7 @@ if (is_valid_session()) {
     // Actuellement tout est recuperer via PHP a la generation de la page.
     document.addEventListener('DOMContentLoaded', () => {
       // graphj
-      const graphj = <?php echo(json_encode($graphj, JSON_NUMERIC_CHECK, JSON_FORCE_OBJECT)); ?>;
+      const graphj = <?=(json_encode($graphj, JSON_NUMERIC_CHECK, JSON_FORCE_OBJECT)); ?>;
       if (graphj.data.length !== 0) {
         Morris.Donut({
           element: 'graphj',
@@ -152,7 +156,7 @@ if (is_valid_session()) {
       }
 
       // graphm
-      const graphm = <?php echo(json_encode($graphm, JSON_NUMERIC_CHECK, JSON_FORCE_OBJECT)); ?>;
+      const graphm = <?=(json_encode($graphm, JSON_NUMERIC_CHECK, JSON_FORCE_OBJECT)); ?>;
       if (graphm.data.length !== 0) {
         Morris.Donut({
           element: 'graphm',
@@ -165,7 +169,7 @@ if (is_valid_session()) {
       }
 
       // grapha
-      const grapha = <?php echo(json_encode($grapha, JSON_NUMERIC_CHECK, JSON_FORCE_OBJECT)); ?>;
+      const grapha = <?=(json_encode($grapha, JSON_NUMERIC_CHECK, JSON_FORCE_OBJECT)); ?>;
       if (grapha.data.length !== 0) {
         Morris.Donut({
           element: 'grapha',

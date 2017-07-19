@@ -1,4 +1,4 @@
- <?php
+<?php
 /*
   Oressource
   Copyright (C) 2014-2017  Martin Vert and Oressource devellopers
@@ -17,127 +17,229 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-session_start();
 
-
+// Formulaire de description de la structure
+// Simple formulaire de saisie renseignant les informations fondamentales identifiant la structure
 
 require_once('../moteur/dbconfig.php');
+require_once('../core/session.php');
+require_once('../core/requetes.php');
 
-//Vérification des autorisations de l'utilisateur et des variables de session requises pour l'affichage de cette page: 
-            if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 'k') !== false))
+session_start();
 
-            {include "tete.php"
+if (is_valid_session() && is_allowed_config()) {
 
-//Oressource 2014, formulaire de description de la structure
-//Simple formulaire de saisie renseignant les informations fondamentales identifiant la  structure 
-            ?>
+  require_once('../moteur/dbconfig.php');
+  require_once('tete.php');
+  $structure = $_SESSION['structure'];
+  ?>
 
-<div class="container">
-<h1>Configuration de Oressource</h1> 
-<label>Description de la structure</label>
-  <div class="panel-heading"> 
+  <div class="container">
+    <h1>Configuration de Oressource</h1>
+    <label>Description de la structure</label>
+    <div class="panel-heading">
+    </div>
+    <div class="panel-body">
+      <div class="row">
+        <!-- Devrait être une methode put -->
+        <form id="form"></form>
+        <div class="col-md-3 col-md-offset-1">
+          <label for="nom">Nom de la structure:</label>
+          <input form='form' type="text"
+                 name="nom" id="nom" class="form-control" required autofocus></div>
+        <div class="col-md-4">
+          <label for="adresse">Adresse:</label>
+          <input form="form" type="text"
+                 name="adresse" id="adresse" class="form-control" required></div>
+        <div class="col-md-2">
+          <label for="telephone">Téléphone:</label>
+          <input form='form' type="tel"
+                 name="telephone" id="telephone" class="form-control" required></div>
+        <div class="col-md-2"></div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-4 col-md-offset-1">
+          <label for="localite">Localité:</label>
+          <input form='form' type="text" name="id_localite" id="id_localite"
+                 class="form-control" required >
+
+          <label for="mail">Mail principal:</label>
+          <input form='form' type="email" name="mail"
+                 id="mail" class="form-control" required>
+
+          <label class="custom-control">
+            <input form='form' name="saisiec" id="saisiec" type="checkbox">
+            Permettre de dater formulaires (mode saisie):
+          </label>
+
+          <!-- TODO: implem un session timeout configurable.
+           timeout session: <?= 'coming soon' /* $_SESSION['session_timeout'] */ ?> secondes
+          -->
+
+          <div class="panel panel-default">
+            <label class="panel-title">formulaire de ventes</label>
+            <div class="panel-body custom-controls-stacked">
+              <label class="custom-control">
+                <input form='form' type="text" name="cr"
+                       id="cr" class="form-control" required>
+                Code de remboursement à la caisse
+              </label>
+
+              <label class="custom-control custom-checkbox">
+                <input form='form' name="pes_vente" id="pes_vente" type="checkbox">
+                Activer la Pesée à la caisse
+              </label>
+
+              <label class="custom-control custom-checkbox">
+                <input form='form' name="force_pes_vente"
+                       id="force_pes_vente" type="checkbox">
+                Interdire les ventes sans pesées
+              </label>
+
+              <label class="custom-control custom-checkbox">
+                <input form='form' name="lot" id="lot" type="checkbox">
+                Activer la vente par lot à la caisse
+              </label>
+
+              <label class="custom-control custom-checkbox">
+                <input form='form' name="viz" id="viz" type="checkbox">
+                Activer la visualisation des ventes à la caisse
+              </label>
+
+              <label class="custom-control">Nombre de ventes anterieures visibles:
+                <input form='form' type="text" name="nb_viz"
+                       id="nb_viz" class="form-control" required>
+              </label>
+
+              <label class="custom-control custom-checkbox">
+                <input form='form' name="tva_active" id="tva_active" type="checkbox">
+                Activer la TVA à la vente
+              </label>
+
+              <label class="custom-control">Taux en vigueur:
+                <input form='form' type="text" name="taux_tva"
+                       id="taux_tva" class="form-control" required>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-2">
+            <label for="siret">Numéro de siret:</label>
+            <input form='form' type="text"
+                   name="siret" id="siret" class="form-control" required>
+          </div>
+
+          <div class="col-md-4">
+            <label for="description">Présentation générale de la structure:</label>
+            <textarea name="description" id="description" form="form"
+                      rows="10" cols="50" required></textarea>
+            <div class="panel panel-default">
+              <label class="panel-title">formulaires de sorties hors boutique</label>
+              <div class="panel-body custom-controls-stacked">
+                <label class="custom-control custom-checkbox">
+                  <input form='form' name="affsp" id ="affsp" type="checkbox">
+                  Utiliser l'onglet "poubelles"
+                </label>
+
+                <label class="custom-control custom-checkbox">
+                  <input form='form' name="affss" id="affss" type="checkbox">
+                  Utiliser l'onglet "sorties partenaires"
+                </label>
+
+                <label class="custom-control custom-checkbox">
+                  <input form='form' name="affsr" id="affsr" type="checkbox">
+                  Utiliser l'onglet "recyclage"
+                </label>
+
+                <label class="custom-control custom-checkbox">
+                  <input form='form' name="affsd" id="affsd" type="checkbox">
+                  Utiliser l'onglet "don"
+                </label>
+
+                <label class="custom-control custom-checkbox">
+                  <input form='form' name="affsde" id="affsde" type="checkbox">
+                  Utiliser l'onglet "déchetterie"
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-1 col-md-offset-6">
+            <br>
+            <button id="send" class="btn btn-default">Enregistrer</button>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
-            <?php 
-            // On recupère tout le contenu de la table description structure
-            $reponse = $bdd->query('SELECT * FROM description_structure');
-            // On affiche chaque entree une à une
-            while ($donnees = $reponse->fetch())
-           {
-           ?>
-  <div class="panel-body">
-    <div class="row">
-    <form action="../moteur/edition_description_post.php" method="post">
-      <div class="col-md-3 col-md-offset-1"><label for="nom">Nom de la structure:</label> <input type="text"value ="<?php echo $donnees['nom']; ?>" name="nom" id="nom" class="form-control " required autofocus></div>
-      <div class="col-md-4"><label for="adresse">Adresse:</label> <input type="text"       value ="<?php echo $donnees['adresse']; ?>" name="adresse" id="adresse" class="form-control " required ></div>
-      <div class="col-md-2"><label for="telephone">Téléphone:</label> <input type="tel" value ="<?php echo $donnees['telephone']; ?>" name="telephone" id="telephone" class="form-control " required ></div>
-      <div class="col-md-2"></div>
-    </div>
-  <br>
-    <div class="row">
-      <div class="col-md-4 col-md-offset-1"><label for="localite">Localité:</label> <input type="text" value ="<?php echo $donnees['id_localite']; ?>" name="localite" id="localite" class="form-control " required > 
-        <br>
-        <label for="mail">Mail principal:</label> <input type="email" name="mail" id="mail" class="form-control " value = "<?php echo $donnees['mail']; ?>" required > 
-        <br>
-        Permettre de dater formulaires (mode saisie):  <input name ="saisiec" id ="saisiec" type="checkbox" value = "oui" <?php if((strpos($donnees['saisiec'], 'oui') !== false)){ echo "checked";} ?> >
-        <br>
-        timeout session: <?//php echo $_SESSION['session_timeout'] ?> secondes
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-<div class="panel panel-default">
-  <label class="panel-title">formulaire de ventes</label>
-  <div class="panel-body">
-
-Code de remboursement à la caisse: <input type="text" value ="<?php echo $donnees['cr']; ?>" name="cr" id="cr" class="form-control " required > 
-<br>
-Activer la Pesée à la caisse: <input name ="pes_vente" id ="pes_vente" type="checkbox" value = "oui" <?php if((strpos($donnees['pes_vente'], 'oui') !== false)){ echo "checked";} ?> >
-<br>
-Interdire les ventes sans pesées: <input name ="force_pes_vente" id ="force_pes_vente" type="checkbox" value = "oui" <?php if((strpos($donnees['force_pes_vente'], 'oui') !== false)){ echo "checked";} ?> >
-<br>
-Activer la vente par lot à la caisse: <input name ="lot" id ="lot" type="checkbox" value = "oui" <?php if((strpos($donnees['lot'], 'oui') !== false)){ echo "checked";} ?> >
-<br>
-Activer la visualisation des ventes à la caisse: <input name ="viz" id ="viz" type="checkbox" value = "oui" <?php if((strpos($donnees['viz'], 'oui') !== false)){ echo "checked";} ?> >
-<br>
-Nombre de ventes anterieures visibles: <input type="text" value ="<?php echo $donnees['nb_viz']; ?>" name="nb_viz" id="nb_viz" class="form-control " required >
-<br>
- Activer la TVA à la vente : <input name ="atva" id ="atva" type="checkbox" value = "oui" <?php if((strpos($donnees['tva_active'], 'oui') !== false)){ echo "checked";} ?> >
-<br>
-Taux en vigueur: <input type="text" value ="<?php echo $donnees['taux_tva']; ?>" name="ttva" id="ttva" class="form-control " required >
-<br>
-</div>
-</div>
-
-
-
-
-      </div>
-       <div class="row">
-      
-      <div class="col-md-2"><label for="siret">Numéro de siret:</label> <input type="text" value ="<?php echo $donnees['siret']; ?>" name="siret" id="siret" class="form-control " required >
-
-      </div>
-      <div class="col-md-4"><label for="description">Présentation générale de la strucure:</label> <textarea name="description" id="description" rows="10" cols="50" required><?php echo $donnees['description']; ?></textarea> 
-
-        <br>
-        <br>
-        <br>
-<div class="panel panel-default">
-  <label class="panel-title">formulaires de sorties hors boutique</label>
-  <div class="panel-body">
-Utiliser l'onglet "poubelles" :  <input name ="affsp" id ="lot" type="checkbox" value = "oui" <?php if((strpos($donnees['affsp'], 'oui') !== false)){ echo "checked";} ?> >
-<br>
-Utiliser l'onglet "sorties partenaires" : <input name ="affss" id ="lot" type="checkbox" value = "oui" <?php if((strpos($donnees['affss'], 'oui') !== false)){ echo "checked";} ?> >
-<br>
-Utiliser l'onglet "recyclage" :<input name ="affsr" id ="lot" type="checkbox" value = "oui" <?php if((strpos($donnees['affsr'], 'oui') !== false)){ echo "checked";} ?> >
-<br>
-Utiliser l'onglet "don" : <input name ="affsd" id ="viz" type="checkbox" value = "oui" <?php if((strpos($donnees['affsd'], 'oui') !== false)){ echo "checked";} ?> >
-<br>
-Utiliser l'onglet "déchetterie" :<input name ="affsde" id ="lot" type="checkbox" value = "oui" <?php if((strpos($donnees['affsde'], 'oui') !== false)){ echo "checked";} ?> >
-<br>
-</div>
-</div>
-      </div>
-    
-  <br>
-        
-
-
-    </div>
-   
-    <div class="row">
-      <div class="col-md-1 col-md-offset-6"><br><button name="creer" class="btn btn-default">Enregistrer</button></div>
-    </div>
-    </form>
-    </div>
-  </div>
-</div>
-<?php }
-   $reponse->closeCursor(); // Termine le traitement de la requête
-include "pied.php"; 
+  <script type="text/javascript">
+    'use strict';
+    const structure = <?= json_encode($structure); ?>;
+    document.addEventListener('DOMContentLoaded', () => {
+      Object.entries(structure).forEach(([key, value]) => {
+        const e = document.getElementById(key);
+        if (e !== null && e !== true) {
+          e.value = value;
+          if (value === true) {
+            e.checked = true;
+          }
+      }
+      });
+      document.getElementById('send').addEventListener('click', (e) => {
+        e.preventDefault();
+        const form = new FormData(document.getElementById('form'));
+        const data = {
+          nom: form.get('nom'),
+          adresse: form.get('adresse').trim(),
+          id_localite: ParseInt(form.get('id_localite'), 10),
+          description: form.get('description'),
+          siret: form.get('siret'),
+          telephone: form.get('telephone'),
+          mail: form.get('mail'),
+          taux_tva: form.get('taux_tva'),
+          cr: form.get('cr'),
+          nb_viz: form.get('nb_viz'),
+          tva_active: (form.get('tva_active') !== null),
+          lot: (form.get('lot') !== null),
+          viz: (form.get('viz') !== null),
+          saisiec: (form.get('saisiec') !== null),
+          affsp: (form.get('affsp') !== null),
+          affss: (form.get('affss') !== null),
+          affsr: (form.get('affsr') !== null),
+          affsd: (form.get('affsd') !== null),
+          affsde: (form.get('affsde') !== null),
+          pes_vente: (form.get('pes_vente') !== null),
+          force_pes_vente: (form.get('force_pes_vente') !== null),
+        };
+        // TODO: verifier que les données sont correctes.
+        fetch('../api/structure.php', {
+          credentials: 'same-origin',
+          method: 'POST',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json; charset=utf-8'
+          },
+          body: JSON.stringify(data)
+        }).then(status)
+          .then((json) => {
+            // TODO Vrai gestion de la reponse... (future mise en attente...)
+            // console.log('response in Json:', json);
+            window.location.href = '../ifaces/index.php';
+        }).catch((ex) => {
+          console.log('Error:', ex);
+        });
+      });
+    });
+  </script>
+  <?php
+  require_once "pied.php";
+} else {
+  destroy_session();
+  header('Location:../moteur/destroy.php?motif=1');
+  die();
 }
-else
-      { header('Location: ../moteur/destroy.php') ;}
-?>

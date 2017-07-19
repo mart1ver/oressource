@@ -18,34 +18,13 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-// Appellee au login.
+// Appellée au login.
 function set_session($user, $structure) {
   global $_SESSION;
   $_SESSION['systeme'] = 'oressource';
-
-  $_SESSION['id'] = $user['id'];
-  $_SESSION['niveau'] = $user['niveau'];
-  $_SESSION['nom'] = $user['nom'];
-  $_SESSION['prenom'] = $user['prenom'];
-  $_SESSION['mail'] = $user['mail'];
-
-  $_SESSION['tva_active'] = $structure['tva_active'] === 'oui';
-  $_SESSION['taux_tva'] = $structure['taux_tva'];
-  $_SESSION['structure'] = $structure['nom'];
-  $_SESSION['siret'] = $structure['siret'];
-  $_SESSION['adresse'] = $structure['adresse'];
-  $_SESSION['texte_adhesion'] = $structure['texte_adhesion'];
-  $_SESSION['lot_caisse'] = $structure['lot'] === 'oui';
-  $_SESSION['viz_caisse'] = $structure['viz'] === 'oui';
-  $_SESSION['nb_viz_caisse'] = $structure['nb_viz'];
-  $_SESSION['saisiec'] = $structure['saisiec'];
-  $_SESSION['affsp'] = $structure['affsp'];
-  $_SESSION['affss'] = $structure['affss'];
-  $_SESSION['affsr'] = $structure['affsr'];
-  $_SESSION['affsd'] = $structure['affsd'];
-  $_SESSION['affsde'] = $structure['affsde'];
-  $_SESSION['pes_vente'] = $structure['pes_vente'] === 'oui';
-  $_SESSION['force_pes_vente'] = $structure['force_pes_vente'] === 'oui';
+  $_SESSION['structure'] = $structure;
+  $_SESSION['timeout'] = 3600;
+  $_SESSION['user'] = $user;
 }
 
 function destroy_session() {
@@ -59,9 +38,28 @@ function destroy_session() {
  * Renvoie `true` si la session est valide.
  */
 function is_valid_session() {
-// FIXME: Pourquoi pas mettre la session en parametre?
-  return (isset($_SESSION['id'])
-    && $_SESSION['systeme'] === 'oressource');
+  global $_SESSION;
+  return (isset($_SESSION['user']['id']) && $_SESSION['systeme'] === 'oressource');
+}
+
+function affichage_sortie_don(): bool {
+  return $_SESSION['structure']['affsd'];
+}
+
+function affichage_sortie_poubelle(): bool {
+  return $_SESSION['structure']['affsp'];
+}
+
+function affichage_sortie_partenaires(): bool {
+  return $_SESSION['structure']['affss'];
+}
+
+function affichage_sortie_dechetterie(): bool {
+  return $_SESSION['structure']['affsde'];
+}
+
+function affichage_sortie_recyclage(): bool {
+  return $_SESSION['structure']['affsr'];
 }
 
 /**
@@ -70,78 +68,75 @@ function is_valid_session() {
  */
 function is_allowed_bilan() {
   // FIXME: Pourquoi pas mettre la session en parametre?
-  return (strpos($_SESSION['niveau'], 'bi') !== false);
+  return (strpos($_SESSION['user']['niveau'], 'bi') !== false);
 }
 
 function is_allowed_vente() {
-  return strpos($_SESSION['niveau'], 'v') !== false;
+  return strpos($_SESSION['user']['niveau'], 'v') !== false;
 }
 
 function is_allowed_vente_id(int $id): bool {
-  return strpos($_SESSION['niveau'], 'v' . $id) !== false;
+  return strpos($_SESSION['user']['niveau'], 'v' . $id) !== false;
 }
 
 function is_allowed_sortie() {
-  return strpos($_SESSION['niveau'], 's') !== false;
+  return strpos($_SESSION['user']['niveau'], 's') !== false;
 }
 
 // Test si l'utilisateur a les droits sur un point de collecte donnee.
 function is_allowed_sortie_id($id) {
-  return strpos($_SESSION['niveau'], 's' . ((string) $id)) !== false;
+  return strpos($_SESSION['user']['niveau'], 's' . ((string) $id)) !== false;
 }
 
 function is_allowed_gestion() {
-  return strpos($_SESSION['niveau'], 'g') !== false;
+  return strpos($_SESSION['user']['niveau'], 'g') !== false;
 }
 
 function is_allowed_gestion_id($id) {
-  return strpos($_SESSION['niveau'], 'g' . ((string) $id)) !== false;
+  return strpos($_SESSION['user']['niveau'], 'g' . ((string) $id)) !== false;
 }
 
 // Test si l'utilisateur a les droits sur un point de collecte donnee.
 function is_allowed_collecte_id($id) {
-  return strpos($_SESSION['niveau'], 'c' . ((string) $id)) !== false;
+  return strpos($_SESSION['user']['niveau'], 'c' . ((string) $id)) !== false;
 }
 
 function is_allowed_collecte() {
-  return strpos($_SESSION['niveau'], 'c') !== false;
+  return strpos($_SESSION['user']['niveau'], 'c') !== false;
 }
 
 function is_allowed_partners() {
-  return strpos($_SESSION['niveau'], 'j') !== false;
+  return strpos($_SESSION['user']['niveau'], 'j') !== false;
 }
 
 function is_allowed_config() {
-  return strpos($_SESSION['niveau'], 'k') !== false;
+  return strpos($_SESSION['user']['niveau'], 'k') !== false;
 }
 
 function is_allowed_users() {
-  return strpos($_SESSION['niveau'], 'l') !== false;
+  return strpos($_SESSION['user']['niveau'], 'l') !== false;
 }
 
 function is_allowed_verifications() {
-  return strpos($_SESSION['niveau'], 'h') !== false;
+  return strpos($_SESSION['user']['niveau'], 'h') !== false;
 }
 
 function is_allowed_edit_date() {
-  return strpos($_SESSION['niveau'], 'e') !== false;
+  return strpos($_SESSION['user']['niveau'], 'e') !== false;
 }
 
 function is_allowed_saisie_collecte() {
-  return $_SESSION['saisiec'] === 'oui';
+  return $_SESSION['structure']['saisiec'];
 }
 
 function is_collecte_visible($point_collecte) {
-  return (strpos($_SESSION['niveau'], 'c' . $point_collecte['id']) !== false
-    && $point_collecte['visible'] === "oui");
+  return (strpos($_SESSION['user']['niveau'], 'c' . $point_collecte['id']) !== false && $point_collecte['visible'] === "oui");
 }
 
 function is_sortie_visible($point_sortie) {
-  return (strpos($_SESSION['niveau'], 's' . $point_sortie['id']) !== false
-    && $point_sortie['visible'] === "oui");
+  return (strpos($_SESSION['user']['niveau'], 's' . $point_sortie['id']) !== false && $point_sortie['visible'] === "oui");
 }
 
 function is_vente_visible($point_vente) {
-  return (strpos($_SESSION['niveau'], 'v' . $point_vente['id']) !== false
-    && $point_vente['visible'] === "oui");
+  return (strpos($_SESSION['user']['niveau'], 'v' . $point_vente['id']) !== false && $point_vente['visible'] === "oui");
 }

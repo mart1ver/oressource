@@ -48,8 +48,7 @@ header("content-type:application/json");
  * SI un des champs est invalide le serveur reponds 400 Bad request avec un objet json
  * detaillant l'erreur.
  */
-if (isset($_SESSION['id'])
-  && $_SESSION['systeme'] = "oressource") {
+if (is_valid_session()) {
   if (!is_allowed_sortie()) {
     http_response_code(403); // Forbiden.
     echo(json_encode(['error' => 'Action interdite.'], JSON_FORCE_OBJECT));

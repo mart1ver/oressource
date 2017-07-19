@@ -30,11 +30,10 @@ session_start();
 
 $numero = filter_input(INPUT_GET, 'numero', FILTER_VALIDATE_INT);
 
-if (isset($_SESSION['id'])
-  && $_SESSION['systeme'] === "oressource"
+if (is_valid_session()
   && is_allowed_sortie_id($numero)) {
 
-  if ($_SESSION['affsd'] !== "oui") {
+  if (!affichage_sortie_dechetterie()) {
     header("Location:sortiesd.php?numero=" . $numero);
     die();
   }
@@ -54,11 +53,11 @@ if (isset($_SESSION['id'])
         <h1><?= $point_sortie['nom'] ?></h1>
       </div>
       <ul class="nav nav-tabs">
-        <?php if ($_SESSION['affsp'] === "oui") { ?><li><a href="sortiesp.php?numero=<?php echo $numero ?>">Poubelles</a></li><?php } ?>
-        <?php if ($_SESSION['affss'] === "oui") { ?><li><a href="sortiesc.php?numero=<?php echo $numero ?>">Sorties partenaires</a></li><?php } ?>
-        <?php if ($_SESSION['affsr'] === "oui") { ?><li><a href="sortiesr.php?numero=<?php echo $numero ?>">Recyclage</a></li><?php } ?>
+        <?php if (affichage_sortie_poubelle()) { ?><li><a href="sortiesp.php?numero=<?= $numero ?>">Poubelles</a></li><?php } ?>
+        <?php if (affichage_sortie_partenaires()) { ?><li><a href="sortiesc.php?numero=<?= $numero ?>">Sorties partenaires</a></li><?php } ?>
+        <?php if (affichage_sortie_recyclage()) { ?><li><a href="sortiesr.php?numero=<?= $numero ?>">Recyclage</a></li><?php } ?>
         <li class="active"><a href="#">Don</a></li>
-        <?php if ($_SESSION['affsde'] == "oui") { ?><li><a href="sortiesd.php?numero=<?php echo $numero ?>">Déchetterie</a></li><?php } ?>
+        <?php if (affichage_sortie_dechetterie()) { ?><li><a href="sortiesd.php?numero=<?= $numero ?>">Déchetterie</a></li><?php } ?>
       </ul>
     </nav>
 
@@ -148,16 +147,12 @@ if (isset($_SESSION['id'])
     </div> <!-- .col-md-4 -->
   </div> <!-- container -->
 
-
   <script type="text/javascript">
     // Variables d'environnement de Oressource.
     'use scrict';
     window.OressourceEnv = {
       structure: <?= json_encode($_SESSION['structure']) ?>,
-      adresse: <?= json_encode($_SESSION['adresse']) ?>,
-      id_user: <?= json_encode($_SESSION['id'], JSON_NUMERIC_CHECK) ?>,
-      saisie_collecte: <?= json_encode(is_allowed_saisie_collecte()) ?>,
-      user_droit: <?= json_encode($_SESSION['niveau']) ?>,
+      user: <?= json_encode($_SESSION['user'], JSON_NUMERIC_CHECK) ?>,
       id_point: <?= json_encode($numero, JSON_NUMERIC_CHECK) ?>,
       id_type_action: <?= json_encode($types_action, JSON_NUMERIC_CHECK) ?>,
       types_dechet: <?= json_encode(types_dechets($bdd), JSON_NUMERIC_CHECK) ?>,

@@ -382,16 +382,57 @@ function insert_sortie(PDO $bdd, $sortie) {
 }
 
 function structure(PDO $bdd) {
-  $sql = 'SELECT tva_active, taux_tva, nom,
-                siret, adresse, texte_adhesion, lot, viz,
+  $sql = 'SELECT id_localite, tva_active, taux_tva, nom,
+                siret, telephone, mail, description, cr, adresse, texte_adhesion, lot, viz,
                 nb_viz, saisiec, affsp, affss, affsr,
                 affsd, affsde, pes_vente, force_pes_vente
           FROM description_structure LIMIT 1';
   $req = $bdd->prepare($sql);
   $req->execute();
   $result = $req->fetch(PDO::FETCH_ASSOC);
+
+  // HACK: A retirer une fois la base propre.
+  $result['tva_active'] = oui_non_to_bool($result['tva_active']);
+  $result['lot'] = oui_non_to_bool($result['lot']);
+  $result['viz'] = oui_non_to_bool($result['viz']);
+  $result['saisiec'] = oui_non_to_bool($result['saisiec']);
+  $result['affsp'] = oui_non_to_bool($result['affsp']);
+  $result['affss'] = oui_non_to_bool($result['affss']);
+  $result['affsr'] = oui_non_to_bool($result['affsr']);
+  $result['affsd'] = oui_non_to_bool($result['affsd']);
+  $result['affsde'] = oui_non_to_bool($result['affsde']);
+  $result['pes_vente'] = oui_non_to_bool($result['pes_vente']);
+  $result['force_pes_vente'] = oui_non_to_bool($result['force_pes_vente']);
+
   $req->closeCursor();
   return $result;
+}
+function structure_update(PDO $bdd, $structure) {
+  $sql = 'UPDATE description_structure
+    SET nom = :nom,
+    adresse = :adresse,
+    description = :description,
+    siret = :siret,
+    telephone = :telephone,
+    mail =:mail,
+    taux_tva = :taux_tva,
+    tva_active= :tva_active,
+    cr = :cr,
+    lot = :lot,
+    viz = :viz,
+    nb_viz = :nb_viz,
+    saisiec =: saisiec,
+    affsp = :affsp,
+    affss = :affss,
+    affsr = :affsr,
+    affsd = :affsd,
+    affsde = :affsde,
+    pes_vente = :pes_vente,
+    force_pes_vente = :force_pes_vente
+    WHERE id = :id';
+  $stmt = $bdd->prepare($sql);
+  $req->execute($structure);
+  $req->closeCursor();
 }
 
 // Return a valid user or an exception.

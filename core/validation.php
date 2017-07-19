@@ -20,15 +20,43 @@
 
 // TODO a virer une fois la base nettoyee des oui et non.
 function oui_non_to_bool($s) {
-  if ($s === 'oui') { return true; }
-  else if ($s === 'non') { return false; }
-  else { throw new InvalidArgumentException('$s different de oui ou non.'); }
+  if ($s === 'oui') {
+    return true;
+  } else if ($s === 'non') {
+    return false;
+  } else {
+    throw new InvalidArgumentException('$s different de oui ou non.');
+  }
 }
 
 // TODO a virer une fois la base nettoyee des oui et non.
 function bool_to_oui_non($b) {
-  if ($b === true) { return 'oui'; }
-  else { return 'non'; }
+  if ($b === true) {
+    return 'oui';
+  } else {
+    return 'non';
+  }
+}
+
+function structure_validate(Array $json) {
+  $structure = [
+    'nom' => filter_input($json, 'nom', FILTER_SANITIZE_STRING),
+    'description' => filter_input($json, 'description', FILTER_SANITIZE_STRING),
+    'mail' => filter_input($json, 'mail', FILTER_VALIDATE_EMAIL),
+    'lot' => filter_input($json, 'lot', FILTER_VALIDATE_BOOLEAN),
+    'viz' => filter_input($json, 'viz', FILTER_VALIDATE_BOOLEAN),
+    'saisiec' => filter_input($json, 'saisiec', FILTER_VALIDATE_BOOLEAN),
+    'affsp' => filter_input($json, 'affsp', FILTER_VALIDATE_BOOLEAN),
+    'affss' => filter_input($json, 'affss', FILTER_VALIDATE_BOOLEAN),
+    'affsr' => filter_input($json, 'affsr', FILTER_VALIDATE_BOOLEAN),
+    'affsde' => filter_input($json, 'affsde', FILTER_VALIDATE_BOOLEAN),
+    'pes_vente' => filter_input($json, 'pes_vente', FILTER_VALIDATE_BOOLEAN),
+    'force_pes_vente' => filter_input($json, 'force_pes_vente', FILTER_VALIDATE_BOOLEAN),
+    'atva' => filter_input($json, 'atva', FILTER_VALIDATE_BOOLEAN),
+    'taux_tva' => filter_input($json, 'taux_tva', FILTER_VALIDATE_FLOAT),
+    'cr' => filter_input($json, 'cr', FILTER_VALIDATE_INT), // devrait etre une regex sur les nombres.
+  ];
+  return $structure;
 }
 
 function validate_json_login($unsafe_json) {
@@ -38,17 +66,17 @@ function validate_json_login($unsafe_json) {
 
 function validate_json_sorties($unsafe_json) {
   $filters = [
-      'id_type_action' => FILTER_DEFAULT, // Peux etre NULL
-      'antidate' => FILTER_DEFAULT,       // Peux etre NULL validation faite plus tard.
-      'localite' => FILTER_DEFAULT,       // Peux etre NULL
-      'id_point' => FILTER_VALIDATE_INT,
-      'id_user' => FILTER_VALIDATE_INT,
-      'items' => FILTER_DEFAULT,
-      'evacs' => FILTER_DEFAULT,
-      'commentaire' => FILTER_SANITIZE_STRING,
-      // TODO: remplacer par une regex sortie|sortier...
-      // Ou remplacer par des id.
-      'classe' => FILTER_SANITIZE_STRING
+    'id_type_action' => FILTER_DEFAULT, // Peux etre NULL
+    'antidate' => FILTER_DEFAULT, // Peux etre NULL validation faite plus tard.
+    'localite' => FILTER_DEFAULT, // Peux etre NULL
+    'id_point' => FILTER_VALIDATE_INT,
+    'id_user' => FILTER_VALIDATE_INT,
+    'items' => FILTER_DEFAULT,
+    'evacs' => FILTER_DEFAULT,
+    'commentaire' => FILTER_SANITIZE_STRING,
+    // TODO: remplacer par une regex sortie|sortier...
+    // Ou remplacer par des id.
+    'classe' => FILTER_SANITIZE_STRING
   ];
   $flag = ['flags' => FILTER_NULL_ON_FAILURE];
   $flags = [];
@@ -74,13 +102,13 @@ function validate_json_sorties($unsafe_json) {
 
 function validate_json_collecte($unsafe_json) {
   $filters = [
-      'id_type_action' => FILTER_VALIDATE_INT,
-      'antidate' => FILTER_DEFAULT,
-      'localite' => FILTER_VALIDATE_INT,
-      'id_point' => FILTER_VALIDATE_INT,
-      'id_user' => FILTER_VALIDATE_INT,
-      'items' => FILTER_DEFAULT,
-      'commentaire' => FILTER_SANITIZE_STRING
+    'id_type_action' => FILTER_VALIDATE_INT,
+    'antidate' => FILTER_DEFAULT,
+    'localite' => FILTER_VALIDATE_INT,
+    'id_point' => FILTER_VALIDATE_INT,
+    'id_user' => FILTER_VALIDATE_INT,
+    'items' => FILTER_DEFAULT,
+    'commentaire' => FILTER_SANITIZE_STRING
   ];
   $flag = ['flags' => FILTER_NULL_ON_FAILURE];
   $flags = [];
