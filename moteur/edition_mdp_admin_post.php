@@ -27,7 +27,6 @@ require_once('../core/requetes.php');
 if (isset($_SESSION['id'])
   && $_SESSION['systeme'] === "oressource"
   && is_allowed_users()) {
-
   $id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
 
   if ($_POST['pass1'] === $_POST['pass2']) {
