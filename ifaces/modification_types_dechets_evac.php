@@ -26,7 +26,7 @@ require_once("../moteur/dbconfig.php");
       { include "tete.php" ?>
     <div class="container">
         <h1>Gestion des types de déchet sortants</h1> 
-         <div class="panel-heading">Modifier les données concernant le type de déchet sortant n° <?php echo $_POST['id']?>, <?php echo $_POST['nom']?>. </div>
+         <div class="panel-heading">Modifier les données concernant le type de déchet sortant n° <?= $_POST['id']?>, <?= $_POST['nom']?>. </div>
 <?php
 //on obtient la couleur de la localité dans la base
             // On recupère tout le contenu de la table point de vente
@@ -51,11 +51,11 @@ $couleur = $donnees['couleur'];
       <div class="panel-body">
         <div class="row">
         	<form action="../moteur/modification_types_dechets_evac_post.php" method="post">
-            <input type="hidden" name ="id" id="id" value="<?php echo $_POST['id']?>">
+            <input type="hidden" name ="id" id="id" value="<?= $_POST['id']?>">
 
-  <div class="col-md-2"><label for="nom">Nom:</label> <input type="text"value ="<?php echo $_POST['nom']?>" name="nom" id="nom" class="form-control " required autofocus></div>
-  <div class="col-md-3"><label for="addresse">Description:</label> <input type="text"value ="<?php echo $_POST['description']?>" name="description" id="description" class="form-control " required ></div>
-  <div class="col-md-1"><label for="couleur">Couleur:</label> <input type="color"value ="<?php echo $couleur ?>"name="couleur" id="couleur" class="form-control " required ></div>
+  <div class="col-md-2"><label for="nom">Nom:</label> <input type="text"value ="<?= $_POST['nom']?>" name="nom" id="nom" class="form-control " required autofocus></div>
+  <div class="col-md-3"><label for="addresse">Description:</label> <input type="text"value ="<?= $_POST['description']?>" name="description" id="description" class="form-control " required ></div>
+  <div class="col-md-1"><label for="couleur">Couleur:</label> <input type="color"value ="<?= $couleur ?>"name="couleur" id="couleur" class="form-control " required ></div>
   <div class="col-md-1"><br><button name="creer" class="btn btn-warning">Modifier</button></div>
 </form>
 <br>

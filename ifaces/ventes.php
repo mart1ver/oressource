@@ -301,7 +301,7 @@ if (isset($_SESSION['id'])
 
           <br><br>
           <?php /*
-            <a href="remboursement.php?numero=<?php echo $_GET['numero']?>&nom=<?php echo $_GET['nom']?>&adresse=<?php echo $_GET['adresse']?>">
+            <a href="remboursement.php?numero=<?= $_GET['numero']?>&nom=<?= $_GET['nom']?>&adresse=<?= $_GET['adresse']?>">
            */ ?>
           <button class="btn btn-danger  pull-right" type="button" data-toggle="collapse" data-target="#collapserembou" aria-expanded="false" aria-controls="collapseExample">
             Remboursement

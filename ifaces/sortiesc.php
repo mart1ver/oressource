@@ -72,7 +72,7 @@ if (isset($_SESSION['id'])
           <form id="formulaire">
             <?php if (is_allowed_edit_date()) { ?>
               <label for="antidate">Date de la sortie: </label>
-              <input form="formulaire" type="date" id="antidate" name="antidate" style="width:130px; height:20px;" value="<?php echo($date->format('Y-m-d')); ?>">
+              <input form="formulaire" type="date" id="antidate" name="antidate" style="width:130px; height:20px;" value="<?=($date->format('Y-m-d')); ?>">
             <?php } ?>
             <ul class="list-group" id="transaction">  <!--start Ticket Caisse -->
               <!-- Remplis via JavaScript voir script de la page -->

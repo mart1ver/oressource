@@ -72,12 +72,12 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
      
 <form action="../moteur/remboursement_post.php" id="formulaire" method="post">
   <?php if ($_SESSION['saisiec'] == 'oui' AND (strpos($_SESSION['niveau'], 'e') !== false) ){ ?>
-      Date de la vente:  <input type="date" id="antidate" name="antidate" style="height:20px;" value=<?php echo date("Y-m-d") ?>>
+      Date de la vente:  <input type="date" id="antidate" name="antidate" style="height:20px;" value=<?= date("Y-m-d") ?>>
 <br>
 <br>
 <?php }?>
 <ul id="liste" class="list-group">
-   <li class="list-group-item">Réference: <?php echo $_GET['numero']?>#<?php echo $numero_vente?>, date: <?php echo date("d-m-Y") ?><br><?php echo $nom_pv;?><br><?php echo $adresse_pv;?>,<br>siret: <?php echo$_SESSION['siret'];?></li>
+   <li class="list-group-item">Réference: <?= $_GET['numero']?>#<?= $numero_vente?>, date: <?= date("d-m-Y") ?><br><?= $nom_pv;?><br><?= $adresse_pv;?>,<br>siret: <?=$_SESSION['siret'];?></li>
   
 </ul>
  <ul class="list-group" id="total">
@@ -89,7 +89,7 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
 <input type="hidden"  id="narticles" name="narticles">
 <input type="hidden"  id="ptot" name="ptot">
 
-<input type="hidden" name ="id_point_vente" id="id_point_vente" value="<?php echo $_GET['numero']?>">
+<input type="hidden" name ="id_point_vente" id="id_point_vente" value="<?= $_GET['numero']?>">
     </form>
  <ul id="boutons" class="list-group">
         <button class="btn btn-danger btn-lg" onclick="encaisse();">Rembourser!</button>
@@ -179,10 +179,10 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
            ?>
       <div class="btn-group">
       <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" style="margin-left:8px; margin-top:16px;">
-      <span class="badge" id="cool" style="background-color:<?php echo$donnees['couleur']?>"><?php echo$donnees['nom']?></span>
+      <span class="badge" id="cool" style="background-color:<?=$donnees['couleur']?>"><?=$donnees['nom']?></span>
       </button>
       <ul class="dropdown-menu" role="menu">
-      <li><a href="javascript:edite('<?php echo$donnees['nom']?>','0','<?php echo$donnees['id']?>','0')" ><?php echo$donnees['nom']?></a></li>
+      <li><a href="javascript:edite('<?=$donnees['nom']?>','0','<?=$donnees['id']?>','0')" ><?=$donnees['nom']?></a></li>
       <li class="divider"></li>
 
 
@@ -195,7 +195,7 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
            while ($donneesint = $req->fetch())
            {
            ?>
-    <li><a href="javascript:edite('<?php echo$donneesint['nom']?>','<?php echo$donneesint['prix']?>','<?php echo$donnees['id']?>','<?php echo$donneesint['id']?>')"><?php echo$donneesint['nom']?></a></li>
+    <li><a href="javascript:edite('<?=$donneesint['nom']?>','<?=$donneesint['prix']?>','<?=$donnees['id']?>','<?=$donneesint['id']?>')"><?=$donneesint['nom']?></a></li>
     </li>
            <?php }
            $req->closeCursor(); // Termine le traitement de la requête
@@ -212,7 +212,7 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
 
     </div>
     <br>
-    <a href="ventes.php?numero=<?php echo $_GET['numero']?>&nom=<?php echo $_GET['nom']?>&adresse=<?php echo $_GET['adresse']?>"> 
+    <a href="ventes.php?numero=<?= $_GET['numero']?>&nom=<?= $_GET['nom']?>&adresse=<?= $_GET['adresse']?>"> 
     <button type="button"  class="btn btn-default pull-right" >
     Retour aux ventes
     </button>
@@ -245,9 +245,9 @@ if (parseInt(document.getElementById('nlignes').value) >= 1)
       
  <?php if ($_SESSION['tva_active']){?>
   var prixtot =  parseFloat(document.getElementById('ptot').value).toFixed(2);
-  var prixht = parseFloat(prixtot).toFixed(2) / ( 1+parseFloat(<?php echo $_SESSION['taux_tva'] ?>).toFixed(2)/100 );
+  var prixht = parseFloat(prixtot).toFixed(2) / ( 1+parseFloat(<?= $_SESSION['taux_tva'] ?>).toFixed(2)/100 );
   var ptva = parseFloat(prixtot).toFixed(2)-parseFloat(prixht).toFixed(2)
-var footstr = "TVA à <?php echo $_SESSION['taux_tva'] ?>%"+" Prix H.T. ="+parseFloat(prixht).toFixed(2)+"€ TVA="+parseFloat(ptva).toFixed(2)+"€";
+var footstr = "TVA à <?= $_SESSION['taux_tva'] ?>%"+" Prix H.T. ="+parseFloat(prixht).toFixed(2)+"€ TVA="+parseFloat(ptva).toFixed(2)+"€";
 <?php
   }else{?>
 var footstr = "Association non assujettie à la TVA.</body></small> ";

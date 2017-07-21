@@ -25,7 +25,7 @@ require_once("../moteur/dbconfig.php");
   if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 'h') !== false))
       {  include "tete.php" ?>
    <div class="container">
-        <h1>Modifier la pesée n° <?php echo $_POST['id']?> appartenant à la sortie <?php echo $_POST['nsortie']?> </h1> 
+        <h1>Modifier la pesée n° <?= $_POST['id']?> appartenant à la sortie <?= $_POST['nsortie']?> </h1> 
  <div class="panel-body">
 
 
@@ -37,12 +37,12 @@ require_once("../moteur/dbconfig.php");
 <div class="row">
    
           <form action="../moteur/modification_verification_pesee_sortiesp_post.php" method="post">
-            <input type="hidden" name ="nsortie" id="ncnsortie" value="<?php echo $_POST['nsortie']?>">
-            <input type="hidden" name ="id" id="id" value="<?php echo $_POST['id']?>">
-            <input type="hidden" name ="masse" id="masse" value="<?php echo $_POST['masse']?>">
-  <input type="hidden" name ="date1" id="date1" value="<?php echo $_POST['date1']?>">
-  <input type="hidden" name ="date2" id="date2" value="<?php echo $_POST['date2']?>">
-    <input type="hidden" name ="npoint" id="npoint" value="<?php echo $_POST['npoint']?>">
+            <input type="hidden" name ="nsortie" id="ncnsortie" value="<?= $_POST['nsortie']?>">
+            <input type="hidden" name ="id" id="id" value="<?= $_POST['id']?>">
+            <input type="hidden" name ="masse" id="masse" value="<?= $_POST['masse']?>">
+  <input type="hidden" name ="date1" id="date1" value="<?= $_POST['date1']?>">
+  <input type="hidden" name ="date2" id="date2" value="<?= $_POST['date2']?>">
+    <input type="hidden" name ="npoint" id="npoint" value="<?= $_POST['npoint']?>">
 
 
 
@@ -62,12 +62,12 @@ require_once("../moteur/dbconfig.php");
               if ($_POST['id_type_poubelle'] == $donnees['nom'])  // SI on a pas de message d'erreur
 {
   ?>
-    <option value = "<?php echo$donnees['id']?>" selected ><?php echo$donnees['nom']?></option>
+    <option value = "<?=$donnees['id']?>" selected ><?=$donnees['nom']?></option>
 <?php
 } else {
             ?>
 
-      <option value = "<?php echo$donnees['id']?>" ><?php echo$donnees['nom']?></option>
+      <option value = "<?=$donnees['id']?>" ><?=$donnees['nom']?></option>
             <?php }}
             $reponse->closeCursor(); // Termine le traitement de la requête
             ?>
@@ -78,7 +78,7 @@ require_once("../moteur/dbconfig.php");
 <div class="col-md-3">
 
     <label for="masse">Masse:</label>
-<br><input type="text"       value ="<?php echo $_POST['masse']?>" name="masse" id="masse" class="form-control " required >
+<br><input type="text"       value ="<?= $_POST['masse']?>" name="masse" id="masse" class="form-control " required >
   <br>
 <button name="creer" class="btn btn-warning">Modifier</button>
  </div>

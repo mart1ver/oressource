@@ -35,15 +35,15 @@ require_once('../moteur/dbconfig.php');
       <div class="panel-body">
         <div class="row">
         	<form action="../moteur/filiere_sortie_post.php" method="post">
-  <div class="col-md-3"><label for="nom">Nom:</label> <input type="text"value ="<?php echo $_GET['nom']?>" name="nom" id="nom" class="form-control " required autofocus>
+  <div class="col-md-3"><label for="nom">Nom:</label> <input type="text"value ="<?= $_GET['nom']?>" name="nom" id="nom" class="form-control " required autofocus>
 
   </div>
 
-    <div class="col-md-4"><label for="description">Description:</label> <input type="text" value ="<?php echo $_GET['description']?>" name="description" id="description" class="form-control " required >
+    <div class="col-md-4"><label for="description">Description:</label> <input type="text" value ="<?= $_GET['description']?>" name="description" id="description" class="form-control " required >
       
     
     </div>
-  <div class="col-md-1"><label for="couleur">Couleur:</label> <input type="color"        value ="<?php echo "#".$_GET['couleur']?>" name="couleur" id="couleur" class="form-control " required ></div>
+  <div class="col-md-1"><label for="couleur">Couleur:</label> <input type="color"        value ="<?= "#".$_GET['couleur']?>" name="couleur" id="couleur" class="form-control " required ></div>
   <div class="col-md-1"><br><button name="creer" class="btn btn-default">Créer!</button></div>
   
                                     
@@ -60,7 +60,7 @@ require_once('../moteur/dbconfig.php');
             // On affiche chaque entree une à une$_POST
            while ($donnees = $reponse->fetch())
            {?>
-                     <input type="checkbox" name="tde<?php echo $donnees['id']; ?>" id="tde<?php echo $donnees['id']; ?>"> <?php echo '<label for="tde'.$donnees['id'].'">'.$donnees['nom'].'.   </label>'; ?>
+                     <input type="checkbox" name="tde<?= $donnees['id']; ?>" id="tde<?= $donnees['id']; ?>"> <?= '<label for="tde'.$donnees['id'].'">'.$donnees['nom'].'.   </label>'; ?>
            
               <?php } ?>
              
@@ -121,10 +121,10 @@ require_once('../moteur/dbconfig.php');
 
            ?>
             <tr> 
-            <td><?php echo $donnees['id']?></td>
-            <td><?php echo $donnees['timestamp']?></td>
-            <td><?php echo $donnees['nom']?></td>
-            <td><?php echo $donnees['description']?></td>
+            <td><?= $donnees['id']?></td>
+            <td><?= $donnees['timestamp']?></td>
+            <td><?= $donnees['nom']?></td>
+            <td><?= $donnees['description']?></td>
 
             <td><?php 
                        foreach (explode("a", $donnees['id_type_dechet_evac']) as $arrayElement)
@@ -144,12 +144,12 @@ echo $donnees2['nom'].", ";
             ?></td>
 
 
-           <td><span class="badge" style="background-color:<?php echo$donnees['couleur']?>"><?php echo$donnees['couleur']?></span></td> 
+           <td><span class="badge" style="background-color:<?=$donnees['couleur']?>"><?=$donnees['couleur']?></span></td> 
 <td>
 <form action="../moteur/filiere_sortie_visible.php" method="post">
 
   
-  <input type="hidden" name ="id" id="id" value="<?php echo $donnees['id']?>">
+  <input type="hidden" name ="id" id="id" value="<?= $donnees['id']?>">
   <input type="hidden"name ="visible" id ="visible" value="<?php if ($donnees['visible'] == "oui") 
 {echo "non";}
 else 
@@ -178,11 +178,11 @@ else // SINON
 
 <form action="modification_filiere_sortie.php" method="post">
 
-<input type="hidden" name ="id" id="id" value="<?php echo $donnees['id']?>">
-<input type="hidden" name ="nom" id="nom" value="<?php echo $donnees['nom']?>">
-<input type="hidden" name ="description" id="description" value="<?php echo $donnees['description']?>">
-<input type="hidden" name ="couleur" id="couleur" value="<?php echo substr($_POST['couleur'],1)?>">
-<input type="hidden" name ="id_type_dechet_evac" id="id_type_dechet_evac" value="<?php echo $donnees['id_type_dechet_evac']?>">
+<input type="hidden" name ="id" id="id" value="<?= $donnees['id']?>">
+<input type="hidden" name ="nom" id="nom" value="<?= $donnees['nom']?>">
+<input type="hidden" name ="description" id="description" value="<?= $donnees['description']?>">
+<input type="hidden" name ="couleur" id="couleur" value="<?= substr($_POST['couleur'],1)?>">
+<input type="hidden" name ="id_type_dechet_evac" id="id_type_dechet_evac" value="<?= $donnees['id_type_dechet_evac']?>">
   <button  class="btn btn-warning btn-sm" >Modifier!</button>
 
 

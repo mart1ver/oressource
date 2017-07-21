@@ -43,7 +43,7 @@ require_once('../moteur/dbconfig.php');
            while ($donnees = $reponse->fetch())
            {
            ?> 
-            <li<?php if ($_GET['numero'] == $donnees['id']){ echo ' class="active"';}?>><a href="<?php echo  "verif_collecte.php?numero=" . $donnees['id']."&date1=" . $_GET['date1']."&date2=" . $_GET['date2']?>"><?php echo$donnees['nom']?></a></li>
+            <li<?php if ($_GET['numero'] == $donnees['id']){ echo ' class="active"';}?>><a href="<?=  "verif_collecte.php?numero=" . $donnees['id']."&date1=" . $_GET['date1']."&date2=" . $_GET['date2']?>"><?=$donnees['nom']?></a></li>
            <?php }
               $reponse->closeCursor(); // Termine le traitement de la requête
            ?>
@@ -159,7 +159,7 @@ var datedosgf = moisdos+'/'+jourdos+"/"+anneedos;
                       + " to " 
                       + picker.endDate.format('DD MM, YYYY')                      
                     ); 
-                    window.location.href = "verif_collecte.php?date1="+picker.startDate.format('DD-MM-YYYY')+"&date2="+picker.endDate.format('DD-MM-YYYY')+"&numero="+"<?php echo $_GET['numero']?>";
+                    window.location.href = "verif_collecte.php?date1="+picker.startDate.format('DD-MM-YYYY')+"&date2="+picker.endDate.format('DD-MM-YYYY')+"&numero="+"<?= $_GET['numero']?>";
                   });
                   $('#reportrange').on('cancel.daterangepicker', function(ev, picker) { console.log("cancel event fired"); });
 
@@ -271,11 +271,11 @@ $req->execute(array('id_point_collecte' => $_GET['numero'], 'du' => $time_debut,
            while ($donnees = $req->fetch()) {
            ?>
             <tr>
-            <td style="height:20px"><?php echo $donnees['id']?></td>
-            <td style="height:20px"><?php echo $donnees['timestamp']?></td>
-            <td style="height:20px"><?php echo $donnees['nom']?></td>
-            <td width="20%" style="height:20px"><?php echo $donnees['commentaire']?></td>
-            <td style="height:20px"><?php echo $donnees['localisation']?></td>
+            <td style="height:20px"><?= $donnees['id']?></td>
+            <td style="height:20px"><?= $donnees['timestamp']?></td>
+            <td style="height:20px"><?= $donnees['nom']?></td>
+            <td width="20%" style="height:20px"><?= $donnees['commentaire']?></td>
+            <td style="height:20px"><?= $donnees['localisation']?></td>
             <td style="height:20px">
  <?php
 $req2 = $bdd->prepare('SELECT SUM(pesees_collectes.masse) masse
@@ -290,7 +290,7 @@ $req2->execute(array('id_collecte' => $donnees['id']));
 
 
 
-<?php echo $donnees2['masse']?>
+<?= $donnees2['masse']?>
 
 
          <?php }
@@ -304,18 +304,18 @@ $req2->execute(array('id_collecte' => $donnees['id']));
 
 
 
-<td><?php echo $donnees['mail']?></td> 
+<td><?= $donnees['mail']?></td> 
 
 <td>
 
-<form action="modification_verification_collecte.php?ncollecte=<?php echo $donnees['id']?>" method="post">
+<form action="modification_verification_collecte.php?ncollecte=<?= $donnees['id']?>" method="post">
 
-<input type="hidden" name ="id" id="id" value="<?php echo $donnees['id']?>">
-<input type="hidden" name ="nom" id="nom" value="<?php echo $donnees['nom']?>">
-<input type="hidden" name ="localisation" id="localisation" value="<?php echo $donnees['localisation']?>">
-<input type="hidden" name ="date1" id="date1" value="<?php echo $_GET['date1']?>">
-<input type="hidden" name ="date2" id="date2" value="<?php echo $_GET['date2']?>">
-<input type="hidden" name ="npoint" id="npoint" value="<?php echo $_GET['numero']?>">
+<input type="hidden" name ="id" id="id" value="<?= $donnees['id']?>">
+<input type="hidden" name ="nom" id="nom" value="<?= $donnees['nom']?>">
+<input type="hidden" name ="localisation" id="localisation" value="<?= $donnees['localisation']?>">
+<input type="hidden" name ="date1" id="date1" value="<?= $_GET['date1']?>">
+<input type="hidden" name ="date2" id="date2" value="<?= $_GET['date2']?>">
+<input type="hidden" name ="npoint" id="npoint" value="<?= $_GET['numero']?>">
   <button  class="btn btn-warning btn-sm" >Modifier</button>
 
 
@@ -341,7 +341,7 @@ $req3->execute(array('id_collecte' => $donnees['id']));
 
 
 
-<?php echo $donnees3['mail']?>
+<?= $donnees3['mail']?>
 
 
          <?php }

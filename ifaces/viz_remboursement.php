@@ -26,7 +26,7 @@ require_once('../moteur/dbconfig.php');
    if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 'h') !== false))
       {  include "tete.php" ?>
    <div class="container">
-        <h1>Visualiser le remboursement n° <?php echo $_GET['nvente']?></h1> 
+        <h1>Visualiser le remboursement n° <?= $_GET['nvente']?></h1> 
         <p align="right">
         <input class="btn btn-default btn-lg" type='button'name='quitter' value='Quitter' OnClick="window.close();"/></p>
  <div class="panel-body">
@@ -102,16 +102,16 @@ $req->execute(array('id_vente' => $_GET['nvente']));
 
            ?>
             <tr> 
-            <td><?php echo $donnees['id']?></td>
-            <td><?php echo $donnees['timestamp']?></td>
-            <td><?php echo $donnees['type']?></td>
-            <td><?php echo $donnees['objet']?></td>
+            <td><?= $donnees['id']?></td>
+            <td><?= $donnees['timestamp']?></td>
+            <td><?= $donnees['type']?></td>
+            <td><?= $donnees['objet']?></td>
            
 
 
-<td><?php echo $donnees['quantite']?></td>
-<td><?php echo $donnees['remboursement']?></td>
-<td><?php echo $donnees['mail']?></td>
+<td><?= $donnees['quantite']?></td>
+<td><?= $donnees['remboursement']?></td>
+<td><?= $donnees['mail']?></td>
 
 
 

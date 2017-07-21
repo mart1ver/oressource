@@ -26,7 +26,7 @@ require_once('../moteur/dbconfig.php');
       { include "tete.php" ?>
     <div class="container">
         <h1>Modifier un recycleur</h1> 
-         <div class="panel-heading">Modifier les données concernant la filiere n° <?php echo $_POST['id']?>, <?php echo $_POST['nom']?>. </div>
+         <div class="panel-heading">Modifier les données concernant la filiere n° <?= $_POST['id']?>, <?= $_POST['nom']?>. </div>
 <?php
 //on obtient la couleur de la localité dans la base
 
@@ -51,12 +51,12 @@ $id_type_dechet_evac_current_tab = explode("a", $id_type_dechet_evac_current);
       <div class="panel-body">
         <div class="row">
         	<form action="../moteur/modification_filiere_sortie_post.php" method="post">
-            <input type="hidden" name ="id" id="id" value="<?php echo $_POST['id']?>">
+            <input type="hidden" name ="id" id="id" value="<?= $_POST['id']?>">
 
-  <div class="col-md-2"><label for="nom">Nom:</label> <input type="text"value ="<?php echo $_POST['nom']?>" name="nom" id="nom" class="form-control " required autofocus></div>
-  <div class="col-md-3"><label for="description">Description:</label> <input type="text"value ="<?php echo $_POST['description']?>" name="description" id="description" class="form-control " required ></div>
+  <div class="col-md-2"><label for="nom">Nom:</label> <input type="text"value ="<?= $_POST['nom']?>" name="nom" id="nom" class="form-control " required autofocus></div>
+  <div class="col-md-3"><label for="description">Description:</label> <input type="text"value ="<?= $_POST['description']?>" name="description" id="description" class="form-control " required ></div>
   
-  <div class="col-md-1"><label for="couleur">Couleur:</label> <input type="color"value ="<?php echo $couleur ?>"name="couleur" id="couleur" class="form-control " required ></div>
+  <div class="col-md-1"><label for="couleur">Couleur:</label> <input type="color"value ="<?= $couleur ?>"name="couleur" id="couleur" class="form-control " required ></div>
   <div class="col-md-1"><br><button name="creer" class="btn btn-warning">Modifier</button></div>
 
 <br> 
@@ -81,7 +81,7 @@ $id_type_dechet_evac_current_tab = explode("a", $id_type_dechet_evac_current);
             // On affiche chaque entree une à une$_POST
            while ($donnees = $reponse->fetch())
            {?>
-                     <input type="checkbox" name="tde<?php echo $donnees['id']; ?>" id="tde<?php echo $donnees['id']; ?>" <?php if (array_key_exists($donnees['id'], $id_type_dechet_evac_current_tab)) { echo "checked"; }?>> <?php echo '<label for="tde'.$donnees['id'].'">'.$donnees['nom'].'.   </label>'; ?>
+                     <input type="checkbox" name="tde<?= $donnees['id']; ?>" id="tde<?= $donnees['id']; ?>" <?php if (array_key_exists($donnees['id'], $id_type_dechet_evac_current_tab)) { echo "checked"; }?>> <?= '<label for="tde'.$donnees['id'].'">'.$donnees['nom'].'.   </label>'; ?>
            
                       
 
