@@ -59,10 +59,10 @@ require_once('../moteur/dbconfig.php');
 
            ?>
             <tr> 
-            <td><?php echo $donnees['id']?></td>
-            <td><?php echo $donnees['nom']?></td>
-            <td><?php echo $donnees['prenom']?></td>
-            <td><?php echo $donnees['mail']?></td>
+            <td><?= $donnees['id']?></td>
+            <td><?= $donnees['nom']?></td>
+            <td><?= $donnees['prenom']?></td>
+            <td><?= $donnees['mail']?></td>
             <td>
 
 
@@ -73,11 +73,11 @@ require_once('../moteur/dbconfig.php');
 
 <form action="edition_utilisateur.php" method="post">
 
-  <input type="hidden" name ="id" id="id" value="<?php echo $donnees['id']?>">
-  <input type="hidden" name ="nom" id="nom" value="<?php echo $donnees['nom']?>">
-  <input type="hidden" name ="prenom" id="prenom" value="<?php echo $donnees['prenom']?>">
-  <input type="hidden" name ="mail" id="mail" value="<?php echo $donnees['mail']?>">
-  <input type="hidden" name ="niveau" id="id" value="<?php echo $donnees['niveau']?>">
+  <input type="hidden" name ="id" id="id" value="<?= $donnees['id']?>">
+  <input type="hidden" name ="nom" id="nom" value="<?= $donnees['nom']?>">
+  <input type="hidden" name ="prenom" id="prenom" value="<?= $donnees['prenom']?>">
+  <input type="hidden" name ="mail" id="mail" value="<?= $donnees['mail']?>">
+  <input type="hidden" name ="niveau" id="id" value="<?= $donnees['niveau']?>">
   
 
 
@@ -104,7 +104,7 @@ require_once('../moteur/dbconfig.php');
 
 <form action="../moteur/sup_utilisateur.php" method="post">
 
-  <input type="hidden" name ="id" id="id" value="<?php echo $donnees['id']?>">
+  <input type="hidden" name ="id" id="id" value="<?= $donnees['id']?>">
   
 
 

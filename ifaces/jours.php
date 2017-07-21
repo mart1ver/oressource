@@ -218,7 +218,7 @@ ORDER BY time');
             labels: ['Masse collectée'],
             postUnits: "Kgs.",
             resize: true,
-            barColors: ['<?php echo $couleur ?>'],
+            barColors: ['<?= $couleur ?>'],
             <?php 
  $interm = 0;
  $cmpt = 0;
@@ -270,7 +270,7 @@ ORDER BY time');
             labels: ['Masse évacuée hors boutique'],
             resize: true,
             postUnits: "Kgs.",
-            barColors: ['<?php echo $couleur ?>'],
+            barColors: ['<?= $couleur ?>'],
   <?php
   $interm = 0;
   $cmpt = 0;
@@ -318,7 +318,7 @@ ORDER BY time');
             labels: ['Q. vendue'],
             resize: true,
              postUnits: "Pcs.",
-            barColors: ['<?php echo $couleur ?>'],
+            barColors: ['<?= $couleur ?>'],
   <?php
   $interm = 0;
   $cmpt = 0;
@@ -367,7 +367,7 @@ ORDER BY time');
             labels: ['C.A.'],
             resize: true,
             postUnits: "€",
-            barColors: ['<?php echo $couleur ?>'],
+            barColors: ['<?= $couleur ?>'],
   <?php
   $interm = 0;
   $cmpt = 0;
@@ -468,7 +468,7 @@ ORDER BY time');
                         + " to "
                         + picker.endDate.format('DD MM, YYYY')
                         );
-                window.location.href = "jours.php?date1=" + picker.startDate.format('DD-MM-YYYY') + "&date2=" + picker.endDate.format('DD-MM-YYYY') + "&type=" +<?php echo $_GET['type'] ?>;
+                window.location.href = "jours.php?date1=" + picker.startDate.format('DD-MM-YYYY') + "&date2=" + picker.endDate.format('DD-MM-YYYY') + "&type=" +<?= $_GET['type'] ?>;
             });
             $('#reportrange').on('cancel.daterangepicker', function (ev, picker) {
                 console.log("cancel event fired");

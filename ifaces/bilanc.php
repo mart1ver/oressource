@@ -138,7 +138,7 @@ var datedosgf = moisdos+'/'+jourdos+"/"+anneedos;
                       + " to " 
                       + picker.endDate.format('DD MM, YYYY')                      
                     ); 
-                    window.location.href = "bilanc.php?date1="+picker.startDate.format('DD-MM-YYYY')+"&date2="+picker.endDate.format('DD-MM-YYYY')+"&numero=<?php echo $_GET['numero'] ?>";
+                    window.location.href = "bilanc.php?date1="+picker.startDate.format('DD-MM-YYYY')+"&date2="+picker.endDate.format('DD-MM-YYYY')+"&numero=<?= $_GET['numero'] ?>";
                   });
                   $('#reportrange').on('cancel.daterangepicker', function(ev, picker) { console.log("cancel event fired"); });
 
@@ -169,8 +169,8 @@ var datedosgf = moisdos+'/'+jourdos+"/"+anneedos;
 <ul class="nav nav-tabs">
   
   <li class="active"><a >Collectes</a></li>
-  <li><a href="<?php echo  "bilanhb.php?date1=" . $_GET['date1'].'&date2='.$_GET['date2'].'&numero=0'?>">Sorties hors-boutique</a></li>
-  <li><a href="<?php echo  "bilanv.php?date1=" . $_GET['date1'].'&date2='.$_GET['date2'].'&numero=0'?>">Ventes</a></li>
+  <li><a href="<?=  "bilanhb.php?date1=" . $_GET['date1'].'&date2='.$_GET['date2'].'&numero=0'?>">Sorties hors-boutique</a></li>
+  <li><a href="<?=  "bilanv.php?date1=" . $_GET['date1'].'&date2='.$_GET['date2'].'&numero=0'?>">Ventes</a></li>
   
 </ul>
       
@@ -203,12 +203,12 @@ var datedosgf = moisdos+'/'+jourdos+"/"+anneedos;
            while ($donnees = $reponse->fetch())
            {
            ?> 
-            <li<?php if ($_GET['numero'] == $donnees['id']){ echo ' class="active"';}?>><a href="<?php echo  "bilanc.php?numero=" . $donnees['id']."&date1=" . $_GET['date1']."&date2=" . $_GET['date2']?>"><?php echo$donnees['nom']?></a></li>
+            <li<?php if ($_GET['numero'] == $donnees['id']){ echo ' class="active"';}?>><a href="<?=  "bilanc.php?numero=" . $donnees['id']."&date1=" . $_GET['date1']."&date2=" . $_GET['date2']?>"><?=$donnees['nom']?></a></li>
            <?php }
               $reponse->closeCursor(); // Termine le traitement de la requête
            ?>
 
-           <li<?php if ($_GET['numero'] == 0){ echo ' class="active"';}?>><a href="<?php echo  "bilanc.php?numero=0" ."&date1=" . $_GET['date1']."&date2=" . $_GET['date2']?>">Tous les points</a></li>
+           <li<?php if ($_GET['numero'] == 0){ echo ' class="active"';}?>><a href="<?=  "bilanc.php?numero=0" ."&date1=" . $_GET['date1']."&date2=" . $_GET['date2']?>">Tous les points</a></li>
 
        </ul>
 
@@ -351,11 +351,11 @@ GROUP BY id_type_collecte');
            while ($donnees = $reponse->fetch())
            {
             ?>
-            <tr data-toggle="collapse" data-target=".parmasse<?php echo $donnees['id']?>" >
-            <td><?php echo $donnees['nom'] ?></td>
-            <td><?php echo $donnees['ncol'] ?></td>
-            <td><?php echo $donnees['somme'] ?></td>
-            <td><?php echo  round($donnees['somme']*100/$mtotcolo, 2)   ; ?></td>      
+            <tr data-toggle="collapse" data-target=".parmasse<?= $donnees['id']?>" >
+            <td><?= $donnees['nom'] ?></td>
+            <td><?= $donnees['ncol'] ?></td>
+            <td><?= $donnees['somme'] ?></td>
+            <td><?=  round($donnees['somme']*100/$mtotcolo, 2)   ; ?></td>      
         </tr>
 
       <?php 
@@ -376,16 +376,16 @@ ORDER BY somme DESC');
            {        
             ?>
 
-    <tr class="collapse parmasse<?php echo $donnees['id']?> " >
+    <tr class="collapse parmasse<?= $donnees['id']?> " >
             <td  >
              
-              <a href=" jours.php?date1=<?php echo $_GET['date1']?>&date2=<?php echo $_GET['date2']?>&type=<?php echo  $donnees2['id'] ?>" > <?php echo $donnees2['nom'] ?> </a>
+              <a href=" jours.php?date1=<?= $_GET['date1']?>&date2=<?= $_GET['date2']?>&type=<?=  $donnees2['id'] ?>" > <?= $donnees2['nom'] ?> </a>
             </td >
             <td >
-                <?php echo $donnees2['somme']." Kgs." ?>
+                <?= $donnees2['somme']." Kgs." ?>
             </td>
             <td >
-                <?php echo  round($donnees2['somme']*100/$donnees['somme'], 2)." %"  ; ?>
+                <?=  round($donnees2['somme']*100/$donnees['somme'], 2)." %"  ; ?>
             </td>
           </tr>
         
@@ -423,11 +423,11 @@ GROUP BY id_type_collecte');
            while ($donnees = $reponse->fetch())
            {
             ?>
-            <tr data-toggle="collapse" data-target=".parmasse<?php echo $donnees['id']?>" >
-            <td><?php echo $donnees['nom'] ?></td>
-             <td><?php echo $donnees['ncol'] ?></td>
-            <td><?php echo $donnees['somme'] ?></td>
-            <td><?php echo  round($donnees['somme']*100/$mtotcolo, 2)   ; ?></td>      
+            <tr data-toggle="collapse" data-target=".parmasse<?= $donnees['id']?>" >
+            <td><?= $donnees['nom'] ?></td>
+             <td><?= $donnees['ncol'] ?></td>
+            <td><?= $donnees['somme'] ?></td>
+            <td><?=  round($donnees['somme']*100/$mtotcolo, 2)   ; ?></td>      
         </tr>
       <?php 
  
@@ -446,16 +446,16 @@ ORDER BY somme DESC');
            while ($donnees2 = $reponse2->fetch())
            {        
             ?>
- <tr class="collapse parmasse<?php echo $donnees['id']?> active">
+ <tr class="collapse parmasse<?= $donnees['id']?> active">
     
             <td class="hiddenRow">
-               <a href=" jours.php?date1=<?php echo $_GET['date1']?>&date2=<?php echo $_GET['date2']?>&type=<?php echo  $donnees2['id'] ?>" > <?php echo $donnees2['nom'] ?> </a>
+               <a href=" jours.php?date1=<?= $_GET['date1']?>&date2=<?= $_GET['date2']?>&type=<?=  $donnees2['id'] ?>" > <?= $donnees2['nom'] ?> </a>
             </td >
             <td class="hiddenRow">
-                <?php echo $donnees2['somme']." Kgs." ?>
+                <?= $donnees2['somme']." Kgs." ?>
             </td>
             <td class="hiddenRow">
-                <?php echo  round($donnees2['somme']*100/$donnees['somme'], 2)." %"  ; ?>
+                <?=  round($donnees2['somme']*100/$donnees['somme'], 2)." %"  ; ?>
             </td>
         </tr>
  <?php
@@ -493,7 +493,7 @@ ORDER BY somme DESC');
           
           
        <br>
-<a href="<?php echo  "../moteur/export_bilanc_partype.php?numero=". $_GET['numero']."&date1=" . $_GET['date1']."&date2=" . $_GET['date2']?>">
+<a href="<?=  "../moteur/export_bilanc_partype.php?numero=". $_GET['numero']."&date1=" . $_GET['date1']."&date2=" . $_GET['date2']?>">
 
 
 
@@ -554,11 +554,11 @@ GROUP BY id');
            while ($donnees = $reponse->fetch())
            {
             ?>
-            <tr data-toggle="collapse" data-target=".parloc<?php echo $donnees['id']?>" >
-            <td><?php echo $donnees['nom'] ?></td>
-            <td><?php echo $donnees['ncol'] ?></td>
-            <td><?php echo $donnees['somme'] ?></td>
-            <td><?php echo  round($donnees['somme']*100/$mtotcolo, 2)   ; ?></td>      
+            <tr data-toggle="collapse" data-target=".parloc<?= $donnees['id']?>" >
+            <td><?= $donnees['nom'] ?></td>
+            <td><?= $donnees['ncol'] ?></td>
+            <td><?= $donnees['somme'] ?></td>
+            <td><?=  round($donnees['somme']*100/$mtotcolo, 2)   ; ?></td>      
         </tr>
 
       <?php 
@@ -579,15 +579,15 @@ ORDER BY somme DESC');
            {        
             ?>
 
-    <tr class="collapse parloc<?php echo $donnees['id']?> " >
+    <tr class="collapse parloc<?= $donnees['id']?> " >
             <td  >
-           <a href=" jours.php?date1=<?php echo $_GET['date1']?>&date2=<?php echo $_GET['date2']?>&type=<?php echo  $donnees2['idd'] ?>" > <?php echo $donnees2['nom'] ?> </a>
+           <a href=" jours.php?date1=<?= $_GET['date1']?>&date2=<?= $_GET['date2']?>&type=<?=  $donnees2['idd'] ?>" > <?= $donnees2['nom'] ?> </a>
             </td >
             <td >
-                <?php echo $donnees2['somme']." Kgs." ?>
+                <?= $donnees2['somme']." Kgs." ?>
             </td>
             <td >
-                <?php echo  round($donnees2['somme']*100/$donnees['somme'], 2)." %"  ; ?>
+                <?=  round($donnees2['somme']*100/$donnees['somme'], 2)." %"  ; ?>
             </td>
           </tr>
         
@@ -624,11 +624,11 @@ GROUP BY id
            while ($donnees = $reponse->fetch())
            {
             ?>
-            <tr data-toggle="collapse" data-target=".parloc<?php echo $donnees['id']?>" >
-            <td><?php echo $donnees['nom'] ?></td>
-             <td><?php echo $donnees['ncol'] ?></td>
-            <td><?php echo $donnees['somme'] ?></td>
-            <td><?php echo  round($donnees['somme']*100/$mtotcolo, 2)   ; ?></td>      
+            <tr data-toggle="collapse" data-target=".parloc<?= $donnees['id']?>" >
+            <td><?= $donnees['nom'] ?></td>
+             <td><?= $donnees['ncol'] ?></td>
+            <td><?= $donnees['somme'] ?></td>
+            <td><?=  round($donnees['somme']*100/$mtotcolo, 2)   ; ?></td>      
         </tr>
       <?php 
             // On recupère tout le contenu de la table affectations
@@ -646,16 +646,16 @@ ORDER BY somme DESC');
            while ($donnees2 = $reponse2->fetch())
            {        
             ?>
- <tr class="collapse parloc<?php echo $donnees['id']?> active">
+ <tr class="collapse parloc<?= $donnees['id']?> active">
     
             <td class="hiddenRow">
-               <a href=" jours.php?date1=<?php echo $_GET['date1']?>&date2=<?php echo $_GET['date2']?>&type=<?php echo  $donnees2['id'] ?>" > <?php echo $donnees2['nom'] ?> </a>
+               <a href=" jours.php?date1=<?= $_GET['date1']?>&date2=<?= $_GET['date2']?>&type=<?=  $donnees2['id'] ?>" > <?= $donnees2['nom'] ?> </a>
             </td >
             <td class="hiddenRow">
-                <?php echo $donnees2['somme']." Kgs." ?>
+                <?= $donnees2['somme']." Kgs." ?>
             </td>
             <td class="hiddenRow">
-                <?php echo  round($donnees2['somme']*100/$donnees['somme'], 2)." %"  ; ?>
+                <?=  round($donnees2['somme']*100/$donnees['somme'], 2)." %"  ; ?>
             </td>
         </tr>
  <?php
@@ -690,7 +690,7 @@ ORDER BY somme DESC');
 <div id="graph2loca" style="height: 180px;"></div>          
 
 <br>
-       <a href="<?php echo  "../moteur/export_bilanc_parloca.php?numero=". $_GET['numero']."&date1=" . $_GET['date1']."&date2=" . $_GET['date2']?>">
+       <a href="<?=  "../moteur/export_bilanc_parloca.php?numero=". $_GET['numero']."&date1=" . $_GET['date1']."&date2=" . $_GET['date2']?>">
         <button type="button" class="btn btn-default btn-xs" disabled>exporter ces données (.csv) </button>
       </a>
   </div>

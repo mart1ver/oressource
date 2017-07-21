@@ -44,30 +44,30 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === "oressource" && is_allowe
   ?>
   <div class="container">
     <h1>Gestion des points de vente</h1>
-    <div class="panel-heading">Modifier les données concernant le point de vente n°<?php echo $id; ?>, <?php echo $point_vente['nom']; ?>. </div>
+    <div class="panel-heading">Modifier les données concernant le point de vente n°<?= $id; ?>, <?= $point_vente['nom']; ?>. </div>
     <div class="panel-body">
       <div class="row">
         <form action="../moteur/modification_points_vente_post.php" method="post">
-          <input type="hidden" name ="id" id="id" value="<?php echo $id; ?>">
+          <input type="hidden" name ="id" id="id" value="<?= $id; ?>">
           <div class="col-md-3">
             <label for="nom">Nom:</label>
-            <input type="text" value="<?php echo $point_vente['nom']; ?>" name="nom" id="nom" class="form-control " required autofocus>
+            <input type="text" value="<?= $point_vente['nom']; ?>" name="nom" id="nom" class="form-control " required autofocus>
           </div>
           <div class="col-md-2">
             <label for="addresse">Adresse:</label>
-            <input type="text" value="<?php echo $point_vente['adresse']; ?>" name="adresse" id="adresse" class="form-control " required>
+            <input type="text" value="<?= $point_vente['adresse']; ?>" name="adresse" id="adresse" class="form-control " required>
           </div>
           <div class="col-md-2">
             <label for="commentaire">Commentaire:</label>
-            <input type="text" value="<?php echo $point_vente['commentaire']; ?>" name="commentaire" id="commentaire" class="form-control" required>
+            <input type="text" value="<?= $point_vente['commentaire']; ?>" name="commentaire" id="commentaire" class="form-control" required>
           </div>
           <div class="col-md-2">
             <label for="surface">Surface de vente (m²):</label>
-            <input type="text"value="<?php echo $point_vente['surface'];?>" name="surface" id="surface" class="form-control " required>
+            <input type="text"value="<?= $point_vente['surface'];?>" name="surface" id="surface" class="form-control " required>
           </div>
           <div class="col-md-1">
             <label for="couleur">Couleur:</label>
-            <input type="color" value="<?php echo $point_vente['couleur']; ?>" name="couleur" id="couleur" class="form-control" required>
+            <input type="color" value="<?= $point_vente['couleur']; ?>" name="couleur" id="couleur" class="form-control" required>
           </div>
           <div class="col-md-1">
             <button type="submit" class="btn btn-warning">Modifier</button>

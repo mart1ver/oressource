@@ -129,7 +129,7 @@ var datedosgf = moisdos+'/'+jourdos+"/"+anneedos;
                       + " to " 
                       + picker.endDate.format('DD MM, YYYY')                      
                     ); 
-                    window.location.href = "bilanhb.php?date1="+picker.startDate.format('DD-MM-YYYY')+"&date2="+picker.endDate.format('DD-MM-YYYY')+"&numero=<?php echo $_GET['numero'] ?>";
+                    window.location.href = "bilanhb.php?date1="+picker.startDate.format('DD-MM-YYYY')+"&date2="+picker.endDate.format('DD-MM-YYYY')+"&numero=<?= $_GET['numero'] ?>";
                   });
                   $('#reportrange').on('cancel.daterangepicker', function(ev, picker) { console.log("cancel event fired"); });
                   $('#options1').click(function() {
@@ -155,9 +155,9 @@ var datedosgf = moisdos+'/'+jourdos+"/"+anneedos;
 </div>
 <ul class="nav nav-tabs">
 
-  <li ><a href="<?php echo  "bilanc.php?date1=" . $_GET['date1'].'&date2='.$_GET['date2'].'&numero=0'?>">Collectes</a></li>
+  <li ><a href="<?=  "bilanc.php?date1=" . $_GET['date1'].'&date2='.$_GET['date2'].'&numero=0'?>">Collectes</a></li>
   <li class="active"><a>Sorties hors-boutique</a></li>
-  <li><a href="<?php echo  "bilanv.php?date1=" . $_GET['date1'].'&date2='.$_GET['date2'].'&numero=0'?>">Ventes</a></li>
+  <li><a href="<?=  "bilanv.php?date1=" . $_GET['date1'].'&date2='.$_GET['date2'].'&numero=0'?>">Ventes</a></li>
   
 </ul>
       
@@ -188,11 +188,11 @@ var datedosgf = moisdos+'/'+jourdos+"/"+anneedos;
            while ($donnees = $reponse->fetch())
            {
            ?> 
-            <li<?php if ($_GET['numero'] == $donnees['id']){ echo ' class="active"';}?>><a href="<?php echo  "bilanhb.php?numero=" . $donnees['id']."&date1=" . $_GET['date1']."&date2=" . $_GET['date2']?>"> <?php echo$donnees['nom']?> </a></li>
+            <li<?php if ($_GET['numero'] == $donnees['id']){ echo ' class="active"';}?>><a href="<?=  "bilanhb.php?numero=" . $donnees['id']."&date1=" . $_GET['date1']."&date2=" . $_GET['date2']?>"> <?=$donnees['nom']?> </a></li>
            <?php }
               $reponse->closeCursor(); // Termine le traitement de la requête
            ?>
-           <li<?php if ($_GET['numero'] == 0){ echo ' class="active"';}?>><a href="<?php echo  "bilanhb.php?numero=0" ."&date1=" . $_GET['date1']."&date2=" . $_GET['date2']?>">Tous les points</a></li>
+           <li<?php if ($_GET['numero'] == 0){ echo ' class="active"';}?>><a href="<?=  "bilanhb.php?numero=0" ."&date1=" . $_GET['date1']."&date2=" . $_GET['date2']?>">Tous les points</a></li>
        </ul>
 
   <br>
@@ -307,7 +307,7 @@ GROUP BY classe');
            while ($donnees = $reponse->fetch())
            {
             ?>
-            <tr data-toggle="collapse" data-target=".parmasse<?php echo $donnees['classe']?>" >
+            <tr data-toggle="collapse" data-target=".parmasse<?= $donnees['classe']?>" >
 
 <?php switch ($donnees['classe'])
 {
@@ -334,9 +334,9 @@ default; ?>
             
 
 
-            <td><?php echo $donnees['ncol'] ?></td>
-            <td><?php echo $donnees['somme'] ?></td>
-            <td><?php echo  round($donnees['somme']*100/$mtotcolo, 2)   ; ?></td>      
+            <td><?= $donnees['ncol'] ?></td>
+            <td><?= $donnees['somme'] ?></td>
+            <td><?=  round($donnees['somme']*100/$mtotcolo, 2)   ; ?></td>      
         </tr>
  <?php
              }
@@ -357,7 +357,7 @@ GROUP BY classe');
            while ($donnees = $reponse->fetch())
            {
             ?>
-            <tr data-toggle="collapse" data-target=".parmasse<?php echo $donnees['classe']?>" >
+            <tr data-toggle="collapse" data-target=".parmasse<?= $donnees['classe']?>" >
 
 <?php switch ($donnees['classe'])
 {
@@ -381,9 +381,9 @@ default; ?>
 <?php
 }
 ?>
-            <td><?php echo $donnees['ncol'] ?></td>
-            <td><?php echo $donnees['somme'] ?></td>
-            <td><?php echo  round($donnees['somme']*100/$mtotcolo, 2)   ; ?></td>      
+            <td><?= $donnees['ncol'] ?></td>
+            <td><?= $donnees['somme'] ?></td>
+            <td><?=  round($donnees['somme']*100/$mtotcolo, 2)   ; ?></td>      
         </tr>
  <?php
              }
@@ -394,7 +394,7 @@ $reponse->closeCursor(); // Termine le traitement de la requête
 <br>
           
    
-<a href="<?php echo  "../moteur/export_bilanc_partype.php?numero=". $_GET['numero']."&date1=" . $_GET['date1']."&date2=" . $_GET['date2']?>">
+<a href="<?=  "../moteur/export_bilanc_partype.php?numero=". $_GET['numero']."&date1=" . $_GET['date1']."&date2=" . $_GET['date2']?>">
 
         <button type="button" class="btn btn-default btn-xs" disabled>exporter ces données (.csv) </button>
       </a>
@@ -471,9 +471,9 @@ GROUP BY nom2');
                      
 
         <tr>
-            <td><?php echo $donnees['nom'] ?></td>
-            <td><?php echo $donnees['somme'] ?></td>
-            <td><?php echo  round($donnees['somme']*100/$mtotcolo, 2)   ; ?></td>      
+            <td><?= $donnees['nom'] ?></td>
+            <td><?= $donnees['somme'] ?></td>
+            <td><?=  round($donnees['somme']*100/$mtotcolo, 2)   ; ?></td>      
         </tr>
  <?php
              }
@@ -534,9 +534,9 @@ GROUP BY nom2');
                      
 
 
-            <td><?php echo $donnees['nom'] ?></td>
-            <td><?php echo $donnees['somme'] ?></td>
-            <td><?php echo  round($donnees['somme']*100/$mtotcolo, 2)   ; ?></td>      
+            <td><?= $donnees['nom'] ?></td>
+            <td><?= $donnees['somme'] ?></td>
+            <td><?=  round($donnees['somme']*100/$mtotcolo, 2)   ; ?></td>      
         </tr>
  <?php
              }
@@ -593,9 +593,9 @@ GROUP BY nom2');
                      
 
 
-            <td><?php echo $donnees['nom'] ?></td>
-            <td><?php echo $donnees['somme'] ?></td>
-            <td><?php echo  round($donnees['somme']*100/$mtotcolo, 2)   ; ?></td>      
+            <td><?= $donnees['nom'] ?></td>
+            <td><?= $donnees['somme'] ?></td>
+            <td><?=  round($donnees['somme']*100/$mtotcolo, 2)   ; ?></td>      
         </tr>
  <?php
              }
@@ -643,9 +643,9 @@ GROUP BY nom
                      
 
 
-            <td><?php echo $donnees['nom'] ?></td>
-            <td><?php echo $donnees['somme'] ?></td>
-            <td><?php echo  round($donnees['somme']*100/$mtotcolo, 2)   ; ?></td>      
+            <td><?= $donnees['nom'] ?></td>
+            <td><?= $donnees['somme'] ?></td>
+            <td><?=  round($donnees['somme']*100/$mtotcolo, 2)   ; ?></td>      
         </tr>
  <?php
              }
@@ -702,9 +702,9 @@ GROUP BY nom2');
                      
 
 
-            <td><?php echo $donnees['nom'] ?></td>
-            <td><?php echo $donnees['somme'] ?></td>
-            <td><?php echo  round($donnees['somme']*100/$mtotcolo, 2)   ; ?></td>      
+            <td><?= $donnees['nom'] ?></td>
+            <td><?= $donnees['somme'] ?></td>
+            <td><?=  round($donnees['somme']*100/$mtotcolo, 2)   ; ?></td>      
         </tr>
  <?php
              }
@@ -764,9 +764,9 @@ GROUP BY nom2');
                      
 
         <tr>
-            <td><?php echo $donnees['nom'] ?></td>
-            <td><?php echo $donnees['somme'] ?></td>
-            <td><?php echo  round($donnees['somme']*100/$mtotcolo, 2)   ; ?></td>      
+            <td><?= $donnees['nom'] ?></td>
+            <td><?= $donnees['somme'] ?></td>
+            <td><?=  round($donnees['somme']*100/$mtotcolo, 2)   ; ?></td>      
         </tr>
  <?php
              }
@@ -831,9 +831,9 @@ GROUP BY nom2');
                      
 
 
-            <td><?php echo $donnees['nom'] ?></td>
-            <td><?php echo $donnees['somme'] ?></td>
-            <td><?php echo  round($donnees['somme']*100/$mtotcolo, 2)   ; ?></td>      
+            <td><?= $donnees['nom'] ?></td>
+            <td><?= $donnees['somme'] ?></td>
+            <td><?=  round($donnees['somme']*100/$mtotcolo, 2)   ; ?></td>      
         </tr>
  <?php
              }
@@ -892,9 +892,9 @@ GROUP BY nom2');
                      
 
 
-            <td><?php echo $donnees['nom'] ?></td>
-            <td><?php echo $donnees['somme'] ?></td>
-            <td><?php echo  round($donnees['somme']*100/$mtotcolo, 2)   ; ?></td>      
+            <td><?= $donnees['nom'] ?></td>
+            <td><?= $donnees['somme'] ?></td>
+            <td><?=  round($donnees['somme']*100/$mtotcolo, 2)   ; ?></td>      
         </tr>
  <?php
              }
@@ -943,9 +943,9 @@ GROUP BY nom
                      
 
 
-            <td><?php echo $donnees['nom'] ?></td>
-            <td><?php echo $donnees['somme'] ?></td>
-            <td><?php echo  round($donnees['somme']*100/$mtotcolo, 2)   ; ?></td>      
+            <td><?= $donnees['nom'] ?></td>
+            <td><?= $donnees['somme'] ?></td>
+            <td><?=  round($donnees['somme']*100/$mtotcolo, 2)   ; ?></td>      
         </tr>
  <?php
              }
@@ -1003,9 +1003,9 @@ GROUP BY nom2');
                      
 
 
-            <td><?php echo $donnees['nom'] ?></td>
-            <td><?php echo $donnees['somme'] ?></td>
-            <td><?php echo  round($donnees['somme']*100/$mtotcolo, 2)   ; ?></td>      
+            <td><?= $donnees['nom'] ?></td>
+            <td><?= $donnees['somme'] ?></td>
+            <td><?=  round($donnees['somme']*100/$mtotcolo, 2)   ; ?></td>      
         </tr>
  <?php
              }
@@ -1033,7 +1033,7 @@ $reponse->closeCursor(); // Termine le traitement de la requête
        
 
 <br>
-       <a href="<?php echo  "../moteur/export_bilanc_parloca.php?numero=". $_GET['numero']."&date1=" . $_GET['date1']."&date2=" . $_GET['date2']?>">
+       <a href="<?=  "../moteur/export_bilanc_parloca.php?numero=". $_GET['numero']."&date1=" . $_GET['date1']."&date2=" . $_GET['date2']?>">
         <button type="button" class="btn btn-default btn-xs" disabled>exporter ces données (.csv) </button>
       </a>
   </div>
@@ -1086,9 +1086,9 @@ GROUP BY nom');
                      
 
         <tr>
-            <td><?php echo $donnees['nom'] ?></td>
-            <td><?php echo $donnees['somme'] ?></td>
-            <td><?php echo  round($donnees['somme']*100/$mtotcolo, 2)   ; ?></td>      
+            <td><?= $donnees['nom'] ?></td>
+            <td><?= $donnees['somme'] ?></td>
+            <td><?=  round($donnees['somme']*100/$mtotcolo, 2)   ; ?></td>      
         </tr>
  <?php
              }
@@ -1131,10 +1131,10 @@ GROUP BY nom');
                      
 
         <tr>
-            <td><?php echo $donnees['nom'] ?></td>
-            <td><?php echo $donnees['nombre'] ?></td>
-            <td><?php echo $donnees['somme'] ?></td>
-            <td><?php echo  round($donnees['somme']*100/$mtotcolo, 2)   ; ?></td>      
+            <td><?= $donnees['nom'] ?></td>
+            <td><?= $donnees['nombre'] ?></td>
+            <td><?= $donnees['somme'] ?></td>
+            <td><?=  round($donnees['somme']*100/$mtotcolo, 2)   ; ?></td>      
         </tr>
  <?php
              }
@@ -1176,9 +1176,9 @@ GROUP BY nom');
                      
 
         <tr>
-            <td><?php echo $donnees['nom'] ?></td>
-            <td><?php echo $donnees['somme'] ?></td>
-            <td><?php echo  round($donnees['somme']*100/$mtotcolo, 2)   ; ?></td>      
+            <td><?= $donnees['nom'] ?></td>
+            <td><?= $donnees['somme'] ?></td>
+            <td><?=  round($donnees['somme']*100/$mtotcolo, 2)   ; ?></td>      
         </tr>
  <?php
              }
@@ -1225,9 +1225,9 @@ GROUP BY nom');
                      
 
         <tr>
-            <td><?php echo $donnees['nom'] ?></td>
-            <td><?php echo $donnees['somme'] ?></td>
-            <td><?php echo  round($donnees['somme']*100/$mtotcolo, 2)   ; ?></td>      
+            <td><?= $donnees['nom'] ?></td>
+            <td><?= $donnees['somme'] ?></td>
+            <td><?=  round($donnees['somme']*100/$mtotcolo, 2)   ; ?></td>      
         </tr>
  <?php
              }
@@ -1271,10 +1271,10 @@ GROUP BY nom');
                      
 
         <tr>
-            <td><?php echo $donnees['nom'] ?></td>
-            <td><?php echo $donnees['nombre'] ?></td>
-            <td><?php echo $donnees['somme'] ?></td>
-            <td><?php echo  round($donnees['somme']*100/$mtotcolo, 2)   ; ?></td>      
+            <td><?= $donnees['nom'] ?></td>
+            <td><?= $donnees['nombre'] ?></td>
+            <td><?= $donnees['somme'] ?></td>
+            <td><?=  round($donnees['somme']*100/$mtotcolo, 2)   ; ?></td>      
         </tr>
  <?php
              }
@@ -1317,9 +1317,9 @@ GROUP BY nom');
                      
 
         <tr>
-            <td><?php echo $donnees['nom'] ?></td>
-            <td><?php echo $donnees['somme'] ?></td>
-            <td><?php echo  round($donnees['somme']*100/$mtotcolo, 2)   ; ?></td>      
+            <td><?= $donnees['nom'] ?></td>
+            <td><?= $donnees['somme'] ?></td>
+            <td><?=  round($donnees['somme']*100/$mtotcolo, 2)   ; ?></td>      
         </tr>
  <?php
              }
@@ -1336,7 +1336,7 @@ $reponse->closeCursor(); // Termine le traitement de la requête
 <br>
           
    
-<a href="<?php echo  "../moteur/export_bilanc_partype.php?numero=". $_GET['numero']."&date1=" . $_GET['date1']."&date2=" . $_GET['date2']?>">
+<a href="<?=  "../moteur/export_bilanc_partype.php?numero=". $_GET['numero']."&date1=" . $_GET['date1']."&date2=" . $_GET['date2']?>">
 
         <button type="button" class="btn btn-default btn-xs" disabled>exporter ces données (.csv) </button>
       </a>

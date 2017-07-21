@@ -25,7 +25,7 @@ require_once('../moteur/dbconfig.php');
    if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 'h') !== false))
       {  include "tete.php" ?>
    <div class="container">
-        <h1>Modifier le remboursement n° <?php echo $_GET['nvente']?></h1> 
+        <h1>Modifier le remboursement n° <?= $_GET['nvente']?></h1> 
  <div class="panel-body">
 
 
@@ -102,25 +102,25 @@ $req->execute(array('id_vente' => $_GET['nvente']));
 
            ?>
             <tr> 
-            <td><?php echo $donnees['id']?></td>
-            <td><?php echo $donnees['timestamp']?></td>
-            <td><?php echo $donnees['type']?></td>
-            <td><?php echo $donnees['objet']?></td>
+            <td><?= $donnees['id']?></td>
+            <td><?= $donnees['timestamp']?></td>
+            <td><?= $donnees['type']?></td>
+            <td><?= $donnees['objet']?></td>
            
 
 
-<td><?php echo $donnees['quantite']?></td>
-<td><?php echo $donnees['remboursement']?></td>
-<td><?php echo $donnees['mail']?></td>
+<td><?= $donnees['quantite']?></td>
+<td><?= $donnees['remboursement']?></td>
+<td><?= $donnees['mail']?></td>
 
 <td><form action="modification_verification_objet_remboursement.php" method="post">
-<input type="hidden" name ="id" id="id" value="<?php echo $donnees['id']?>">
-<input type="hidden" name ="nvente" id="nvente" value="<?php echo $_GET['nvente']?>">
-<input type="hidden" name ="quantite" id="quantite" value="<?php echo $donnees['quantite']?>">
-<input type="hidden" name ="remboursement" id="remboursement" value="<?php echo $donnees['remboursement']?>">
-<input type="hidden" name ="date1" id="date1" value="<?php echo $_POST['date1']?>">
-<input type="hidden" name ="date2" id="date2" value="<?php echo $_POST['date2']?>">
-<input type="hidden" name ="npoint" id="npoint" value="<?php echo $_POST['npoint']?>">
+<input type="hidden" name ="id" id="id" value="<?= $donnees['id']?>">
+<input type="hidden" name ="nvente" id="nvente" value="<?= $_GET['nvente']?>">
+<input type="hidden" name ="quantite" id="quantite" value="<?= $donnees['quantite']?>">
+<input type="hidden" name ="remboursement" id="remboursement" value="<?= $donnees['remboursement']?>">
+<input type="hidden" name ="date1" id="date1" value="<?= $_POST['date1']?>">
+<input type="hidden" name ="date2" id="date2" value="<?= $_POST['date2']?>">
+<input type="hidden" name ="npoint" id="npoint" value="<?= $_POST['npoint']?>">
 
   <button  class="btn btn-warning btn-sm" >Modifier</button>
 
@@ -145,7 +145,7 @@ $req3->execute(array('id_vendu' => $donnees['id']));
 
 
 
-<?php echo $donnees3['mail']?>
+<?= $donnees3['mail']?>
 
 
          <?php }

@@ -89,23 +89,23 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === "oressource" && is_allowe
           $btn_class = $visible_bool ? 'btn-info' : 'btn-danger';
           ?>
           <tr>
-            <td><?php echo $point_vente['id']; ?></td>
-            <td><?php echo $point_vente['timestamp']; ?></td>
-            <td><?php echo $point_vente['nom']; ?></td>
-            <td><?php echo $point_vente['adresse']; ?></td>
-            <td><span class="badge" style="background-color:<?php echo $point_vente['couleur']; ?>"><?php echo $point_vente['couleur']; ?></span></td>
-            <td><?php echo $point_vente['commentaire']; ?></td>
-            <td><?php echo $point_vente['surface_vente']; ?></td>
+            <td><?= $point_vente['id']; ?></td>
+            <td><?= $point_vente['timestamp']; ?></td>
+            <td><?= $point_vente['nom']; ?></td>
+            <td><?= $point_vente['adresse']; ?></td>
+            <td><span class="badge" style="background-color:<?= $point_vente['couleur']; ?>"><?= $point_vente['couleur']; ?></span></td>
+            <td><?= $point_vente['commentaire']; ?></td>
+            <td><?= $point_vente['surface_vente']; ?></td>
             <td>
               <form action="../moteur/ventes_visibles_post.php" method="post">
-                <input type="hidden" name="id" id="id" value="<?php echo $point_vente['id']; ?>">
-                <input type="hidden" name="visible" id="visible" value="<?php echo($vente_visible); ?>">
-                <button type="submit" class="btn btn-sm <?php echo($btn_class); ?>"><?php echo $point_vente['visible']; ?></button>
+                <input type="hidden" name="id" id="id" value="<?= $point_vente['id']; ?>">
+                <input type="hidden" name="visible" id="visible" value="<?=($vente_visible); ?>">
+                <button type="submit" class="btn btn-sm <?=($btn_class); ?>"><?= $point_vente['visible']; ?></button>
               </form>
             </td>
             <td>
               <form action="modification_points_vente.php" method="post">
-                <input type="hidden" name="id" id="id" value="<?php echo $point_vente['id']; ?>">
+                <input type="hidden" name="id" id="id" value="<?= $point_vente['id']; ?>">
                 <button class="btn btn-warning btn-sm" type="submit" >Modifier!</button>
               </form>
             </td>

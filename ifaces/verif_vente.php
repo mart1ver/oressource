@@ -45,7 +45,7 @@ require_once('../moteur/dbconfig.php');
            while ($donnees = $reponse->fetch())
            {
            ?> 
-            <li<?php if ($_GET['numero'] == $donnees['id']){ echo ' class="active"';}?>><a href="<?php echo  "verif_vente.php?numero=" . $donnees['id']."&date1=" . $_GET['date1']."&date2=" . $_GET['date2']?>"><?php echo$donnees['nom']?></a></li>
+            <li<?php if ($_GET['numero'] == $donnees['id']){ echo ' class="active"';}?>><a href="<?=  "verif_vente.php?numero=" . $donnees['id']."&date1=" . $_GET['date1']."&date2=" . $_GET['date2']?>"><?=$donnees['nom']?></a></li>
            <?php }
               $reponse->closeCursor(); // Termine le traitement de la requête
            ?>
@@ -158,7 +158,7 @@ var datedosgf = moisdos+'/'+jourdos+"/"+anneedos;
                       + " to " 
                       + picker.endDate.format('DD MM, YYYY')                      
                     ); 
-                    window.location.href = "verif_vente.php?date1="+picker.startDate.format('DD-MM-YYYY')+"&date2="+picker.endDate.format('DD-MM-YYYY')+"&numero="+"<?php echo $_GET['numero']?>";
+                    window.location.href = "verif_vente.php?date1="+picker.startDate.format('DD-MM-YYYY')+"&date2="+picker.endDate.format('DD-MM-YYYY')+"&numero="+"<?= $_GET['numero']?>";
                   });
                   $('#reportrange').on('cancel.daterangepicker', function(ev, picker) { console.log("cancel event fired"); });
 
@@ -257,8 +257,8 @@ $req->execute(array('id_point_vente' => $_GET['numero'], 'du' => $time_debut,'au
 
            ?>
             <tr> 
-            <td><?php echo $donnees['id']?></td>
-            <td><?php echo $donnees['timestamp']?></td>
+            <td><?= $donnees['id']?></td>
+            <td><?= $donnees['timestamp']?></td>
 
 
             <td> <?php 
@@ -332,7 +332,7 @@ $req4->execute(array('id_vente' => $donnees['id']));
 
 
 
-            <td> <span class="badge" style="background-color:<?php echo$donnees['coul']?>"><?php echo $donnees['moyen']?></span></td>
+            <td> <span class="badge" style="background-color:<?=$donnees['coul']?>"><?= $donnees['moyen']?></span></td>
             <td><?php 
 $req5 = $bdd->prepare('SELECT SUM(pesees_vendus.masse) mto
                        FROM vendus,pesees_vendus
@@ -353,7 +353,7 @@ $req5->execute(array('id_vente' => $donnees['id']));
          <?php }
             
                 ?></td>
-            <td style="width:100px"><?php echo $donnees['commentaire']?></td>
+            <td style="width:100px"><?= $donnees['commentaire']?></td>
             <td><?php 
  
             // Si tout va bien, on peut continuer
@@ -370,7 +370,7 @@ $req5->execute(array('id_vente' => $donnees['id']));
 
 
 
-<?php echo $donnees5['mail']?>
+<?= $donnees5['mail']?>
 
 
          <?php }
@@ -379,17 +379,17 @@ $req5->execute(array('id_vente' => $donnees['id']));
             <td>
 
 
-<?php echo $donnees3['pto'];
+<?= $donnees3['pto'];
 echo $donnees4['pto'];
 
  if ( $rembo == 'non'){?>
 
-              <form action="modification_verification_vente.php?nvente=<?php echo $donnees['id']?>" method="post">
-<input type="hidden" name ="moyen" id="moyen" value="<?php echo $donnees['moyen']?>">
-<input type="hidden" name ="id" id="id" value="<?php echo $donnees['id']?>">
-<input type="hidden" name ="date1" id="date1" value="<?php echo $_GET['date1']?>">
-<input type="hidden" name ="date2" id="date2" value="<?php echo $_GET['date2']?>">
-<input type="hidden" name ="npoint" id="npoint" value="<?php echo $_GET['numero']?>">
+              <form action="modification_verification_vente.php?nvente=<?= $donnees['id']?>" method="post">
+<input type="hidden" name ="moyen" id="moyen" value="<?= $donnees['moyen']?>">
+<input type="hidden" name ="id" id="id" value="<?= $donnees['id']?>">
+<input type="hidden" name ="date1" id="date1" value="<?= $_GET['date1']?>">
+<input type="hidden" name ="date2" id="date2" value="<?= $_GET['date2']?>">
+<input type="hidden" name ="npoint" id="npoint" value="<?= $_GET['numero']?>">
   <button  class="btn btn-warning btn-sm" >Modifier</button>
 
 
@@ -398,12 +398,12 @@ echo $donnees4['pto'];
 
 <?php } if (  $rembo == 'oui'){?>
 
-              <form action="modification_verification_remboursement.php?nvente=<?php echo $donnees['id']?>" method="post">
-<input type="hidden" name ="moyen" id="moyen" value="<?php echo $donnees['moyen']?>">
-<input type="hidden" name ="id" id="id" value="<?php echo $donnees['id']?>">
-<input type="hidden" name ="date1" id="date1" value="<?php echo $_GET['date1']?>">
-<input type="hidden" name ="date2" id="date2" value="<?php echo $_GET['date2']?>">
-<input type="hidden" name ="npoint" id="npoint" value="<?php echo $_GET['numero']?>">
+              <form action="modification_verification_remboursement.php?nvente=<?= $donnees['id']?>" method="post">
+<input type="hidden" name ="moyen" id="moyen" value="<?= $donnees['moyen']?>">
+<input type="hidden" name ="id" id="id" value="<?= $donnees['id']?>">
+<input type="hidden" name ="date1" id="date1" value="<?= $_GET['date1']?>">
+<input type="hidden" name ="date2" id="date2" value="<?= $_GET['date2']?>">
+<input type="hidden" name ="npoint" id="npoint" value="<?= $_GET['numero']?>">
   <button  class="btn btn-warning btn-sm" >Modifier</button>
 
 
@@ -429,7 +429,7 @@ $req5->execute(array('id_vente' => $donnees['id']));
 
 
 
-<?php echo $donnees5['mail']?>
+<?= $donnees5['mail']?>
 
 
          <?php }

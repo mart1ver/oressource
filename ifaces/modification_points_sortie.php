@@ -26,7 +26,7 @@ require_once('../moteur/dbconfig.php');
       { include "tete.php" ?>
     <div class="container">
         <h1>Gestions des points de sortie hors-boutique</h1> 
-         <div class="panel-heading">Modifier les données concernant le point de sortie numero <?php echo $_POST['id']?>, <?php echo $_POST['nom']?>. </div>
+         <div class="panel-heading">Modifier les données concernant le point de sortie numero <?= $_POST['id']?>, <?= $_POST['nom']?>. </div>
 <?php
 //POST ou GET ?
 if (isset($_POST['id']) !== false)
@@ -57,13 +57,13 @@ $couleur = $donnees['couleur'];
       <div class="panel-body">
         <div class="row">
         	<form action="../moteur/modification_points_sortie_post.php" method="post">
-            <input type="hidden" name ="id" id="id" value="<?php echo $id?>">
+            <input type="hidden" name ="id" id="id" value="<?= $id?>">
 
-  <div class="col-md-3"><label for="nom">Nom:</label><br><br> <input type="text"                 value ="<?php echo $_POST['nom'].$_GET['nom']?>" name="nom" id="nom" class="form-control " required autofocus></div>
-  <div class="col-md-2"><label for="addresse">Addresse:</label><br><br> <input type="text"       value ="<?php echo $_POST['adresse'].$_GET['adresse']?>" name="adresse" id="adresse" class="form-control " required ></div>
-  <div class="col-md-2"><label for="commentaire">Commentaire:</label><br><br> <input type="text" value ="<?php echo $_POST['commentaire'].$_GET['commentaire']?>" name="commentaire" id="commentaire" class="form-control " required ></div>
-   <div class="col-md-1"><label for="pesee_max">Pesée maxi:</label> <input type="text" value ="<?php echo $_POST['pesee_max'].$_GET['pesee_max']?>" name="pesee_max" id="pesee_max" class="form-control " required ></div>
-  <div class="col-md-1"><label for="couleur">Couleur:</label><br><br> <input type="color"        value ="<?php echo $couleur ?>" name="couleur" id="couleur" class="form-control " required ></div>
+  <div class="col-md-3"><label for="nom">Nom:</label><br><br> <input type="text"                 value ="<?= $_POST['nom'].$_GET['nom']?>" name="nom" id="nom" class="form-control " required autofocus></div>
+  <div class="col-md-2"><label for="addresse">Addresse:</label><br><br> <input type="text"       value ="<?= $_POST['adresse'].$_GET['adresse']?>" name="adresse" id="adresse" class="form-control " required ></div>
+  <div class="col-md-2"><label for="commentaire">Commentaire:</label><br><br> <input type="text" value ="<?= $_POST['commentaire'].$_GET['commentaire']?>" name="commentaire" id="commentaire" class="form-control " required ></div>
+   <div class="col-md-1"><label for="pesee_max">Pesée maxi:</label> <input type="text" value ="<?= $_POST['pesee_max'].$_GET['pesee_max']?>" name="pesee_max" id="pesee_max" class="form-control " required ></div>
+  <div class="col-md-1"><label for="couleur">Couleur:</label><br><br> <input type="color"        value ="<?= $couleur ?>" name="couleur" id="couleur" class="form-control " required ></div>
   <div class="col-md-1"><br><br><button name="creer" class="btn btn-warning">Modifier</button></div>
 </form>
 <br><br>

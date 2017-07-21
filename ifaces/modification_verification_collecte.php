@@ -25,7 +25,7 @@ require_once("../moteur/dbconfig.php");
    if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 'h') !== false))
       {  include "tete.php" ?>
    <div class="container">
-        <h1>Modifier la collecte n° <?php echo $_GET['ncollecte']?></h1> 
+        <h1>Modifier la collecte n° <?= $_GET['ncollecte']?></h1> 
  <div class="panel-body">
 
 
@@ -36,12 +36,12 @@ require_once("../moteur/dbconfig.php");
 
 <div class="row">
    
-        	<form action="../moteur/modification_verification_collecte_post.php?ncollecte=<?php echo $_GET['ncollecte']?>" method="post">
-            <input type="hidden" name ="id" id="id" value="<?php echo $_GET['ncollecte']?>">
+        	<form action="../moteur/modification_verification_collecte_post.php?ncollecte=<?= $_GET['ncollecte']?>" method="post">
+            <input type="hidden" name ="id" id="id" value="<?= $_GET['ncollecte']?>">
 
-  <input type="hidden" name ="date1" id="date1" value="<?php echo $_POST['date1']?>">
-  <input type="hidden" name ="date2" id="date2" value="<?php echo $_POST['date2']?>">
-    <input type="hidden" name ="npoint" id="npoint" value="<?php echo $_POST['npoint']?>">
+  <input type="hidden" name ="date1" id="date1" value="<?= $_POST['date1']?>">
+  <input type="hidden" name ="date2" id="date2" value="<?= $_POST['date2']?>">
+    <input type="hidden" name ="npoint" id="npoint" value="<?= $_POST['npoint']?>">
 
 
 
@@ -58,12 +58,12 @@ require_once("../moteur/dbconfig.php");
               if ($_POST['nom'] == $donnees['nom'])  // SI on a pas de message d'erreur
 {
   ?>
-    <option value = "<?php echo$donnees['id']?>" selected ><?php echo$donnees['nom']?></option>
+    <option value = "<?=$donnees['id']?>" selected ><?=$donnees['nom']?></option>
 <?php
 } else {
             ?>
 
-      <option value = "<?php echo$donnees['id']?>" ><?php echo$donnees['nom']?></option>
+      <option value = "<?=$donnees['id']?>" ><?=$donnees['nom']?></option>
             <?php }}
             $reponse->closeCursor(); // Termine le traitement de la requête
             ?>
@@ -83,12 +83,12 @@ require_once("../moteur/dbconfig.php");
               if ($_POST['localisation'] == $donnees['nom']) // SI on a pas de message d'erreur
 {
   ?>
-    <option value = "<?php echo$donnees['id']?>" selected ><?php echo$donnees['nom']?></option>
+    <option value = "<?=$donnees['id']?>" selected ><?=$donnees['nom']?></option>
 <?php
 } else {
             ?>
 
-      <option value = "<?php echo$donnees['id']?>" ><?php echo$donnees['nom']?></option>
+      <option value = "<?=$donnees['id']?>" ><?=$donnees['nom']?></option>
             <?php }}
             $reponse->closeCursor(); // Termine le traitement de la requête
             ?>
@@ -164,26 +164,26 @@ $req->execute(array('id_collecte' => $_GET['ncollecte']));
 
            ?>
             <tr> 
-            <td><?php echo $donnees['id']?></td>
-            <td><?php echo $donnees['timestamp']?></td>
-            <td><span class="badge" id="cool" style="background-color:<?php echo$donnees['couleur']?>"><?php echo$donnees['nom']?></span></td>
-            <td><?php echo $donnees['masse']?></td>
+            <td><?= $donnees['id']?></td>
+            <td><?= $donnees['timestamp']?></td>
+            <td><span class="badge" id="cool" style="background-color:<?=$donnees['couleur']?>"><?=$donnees['nom']?></span></td>
+            <td><?= $donnees['masse']?></td>
            
 
 
-<td><?php echo $donnees['mail']?></td>
+<td><?= $donnees['mail']?></td>
 
 <td>
 
 <form action="modification_verification_pesee.php" method="post">
 
-<input type="hidden" name ="id" id="id" value="<?php echo $donnees['id']?>">
-<input type="hidden" name ="nomtypo" id="nomtypo" value="<?php echo $donnees['nom']?>">
-<input type="hidden" name ="ncollecte" id="ncollecte" value="<?php echo $_GET['ncollecte']?>">
-<input type="hidden" name ="masse" id="masse" value="<?php echo $donnees['masse']?>">
-<input type="hidden" name ="date1" id="date1" value="<?php echo $_POST['date1']?>">
-<input type="hidden" name ="date2" id="date2" value="<?php echo $_POST['date2']?>">
-<input type="hidden" name ="npoint" id="npoint" value="<?php echo $_POST['npoint']?>">
+<input type="hidden" name ="id" id="id" value="<?= $donnees['id']?>">
+<input type="hidden" name ="nomtypo" id="nomtypo" value="<?= $donnees['nom']?>">
+<input type="hidden" name ="ncollecte" id="ncollecte" value="<?= $_GET['ncollecte']?>">
+<input type="hidden" name ="masse" id="masse" value="<?= $donnees['masse']?>">
+<input type="hidden" name ="date1" id="date1" value="<?= $_POST['date1']?>">
+<input type="hidden" name ="date2" id="date2" value="<?= $_POST['date2']?>">
+<input type="hidden" name ="npoint" id="npoint" value="<?= $_POST['npoint']?>">
 
   <button  class="btn btn-warning btn-sm" >Modifier</button>
 
@@ -211,7 +211,7 @@ $req3->execute(array('id_collecte' => $donnees['id']));
 
 
 
-<?php echo $donnees3['mail']?>
+<?= $donnees3['mail']?>
 
 
          <?php }
