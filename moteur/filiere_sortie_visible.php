@@ -19,6 +19,7 @@
  */
 
 session_start();
+
 //Vérification des autorisations de l'utilisateur et des variables de session requises pour l'utilisation de cette requête:
 if (isset($_SESSION['id']) && $_SESSION['systeme'] === "oressource" && (strpos($_SESSION['niveau'], 'j') !== false)) {
   //martin vert
@@ -32,4 +33,3 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === "oressource" && (strpos($
 } else {
   header('Location:../moteur/destroy.php');
 }
-?>
