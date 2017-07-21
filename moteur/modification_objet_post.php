@@ -27,7 +27,6 @@ session_start();
 if (isset($_SESSION['id'])
   && $_SESSION['systeme'] === 'oressource'
   && is_allowed_bilan()) {
-
   require_once('../moteur/dbconfig.php');
 
   $id = filter_input(INPUT_POST, 'id', FILTER_VALIDATE_INT);

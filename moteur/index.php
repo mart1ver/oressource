@@ -18,8 +18,6 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 //on empeche l'affichage du contenu du répertoire
 //en redirigeant vers l'index dans /ifaces
 header('Location: ../ifaces/');
-?>

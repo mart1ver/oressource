@@ -22,8 +22,7 @@ session_start();
 
 if (isset($_SESSION['id'])
   && $_SESSION['systeme'] === "oressource"
-  && ( strpos($_SESSION['niveau'], 'k') !== false)) {
-
+  && (strpos($_SESSION['niveau'], 'k') !== false)) {
   require_once('dbconfig.php');
 
   $mail = filter_input(INPUT_POST, 'mail', FILTER_VALIDATE_EMAIL);
@@ -64,7 +63,7 @@ if (isset($_SESSION['id'])
     force_pes_vente = :force_pes_vente
     WHERE id = :id');
 
-  $req->execute([
+    $req->execute([
       'id' => 1,
       'nom' => $_POST['nom'],
       'description' => $_POST['description'],
