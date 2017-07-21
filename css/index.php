@@ -1,4 +1,5 @@
 <?php
+
 /*
   Oressource
   Copyright (C) 2014-2017  Martin Vert and Oressource devellopers
@@ -19,4 +20,3 @@
 
 //redirige vers l'index dans /ifaces
 header('Location: ../ifaces/');
-?>

@@ -79,4 +79,3 @@ if (isset($_SESSION['id']) and $_SESSION['systeme'] = "oressource" and (strpos($
 } else {
   header('Location:../moteur/destroy.php');
 }
-?>

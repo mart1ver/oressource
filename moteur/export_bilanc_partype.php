@@ -17,6 +17,7 @@
   You should have received a copy of the GNU Affero General Public License
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 session_start();
 
 //Vérification des autorisations de l'utilisateur et des variables de session requises pour l'utilisation de cette requête:
@@ -191,4 +192,3 @@ $reponse->closeCursor(); // Termine le traitement de la requête
 } else {
   header('Location:../moteur/destroy.php');
 }
-?>
