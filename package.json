@@ -20,6 +20,7 @@
     "webpack": "^3.3.0"
   },
   "dependencies": {
+    "daterangepicker": "^2.1.25",
     "jquery": "^3.2.1",
     "moment": "^2.18.1",
     "morris.js": "^0.5.0"
