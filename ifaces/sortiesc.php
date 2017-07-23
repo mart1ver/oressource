@@ -93,7 +93,8 @@ if (isset($_SESSION['id'])
           </h3>
         </div>
         <div class="panel-body">
-          <select id="id_type_action" form="formulaire" name="id_convention" class="form-control printable" required>
+          <select id="id_type_action" form="formulaire" name="id_type_action" class="form-control printable" required>
+          <option value="" hidden disabled selected>Selectionez un partenaire</option>
             <?php foreach ($conventions as $convention) { ?>
               <option value="<?= $convention['id'] ?>"><?= $convention['nom'] ?></option>
             <?php } ?>

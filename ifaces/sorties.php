@@ -94,14 +94,16 @@ if (isset($_SESSION['id'])
           </h3>
         </div>
         <div class="panel-body">
-          <label for="id_type_action">Type de donnation:</label>
-          <select name="id_type_action" form="formulaire" id="type_action" class="form-control" style="font-size: 12pt" required>
+          <label for="id_type_action">Type de don:</label>
+          <select name="id_type_action" form="formulaire" id="id_type_action" class="form-control" style="font-size: 12pt" required>
+            <option value="" hidden disabled selected>Selectionez un type de don</option>         
             <?php foreach ($types_action as $type_action) { ?>
               <option value="<?= $type_action['id'] ?>"><?= $type_action['nom'] ?></option>
             <?php } ?>
           </select>
-          <label for="loc">Localité :</label>
-          <select name="localite" id="loc" form="formulaire" class="form-control" style="font-size: 12pt" required>
+          <label for="localite">Localité :</label>
+          <select name="localite" id="localite" form="formulaire" class="form-control" style="font-size: 12pt" required>
+            <option value="" hidden disabled selected>Selectionez une localité</option>
             <?php foreach (localites($bdd) as $localite) { ?>
               <option value="<?= $localite['id'] ?>"><?= $localite['nom'] ?></option>
             <?php } ?>
