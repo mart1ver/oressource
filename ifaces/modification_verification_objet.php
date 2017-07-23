@@ -24,7 +24,7 @@ session_start();
   if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 'h') !== false))
       {  include "tete.php" ?>
    <div class="container">
-        <h1>Modifier l'objet vendu n° <?= $_POST['id']?> appartenant à la vente <?= $_POST['nvente']?> </h1> 
+        <h1>Modifier l'objet vendu n° <?= $_POST['id']?> appartenant à la vente <?= $_POST['nvente']?> </h1>
  <div class="panel-body">
 
 
@@ -34,7 +34,7 @@ session_start();
 
 
 <div class="row">
-   
+
         	<form action="../moteur/modification_verification_objet_post.php" method="post">
             <input type="hidden" name ="nvente" id="nvente" value="<?= $_POST['nvente']?>">
             <input type="hidden" name ="id" id="id" value="<?= $_POST['id']?>">
@@ -49,24 +49,24 @@ session_start();
 <label for="quantite">Quantité:</label>
 <br><input type="text"       value ="<?= $_POST['quantite']?>" name="quantite" id="quantite" class="form-control " required >
 
-      
+
   </div>
   <div class="col-md-2">
 
     <label for="prix">Prix:</label>
 <br><input type="text"       value ="<?= $_POST['prix']?>" name="prix" id="prix" class="form-control " required >
-  
+
  </div>
-  
+
   <div class="col-md-2">
 
     <label for="prix">Masse:</label>
 <br><input type="text"       value ="<?= $_POST['masse']?>" name="masse" id="masse" class="form-control" <?php if($_POST['masse'] == 0){echo "disabled";} ?>  >
-  
+
  </div>
 
   <div class="col-md-3">
-  
+
   <br>
 <button name="creer" class="btn btn-warning">Modifier</button>
 <a href="verif_vente.php?date1=<?= $_POST['date1']?>&date2=<?= $_POST['date2']?>&numero=<?= $_POST['npoint']?>">
@@ -81,19 +81,17 @@ session_start();
 
 </div>
 
-      
+
 
 
 
 
 
   </div><!-- /.container -->
-<?php include "pied.php"; 
+<?php include "pied.php";
 }
     else
 {
     header('Location: ../moteur/destroy.php') ;
 }
 ?>
-       
-      

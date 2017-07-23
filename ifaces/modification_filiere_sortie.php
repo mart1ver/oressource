@@ -25,7 +25,7 @@ require_once('../moteur/dbconfig.php');
     if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 'j') !== false))
       { include "tete.php" ?>
     <div class="container">
-        <h1>Modifier un recycleur</h1> 
+        <h1>Modifier un recycleur</h1>
          <div class="panel-heading">Modifier les données concernant la filiere n° <?= $_POST['id']?>, <?= $_POST['nom']?>. </div>
 <?php
 //on obtient la couleur de la localité dans la base
@@ -37,9 +37,9 @@ $donnees = $req->fetch();
 $couleur = $donnees['couleur'];
 $id_type_dechet_evac_current = $_POST['id_type_dechet_evac'];
 $id_type_dechet_evac_current_tab = explode("a", $id_type_dechet_evac_current);
-            
+
               $req->closeCursor(); // Termine le traitement de la requête
-               
+
 
 
 ?>
@@ -55,11 +55,11 @@ $id_type_dechet_evac_current_tab = explode("a", $id_type_dechet_evac_current);
 
   <div class="col-md-2"><label for="nom">Nom:</label> <input type="text"value ="<?= $_POST['nom']?>" name="nom" id="nom" class="form-control " required autofocus></div>
   <div class="col-md-3"><label for="description">Description:</label> <input type="text"value ="<?= $_POST['description']?>" name="description" id="description" class="form-control " required ></div>
-  
+
   <div class="col-md-1"><label for="couleur">Couleur:</label> <input type="color"value ="<?= $couleur ?>"name="couleur" id="couleur" class="form-control " required ></div>
   <div class="col-md-1"><br><button name="creer" class="btn btn-warning">Modifier</button></div>
 
-<br> 
+<br>
 
 
 
@@ -70,25 +70,25 @@ $id_type_dechet_evac_current_tab = explode("a", $id_type_dechet_evac_current);
 </a>
 
 </div>
-<div class="row"> 
+<div class="row">
   <div class="col-md-9"><br>
     <label for="tde">Type de déchets enlevés:</label>
         <div class="alert alert-info">
-          <?php 
-        
+          <?php
+
             // On recupère tout le contenu de la table point de vente
             $reponse = $bdd->query('SELECT * FROM type_dechets_evac');
             // On affiche chaque entree une à une$_POST
            while ($donnees = $reponse->fetch())
            {?>
                      <input type="checkbox" name="tde<?= $donnees['id']; ?>" id="tde<?= $donnees['id']; ?>" <?php if (array_key_exists($donnees['id'], $id_type_dechet_evac_current_tab)) { echo "checked"; }?>> <?= '<label for="tde'.$donnees['id'].'">'.$donnees['nom'].'.   </label>'; ?>
-           
-                      
+
+
 
 
 
               <?php } ?>
-             
+
               <?php
               $reponse->closeCursor(); // Termine le traitement de la requête
                  ?>
@@ -99,7 +99,7 @@ $id_type_dechet_evac_current_tab = explode("a", $id_type_dechet_evac_current);
 
 
 
-       
+
 
 
 
@@ -112,7 +112,7 @@ $id_type_dechet_evac_current_tab = explode("a", $id_type_dechet_evac_current);
 
 
       </div>
-     
+
       <br>
 
       <div class="row">
@@ -123,7 +123,7 @@ $id_type_dechet_evac_current_tab = explode("a", $id_type_dechet_evac_current);
   </div>
   </div>
     </div><!-- /.container -->
-   
+
 <?php include "pied.php";
 }
 else

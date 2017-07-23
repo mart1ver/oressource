@@ -26,7 +26,7 @@ require_once('../moteur/dbconfig.php');
     if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 'g') !== false))
       { include "tete.php" ?>
     <div class="container">
-        <h1>Gestion de la typologie des bacs et des outils de manutention. </h1> 
+        <h1>Gestion de la typologie des bacs et des outils de manutention. </h1>
          <div class="panel-heading">Renseignez ici la masse de vos bacs et outils de manutention .</div>
          <p>Cet outil vous permet notamment d'indiquer le poids de vos bacs, chariots, diables, etc. de manière à pouvoir le soustraire automatiquement au moment de la pesée.</p>
       <div class="panel-body">
@@ -52,33 +52,33 @@ require_once('../moteur/dbconfig.php');
             <th>Couleur</th>
             <th>Visible</th>
             <th></th>
-            
+
           </tr>
         </thead>
         <tbody>
-        <?php 
+        <?php
             // On recupère tout le contenu de la table affectations
             $reponse = $bdd->query('SELECT * FROM type_contenants');
- 
+
            // On affiche chaque entrée une à une
            while ($donnees = $reponse->fetch())
            {
 
            ?>
-            <tr> 
+            <tr>
             <td><?= $donnees['id']?></td>
             <td><?= $donnees['timestamp']?></td>
             <td><?= $donnees['nom']?></td>
             <td><?= $donnees['description']?></td>
             <td><?= $donnees['masse']?></td>
-                 <td><span class="badge" style="background-color:<?=$donnees['couleur']?>"><?=$donnees['couleur']?></span></td> 
+                 <td><span class="badge" style="background-color:<?=$donnees['couleur']?>"><?=$donnees['couleur']?></span></td>
 <td>
 <form action="../moteur/type_contenants_visible.php" method="post">
 
   <input type="hidden" name ="id" id="id" value="<?= $donnees['id']?>">
-  <input type="hidden"name ="visible" id ="visible" value="<?php if ($donnees['visible'] == "oui") 
+  <input type="hidden"name ="visible" id ="visible" value="<?php if ($donnees['visible'] == "oui")
 {echo "non";}
-else 
+else
 {echo "oui";}?>">
 <?php
 if ($donnees['visible'] == "oui") // SI on a pas de message d'erreur
@@ -87,12 +87,12 @@ if ($donnees['visible'] == "oui") // SI on a pas de message d'erreur
   <?php
 }
 
-else // SINON 
+else // SINON
 {?>
    <button  class="btn btn-danger btn-sm " >
  <?php
 }
- echo $donnees['visible']?> 
+ echo $donnees['visible']?>
   </button>
 </form>
 </td>
@@ -139,9 +139,9 @@ else // SINON
                  <th></th>
             <th></th>
             <th></th>
-            
+
           </tfoot>
-        
+
       </table>
       <br>
       <div class="row">
@@ -152,8 +152,8 @@ else // SINON
   </div>
   </div>
     </div><!-- /.container -->
-   
-<?php include "pied.php"; 
+
+<?php include "pied.php";
 }
 else
 {

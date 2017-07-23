@@ -25,7 +25,7 @@ require_once('../moteur/dbconfig.php');
   if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 'k') !== false))
       { include "tete.php" ?>
     <div class="container">
-        <h1>Gestion de la typologie des objets collectés</h1> 
+        <h1>Gestion de la typologie des objets collectés</h1>
          <div class="panel-heading">Gérez ici la typologie des différents objets collectés par la structure.</div>
          <p>Permet de créer son propre jeu de sept famille (ou plus) des objets collectés</p>
 
@@ -34,7 +34,7 @@ require_once('../moteur/dbconfig.php');
         	<form action="../moteur/types_dechets_post.php" method="post">
   <div class="col-md-3"><label for="nom">Nom:</label> <input type="text"                 value ="<?= $_GET['nom']?>" name="nom" id="nom" class="form-control " required autofocus></div>
     <div class="col-md-2"><label for="commentaire">Description:</label> <input type="text" value ="<?= $_GET['description']?>" name="description" id="description" class="form-control " required ></div>
-    
+
   <div class="col-md-1"><label for="couleur">Couleur:</label> <input type="color"        value ="<?= "#".$_GET['couleur']?>" name="couleur" id="couleur" class="form-control " required ></div>
   <div class="col-md-1"><br><button name="creer" class="btn btn-default">Créer!</button></div>
 </form>
@@ -51,32 +51,32 @@ require_once('../moteur/dbconfig.php');
             <th>Couleur</th>
             <th>Visible</th>
             <th></th>
-            
+
           </tr>
         </thead>
         <tbody>
-        <?php 
+        <?php
             // On recupère tout le contenu de la table affectations
             $reponse = $bdd->query('SELECT * FROM type_dechets');
- 
+
            // On affiche chaque entree une à une
            while ($donnees = $reponse->fetch())
            {
 
            ?>
-            <tr> 
+            <tr>
             <td><?= $donnees['id']?></td>
             <td><?= $donnees['timestamp']?></td>
             <td><?= $donnees['nom']?></td>
             <td><?= $donnees['description']?></td>
-            <td><span class="badge" style="background-color:<?=$donnees['couleur']?>"><?=$donnees['couleur']?></span></td> 
+            <td><span class="badge" style="background-color:<?=$donnees['couleur']?>"><?=$donnees['couleur']?></span></td>
 <td>
 <form action="../moteur/types_dechets_visible.php" method="post">
 
   <input type="hidden" name ="id" id="id" value="<?= $donnees['id']?>">
-  <input type="hidden"name ="visible" id ="visible" value="<?php if ($donnees['visible'] == "oui") 
+  <input type="hidden"name ="visible" id ="visible" value="<?php if ($donnees['visible'] == "oui")
 {echo "non";}
-else 
+else
 {echo "oui";}?>">
 <?php
 if ($donnees['visible'] == "oui") // SI on a pas de message d'erreur
@@ -85,12 +85,12 @@ if ($donnees['visible'] == "oui") // SI on a pas de message d'erreur
   <?php
 }
 
-else // SINON 
+else // SINON
 {?>
    <button  class="btn btn-danger btn-sm " >
  <?php
 }
- echo $donnees['visible']?> 
+ echo $donnees['visible']?>
   </button>
 </form>
 </td>
@@ -135,9 +135,9 @@ else // SINON
             <th></th>
             <th></th>
             <th></th>
-            
+
           </tfoot>
-        
+
       </table>
       <br>
       <div class="row">
@@ -148,7 +148,7 @@ else // SINON
   </div>
   </div>
     </div><!-- /.container -->
-   
+
 <?php include "pied.php";
  }
     else

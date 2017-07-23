@@ -96,7 +96,7 @@ if (isset($_SESSION['id'])
         <div class="panel-body">
           <label for="id_type_action">Type de don:</label>
           <select name="id_type_action" form="formulaire" id="id_type_action" class="form-control" style="font-size: 12pt" required>
-            <option value="" hidden disabled selected>Selectionez un type de don</option>         
+            <option value="" hidden disabled selected>Selectionez un type de don</option>
             <?php foreach ($types_action as $type_action) { ?>
               <option value="<?= $type_action['id'] ?>"><?= $type_action['nom'] ?></option>
             <?php } ?>

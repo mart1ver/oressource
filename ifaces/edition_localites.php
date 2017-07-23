@@ -20,14 +20,14 @@
 
 session_start();
 
-require_once('../moteur/dbconfig.php'); 
+require_once('../moteur/dbconfig.php');
 
-//Vérification des autorisations de l'utilisateur et des variables de session requises pour l'affichage de cette page: 
+//Vérification des autorisations de l'utilisateur et des variables de session requises pour l'affichage de cette page:
                 if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 'k') !== false))
-                { 
+                {
                 include "tete.php" ?>
 <div class="container">
-<h1>Gestion des localités de collecte</h1> 
+<h1>Gestion des localités de collecte</h1>
   <div class="panel-heading">Définissez ici les localité d'origine possibles pour les matériaux entrant.</div>
   <p>Ces localités sont renseignées au moment de la collecte et permettent d'estimer l'impact territorial de la structure </p>
 <div class="panel-body">
@@ -56,18 +56,18 @@ require_once('../moteur/dbconfig.php');
   </tr>
 </thead>
 <tbody>
-            <?php 
+            <?php
             $reponse = $bdd->query('SELECT * FROM localites');
             // On affiche chaque entree une à une
             while ($donnees = $reponse->fetch())
             {
             ?>
-<tr> 
+<tr>
   <td><?= $donnees['id']?></td>
   <td><?= $donnees['timestamp']?></td>
   <td><?= $donnees['nom']?></td>
   <td><?= $donnees['commentaire']?></td>
-  <td><span class="badge" style="background-color:<?=$donnees['couleur']?>"><?=$donnees['couleur']?></span></td> 
+  <td><span class="badge" style="background-color:<?=$donnees['couleur']?>"><?=$donnees['couleur']?></span></td>
   <td><a href="<?= $donnees['relation_openstreetmap']?>" target="_blank"><p style="text-align:center"><span class="glyphicon glyphicon-link"></span></p></a></td>
   <td>
   <form action="../moteur/localites_visibles.php" method="post"><input type="hidden" name ="id" id="id" value="<?= $donnees['id']?>">
@@ -78,12 +78,12 @@ require_once('../moteur/dbconfig.php');
   <button  class="btn btn-info btn-sm " >
             <?php
             }
-            else // SINON 
+            else // SINON
             {?>
   <button  class="btn btn-danger btn-sm " >
             <?php
             }
-            echo $donnees['visible']?> 
+            echo $donnees['visible']?>
   </button>
   </form>
   </td>
@@ -123,7 +123,7 @@ require_once('../moteur/dbconfig.php');
 </div>
 </div>
 </div><!-- /.container -->
-            <?php include "pied.php"; 
+            <?php include "pied.php";
 }
 else
 { header('Location: ../moteur/destroy.php') ;}

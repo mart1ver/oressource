@@ -20,15 +20,15 @@
 
 session_start();
 require_once('../moteur/dbconfig.php');
- 
-//Vérification des autorisations de l'utilisateur et des variables de session requises pour l'affichage de cette page: 
+
+//Vérification des autorisations de l'utilisateur et des variables de session requises pour l'affichage de cette page:
     if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 'j') !== false))
       { include "tete.php"
 //Oressource 2014, formulaire de référencement des filières de sortie (entreprises de recyclage, associations, etc) en lien avec la structure
 //Simple formulaire de saisie qui permet de lister des filières de sortie déjà référencées et s'accompagne de la possibilité de les cacher à l'utilisateur ou d'en modifier les données
 ?>
     <div class="container">
-        <h1>Gestion des partenaires de recyclage</h1> 
+        <h1>Gestion des partenaires de recyclage</h1>
          <div class="panel-heading">Gérez ici la liste de ceux de vos partenaires qui traitent vos sorties destinées au recyclage.</div>
          <p>Permet notamment de différencier les "sorties recyclage" des "sorties ré-emploi" au moment de la mise en bilan.</p>
 
@@ -40,30 +40,30 @@ require_once('../moteur/dbconfig.php');
   </div>
 
     <div class="col-md-4"><label for="description">Description:</label> <input type="text" value ="<?= $_GET['description']?>" name="description" id="description" class="form-control " required >
-      
-    
+
+
     </div>
   <div class="col-md-1"><label for="couleur">Couleur:</label> <input type="color"        value ="<?= "#".$_GET['couleur']?>" name="couleur" id="couleur" class="form-control " required ></div>
   <div class="col-md-1"><br><button name="creer" class="btn btn-default">Créer!</button></div>
-  
-                                    
+
+
 
 </div>
-<div class="row"> 
+<div class="row">
   <div class="col-md-9"><br>
     <label for="tde">Type de déchets enlevés:</label>
         <div class="alert alert-info">
-          <?php 
-        
+          <?php
+
             // On recupère tout le contenu de la table point de vente
             $reponse = $bdd->query('SELECT * FROM type_dechets_evac');
             // On affiche chaque entree une à une$_POST
            while ($donnees = $reponse->fetch())
            {?>
                      <input type="checkbox" name="tde<?= $donnees['id']; ?>" id="tde<?= $donnees['id']; ?>"> <?= '<label for="tde'.$donnees['id'].'">'.$donnees['nom'].'.   </label>'; ?>
-           
+
               <?php } ?>
-             
+
               <?php
               $reponse->closeCursor(); // Termine le traitement de la requête
                  ?>
@@ -74,7 +74,7 @@ require_once('../moteur/dbconfig.php');
 
 
 
-       
+
 
 
 
@@ -95,14 +95,14 @@ require_once('../moteur/dbconfig.php');
             <th>Couleur</th>
             <th>Visible</th>
             <th></th>
-            
+
           </tr>
         </thead>
         <tbody>
-        <?php 
+        <?php
             // On reccupère toute la liste des filières de sortie
-            $reponse = $bdd->query('SELECT filieres_sortie.id, 
-                                           filieres_sortie.timestamp, 
+            $reponse = $bdd->query('SELECT filieres_sortie.id,
+                                           filieres_sortie.timestamp,
                                            filieres_sortie.nom,
                                            filieres_sortie.description,
                                            filieres_sortie.id_type_dechet_evac,
@@ -114,19 +114,19 @@ require_once('../moteur/dbconfig.php');
                                              FROM filieres_sortie
 
                                                ');
- 
+
            // On affiche chaque entrée une à une
            while ($donnees = $reponse->fetch())
            {
 
            ?>
-            <tr> 
+            <tr>
             <td><?= $donnees['id']?></td>
             <td><?= $donnees['timestamp']?></td>
             <td><?= $donnees['nom']?></td>
             <td><?= $donnees['description']?></td>
 
-            <td><?php 
+            <td><?php
                        foreach (explode("a", $donnees['id_type_dechet_evac']) as $arrayElement)
                       {
 
@@ -138,21 +138,21 @@ echo $donnees2['nom'].", ";
 }
               $req2->closeCursor(); // Termine le traitement de la requête
 
-                       
+
 
                       }
             ?></td>
 
 
-           <td><span class="badge" style="background-color:<?=$donnees['couleur']?>"><?=$donnees['couleur']?></span></td> 
+           <td><span class="badge" style="background-color:<?=$donnees['couleur']?>"><?=$donnees['couleur']?></span></td>
 <td>
 <form action="../moteur/filiere_sortie_visible.php" method="post">
 
-  
+
   <input type="hidden" name ="id" id="id" value="<?= $donnees['id']?>">
-  <input type="hidden"name ="visible" id ="visible" value="<?php if ($donnees['visible'] == "oui") 
+  <input type="hidden"name ="visible" id ="visible" value="<?php if ($donnees['visible'] == "oui")
 {echo "non";}
-else 
+else
 {echo "oui";}?>">
 <?php
 if ($donnees['visible'] == "oui") // SI on a pas de message d'erreur
@@ -161,12 +161,12 @@ if ($donnees['visible'] == "oui") // SI on a pas de message d'erreur
   <?php
 }
 
-else // SINON 
+else // SINON
 {?>
    <button  class="btn btn-danger btn-sm " >
  <?php
 }
- echo $donnees['visible']?> 
+ echo $donnees['visible']?>
   </button>
 </form>
 </td>
@@ -212,9 +212,9 @@ else // SINON
             <th></th>
             <th></th>
             <th></th>
-            
+
           </tfoot>
-        
+
       </table>
       <br>
       <div class="row">
@@ -225,8 +225,8 @@ else // SINON
   </div>
   </div>
     </div><!-- /.container -->
-   
-<?php include "pied.php"; 
+
+<?php include "pied.php";
 }
     else
   {

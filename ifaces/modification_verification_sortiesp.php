@@ -25,7 +25,7 @@ require_once('../moteur/dbconfig.php');
   if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 'h') !== false))
       {  include "tete.php" ?>
    <div class="container">
-        <h1>Modifier la sortie n° <?= $_GET['nsortie']?></h1> 
+        <h1>Modifier la sortie n° <?= $_GET['nsortie']?></h1>
  <div class="panel-body">
 
 
@@ -39,7 +39,7 @@ require_once('../moteur/dbconfig.php');
 
 
 </div>
-<h1>Pesées incluses dans cette sortie poubelles:</h1> 
+<h1>Pesées incluses dans cette sortie poubelles:</h1>
   <!-- Table -->
       <table class="table">
         <thead>
@@ -52,14 +52,14 @@ require_once('../moteur/dbconfig.php');
             <th></th>
             <th>Modifié par</th>
             <th>Le:</th>
-            
+
           </tr>
         </thead>
         <tbody>
-        <?php 
+        <?php
 /*
-'SELECT type_dechets.couleur,type_dechets.nom, sum(pesees_collectes.masse) somme 
-FROM type_dechets,pesees_collectes 
+'SELECT type_dechets.couleur,type_dechets.nom, sum(pesees_collectes.masse) somme
+FROM type_dechets,pesees_collectes
 WHERE type_dechets.id = pesees_collectes.id_type_dechet AND DATE(pesees_collectes.timestamp) = CURDATE()
 GROUP BY nom'
 
@@ -69,15 +69,15 @@ SELECT pesees_collectes.id ,pesees_collectes.timestamp  ,type_dechets.nom  , pes
 */
 
 
- 
+
             // On recupère toute la liste des filieres de sortie
             //   $reponse = $bdd->query('SELECT * FROM grille_objets');
-          
+
 $req = $bdd->prepare('SELECT pesees_sorties.id ,pesees_sorties.timestamp  ,types_poubelles.nom , pesees_sorties.masse ,types_poubelles.couleur
-                       FROM pesees_sorties ,types_poubelles 
+                       FROM pesees_sorties ,types_poubelles
                        WHERE types_poubelles.id = pesees_sorties.id_type_poubelle AND pesees_sorties.id_sortie = :id_sortie
                        GROUP BY pesees_sorties.id
-                      
+
 
                        ');
 $req->execute(array('id_sortie' => $_GET['nsortie']));
@@ -88,17 +88,17 @@ $req->execute(array('id_sortie' => $_GET['nsortie']));
            {
 
            ?>
-            <tr> 
+            <tr>
             <td><?= $donnees['id']?></td>
             <td><?= $donnees['timestamp']?></td>
             <td><span class="badge" id="cool" style="background-color:<?=$donnees['couleur']?>"><?=$donnees['nom']?></span></td>
             <td><?= $donnees['masse']?></td>
-           
+
 
 
 <td>
- <?php 
-          
+ <?php
+
 $req3 = $bdd->prepare('SELECT utilisateurs.mail mail
                        FROM utilisateurs ,pesees_sorties
                        WHERE  pesees_sorties.id_sortie = :id_sortie
@@ -117,7 +117,7 @@ $req3->execute(array('id_sortie' => $_GET['nsortie']));
 
 
          <?php }
-            
+
                 ?>
 </td>
 
@@ -142,8 +142,8 @@ $req3->execute(array('id_sortie' => $_GET['nsortie']));
 
 </td>
 
-<td><?php 
-          
+<td><?php
+
 $req5 = $bdd->prepare('SELECT utilisateurs.mail mail
                        FROM pesees_sorties, utilisateurs
                        WHERE  pesees_sorties.id = :id_sortie
@@ -161,9 +161,9 @@ $req5->execute(array('id_sortie' => $donnees['id']));
 <?= $donnees5['mail'];?>
 
          <?php }
-            
+
                 ?></td>
-<td><?php 
+<td><?php
 $req4 = $bdd->prepare('SELECT pesees_sorties.last_hero_timestamp lht
                        FROM pesees_sorties
                        WHERE  pesees_sorties.id = :id_sortie
@@ -180,7 +180,7 @@ $req4->execute(array('id_sortie' => $donnees['id']));
 <?php if ($donnees4['lht'] !== '0000-00-00 00:00:00'){echo $donnees4['lht'];}?>
 
          <?php }
-            
+
 ?>
 
 
@@ -191,12 +191,12 @@ $req4->execute(array('id_sortie' => $donnees['id']));
               $req3->closeCursor(); // Termine le traitement de la requête3
               $req4->closeCursor(); // Termine le traitement de la requête3
               $req5->closeCursor(); // Termine le traitement de la requête3
-                  
 
-                
+
+
                 ?>
 
- 
+
 
        </tbody>
         <tfoot>
@@ -209,9 +209,9 @@ $req4->execute(array('id_sortie' => $donnees['id']));
             <th></th>
             <th></th>
             <th></th>
-            
+
           </tfoot>
-        
+
       </table>
 
 
@@ -225,5 +225,3 @@ $req4->execute(array('id_sortie' => $donnees['id']));
     header('Location: ../moteur/destroy.php') ;
 }
 ?>
-       
-      

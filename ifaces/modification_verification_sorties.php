@@ -25,7 +25,7 @@ require_once('../moteur/dbconfig.php');
     if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 'h') !== false))
       {  include "tete.php" ?>
    <div class="container">
-        <h1>Modifier la sortie n° <?= $_GET['nsortie']?></h1> 
+        <h1>Modifier la sortie n° <?= $_GET['nsortie']?></h1>
  <div class="panel-body">
 
 
@@ -35,7 +35,7 @@ require_once('../moteur/dbconfig.php');
 
 
 <div class="row">
-   
+
           <form action="../moteur/modification_verification_sorties_post.php?nsortie=<?= $_GET['nsortie']?>" method="post">
             <input type="hidden" name ="id" id="id" value="<?= $_GET['nsortie']?>">
 
@@ -49,7 +49,7 @@ require_once('../moteur/dbconfig.php');
 
 <label for="id_type_sortie">Type de sortie:</label>
 <select name="id_type_sortie" id="id_type_sortie" class="form-control " required>
-            <?php 
+            <?php
             // On affiche une liste deroulante des type de sortie visibles
             $reponse = $bdd->query('SELECT * FROM type_sortie WHERE visible = "oui"');
             // On affiche chaque entree une à une
@@ -68,7 +68,7 @@ require_once('../moteur/dbconfig.php');
             $reponse->closeCursor(); // Termine le traitement de la requête
             ?>
     </select>
-      
+
   </div>
 
 
@@ -76,15 +76,15 @@ require_once('../moteur/dbconfig.php');
 
     <label for="commentaire">Commentaire</label>
 
-           
-           
- <textarea name="commentaire" id="commentaire" class="form-control"><?php 
+
+
+ <textarea name="commentaire" id="commentaire" class="form-control"><?php
             // On affiche le commentaire
             $reponse = $bdd->prepare('SELECT commentaire FROM sorties WHERE id = :id_sortie');
             $reponse->execute(array('id_sortie' => $_GET['nsortie']));
             // On affiche chaque entree une à une
             while ($donnees = $reponse->fetch()){
-     
+
            echo $donnees['commentaire'];
              }
             $reponse->closeCursor(); // Termine le traitement de la requête
@@ -92,12 +92,12 @@ require_once('../moteur/dbconfig.php');
 
 
 
-    
-  
+
+
  </div>
-  
+
   <div class="col-md-3">
-  
+
   <br>
 <button name="creer" class="btn btn-warning">Modifier</button>
 </div>
@@ -107,7 +107,7 @@ require_once('../moteur/dbconfig.php');
 
 
 </div>
-<h1>Pesées incluses dans ce don</h1> 
+<h1>Pesées incluses dans ce don</h1>
   <!-- Table -->
       <table class="table">
         <thead>
@@ -120,14 +120,14 @@ require_once('../moteur/dbconfig.php');
             <th></th>
             <th>Modifié par</th>
             <th>Le:</th>
-            
+
           </tr>
         </thead>
         <tbody>
-        <?php 
+        <?php
 /*
-'SELECT type_dechets.couleur,type_dechets.nom, sum(pesees_collectes.masse) somme 
-FROM type_dechets,pesees_collectes 
+'SELECT type_dechets.couleur,type_dechets.nom, sum(pesees_collectes.masse) somme
+FROM type_dechets,pesees_collectes
 WHERE type_dechets.id = pesees_collectes.id_type_dechet AND DATE(pesees_collectes.timestamp) = CURDATE()
 GROUP BY nom'
 
@@ -137,12 +137,12 @@ SELECT pesees_collectes.id ,pesees_collectes.timestamp  ,type_dechets.nom  , pes
 */
 
 
- 
+
             // On recupère toute la liste des filieres de sortie
             //   $reponse = $bdd->query('SELECT * FROM grille_objets');
-          
+
 $req = $bdd->prepare('SELECT pesees_sorties.id ,pesees_sorties.timestamp  ,type_dechets.nom , pesees_sorties.masse ,type_dechets.couleur
-                       FROM pesees_sorties ,type_dechets 
+                       FROM pesees_sorties ,type_dechets
                        WHERE type_dechets.id = pesees_sorties.id_type_dechet AND pesees_sorties.id_sortie = :id_sortie
                                             ');
 $req->execute(array('id_sortie' => $_GET['nsortie']));
@@ -153,17 +153,17 @@ $req->execute(array('id_sortie' => $_GET['nsortie']));
            {
 
            ?>
-            <tr> 
+            <tr>
             <td><?= $donnees['id']?></td>
             <td><?= $donnees['timestamp']?></td>
             <td><span class="badge" id="cool" style="background-color:<?=$donnees['couleur']?>"><?=$donnees['nom']?></span></td>
             <td><?= $donnees['masse']?></td>
-           
+
 
 
 <td>
- <?php 
-          
+ <?php
+
 $req3 = $bdd->prepare('SELECT utilisateurs.mail mail
                        FROM utilisateurs ,pesees_sorties
                        WHERE  pesees_sorties.id_sortie = :id_sortie
@@ -182,7 +182,7 @@ $req3->execute(array('id_sortie' => $_GET['nsortie']));
 
 
          <?php }
-            
+
                 ?>
 </td>
 
@@ -207,8 +207,8 @@ $req3->execute(array('id_sortie' => $_GET['nsortie']));
 
 </td>
 
-<td><?php 
-          
+<td><?php
+
 $req5 = $bdd->prepare('SELECT utilisateurs.mail mail
                        FROM pesees_sorties, utilisateurs
                        WHERE  pesees_sorties.id = :id_sortie
@@ -226,10 +226,10 @@ $req5->execute(array('id_sortie' => $donnees['id']));
 <?= $donnees5['mail'];?>
 
          <?php }
-            
+
                 ?></td>
-<td><?php 
-          
+<td><?php
+
 $req4 = $bdd->prepare('SELECT pesees_sorties.last_hero_timestamp lht
                        FROM pesees_sorties
                        WHERE  pesees_sorties.id = :id_sortie
@@ -246,7 +246,7 @@ $req4->execute(array('id_sortie' => $donnees['id']));
 <?php if ($donnees4['lht'] !== '0000-00-00 00:00:00'){echo $donnees4['lht'];}?>
 
          <?php }
-            
+
 ?>
 
 
@@ -257,15 +257,15 @@ $req4->execute(array('id_sortie' => $donnees['id']));
               $req3->closeCursor(); // Termine le traitement de la requête3
               $req4->closeCursor(); // Termine le traitement de la requête3
               $req5->closeCursor(); // Termine le traitement de la requête3
-                  
 
-                
+
+
                 ?>
 
- <?php 
+ <?php
 /*
-'SELECT type_dechets.couleur,type_dechets.nom, sum(pesees_collectes.masse) somme 
-FROM type_dechets,pesees_collectes 
+'SELECT type_dechets.couleur,type_dechets.nom, sum(pesees_collectes.masse) somme
+FROM type_dechets,pesees_collectes
 WHERE type_dechets.id = pesees_collectes.id_type_dechet AND DATE(pesees_collectes.timestamp) = CURDATE()
 GROUP BY nom'
 
@@ -275,14 +275,14 @@ SELECT pesees_collectes.id ,pesees_collectes.timestamp  ,type_dechets.nom  , pes
 */
 
 
- 
+
             // On recupère toute la liste des filieres de sortie
             //   $reponse = $bdd->query('SELECT * FROM grille_objets');
-          
+
 $req = $bdd->prepare('SELECT pesees_sorties.id ,pesees_sorties.timestamp  ,type_dechets_evac.nom , pesees_sorties.masse ,type_dechets_evac.couleur
-                       FROM pesees_sorties ,type_dechets_evac 
+                       FROM pesees_sorties ,type_dechets_evac
                        WHERE type_dechets_evac.id = pesees_sorties.id_type_dechet_evac AND pesees_sorties.id_sortie = :id_sortie
-                      
+
 
                        ');
 $req->execute(array('id_sortie' => $_GET['nsortie']));
@@ -293,17 +293,17 @@ $req->execute(array('id_sortie' => $_GET['nsortie']));
            {
 
            ?>
-            <tr> 
+            <tr>
             <td><?= $donnees['id']?></td>
             <td><?= $donnees['timestamp']?></td>
             <td><span class="badge" id="cool" style="background-color:<?=$donnees['couleur']?>"><?=$donnees['nom']?></span></td>
             <td><?= $donnees['masse']?></td>
-           
+
 
 
 <td>
- <?php 
-          
+ <?php
+
 $req3 = $bdd->prepare('SELECT utilisateurs.mail mail
                        FROM utilisateurs ,pesees_sorties
                        WHERE  pesees_sorties.id = :id_sortie
@@ -322,7 +322,7 @@ $req3->execute(array('id_sortie' => $_GET['nsortie']));
 
 
          <?php }
-            
+
                 ?>
 </td>
 
@@ -345,8 +345,8 @@ $req3->execute(array('id_sortie' => $_GET['nsortie']));
 
 </td>
 
-<td><?php 
-          
+<td><?php
+
 $req5 = $bdd->prepare('SELECT utilisateurs.mail mail
                        FROM pesees_sorties, utilisateurs
                        WHERE  pesees_sorties.id = :id_sortie
@@ -364,10 +364,10 @@ $req5->execute(array('id_sortie' => $donnees['id']));
 <?= $donnees5['mail'];?>
 
          <?php }
-            
+
                 ?></td>
-<td><?php 
-          
+<td><?php
+
 $req4 = $bdd->prepare('SELECT pesees_sorties.last_hero_timestamp lht
                        FROM pesees_sorties
                        WHERE  pesees_sorties.id = :id_sortie
@@ -384,7 +384,7 @@ $req4->execute(array('id_sortie' => $donnees['id']));
 <?php if ($donnees4['lht'] !== '0000-00-00 00:00:00'){echo $donnees4['lht'];}?>
 
          <?php }
-            
+
 ?>
 
 
@@ -395,24 +395,24 @@ $req4->execute(array('id_sortie' => $donnees['id']));
               $req3->closeCursor(); // Termine le traitement de la requête3
               $req4->closeCursor(); // Termine le traitement de la requête3
               $req5->closeCursor(); // Termine le traitement de la requête3
-                  
 
-                
+
+
                 ?>
 
        </tbody>
         <tfoot>
           <tr>
             <th></th>
-           
+
             <th></th>
-            
+
             <th></th>
             <th></th>
             <th></th>
-            
+
           </tfoot>
-        
+
       </table>
 
 
@@ -420,12 +420,10 @@ $req4->execute(array('id_sortie' => $donnees['id']));
 
 
   </div><!-- /.container -->
-<?php include "pied.php"; 
+<?php include "pied.php";
 }
     else
 {
     header('Location: ../moteur/destroy.php') ;
 }
 ?>
-       
-      

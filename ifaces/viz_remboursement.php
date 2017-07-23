@@ -26,7 +26,7 @@ require_once('../moteur/dbconfig.php');
    if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 'h') !== false))
       {  include "tete.php" ?>
    <div class="container">
-        <h1>Visualiser le remboursement n° <?= $_GET['nvente']?></h1> 
+        <h1>Visualiser le remboursement n° <?= $_GET['nvente']?></h1>
         <p align="right">
         <input class="btn btn-default btn-lg" type='button'name='quitter' value='Quitter' OnClick="window.close();"/></p>
  <div class="panel-body">
@@ -41,7 +41,7 @@ require_once('../moteur/dbconfig.php');
 
 
 </div>
-<h1>Objets inclus dans ce remboursement</h1> 
+<h1>Objets inclus dans ce remboursement</h1>
   <!-- Table -->
       <table class="table">
         <thead>
@@ -53,19 +53,19 @@ require_once('../moteur/dbconfig.php');
             <th>Quantité</th>
             <th>Prix</th>
             <th>Auteur de la ligne</th>
-            
-            
 
-            
+
+
+
           </tr>
         </thead>
         <tbody>
 
 
-        <?php 
+        <?php
 /*
-'SELECT type_dechets.couleur,type_dechets.nom, sum(pesees_collectes.masse) somme 
-FROM type_dechets,pesees_collectes 
+'SELECT type_dechets.couleur,type_dechets.nom, sum(pesees_collectes.masse) somme
+FROM type_dechets,pesees_collectes
 WHERE type_dechets.id = pesees_collectes.id_type_dechet AND DATE(pesees_collectes.timestamp) = CURDATE()
 GROUP BY nom'
 
@@ -75,14 +75,14 @@ SELECT pesees_collectes.id ,pesees_collectes.timestamp  ,type_dechets.nom  , pes
 */
 
 
- 
+
             // On recupère toute la liste des filieres de sortie
             //   $reponse = $bdd->query('SELECT * FROM grille_objets');
-          
-$req = $bdd->prepare('SELECT vendus.id ,vendus.timestamp  
+
+$req = $bdd->prepare('SELECT vendus.id ,vendus.timestamp
  ,type_dechets.nom type
 ,grille_objets.nom objet
- ,vendus.remboursement 
+ ,vendus.remboursement
  ,vendus.quantite
 ,utilisateurs.mail
 
@@ -101,12 +101,12 @@ $req->execute(array('id_vente' => $_GET['nvente']));
            {
 
            ?>
-            <tr> 
+            <tr>
             <td><?= $donnees['id']?></td>
             <td><?= $donnees['timestamp']?></td>
             <td><?= $donnees['type']?></td>
             <td><?= $donnees['objet']?></td>
-           
+
 
 
 <td><?= $donnees['quantite']?></td>
@@ -128,7 +128,7 @@ $req->execute(array('id_vente' => $_GET['nvente']));
           </tr>
            <?php }
               $req->closeCursor(); // Termine le traitement de la requête
-                
+
                 ?>
        </tbody>
         <tfoot>
@@ -140,9 +140,9 @@ $req->execute(array('id_vente' => $_GET['nvente']));
             <th></th>
             <th></th>
             <th></th>
-            
+
           </tfoot>
-        
+
       </table>
 
 
@@ -158,5 +158,3 @@ $req->execute(array('id_vente' => $_GET['nvente']));
    header('Location: ../moteur/destroy.php') ;
 }
 ?>
-       
-      

@@ -25,7 +25,7 @@ require_once('../moteur/dbconfig.php');
  if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 'j') !== false))
       { include "tete.php" ?>
     <div class="container">
-        <h1>Gestion des partenaires de réemploi.</h1> 
+        <h1>Gestion des partenaires de réemploi.</h1>
          <div class="panel-heading">Modifier les données concernant le partenaire n° <?= $_POST['id']?>, <?= $_POST['nom']?>.  </div>
 <?php
 //on obtien la couleur de la localité dans la base
@@ -35,9 +35,9 @@ $req->execute(array('id' => $_POST['id']));
 $donnees = $req->fetch();
 
 $couleur = $donnees['couleur'];
-            
+
               $req->closeCursor(); // Termine le traitement de la requête
-               
+
 
 ?>
 
@@ -62,7 +62,7 @@ s
 
 </div>
       </div>
-     
+
       <br>
       <div class="row">
   <div class="col-md-4"></div>
@@ -72,11 +72,11 @@ s
   </div>
   </div>
     </div><!-- /.container -->
-   
-<?php include "pied.php"; 
+
+<?php include "pied.php";
 }
 else
-{    
+{
 header('Location: ../moteur/destroy.php') ;
 }
 ?>

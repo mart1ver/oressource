@@ -33,7 +33,7 @@ if (isset($_SESSION['id'])
   $id_obj = filter_input(INPUT_GET, 'id_obj', FILTER_VALIDATE_INT);
 
   $obj = objet_id($bdd, $id_obj);
-  
+
   ?>
   <div class="container">
     <h1>Grille des prix</h1>

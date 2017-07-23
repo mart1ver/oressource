@@ -25,13 +25,13 @@ require_once('../moteur/dbconfig.php');
 if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 'l') !== false))
       {  include "tete.php" ?>
     <div class="container">
-        <h1>Gestion des utilisateurs</h1> 
+        <h1>Gestion des utilisateurs</h1>
          <ul class="nav nav-tabs">
   <li class="active"><a>Inscription</a></li>
   <li><a href="edition_utilisateurs.php">Édition</a></li>
-  
+
 </ul>
-    <br>     
+    <br>
 <div class="panel-body">
         <div class="row">
             <form action="../moteur/inscription_post.php" method="post">
@@ -42,9 +42,9 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
                                                        Répetez le mot de passe</label> <input type="password"  name="pass2" id="pass2" class="form-control" required >
   </div>
   <div class="col-md-4"><div class="alert alert-info"><label for="niveau">Permissions d'accès</label> <br>
-          
+
           <input type="checkbox" name="niveaubi" id="niveaubi" value="bi"><label for="niveaubi">Bilans</label><br>
-          
+
           <input type="checkbox" name="niveaug" id="niveaug" value="g"> <label for="niveaug">Gestion quotidienne</label><br>
           <input type="checkbox" name="niveauh" id="niveauh" value="h"> <label for="niveauh">Verif. formulaires</label><br>
           <input type="checkbox" name="niveaul" id="niveaul" value="l"> <label for="niveaul">Utilisateurs</label><br>
@@ -56,48 +56,48 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
 <br></div>
   </div>
 <div class="col-md-4"><div class="alert alert-info"><label for="niveauc">Points de collecte:</label><br>
-<?php 
+<?php
             // On recupère tout le contenu de la table point de collecte
             $reponse = $bdd->query('SELECT * FROM points_collecte');
             // On affiche chaque entree une à une
            while ($donnees = $reponse->fetch())
            {?>
-         
+
 
             <input type="checkbox" name="niveauc<?= $donnees['id']; ?>" id="niveauc<?= $donnees['id']; ?>"> <?= '<label for="niveauc'.$donnees['id'].'">'.$donnees['nom'].'</label>'; ?> <br><br>
               <?php }
               $reponse->closeCursor(); // Termine le traitement de la requête
                  ?>
 </div>
-          
+
                                             <div class="alert alert-info"><label for="niveauv">Points de vente:</label><br>
-          <?php 
+          <?php
             // On recupère tout le contenu de la table point de vente
             $reponse = $bdd->query('SELECT * FROM points_vente');
             // On affiche chaque entree une à une
            while ($donnees = $reponse->fetch())
            {?>
-         
+
 
             <input type="checkbox" name="niveauv<?= $donnees['id']; ?>" id="niveauv<?= $donnees['id']; ?>"> <?= '<label for="niveauv'.$donnees['id'].'">'.$donnees['nom'].'</label>'; ?> <br><br>
-              
-               
-              
-          
-          
-   
+
+
+
+
+
+
               <?php }
               $reponse->closeCursor(); // Termine le traitement de la requête
                  ?></div>
                                             <div class="alert alert-info"><label for="niveaus">Points de sortie hors-boutique:</label><br>
-          <?php 
+          <?php
             // On recupère tout le contenu de la table point de vente
             $reponse = $bdd->query('SELECT * FROM points_sortie');
             // On affiche chaque entree une à une
            while ($donnees = $reponse->fetch())
            {?>
                      <input type="checkbox" name="niveaus<?= $donnees['id']; ?>" id="niveaus<?= $donnees['id']; ?>"> <?= '<label for="niveaus'.$donnees['id'].'">'.$donnees['nom'].'</label>'; ?> <br><br>
-           
+
               <?php }
               $reponse->closeCursor(); // Termine le traitement de la requête
                  ?>
@@ -108,32 +108,30 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
 
 
 
-       
+
 
 
 
 
         </div></div>
   <div class="col-md-4"><br></div>
-  
 
-  
+
+
 
 </div>
 <div class="row"><div class="col-md-3 col-md-offset-3"><br><button name="creer" class="btn btn-default">Créer!</button></div></div>
       </div>
-     
-      
+
+
   </div>
-  
-  
+
+
 
 <?php include "pied.php";
 }
     else
-{    
+{
     header('Location: ../moteur/destroy.php') ;
 }
 ?>
-       
-      

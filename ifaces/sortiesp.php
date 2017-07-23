@@ -83,7 +83,7 @@ if (isset($_SESSION['id'])
       </div>
     </div> <!-- .col-md-4 -->
 
-    
+
     <div id="numpad" class="col-md-4" style="width: 220px;">
       <p>La masse des différents bacs est automatiquement déduite.</p>
     </div>
@@ -159,7 +159,7 @@ if (isset($_SESSION['id'])
           fragment.appendChild(button);
       });
       div_list_evac.appendChild(fragment);
-      
+
       const metadata = {classe: 'sortiesp'};
       const encaisse = make_encaissement('../api/sorties.php', {
         evacs: ticketEvac

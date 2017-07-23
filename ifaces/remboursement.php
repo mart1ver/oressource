@@ -29,11 +29,11 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
 <div class="panel-body" >
       <fieldset>
       <legend>
-             <?php 
+             <?php
           // on determine le numero de la vente
          $req = $bdd->prepare("SELECT max(id) FROM ventes WHERE id_point_vente = :id ");
             $req->execute(array('id' => $_GET['numero']));
- 
+
            // On affiche chaque entree une à une
            while ($donnees = $req->fetch())
            {
@@ -42,10 +42,10 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
               $req->closeCursor(); // Termine le traitement de la requête
             //on affiche le nom du point de vente
             // On recupère tout le contenu de la table point de collecte
-          
+
             $req = $bdd->prepare("SELECT * FROM points_vente WHERE id = :id ");
             $req->execute(array('id' => $_GET['numero']));
- 
+
            // On affiche chaque entree une à une
            while ($donnees = $req->fetch())
            {
@@ -55,12 +55,12 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
            }
               $req->closeCursor(); // Termine le traitement de la requête
         ?>
-      </legend>   
-      </fieldset>     
+      </legend>
+      </fieldset>
     <div class="row">
    	<br>
       <div class="col-md-2 col-md-offset-2" style="width: 330px;" >
-     
+
 
        <div class="panel panel-danger" id="divID">
         <div class="panel-heading">
@@ -69,7 +69,7 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
     </span>
   </div>
   <div class="panel-body">
-     
+
 <form action="../moteur/remboursement_post.php" id="formulaire" method="post">
   <?php if ($_SESSION['saisiec'] == 'oui' AND (strpos($_SESSION['niveau'], 'e') !== false) ){ ?>
       Date de la vente:  <input type="date" id="antidate" name="antidate" style="height:20px;" value=<?= date("Y-m-d") ?>>
@@ -78,7 +78,7 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
 <?php }?>
 <ul id="liste" class="list-group">
    <li class="list-group-item">Réference: <?= $_GET['numero']?>#<?= $numero_vente?>, date: <?= date("d-m-Y") ?><br><?= $nom_pv;?><br><?= $adresse_pv;?>,<br>siret: <?=$_SESSION['siret'];?></li>
-  
+
 </ul>
  <ul class="list-group" id="total">
 </ul>
@@ -100,24 +100,24 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
 
       </div>
       </div>
-      </div>  
-      
-   
+      </div>
+
+
     <div class="col-md-3" style="width: 220px;">
- 
+
       <div class="panel panel-danger">
         <div class="panel-heading">
     <h3 class="panel-title"id="nom_objet"><label>Objet:</label></h3>
   </div>
-  <div class="panel-body"> 
+  <div class="panel-body">
       Quantité: <input type="text" class="form-control" placeholder="Quantité" id="quantite" name="quantite" onfocus="fokus(this)" > Prix unitaire: <input type="text" class="form-control" placeholder="€" id="prix" name="prix" onfocus="fokus(this)">
 <input type="hidden"  id="id_type_objet" name="id_type_objet">
-<input type="hidden"  id="id_objet" name="id_objet">   
-<input type="hidden"  id="nom_objet0" name="nom_objet0">   
+<input type="hidden"  id="id_objet" name="id_objet">
+<input type="hidden"  id="nom_objet0" name="nom_objet0">
 
 
       <br>
-     
+
 
     <button type="button" class="btn btn-default btn-lg" onclick="ajout();">
     Ajouter
@@ -126,7 +126,7 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
 
     <div class="col-md-3" style="width: 200px;">
     <div class="row">
-    
+
     </div>
     <br>
     <div class="row">
@@ -159,20 +159,20 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
 
     </div>
 
- 
+
 <div class="col-md-3" >
 <div class="panel panel-danger">
         <div class="panel-heading">
     <h3 class="panel-title"><label>Type d'objet:</label></h3>
   </div>
-  <div class="panel-body"> 
-      
+  <div class="panel-body">
 
 
-            <?php 
+
+            <?php
             // On recupère tout le contenu de la table point de collecte
             $reponse = $bdd->query('SELECT * FROM type_dechets WHERE visible = "oui"');
- 
+
            // On affiche chaque entree une à une
            while ($donnees = $reponse->fetch())
            {
@@ -186,7 +186,7 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
       <li class="divider"></li>
 
 
-  <?php 
+  <?php
              // On recupère tout le contenu de la table grille_objets
            $req = $bdd->prepare('SELECT * FROM grille_objets WHERE id_type_dechet = :id_type_dechet AND visible = "oui"   ');
            $req->execute(array('id_type_dechet' => $donnees['id']));
@@ -199,32 +199,32 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
     </li>
            <?php }
            $req->closeCursor(); // Termine le traitement de la requête
-           ?> 
+           ?>
     </ul>
     </div>
-   
+
                 <?php }
                 $reponse->closeCursor(); // Termine le traitement de la requête
                 ?>
-    </div> 
+    </div>
 
 
 
     </div>
     <br>
-    <a href="ventes.php?numero=<?= $_GET['numero']?>&nom=<?= $_GET['nom']?>&adresse=<?= $_GET['adresse']?>"> 
+    <a href="ventes.php?numero=<?= $_GET['numero']?>&nom=<?= $_GET['nom']?>&adresse=<?= $_GET['adresse']?>">
     <button type="button"  class="btn btn-default pull-right" >
     Retour aux ventes
     </button>
     <a>
        <br><br>
-     
+
     </div>
   </div>
     </div>
-   
+
     <br>
-            <?php include "pied.php" ; ?> 
+            <?php include "pied.php" ; ?>
 <script type="text/javascript">
 "use strict";
 
@@ -237,12 +237,12 @@ what = that;
 
 function printdiv(divID)
     {
-if (parseInt(document.getElementById('nlignes').value) >= 1) 
-          { 
-            
-      
+if (parseInt(document.getElementById('nlignes').value) >= 1)
+          {
+
+
       var headstr = "<html><head><title></title></head><body><small>";
-      
+
  <?php if ($_SESSION['tva_active']){?>
   var prixtot =  parseFloat(document.getElementById('ptot').value).toFixed(2);
   var prixht = parseFloat(prixtot).toFixed(2) / ( 1+parseFloat(<?= $_SESSION['taux_tva'] ?>).toFixed(2)/100 );
@@ -266,9 +266,9 @@ var footstr = "Association non assujettie à la TVA.</body></small> ";
 
           //puis encaisse
            if ((parseInt(document.getElementById('nlignes').value) >= 1) && ((document.getElementById('quantite').value == "")||(document.getElementById('quantite').value == "0"))&&((document.getElementById('prix').value == "")||(document.getElementById('prix').value == "0")) )
-          { 
+          {
             document.getElementById('comm').value = document.getElementById('comm').value
-            
+
           document.getElementById("formulaire").submit();
           }
     }
@@ -277,8 +277,8 @@ var footstr = "Association non assujettie à la TVA.</body></small> ";
 
 
 function often(that) {
-if (isNaN(parseInt(document.getElementById('id_type_objet').value)) ) 
-          { 
+if (isNaN(parseInt(document.getElementById('id_type_objet').value)) )
+          {
           }
           else{
 
@@ -293,43 +293,43 @@ what.value = what.value + that.value;
 }
 
 function ajout() {
-     if (isNaN((parseFloat(document.getElementById('prix').value)*parseFloat(document.getElementById('quantite').value)).toFixed(2)) ) 
-         {} 
+     if (isNaN((parseFloat(document.getElementById('prix').value)*parseFloat(document.getElementById('quantite').value)).toFixed(2)) )
+         {}
           else
           {
 
-         
-if (isNaN(parseInt(document.getElementById('nlignes').value)) ) 
-          { 
+
+if (isNaN(parseInt(document.getElementById('nlignes').value)) )
+          {
           document.getElementById('nlignes').value = 1;
-          } 
-          else
-          {
-          document.getElementById('nlignes').value=parseInt(document.getElementById('nlignes').value)+ 1; 
           }
-if (isNaN(parseInt(document.getElementById('narticles').value)) ) 
-          { 
+          else
+          {
+          document.getElementById('nlignes').value=parseInt(document.getElementById('nlignes').value)+ 1;
+          }
+if (isNaN(parseInt(document.getElementById('narticles').value)) )
+          {
           document.getElementById('narticles').value = document.getElementById('quantite').value;
-          } 
+          }
           else
           {
-          document.getElementById('narticles').value=parseInt(document.getElementById('narticles').value)+parseInt(document.getElementById('quantite').value); 
-          }          
-if (isNaN(parseInt(document.getElementById('ptot').value)) ) 
-          { 
+          document.getElementById('narticles').value=parseInt(document.getElementById('narticles').value)+parseInt(document.getElementById('quantite').value);
+          }
+if (isNaN(parseInt(document.getElementById('ptot').value)) )
+          {
           document.getElementById('ptot').value = document.getElementById('prix').value*document.getElementById('quantite').value;
-          } 
+          }
           else
           {
-          document.getElementById('ptot').value=parseFloat(document.getElementById('ptot').value)+parseFloat(document.getElementById('prix').value*document.getElementById('quantite').value); 
-          }          
+          document.getElementById('ptot').value=parseFloat(document.getElementById('ptot').value)+parseFloat(document.getElementById('prix').value*document.getElementById('quantite').value);
+          }
 
              document.getElementById('liste').innerHTML += '<li class="list-group-item"><span class="badge">'+parseFloat(parseFloat(document.getElementById('prix').value)*parseFloat(document.getElementById('quantite').value)).toFixed(2)+'€'+'</span>'
              +document.getElementById('quantite').value+'*'+document.getElementById('nom_objet0').value
              +'<input type="hidden"  id="tid_type_objet'+parseInt(document.getElementById('nlignes').value)+'" name="tid_type_objet'+parseInt(document.getElementById('nlignes').value)+'"value="'+document.getElementById('id_type_objet').value+'">'
              +'<input type="hidden"  id="tid_objet'+parseInt(document.getElementById('nlignes').value)+'" name="tid_objet'+parseInt(document.getElementById('nlignes').value)+'"value="'+document.getElementById('id_objet').value+'">'
              +'<input type="hidden"  id="tquantite'+parseInt(document.getElementById('nlignes').value)+'" name="tquantite'+parseInt(document.getElementById('nlignes').value)+'"value="'+document.getElementById('quantite').value+'">'
-             +'<input type="hidden"  id="tprix'+parseInt(document.getElementById('nlignes').value)+'" name="tprix'+parseInt(document.getElementById('nlignes').value)+'"value="'+document.getElementById('prix').value+'"></li>';                                               
+             +'<input type="hidden"  id="tprix'+parseInt(document.getElementById('nlignes').value)+'" name="tprix'+parseInt(document.getElementById('nlignes').value)+'"value="'+document.getElementById('prix').value+'"></li>';
                document.getElementById('total').innerHTML = '<li class="list-group-item">Soit : '+document.getElementById('narticles').value+' article(s) pour : <span class="badge" style="float:right;">'+parseFloat(document.getElementById('ptot').value).toFixed(2)+'€</span></li>';
                document.getElementById('recaptotal').innerHTML = parseFloat(document.getElementById('ptot').value).toFixed(2)+'€';
                document.getElementById('nom_objet').innerHTML = "<label>Objet:</label>";
@@ -350,18 +350,18 @@ function edite(nom,prix,id_type_objet,id_objet) {
 
 }
 function encaisse() {
-  if (parseInt(document.getElementById('nlignes').value) >= 1) 
-          { 
-            
+  if (parseInt(document.getElementById('nlignes').value) >= 1)
+          {
+
           document.getElementById("formulaire").submit();
           }
                     }
 </script>
 
-            <?php 
-} 
+            <?php
+}
 else
-      { 
+      {
         header('Location:../moteur/destroy.php');
       }
 ?>

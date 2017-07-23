@@ -25,7 +25,7 @@ require_once('../moteur/dbconfig.php');
    if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 'h') !== false))
       {  include "tete.php" ?>
    <div class="container">
-        <h1>Modifier le remboursement n° <?= $_GET['nvente']?></h1> 
+        <h1>Modifier le remboursement n° <?= $_GET['nvente']?></h1>
  <div class="panel-body">
 
 
@@ -38,7 +38,7 @@ require_once('../moteur/dbconfig.php');
 
 
 </div>
-<h1>Objets inclus dans ce remboursement</h1> 
+<h1>Objets inclus dans ce remboursement</h1>
   <!-- Table -->
       <table class="table">
         <thead>
@@ -54,18 +54,18 @@ require_once('../moteur/dbconfig.php');
             <th>Modifié par</th>
             <th>Le:</th>
 
-            
+
           </tr>
         </thead>
         <tbody>
 
 
-        <?php 
- 
+        <?php
+
             // Si tout va bien, on peut continuer
 /*
-'SELECT type_dechets.couleur,type_dechets.nom, sum(pesees_collectes.masse) somme 
-FROM type_dechets,pesees_collectes 
+'SELECT type_dechets.couleur,type_dechets.nom, sum(pesees_collectes.masse) somme
+FROM type_dechets,pesees_collectes
 WHERE type_dechets.id = pesees_collectes.id_type_dechet AND DATE(pesees_collectes.timestamp) = CURDATE()
 GROUP BY nom'
 
@@ -75,14 +75,14 @@ SELECT pesees_collectes.id ,pesees_collectes.timestamp  ,type_dechets.nom  , pes
 */
 
 
- 
+
             // On recupère toute la liste des filieres de sortie
             //   $reponse = $bdd->query('SELECT * FROM grille_objets');
-          
-$req = $bdd->prepare('SELECT vendus.id ,vendus.timestamp  
+
+$req = $bdd->prepare('SELECT vendus.id ,vendus.timestamp
  ,type_dechets.nom type
 ,grille_objets.nom objet
- ,vendus.remboursement 
+ ,vendus.remboursement
  ,vendus.quantite
 ,utilisateurs.mail
 
@@ -101,12 +101,12 @@ $req->execute(array('id_vente' => $_GET['nvente']));
            {
 
            ?>
-            <tr> 
+            <tr>
             <td><?= $donnees['id']?></td>
             <td><?= $donnees['timestamp']?></td>
             <td><?= $donnees['type']?></td>
             <td><?= $donnees['objet']?></td>
-           
+
 
 
 <td><?= $donnees['quantite']?></td>
@@ -131,10 +131,10 @@ $req->execute(array('id_vente' => $_GET['nvente']));
 
 
 
-<td><?php 
+<td><?php
 $req3 = $bdd->prepare('SELECT utilisateurs.mail mail
                        FROM utilisateurs, vendus
-                       WHERE  vendus.id = :id_vendu 
+                       WHERE  vendus.id = :id_vendu
                        AND utilisateurs.id = vendus.id_last_hero');
 $req3->execute(array('id_vendu' => $donnees['id']));
 
@@ -153,10 +153,10 @@ $req3->execute(array('id_vendu' => $donnees['id']));
                 ?></td>
 
 
-<td><?php 
+<td><?php
 $req3 = $bdd->prepare('SELECT vendus.last_hero_timestamp lht
                        FROM  vendus
-                       WHERE  vendus.id = :id_vendu 
+                       WHERE  vendus.id = :id_vendu
                        ');
 $req3->execute(array('id_vendu' => $donnees['id']));
 
@@ -172,21 +172,21 @@ $req3->execute(array('id_vendu' => $donnees['id']));
           </tr>
            <?php }
               $req->closeCursor(); // Termine le traitement de la requête
-                
+
                 ?>
        </tbody>
         <tfoot>
           <tr>
             <th></th>
-           
+
             <th></th>
-            
+
             <th></th>
             <th></th>
             <th></th>
-            
+
           </tfoot>
-        
+
       </table>
 
 
@@ -202,5 +202,3 @@ $req3->execute(array('id_vendu' => $donnees['id']));
    header('Location: ../moteur/destroy.php') ;
 }
 ?>
-       
-      

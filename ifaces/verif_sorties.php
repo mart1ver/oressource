@@ -32,21 +32,21 @@ session_start();
       <script type="text/javascript" src="../js/moment.js"></script>
       <script type="text/javascript" src="../js/daterangepicker.js"></script>
    <div class="container">
-        <h1>Vérification des sorties hors-boutique</h1> 
+        <h1>Vérification des sorties hors-boutique</h1>
  <div class="panel-body">
 <ul class="nav nav-tabs">
 
 
- <?php 
+ <?php
           //on affiche un onglet par type d'objet
- 
+
             // On recupère tout le contenu des visibles de la table points_sortie
             $reponse = $bdd->query('SELECT * FROM points_sortie');
- 
+
            // On affiche chaque entree une à une
            while ($donnees = $reponse->fetch())
            {
-           ?> 
+           ?>
             <li<?php if ($_GET['numero'] == $donnees['id']){ echo ' class="active"';}?>><a href="<?=  "verif_sorties.php?numero=" . $donnees['id']."&date=" . $_GET['date']?>"><?=$donnees['nom']?></a></li>
            <?php }
               $reponse->closeCursor(); // Termine le traitement de la requête
@@ -73,7 +73,7 @@ session_start();
 "use strict";
 function $_GET(param) {
   var vars = {};
-  window.location.href.replace( 
+  window.location.href.replace(
     /[?&]+([^=&]+)=?([^&]*)?/gi, // regexp
     function( m, key, value ) { // callback
       vars[key] = value !== undefined ? value : '';
@@ -81,7 +81,7 @@ function $_GET(param) {
   );
 
   if ( param ) {
-    return vars[param] ? vars[param] : null;  
+    return vars[param] ? vars[param] : null;
   }
   return vars;
 }
@@ -143,7 +143,7 @@ var datedosgf = moisdos+'/'+jourdos+"/"+anneedos;
                     }
                   };
 
-                  
+
 
                    $('#reportrange span').html($_GET('date1') + ' - ' + $_GET('date2'));
 
@@ -151,12 +151,12 @@ var datedosgf = moisdos+'/'+jourdos+"/"+anneedos;
 
                   $('#reportrange').on('show.daterangepicker', function() { console.log("show event fired"); });
                   $('#reportrange').on('hide.daterangepicker', function() { console.log("hide event fired"); });
-                  $('#reportrange').on('apply.daterangepicker', function(ev, picker) { 
-                    console.log("apply event fired, start/end dates are " 
-                      + picker.startDate.format('DD MM, YYYY') 
-                      + " to " 
-                      + picker.endDate.format('DD MM, YYYY')                      
-                    ); 
+                  $('#reportrange').on('apply.daterangepicker', function(ev, picker) {
+                    console.log("apply event fired, start/end dates are "
+                      + picker.startDate.format('DD MM, YYYY')
+                      + " to "
+                      + picker.endDate.format('DD MM, YYYY')
+                    );
                     window.location.href = "verif_sorties.php?date1="+picker.startDate.format('DD-MM-YYYY')+"&date2="+picker.endDate.format('DD-MM-YYYY')+"&numero="+"<?= $_GET['numero']?>";
                   });
                   $('#reportrange').on('cancel.daterangepicker', function(ev, picker) { console.log("cancel event fired"); });
@@ -175,7 +175,7 @@ var datedosgf = moisdos+'/'+jourdos+"/"+anneedos;
 
                });
                </script>
-          
+
 
 <?php
 // on affiche la période visée
@@ -185,7 +185,7 @@ var datedosgf = moisdos+'/'+jourdos+"/"+anneedos;
   }
   else
   {
-  echo' du '.$_GET['date1']." au ".$_GET['date2']." :";  
+  echo' du '.$_GET['date1']." au ".$_GET['date2']." :";
 }
 //on convertit les deux dates en un format compatible avec la bdd
 
@@ -209,17 +209,17 @@ $time_fin = $time_fin." 23:59:59";
 <?php
             // On recupère toute la liste des filieres de sortie
             //   $reponse = $bdd->query('SELECT * FROM grille_objets');
-          
+
 $req = $bdd->prepare('SELECT COUNT(id) nid
-                        FROM `sorties` 
+                        FROM `sorties`
                        WHERE sorties.id_point_sortie = :id_point_sortie AND DATE(sorties.timestamp) BETWEEN :du AND :au  AND classe = "sorties" ');
 $req->execute(array('id_point_sortie' => $_GET['numero'], 'du' => $time_debut,'au' => $time_fin));
 
 
            // On affiche chaque entree une à une
            while ($donnees = $req->fetch())
-           { 
-if($donnees['nid'] > 0){ $req->closeCursor(); 
+           {
+if($donnees['nid'] > 0){ $req->closeCursor();
 
 
 
@@ -245,9 +245,9 @@ if($donnees['nid'] > 0){ $req->closeCursor();
           </tr>
         </thead>
         <tbody>
-        <?php 
-          
-$req = $bdd->prepare('SELECT sorties.id,sorties.timestamp ,type_sortie.nom,sorties.commentaire ,sorties.classe classe 
+        <?php
+
+$req = $bdd->prepare('SELECT sorties.id,sorties.timestamp ,type_sortie.nom,sorties.commentaire ,sorties.classe classe
                        FROM sorties ,type_sortie
                        WHERE type_sortie.id = sorties.id_type_sortie  AND sorties.id_point_sortie = :id_point_sortie AND DATE(sorties.timestamp) BETWEEN :du AND :au
                        ORDER BY sorties.timestamp DESC');
@@ -259,18 +259,18 @@ $req->execute(array('id_point_sortie' => $_GET['numero'], 'du' => $time_debut,'a
            {
 
            ?>
-            <tr> 
+            <tr>
             <td><?= $donnees['id']?></td>
             <td><?= $donnees['timestamp']?></td>
             <td><?= $donnees['nom']?></td>
             <td><?= $donnees['commentaire']?></td>
-            
-           <td> 
 
- <?php 
- 
-           
-          
+           <td>
+
+ <?php
+
+
+
 $req2 = $bdd->prepare('SELECT SUM(pesees_sorties.masse) masse
                        FROM pesees_sorties
                        WHERE  pesees_sorties.id_sortie = :id_sortie ');
@@ -287,18 +287,18 @@ $req2->execute(array('id_sortie' => $donnees['id']));
 
 
          <?php }
-            
+
                 ?>
 
 
 
 
-           </td> 
+           </td>
 
 
 <td>
- <?php 
-          
+ <?php
+
 $req3 = $bdd->prepare('SELECT utilisateurs.mail mail
                        FROM utilisateurs ,sorties
                        WHERE  sorties.id = :id_sortie
@@ -316,7 +316,7 @@ $req3->execute(array('id_sortie' => $donnees['id']));
 
 
          <?php }
-            
+
                 ?>
 </td>
 
@@ -339,8 +339,8 @@ $req3->execute(array('id_sortie' => $donnees['id']));
 
 </td>
 
-<td><?php 
-          
+<td><?php
+
 $req5 = $bdd->prepare('SELECT utilisateurs.mail mail
                        FROM sorties, utilisateurs
                        WHERE  sorties.id = :id_sortie
@@ -358,12 +358,12 @@ $req5->execute(array('id_sortie' => $donnees['id']));
 <?= $donnees5['mail'];?>
 
          <?php }
-            
+
                 ?></td>
-<td><?php 
- 
-           
-          
+<td><?php
+
+
+
 $req4 = $bdd->prepare('SELECT sorties.last_hero_timestamp lht
                        FROM sorties
                        WHERE  sorties.id = :id_sortie
@@ -380,7 +380,7 @@ $req4->execute(array('id_sortie' => $donnees['id']));
 <?php if ($donnees4['lht'] !== '0000-00-00 00:00:00'){echo $donnees4['lht'];}?>
 
          <?php }
-            
+
                 ?></td>
 
 
@@ -395,8 +395,8 @@ $req4->execute(array('id_sortie' => $donnees['id']));
                 $req5->closeCursor(); // Termine le traitement de la requête4
                 ?>
        </tbody>
-       
-        
+
+
       </table>
       </div>
 </div>
@@ -406,20 +406,20 @@ $req4->execute(array('id_sortie' => $donnees['id']));
 }
 ?>
 <?php
- 
+
             // On recupère toute la liste des filieres de sortie
             //   $reponse = $bdd->query('SELECT * FROM grille_objets');
-          
+
 $req = $bdd->prepare('SELECT COUNT(id) nid
-                        FROM `sorties` 
+                        FROM `sorties`
                        WHERE sorties.id_point_sortie = :id_point_sortie AND DATE(sorties.timestamp) BETWEEN :du AND :au AND classe = "sortiesc" ');
 $req->execute(array('id_point_sortie' => $_GET['numero'], 'du' => $time_debut,'au' => $time_fin));
 
 
            // On affiche chaque entree une à une
            while ($donnees = $req->fetch())
-           { 
-if($donnees['nid'] > 0){ $req->closeCursor(); 
+           {
+if($donnees['nid'] > 0){ $req->closeCursor();
 
 
 
@@ -443,15 +443,15 @@ if($donnees['nid'] > 0){ $req->closeCursor();
             <th></th>
             <th>Modifié par</th>
             <th>Le</th>
-            
+
           </tr>
         </thead>
         <tbody>
-        <?php 
-          
+        <?php
+
 $req = $bdd->prepare('SELECT sorties.id,sorties.timestamp ,conventions_sorties.nom,sorties.commentaire,sorties.adherent , sorties.classe classe
                        FROM sorties ,conventions_sorties
-                       WHERE conventions_sorties.id = sorties.id_convention  AND sorties.id_point_sortie = :id_point_sortie AND DATE(sorties.timestamp) BETWEEN :du AND :au AND classe = "sortiesc" 
+                       WHERE conventions_sorties.id = sorties.id_convention  AND sorties.id_point_sortie = :id_point_sortie AND DATE(sorties.timestamp) BETWEEN :du AND :au AND classe = "sortiesc"
                        ORDER BY sorties.timestamp DESC');
 $req->execute(array('id_point_sortie' => $_GET['numero'], 'du' => $time_debut,'au' => $time_fin));
 
@@ -461,17 +461,17 @@ $req->execute(array('id_point_sortie' => $_GET['numero'], 'du' => $time_debut,'a
            {
 
            ?>
-            <tr> 
+            <tr>
             <td><?= $donnees['id']?></td>
             <td><?= $donnees['timestamp']?></td>
             <td><?= $donnees['nom']?></td>
             <td><?= $donnees['commentaire']?></td>
-            
-           <td> 
 
- <?php 
-           
-          
+           <td>
+
+ <?php
+
+
 $req2 = $bdd->prepare('SELECT SUM(pesees_sorties.masse) masse
                        FROM pesees_sorties
                        WHERE  pesees_sorties.id_sortie = :id_sortie ');
@@ -488,20 +488,20 @@ $req2->execute(array('id_sortie' => $donnees['id']));
 
 
          <?php }
-            
+
                 ?>
 
 
 
 
-           </td> 
+           </td>
 
 
 
 <td>
- <?php 
-           
-          
+ <?php
+
+
 $req3 = $bdd->prepare('SELECT utilisateurs.mail mail
                        FROM utilisateurs ,sorties
                        WHERE  sorties.id = :id_sortie
@@ -519,7 +519,7 @@ $req3->execute(array('id_sortie' => $donnees['id']));
 
 
          <?php }
-            
+
                 ?>
 </td>
 
@@ -537,9 +537,9 @@ $req3->execute(array('id_sortie' => $donnees['id']));
 
 </form>
 
-<td><?php 
-           
-          
+<td><?php
+
+
 $req5 = $bdd->prepare('SELECT utilisateurs.mail mail
                        FROM sorties, utilisateurs
                        WHERE  sorties.id = :id_sortie
@@ -557,10 +557,10 @@ $req5->execute(array('id_sortie' => $donnees['id']));
 <?= $donnees5['mail'];?>
 
          <?php }
-            
+
                 ?></td>
-<td><?php 
-          
+<td><?php
+
 $req4 = $bdd->prepare('SELECT sorties.last_hero_timestamp lht
                        FROM sorties
                        WHERE  sorties.id = :id_sortie
@@ -577,7 +577,7 @@ $req4->execute(array('id_sortie' => $donnees['id']));
 <?php if ($donnees4['lht'] !== '0000-00-00 00:00:00'){echo $donnees4['lht'];}?>
 
          <?php }
-            
+
                 ?></td>
 
 </td>
@@ -596,8 +596,8 @@ $req4->execute(array('id_sortie' => $donnees['id']));
                 $req5->closeCursor(); // Termine le traitement de la requête4
                 ?>
        </tbody>
-        
-        
+
+
       </table>
        </div>
 </div>
@@ -607,20 +607,20 @@ $req4->execute(array('id_sortie' => $donnees['id']));
 }
 ?>
 <?php
- 
+
             // On recupère toute la liste des filieres de sortie
             //   $reponse = $bdd->query('SELECT * FROM grille_objets');
-          
+
 $req = $bdd->prepare('SELECT COUNT(id) nid
-                        FROM `sorties` 
+                        FROM `sorties`
                        WHERE sorties.id_point_sortie = :id_point_sortie  AND DATE(sorties.timestamp) BETWEEN :du AND :au   AND classe = "sortiesr" ');
 $req->execute(array('id_point_sortie' => $_GET['numero'], 'du' => $time_debut,'au' => $time_fin));
 
 
            // On affiche chaque entree une à une
            while ($donnees = $req->fetch())
-           { 
-if($donnees['nid'] > 0){ $req->closeCursor(); 
+           {
+if($donnees['nid'] > 0){ $req->closeCursor();
 
 
 
@@ -644,12 +644,12 @@ if($donnees['nid'] > 0){ $req->closeCursor();
             <th></th>
             <th>Modifié par</th>
             <th>Le</th>
-            
+
           </tr>
         </thead>
         <tbody>
-        <?php 
-          
+        <?php
+
 $req = $bdd->prepare('SELECT sorties.id,sorties.timestamp ,filieres_sortie.nom,sorties.commentaire , sorties.classe classe
                        FROM sorties ,filieres_sortie
                        WHERE filieres_sortie.id = sorties.id_filiere  AND sorties.id_point_sortie = :id_point_sortie AND DATE(sorties.timestamp) BETWEEN :du AND :au AND classe = "sortiesr"
@@ -662,16 +662,16 @@ $req->execute(array('id_point_sortie' => $_GET['numero'], 'du' => $time_debut,'a
            {
 
            ?>
-            <tr> 
+            <tr>
             <td><?= $donnees['id']?></td>
             <td><?= $donnees['timestamp']?></td>
             <td><?= $donnees['nom']?></td>
             <td><?= $donnees['commentaire']?></td>
-           
-           <td> 
 
- <?php 
-          
+           <td>
+
+ <?php
+
 $req2 = $bdd->prepare('SELECT SUM(pesees_sorties.masse) masse
                        FROM pesees_sorties
                        WHERE  pesees_sorties.id_sortie = :id_sortie ');
@@ -688,18 +688,18 @@ $req2->execute(array('id_sortie' => $donnees['id']));
 
 
          <?php }
-            
+
                 ?>
 
 
 
 
-           </td> 
+           </td>
 
 
 <td>
- <?php 
-          
+ <?php
+
 $req3 = $bdd->prepare('SELECT utilisateurs.mail mail
                        FROM utilisateurs ,sorties
                        WHERE  sorties.id = :id_sortie
@@ -717,7 +717,7 @@ $req3->execute(array('id_sortie' => $donnees['id']));
 
 
          <?php }
-            
+
                 ?>
 </td>
 
@@ -736,8 +736,8 @@ $req3->execute(array('id_sortie' => $donnees['id']));
 
 </form>
 
-<td><?php 
-          
+<td><?php
+
 $req5 = $bdd->prepare('SELECT utilisateurs.mail mail
                        FROM sorties, utilisateurs
                        WHERE  sorties.id = :id_sortie
@@ -755,12 +755,12 @@ $req5->execute(array('id_sortie' => $donnees['id']));
 <?= $donnees5['mail'];?>
 
          <?php }
-            
+
                 ?></td>
-<td><?php 
- 
-           
-          
+<td><?php
+
+
+
 $req4 = $bdd->prepare('SELECT sorties.last_hero_timestamp lht
                        FROM sorties
                        WHERE  sorties.id = :id_sortie
@@ -777,7 +777,7 @@ $req4->execute(array('id_sortie' => $donnees['id']));
 <?php if ($donnees4['lht'] !== '0000-00-00 00:00:00'){echo $donnees4['lht'];}?>
 
          <?php }
-            
+
                 ?></td>
 
 
@@ -794,8 +794,8 @@ $req4->execute(array('id_sortie' => $donnees['id']));
                 $req5->closeCursor(); // Termine le traitement de la requête4
                 ?>
        </tbody>
-        
-        
+
+
       </table>
       </div></div>
       <?php
@@ -806,17 +806,17 @@ $req4->execute(array('id_sortie' => $donnees['id']));
 <?php
             // On recupère toute la liste des filieres de sortie
             //   $reponse = $bdd->query('SELECT * FROM grille_objets');
-          
+
 $req = $bdd->prepare('SELECT COUNT(id) nid
-                        FROM `sorties` 
+                        FROM `sorties`
                        WHERE sorties.id_point_sortie = :id_point_sortie AND DATE(sorties.timestamp) BETWEEN :du AND :au AND classe = "sortiesp" ');
 $req->execute(array('id_point_sortie' => $_GET['numero'], 'du' => $time_debut,'au' => $time_fin));
 
 
            // On affiche chaque entree une à une
            while ($donnees = $req->fetch())
-           { 
-if($donnees['nid'] > 0){ $req->closeCursor(); 
+           {
+if($donnees['nid'] > 0){ $req->closeCursor();
 
 
 
@@ -826,7 +826,7 @@ if($donnees['nid'] > 0){ $req->closeCursor();
             <div class="panel panel-info">
   <div class="panel-heading"><h3 class="panel-title">Sorties Poubelles:</h3> </div>
   <div class="panel-body">
- 
+
   <!-- Table -->
       <table class="table">
         <thead>
@@ -838,15 +838,15 @@ if($donnees['nid'] > 0){ $req->closeCursor();
             <th></th>
             <th>Modifié par</th>
             <th>Le</th>
-            
+
           </tr>
         </thead>
         <tbody>
-        <?php 
-            
-          
+        <?php
+
+
 $req = $bdd->prepare('SELECT sorties.id,sorties.timestamp , sorties.classe classe
-                       FROM sorties 
+                       FROM sorties
                        WHERE sorties.id_point_sortie = :id_point_sortie AND DATE(sorties.timestamp) BETWEEN :du AND :au AND classe = "sortiesp"
                        ORDER BY sorties.timestamp DESC');
 $req->execute(array('id_point_sortie' => $_GET['numero'], 'du' => $time_debut,'au' => $time_fin));
@@ -857,17 +857,17 @@ $req->execute(array('id_point_sortie' => $_GET['numero'], 'du' => $time_debut,'a
            {
 
            ?>
-            <tr> 
+            <tr>
             <td><?= $donnees['id']?></td>
             <td><?= $donnees['timestamp']?></td>
-            
-            
-           <td> 
 
- <?php 
- 
-           
-          
+
+           <td>
+
+ <?php
+
+
+
 $req2 = $bdd->prepare('SELECT SUM(pesees_sorties.masse) masse
                        FROM pesees_sorties
                        WHERE  pesees_sorties.id_sortie = :id_sortie ');
@@ -884,17 +884,17 @@ $req2->execute(array('id_sortie' => $donnees['id']));
 
 
          <?php }
-            
+
                 ?>
 
 
 
 
-           </td> 
+           </td>
 
 
 <td>
- <?php 
+ <?php
 $req3 = $bdd->prepare('SELECT utilisateurs.mail mail
                        FROM utilisateurs ,sorties
                        WHERE  sorties.id = :id_sortie
@@ -912,7 +912,7 @@ $req3->execute(array('id_sortie' => $donnees['id']));
 
 
          <?php }
-            
+
                 ?>
 </td>
 
@@ -932,8 +932,8 @@ $req3->execute(array('id_sortie' => $donnees['id']));
 </form>
 </td>
 
-<td><?php 
-          
+<td><?php
+
 $req5 = $bdd->prepare('SELECT utilisateurs.mail mail
                        FROM sorties, utilisateurs
                        WHERE  sorties.id = :id_sortie
@@ -951,9 +951,9 @@ $req5->execute(array('id_sortie' => $donnees['id']));
 <?= $donnees5['mail'];?>
 
          <?php }
-            
+
                 ?></td>
-<td><?php 
+<td><?php
 $req4 = $bdd->prepare('SELECT sorties.last_hero_timestamp lht
                        FROM sorties
                        WHERE  sorties.id = :id_sortie
@@ -970,7 +970,7 @@ $req4->execute(array('id_sortie' => $donnees['id']));
 <?php if ($donnees4['lht'] !== '0000-00-00 00:00:00'){echo $donnees4['lht'];}?>
 
          <?php }
-            
+
                 ?></td>
 
 
@@ -989,8 +989,8 @@ $req4->execute(array('id_sortie' => $donnees['id']));
                 $req5->closeCursor(); // Termine le traitement de la requête4
                 ?>
        </tbody>
-        
-        
+
+
       </table>
     </div></div>
 <?php
@@ -1001,20 +1001,20 @@ $req4->execute(array('id_sortie' => $donnees['id']));
 
 
 <?php
- 
+
             // On recupère toute la liste des filieres de sortie
             //   $reponse = $bdd->query('SELECT * FROM grille_objets');
-          
+
 $req = $bdd->prepare('SELECT COUNT(id) nid
-                        FROM `sorties` 
+                        FROM `sorties`
                        WHERE sorties.id_point_sortie = :id_point_sortie AND DATE(sorties.timestamp) BETWEEN :du AND :au AND classe = "sortiesd" ');
 $req->execute(array('id_point_sortie' => $_GET['numero'], 'du' => $time_debut,'au' => $time_fin));
 
 
            // On affiche chaque entree une à une
            while ($donnees = $req->fetch())
-           { 
-if($donnees['nid'] > 0){ $req->closeCursor(); 
+           {
+if($donnees['nid'] > 0){ $req->closeCursor();
 
 
 
@@ -1031,21 +1031,21 @@ if($donnees['nid'] > 0){ $req->closeCursor();
           <tr>
             <th>#</th>
             <th>Date de création</th>
-            <th>Commentaire</th>            
+            <th>Commentaire</th>
             <th>Masse totale</th>
             <th>Auteur de la ligne</th>
             <th></th>
             <th>Modifié par</th>
             <th>Le</th>
-            
+
           </tr>
         </thead>
         <tbody>
-        <?php 
-          
+        <?php
+
 $req = $bdd->prepare('SELECT sorties.id,sorties.timestamp ,sorties.commentaire , sorties.classe classe
                        FROM sorties ,conventions_sorties
-                       WHERE  sorties.id_point_sortie = :id_point_sortie AND DATE(sorties.timestamp) BETWEEN :du AND :au AND classe = "sortiesd" 
+                       WHERE  sorties.id_point_sortie = :id_point_sortie AND DATE(sorties.timestamp) BETWEEN :du AND :au AND classe = "sortiesd"
                        GROUP BY id ORDER BY sorties.timestamp DESC
                        ');
 $req->execute(array('id_point_sortie' => $_GET['numero'], 'du' => $time_debut,'au' => $time_fin));
@@ -1056,16 +1056,16 @@ $req->execute(array('id_point_sortie' => $_GET['numero'], 'du' => $time_debut,'a
            {
 
            ?>
-            <tr> 
+            <tr>
             <td><?= $donnees['id']?></td>
             <td><?= $donnees['timestamp']?></td>
             <td><?= $donnees['commentaire']?></td>
-            
-           <td> 
 
- <?php 
-           
-          
+           <td>
+
+ <?php
+
+
 $req2 = $bdd->prepare('SELECT SUM(pesees_sorties.masse) masse
                        FROM pesees_sorties
                        WHERE  pesees_sorties.id_sortie = :id_sortie ');
@@ -1082,19 +1082,19 @@ $req2->execute(array('id_sortie' => $donnees['id']));
 
 
          <?php }
-            
+
                 ?>
 
 
 
 
-           </td> 
+           </td>
 
 
 
 <td>
- <?php 
-          
+ <?php
+
 $req3 = $bdd->prepare('SELECT utilisateurs.mail mail
                        FROM utilisateurs ,sorties
                        WHERE  sorties.id = :id_sortie
@@ -1112,7 +1112,7 @@ $req3->execute(array('id_sortie' => $donnees['id']));
 
 
          <?php }
-            
+
                 ?>
 </td>
 
@@ -1130,8 +1130,8 @@ $req3->execute(array('id_sortie' => $donnees['id']));
 
 </form>
 
-<td><?php 
-          
+<td><?php
+
 $req5 = $bdd->prepare('SELECT utilisateurs.mail mail
                        FROM sorties, utilisateurs
                        WHERE  sorties.id = :id_sortie
@@ -1149,12 +1149,12 @@ $req5->execute(array('id_sortie' => $donnees['id']));
 <?= $donnees5['mail'];?>
 
          <?php }
-            
+
                 ?></td>
-<td><?php 
- 
-           
-          
+<td><?php
+
+
+
 $req4 = $bdd->prepare('SELECT sorties.last_hero_timestamp lht
                        FROM sorties
                        WHERE  sorties.id = :id_sortie
@@ -1171,7 +1171,7 @@ $req4->execute(array('id_sortie' => $donnees['id']));
 <?php if ($donnees4['lht'] !== '0000-00-00 00:00:00'){echo $donnees4['lht'];}?>
 
          <?php }
-            
+
                 ?></td>
 
 </td>
@@ -1190,8 +1190,8 @@ $req4->execute(array('id_sortie' => $donnees['id']));
                 $req5->closeCursor(); // Termine le traitement de la requête4
                 ?>
        </tbody>
-        
-        
+
+
       </table>
        </div>
 </div>
@@ -1215,5 +1215,3 @@ $req4->execute(array('id_sortie' => $donnees['id']));
    header('Location: ../moteur/destroy.php') ;
 }
 ?>
-       
-      
