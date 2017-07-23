@@ -16,6 +16,7 @@
   },
   "homepage": "https://github.com/mart1ver/oressource#readme",
   "devDependencies": {
+    "eslint": "^4.3.0",
     "webpack": "^3.3.0"
   }
 }
