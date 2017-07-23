@@ -43,7 +43,7 @@ if (is_valid_session() && is_allowed_sortie_id($numero)) {
     <?= configNav($nav) ?>
     <?= cartList(['text' => "Masse totale: 0 Kg.", 'date' => $date->format('Y-m-d')]) ?>
 
-    <!-- Pavee de saisie numerique vcir numpad.js -->
+    <!-- Pavee de saisie numerique voir numpad.js -->
     <div id="numpad" class="col-md-4"" style="width: 220px;"></div>
 
     <div class="col-md-4">

@@ -39,8 +39,6 @@ $can_config = is_allowed_config();
     <meta name="author" content="">
     <link rel="shortcut icon" href="../images/favicon.ico">
     <title>Oressource</title>
-    <link href="../css/bootstrap.min.css" type="text/css" rel="stylesheet">
-    <link href="../css/bootstrap-switch.css" rel="stylesheet">
     <link href="../css/oressource.css" type="text/css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="../js/morris/morris.css">
     <link rel="stylesheet" type="text/css" media="all" href="../css/daterangepicker-bs3.css">
