@@ -3,7 +3,8 @@
   "version": "0.3.0",
   "description": "Système simple, libre, léger et adaptable de quantification et de bilan écologique pour ressourcerie",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack"
   },
   "repository": {
     "type": "git",
