@@ -49,7 +49,6 @@ if (isset($_SESSION['id'])
   $date = new Datetime('now');
   ?>
 
-
   <div class="container">
     <div class="header-header">
       <h1><?= $point_collecte['nom'] ?></h1>
@@ -83,20 +82,17 @@ if (isset($_SESSION['id'])
             <h3 class="panel-title"><label>Informations :</label></h3>
           </div>
           <div class="panel-body" style="padding-top:5px">
+
             <label for="id_type_action">Type de collecte:</label>
             <select name="id_type_action" form="formulaire" id="id_type_action" class="form-control" style="font-size: 12pt" required>
-            <option value="" hidden disabled selected>Selectionez un type de collecte</option>
-              <?php foreach ($types_action as $type_collecte) { ?>
-                <option value="<?= $type_collecte['id'] ?>"><?= $type_collecte['nom'] ?></option>
-              <?php } ?>
+              <option value="" hidden disabled selected>Selectionez un type de collecte</option>
+              <!-- Remplis via JavaScript voir script de la page -->
             </select>
 
             <label for="localite">Localité :</label>
             <select name="localite" id="localite" form="formulaire" class="form-control" style="font-size: 12pt" required>
-            <option value="" hidden disabled selected>Selectionez une localité</option>
-              <?php foreach (localites($bdd) as $localite) { ?>
-                <option value="<?= $localite['id'] ?>"><?= $localite['nom'] ?></option>
-              <?php } ?>
+              <option value="" hidden disabled selected>Selectionez une localité</option>
+              <!-- Remplis via JavaScript voir script de la page -->
             </select>
 
           </div>
@@ -113,15 +109,15 @@ if (isset($_SESSION['id'])
           </div>
           <div class="panel-body" style="padding-top:0px">
             <div class="btn-group" id="list_item">
-              <!-- Cree via JS -->
+              <!-- Remplis via JavaScript voir script de la page -->
             </div>
           </div>
         </div>
         <div class="btn-group" role="group">
           <button id="encaissement" class="btn btn-success btn-lg">C'est pesé!</button>
           <button id="impression" class="btn btn-primary btn-lg" value="Print" ><span class="glyphicon glyphicon-print"></span></button>
-          <button id="reset" class="btn btn-warning btn-lg"><span class="glyphicon glyphicon-refresh"></button></div>
-
+          <button id="reset" class="btn btn-warning btn-lg"><span class="glyphicon glyphicon-refresh"></button>
+        </div>
       </div>
     </div> <!-- row -->
   </div> <!--container-->
@@ -137,7 +133,9 @@ if (isset($_SESSION['id'])
       id_type_action: <?= json_encode($types_action, JSON_NUMERIC_CHECK) ?>,
       types_dechet: <?= json_encode(types_dechets($bdd), JSON_NUMERIC_CHECK) ?>,
       masse_max: <?= json_encode($point_collecte['pesee_max'], JSON_NUMERIC_CHECK) ?>,
-      conteneurs: <?= json_encode(types_contenants($bdd), JSON_NUMERIC_CHECK) ?>
+      conteneurs: <?= json_encode(types_contenants($bdd), JSON_NUMERIC_CHECK) ?>,
+      types_action: <?= json_encode($types_action, JSON_NUMERIC_CHECK) ?>,
+      localites: <?= json_encode(localites($bdd), JSON_NUMERIC_CHECK) ?>,
     };
   </script>
   <script src="../js/ticket.js" type="text/javascript"></script>
@@ -159,6 +157,22 @@ if (isset($_SESSION['id'])
       typesItems.forEach((item) => {
         const button = html_saisie_item(item, pushItems);
         div_list_item.appendChild(button);
+      });
+
+      const div_type_action = document.getElementById('id_type_action');
+      window.OressourceEnv.types_action.forEach((type_collecte) => {
+        const item = document.createElement('option');
+        item.value = type_collecte.id;
+        item.innerHTML = type_collecte.nom;
+        div_type_action.appendChild(item);
+      });
+
+      const div_localite = document.getElementById('localite');
+      window.OressourceEnv.localites.forEach((localite) => {
+        const item = document.createElement('option');
+        item.value = localite.id;
+        item.innerHTML = localite.nom;
+        div_localite.appendChild(item);
       });
 
       const encaisse = make_encaissement('../api/collectes.php',
