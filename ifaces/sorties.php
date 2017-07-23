@@ -34,7 +34,7 @@ if (isset($_SESSION['id'])
   && $_SESSION['systeme'] === "oressource"
   && is_allowed_sortie_id($numero)) {
 
-  if ($_SESSION['affsd'] !== "oui") {
+  if (!affichage_sortie_don()) {
     header("Location:sortiesd.php?numero=" . $numero);
     die();
   }
@@ -54,11 +54,11 @@ if (isset($_SESSION['id'])
         <h1><?= $point_sortie['nom'] ?></h1>
       </div>
       <ul class="nav nav-tabs">
-        <?php if ($_SESSION['affsp'] === "oui") { ?><li><a href="sortiesp.php?numero=<?= $numero ?>">Poubelles</a></li><?php } ?>
-        <?php if ($_SESSION['affss'] === "oui") { ?><li><a href="sortiesc.php?numero=<?= $numero ?>">Sorties partenaires</a></li><?php } ?>
-        <?php if ($_SESSION['affsr'] === "oui") { ?><li><a href="sortiesr.php?numero=<?= $numero ?>">Recyclage</a></li><?php } ?>
+        <?php if (affichage_sortie_poubelle()) { ?><li><a href="sortiesp.php?numero=<?= $numero ?>">Poubelles</a></li><?php } ?>
+        <?php if (affichage_sortie_partenaires()) { ?><li><a href="sortiesc.php?numero=<?= $numero ?>">Sorties partenaires</a></li><?php } ?>
+        <?php if (affichage_sortie_recyclage()) { ?><li><a href="sortiesr.php?numero=<?= $numero ?>">Recyclage</a></li><?php } ?>
         <li class="active"><a href="#">Don</a></li>
-        <?php if ($_SESSION['affsde'] == "oui") { ?><li><a href="sortiesd.php?numero=<?= $numero ?>">Déchetterie</a></li><?php } ?>
+        <?php if (affichage_sortie_dechetterie()) { ?><li><a href="sortiesd.php?numero=<?= $numero ?>">Déchetterie</a></li><?php } ?>
       </ul>
     </nav>
 
