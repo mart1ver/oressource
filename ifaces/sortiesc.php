@@ -203,7 +203,9 @@ if (isset($_SESSION['id'])
       document.getElementById('impression').addEventListener('click', () => {
         impression_ticket(encaisse);
       }, false);
-      document.getElementById('reset').addEventListener('click', tickets_clear, false);
+      document.getElementById('reset').addEventListener('click', () => {
+        tickets_clear(metadata);
+      }, false);
 
       window.tickets = [ticketItems, ticketEvac];
     }, false);
