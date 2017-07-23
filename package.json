@@ -1,0 +1,18 @@
+{
+  "name": "oressource",
+  "version": "0.3.0",
+  "description": "Système simple, libre, léger et adaptable de quantification et de bilan écologique pour ressourcerie",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mart1ver/oressource.git"
+  },
+  "author": "Martin Vert and Oressource devellopers",
+  "license": "AGPL-3.0",
+  "bugs": {
+    "url": "https://github.com/mart1ver/oressource/issues"
+  },
+  "homepage": "https://github.com/mart1ver/oressource#readme"
+}
