@@ -223,7 +223,9 @@ if (isset($_SESSION['id'])
 
       document.getElementById('encaissement').addEventListener('click', encaisse, false);
       document.getElementById('impression').addEventListener('click', impression_ticket, false);
-      document.getElementById('reset').addEventListener('click', tickets_clear, false);
+      document.getElementById('reset').addEventListener('click', () => {
+        tickets_clear(metadata);
+      }, false);
 
       window.tickets = [ticketItems, ticketEvac];
     }, false);

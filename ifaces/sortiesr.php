@@ -25,9 +25,7 @@ require_once('../moteur/dbconfig.php');
 
 $numero = filter_input(INPUT_GET, 'numero', FILTER_VALIDATE_INT);
 
-if (isset($_SESSION['id'])
-  && $_SESSION['systeme'] === "oressource"
-  && is_allowed_sortie_id($numero)) {
+if (is_valid_session() && is_allowed_sortie_id($numero)) {
 
   require_once('tete.php');
 
@@ -94,7 +92,7 @@ if (isset($_SESSION['id'])
         </div>
         <div class="panel-body">
           <select id="id_type_action" form="formulaire" name="id_type_action" class="form-control" required>
-            <option value="0" selected disabled>Clickez pour selectioner un recycleur</option>
+            <option value="" hidden selected disabled>Selectionez un recycleur</option>
             <?php foreach ($filieres_sorties as $filiere_sortie) { ?>
               <option value="<?= $filiere_sortie['id']; ?>"><?= $filiere_sortie['nom']; ?></option>
             <?php } ?>
@@ -149,55 +147,32 @@ if (isset($_SESSION['id'])
     'use strict';
     function make_choix_recycleur(ui, filieres) {
       return (event) => {
-        if (event.target.selectedIndex > 0) {
+        if (event.target.value) {
           event.preventDefault();
           const select = event.target;
 
-          select[0].removeAttribute('selected', false);
-          // select.value = id_recycleur;
-          const option = select[select.selectedIndex];
-          option.setAttribute('selected', true);
+          select[0].removeAttribute('selected');
+          select[select.selectedIndex].setAttribute('selected', true);
 
           // On desactive tout sauf ce qui viens d'etre choisi.
           select.querySelectorAll(':not([selected])').forEach((element) => {
-            element.setAttribute('disabled', true);
+            element.disabled = true;
           });
 
           const id_recycleur = parseInt(select.value, 10);
           // On recupere le bon recycleur.
-          const recycleur = filieres.filter(({id}) => {
-            return id === id_recycleur;
-          })[0];
+          const [ recycleur ] = filieres.filter(({id}) => id === id_recycleur);
 
           // On selectione les boutons qui correspondent au possiblites du recyleur.
           const accepte = recycleur.accepte_type_dechet;
           const btnList = Array.from(ui.children).filter((e) => {
-            return accepte.reduce((acc, id) => {
-              return acc || parseInt(e.id, 10) === id;
-            }, false);
+            return accepte.reduce((acc, id) => acc || parseInt(e.id, 10) === id, false);
           });
           btnList.forEach((button) => {
             button.setAttribute('style', 'display: block; visibility: visible');
           });
         }
       };
-    }
-    function recycleur_reset() {
-      const select = document.getElementById('id_type_action');
-      // Reactivation des options du select
-      Array.from(select.children).forEach((element) => {
-        element.removeAttribute('disabled', false);
-        element.removeAttribute('selected', false);
-      });
-
-      select.value = 0;
-      select[0].setAttribute('selected', true); // first option
-
-      const ui = document.getElementById('list_evac');
-      // On pourrais juste cacher ceux qui sont visibles.
-      const btnList = Array.from(ui.children).forEach((button) => {
-        button.setAttribute('style', 'display: none; visibility: hidden');
-      });
     }
 
     document.addEventListener('DOMContentLoaded', () => {
@@ -222,8 +197,7 @@ if (isset($_SESSION['id'])
       document.getElementById('encaissement').addEventListener('click', encaisse, false);
       document.getElementById('impression').addEventListener('click', impression_ticket, false);
       document.getElementById('reset').addEventListener('click', () => {
-        recycleur_reset();
-        tickets_clear();
+        tickets_clear(metadata);
       }, false);
 
       const recycleur_choix = make_choix_recycleur(div_list_item, window.OressourceEnv.id_type_action);

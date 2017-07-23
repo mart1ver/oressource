@@ -86,8 +86,7 @@ if (is_valid_session() && is_allowed_sortie()) {
     $requete_OK = false;
 
     if ($sortie['classe'] === 'sorties'
-            || $sortie['classe'] === 'sortiesc'
-            || $sortie['classe'] === 'sortiesr') {
+            || $sortie['classe'] === 'sortiesc') {
       if (count($json['items']) > 0) {
         insert_items_sorties($bdd, $id_sortie, $sortie, $json['items']);
         $requete_OK = true;
@@ -96,7 +95,8 @@ if (is_valid_session() && is_allowed_sortie()) {
         insert_evac_sorties($bdd, $id_sortie, $sortie, $json['evacs']);
         $requete_OK = true;
       }
-    } elseif ($sortie['classe'] === 'sortiesd') {
+    } elseif ($sortie['classe'] === 'sortiesd'
+              || $sortie['classe'] === 'sortiesr') {
       if (count($json['evacs']) > 0) {
         insert_evac_sorties($bdd, $id_sortie, $sortie, $json['evacs']);
         $requete_OK = true;

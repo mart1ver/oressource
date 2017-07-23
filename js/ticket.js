@@ -164,6 +164,25 @@ function ticket_update_ui(container, totalUI, type_item, value, total) {
   totalUI.textContent = `Masse totale: ${total} Kg.`;
 }
 
+function recycleur_reset() {
+  const select = document.getElementById('id_type_action');
+  // Reactivation des options du select
+  select.value = '';
+  select.selectedIndex = '0';
+  select[0].setAttribute('selected', true);
+  Array.from(select.children).slice(1).forEach((element) => {
+    element.removeAttribute('selected');
+    element.removeAttribute('disabled');
+    element.disabled = false;
+    element.selected = false;
+  });
+
+  const ui = document.getElementById('list_evac');
+  const btnList = Array.from(ui.children).forEach((button) => {
+    button.setAttribute('style', 'display: none; visibility: hidden');
+  });
+}
+
 /* Fonction de remise à zéro de l'interface graphique et des tickets en cours.
  * @return {undefined}
  */
@@ -179,6 +198,9 @@ function tickets_clear(data) {
   const type = data.classe;
   if (type === 'collecte' || type === 'sorties') {
     document.getElementById('localite').selectedIndex = '0';
+  }
+  if (type === 'sortiesr') {
+    recycleur_reset();
   }
   if (type !== 'sortiesp' && type !== 'sortiesd') {
     document.getElementById('id_type_action').selectedIndex = '0';
@@ -331,9 +353,7 @@ function make_encaissement(url, tickets, metadata) {
       const commentaire = form.get('commentaire').trim(); // On enleve les espaces inutiles.
       const antidate = form.get('antidate');
       const data = {
-        // Ok
         id_point: window.OressourceEnv.id_point,
-        // Ok
         id_user: window.OressourceEnv.id_user,
         commentaire,
         antidate
