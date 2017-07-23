@@ -1,3 +1,5 @@
+@import url('https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css');
+
 /* Move down content because we have a fixed navbar that is 50px tallles
  * textarea ne sont plus resizables */
 
