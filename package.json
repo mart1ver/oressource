@@ -20,6 +20,7 @@
     "webpack": "^3.3.0"
   },
   "dependencies": {
+    "jquery": "^3.2.1",
     "morris.js": "^0.5.0"
   }
 }
