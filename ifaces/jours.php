@@ -66,8 +66,8 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND ( strpos(
                       <?php } ?>
                   </select>
               </div>
-          
-      </div>    
+
+      </div>
   </div>
   <hr/>
   <h2>
@@ -91,7 +91,7 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND ( strpos(
       $cmpt = 0;
       $reponse = $bdd->prepare('SELECT SUM(masse) AS nombre ,  DATE( timestamp ) AS time FROM pesees_collectes
 WHERE DATE(pesees_collectes.timestamp) BETWEEN :du AND :au AND  pesees_collectes.id_type_dechet = :type
-GROUP BY DATE_FORMAT( time,  "%Y-%m-%d" ) 
+GROUP BY DATE_FORMAT( time,  "%Y-%m-%d" )
 ORDER BY time');
       $reponse->execute(array('du' => $time_debut, 'au' => $time_fin, 'type' => $_GET['type']));
       // On affiche chaque entree une à une
@@ -106,7 +106,7 @@ ORDER BY time');
         $masse_moy_jour = round($interm / $cmpt, 2);
       }
       if ($masse_moy_jour == 0) {
-        
+
       } else {
         echo "<h3>Évolution de la masse totale collectée au " . $nom . ".</h3> Moyenne journalière: " . $masse_moy_jour;
         ?> Kgs.
@@ -117,7 +117,7 @@ ORDER BY time');
       $cmpt = 0;
       $reponse = $bdd->prepare('SELECT SUM(masse) AS nombre ,  DATE( timestamp ) AS time FROM pesees_sorties
 WHERE DATE(pesees_sorties.timestamp) BETWEEN :du AND :au AND  pesees_sorties.id_type_dechet = :type
-GROUP BY DATE_FORMAT( time,  "%Y-%m-%d" ) 
+GROUP BY DATE_FORMAT( time,  "%Y-%m-%d" )
 ORDER BY time');
       $reponse->execute(array('du' => $time_debut, 'au' => $time_fin, 'type' => $_GET['type']));
       // On affiche chaque entree une à une
@@ -132,7 +132,7 @@ ORDER BY time');
         $masse_moy_jour = round($interm / $cmpt, 2);
       }
       if ($masse_moy_jour == 0) {
-        
+
       } else {
         echo "<h3>Évolution des masses totales évacuées hors boutique en " . $nom . ".</h3> Moyenne journalière: " . $masse_moy_jour;
         ?> Kgs.
@@ -143,7 +143,7 @@ ORDER BY time');
       $cmpt = 0;
       $reponse = $bdd->prepare('SELECT SUM(quantite) AS nombre ,  DATE( timestamp ) AS time FROM vendus
 WHERE DATE(vendus.timestamp) BETWEEN :du AND :au AND  vendus.id_type_dechet = :type
-GROUP BY DATE_FORMAT( time,  "%Y-%m-%d" ) 
+GROUP BY DATE_FORMAT( time,  "%Y-%m-%d" )
 ORDER BY time');
       $reponse->execute(array('du' => $time_debut, 'au' => $time_fin, 'type' => $_GET['type']));
       // On affiche chaque entree une à une
@@ -157,7 +157,7 @@ ORDER BY time');
       } else {
         $masse_moy_jour = round($interm / $cmpt, 2);
         if ($masse_moy_jour == 0) {
-          
+
         } else {
           echo "<h3>Évolution des quantités de " . $nom . " vendues.</h3> Moyenne journalière: " . $masse_moy_jour;
         }
@@ -169,7 +169,7 @@ ORDER BY time');
       $cmpt = 0;
       $reponse = $bdd->prepare('SELECT SUM(quantite*prix) AS nombre ,  DATE( timestamp ) AS time FROM vendus
 WHERE DATE(vendus.timestamp) BETWEEN :du AND :au AND  vendus.id_type_dechet = :type
-GROUP BY DATE_FORMAT( time,  "%Y-%m-%d" ) 
+GROUP BY DATE_FORMAT( time,  "%Y-%m-%d" )
 ORDER BY time');
       $reponse->execute(array('du' => $time_debut, 'au' => $time_fin, 'type' => $_GET['type']));
       // On affiche chaque entree une à une
@@ -184,7 +184,7 @@ ORDER BY time');
         $masse_moy_jour = round($interm / $cmpt, 2);
       }
       if ($masse_moy_jour == 0) {
-        
+
       } else {
         echo "<h3>Évolution du C.A quotidien, " . $nom . ".</h3> Moyenne journalière: " . $masse_moy_jour;
         ?> €.
@@ -203,7 +203,7 @@ ORDER BY time');
   $reponse = $bdd->prepare('SELECT SUM( masse ) AS nombre, DATE( timestamp ) AS time
 FROM pesees_collectes
 WHERE  DATE(pesees_collectes.timestamp) BETWEEN :du AND :au AND  pesees_collectes.id_type_dechet = :type
-GROUP BY DATE_FORMAT( time,  "%Y-%m-%d" ) 
+GROUP BY DATE_FORMAT( time,  "%Y-%m-%d" )
 ORDER BY time');
   $reponse->execute(array('du' => $time_debut, 'au' => $time_fin, 'type' => $_GET['type']));
 // On affiche chaque entree une à une
@@ -219,16 +219,16 @@ ORDER BY time');
             postUnits: "Kgs.",
             resize: true,
             barColors: ['<?= $couleur ?>'],
-            <?php 
+            <?php
  $interm = 0;
  $cmpt = 0;
             // On recupère tout le contenu de la table affectations
             $reponse = $bdd->prepare('SELECT SUM(masse) AS nombre ,  DATE( timestamp ) AS time FROM pesees_collectes
 WHERE DATE(pesees_collectes.timestamp) BETWEEN :du AND :au AND  pesees_collectes.id_type_dechet = :type
-GROUP BY DATE_FORMAT( time,  "%Y-%m-%d" ) 
+GROUP BY DATE_FORMAT( time,  "%Y-%m-%d" )
 ORDER BY time');
             $reponse->execute(array('du' => $time_debut,'au' => $time_fin,'type' => $_GET['type'] ));
- 
+
            // On affiche chaque entree une à une
            while ($donnees = $reponse->fetch())
            {
@@ -252,7 +252,7 @@ echo "goals: [".$interm/$cmpt."],";
   $reponse = $bdd->prepare('SELECT SUM( masse ) AS nombre, DATE( timestamp ) AS time
 FROM pesees_sorties
 WHERE  DATE(pesees_sorties.timestamp) BETWEEN :du AND :au AND  pesees_sorties.id_type_dechet = :type
-GROUP BY DATE_FORMAT( time,  "%Y-%m-%d" ) 
+GROUP BY DATE_FORMAT( time,  "%Y-%m-%d" )
 ORDER BY time');
   $reponse->execute(array('du' => $time_debut, 'au' => $time_fin, 'type' => $_GET['type']));
 
@@ -277,7 +277,7 @@ ORDER BY time');
 // On recupère tout le contenu de la table affectations
   $reponse = $bdd->prepare('SELECT SUM(masse) AS nombre ,  DATE( timestamp ) AS time FROM pesees_sorties
 WHERE DATE(pesees_sorties.timestamp) BETWEEN :du AND :au AND  pesees_sorties.id_type_dechet = :type
-GROUP BY DATE_FORMAT( time,  "%Y-%m-%d" ) 
+GROUP BY DATE_FORMAT( time,  "%Y-%m-%d" )
 ORDER BY time');
   $reponse->execute(array('du' => $time_debut, 'au' => $time_fin, 'type' => $_GET['type']));
 // On affiche chaque entree une à une
@@ -303,7 +303,7 @@ ORDER BY time');
           'SELECT SUM( quantite ) AS nombre, DATE( timestamp ) AS time
         FROM vendus
         WHERE  DATE(vendus.timestamp) BETWEEN :du AND :au AND  vendus.id_type_dechet = :type
-        GROUP BY DATE_FORMAT( time,  "%Y-%m-%d" ) 
+        GROUP BY DATE_FORMAT( time,  "%Y-%m-%d" )
         ORDER BY time');
   $reponse->execute(array('du' => $time_debut, 'au' => $time_fin, 'type' => $_GET['type']));
 // On affiche chaque entree une à une
@@ -325,7 +325,7 @@ ORDER BY time');
 // On recupère tout le contenu de la table affectations
   $reponse = $bdd->prepare('SELECT SUM(quantite) AS nombre ,  DATE( timestamp ) AS time FROM vendus
 WHERE DATE(vendus.timestamp) BETWEEN :du AND :au AND  vendus.id_type_dechet = :type
-GROUP BY DATE_FORMAT( time,  "%Y-%m-%d" ) 
+GROUP BY DATE_FORMAT( time,  "%Y-%m-%d" )
 ORDER BY time');
   $reponse->execute(array('du' => $time_debut, 'au' => $time_fin, 'type' => $_GET['type']));
 // On affiche chaque entree une à une
@@ -350,7 +350,7 @@ ORDER BY time');
   $reponse = $bdd->prepare('SELECT SUM( prix*quantite ) AS nombre, DATE( timestamp ) AS time
 FROM vendus
 WHERE  DATE(vendus.timestamp) BETWEEN :du AND :au AND  vendus.id_type_dechet = :type
-GROUP BY DATE_FORMAT( time,  "%Y-%m-%d" ) 
+GROUP BY DATE_FORMAT( time,  "%Y-%m-%d" )
 ORDER BY time');
   $reponse->execute(array('du' => $time_debut, 'au' => $time_fin, 'type' => $_GET['type']));
 
@@ -374,7 +374,7 @@ ORDER BY time');
 // On recupère tout le contenu de la table affectations
   $reponse = $bdd->prepare('SELECT SUM(prix*quantite) AS nombre ,  DATE( timestamp ) AS time FROM vendus
 WHERE DATE(vendus.timestamp) BETWEEN :du AND :au AND  vendus.id_type_dechet = :type
-GROUP BY DATE_FORMAT( time,  "%Y-%m-%d" ) 
+GROUP BY DATE_FORMAT( time,  "%Y-%m-%d" )
 ORDER BY time');
   $reponse->execute(array('du' => $time_debut, 'au' => $time_fin, 'type' => $_GET['type']));
 // On affiche chaque entree une à une

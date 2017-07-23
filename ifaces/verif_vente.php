@@ -31,20 +31,20 @@ require_once('../moteur/dbconfig.php');
       <script type="text/javascript" src="../js/moment.js"></script>
       <script type="text/javascript" src="../js/daterangepicker.js"></script>
    <div class="container">
-        <h1>verification des ventes</h1> 
+        <h1>verification des ventes</h1>
  <div class="panel-body">
 <ul class="nav nav-tabs">
 
 
- <?php 
+ <?php
           //on affiche un onglet par type d'objet
             // On recupère tout le contenu des visibles de la table type_dechets
             $reponse = $bdd->query('SELECT * FROM points_vente');
- 
+
            // On affiche chaque entree une à une
            while ($donnees = $reponse->fetch())
            {
-           ?> 
+           ?>
             <li<?php if ($_GET['numero'] == $donnees['id']){ echo ' class="active"';}?>><a href="<?=  "verif_vente.php?numero=" . $donnees['id']."&date1=" . $_GET['date1']."&date2=" . $_GET['date2']?>"><?=$donnees['nom']?></a></li>
            <?php }
               $reponse->closeCursor(); // Termine le traitement de la requête
@@ -73,7 +73,7 @@ require_once('../moteur/dbconfig.php');
 "use strict";
 function $_GET(param) {
   var vars = {};
-  window.location.href.replace( 
+  window.location.href.replace(
     /[?&]+([^=&]+)=?([^&]*)?/gi, // regexp
     function( m, key, value ) { // callback
       vars[key] = value !== undefined ? value : '';
@@ -81,7 +81,7 @@ function $_GET(param) {
   );
 
   if ( param ) {
-    return vars[param] ? vars[param] : null;  
+    return vars[param] ? vars[param] : null;
   }
   return vars;
 }
@@ -144,7 +144,7 @@ var datedosgf = moisdos+'/'+jourdos+"/"+anneedos;
                     }
                   };
 
-                  
+
 
                    $('#reportrange span').html($_GET('date1') + ' - ' + $_GET('date2'));
 
@@ -152,12 +152,12 @@ var datedosgf = moisdos+'/'+jourdos+"/"+anneedos;
 
                   $('#reportrange').on('show.daterangepicker', function() { console.log("show event fired"); });
                   $('#reportrange').on('hide.daterangepicker', function() { console.log("hide event fired"); });
-                  $('#reportrange').on('apply.daterangepicker', function(ev, picker) { 
-                    console.log("apply event fired, start/end dates are " 
-                      + picker.startDate.format('DD MM, YYYY') 
-                      + " to " 
-                      + picker.endDate.format('DD MM, YYYY')                      
-                    ); 
+                  $('#reportrange').on('apply.daterangepicker', function(ev, picker) {
+                    console.log("apply event fired, start/end dates are "
+                      + picker.startDate.format('DD MM, YYYY')
+                      + " to "
+                      + picker.endDate.format('DD MM, YYYY')
+                    );
                     window.location.href = "verif_vente.php?date1="+picker.startDate.format('DD-MM-YYYY')+"&date2="+picker.endDate.format('DD-MM-YYYY')+"&numero="+"<?= $_GET['numero']?>";
                   });
                   $('#reportrange').on('cancel.daterangepicker', function(ev, picker) { console.log("cancel event fired"); });
@@ -186,7 +186,7 @@ var datedosgf = moisdos+'/'+jourdos+"/"+anneedos;
   }
   else
   {
-  echo' du '.$_GET['date1']." au ".$_GET['date2']." :";  
+  echo' du '.$_GET['date1']." au ".$_GET['date2']." :";
 }
 //on convertit les deux dates en un format compatible avec la bdd
 
@@ -226,26 +226,26 @@ $time_fin = $time_fin." 23:59:59";
             <th></th>
             <th>Modifié par</th>
             <th style="width:100px">Le</th>
-            
+
           </tr>
         </thead>
         <tbody>
-        <?php 
+        <?php
 /*
-'SELECT type_dechets.couleur,type_dechets.nom, sum(pesees_collectes.masse) somme 
-FROM type_dechets,pesees_collectes 
+'SELECT type_dechets.couleur,type_dechets.nom, sum(pesees_collectes.masse) somme
+FROM type_dechets,pesees_collectes
 WHERE type_dechets.id = pesees_collectes.id_type_dechet AND DATE(pesees_collectes.timestamp) = CURDATE()
 GROUP BY nom'
 */
 
 
- 
+
             // On recupère toute la liste des filieres de sortie
             //   $reponse = $bdd->query('SELECT * FROM grille_objets');
-          
-$req = $bdd->prepare('SELECT ventes.id,ventes.timestamp ,moyens_paiement.nom moyen, moyens_paiement.couleur coul, ventes.commentaire ,ventes.last_hero_timestamp lht 
-                       FROM ventes ,moyens_paiement 
-                       WHERE ventes.id_point_vente = :id_point_vente 
+
+$req = $bdd->prepare('SELECT ventes.id,ventes.timestamp ,moyens_paiement.nom moyen, moyens_paiement.couleur coul, ventes.commentaire ,ventes.last_hero_timestamp lht
+                       FROM ventes ,moyens_paiement
+                       WHERE ventes.id_point_vente = :id_point_vente
                        AND ventes.id_moyen_paiement = moyens_paiement.id
                        AND DATE(ventes.timestamp) BETWEEN :du AND :au ');
 $req->execute(array('id_point_vente' => $_GET['numero'], 'du' => $time_debut,'au' => $time_fin));
@@ -256,17 +256,17 @@ $req->execute(array('id_point_vente' => $_GET['numero'], 'du' => $time_debut,'au
            {
 
            ?>
-            <tr> 
+            <tr>
             <td><?= $donnees['id']?></td>
             <td><?= $donnees['timestamp']?></td>
 
 
-            <td> <?php 
- 
+            <td> <?php
+
             // Si tout va bien, on peut continuer
 $req2 = $bdd->prepare('SELECT SUM(vendus.prix*vendus.quantite) pto
                        FROM vendus
-                       WHERE  vendus.id_vente = :id_vente 
+                       WHERE  vendus.id_vente = :id_vente
                        ');
 $req2->execute(array('id_vente' => $donnees['id']));
 
@@ -283,14 +283,14 @@ $rembo = 'non';
 
 
          <?php }
-            
+
                 ?></td>
-            <td><?php 
- 
+            <td><?php
+
             // Si tout va bien, on peut continuer
 $req3 = $bdd->prepare('SELECT SUM(vendus.remboursement*vendus.quantite) pto
                        FROM vendus
-                       WHERE  vendus.id_vente = :id_vente 
+                       WHERE  vendus.id_vente = :id_vente
                        ');
 $req3->execute(array('id_vente' => $donnees['id']));
 
@@ -307,12 +307,12 @@ $rembo = 'oui';
 
 
          <?php }
-            
+
                 ?></td>
-            <td><?php 
+            <td><?php
 $req4 = $bdd->prepare('SELECT SUM(vendus.quantite) pto
                        FROM vendus
-                       WHERE  vendus.id_vente = :id_vente 
+                       WHERE  vendus.id_vente = :id_vente
                        ');
 $req4->execute(array('id_vente' => $donnees['id']));
 
@@ -327,13 +327,13 @@ $req4->execute(array('id_vente' => $donnees['id']));
 
 
          <?php }
-            
+
                 ?></td>
 
 
 
             <td> <span class="badge" style="background-color:<?=$donnees['coul']?>"><?= $donnees['moyen']?></span></td>
-            <td><?php 
+            <td><?php
 $req5 = $bdd->prepare('SELECT SUM(pesees_vendus.masse) mto
                        FROM vendus,pesees_vendus
                        WHERE   vendus.id_vente = :id_vente AND pesees_vendus.id_vendu =  vendus.id
@@ -351,15 +351,15 @@ $req5->execute(array('id_vente' => $donnees['id']));
 
 
          <?php }
-            
+
                 ?></td>
             <td style="width:100px"><?= $donnees['commentaire']?></td>
-            <td><?php 
- 
+            <td><?php
+
             // Si tout va bien, on peut continuer
 $req5 = $bdd->prepare('SELECT utilisateurs.mail mail
                        FROM utilisateurs, ventes
-                       WHERE  ventes.id = :id_vente 
+                       WHERE  ventes.id = :id_vente
                        AND utilisateurs.id = ventes.id_createur');
 $req5->execute(array('id_vente' => $donnees['id']));
 
@@ -374,8 +374,8 @@ $req5->execute(array('id_vente' => $donnees['id']));
 
 
          <?php }
-           
-                ?></td> 
+
+                ?></td>
             <td>
 
 
@@ -413,12 +413,12 @@ echo $donnees4['pto'];
 <?php } ?>
 
             </td>
-            <td><?php 
- 
+            <td><?php
+
             // Si tout va bien, on peut continuer
 $req5 = $bdd->prepare('SELECT utilisateurs.mail mail
-                       FROM utilisateurs, ventes 
-                       WHERE  ventes.id = :id_vente 
+                       FROM utilisateurs, ventes
+                       WHERE  ventes.id = :id_vente
                        AND utilisateurs.id = ventes.id_last_hero');
 $req5->execute(array('id_vente' => $donnees['id']));
 
@@ -433,7 +433,7 @@ $req5->execute(array('id_vente' => $donnees['id']));
 
 
          <?php }
-           
+
                 ?></td>
 
             <td><?php if ($donnees['lht'] !== '0000-00-00 00:00:00'){echo $donnees['lht'];}?></td>
@@ -464,9 +464,9 @@ $req5->execute(array('id_vente' => $donnees['id']));
             <th></th>
             <th></th>
             <th></th>
-            
+
           </tfoot>
-        
+
       </table>
 
 
@@ -481,5 +481,3 @@ $req5->execute(array('id_vente' => $donnees['id']));
 header('Location: ../moteur/destroy.php') ;
 }
 ?>
-       
-      

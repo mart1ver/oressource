@@ -28,10 +28,10 @@ require_once('../moteur/dbconfig.php');
 
 
     <div class="container">
-        <h1>Édition du profil utilisateur n°:<?= $_POST['id']?>, <?= $_POST['mail']?></h1> 
-         
-         
-    <br>     
+        <h1>Édition du profil utilisateur n°:<?= $_POST['id']?>, <?= $_POST['mail']?></h1>
+
+
+    <br>
 <div class="panel-body">
         <div class="row">
             <form action="../moteur/modification_utilisateur_post.php" method="post">
@@ -44,7 +44,7 @@ require_once('../moteur/dbconfig.php');
 
                           </div>
   <div class="col-md-4"><div class="alert alert-info"><label>Permissions d'accès</label> <br>
-          
+
           <input type="checkbox" name="niveaubi" id="niveaubi" value="bi"<?php if((strpos($_POST['niveau'], 'bi') !== false)){ echo "checked";} ?>> <label for="niveaubi">Bilans</label><br>
 
           <input type="checkbox" name="niveaug" id="niveaug" value="g"<?php if((strpos($_POST['niveau'], 'g') !== false)){ echo "checked";} ?>> <label for="niveaug">Gestion quotidienne</label><br>
@@ -57,51 +57,51 @@ require_once('../moteur/dbconfig.php');
         <?php }?>
 
      </div>
-          
+
   <input type="hidden" name ="id" id="id" value="<?= $_POST['id']?>">
   </div>
 <div class="col-md-4"><div class="alert alert-info"><label for="niveauc">Points de collecte:</label><br>
-<?php 
+<?php
             $reponse = $bdd->query('SELECT * FROM points_collecte');
             // On affiche chaque entree une à une
            while ($donnees = $reponse->fetch())
            {?>
-         
+
 
             <input type="checkbox" name="niveauc<?= $donnees['id']; ?>" id="niveauc<?= $donnees['id']; ?>" <?php if((strpos($_POST['niveau'], 'c'.$donnees['id']) !== false)){ echo "checked";} ?>> <?= '<label for="niveauc'.$donnees['id'].'">'.$donnees['nom'].'</label>'; ?> <br><br>
               <?php }
               $reponse->closeCursor(); // Termine le traitement de la requête
                  ?>
 </div>
-          
+
                                             <div class="alert alert-info"><label for="niveauv">Points de vente:</label><br>
-          <?php 
+          <?php
             // On recupère tout le contenu de la table point de vente
             $reponse = $bdd->query('SELECT * FROM points_vente');
             // On affiche chaque entree une à une
            while ($donnees = $reponse->fetch())
            {?>
-         
+
 
             <input type="checkbox" name="niveauv<?= $donnees['id']; ?>" id="niveauv<?= $donnees['id']; ?>" value="v<?= $donnees['id']; ?>"<?php if((strpos($_POST['niveau'], 'v'.$donnees['id']) !== false)){ echo "checked";} ?>> <?= '<label for="niveauv'.$donnees['id'].'">'.$donnees['nom'].'</label>'; ?> <br><br>
-              
-               
-              
-          
-          
-   
+
+
+
+
+
+
               <?php }
               $reponse->closeCursor(); // Termine le traitement de la requête
                  ?></div>
                                             <div class="alert alert-info"><label for="niveaus">Points de sortie hors-boutique:</label><br>
-          <?php 
+          <?php
             // On recupère tout le contenu de la table point de vente
             $reponse = $bdd->query('SELECT * FROM points_sortie');
             // On affiche chaque entree une à une
            while ($donnees = $reponse->fetch())
            {?>
                      <input type="checkbox" name="niveaus<?= $donnees['id']; ?>" id="niveaus<?= $donnees['id']; ?>" value="s<?= $donnees['id']; ?>"<?php if((strpos($_POST['niveau'], 's'.$donnees['id']) !== false)){ echo "checked";} ?>> <?= '<label for="niveaus'.$donnees['id'].'">'.$donnees['nom'].'</label>'; ?> <br><br>
-           
+
               <?php }
               $reponse->closeCursor(); // Termine le traitement de la requête
                  ?>
@@ -112,16 +112,16 @@ require_once('../moteur/dbconfig.php');
 
 
 
-       
+
 
 
 
 
         </div></div>
   <div class="col-md-4"><br></div>
-  
 
-  
+
+
 
 </div>
 <div class="row"><div class="col-md-3 col-md-offset-3"><br><button name="modifier" class="btn btn-warning">MODIFIER!</button></form>
@@ -132,11 +132,11 @@ require_once('../moteur/dbconfig.php');
 
 </div></div>
       </div>
-     
-      
+
+
   </div>
-  
-  
+
+
 
 <?php include "pied.php";
 }
@@ -145,5 +145,3 @@ require_once('../moteur/dbconfig.php');
     header('Location: ../moteur/destroy.php') ;
 }
 ?>
-       
-      

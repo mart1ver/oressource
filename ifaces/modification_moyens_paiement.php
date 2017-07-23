@@ -25,7 +25,7 @@ require_once('../moteur/dbconfig.php');
     if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 'k') !== false))
       { include "tete.php" ?>
     <div class="container">
-        <h1>Gestions des moyens de paiement en caisse</h1> 
+        <h1>Gestions des moyens de paiement en caisse</h1>
          <div class="panel-heading">Modifier les données concernant le moyen de paiments n° <?= $_POST['id']?>, <?= $_POST['nom']?>. </div>
 <?php
 //on obtien la couleur de la localité dans la base
@@ -35,9 +35,9 @@ $req->execute(array('id' => $_POST['id']));
 $donnees = $req->fetch();
 
 $couleur = $donnees['couleur'];
-            
+
               $req->closeCursor(); // Termine le traitement de la requête
-               
+
 
 
 ?>
@@ -63,7 +63,7 @@ $couleur = $donnees['couleur'];
 
 </div>
       </div>
-     
+
       <br>
       <div class="row">
   <div class="col-md-4"></div>
@@ -73,7 +73,7 @@ $couleur = $donnees['couleur'];
   </div>
   </div>
     </div><!-- /.container -->
-   
+
 <?php include "pied.php";
 }
 else

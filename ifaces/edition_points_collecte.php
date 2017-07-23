@@ -28,7 +28,7 @@ require_once('../moteur/dbconfig.php');
                     include "tete.php";
                     ?>
 <div class="container">
-<h1>Gestion des points de collecte</h1> 
+<h1>Gestion des points de collecte</h1>
   <div class="panel-heading">Gérez ici les différents points de collecte.</div>
   <div class="panel-body">
     <div class="row">
@@ -58,19 +58,19 @@ require_once('../moteur/dbconfig.php');
      </tr>
     </thead>
   <tbody>
-                       <?php 
+                       <?php
                         // On recupère tout le contenu de la table points-collecte
                         $reponse = $bdd->query('SELECT * FROM points_collecte');
                         // On affiche chaque entree une à une
                         while ($donnees = $reponse->fetch())
                         {
                         ?>
-    <tr> 
+    <tr>
       <td><?= $donnees['id']?></td>
       <td><?= $donnees['timestamp']?></td>
       <td><?= $donnees['nom']?></td>
       <td><?= $donnees['adresse']?></td>
-      <td><span class="badge" style="background-color:<?=$donnees['couleur']?>"><?=$donnees['couleur']?></span></td> 
+      <td><span class="badge" style="background-color:<?=$donnees['couleur']?>"><?=$donnees['couleur']?></span></td>
       <td><?= $donnees['commentaire']?></td>
       <td><?= $donnees['pesee_max']?></td>
       <td>
@@ -84,12 +84,12 @@ require_once('../moteur/dbconfig.php');
                             <?php
                           }
 
-                          else // SINON 
+                          else // SINON
                           {?>
           <button  class="btn btn-danger btn-sm " >
                            <?php
                           }
-                           echo $donnees['visible']?> 
+                           echo $donnees['visible']?>
           </button>
         </form>
         </td>
@@ -132,7 +132,7 @@ require_once('../moteur/dbconfig.php');
 </div>
 </div>
 </div><!-- /.container -->
-   
+
 <?php include "pied.php";
 
 }

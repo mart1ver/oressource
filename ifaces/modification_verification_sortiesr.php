@@ -25,7 +25,7 @@ require_once('../moteur/dbconfig.php');
  if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 'h') !== false))
       {  include "tete.php" ?>
    <div class="container">
-        <h1>Modifier la sortie n° <?= $_GET['nsortie']?></h1> 
+        <h1>Modifier la sortie n° <?= $_GET['nsortie']?></h1>
  <div class="panel-body">
 
 
@@ -35,7 +35,7 @@ require_once('../moteur/dbconfig.php');
 
 
 <div class="row">
-   
+
           <form action="../moteur/modification_verification_sortiesr_post.php?nsortie=<?= $_GET['nsortie']?>" method="post">
             <input type="hidden" name ="id" id="id" value="<?= $_GET['nsortie']?>">
 
@@ -49,7 +49,7 @@ require_once('../moteur/dbconfig.php');
 
 <label for="id_filiere">Nom de l'entreprise de recyclage:</label>
 <select name="id_filiere" id="id_filiere" class="form-control " required>
-            <?php 
+            <?php
             // On affiche une liste deroulante des type de sortie visibles
             $reponse = $bdd->query('SELECT * FROM filieres_sortie WHERE visible = "oui"');
             // On affiche chaque entree une à une
@@ -68,21 +68,21 @@ require_once('../moteur/dbconfig.php');
             $reponse->closeCursor(); // Termine le traitement de la requête
             ?>
     </select>
-      
+
   </div>
   <div class="col-md-3">
 
     <label for="commentaire">Commentaire</label>
 
-           
-           
- <textarea name="commentaire" id="commentaire" class="form-control"><?php 
+
+
+ <textarea name="commentaire" id="commentaire" class="form-control"><?php
             // On affiche le commentaire
             $reponse = $bdd->prepare('SELECT commentaire FROM sorties WHERE id = :id_sortie');
             $reponse->execute(array('id_sortie' => $_GET['nsortie']));
             // On affiche chaque entree une à une
             while ($donnees = $reponse->fetch()){
-     
+
            echo $donnees['commentaire'];
              }
             $reponse->closeCursor(); // Termine le traitement de la requête
@@ -90,11 +90,11 @@ require_once('../moteur/dbconfig.php');
 
 
 
-    
-  
+
+
  </div>
   <div class="col-md-3">
-  
+
   <br>
 <button name="creer" class="btn btn-warning">Modifier</button>
 </div>
@@ -104,7 +104,7 @@ require_once('../moteur/dbconfig.php');
 
 
 </div>
-<h1>Pesées incluses dans cette sortie</h1> 
+<h1>Pesées incluses dans cette sortie</h1>
   <!-- Table -->
       <table class="table">
         <thead>
@@ -114,16 +114,16 @@ require_once('../moteur/dbconfig.php');
             <th>Type de déchet:</th>
             <th>Masse</th>
             <th></th>
-            
+
           </tr>
         </thead>
         <tbody>
-        <?php 
- 
+        <?php
+
             // Si tout va bien, on peut continuer
 /*
-'SELECT type_dechets.couleur,type_dechets.nom, sum(pesees_collectes.masse) somme 
-FROM type_dechets,pesees_collectes 
+'SELECT type_dechets.couleur,type_dechets.nom, sum(pesees_collectes.masse) somme
+FROM type_dechets,pesees_collectes
 WHERE type_dechets.id = pesees_collectes.id_type_dechet AND DATE(pesees_collectes.timestamp) = CURDATE()
 GROUP BY nom'
 
@@ -133,10 +133,10 @@ SELECT pesees_collectes.id ,pesees_collectes.timestamp  ,type_dechets.nom  , pes
 */
 
 
- 
+
             // On recupère toute la liste des filieres de sortie
             //   $reponse = $bdd->query('SELECT * FROM grille_objets');
-          
+
 $req = $bdd->prepare('SELECT pesees_sorties.id ,pesees_sorties.timestamp  ,type_dechets_evac.nom  , pesees_sorties.masse ,type_dechets_evac.couleur
                        FROM pesees_sorties ,type_dechets_evac
                        WHERE type_dechets_evac.id = pesees_sorties.id_type_dechet_evac AND pesees_sorties.id_sortie = :id_sortie');
@@ -148,12 +148,12 @@ $req->execute(array('id_sortie' => $_GET['nsortie']));
            {
 
            ?>
-            <tr> 
+            <tr>
             <td><?= $donnees['id']?></td>
             <td><?= $donnees['timestamp']?></td>
             <td><span class="badge" id="cool" style="background-color:<?=$donnees['couleur']?>"><?=$donnees['nom']?></span></td>
             <td><?= $donnees['masse']?></td>
-           
+
 
 
 
@@ -187,21 +187,21 @@ $req->execute(array('id_sortie' => $_GET['nsortie']));
           </tr>
            <?php }
               $req->closeCursor(); // Termine le traitement de la requête
-                
+
                 ?>
        </tbody>
         <tfoot>
           <tr>
             <th></th>
-           
-           
-            
+
+
+
             <th></th>
             <th></th>
             <th></th>
-            
+
           </tfoot>
-        
+
       </table>
 
 
@@ -209,12 +209,10 @@ $req->execute(array('id_sortie' => $_GET['nsortie']));
 
 
   </div><!-- /.container -->
-<?php include "pied.php"; 
+<?php include "pied.php";
 }
     else
 {
    header('Location: ../moteur/destroy.php') ;
 }
 ?>
-       
-      

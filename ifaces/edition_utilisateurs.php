@@ -25,16 +25,16 @@ require_once('../moteur/dbconfig.php');
 //Vérification des autorisations de l'utilisateur et des variables de session requisent pour l'affichage de cette page:
      if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 'l') !== false))
       {  include "tete.php" ?>
-      
+
     <div class="container">
-        <h1>Gestion des utilisateurs</h1> 
+        <h1>Gestion des utilisateurs</h1>
          <ul class="nav nav-tabs">
   <li ><a href="utilisateurs.php">Inscription</a></li>
   <li class="active"><a>Édition</a></li>
-  
+
 </ul>
-    <br>     
-      
+    <br>
+
       <!-- Table -->
       <table class="table">
         <thead>
@@ -45,20 +45,20 @@ require_once('../moteur/dbconfig.php');
             <th>Mail</th>
              <th>Éditer</th>
             <th>Supprimer!</th>
-            
+
           </tr>
         </thead>
         <tbody>
-        <?php 
+        <?php
             // On recupère tout le contenu de la table affectations
             $reponse = $bdd->query('SELECT * FROM utilisateurs');
- 
+
            // On affiche chaque entree une à une
            while ($donnees = $reponse->fetch())
            {
 
            ?>
-            <tr> 
+            <tr>
             <td><?= $donnees['id']?></td>
             <td><?= $donnees['nom']?></td>
             <td><?= $donnees['prenom']?></td>
@@ -78,19 +78,19 @@ require_once('../moteur/dbconfig.php');
   <input type="hidden" name ="prenom" id="prenom" value="<?= $donnees['prenom']?>">
   <input type="hidden" name ="mail" id="mail" value="<?= $donnees['mail']?>">
   <input type="hidden" name ="niveau" id="id" value="<?= $donnees['niveau']?>">
-  
 
 
 
 
 
- 
 
 
 
 
 
-   <button  class="btn btn-warning btn-sm ">ÉDITER! 
+
+
+   <button  class="btn btn-warning btn-sm ">ÉDITER!
   </button>
 </form>
 </td>
@@ -105,19 +105,19 @@ require_once('../moteur/dbconfig.php');
 <form action="../moteur/sup_utilisateur.php" method="post">
 
   <input type="hidden" name ="id" id="id" value="<?= $donnees['id']?>">
-  
 
 
 
 
 
- 
 
 
 
 
 
-   <button  class="btn btn-danger btn-sm ">SUPPRIMER! 
+
+
+   <button  class="btn btn-danger btn-sm ">SUPPRIMER!
   </button>
 </form>
 </td>
@@ -134,9 +134,9 @@ require_once('../moteur/dbconfig.php');
             <th></th>
             <th></th>
             <th></th>
-            
+
           </tfoot>
-        
+
       </table>
       <br>
       <div class="row">
@@ -147,7 +147,7 @@ require_once('../moteur/dbconfig.php');
   </div>
   </div>
     </div><!-- /.container -->
- 
+
 
 
 <?php include "pied.php";
@@ -155,5 +155,5 @@ require_once('../moteur/dbconfig.php');
     else
 {
    header('Location: ../moteur/destroy.php') ;
-}      
+}
 ?>

@@ -31,18 +31,18 @@ require_once('../moteur/dbconfig.php');
    <script type="text/javascript" src="../js/moment.js"></script>
    <script type="text/javascript" src="../js/daterangepicker.js"></script>
    <div class="container" style="width:1300px">
-        <h1>Vérification des collectes</h1> 
+        <h1>Vérification des collectes</h1>
  <div class="panel-body">
 <ul class="nav nav-tabs">
- <?php 
+ <?php
           //on affiche un onglet par type d'objet
             // On recupère tout le contenu des visibles de la table type_dechets
             $reponse = $bdd->query('SELECT * FROM points_collecte');
- 
+
            // On affiche chaque entree une à une
            while ($donnees = $reponse->fetch())
            {
-           ?> 
+           ?>
             <li<?php if ($_GET['numero'] == $donnees['id']){ echo ' class="active"';}?>><a href="<?=  "verif_collecte.php?numero=" . $donnees['id']."&date1=" . $_GET['date1']."&date2=" . $_GET['date2']?>"><?=$donnees['nom']?></a></li>
            <?php }
               $reponse->closeCursor(); // Termine le traitement de la requête
@@ -70,7 +70,7 @@ require_once('../moteur/dbconfig.php');
 
 function $_GET(param) {
   var vars = {};
-  window.location.href.replace( 
+  window.location.href.replace(
     /[?&]+([^=&]+)=?([^&]*)?/gi, // regexp
     function( m, key, value ) { // callback
       vars[key] = value !== undefined ? value : '';
@@ -78,7 +78,7 @@ function $_GET(param) {
   );
 
   if ( param ) {
-    return vars[param] ? vars[param] : null;  
+    return vars[param] ? vars[param] : null;
   }
   return vars;
 }
@@ -145,7 +145,7 @@ var datedosgf = moisdos+'/'+jourdos+"/"+anneedos;
                     }
                   };
 
-                  
+
 
                    $('#reportrange span').html($_GET('date1') + ' - ' + $_GET('date2'));
 
@@ -153,12 +153,12 @@ var datedosgf = moisdos+'/'+jourdos+"/"+anneedos;
 
                   $('#reportrange').on('show.daterangepicker', function() { console.log("show event fired"); });
                   $('#reportrange').on('hide.daterangepicker', function() { console.log("hide event fired"); });
-                  $('#reportrange').on('apply.daterangepicker', function(ev, picker) { 
-                    console.log("apply event fired, start/end dates are " 
-                      + picker.startDate.format('DD MM, YYYY') 
-                      + " to " 
-                      + picker.endDate.format('DD MM, YYYY')                      
-                    ); 
+                  $('#reportrange').on('apply.daterangepicker', function(ev, picker) {
+                    console.log("apply event fired, start/end dates are "
+                      + picker.startDate.format('DD MM, YYYY')
+                      + " to "
+                      + picker.endDate.format('DD MM, YYYY')
+                    );
                     window.location.href = "verif_collecte.php?date1="+picker.startDate.format('DD-MM-YYYY')+"&date2="+picker.endDate.format('DD-MM-YYYY')+"&numero="+"<?= $_GET['numero']?>";
                   });
                   $('#reportrange').on('cancel.daterangepicker', function(ev, picker) { console.log("cancel event fired"); });
@@ -167,14 +167,14 @@ var datedosgf = moisdos+'/'+jourdos+"/"+anneedos;
                     $('#reportrange').data('daterangepicker').setOptions(optionSet1, cb);
                   });
 
-                 
+
                   $('#destroy').click(function() {
                     $('#reportrange').data('daterangepicker').remove();
                   });
 
                });
                </script>
-        	
+
  </div>
 <?php
 // on affiche la période visée
@@ -184,7 +184,7 @@ var datedosgf = moisdos+'/'+jourdos+"/"+anneedos;
   }
   else
   {
-  echo' du '.$_GET['date1']." au ".$_GET['date2']." :";  
+  echo' du '.$_GET['date1']." au ".$_GET['date2']." :";
 }
 //on convertit les deux dates en un format compatible avec la bdd
 
@@ -201,23 +201,23 @@ $time_fin = $time_fin." 23:59:59";
 
 
   ?>
- 
+
 </div>
 
 <?php
             // On recupère toute la liste des filieres de sortie
             //   $reponse = $bdd->query('SELECT * FROM grille_objets');
-          
+
 $req = $bdd->prepare('SELECT COUNT(id) nid
-                        FROM `collectes` 
+                        FROM `collectes`
                        WHERE collectes.id_point_collecte = :id_point_collecte AND DATE(collectes.timestamp) BETWEEN :du AND :au   ');
 $req->execute(array('id_point_collecte' => $_GET['numero'], 'du' => $time_debut,'au' => $time_fin));
 
 
            // On affiche chaque entree une à une
            while ($donnees = $req->fetch())
-           { 
-if($donnees['nid'] > 0){ $req->closeCursor(); 
+           {
+if($donnees['nid'] > 0){ $req->closeCursor();
 
 
 
@@ -243,26 +243,26 @@ if($donnees['nid'] > 0){ $req->closeCursor();
           </tr>
         </thead>
         <tbody>
-        <?php 
+        <?php
 /*
-'SELECT type_dechets.couleur,type_dechets.nom, sum(pesees_collectes.masse) somme 
-FROM type_dechets,pesees_collectes 
+'SELECT type_dechets.couleur,type_dechets.nom, sum(pesees_collectes.masse) somme
+FROM type_dechets,pesees_collectes
 WHERE type_dechets.id = pesees_collectes.id_type_dechet AND DATE(pesees_collectes.timestamp) = CURDATE()
 GROUP BY nom'
 */
 
 
- 
+
             // On recupère toute la liste des filieres de sortie
             //   $reponse = $bdd->query('SELECT * FROM grille_objets');
-          
+
 $req = $bdd->prepare('SELECT collectes.id,collectes.timestamp ,type_collecte.nom, collectes.commentaire, localites.nom localisation, utilisateurs.mail mail , collectes.last_hero_timestamp lht
                        FROM collectes ,type_collecte, localites,utilisateurs
                        WHERE type_collecte.id = collectes.id_type_collecte
-                       
+
                         AND utilisateurs.id = collectes.id_createur
-                        AND localites.id = collectes.localisation  
-                        AND collectes.id_point_collecte = :id_point_collecte 
+                        AND localites.id = collectes.localisation
+                        AND collectes.id_point_collecte = :id_point_collecte
                         AND DATE(collectes.timestamp) BETWEEN :du AND :au  ');
 $req->execute(array('id_point_collecte' => $_GET['numero'], 'du' => $time_debut,'au' => $time_fin));
 
@@ -294,17 +294,17 @@ $req2->execute(array('id_collecte' => $donnees['id']));
 
 
          <?php }
-            
+
                 ?>
 
 
 
 
-           </td> 
+           </td>
 
 
 
-<td><?= $donnees['mail']?></td> 
+<td><?= $donnees['mail']?></td>
 
 <td>
 
@@ -327,10 +327,10 @@ $req2->execute(array('id_collecte' => $donnees['id']));
 
 <td>
 
-<?php 
+<?php
 $req3 = $bdd->prepare('SELECT utilisateurs.mail mail
                        FROM utilisateurs, collectes
-                       WHERE  collectes.id = :id_collecte 
+                       WHERE  collectes.id = :id_collecte
                        AND utilisateurs.id = collectes.id_last_hero');
 $req3->execute(array('id_collecte' => $donnees['id']));
 
@@ -348,8 +348,8 @@ $req3->execute(array('id_collecte' => $donnees['id']));
             $req3->closeCursor(); // Termine le traitement de la requête 3
                 ?>
 
-</td> 
-<td><?php if ($donnees['lht'] !== '0000-00-00 00:00:00'){echo $donnees['lht'];}?></td> 
+</td>
+<td><?php if ($donnees['lht'] !== '0000-00-00 00:00:00'){echo $donnees['lht'];}?></td>
 
 
 
@@ -366,7 +366,7 @@ $req3->execute(array('id_collecte' => $donnees['id']));
             <th></th>
             <th></th>
             <th></th>
-            
+
             <th></th>
             <th></th>
             <th></th>
@@ -374,7 +374,7 @@ $req3->execute(array('id_collecte' => $donnees['id']));
             <th></th>
             <th></th>
           </tfoot>
-        
+
       </table>
 
 <?php
@@ -390,9 +390,7 @@ $req3->execute(array('id_collecte' => $donnees['id']));
 <?php include "pied.php";
 }
     else
-{   
+{
 header('Location: ../moteur/destroy.php') ;
 }
 ?>
-       
-      

@@ -23,21 +23,21 @@ session_start();
 
 require_once('../moteur/dbconfig.php');
 
-//Vérification des autorisations de l'utilisateur et des variables de session requises pour l'affichage de cette page: 
+//Vérification des autorisations de l'utilisateur et des variables de session requises pour l'affichage de cette page:
             if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 'k') !== false))
 
             {include "tete.php"
 
 //Oressource 2014, formulaire de description de la structure
-//Simple formulaire de saisie renseignant les informations fondamentales identifiant la  structure 
+//Simple formulaire de saisie renseignant les informations fondamentales identifiant la  structure
             ?>
 
 <div class="container">
-<h1>Configuration de Oressource</h1> 
+<h1>Configuration de Oressource</h1>
 <label>Description de la structure</label>
-  <div class="panel-heading"> 
+  <div class="panel-heading">
   </div>
-            <?php 
+            <?php
             // On recupère tout le contenu de la table description structure
             $reponse = $bdd->query('SELECT * FROM description_structure');
             // On affiche chaque entree une à une
@@ -54,9 +54,9 @@ require_once('../moteur/dbconfig.php');
     </div>
   <br>
     <div class="row">
-      <div class="col-md-4 col-md-offset-1"><label for="localite">Localité:</label> <input type="text" value ="<?= $donnees['id_localite']; ?>" name="localite" id="localite" class="form-control " required > 
+      <div class="col-md-4 col-md-offset-1"><label for="localite">Localité:</label> <input type="text" value ="<?= $donnees['id_localite']; ?>" name="localite" id="localite" class="form-control " required >
         <br>
-        <label for="mail">Mail principal:</label> <input type="email" name="mail" id="mail" class="form-control " value = "<?= $donnees['mail']; ?>" required > 
+        <label for="mail">Mail principal:</label> <input type="email" name="mail" id="mail" class="form-control " value = "<?= $donnees['mail']; ?>" required >
         <br>
         Permettre de dater formulaires (mode saisie):  <input name ="saisiec" id ="saisiec" type="checkbox" value = "oui" <?php if((strpos($donnees['saisiec'], 'oui') !== false)){ echo "checked";} ?> >
         <br>
@@ -71,7 +71,7 @@ require_once('../moteur/dbconfig.php');
   <label class="panel-title">formulaire de ventes</label>
   <div class="panel-body">
 
-Code de remboursement à la caisse: <input type="text" value ="<?= $donnees['cr']; ?>" name="cr" id="cr" class="form-control " required > 
+Code de remboursement à la caisse: <input type="text" value ="<?= $donnees['cr']; ?>" name="cr" id="cr" class="form-control " required >
 <br>
 Activer la Pesée à la caisse: <input name ="pes_vente" id ="pes_vente" type="checkbox" value = "oui" <?php if((strpos($donnees['pes_vente'], 'oui') !== false)){ echo "checked";} ?> >
 <br>
@@ -95,11 +95,11 @@ Taux en vigueur: <input type="text" value ="<?= $donnees['taux_tva']; ?>" name="
 
       </div>
        <div class="row">
-      
+
       <div class="col-md-2"><label for="siret">Numéro de siret:</label> <input type="text" value ="<?= $donnees['siret']; ?>" name="siret" id="siret" class="form-control " required >
 
       </div>
-      <div class="col-md-4"><label for="description">Présentation générale de la strucure:</label> <textarea name="description" id="description" rows="10" cols="50" required><?= $donnees['description']; ?></textarea> 
+      <div class="col-md-4"><label for="description">Présentation générale de la strucure:</label> <textarea name="description" id="description" rows="10" cols="50" required><?= $donnees['description']; ?></textarea>
 
         <br>
         <br>
@@ -120,13 +120,13 @@ Utiliser l'onglet "déchetterie" :<input name ="affsde" id ="lot" type="checkbox
 </div>
 </div>
       </div>
-    
+
   <br>
-        
+
 
 
     </div>
-   
+
     <div class="row">
       <div class="col-md-1 col-md-offset-6"><br><button name="creer" class="btn btn-default">Enregistrer</button></div>
     </div>
@@ -136,7 +136,7 @@ Utiliser l'onglet "déchetterie" :<input name ="affsde" id ="lot" type="checkbox
 </div>
 <?php }
    $reponse->closeCursor(); // Termine le traitement de la requête
-include "pied.php"; 
+include "pied.php";
 }
 else
       { header('Location: ../moteur/destroy.php') ;}

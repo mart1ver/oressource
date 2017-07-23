@@ -51,7 +51,7 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
 "use strict";
 function $_GET(param) {
   var vars = {};
-  window.location.href.replace( 
+  window.location.href.replace(
     /[?&]+([^=&]+)=?([^&]*)?/gi, // regexp
     function( m, key, value ) { // callback
       vars[key] = value !== undefined ? value : '';
@@ -59,7 +59,7 @@ function $_GET(param) {
   );
 
   if ( param ) {
-    return vars[param] ? vars[param] : null;  
+    return vars[param] ? vars[param] : null;
   }
   return vars;
 }
@@ -118,17 +118,17 @@ var datedosgf = moisdos+'/'+jourdos+"/"+anneedos;
                         firstDay: 1
                     }
                   };
-                  
+
                    $('#reportrange span').html($_GET('date1') + ' - ' + $_GET('date2'));
                   $('#reportrange').daterangepicker(optionSet1, cb);
                   $('#reportrange').on('show.daterangepicker', function() { console.log("show event fired"); });
                   $('#reportrange').on('hide.daterangepicker', function() { console.log("hide event fired"); });
-                  $('#reportrange').on('apply.daterangepicker', function(ev, picker) { 
-                    console.log("apply event fired, start/end dates are " 
-                      + picker.startDate.format('DD MM, YYYY') 
-                      + " to " 
-                      + picker.endDate.format('DD MM, YYYY')                      
-                    ); 
+                  $('#reportrange').on('apply.daterangepicker', function(ev, picker) {
+                    console.log("apply event fired, start/end dates are "
+                      + picker.startDate.format('DD MM, YYYY')
+                      + " to "
+                      + picker.endDate.format('DD MM, YYYY')
+                    );
                     window.location.href = "bilanhb.php?date1="+picker.startDate.format('DD-MM-YYYY')+"&date2="+picker.endDate.format('DD-MM-YYYY')+"&numero=<?= $_GET['numero'] ?>";
                   });
                   $('#reportrange').on('cancel.daterangepicker', function(ev, picker) { console.log("cancel event fired"); });
@@ -150,7 +150,7 @@ var datedosgf = moisdos+'/'+jourdos+"/"+anneedos;
       <script src="../js/morris/morris.js"></script>
 
 
-            
+
 
 </div>
 <ul class="nav nav-tabs">
@@ -158,36 +158,36 @@ var datedosgf = moisdos+'/'+jourdos+"/"+anneedos;
   <li ><a href="<?=  "bilanc.php?date1=" . $_GET['date1'].'&date2='.$_GET['date2'].'&numero=0'?>">Collectes</a></li>
   <li class="active"><a>Sorties hors-boutique</a></li>
   <li><a href="<?=  "bilanv.php?date1=" . $_GET['date1'].'&date2='.$_GET['date2'].'&numero=0'?>">Ventes</a></li>
-  
+
 </ul>
-      
-         
+
+
   </div>
 
-      </div>    
-
- 
-  
       </div>
-      
+
+
+
+      </div>
+
 
 
 
 <div class="row">
    <div class="col-md-8 col-md-offset-1" >
-  <h2> Bilan des sorties hors-boutique de la structure 
+  <h2> Bilan des sorties hors-boutique de la structure
   </h2>
   <ul class="nav nav-tabs">
- 
 
- <?php 
+
+ <?php
             // On recupère tout le contenu des visibles de la table type_dechets
             $reponse = $bdd->query('SELECT * FROM points_sortie');
- 
+
            // On affiche chaque entree une à une
            while ($donnees = $reponse->fetch())
            {
-           ?> 
+           ?>
             <li<?php if ($_GET['numero'] == $donnees['id']){ echo ' class="active"';}?>><a href="<?=  "bilanhb.php?numero=" . $donnees['id']."&date1=" . $_GET['date1']."&date2=" . $_GET['date2']?>"> <?=$donnees['nom']?> </a></li>
            <?php }
               $reponse->closeCursor(); // Termine le traitement de la requête
@@ -199,7 +199,7 @@ var datedosgf = moisdos+'/'+jourdos+"/"+anneedos;
 </div>
 </div>
 <div class="row">
-  <div class="col-md-8 col-md-offset-1"> 
+  <div class="col-md-8 col-md-offset-1">
   <h2>
     <?php
 // on affiche la période visée
@@ -208,7 +208,7 @@ var datedosgf = moisdos+'/'+jourdos+"/"+anneedos;
   }
   else
   {
-  echo' Du '.$_GET['date1']." au ".$_GET['date2']." ,";  
+  echo' Du '.$_GET['date1']." au ".$_GET['date2']." ,";
 }
 //on convertit les deux dates en un format compatible avec la bdd
 $txt1  = $_GET['date1'];
@@ -222,7 +222,7 @@ $time_fin = $time_fin." 23:59:59";
   ?>
   masse totale évacuée: <?php
 // on determine la masse totale collecté sur cette période (pour tous les points)
-           
+
 if ($_GET['numero'] == 0) {
             // On recupère tout le contenu de la table point de vente
 $req = $bdd->prepare("SELECT SUM(pesees_sorties.masse)AS total   FROM pesees_sorties  WHERE  pesees_sorties.timestamp BETWEEN :du AND :au ");
@@ -230,22 +230,22 @@ $req->execute(array('du' => $time_debut,'au' => $time_fin ));
 $donnees = $req->fetch();
 $mtotcolo = $donnees['total'];
 echo $donnees['total']." Kgs.";
-            
+
               $req->closeCursor(); // Termine le traitement de la requête
-               
+
 }
 else //si on observe un point en particulier
 {
             // On recupère tout le contenu de la table point de vente
-$req = $bdd->prepare("SELECT SUM(pesees_sorties.masse)AS total  
+$req = $bdd->prepare("SELECT SUM(pesees_sorties.masse)AS total
 FROM pesees_sorties ,sorties
-WHERE pesees_sorties.id_sortie = sorties.id 
+WHERE pesees_sorties.id_sortie = sorties.id
 AND pesees_sorties.timestamp BETWEEN :du AND :au  AND sorties.id_point_sortie = :numero ");
 $req->execute(array('du' => $time_debut,'au' => $time_fin,'numero' => $_GET['numero'] ));
 $donnees = $req->fetch();
 $mtotcolo = $donnees['total'];
 echo $donnees['total']." Kgs.";
-            
+
               $req->closeCursor(); // Termine le traitement de la requête
 }
 if ($_GET['numero'] == 0) {
@@ -257,7 +257,7 @@ if ($_GET['numero'] == 0) {
  $req = $bdd->prepare("SELECT COUNT(id) FROM points_sortie");//SELECT `titre_affectation` FROM affectations WHERE titre_affectation = "conssomables" LIMIT 1
 $req->execute(array('au' => $time_fin ));
 $donnees = $req->fetch();
-     
+
 echo $donnees['COUNT(id)'];
 $req->closeCursor(); // Termine le traitement de la requête
   ?> Point(s) de sorties.
@@ -265,8 +265,8 @@ $req->closeCursor(); // Termine le traitement de la requête
 <?php } ?></h2>
 </div>
 </div>
-<div class="row">   
-  <div class="col-md-5 col-md-offset-1">        
+<div class="row">
+  <div class="col-md-5 col-md-offset-1">
 
 
 <div class="panel panel-default">
@@ -275,7 +275,7 @@ $req->closeCursor(); // Termine le traitement de la requête
 </h3>
   </div>
   <div class="panel-body">
-    
+
 <table class="table table-condensed table-striped table table-bordered table-hover" style="border-collapse:collapse;">
     <thead>
         <tr>
@@ -284,20 +284,20 @@ $req->closeCursor(); // Termine le traitement de la requête
             <th>Masse évacuée</th>
 
             <th>%</th>
-            
+
         </tr>
     </thead>
     <tbody>
-       
+
 
 
         <?php
         if ($_GET['numero'] == 0) {
 // on determine les masses totales évacuées sur cete période(pour Tous les points)
-            
-            $reponse = $bdd->prepare('SELECT 
+
+            $reponse = $bdd->prepare('SELECT
 SUM(pesees_sorties.masse) somme,pesees_sorties.timestamp,sorties.classe,COUNT(distinct sorties.id) ncol
-FROM 
+FROM
 pesees_sorties,sorties
 WHERE
   pesees_sorties.timestamp BETWEEN :du AND :au  AND pesees_sorties.id_sortie = sorties.id
@@ -331,12 +331,12 @@ default; ?>
 <?php
 }
 ?>
-            
+
 
 
             <td><?= $donnees['ncol'] ?></td>
             <td><?= $donnees['somme'] ?></td>
-            <td><?=  round($donnees['somme']*100/$mtotcolo, 2)   ; ?></td>      
+            <td><?=  round($donnees['somme']*100/$mtotcolo, 2)   ; ?></td>
         </tr>
  <?php
              }
@@ -344,10 +344,10 @@ $reponse->closeCursor(); // Termine le traitement de la requête
                }else
                {
 // on determine les masses totales évacuées sur cete période(pour Tous les points)
-            
-            $reponse = $bdd->prepare('SELECT 
+
+            $reponse = $bdd->prepare('SELECT
 SUM(pesees_sorties.masse) somme,pesees_sorties.timestamp,sorties.classe,COUNT(distinct sorties.id) ncol
-FROM 
+FROM
 pesees_sorties,sorties
 WHERE
   pesees_sorties.timestamp BETWEEN :du AND :au  AND pesees_sorties.id_sortie = sorties.id AND sorties.id_point_sortie = :numero
@@ -383,7 +383,7 @@ default; ?>
 ?>
             <td><?= $donnees['ncol'] ?></td>
             <td><?= $donnees['somme'] ?></td>
-            <td><?=  round($donnees['somme']*100/$mtotcolo, 2)   ; ?></td>      
+            <td><?=  round($donnees['somme']*100/$mtotcolo, 2)   ; ?></td>
         </tr>
  <?php
              }
@@ -392,8 +392,8 @@ $reponse->closeCursor(); // Termine le traitement de la requête
       </tbody>
 </table>
 <br>
-          
-   
+
+
 <a href="<?=  "../moteur/export_bilanc_partype.php?numero=". $_GET['numero']."&date1=" . $_GET['date1']."&date2=" . $_GET['date2']?>">
 
         <button type="button" class="btn btn-default btn-xs" disabled>exporter ces données (.csv) </button>
@@ -409,7 +409,7 @@ $reponse->closeCursor(); // Termine le traitement de la requête
   <div class="panel-body">
 
 
-    
+
 
 
 
@@ -423,11 +423,11 @@ $reponse->closeCursor(); // Termine le traitement de la requête
 <div class="collapse" id="collapse0">
 <table class="table table-condensed table-striped table table-bordered table-hover" style="border-collapse:collapse;">
     <thead>
-     
 
 
-  
-    
+
+
+
 
 
 
@@ -437,11 +437,11 @@ $reponse->closeCursor(); // Termine le traitement de la requête
             <th>masse</th>
             <th>%</th>
 
-                        
+
         </tr>
     </thead>
-   
-       
+
+
 
 <?php
  $reponse = $bdd->prepare('SELECT type_dechets.nom, sum(pesees_sorties.masse) somme
@@ -468,12 +468,12 @@ GROUP BY nom2');
            while ($donnees = $reponse->fetch())
            {
             ?>
-                     
+
 
         <tr>
             <td><?= $donnees['nom'] ?></td>
             <td><?= $donnees['somme'] ?></td>
-            <td><?=  round($donnees['somme']*100/$mtotcolo, 2)   ; ?></td>      
+            <td><?=  round($donnees['somme']*100/$mtotcolo, 2)   ; ?></td>
         </tr>
  <?php
              }
@@ -487,7 +487,7 @@ $reponse->closeCursor(); // Termine le traitement de la requête
    </tbody>
 </table>
 
-  
+
 </div>
 
 <div class="list-group"><a class="list-group-item" data-toggle="collapse" href="#collapse1" aria-expanded="false" aria-controls="collapse0">
@@ -501,11 +501,11 @@ Dons aux partenaires
             <th>masse</th>
             <th>%</th>
 
-                        
+
         </tr>
     </thead>
     <tbody>
-       
+
 <?php
  $reponse = $bdd->prepare('SELECT type_dechets.nom, sum(pesees_sorties.masse) somme
 FROM type_dechets, pesees_sorties, sorties
@@ -531,12 +531,12 @@ GROUP BY nom2');
            while ($donnees = $reponse->fetch())
            {
             ?>
-                     
+
 
 
             <td><?= $donnees['nom'] ?></td>
             <td><?= $donnees['somme'] ?></td>
-            <td><?=  round($donnees['somme']*100/$mtotcolo, 2)   ; ?></td>      
+            <td><?=  round($donnees['somme']*100/$mtotcolo, 2)   ; ?></td>
         </tr>
  <?php
              }
@@ -554,17 +554,17 @@ $reponse->closeCursor(); // Termine le traitement de la requête
 
 <table class="table table-condensed table-striped table table-bordered table-hover" style="border-collapse:collapse;">
     <thead>
-    
+
         <tr>
             <th  style="width:300px">typo</th>
             <th>masse</th>
             <th>%</th>
 
-                        
+
         </tr>
     </thead>
     <tbody>
-       
+
 <?php
  $reponse = $bdd->prepare('SELECT type_dechets.nom, sum(pesees_sorties.masse) somme
 FROM type_dechets, pesees_sorties, sorties
@@ -590,12 +590,12 @@ GROUP BY nom2');
            while ($donnees = $reponse->fetch())
            {
             ?>
-                     
+
 
 
             <td><?= $donnees['nom'] ?></td>
             <td><?= $donnees['somme'] ?></td>
-            <td><?=  round($donnees['somme']*100/$mtotcolo, 2)   ; ?></td>      
+            <td><?=  round($donnees['somme']*100/$mtotcolo, 2)   ; ?></td>
         </tr>
  <?php
              }
@@ -613,17 +613,17 @@ $reponse->closeCursor(); // Termine le traitement de la requête
 
 <table class="table table-condensed table-striped table table-bordered table-hover" style="border-collapse:collapse;">
     <thead>
-    
+
         <tr>
             <th  style="width:300px">type de bac</th>
             <th>masse</th>
             <th>%</th>
 
-                        
+
         </tr>
     </thead>
     <tbody>
-       
+
 <?php
  $reponse = $bdd->prepare('SELECT types_poubelles.nom, sum(pesees_sorties.masse) somme
 FROM types_poubelles, pesees_sorties, sorties
@@ -640,12 +640,12 @@ GROUP BY nom
            while ($donnees = $reponse->fetch())
            {
             ?>
-                     
+
 
 
             <td><?= $donnees['nom'] ?></td>
             <td><?= $donnees['somme'] ?></td>
-            <td><?=  round($donnees['somme']*100/$mtotcolo, 2)   ; ?></td>      
+            <td><?=  round($donnees['somme']*100/$mtotcolo, 2)   ; ?></td>
         </tr>
  <?php
              }
@@ -663,17 +663,17 @@ $reponse->closeCursor(); // Termine le traitement de la requête
 
 <table class="table table-condensed table-striped table table-bordered table-hover" style="border-collapse:collapse;">
     <thead>
-     
+
         <tr>
             <th  style="width:300px">typo</th>
             <th>masse</th>
             <th>%</th>
 
-                        
+
         </tr>
     </thead>
     <tbody>
-       
+
 <?php
  $reponse = $bdd->prepare('SELECT type_dechets.nom, sum(pesees_sorties.masse) somme
 FROM type_dechets, pesees_sorties, sorties
@@ -699,12 +699,12 @@ GROUP BY nom2');
            while ($donnees = $reponse->fetch())
            {
             ?>
-                     
+
 
 
             <td><?= $donnees['nom'] ?></td>
             <td><?= $donnees['somme'] ?></td>
-            <td><?=  round($donnees['somme']*100/$mtotcolo, 2)   ; ?></td>      
+            <td><?=  round($donnees['somme']*100/$mtotcolo, 2)   ; ?></td>
         </tr>
  <?php
              }
@@ -722,17 +722,17 @@ $reponse->closeCursor(); // Termine le traitement de la requête
 <div class="collapse" id="collapse0">
 <table class="table table-condensed table-striped table table-bordered table-hover" style="border-collapse:collapse;">
     <thead>
-    
+
         <tr>
             <th  style="width:300px">typo</th>
             <th>masse</th>
             <th>%</th>
 
-                        
+
         </tr>
     </thead>
     <tbody>
-       
+
 
 <?php
  $reponse = $bdd->prepare('SELECT type_dechets.nom, sum(pesees_sorties.masse) somme
@@ -761,12 +761,12 @@ GROUP BY nom2');
            while ($donnees = $reponse->fetch())
            {
             ?>
-                     
+
 
         <tr>
             <td><?= $donnees['nom'] ?></td>
             <td><?= $donnees['somme'] ?></td>
-            <td><?=  round($donnees['somme']*100/$mtotcolo, 2)   ; ?></td>      
+            <td><?=  round($donnees['somme']*100/$mtotcolo, 2)   ; ?></td>
         </tr>
  <?php
              }
@@ -790,17 +790,17 @@ $reponse->closeCursor(); // Termine le traitement de la requête
 
 <table class="table table-condensed table-striped table table-bordered table-hover" style="border-collapse:collapse;">
     <thead>
-      
+
         <tr>
             <th  style="width:300px">typo</th>
             <th>masse</th>
             <th>%</th>
 
-                        
+
         </tr>
     </thead>
     <tbody>
-       
+
 <?php
  $reponse = $bdd->prepare('SELECT type_dechets.nom, sum(pesees_sorties.masse) somme
 FROM type_dechets, pesees_sorties, sorties
@@ -828,12 +828,12 @@ GROUP BY nom2');
            while ($donnees = $reponse->fetch())
            {
             ?>
-                     
+
 
 
             <td><?= $donnees['nom'] ?></td>
             <td><?= $donnees['somme'] ?></td>
-            <td><?=  round($donnees['somme']*100/$mtotcolo, 2)   ; ?></td>      
+            <td><?=  round($donnees['somme']*100/$mtotcolo, 2)   ; ?></td>
         </tr>
  <?php
              }
@@ -851,17 +851,17 @@ $reponse->closeCursor(); // Termine le traitement de la requête
 
 
 <table class="table table-condensed table-striped table table-bordered table-hover" style="border-collapse:collapse;">
-    
+
         <tr>
             <th  style="width:300px">typo</th>
             <th>masse</th>
             <th>%</th>
 
-                        
+
         </tr>
     </thead>
     <tbody>
-       
+
 <?php
  $reponse = $bdd->prepare('SELECT type_dechets.nom, sum(pesees_sorties.masse) somme
 FROM type_dechets, pesees_sorties, sorties
@@ -889,12 +889,12 @@ GROUP BY nom2');
            while ($donnees = $reponse->fetch())
            {
             ?>
-                     
+
 
 
             <td><?= $donnees['nom'] ?></td>
             <td><?= $donnees['somme'] ?></td>
-            <td><?=  round($donnees['somme']*100/$mtotcolo, 2)   ; ?></td>      
+            <td><?=  round($donnees['somme']*100/$mtotcolo, 2)   ; ?></td>
         </tr>
  <?php
              }
@@ -912,17 +912,17 @@ $reponse->closeCursor(); // Termine le traitement de la requête
 
 <table class="table table-condensed table-striped table table-bordered table-hover" style="border-collapse:collapse;">
     <thead>
-      
+
         <tr>
             <th  style="width:300px">type de bac</th>
             <th>masse</th>
             <th>%</th>
 
-                        
+
         </tr>
     </thead>
     <tbody>
-       
+
 <?php
  $reponse = $bdd->prepare('SELECT types_poubelles.nom, sum(pesees_sorties.masse) somme
 FROM types_poubelles, pesees_sorties, sorties
@@ -940,12 +940,12 @@ GROUP BY nom
            while ($donnees = $reponse->fetch())
            {
             ?>
-                     
+
 
 
             <td><?= $donnees['nom'] ?></td>
             <td><?= $donnees['somme'] ?></td>
-            <td><?=  round($donnees['somme']*100/$mtotcolo, 2)   ; ?></td>      
+            <td><?=  round($donnees['somme']*100/$mtotcolo, 2)   ; ?></td>
         </tr>
  <?php
              }
@@ -968,11 +968,11 @@ $reponse->closeCursor(); // Termine le traitement de la requête
             <th>masse</th>
             <th>%</th>
 
-                        
+
         </tr>
     </thead>
     <tbody>
-       
+
 <?php
  $reponse = $bdd->prepare('SELECT type_dechets.nom, sum(pesees_sorties.masse) somme
 FROM type_dechets, pesees_sorties, sorties
@@ -1000,12 +1000,12 @@ GROUP BY nom2');
            while ($donnees = $reponse->fetch())
            {
             ?>
-                     
+
 
 
             <td><?= $donnees['nom'] ?></td>
             <td><?= $donnees['somme'] ?></td>
-            <td><?=  round($donnees['somme']*100/$mtotcolo, 2)   ; ?></td>      
+            <td><?=  round($donnees['somme']*100/$mtotcolo, 2)   ; ?></td>
         </tr>
  <?php
              }
@@ -1030,7 +1030,7 @@ $reponse->closeCursor(); // Termine le traitement de la requête
 
 
 
-       
+
 
 <br>
        <a href="<?=  "../moteur/export_bilanc_parloca.php?numero=". $_GET['numero']."&date1=" . $_GET['date1']."&date2=" . $_GET['date2']?>">
@@ -1039,16 +1039,16 @@ $reponse->closeCursor(); // Termine le traitement de la requête
   </div>
 </div>
 
- 
+
 </div>
-   
-<div class="col-md-5"> 
- 
+
+<div class="col-md-5">
+
 
 
 <div class="panel panel-default">
   <div class="panel-heading">
-    <h3 class="panel-title">Partenaires, recycleurs et dons 
+    <h3 class="panel-title">Partenaires, recycleurs et dons
 </h3>
   </div>
   <div class="panel-body">
@@ -1063,7 +1063,7 @@ $reponse->closeCursor(); // Termine le traitement de la requête
             <th>masse</th>
             <th>%</th>
 
-                        
+
         </tr>
     </thead>
     <tbody>
@@ -1083,12 +1083,12 @@ GROUP BY nom');
            while ($donnees = $reponse->fetch())
            {
             ?>
-                     
+
 
         <tr>
             <td><?= $donnees['nom'] ?></td>
             <td><?= $donnees['somme'] ?></td>
-            <td><?=  round($donnees['somme']*100/$mtotcolo, 2)   ; ?></td>      
+            <td><?=  round($donnees['somme']*100/$mtotcolo, 2)   ; ?></td>
         </tr>
  <?php
              }
@@ -1108,7 +1108,7 @@ $reponse->closeCursor(); // Termine le traitement de la requête
             <th>masse</th>
             <th>%</th>
 
-                        
+
         </tr>
     </thead>
     <tbody>
@@ -1128,13 +1128,13 @@ GROUP BY nom');
            while ($donnees = $reponse->fetch())
            {
             ?>
-                     
+
 
         <tr>
             <td><?= $donnees['nom'] ?></td>
             <td><?= $donnees['nombre'] ?></td>
             <td><?= $donnees['somme'] ?></td>
-            <td><?=  round($donnees['somme']*100/$mtotcolo, 2)   ; ?></td>      
+            <td><?=  round($donnees['somme']*100/$mtotcolo, 2)   ; ?></td>
         </tr>
  <?php
              }
@@ -1153,7 +1153,7 @@ $reponse->closeCursor(); // Termine le traitement de la requête
             <th>masse</th>
             <th>%</th>
 
-                        
+
         </tr>
     </thead>
     <tbody>
@@ -1173,12 +1173,12 @@ GROUP BY nom');
            while ($donnees = $reponse->fetch())
            {
             ?>
-                     
+
 
         <tr>
             <td><?= $donnees['nom'] ?></td>
             <td><?= $donnees['somme'] ?></td>
-            <td><?=  round($donnees['somme']*100/$mtotcolo, 2)   ; ?></td>      
+            <td><?=  round($donnees['somme']*100/$mtotcolo, 2)   ; ?></td>
         </tr>
  <?php
              }
@@ -1201,7 +1201,7 @@ $reponse->closeCursor(); // Termine le traitement de la requête
             <th>masse</th>
             <th>%</th>
 
-                        
+
         </tr>
     </thead>
     <tbody>
@@ -1222,12 +1222,12 @@ GROUP BY nom');
            while ($donnees = $reponse->fetch())
            {
             ?>
-                     
+
 
         <tr>
             <td><?= $donnees['nom'] ?></td>
             <td><?= $donnees['somme'] ?></td>
-            <td><?=  round($donnees['somme']*100/$mtotcolo, 2)   ; ?></td>      
+            <td><?=  round($donnees['somme']*100/$mtotcolo, 2)   ; ?></td>
         </tr>
  <?php
              }
@@ -1247,7 +1247,7 @@ $reponse->closeCursor(); // Termine le traitement de la requête
             <th>masse</th>
             <th>%</th>
 
-                        
+
         </tr>
     </thead>
     <tbody>
@@ -1268,13 +1268,13 @@ GROUP BY nom');
            while ($donnees = $reponse->fetch())
            {
             ?>
-                     
+
 
         <tr>
             <td><?= $donnees['nom'] ?></td>
             <td><?= $donnees['nombre'] ?></td>
             <td><?= $donnees['somme'] ?></td>
-            <td><?=  round($donnees['somme']*100/$mtotcolo, 2)   ; ?></td>      
+            <td><?=  round($donnees['somme']*100/$mtotcolo, 2)   ; ?></td>
         </tr>
  <?php
              }
@@ -1293,7 +1293,7 @@ $reponse->closeCursor(); // Termine le traitement de la requête
             <th>masse</th>
             <th>%</th>
 
-                        
+
         </tr>
     </thead>
     <tbody>
@@ -1314,12 +1314,12 @@ GROUP BY nom');
            while ($donnees = $reponse->fetch())
            {
             ?>
-                     
+
 
         <tr>
             <td><?= $donnees['nom'] ?></td>
             <td><?= $donnees['somme'] ?></td>
-            <td><?=  round($donnees['somme']*100/$mtotcolo, 2)   ; ?></td>      
+            <td><?=  round($donnees['somme']*100/$mtotcolo, 2)   ; ?></td>
         </tr>
  <?php
              }
@@ -1334,8 +1334,8 @@ $reponse->closeCursor(); // Termine le traitement de la requête
 
 <?php } ?>
 <br>
-          
-   
+
+
 <a href="<?=  "../moteur/export_bilanc_partype.php?numero=". $_GET['numero']."&date1=" . $_GET['date1']."&date2=" . $_GET['date2']?>">
 
         <button type="button" class="btn btn-default btn-xs" disabled>exporter ces données (.csv) </button>
@@ -1352,7 +1352,7 @@ $reponse->closeCursor(); // Termine le traitement de la requête
 
    </div>
      </div>
-  
+
 <?php include "pied.php"; ?>
 
 <?php

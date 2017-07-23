@@ -25,7 +25,7 @@ require_once("../moteur/dbconfig.php");
     if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 'g') !== false))
       { include "tete.php" ?>
     <div class="container">
-        <h1>Gestion des types de bacs et de moyens de manutention.</h1> 
+        <h1>Gestion des types de bacs et de moyens de manutention.</h1>
          <div class="panel-heading">Modifier les données concernant le moyen de manutention n° <?= $_POST['id']?>, <?= $_POST['nom']?>. </div>
 <?php
 //on obtien la couleur de la localité dans la base
@@ -37,7 +37,7 @@ $req->execute(array('id' => $_POST['id']));
 $donnees = $req->fetch();
 
 $couleur = $donnees['couleur'];
-            
+
               $req->closeCursor(); // Termine le traitement de la requête
 
 
@@ -55,14 +55,13 @@ $couleur = $donnees['couleur'];
   <div class="col-md-2"><label for="nom">Nom:</label> <input type="text"value ="<?= $_POST['nom']?>" name="nom" id="nom" class="form-control " required autofocus></div>
   <div class="col-md-3"><label for="description">Description:</label> <input type="text"value ="<?= $_POST['description']?>" name="description" id="description" class="form-control " required ></div>
   <div class="col-md-2"><label for="masse_bac">Masse de l'objet (Kg):</label> <input type="text"value ="<?= $_POST['masse_bac']?>" name="masse_bac" id="masse_bac" class="form-control " required ></div>
- 
+
   <div class="col-md-1"><label for="couleur">Couleur:</label> <input type="color"        value ="<?= $couleur?>" name="couleur" id="couleur" class="form-control " required autofocus></div>
 
 
 
 
 
-  
 
 
 
@@ -73,8 +72,9 @@ $couleur = $donnees['couleur'];
 
 
 
-  
-  
+
+
+
   <div class="col-md-1"><br><button name="creer" class="btn btn-warning">Modifier</button></div>
 </form>
 <br>
@@ -83,7 +83,7 @@ $couleur = $donnees['couleur'];
 </a>
 </div>
       </div>
-     
+
       <br>
       <div class="row">
   <div class="col-md-4"></div>
@@ -93,8 +93,8 @@ $couleur = $donnees['couleur'];
   </div>
   </div>
     </div><!-- /.container -->
-   
-<?php include "pied.php"; 
+
+<?php include "pied.php";
 }
     else
 {
