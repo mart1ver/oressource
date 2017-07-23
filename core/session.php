@@ -56,6 +56,14 @@ function destroy_session(): void {
   setcookie('pass', '');
 }
 
+function user() {
+  return $_SESSION['user'];
+}
+
+function configuration() {
+  return $_SESSION['structure'];
+}
+
 /**
  * Renvoie `true` si la session est valide.
  */
@@ -83,6 +91,20 @@ function affichage_sortie_recyclage(): bool {
   return $_SESSION['affsr'] === 'oui';
 }
 
+function affichage_sortie_partenaires(): bool {
+  return configuration()['affss'];
+}
+
+function affichage_sortie_dechetterie(): bool {
+  return configuration()['affsde'];
+}
+
+function affichage_sortie_recyclage(): bool {
+  return configuration()['affsr'];
+}
+
+
+
 /**
  * Renvoie `true` si la session est autorisee a voir les bilans.
  * On suppose que la session a deja ete verifiee avant.
@@ -96,7 +118,7 @@ function is_allowed_vente(): bool {
 }
 
 function is_allowed_vente_id(int $id): bool {
-  return strpos($_SESSION['niveau'], 'v' . $id) !== false;
+  return strpos(user()['niveau'], 'v' . $id) !== false;
 }
 
 function is_allowed_sortie(): bool {

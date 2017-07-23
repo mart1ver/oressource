@@ -378,7 +378,7 @@ function insert_collecte(PDO $bdd, array $collecte): int {
       :commentaire, :id_createur)');
   $req->bindValue(':timestamp', $collecte['timestamp']->format('Y-m-d H:i:s'), PDO::PARAM_STR);
   $req->bindValue(':id_type_action', $collecte['id_type_action'], PDO::PARAM_INT);
-  // HACK: virer les adherants de la base ou juste changer le type en booleen serieusement...
+// HACK: virer les adherants de la base ou juste changer le type en booleen serieusement...
   $req->bindValue(':localite', $collecte['localite'], PDO::PARAM_INT);
   $req->bindValue(':id_point', $collecte['id_point'], PDO::PARAM_INT);
   $req->bindValue(':commentaire', $bdd->quote($collecte['commentaire']), PDO::PARAM_STR);
@@ -452,17 +452,17 @@ function insert_poubelle_sorties(PDO $bdd, int $id_sorties, $sortie, $items): vo
 
 function specialise_sortie(PDOStatement $stmt, $sortie) {
   $classe = $sortie['classe'];
-  // Sorties Dons
+// Sorties Dons
   if ($classe === 'sorties') {
     $stmt->bindvalue(':type_sortie', $sortie['type_sortie'], PDO::PARAM_INT);
     $stmt->bindvalue(':id_filiere', 0, PDO::PARAM_INT);
     $stmt->bindvalue(':id_convention', 0, PDO::PARAM_INT);
-    // Sorties recycleur
+// Sorties recycleur
   } elseif ($classe === 'sortiesr') {
     $stmt->bindvalue(':type_sortie', 0, PDO::PARAM_INT);
     $stmt->bindvalue(':id_filiere', $sortie['type_sortie'], PDO::PARAM_INT);
     $stmt->bindvalue(':id_convention', 0, PDO::PARAM_INT);
-    // Sorties conventions
+// Sorties conventions
   } elseif ($classe === 'sortiesc') {
     $stmt->bindvalue(':type_sortie', 0, PDO::PARAM_INT);
     $stmt->bindvalue(':id_filiere', 0, PDO::PARAM_INT);
