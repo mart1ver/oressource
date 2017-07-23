@@ -180,7 +180,7 @@ function tickets_clear(data) {
   if (type === 'collecte' || type === 'sorties') {
     document.getElementById('localite').selectedIndex = '0';
   }
-  if (type !== 'sortiesp' || type !== 'sortiesd') {
+  if (type !== 'sortiesp' && type !== 'sortiesd') {
     document.getElementById('id_type_action').selectedIndex = '0';
   }
 

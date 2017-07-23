@@ -104,7 +104,7 @@ if (is_valid_session() && is_allowed_sortie()) {
     } elseif ($sortie['classe'] === 'sortiesp') {
       if (count($json['evacs']) > 0) {
         $sortie['commentaire'] = '';
-        insert_poubelle_sortie($bdd, $id_sortie, $sortie, $json['evacs']);
+        insert_poubelle_sorties($bdd, $id_sortie, $sortie, $json['evacs']);
         $requete_OK = true;
       }
     } else {
