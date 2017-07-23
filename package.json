@@ -20,6 +20,7 @@
     "webpack": "^3.3.0"
   },
   "dependencies": {
+    "bootstrap": "^3.3.7",
     "bootstrap-switch": "^3.3.4",
     "daterangepicker": "^2.1.25",
     "jquery": "^3.2.1",
