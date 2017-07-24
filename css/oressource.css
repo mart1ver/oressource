@@ -1,6 +1,6 @@
-@import url('https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css');
-@import url('https://cdnjs.cloudflare.com/ajax/libs/bootstrap-switch/3.3.4/css/bootstrap3/bootstrap-switch.min.css');
-@import url('https://cdnjs.cloudflare.com/ajax/libs/bootstrap-daterangepicker/2.1.25/daterangepicker.min.css');
+@import url('./bootstrap.min.css');
+@import url('./bootstrap-switch.min.css');
+@import url('./daterangepicker.min.css');
 
 /* Move down content because we have a fixed navbar that is 50px tallles
  * textarea ne sont plus resizables */
