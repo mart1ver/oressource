@@ -3,7 +3,7 @@
   "version": "0.3.0",
   "description": "Système simple, libre, léger et adaptable de quantification et de bilan écologique pour ressourcerie",
   "scripts": {
-    "test": "eslint **/*.js",
+    "test": "eslint ./js/*.js",
     "build": "webpack"
   },
   "repository": {
