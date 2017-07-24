@@ -58,14 +58,12 @@ function structure_validate(array $json) {
   return $structure;
 }
 
-function validate_json_login($unsafe_json)
-{
+function validate_json_login($unsafe_json) {
   $unsafe_json['username'] = filter_var($unsafe_json['username'], FILTER_VALIDATE_EMAIL);
   return $unsafe_json;
 }
 
-function validate_json_sorties($unsafe_json)
-{
+function validate_json_sorties($unsafe_json) {
   $filters = [
     'id_type_action' => FILTER_DEFAULT, // Peux etre NULL
     'antidate' => FILTER_DEFAULT, // Peux etre NULL validation faite plus tard.
@@ -100,8 +98,7 @@ function validate_json_sorties($unsafe_json)
   return $json;
 }
 
-function validate_json_collecte($unsafe_json)
-{
+function validate_json_collecte($unsafe_json) {
   $filters = [
     'id_type_action' => FILTER_VALIDATE_INT,
     'antidate' => FILTER_DEFAULT,
@@ -131,8 +128,7 @@ function validate_json_collecte($unsafe_json)
   return $json;
 }
 
-function parseDate_Post($key)
-{
+function parseDate_Post($key) {
   $result = filter_input(INPUT_POST, $key, FILTER_SANITIZE_STRING);
   if ($result) {
     return DateTime::createFromFormat('Y-m-d', $result);
@@ -141,8 +137,7 @@ function parseDate_Post($key)
   }
 }
 
-function parseDate($str)
-{
+function parseDate($str) {
   if ($str) {
     return DateTime::createFromFormat('Y-m-d', $str);
   } else {
@@ -150,8 +145,7 @@ function parseDate($str)
   }
 }
 
-function parseFloat($key)
-{
+function parseFloat($key) {
   $result = filter_var($key, FILTER_VALIDATE_FLOAT);
   if ($result) {
     return (float) $result;
@@ -160,8 +154,7 @@ function parseFloat($key)
   }
 }
 
-function parseInt($key)
-{
+function parseInt($key) {
   $result = filter_var($key, FILTER_VALIDATE_INT);
   if ($result) {
     return (int) $result;
@@ -170,8 +163,7 @@ function parseInt($key)
   }
 }
 
-function parseInt_Post($key)
-{
+function parseInt_Post($key) {
   $result = filter_input(INPUT_POST, $key, FILTER_VALIDATE_INT);
   if ($result) {
     return (int) $result;
@@ -180,8 +172,7 @@ function parseInt_Post($key)
   }
 }
 
-function parseFloat_Post($key)
-{
+function parseFloat_Post($key) {
   $result = filter_input(INPUT_POST, $key, FILTER_VALIDATE_FLOAT);
   if ($result) {
     return (float) $result;
@@ -190,8 +181,7 @@ function parseFloat_Post($key)
   }
 }
 
-function parseString_Post($key)
-{
+function parseString_Post($key) {
   $result = filter_input(INPUT_POST, $key, FILTER_SANITIZE_STRING);
   if ($result !== null) {
     return $result;
@@ -201,8 +191,7 @@ function parseString_Post($key)
 }
 
 // On definit $adh en fonction $_POST['adh']
-function parseAdherant($key)
-{
+function parseAdherant($key) {
   $adh = filter_input(INPUT_POST, $key, FILTER_SANITIZE_STRING);
   if ($adh === 'oui') {
     return 'oui';

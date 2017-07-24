@@ -51,6 +51,7 @@ function objet_update_nom(PDO $bdd, $id, $nom): void {
   $req->execute();
   $req->closeCursor();
 }
+
 function objet_update(PDO $bdd, int $id, $prix, $nom, $description): void {
   $req = $bdd->prepare('
       update grille_objets
@@ -449,8 +450,7 @@ function insert_poubelle_sorties(PDO $bdd, int $id_sorties, $sortie, $items): vo
   }
 }
 
-function specialise_sortie(PDOStatement $stmt, $sortie)
-{
+function specialise_sortie(PDOStatement $stmt, $sortie) {
   $classe = $sortie['classe'];
   // Sorties Dons
   if ($classe === 'sorties') {
@@ -575,8 +575,7 @@ function login_user(PDO $bdd, string $email, string $password): array {
  * @param string $sql Requete sql valide
  * @return array Correspondant aux donnees pour morris.js.
  */
-function data_graphs(PDOStatement $stmt)
-{
+function data_graphs(PDOStatement $stmt) {
   $stmt->execute();
   $data = [];
   $colors = [];
@@ -587,8 +586,7 @@ function data_graphs(PDOStatement $stmt)
   return ['data' => $data, 'colors' => $colors];
 }
 
-function data_graphs_from_bilan($bilan, $key)
-{
+function data_graphs_from_bilan($bilan, $key) {
   $data = [];
   $colors = [];
   foreach ($bilan as $_ => $iter) {
@@ -602,8 +600,7 @@ function data_graphs_from_bilan($bilan, $key)
 // Utile pour vérifier le fond de caisse en fin de vente
 // Equivalent de la touche 'Z' sur une caisse enregistreuse
 // Affichage du tableau
-function chiffre_affaire_par_mode_paiement(PDO $bdd, $start, $stop)
-{
+function chiffre_affaire_par_mode_paiement(PDO $bdd, $start, $stop) {
   $sql = 'SELECT
     ventes.id_moyen_paiement AS id_moyen,
     moyens_paiement.nom AS moyen,
@@ -627,8 +624,7 @@ function chiffre_affaire_par_mode_paiement(PDO $bdd, $start, $stop)
   return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
-function chiffre_affaire_mode_paiement_point_vente(PDO $bdd, $start, $stop, $id_point_vente)
-{
+function chiffre_affaire_mode_paiement_point_vente(PDO $bdd, $start, $stop, $id_point_vente) {
   $sql = 'SELECT
     ventes.id_moyen_paiement AS id_moyen,
     moyens_paiement.nom AS moyen,
@@ -653,8 +649,7 @@ function chiffre_affaire_mode_paiement_point_vente(PDO $bdd, $start, $stop, $id_
   return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
-function nb_points_ventes($bdd)
-{
+function nb_points_ventes($bdd) {
   $sql = 'SELECT COUNT(id) as nb_points_ventes
     FROM points_vente LIMIT 1';
   $stmt = $bdd->query($sql);
@@ -663,8 +658,7 @@ function nb_points_ventes($bdd)
   return $nb_point_ventes;
 }
 
-function nb_ventes(PDO $bdd, $start, $stop)
-{
+function nb_ventes(PDO $bdd, $start, $stop) {
   $sql = 'SELECT
     COUNT(DISTINCT(ventes.id)) as nb_ventes
     FROM ventes, vendus
@@ -681,8 +675,7 @@ function nb_ventes(PDO $bdd, $start, $stop)
   return $nb_ventes;
 }
 
-function nb_ventes_point_vente(PDO $bdd, $start, $stop, $id_point_vente)
-{
+function nb_ventes_point_vente(PDO $bdd, $start, $stop, $id_point_vente) {
   $sql = 'SELECT
     COUNT(DISTINCT(ventes.id)) as nb_ventes
     FROM ventes
@@ -702,8 +695,7 @@ function nb_ventes_point_vente(PDO $bdd, $start, $stop, $id_point_vente)
   return $nb_ventes;
 }
 
-function nb_remboursements_point_vente(PDO $bdd, $start, $stop, $id_point_vente)
-{
+function nb_remboursements_point_vente(PDO $bdd, $start, $stop, $id_point_vente) {
   $sql = 'SELECT
     COUNT(DISTINCT(ventes.id)) as nb_remb
     FROM ventes
@@ -723,8 +715,7 @@ function nb_remboursements_point_vente(PDO $bdd, $start, $stop, $id_point_vente)
   return $result;
 }
 
-function nb_remboursements(PDO $bdd, $start, $stop)
-{
+function nb_remboursements(PDO $bdd, $start, $stop) {
   $sql = 'SELECT
     COUNT(DISTINCT(ventes.id)) as nb_remb
     FROM ventes, vendus
@@ -803,8 +794,7 @@ function bilan_ventes_par_type(PDO $bdd, $start, $stop) {
   return $result;
 }
 
-function bilan_ventes_par_type_point_vente(PDO $bdd, $start, $stop, $id_point_vente)
-{
+function bilan_ventes_par_type_point_vente(PDO $bdd, $start, $stop, $id_point_vente) {
   $sql = '
     SELECT
       type_dechets.id as id,
@@ -839,8 +829,7 @@ function bilan_ventes_par_type_point_vente(PDO $bdd, $start, $stop, $id_point_ve
   return $result;
 }
 
-function bilan_ventes_pesees(PDO $bdd, $start, $stop)
-{
+function bilan_ventes_pesees(PDO $bdd, $start, $stop) {
   $sql = 'SELECT
     type_dechets.id as id,
     type_dechets.nom as nom,
@@ -871,8 +860,7 @@ function bilan_ventes_pesees(PDO $bdd, $start, $stop)
   return $result;
 }
 
-function bilan_ventes_pesees_point_vente(PDO $bdd, $start, $stop, $id_point_vente)
-{
+function bilan_ventes_pesees_point_vente(PDO $bdd, $start, $stop, $id_point_vente) {
   $sql = 'SELECT
     type_dechets.id as id,
     type_dechets.nom as nom,
@@ -907,8 +895,7 @@ function bilan_ventes_pesees_point_vente(PDO $bdd, $start, $stop, $id_point_vent
   return $result;
 }
 
-function bilan_ventes(PDO $bdd, $start, $stop)
-{
+function bilan_ventes(PDO $bdd, $start, $stop) {
   $sql = '
     SELECT
       (select count(*) from ventes) as nb_ventes,
@@ -931,8 +918,7 @@ function bilan_ventes(PDO $bdd, $start, $stop)
   return $bilan;
 }
 
-function bilan_ventes_point_vente(PDO $bdd, $start, $stop, $id_point_vente)
-{
+function bilan_ventes_point_vente(PDO $bdd, $start, $stop, $id_point_vente) {
   $sql = '
     SELECT
       (select count(*) from ventes) as nb_ventes,

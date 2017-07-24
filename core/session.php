@@ -95,8 +95,7 @@ function is_allowed_vente(): bool {
   return strpos($_SESSION['niveau'], 'v') !== false;
 }
 
-function is_allowed_vente_id(int $id): bool
-{
+function is_allowed_vente_id(int $id): bool {
   return strpos($_SESSION['niveau'], 'v' . $id) !== false;
 }
 
