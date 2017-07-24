@@ -23,5 +23,10 @@ module.exports = {
       $: "jquery",
       jQuery: "jquery"
     })
-  ]
+  ],
+  resolve: {
+    alias: {
+      'morris.js': 'morris.js/morris.js'
+    }
+  }
 };
