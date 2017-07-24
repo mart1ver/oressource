@@ -39,27 +39,27 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($
   <script src="../js/morris/morris.min.js"></script>
   <div class="container">
     <div class="row">
-
       <br>
-      <div class="col-md-4" >
-        <label for="reportrange">Choisissez la période à inspecter:</label><br>
-        <div id="reportrange" class="pull-left" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc">
+      <div class="col-md-4">
+        <label for="reportrange">Choisissez la période à inspecter:</label>
+        <br>
+        <div id="reportrange" class="pull-left" 
+             style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc">
           <i class="fa fa-calendar"></i>
-          <span></span> <b class="caret"></b>
+          <span></span>
+          <b class="caret"></b>
         </div>
-
       </div>
+
       <div class="col-md-4" >
         <label>Choisissez le type d'objet ou de dechet:</label><br>
         <select name="select" onchange="location = this.value;">
           <?php foreach ($types_dechets as $type) { ?>
-            <option value="jours.php?date1='.<?= $_GET['date1'] . '&date2=' . $_GET['date2'] . '&type=' . $type['id']; ?>"
-            <?= ($type['id'] === $_GET['type']) ? 'selected' : ''; ?>
-                    ><?= $type['nom']; ?></option>
-                  <?php } ?>
+            <option value="jours.php?date1=<?= $_GET['date1'] . '&date2=' . $_GET['date2'] . '&type=' . $type['id']; ?>"
+            <?= ($type['id'] === $_GET['type']) ? 'selected' : ''; ?>><?= $type['nom']; ?></option>
+          <?php } ?>
         </select>
       </div>
-
     </div>
   </div>
   <hr/>
