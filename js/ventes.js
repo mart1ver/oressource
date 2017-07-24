@@ -41,7 +41,7 @@ function often_stats(that) {
     what.value += that.value;
     document.getElementById('quantite').value ="";
         if (that.value == "c") { what.value = ""; }
-    
+
   }
   if (isNaN(parseInt(document.getElementById('id_type_objet').value))) {
   } else {
@@ -79,7 +79,7 @@ function switchlot(state) {
     if(document.getElementById('masse') )
     {
      document.getElementById('labelmasse').innerHTML = masse_string;
-    } 
+    }
   }
   if (state == false) {
     lot_or_unite("lot", "vente au: ", "Prix du lot: ", "Masse du lot: ", "#E8E6BC");
@@ -96,7 +96,7 @@ function switchlot_stats(state) {
     if(document.getElementById('masse') )
     {
      document.getElementById('labelmasse').innerHTML = masse_string;
-    } 
+    }
   }
   if (state == false) {
     lot_or_unite("lot", "Pesée au: ",  "Masse du lot: ", "#E8E6BC");
@@ -112,13 +112,13 @@ function ajout() {
     var prixtemp = document.getElementById('prix').value;
     prixtemp = prixtemp.replace(",", ".");
     document.getElementById('prix').value = prixtemp;
-   
+
    if(document.getElementById('masse') )
           {
     var massetemp = document.getElementById('masse').value;
     massetemp = massetemp.replace(",", ".");
     if (force_pes_vente == "oui" && isNaN(parseFloat(massetemp))) {return;}
-    if (isNaN(parseFloat(massetemp))) {document.getElementById('masse').value = "";}else{ 
+    if (isNaN(parseFloat(massetemp))) {document.getElementById('masse').value = "";}else{
     document.getElementById('masse').value = parseFloat(massetemp);
   }
 
@@ -184,7 +184,7 @@ function ajout() {
       fait = "oui";}
          }else
          {
-          
+
           document.getElementById('liste').innerHTML += '<li class="list-group-item" name="ligne'+parseInt(document.getElementById('nlignes').value)+'" id="ligne'+parseInt(document.getElementById('nlignes').value)+'"><span class="badge">'+parseFloat(parseFloat(document.getElementById('prix').value)*parseFloat(document.getElementById('quantite').value)).toFixed(2)+'€'+'</span><span class="glyphicon glyphicon-remove" aria-hidden="true"    onclick="javascirpt:suprime('+"'ligne"+parseInt(document.getElementById('nlignes').value)+"');"+'"></span>&nbsp;&nbsp;'+document.getElementById('quantite').value+' * '+document.getElementById('nom_objet0').value
         +'<input type="hidden"  id="tid_type_objet'+parseInt(document.getElementById('nlignes').value)+'" name="tid_type_objet'+parseInt(document.getElementById('nlignes').value)+'"value="'+document.getElementById('id_type_objet').value+'">'
         +'<input type="hidden"  id="tid_objet'+parseInt(document.getElementById('nlignes').value)+'" name="tid_objet'+parseInt(document.getElementById('nlignes').value)+'"value="'+document.getElementById('id_objet').value+'">'
@@ -210,7 +210,7 @@ function ajout() {
     var massetemp = document.getElementById('masse').value;
     massetemp = massetemp.replace(",", ".");
     if (force_pes_vente == "oui" && isNaN(parseFloat(massetemp))) {return;}
-    if (isNaN(parseFloat(massetemp))) {document.getElementById('masse').value = "";}else{ 
+    if (isNaN(parseFloat(massetemp))) {document.getElementById('masse').value = "";}else{
     document.getElementById('masse').value = parseFloat(massetemp);
   }
           }
@@ -274,7 +274,7 @@ function ajout() {
       fait = "oui"}
          }else
          {
-          
+
           document.getElementById('liste').innerHTML += '<li class="list-group-item" name="ligne'+parseInt(document.getElementById('nlignes').value)+'" id="ligne'+parseInt(document.getElementById('nlignes').value)+'"><span class="badge">'+parseFloat(document.getElementById('prix').value).toFixed(2)+'€'+'</span><span class="glyphicon glyphicon-remove" aria-hidden="true"    onclick="javascirpt:suprime('+"'ligne"+parseInt(document.getElementById('nlignes').value)+"');"+'"></span>&nbsp;&nbsp;'+document.getElementById('quantite').value+' * '+document.getElementById('nom_objet0').value
         +'<input type="hidden"  id="tid_type_objet'+parseInt(document.getElementById('nlignes').value)+'" name="tid_type_objet'+parseInt(document.getElementById('nlignes').value)+'"value="'+document.getElementById('id_type_objet').value+'">'
         +'<input type="hidden"  id="tid_objet'+parseInt(document.getElementById('nlignes').value)+'" name="tid_objet'+parseInt(document.getElementById('nlignes').value)+'"value="'+document.getElementById('id_objet').value+'">'
@@ -308,14 +308,14 @@ function ajout_stats() {
   if (document.getElementById('id_type_objet').value == ""){}else{
 
   if (document.getElementById('sul').value == "unite") {
-   
-   
+
+
    if(document.getElementById('masse') )
           {
     var massetemp = document.getElementById('masse').value;
     massetemp = massetemp.replace(",", ".");
     if (force_pes_vente == "oui" && isNaN(parseFloat(massetemp))) {return;}
-    if (isNaN(parseFloat(massetemp))) {document.getElementById('masse').value = "";}else{ 
+    if (isNaN(parseFloat(massetemp))) {document.getElementById('masse').value = "";}else{
     document.getElementById('masse').value = parseFloat(massetemp);
   }
 
@@ -337,10 +337,10 @@ function ajout_stats() {
       }
 
       if (isNaN(parseInt(document.getElementById('mtot').value))) {
-        
+
       } else {
         document.getElementById('mtot').value=parseFloat(document.getElementById('mtot').value)+parseFloat(document.getElementById('masse').value*document.getElementById('quantite').value);
-        
+
       }
         if(document.getElementById('masse') )
           {
@@ -377,7 +377,7 @@ function ajout_stats() {
       fait = "oui";}
          }else
          {
-          
+
           document.getElementById('liste').innerHTML += '<li class="list-group-item" name="ligne'+parseInt(document.getElementById('nlignes').value)+'" id="ligne'+parseInt(document.getElementById('nlignes').value)+'"><span class="badge">'+'</span><span class="glyphicon glyphicon-remove" aria-hidden="true"    onclick="javascirpt:suprime('+"'ligne"+parseInt(document.getElementById('nlignes').value)+"');"+'"></span>&nbsp;&nbsp;'+document.getElementById('quantite').value+' * '+document.getElementById('nom_objet0').value
         +'<input type="hidden"  id="tid_type_objet'+parseInt(document.getElementById('nlignes').value)+'" name="tid_type_objet'+parseInt(document.getElementById('nlignes').value)+'"value="'+document.getElementById('id_type_objet').value+'">'
         +'<input type="hidden"  id="tid_objet'+parseInt(document.getElementById('nlignes').value)+'" name="tid_objet'+parseInt(document.getElementById('nlignes').value)+'"value="'+document.getElementById('id_objet').value+'">'
@@ -397,7 +397,7 @@ function ajout_stats() {
     var massetemp = document.getElementById('masse').value;
     massetemp = massetemp.replace(",", ".");
     if (force_pes_vente == "oui" && isNaN(parseFloat(massetemp))) {return;}
-    if (isNaN(parseFloat(massetemp))) {document.getElementById('masse').value = "";}else{ 
+    if (isNaN(parseFloat(massetemp))) {document.getElementById('masse').value = "";}else{
     document.getElementById('masse').value = parseFloat(massetemp);
   }
           }
@@ -418,7 +418,7 @@ function ajout_stats() {
 
       if (isNaN(parseInt(document.getElementById('mtot').value))) {
         document.getElementById('mtot').value = document.getElementById('masse').value;
-       
+
       } else {
         document.getElementById('mtot').value = parseFloat(document.getElementById('mtot').value) + parseFloat(document.getElementById('masse').value);
       }
@@ -457,7 +457,7 @@ function ajout_stats() {
       fait = "oui"}
          }else
          {
-          
+
           document.getElementById('liste').innerHTML += '<li class="list-group-item" name="ligne'+parseInt(document.getElementById('nlignes').value)+'" id="ligne'+parseInt(document.getElementById('nlignes').value)+'"><span class="badge">'+'</span><span class="glyphicon glyphicon-remove" aria-hidden="true"    onclick="javascirpt:suprime('+"'ligne"+parseInt(document.getElementById('nlignes').value)+"');"+'"></span>&nbsp;&nbsp;'+document.getElementById('quantite').value+' * '+document.getElementById('nom_objet0').value
         +'<input type="hidden"  id="tid_type_objet'+parseInt(document.getElementById('nlignes').value)+'" name="tid_type_objet'+parseInt(document.getElementById('nlignes').value)+'"value="'+document.getElementById('id_type_objet').value+'">'
         +'<input type="hidden"  id="tid_objet'+parseInt(document.getElementById('nlignes').value)+'" name="tid_objet'+parseInt(document.getElementById('nlignes').value)+'"value="'+document.getElementById('id_objet').value+'">'
@@ -473,7 +473,7 @@ function ajout_stats() {
     }
   }
 
-  
+
 
 }
 
