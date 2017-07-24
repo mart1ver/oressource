@@ -40,6 +40,7 @@ $can_config = is_allowed_config();
     <link rel="shortcut icon" href="../images/favicon.ico">
     <title>Oressource</title>
     <link href="../css/oressource.css" type="text/css" rel="stylesheet">
+    <script src="../dist/bundle.js" type="text/javascript"></script>
   </head>
 
   <body>
