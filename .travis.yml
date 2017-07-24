@@ -5,7 +5,7 @@ php:
 - 7.1
 - hhvm
 before_script:
-  - npm install -g eslint
+  - npm install
 script:
-  - phpunit .
-  - eslint **/*.js
+  - find . -type f -name "*.php" -exec php -l {} \;
+  - npm run test

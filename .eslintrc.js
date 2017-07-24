@@ -4,6 +4,9 @@ module.exports = {
         "es6": true
     },
     "extends": "eslint:recommended",
+    "parserOptions": {
+        "sourceType": "module"
+    },
     "rules": {
         "indent": [
             "warn",
@@ -15,7 +18,7 @@ module.exports = {
         ],
         "quotes": [
             "warn",
-            "simple"
+            "single"
         ],
         "semi": [
             "warn",
