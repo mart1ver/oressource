@@ -97,16 +97,12 @@ if (isset($_SESSION['id'])
           <label for="id_type_action">Type de don:</label>
           <select name="id_type_action" form="formulaire" id="id_type_action" class="form-control" style="font-size: 12pt" required>
             <option value="" hidden disabled selected>Selectionez un type de don</option>
-            <?php foreach ($types_action as $type_action) { ?>
-              <option value="<?= $type_action['id'] ?>"><?= $type_action['nom'] ?></option>
-            <?php } ?>
+            <!-- Remplis via JavaScript voir script de la page -->
           </select>
           <label for="localite">Localité :</label>
           <select name="localite" id="localite" form="formulaire" class="form-control" style="font-size: 12pt" required>
             <option value="" hidden disabled selected>Selectionez une localité</option>
-            <?php foreach (localites($bdd) as $localite) { ?>
-              <option value="<?= $localite['id'] ?>"><?= $localite['nom'] ?></option>
-            <?php } ?>
+            <!-- Remplis via JavaScript voir script de la page -->
           </select>
         </div>
       </div>
@@ -165,7 +161,9 @@ if (isset($_SESSION['id'])
       types_dechet: <?= json_encode(types_dechets($bdd), JSON_NUMERIC_CHECK) ?>,
       masse_max: <?= json_encode($point_sortie['pesee_max'], JSON_NUMERIC_CHECK) ?>,
       types_evac: <?= json_encode(types_dechets_evac($bdd), JSON_NUMERIC_CHECK) ?>,
-      conteneurs: <?= json_encode(types_contenants($bdd), JSON_NUMERIC_CHECK) ?>
+      conteneurs: <?= json_encode(types_contenants($bdd), JSON_NUMERIC_CHECK) ?>,
+      types_action: <?= json_encode($types_action, JSON_NUMERIC_CHECK) ?>,
+      localites: <?= json_encode(localites($bdd), JSON_NUMERIC_CHECK) ?>,
     };
   </script>
   <script src="../js/ticket.js" type="text/javascript"></script>
@@ -199,6 +197,22 @@ if (isset($_SESSION['id'])
       typesEvacs.forEach((item) => {
         const button = html_saisie_item(item, pushEvac);
         div_list_evac.appendChild(button);
+      });
+
+      const div_type_action = document.getElementById('id_type_action');
+      window.OressourceEnv.types_action.forEach((type_collecte) => {
+        const item = document.createElement('option');
+        item.value = type_collecte.id;
+        item.innerHTML = type_collecte.nom;
+        div_type_action.appendChild(item);
+      });
+
+      const div_localite = document.getElementById('localite');
+      window.OressourceEnv.localites.forEach((localite) => {
+        const item = document.createElement('option');
+        item.value = localite.id;
+        item.innerHTML = localite.nom;
+        div_localite.appendChild(item);
       });
 
       const metadata = {classe: 'sorties'};
