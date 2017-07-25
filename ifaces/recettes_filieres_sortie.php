@@ -1,5 +1,4 @@
 <?php
-
 /*
   Oressource
   Copyright (C) 2014-2017  Martin Vert and Oressource devellopers
@@ -19,19 +18,15 @@
  */
 
 session_start();
+if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($_SESSION['niveau'], 'h') !== false)) {
+  require_once 'tete.php';
+  ?>
 
-//Vérification des autorisations de l'utilisateur et des variables de session requises pour l'affichage de cette page:
-    if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 'h') !== false))
-      {  include "tete.php" ?>
+  <h1>Recettes filières de sortie</h1>
 
-        <h1>Recettes filières de sortie</h1>
-
-
-
-<?php include "pied.php";
-}
-    else
-{
-header('Location: ../moteur/destroy.php') ;
+  <?php
+  require_once 'pied.php';
+} else {
+  header('Location: ../moteur/destroy.php');
 }
 ?>

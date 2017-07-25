@@ -30,10 +30,7 @@ session_start();
 
 $numero = filter_input(INPUT_GET, 'numero', FILTER_VALIDATE_INT);
 
-if (isset($_SESSION['id'])
-  && $_SESSION['systeme'] === "oressource"
-  && is_allowed_sortie_id($numero)) {
-
+if (is_valid_session() && is_allowed_sortie_id($numero)) {
   if (!affichage_sortie_don()) {
     header("Location:sortiesd.php?numero=" . $numero);
     die();
@@ -51,7 +48,7 @@ if (isset($_SESSION['id'])
 
     <nav class="navbar">
       <div class="header-header">
-        <h1><?= $point_sortie['nom'] ?></h1>
+        <h1><?= $point_sortie['nom']; ?></h1>
       </div>
       <ul class="nav nav-tabs">
         <?php if (affichage_sortie_poubelle()) { ?><li><a href="sortiesp.php?numero=<?= $numero ?>">Poubelles</a></li><?php } ?>
@@ -73,7 +70,7 @@ if (isset($_SESSION['id'])
           <form id="formulaire">
             <?php if (is_allowed_edit_date()) { ?>
               <label for="antidate">Date de la sortie: </label>
-              <input type="date" id="antidate" name="antidate" style="width:130px; height:20px;" value="<?= $date->format('Y-m-d') ?>">
+              <input type="date" id="antidate" name="antidate" style="width:130px; height:20px;" value="<?= $date->format('Y-m-d'); ?>">
             <?php } ?>
             <ul class="list-group" id="transaction">  <!--start Ticket Caisse -->
               <!-- Remplis via JavaScript voir script de la page -->
@@ -145,8 +142,6 @@ if (isset($_SESSION['id'])
       </div>
     </div> <!-- .col-md-4 -->
   </div> <!-- container -->
-
-
   <script type="text/javascript">
     // Variables d'environnement de Oressource.
     'use scrict';
@@ -215,7 +210,7 @@ if (isset($_SESSION['id'])
         div_localite.appendChild(item);
       });
 
-      const metadata = {classe: 'sorties'};
+      const metadata = { classe: 'sorties' };
       const encaisse = make_encaissement('../api/sorties.php', {
         items: ticketItems,
         evacs: ticketEvac,
@@ -227,12 +222,12 @@ if (isset($_SESSION['id'])
         tickets_clear(metadata);
       }, false);
 
-      window.tickets = [ticketItems, ticketEvac];
+      window.tickets = [ ticketItems, ticketEvac ];
     }, false);
   </script>
 
   <?php
-  include "pied.php";
+  require_once 'pied.php';
 } else {
   header('Location:../moteur/destroy.php');
 }

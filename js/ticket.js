@@ -86,7 +86,7 @@ class Ticket {
   }
 
   to_array() {
-    return [...this.items.values()];
+    return [ ...this.items.values() ];
   }
 
   /*
@@ -103,7 +103,7 @@ class Ticket {
 // Gros Hack pour pouvoir gerer les sorties... On revoie une
 // fonction specialisee.
 // Attention pretrairement ne fait que retourner la masse sauf si on est une sortie poubelles.
-function connection_UI_ticket(numpad, ticket, typesItems, pretraitement=((a, ..._) => a)) {
+function connection_UI_ticket(numpad, ticket, typesItems, pretraitement = ((a, ..._) => a)) {
   const totalUI = document.getElementById('massetot');
   const transaction = document.getElementById('transaction');
 
@@ -155,7 +155,7 @@ function html_saisie_item( { id, nom, couleur }, action) {
 // TODO revoir le design...
 function ticket_update_ui(container, totalUI, type_item, value, total) {
   // Constitution du panier
-  const {_, nom, couleur} = type_item;
+  const { _, nom, couleur } = type_item;
   const li = document.createElement('li');
   li.setAttribute('class', 'list-group-item');
   li.innerHTML = `<span class="badge" style="background-color:${couleur}">${value}</span>${nom}`;
@@ -227,12 +227,12 @@ function impression_ticket(encaisse) {
       <p>---------------------------------------------------------------------</p>
       <p>${document.getElementById('transaction').innerHTML}<p>
     </body>`;
-    const oldstr = document.body.innerHTML;
-    document.body.innerHTML = print_html;
-    window.print();
-    document.body.innerHTML = oldstr;
-    encaisse();
-    tickets_clear();
+  const oldstr = document.body.innerHTML;
+  document.body.innerHTML = print_html;
+  window.print();
+  document.body.innerHTML = oldstr;
+  encaisse();
+  tickets_clear();
 
 }
 
@@ -263,17 +263,17 @@ function login(onSuccess = undefined) {
       method: 'POST',
       credidentials: 'include',
       headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json; charset=utf-8'
+        'Accept': 'application/json',
+        'Content-Type': 'application/json; charset=utf-8'
       },
       body: JSON.stringify({ username, password })
     }).then(status)
-      .then((json) => {
-        container.setAttribute('style', 'visibility: hidden;  opacity: 0;');
-        if (onSuccess) {
-          onSuccess();
-        }
-      }).catch((ex) => {
+            .then((json) => {
+              container.setAttribute('style', 'visibility: hidden;  opacity: 0;');
+              if (onSuccess) {
+                onSuccess();
+              }
+            }).catch((ex) => {
       console.log('Error:', ex);
     });
   }, false);
@@ -303,13 +303,15 @@ function post_data(url, data) {
     },
     body: JSON.stringify(data)
   }).then(status)
-    .then((json) => {
-      // TODO Vrai gestion de la reponse... (future mise en attente...)
-      // console.log('response in Json:', json);
-      tickets_clear(data);
-  }).catch((ex) => {
+          .then((json) => {
+            // TODO Vrai gestion de la reponse... (future mise en attente...)
+            // console.log('response in Json:', json);
+            tickets_clear(data);
+          }).catch((ex) => {
     // Reloging and resending!
-    login(() => { post_data(url, data); });
+    login(() => {
+      post_data(url, data);
+    });
     console.log('Error:', ex);
   });
 }
@@ -346,8 +348,6 @@ function make_encaissement(url, tickets, metadata) {
       localite: parseInt(form.get('localite'), 10),
       id_type_action: parseInt(form.get('id_type_action'), 10),
     };
-
-
     const test = strategie_validation(metadata);
     if (sum > 0 && test(formdata)) {
       const commentaire = form.get('commentaire').trim(); // On enleve les espaces inutiles.
@@ -362,10 +362,10 @@ function make_encaissement(url, tickets, metadata) {
       // Petit hack pour merger differents types d'objets a envoyer.
       const items = Object.entries(tickets).reduce((acc, [type, ticket]) => {
         // [type] c'est parceque la clef est a calculee
-        return Object.assign({}, acc, {[type]: ticket.to_array()});
-      }, {});
+        return Object.assign({ }, acc, { [type]: ticket.to_array() });
+      }, { });
       // Object.assign sert a mixer des Objets Javascript.
-      post_data(url, Object.assign({}, data, formdata, items, metadata));
+      post_data(url, Object.assign({ }, data, formdata, items, metadata));
     }
   };
 }

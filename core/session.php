@@ -60,7 +60,7 @@ function destroy_session(): void {
  * Renvoie `true` si la session est valide.
  */
 function is_valid_session(): bool {
-  return (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource');
+  return isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource';
 }
 
 function affichage_sortie_don(): bool {
@@ -88,8 +88,7 @@ function affichage_sortie_recyclage(): bool {
  * On suppose que la session a deja ete verifiee avant.
  */
 function is_allowed_bilan(): bool {
-  // FIXME: Pourquoi pas mettre la session en parametre?
-  return (strpos($_SESSION['niveau'], 'bi') !== false);
+  return strpos($_SESSION['niveau'], 'bi') !== false;
 }
 
 function is_allowed_vente(): bool {
@@ -151,13 +150,13 @@ function is_allowed_saisie_collecte(): bool {
 }
 
 function is_collecte_visible(array $point_collecte): bool {
-  return is_allowed_collecte_id($point_collecte['id']) && $point_collecte['visible'] === "oui";
+  return is_allowed_collecte_id($point_collecte['id']) && $point_collecte['visible'] === 'oui';
 }
 
 function is_sortie_visible(array $point_sortie): bool {
-  return is_allowed_sortie_id($point_sortie['id']) && $point_sortie['visible'] === "oui";
+  return is_allowed_sortie_id($point_sortie['id']) && $point_sortie['visible'] === 'oui';
 }
 
 function is_vente_visible(array $point_vente): bool {
-  return is_allowed_vente_id($point_vente['id']) && $point_vente['visible'] === "oui";
+  return is_allowed_vente_id($point_vente['id']) && $point_vente['visible'] === 'oui';
 }

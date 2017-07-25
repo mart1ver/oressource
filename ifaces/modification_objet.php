@@ -1,5 +1,4 @@
 <?php
-
 /*
   Oressource
   Copyright (C) 2014-2017  Martin Vert and Oressource devellopers
@@ -24,35 +23,31 @@ require_once('../moteur/dbconfig.php');
 require_once('../core/session.php');
 require_once('../core/requetes.php');
 
-if (isset($_SESSION['id'])
-  && $_SESSION['systeme'] === 'oressource'
-  && is_allowed_bilan()) {
-
+if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && is_allowed_bilan()) {
   require_once 'tete.php';
 
   $id_obj = filter_input(INPUT_GET, 'id_obj', FILTER_VALIDATE_INT);
 
   $obj = objet_id($bdd, $id_obj);
-
   ?>
   <div class="container">
     <h1>Grille des prix</h1>
-    <div class="panel-heading">Modifier les données concernant l'objet n° <?= $obj['id'] ?>, <?= $obj['nom'] ?>.</div>
+    <div class="panel-heading">Modifier les données concernant l'objet n° <?= $obj['id']; ?>, <?= $obj['nom']; ?>.</div>
     <div class="panel-body">
       <div class="row">
         <form action="../moteur/modification_objet_post.php" method="post">
-          <input type="hidden" name="id" id="id" value="<?= $obj['id'] ?>">
+          <input type="hidden" name="id" id="id" value="<?= $obj['id']; ?>">
           <div class="col-md-2">
             <label for="nom">Nom:</label>
-            <input type="text" value="<?= $obj['nom'] ?>" name="nom" id="nom" class="form-control" required autofocus>
+            <input type="text" value="<?= $obj['nom']; ?>" name="nom" id="nom" class="form-control" required autofocus>
           </div>
           <div class="col-md-3">
             <label for="description">Description:</label>
-            <input type="text" value="<?= $obj['description'] ?>" name="description" id="description" class="form-control" required>
+            <input type="text" value="<?= $obj['description']; ?>" name="description" id="description" class="form-control" required>
           </div>
           <div class="col-md-1">
             <label for="prix">Prix:</label>
-            <input type="text" value="<?= $obj['prix'] ?>" name="prix" id="prix" class="form-control" required>
+            <input type="text" value="<?= $obj['prix']; ?>" name="prix" id="prix" class="form-control" required>
           </div>
           <div class="col-md-1">
             <br>
@@ -60,14 +55,14 @@ if (isset($_SESSION['id'])
           </div>
         </form>
         <br>
-        <a href="grilles_prix.php?type_dechet=<?= $obj['id_type_dechet'] ?>">
+        <a href="grilles_prix.php?type_dechet=<?= $obj['id_type_dechet']; ?>">
           <button name="creer" class="btn btn">Annuler</button>
         </a>
       </div>
     </div>
   </div>
   <?php
-  require_once "pied.php";
+  require_once 'pied.php';
 } else {
   header('Location: ../moteur/destroy.php');
 }

@@ -36,7 +36,7 @@ function objet_id(PDO $bdd, $id_obj) {
   return $result;
 }
 
-function objet_update_visible(PDO $bdd, $id, $visible) {
+function objet_update_visible(PDO $bdd, $id, $visible): void {
   $req = $bdd->prepare('update grille_objets set visible = :visible where id = :id');
   $req->bindValue(':id', $id, PDO::PARAM_INT);
   $req->bindValue(':visible', $visible, PDO::PARAM_STR);
@@ -44,15 +44,14 @@ function objet_update_visible(PDO $bdd, $id, $visible) {
   $req->closeCursor();
 }
 
-function objet_update_nom(PDO $bdd, $id, $nom) {
+function objet_update_nom(PDO $bdd, $id, $nom): void {
   $req = $bdd->prepare('update grille_objets set nom = :nom where id = :id');
   $req->bindValue(':id', $id, PDO::PARAM_INT);
   $req->bindValue(':nom', $nom, PDO::PARAM_STR);
   $req->execute();
   $req->closeCursor();
 }
-
-function objet_update(PDO $bdd, int $id, $prix, $nom, $description) {
+function objet_update(PDO $bdd, int $id, $prix, $nom, $description): void {
   $req = $bdd->prepare('
       update grille_objets
       set nom = :nom1,
@@ -213,7 +212,7 @@ function types_conteneurs(PDO $bdd): array {
   $sql = 'SELECT masse, nom FROM type_contenants WHERE visible = "oui"';
   $stmt = $bdd->prepare($sql);
   $stmt->execute();
-  $stmt->fetchAll(PDO::FETCH_ASSOC);
+  return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
 function types_dechets_evac(PDO $bdd): array {
@@ -312,7 +311,8 @@ function nb_categories_poubelles(PDO $bdd): int {
 // Si des utilisateurs suppriment des objet sa la main c'est la galere...
 // Mais d'un cote niveau tracabilite ils devraient pas supprimer de categories...
 // genere une exception si les masses sont inferieurs a 0.
-function insert_items_collecte(PDO $bdd, int $id_collecte, $collecte, $items) {
+
+function insert_items_collecte(PDO $bdd, int $id_collecte, $collecte, $items): void {
   $nombreCategories = nb_categories_dechets_item($bdd);
   $req = $bdd->prepare('INSERT INTO pesees_collectes
                             (timestamp, masse, id_collecte, id_type_dechet, id_createur)
@@ -321,7 +321,7 @@ function insert_items_collecte(PDO $bdd, int $id_collecte, $collecte, $items) {
   $req->bindValue(':id_collecte', $id_collecte, PDO::PARAM_INT);
   $req->bindValue(':id_createur', $collecte['id_user'], PDO::PARAM_INT);
   foreach ($items as $item) {
-    $masse = (double) parseFloat($item['masse']);
+    $masse = (float) parseFloat($item['masse']);
     $type_dechet = (int) parseInt($item['type']);
     if ($masse > 0.00 && $type_dechet <= $nombreCategories) {
       $req->bindValue(':masse', $masse);
@@ -377,7 +377,7 @@ function insert_collecte(PDO $bdd, array $collecte): int {
                                   :commentaire, :id_createur)');
   $req->bindValue(':timestamp', $collecte['timestamp']->format('Y-m-d H:i:s'), PDO::PARAM_STR);
   $req->bindValue(':id_type_action', $collecte['id_type_action'], PDO::PARAM_INT);
-// HACK: virer les adherants de la base ou juste changer le type en booleen serieusement...
+  // HACK: virer les adherants de la base ou juste changer le type en booleen serieusement...
   $req->bindValue(':localite', $collecte['localite'], PDO::PARAM_INT);
   $req->bindValue(':id_point', $collecte['id_point'], PDO::PARAM_INT);
   $req->bindValue(':commentaire', $bdd->quote($collecte['commentaire']), PDO::PARAM_STR);
@@ -386,7 +386,7 @@ function insert_collecte(PDO $bdd, array $collecte): int {
   return (int) $bdd->lastInsertId();
 }
 
-function insert_items_sorties(PDO $bdd, int $id_sorties, $sortie, $items) {
+function insert_items_sorties(PDO $bdd, int $id_sorties, $sortie, $items): void {
   $nombreCategories = nb_categories_dechets_item($bdd);
   $req = $bdd->prepare('INSERT INTO pesees_sorties (timestamp, masse,  id_sortie, id_type_dechet, id_createur)
                             VALUES(:timestamp, :masse, :id_sortie, :id_type_dechet, :id_createur)');
@@ -394,7 +394,7 @@ function insert_items_sorties(PDO $bdd, int $id_sorties, $sortie, $items) {
   $req->bindValue(':id_sortie', $id_sorties, PDO::PARAM_INT);
   $req->bindValue(':id_createur', $sortie['id_user'], PDO::PARAM_INT);
   foreach ($items as $item) {
-    $masse = (double) parseFloat($item['masse']);
+    $masse = (float) parseFloat($item['masse']);
     $type_dechet = (int) parseInt($item['type']);
     if ($masse > 0.00 && $type_dechet <= $nombreCategories) {
       $req->bindValue(':masse', $masse);
@@ -407,7 +407,7 @@ function insert_items_sorties(PDO $bdd, int $id_sorties, $sortie, $items) {
   }
 }
 
-function insert_evac_sorties(PDO $bdd, int $id_sorties, $sortie, $items) {
+function insert_evac_sorties(PDO $bdd, int$id_sorties, $sortie, $items): void {
   $nombreCategories = nb_categories_dechets_evac($bdd);
   $req = $bdd->prepare('INSERT INTO pesees_sorties (timestamp, masse,  id_sortie, id_type_dechet_evac, id_createur)
                             VALUES(:timestamp, :masse, :id_sortie, :id_type_dechet_evac, :id_createur)');
@@ -415,7 +415,7 @@ function insert_evac_sorties(PDO $bdd, int $id_sorties, $sortie, $items) {
   $req->bindValue(':id_sortie', $id_sorties, PDO::PARAM_INT);
   $req->bindValue(':id_createur', $sortie['id_user'], PDO::PARAM_INT);
   foreach ($items as $item) {
-    $masse = (double) parseFloat($item['masse']);
+    $masse = (float) parseFloat($item['masse']);
     $type_dechet = (int) parseInt($item['type']);
     if ($masse > 0.00 && $type_dechet <= $nombreCategories) {
       $req->bindValue(':masse', $masse);
@@ -428,7 +428,7 @@ function insert_evac_sorties(PDO $bdd, int $id_sorties, $sortie, $items) {
   }
 }
 
-function insert_poubelle_sorties(PDO $bdd, int $id_sorties, $sortie, $items) {
+function insert_poubelle_sorties(PDO $bdd, int $id_sorties, $sortie, $items): void {
   $nombreCategories = nb_categories_poubelles($bdd);
   $req = $bdd->prepare('INSERT INTO pesees_sorties (timestamp, masse, id_sortie, id_type_poubelle, id_createur)
                             VALUES(:timestamp, :masse, :id_sortie, :id_type_poubelle, :id_createur)');
@@ -436,7 +436,7 @@ function insert_poubelle_sorties(PDO $bdd, int $id_sorties, $sortie, $items) {
   $req->bindValue(':id_sortie', $id_sorties, PDO::PARAM_INT);
   $req->bindValue(':id_createur', $sortie['id_user'], PDO::PARAM_INT);
   foreach ($items as $item) {
-    $masse = (double) parseFloat($item['masse']);
+    $masse = (float) parseFloat($item['masse']);
     $type_dechet = (int) parseInt($item['type']);
     if ($masse > 0.00 && $type_dechet <= $nombreCategories) {
       $req->bindValue(':masse', $masse);
@@ -451,17 +451,17 @@ function insert_poubelle_sorties(PDO $bdd, int $id_sorties, $sortie, $items) {
 
 function specialise_sortie(PDOStatement $stmt, $sortie) {
   $classe = $sortie['classe'];
-// Sorties Dons
+  // Sorties Dons
   if ($classe === 'sorties') {
     $stmt->bindvalue(':type_sortie', $sortie['type_sortie'], PDO::PARAM_INT);
     $stmt->bindvalue(':id_filiere', 0, PDO::PARAM_INT);
     $stmt->bindvalue(':id_convention', 0, PDO::PARAM_INT);
-// Sorties recycleur
+    // Sorties recycleur
   } elseif ($classe === 'sortiesr') {
     $stmt->bindvalue(':type_sortie', 0, PDO::PARAM_INT);
     $stmt->bindvalue(':id_filiere', $sortie['type_sortie'], PDO::PARAM_INT);
     $stmt->bindvalue(':id_convention', 0, PDO::PARAM_INT);
-// Sorties conventions
+    // Sorties conventions
   } elseif ($classe === 'sortiesc') {
     $stmt->bindvalue(':type_sortie', 0, PDO::PARAM_INT);
     $stmt->bindvalue(':id_filiere', 0, PDO::PARAM_INT);
@@ -471,7 +471,7 @@ function specialise_sortie(PDOStatement $stmt, $sortie) {
     $stmt->bindvalue(':id_filiere', 0, PDO::PARAM_INT);
     $stmt->bindvalue(':id_convention', 0, PDO::PARAM_INT);
   } else {
-    throw new UnexpectedValueException("class de sortie inconnue");
+    throw new UnexpectedValueException('class de sortie inconnue');
   }
   return $stmt;
 }
@@ -564,9 +564,8 @@ function login_user(PDO $bdd, string $email, string $password): array {
   $req->closeCursor();
   if ($user) {
     return $user;
-  } else {
-    throw new Exception('Mot de passe ou nom de compte invalide.');
   }
+  throw new Exception('Mot de passe ou nom de compte invalide.');
 }
 
 /**

@@ -17,6 +17,9 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+// Simple formulaire de saisie des matieres d'ouevres sortantes de la structure. (structures partenaires, conventiionnées)
+// Doit etre fonctionnel avec un ecran tactille.
+
 session_start();
 
 require_once('../core/requetes.php');
@@ -25,19 +28,13 @@ require_once('../moteur/dbconfig.php');
 
 $numero = filter_input(INPUT_GET, 'numero', FILTER_VALIDATE_INT);
 
-// Vérification des autorisations de l'utilisateur et des variables de session requises pour l'affichage de cette page:
-if (isset($_SESSION['id'])
-  && $_SESSION['systeme'] === "oressource"
-  && is_allowed_sortie_id($numero)) {
-
+if (is_valid_session() && is_allowed_sortie_id($numero)) {
   if (!affichage_sortie_partenaires()) {
     header("Location:sortiesr.php?numero=" . $numero);
     die();
   }
-  require_once('tete.php');
 
-  // Simple formulaire de saisie des matieres d'ouevres sortantes de la structure. (structures partenaires, conventiionnées)
-  // Doit etre fonctionnel avec un ecran tactille.
+  require_once('tete.php');
 
   $point_sortie = point_sorties_id($bdd, $numero);
   $conventions = convention_sortie($bdd);
@@ -50,7 +47,7 @@ if (isset($_SESSION['id'])
 
     <nav class="navbar">
       <div class="header-header">
-        <h1><?= $point_sortie['nom'] ?></h1>
+        <h1><?= $point_sortie['nom']; ?></h1>
       </div>
       <ul class="nav nav-tabs">
         <?php if (affichage_sortie_poubelle()) { ?><li><a href="sortiesp.php?numero=<?= $numero; ?>">Poubelles</a></li><?php } ?>
@@ -72,7 +69,7 @@ if (isset($_SESSION['id'])
           <form id="formulaire">
             <?php if (is_allowed_edit_date()) { ?>
               <label for="antidate">Date de la sortie: </label>
-              <input form="formulaire" type="date" id="antidate" name="antidate" style="width:130px; height:20px;" value="<?=($date->format('Y-m-d')); ?>">
+              <input form="formulaire" type="date" id="antidate" name="antidate" style="width:130px; height:20px;" value="<?= ($date->format('Y-m-d')); ?>">
             <?php } ?>
             <ul class="list-group" id="transaction">  <!--start Ticket Caisse -->
               <!-- Remplis via JavaScript voir script de la page -->
@@ -94,9 +91,9 @@ if (isset($_SESSION['id'])
         </div>
         <div class="panel-body">
           <select id="id_type_action" form="formulaire" name="id_type_action" class="form-control printable" required>
-          <option value="" hidden disabled selected>Selectionez un partenaire</option>
+            <option value="" hidden disabled selected>Selectionez un partenaire</option>
             <?php foreach ($conventions as $convention) { ?>
-              <option value="<?= $convention['id'] ?>"><?= $convention['nom'] ?></option>
+              <option value="<?= $convention['id']; ?>"><?= $convention['nom']; ?></option>
             <?php } ?>
           </select>
         </div>
@@ -141,23 +138,21 @@ if (isset($_SESSION['id'])
 
     </div><!-- .col-md-4 -->
   </div>
-
-
   <script type="text/javascript">
     // Variables d'environnement de Oressource.
     'use scrict';
     window.OressourceEnv = {
-      structure: <?= json_encode($_SESSION['structure']) ?>,
-      adresse: <?= json_encode($_SESSION['adresse']) ?>,
-      id_user: <?= json_encode($_SESSION['id'], JSON_NUMERIC_CHECK) ?>,
-      saisie_collecte: <?= json_encode(is_allowed_saisie_collecte()) ?>,
-      user_droit: <?= json_encode($_SESSION['niveau']) ?>,
-      id_point: <?= json_encode($numero, JSON_NUMERIC_CHECK) ?>,
-      id_type_action: <?= json_encode($conventions, JSON_NUMERIC_CHECK) ?>,
-      types_dechet: <?= json_encode(types_dechets($bdd), JSON_NUMERIC_CHECK) ?>,
-      masse_max: <?= json_encode($point_sortie['pesee_max'], JSON_NUMERIC_CHECK) ?>,
-      types_evac: <?= json_encode(types_dechets_evac($bdd), JSON_NUMERIC_CHECK) ?>,
-      conteneurs: <?= json_encode(types_contenants($bdd), JSON_NUMERIC_CHECK) ?>
+      structure: <?= json_encode($_SESSION['structure']); ?>,
+      adresse: <?= json_encode($_SESSION['adresse']); ?>,
+      id_user: <?= json_encode($_SESSION['id'], JSON_NUMERIC_CHECK); ?>,
+      saisie_collecte: <?= json_encode(is_allowed_saisie_collecte()); ?>,
+      user_droit: <?= json_encode($_SESSION['niveau']); ?>,
+      id_point: <?= json_encode($numero, JSON_NUMERIC_CHECK); ?>,
+      id_type_action: <?= json_encode($conventions, JSON_NUMERIC_CHECK); ?>,
+      types_dechet: <?= json_encode(types_dechets($bdd), JSON_NUMERIC_CHECK); ?>,
+      masse_max: <?= json_encode($point_sortie['pesee_max'], JSON_NUMERIC_CHECK); ?>,
+      types_evac: <?= json_encode(types_dechets_evac($bdd), JSON_NUMERIC_CHECK); ?>,
+      conteneurs: <?= json_encode(types_contenants($bdd), JSON_NUMERIC_CHECK); ?>
     };
   </script>
   <script src="../js/ticket.js" type="text/javascript"></script>
@@ -167,7 +162,7 @@ if (isset($_SESSION['id'])
 
     document.addEventListener('DOMContentLoaded', () => {
       const numpad = new NumPad(document.getElementById('numpad'),
-                                window.OressourceEnv.conteneurs);
+              window.OressourceEnv.conteneurs);
 
       // Hack en attendant de trouver une solution pour gerer differament les dechets
       // et les objets qui ont les memes id...
@@ -193,7 +188,7 @@ if (isset($_SESSION['id'])
         div_list_evac.appendChild(button);
       });
 
-      const metadata = {classe: 'sortiesc'};
+      const metadata = { classe: 'sortiesc' };
       const encaisse = make_encaissement('../api/sorties.php', {
         items: ticketItems,
         evacs: ticketEvac
@@ -207,12 +202,12 @@ if (isset($_SESSION['id'])
         tickets_clear(metadata);
       }, false);
 
-      window.tickets = [ticketItems, ticketEvac];
+      window.tickets = [ ticketItems, ticketEvac ];
     }, false);
   </script>
 
   <?php
-  include "pied.php";
+  require_once 'pied.php';
 } else {
   header('Location:../moteur/destroy.php');
 }
