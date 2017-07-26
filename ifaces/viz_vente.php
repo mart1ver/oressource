@@ -1,17 +1,35 @@
-<?php session_start();
+<?php
 
-//<<<<<<< HEAD
+/*
+  Oressource
+  Copyright (C) 2014-2017  Martin Vert and Oressource devellopers
+
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU Affero General Public License as
+  published by the Free Software Foundation, either version 3 of the
+  License, or (at your option) any later version.
+
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU Affero General Public License for more details.
+
+  You should have received a copy of the GNU Affero General Public License
+  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+session_start();
 require_once('../moteur/dbconfig.php');
-//=======
 
-//>>>>>>> daamien-err_msg
+
+
 
 //Vérification des autorisations de l'utilisateur et des variables de session requises pour l'affichage de cette page:
    if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND $_SESSION['viz_caisse'] = "oui" AND (strpos($_SESSION['niveau'], 'v'.$_GET['numero']) !== false)  )
       {  include "tete.php"
 ?>
    <div class="container">
-        <h1>Visualiser la vente n° <?php echo $_GET['nvente']?></h1> 
+        <h1>Visualiser la vente n° <?= $_GET['nvente']?></h1>
         <p align="right">
         <input class="btn btn-default btn-lg" type='button'name='quitter' value='Quitter' OnClick="window.close();"/></p>
  <div class="panel-body">
@@ -26,7 +44,7 @@ require_once('../moteur/dbconfig.php');
 
 
 </div>
-<h1>Objets inclus dans cette vente</h1> 
+<h1>Objets inclus dans cette vente</h1>
   <!-- Table -->
       <table class="table">
         <thead>
@@ -38,18 +56,18 @@ require_once('../moteur/dbconfig.php');
             <th>Quantité</th>
             <th>Prix</th>
             <th>Auteur de la ligne</th>
-            
-            
 
-            
+
+
+
           </tr>
         </thead>
         <tbody>
 
 
-        <?php 
-          
-$req = $bdd->prepare('SELECT 
+        <?php
+
+$req = $bdd->prepare('SELECT
 vendus.id ,vendus.timestamp,
 type_dechets.nom type,
 IF(vendus.id_objet > 0 ,grille_objets.nom, "autre") objet,
@@ -58,7 +76,7 @@ vendus.prix,
 utilisateurs.mail
 FROM
 vendus, type_dechets, grille_objets ,utilisateurs
-WHERE 
+WHERE
 vendus.id_vente = :id_vente
 AND type_dechets.id = vendus.id_type_dechet
 AND (grille_objets.id = vendus.id_objet OR vendus.id_objet = 0 )
@@ -72,27 +90,27 @@ $req->execute(array('id_vente' => $_GET['nvente']));
            {
 
            ?>
-            <tr> 
-            <td><?php echo $donnees['id']?></td>
-            <td><?php echo $donnees['timestamp']?></td>
-            <td><?php echo $donnees['type']?></td>
-            <td><?php echo $donnees['objet']?></td>
-           
-
-
-<td><?php echo $donnees['quantite']?></td>
-<td><?php echo $donnees['prix']?></td>
-<td><?php echo $donnees['mail']?></td>
+            <tr>
+            <td><?= $donnees['id']?></td>
+            <td><?= $donnees['timestamp']?></td>
+            <td><?= $donnees['type']?></td>
+            <td><?= $donnees['objet']?></td>
 
 
 
+<td><?= $donnees['quantite']?></td>
+<td><?= $donnees['prix']?></td>
+<td><?= $donnees['mail']?></td>
 
 
 
-<td><?php 
+
+
+
+<td><?php
 $req3 = $bdd->prepare('SELECT utilisateurs.mail mail
                        FROM utilisateurs, vendus
-                       WHERE  vendus.id = :id_vendu 
+                       WHERE  vendus.id = :id_vendu
                        AND utilisateurs.id = vendus.id_last_hero');
 $req3->execute(array('id_vendu' => $donnees['id']));
 
@@ -103,7 +121,7 @@ $req3->execute(array('id_vendu' => $donnees['id']));
 
 
 
-<?php echo $donnees3['mail']?>
+<?= $donnees3['mail']?>
 
 
          <?php }
@@ -111,10 +129,10 @@ $req3->execute(array('id_vendu' => $donnees['id']));
                 ?></td>
 
 
-<td><?php 
+<td><?php
 $req3 = $bdd->prepare('SELECT vendus.last_hero_timestamp lht
                        FROM  vendus
-                       WHERE  vendus.id = :id_vendu 
+                       WHERE  vendus.id = :id_vendu
                        ');
 $req3->execute(array('id_vendu' => $donnees['id']));
 
@@ -130,21 +148,21 @@ $req3->execute(array('id_vendu' => $donnees['id']));
           </tr>
            <?php }
               $req->closeCursor(); // Termine le traitement de la requête
-                
+
                 ?>
        </tbody>
         <tfoot>
           <tr>
             <th></th>
-           
-            
-            
+
+
+
             <th></th>
             <th></th>
             <th></th>
-            
+
           </tfoot>
-        
+
       </table>
 
 
@@ -160,5 +178,3 @@ $req3->execute(array('id_vendu' => $donnees['id']));
    header('Location: ../moteur/destroy.php') ;
 }
 ?>
-       
-      

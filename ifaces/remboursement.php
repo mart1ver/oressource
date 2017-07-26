@@ -1,5 +1,24 @@
-<?php session_start(); 
+<?php
 
+/*
+  Oressource
+  Copyright (C) 2014-2017  Martin Vert and Oressource devellopers
+
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU Affero General Public License as
+  published by the Free Software Foundation, either version 3 of the
+  License, or (at your option) any later version.
+
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU Affero General Public License for more details.
+
+  You should have received a copy of the GNU Affero General Public License
+  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+session_start();
 require_once('../moteur/dbconfig.php');
 
 //Vérification des autorisations de l'utilisateur et des variables de session requises pour l'affichage de cette page:
@@ -10,11 +29,11 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
 <div class="panel-body" >
       <fieldset>
       <legend>
-             <?php 
+             <?php
           // on determine le numero de la vente
          $req = $bdd->prepare("SELECT max(id) FROM ventes WHERE id_point_vente = :id ");
             $req->execute(array('id' => $_GET['numero']));
- 
+
            // On affiche chaque entree une à une
            while ($donnees = $req->fetch())
            {
@@ -23,10 +42,10 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
               $req->closeCursor(); // Termine le traitement de la requête
             //on affiche le nom du point de vente
             // On recupère tout le contenu de la table point de collecte
-          
+
             $req = $bdd->prepare("SELECT * FROM points_vente WHERE id = :id ");
             $req->execute(array('id' => $_GET['numero']));
- 
+
            // On affiche chaque entree une à une
            while ($donnees = $req->fetch())
            {
@@ -36,12 +55,12 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
            }
               $req->closeCursor(); // Termine le traitement de la requête
         ?>
-      </legend>   
-      </fieldset>     
+      </legend>
+      </fieldset>
     <div class="row">
    	<br>
       <div class="col-md-2 col-md-offset-2" style="width: 330px;" >
-     
+
 
        <div class="panel panel-danger" id="divID">
         <div class="panel-heading">
@@ -50,16 +69,16 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
     </span>
   </div>
   <div class="panel-body">
-     
+
 <form action="../moteur/remboursement_post.php" id="formulaire" method="post">
   <?php if ($_SESSION['saisiec'] == 'oui' AND (strpos($_SESSION['niveau'], 'e') !== false) ){ ?>
-      Date de la vente:  <input type="date" id="antidate" name="antidate" style="height:20px;" value=<?php echo date("Y-m-d") ?>>
+      Date de la vente:  <input type="date" id="antidate" name="antidate" style="height:20px;" value=<?= date("Y-m-d") ?>>
 <br>
 <br>
 <?php }?>
 <ul id="liste" class="list-group">
-   <li class="list-group-item">Réference: <?php echo $_GET['numero']?>#<?php echo $numero_vente?>, date: <?php echo date("d-m-Y") ?><br><?php echo $nom_pv;?><br><?php echo $adresse_pv;?>,<br>siret: <?php echo$_SESSION['siret'];?></li>
-  
+   <li class="list-group-item">Réference: <?= $_GET['numero']?>#<?= $numero_vente?>, date: <?= date("d-m-Y") ?><br><?= $nom_pv;?><br><?= $adresse_pv;?>,<br>siret: <?=$_SESSION['siret'];?></li>
+
 </ul>
  <ul class="list-group" id="total">
 </ul>
@@ -70,7 +89,7 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
 <input type="hidden"  id="narticles" name="narticles">
 <input type="hidden"  id="ptot" name="ptot">
 
-<input type="hidden" name ="id_point_vente" id="id_point_vente" value="<?php echo $_GET['numero']?>">
+<input type="hidden" name ="id_point_vente" id="id_point_vente" value="<?= $_GET['numero']?>">
     </form>
  <ul id="boutons" class="list-group">
         <button class="btn btn-danger btn-lg" onclick="encaisse();">Rembourser!</button>
@@ -81,24 +100,24 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
 
       </div>
       </div>
-      </div>  
-      
-   
+      </div>
+
+
     <div class="col-md-3" style="width: 220px;">
- 
+
       <div class="panel panel-danger">
         <div class="panel-heading">
     <h3 class="panel-title"id="nom_objet"><label>Objet:</label></h3>
   </div>
-  <div class="panel-body"> 
+  <div class="panel-body">
       Quantité: <input type="text" class="form-control" placeholder="Quantité" id="quantite" name="quantite" onfocus="fokus(this)" > Prix unitaire: <input type="text" class="form-control" placeholder="€" id="prix" name="prix" onfocus="fokus(this)">
 <input type="hidden"  id="id_type_objet" name="id_type_objet">
-<input type="hidden"  id="id_objet" name="id_objet">   
-<input type="hidden"  id="nom_objet0" name="nom_objet0">   
+<input type="hidden"  id="id_objet" name="id_objet">
+<input type="hidden"  id="nom_objet0" name="nom_objet0">
 
 
       <br>
-     
+
 
     <button type="button" class="btn btn-default btn-lg" onclick="ajout();">
     Ajouter
@@ -107,7 +126,7 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
 
     <div class="col-md-3" style="width: 200px;">
     <div class="row">
-    
+
     </div>
     <br>
     <div class="row">
@@ -140,34 +159,34 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
 
     </div>
 
- 
+
 <div class="col-md-3" >
 <div class="panel panel-danger">
         <div class="panel-heading">
     <h3 class="panel-title"><label>Type d'objet:</label></h3>
   </div>
-  <div class="panel-body"> 
-      
+  <div class="panel-body">
 
 
-            <?php 
+
+            <?php
             // On recupère tout le contenu de la table point de collecte
             $reponse = $bdd->query('SELECT * FROM type_dechets WHERE visible = "oui"');
- 
+
            // On affiche chaque entree une à une
            while ($donnees = $reponse->fetch())
            {
            ?>
       <div class="btn-group">
       <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" style="margin-left:8px; margin-top:16px;">
-      <span class="badge" id="cool" style="background-color:<?php echo$donnees['couleur']?>"><?php echo$donnees['nom']?></span>
+      <span class="badge" id="cool" style="background-color:<?=$donnees['couleur']?>"><?=$donnees['nom']?></span>
       </button>
       <ul class="dropdown-menu" role="menu">
-      <li><a href="javascript:edite('<?php echo$donnees['nom']?>','0','<?php echo$donnees['id']?>','0')" ><?php echo$donnees['nom']?></a></li>
+      <li><a href="javascript:edite('<?=$donnees['nom']?>','0','<?=$donnees['id']?>','0')" ><?=$donnees['nom']?></a></li>
       <li class="divider"></li>
 
 
-  <?php 
+  <?php
              // On recupère tout le contenu de la table grille_objets
            $req = $bdd->prepare('SELECT * FROM grille_objets WHERE id_type_dechet = :id_type_dechet AND visible = "oui"   ');
            $req->execute(array('id_type_dechet' => $donnees['id']));
@@ -176,36 +195,36 @@ if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($
            while ($donneesint = $req->fetch())
            {
            ?>
-    <li><a href="javascript:edite('<?php echo$donneesint['nom']?>','<?php echo$donneesint['prix']?>','<?php echo$donnees['id']?>','<?php echo$donneesint['id']?>')"><?php echo$donneesint['nom']?></a></li>
+    <li><a href="javascript:edite('<?=$donneesint['nom']?>','<?=$donneesint['prix']?>','<?=$donnees['id']?>','<?=$donneesint['id']?>')"><?=$donneesint['nom']?></a></li>
     </li>
            <?php }
            $req->closeCursor(); // Termine le traitement de la requête
-           ?> 
+           ?>
     </ul>
     </div>
-   
+
                 <?php }
                 $reponse->closeCursor(); // Termine le traitement de la requête
                 ?>
-    </div> 
+    </div>
 
 
 
     </div>
     <br>
-    <a href="ventes.php?numero=<?php echo $_GET['numero']?>&nom=<?php echo $_GET['nom']?>&adresse=<?php echo $_GET['adresse']?>"> 
+    <a href="ventes.php?numero=<?= $_GET['numero']?>&nom=<?= $_GET['nom']?>&adresse=<?= $_GET['adresse']?>">
     <button type="button"  class="btn btn-default pull-right" >
     Retour aux ventes
     </button>
     <a>
        <br><br>
-     
+
     </div>
   </div>
     </div>
-   
+
     <br>
-            <?php include "pied.php" ; ?> 
+            <?php include "pied.php" ; ?>
 <script type="text/javascript">
 "use strict";
 
@@ -218,17 +237,17 @@ what = that;
 
 function printdiv(divID)
     {
-if (parseInt(document.getElementById('nlignes').value) >= 1) 
-          { 
-            
-      
+if (parseInt(document.getElementById('nlignes').value) >= 1)
+          {
+
+
       var headstr = "<html><head><title></title></head><body><small>";
-      
- <?php if ($_SESSION['tva_active'] == 'oui'){?>
+
+ <?php if ($_SESSION['tva_active']){?>
   var prixtot =  parseFloat(document.getElementById('ptot').value).toFixed(2);
-  var prixht = parseFloat(prixtot).toFixed(2) / ( 1+parseFloat(<?php echo $_SESSION['taux_tva'] ?>).toFixed(2)/100 );
+  var prixht = parseFloat(prixtot).toFixed(2) / ( 1+parseFloat(<?= $_SESSION['taux_tva'] ?>).toFixed(2)/100 );
   var ptva = parseFloat(prixtot).toFixed(2)-parseFloat(prixht).toFixed(2)
-var footstr = "TVA à <?php echo $_SESSION['taux_tva'] ?>%"+" Prix H.T. ="+parseFloat(prixht).toFixed(2)+"€ TVA="+parseFloat(ptva).toFixed(2)+"€";
+var footstr = "TVA à <?= $_SESSION['taux_tva'] ?>%"+" Prix H.T. ="+parseFloat(prixht).toFixed(2)+"€ TVA="+parseFloat(ptva).toFixed(2)+"€";
 <?php
   }else{?>
 var footstr = "Association non assujettie à la TVA.</body></small> ";
@@ -247,9 +266,9 @@ var footstr = "Association non assujettie à la TVA.</body></small> ";
 
           //puis encaisse
            if ((parseInt(document.getElementById('nlignes').value) >= 1) && ((document.getElementById('quantite').value == "")||(document.getElementById('quantite').value == "0"))&&((document.getElementById('prix').value == "")||(document.getElementById('prix').value == "0")) )
-          { 
+          {
             document.getElementById('comm').value = document.getElementById('comm').value
-            
+
           document.getElementById("formulaire").submit();
           }
     }
@@ -258,8 +277,8 @@ var footstr = "Association non assujettie à la TVA.</body></small> ";
 
 
 function often(that) {
-if (isNaN(parseInt(document.getElementById('id_type_objet').value)) ) 
-          { 
+if (isNaN(parseInt(document.getElementById('id_type_objet').value)) )
+          {
           }
           else{
 
@@ -274,43 +293,43 @@ what.value = what.value + that.value;
 }
 
 function ajout() {
-     if (isNaN((parseFloat(document.getElementById('prix').value)*parseFloat(document.getElementById('quantite').value)).toFixed(2)) ) 
-         {} 
+     if (isNaN((parseFloat(document.getElementById('prix').value)*parseFloat(document.getElementById('quantite').value)).toFixed(2)) )
+         {}
           else
           {
 
-         
-if (isNaN(parseInt(document.getElementById('nlignes').value)) ) 
-          { 
+
+if (isNaN(parseInt(document.getElementById('nlignes').value)) )
+          {
           document.getElementById('nlignes').value = 1;
-          } 
-          else
-          {
-          document.getElementById('nlignes').value=parseInt(document.getElementById('nlignes').value)+ 1; 
           }
-if (isNaN(parseInt(document.getElementById('narticles').value)) ) 
-          { 
+          else
+          {
+          document.getElementById('nlignes').value=parseInt(document.getElementById('nlignes').value)+ 1;
+          }
+if (isNaN(parseInt(document.getElementById('narticles').value)) )
+          {
           document.getElementById('narticles').value = document.getElementById('quantite').value;
-          } 
+          }
           else
           {
-          document.getElementById('narticles').value=parseInt(document.getElementById('narticles').value)+parseInt(document.getElementById('quantite').value); 
-          }          
-if (isNaN(parseInt(document.getElementById('ptot').value)) ) 
-          { 
+          document.getElementById('narticles').value=parseInt(document.getElementById('narticles').value)+parseInt(document.getElementById('quantite').value);
+          }
+if (isNaN(parseInt(document.getElementById('ptot').value)) )
+          {
           document.getElementById('ptot').value = document.getElementById('prix').value*document.getElementById('quantite').value;
-          } 
+          }
           else
           {
-          document.getElementById('ptot').value=parseFloat(document.getElementById('ptot').value)+parseFloat(document.getElementById('prix').value*document.getElementById('quantite').value); 
-          }          
+          document.getElementById('ptot').value=parseFloat(document.getElementById('ptot').value)+parseFloat(document.getElementById('prix').value*document.getElementById('quantite').value);
+          }
 
              document.getElementById('liste').innerHTML += '<li class="list-group-item"><span class="badge">'+parseFloat(parseFloat(document.getElementById('prix').value)*parseFloat(document.getElementById('quantite').value)).toFixed(2)+'€'+'</span>'
              +document.getElementById('quantite').value+'*'+document.getElementById('nom_objet0').value
              +'<input type="hidden"  id="tid_type_objet'+parseInt(document.getElementById('nlignes').value)+'" name="tid_type_objet'+parseInt(document.getElementById('nlignes').value)+'"value="'+document.getElementById('id_type_objet').value+'">'
              +'<input type="hidden"  id="tid_objet'+parseInt(document.getElementById('nlignes').value)+'" name="tid_objet'+parseInt(document.getElementById('nlignes').value)+'"value="'+document.getElementById('id_objet').value+'">'
              +'<input type="hidden"  id="tquantite'+parseInt(document.getElementById('nlignes').value)+'" name="tquantite'+parseInt(document.getElementById('nlignes').value)+'"value="'+document.getElementById('quantite').value+'">'
-             +'<input type="hidden"  id="tprix'+parseInt(document.getElementById('nlignes').value)+'" name="tprix'+parseInt(document.getElementById('nlignes').value)+'"value="'+document.getElementById('prix').value+'"></li>';                                               
+             +'<input type="hidden"  id="tprix'+parseInt(document.getElementById('nlignes').value)+'" name="tprix'+parseInt(document.getElementById('nlignes').value)+'"value="'+document.getElementById('prix').value+'"></li>';
                document.getElementById('total').innerHTML = '<li class="list-group-item">Soit : '+document.getElementById('narticles').value+' article(s) pour : <span class="badge" style="float:right;">'+parseFloat(document.getElementById('ptot').value).toFixed(2)+'€</span></li>';
                document.getElementById('recaptotal').innerHTML = parseFloat(document.getElementById('ptot').value).toFixed(2)+'€';
                document.getElementById('nom_objet').innerHTML = "<label>Objet:</label>";
@@ -331,18 +350,18 @@ function edite(nom,prix,id_type_objet,id_objet) {
 
 }
 function encaisse() {
-  if (parseInt(document.getElementById('nlignes').value) >= 1) 
-          { 
-            
+  if (parseInt(document.getElementById('nlignes').value) >= 1)
+          {
+
           document.getElementById("formulaire").submit();
           }
                     }
 </script>
 
-            <?php 
-} 
+            <?php
+}
 else
-      { 
+      {
         header('Location:../moteur/destroy.php');
       }
 ?>

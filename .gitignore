@@ -1,2 +1,5 @@
 moteur/dbconfig.php
 data
+/nbproject/private/
+/nbproject
+_build

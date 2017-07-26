@@ -1,66 +1,74 @@
-<?php session_start();
+<?php
 
-//Vérification des autorisations de l'utilisateur et des variables de session requises pour l'utilisation de cette requête:
- if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 'k') !== false))
-{ 
+/*
+  Oressource
+  Copyright (C) 2014-2017  Martin Vert and Oressource devellopers
 
-//martin vert
-try
-            {
-            // On se connecte à MySQL
-            include('../moteur/dbconfig.php');
-            }
-            catch(Exception $e)
-            {
-            // En cas d'erreur, on affiche un message et on arrête tout
-            die('Erreur : '.$e->getMessage());
-            }
- 
-            // Si tout va bien, on peut continuer
- $req = $bdd->prepare("SELECT SUM(id) FROM points_vente WHERE nom = :nom AND id <> :id ");//SELECT `titre_affectation` FROM affectations WHERE titre_affectation = "conssomables" LIMIT 1
-$req->execute(array('nom' => $_POST['nom'],'id' => $_POST['id'] ));
-$donnees = $req->fetch();
-$req->closeCursor(); // Termine le traitement de la requête
-     
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU Affero General Public License as
+  published by the Free Software Foundation, either version 3 of the
+  License, or (at your option) any later version.
 
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU Affero General Public License for more details.
 
-if ($donnees['SUM(id)'] > 0) // SI le titre existe
+  You should have received a copy of the GNU Affero General Public License
+  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
-{
-header("Location:../ifaces/modification_points_vente.php?err=Un point de vente porte deja le meme nom!&nom=".$_POST['nom']."&adresse=".$_POST['adresse']."&surface=".$_POST['surface']."&commentaire=".$_POST['commentaire']."&couleur=".substr($_POST['couleur'],1));
-$req->closeCursor(); // Termine le traitement de la requête
+require_once('../core/session.php');
+
+session_start();
+
+// Vérification des autorisations de l'utilisateur et des variables de session requises pour l'utilisation de cette requête:
+if (isset($_SESSION['id']) && $_SESSION['systeme'] === "oressource" && is_allowed_config()) {
+  include_once('../moteur/dbconfig.php');
+
+  $id = filter_input(INPUT_POST, 'id', FILTER_VALIDATE_INT);
+  $nom = filter_input(INPUT_POST, 'nom', FILTER_SANITIZE_STRING);
+  $adresse = filter_input(INPUT_POST, 'adresse', FILTER_SANITIZE_STRING);
+  $surface = filter_input(INPUT_POST, 'surface', FILTER_VALIDATE_INT);
+  $commentaire = filter_input(INPUT_POST, 'commentaire', FILTER_SANITIZE_STRING);
+  // La regex capture SEULEMENT les couleurs en HEXA.
+  $couleur = filter_input(INPUT_POST, 'couleur', FILTER_VALIDATE_REGEXP, ['options' => ['regexp' =>'/(^#[0-9A-Fa-f]{6})/']]);
+
+  // TODO: rejeter si une des variables nulle.
+
+  $req = $bdd->prepare("SELECT
+    id
+    FROM points_vente
+    WHERE
+    id = :id
+    LIMIT 1");
+  $req->bindValue(':id', (int) $id, PDO::PARAM_INT);
+  $donnees = $req->fetch(PDO::FETCH_ASSOC);
+
+  // Si il existe pas
+  if (isset($donnees['id'])) {
+    $base = 'Location:../ifaces/edition_points_vente.php?';
+    $error = 'err=Aucun point de vente porte deja le meme nom mais vous pouvez le creer!';
+    header($base . $error . '&nom=' . $nom . '&adresse=' . $adresse . '&surface='
+      . $surface . '&commentaire=' . $commentaire . '&couleur=' . substr($couleur, 1));
+  } else {
+    $req = $bdd->prepare('UPDATE points_vente
+      SET nom = :nom,
+      adresse = :adresse ,
+      commentaire = :commentaire,
+      surface_vente = :surface_vente,
+      couleur = :couleur
+      WHERE id = :id');
+    $req->bindvalue(':adresse', $adresse, PDO::PARAM_STR);
+    $req->bindvalue(':commentaire', $commentaire, PDO::PARAM_STR);
+    $req->bindvalue(':surface_vente', $surface, PDO::PARAM_INT);
+    $req->bindvalue(':couleur', $couleur, PDO::PARAM_STR);
+    $req->bindvalue(':nom', $nom, PDO::PARAM_STR);
+    $req->bindValue(':id', $id, PDO::PARAM_INT);
+    $req->execute();
+    // Redirection du visiteur vers la page de gestion des points de collecte
+    header('Location:../ifaces/edition_points_vente.php?msg=' . $nom . ' bien mis a jour');
+  }
+} else {
+  header('Location:../moteur/destroy.php');
 }
-
-else 
-{
-// Connexion à la base de données
-try
-{
-include('dbconfig.php');
-}
-catch(Exception $e)
-{
-        die('Erreur : '.$e->getMessage());
-}
- 
-// Insertion du post à l'aide d'une requête préparée
-// mot de passe crypté md5 
-
-// Insertion du post à l'aide d'une requête préparée 
-$req = $bdd->prepare('UPDATE points_vente SET nom = :nom, adresse = :adresse , commentaire = :commentaire, surface_vente = :surface_vente, couleur = :couleur  WHERE id = :id');
-$req->execute(array('nom' => $_POST['nom'],'adresse' => $_POST['adresse'],'commentaire' => $_POST['commentaire'],'surface_vente' => $_POST['surface'],'couleur' => $_POST['couleur'],'id' => $_POST['id']));
-
-  $req->closeCursor();
-
-
-
-
-// Redirection du visiteur vers la page de gestion des points de collecte
-header('Location:../ifaces/edition_points_vente.php');
-}
-}
-else { 
-header('Location:../moteur/destroy.php');
-     }
-?>
-

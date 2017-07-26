@@ -1,5 +1,24 @@
-<?php session_start(); 
+<?php
 
+/*
+  Oressource
+  Copyright (C) 2014-2017  Martin Vert and Oressource devellopers
+
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU Affero General Public License as
+  published by the Free Software Foundation, either version 3 of the
+  License, or (at your option) any later version.
+
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU Affero General Public License for more details.
+
+  You should have received a copy of the GNU Affero General Public License
+  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+session_start();
 require_once('../moteur/dbconfig.php');
 
 //Vérification des autorisations de l'utilisateur et des variables de session requisent pour l'affichage de cette page:
@@ -9,23 +28,23 @@ require_once('../moteur/dbconfig.php');
 
 
     <div class="container">
-        <h1>Édition du profil utilisateur n°:<?php echo $_POST['id']?>, <?php echo $_POST['mail']?></h1> 
-         
-         
-    <br>     
+        <h1>Édition du profil utilisateur n°:<?= $_POST['id']?>, <?= $_POST['mail']?></h1>
+
+
+    <br>
 <div class="panel-body">
         <div class="row">
             <form action="../moteur/modification_utilisateur_post.php" method="post">
-  <div class="col-md-2"><label for="nom">Nom:</label> <input type="text" value ="<?php echo $_POST['nom']?>" name="nom" id="nom" class="form-control " required autofocus><br>
-                        <label for="prenom">Prénom:</label> <input type="text" value ="<?php echo $_POST['prenom']?>" name="prenom" id="prenom" class="form-control " required><br>
-                        <label for="mail">Mail:</label> <input type="email" value ="<?php echo $_POST['mail']?>" name="mail" id="mail" class="form-control " required ><br>
-<a href="edition_mdp_admin.php?id=<?php echo $_POST['id']?>&mail=<?php echo $_POST['mail']?>">
+  <div class="col-md-2"><label for="nom">Nom:</label> <input type="text" value ="<?= $_POST['nom']?>" name="nom" id="nom" class="form-control " required autofocus><br>
+                        <label for="prenom">Prénom:</label> <input type="text" value ="<?= $_POST['prenom']?>" name="prenom" id="prenom" class="form-control " required><br>
+                        <label for="mail">Mail:</label> <input type="email" value ="<?= $_POST['mail']?>" name="mail" id="mail" class="form-control " required ><br>
+<a href="edition_mdp_admin.php?id=<?= $_POST['id']?>&mail=<?= $_POST['mail']?>">
 <button name="creer" type="button" class="btn btn btn-danger">Changer le mot de passe</button>
 </a>
 
                           </div>
   <div class="col-md-4"><div class="alert alert-info"><label>Permissions d'accès</label> <br>
-          
+
           <input type="checkbox" name="niveaubi" id="niveaubi" value="bi"<?php if((strpos($_POST['niveau'], 'bi') !== false)){ echo "checked";} ?>> <label for="niveaubi">Bilans</label><br>
 
           <input type="checkbox" name="niveaug" id="niveaug" value="g"<?php if((strpos($_POST['niveau'], 'g') !== false)){ echo "checked";} ?>> <label for="niveaug">Gestion quotidienne</label><br>
@@ -38,51 +57,51 @@ require_once('../moteur/dbconfig.php');
         <?php }?>
 
      </div>
-          
-  <input type="hidden" name ="id" id="id" value="<?php echo $_POST['id']?>">
+
+  <input type="hidden" name ="id" id="id" value="<?= $_POST['id']?>">
   </div>
 <div class="col-md-4"><div class="alert alert-info"><label for="niveauc">Points de collecte:</label><br>
-<?php 
+<?php
             $reponse = $bdd->query('SELECT * FROM points_collecte');
             // On affiche chaque entree une à une
            while ($donnees = $reponse->fetch())
            {?>
-         
 
-            <input type="checkbox" name="niveauc<?php echo $donnees['id']; ?>" id="niveauc<?php echo $donnees['id']; ?>" <?php if((strpos($_POST['niveau'], 'c'.$donnees['id']) !== false)){ echo "checked";} ?>> <?php echo '<label for="niveauc'.$donnees['id'].'">'.$donnees['nom'].'</label>'; ?> <br><br>
+
+            <input type="checkbox" name="niveauc<?= $donnees['id']; ?>" id="niveauc<?= $donnees['id']; ?>" <?php if((strpos($_POST['niveau'], 'c'.$donnees['id']) !== false)){ echo "checked";} ?>> <?= '<label for="niveauc'.$donnees['id'].'">'.$donnees['nom'].'</label>'; ?> <br><br>
               <?php }
               $reponse->closeCursor(); // Termine le traitement de la requête
                  ?>
 </div>
-          
+
                                             <div class="alert alert-info"><label for="niveauv">Points de vente:</label><br>
-          <?php 
+          <?php
             // On recupère tout le contenu de la table point de vente
             $reponse = $bdd->query('SELECT * FROM points_vente');
             // On affiche chaque entree une à une
            while ($donnees = $reponse->fetch())
            {?>
-         
 
-            <input type="checkbox" name="niveauv<?php echo $donnees['id']; ?>" id="niveauv<?php echo $donnees['id']; ?>" value="v<?php echo $donnees['id']; ?>"<?php if((strpos($_POST['niveau'], 'v'.$donnees['id']) !== false)){ echo "checked";} ?>> <?php echo '<label for="niveauv'.$donnees['id'].'">'.$donnees['nom'].'</label>'; ?> <br><br>
-              
-               
-              
-          
-          
-   
+
+            <input type="checkbox" name="niveauv<?= $donnees['id']; ?>" id="niveauv<?= $donnees['id']; ?>" value="v<?= $donnees['id']; ?>"<?php if((strpos($_POST['niveau'], 'v'.$donnees['id']) !== false)){ echo "checked";} ?>> <?= '<label for="niveauv'.$donnees['id'].'">'.$donnees['nom'].'</label>'; ?> <br><br>
+
+
+
+
+
+
               <?php }
               $reponse->closeCursor(); // Termine le traitement de la requête
                  ?></div>
                                             <div class="alert alert-info"><label for="niveaus">Points de sortie hors-boutique:</label><br>
-          <?php 
+          <?php
             // On recupère tout le contenu de la table point de vente
             $reponse = $bdd->query('SELECT * FROM points_sortie');
             // On affiche chaque entree une à une
            while ($donnees = $reponse->fetch())
            {?>
-                     <input type="checkbox" name="niveaus<?php echo $donnees['id']; ?>" id="niveaus<?php echo $donnees['id']; ?>" value="s<?php echo $donnees['id']; ?>"<?php if((strpos($_POST['niveau'], 's'.$donnees['id']) !== false)){ echo "checked";} ?>> <?php echo '<label for="niveaus'.$donnees['id'].'">'.$donnees['nom'].'</label>'; ?> <br><br>
-           
+                     <input type="checkbox" name="niveaus<?= $donnees['id']; ?>" id="niveaus<?= $donnees['id']; ?>" value="s<?= $donnees['id']; ?>"<?php if((strpos($_POST['niveau'], 's'.$donnees['id']) !== false)){ echo "checked";} ?>> <?= '<label for="niveaus'.$donnees['id'].'">'.$donnees['nom'].'</label>'; ?> <br><br>
+
               <?php }
               $reponse->closeCursor(); // Termine le traitement de la requête
                  ?>
@@ -93,16 +112,16 @@ require_once('../moteur/dbconfig.php');
 
 
 
-       
+
 
 
 
 
         </div></div>
   <div class="col-md-4"><br></div>
-  
 
-  
+
+
 
 </div>
 <div class="row"><div class="col-md-3 col-md-offset-3"><br><button name="modifier" class="btn btn-warning">MODIFIER!</button></form>
@@ -113,11 +132,11 @@ require_once('../moteur/dbconfig.php');
 
 </div></div>
       </div>
-     
-      
+
+
   </div>
-  
-  
+
+
 
 <?php include "pied.php";
 }
@@ -126,5 +145,3 @@ require_once('../moteur/dbconfig.php');
     header('Location: ../moteur/destroy.php') ;
 }
 ?>
-       
-      

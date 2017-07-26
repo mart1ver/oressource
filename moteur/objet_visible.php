@@ -1,38 +1,43 @@
-<?php session_start();
+<?php
 
-//Vérification des autorisations de l'utilisateur et des variables de session requises pour l'utilisation de cette requête:
- if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 'g') !== false))
-{ 
+/*
+  Oressource
+  Copyright (C) 2014-2017  Martin Vert and Oressource devellopers
 
-//martin vert
-// Connexion à la base de données
-try
-{
-include('dbconfig.php');
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU Affero General Public License as
+  published by the Free Software Foundation, either version 3 of the
+  License, or (at your option) any later version.
+
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU Affero General Public License for more details.
+
+  You should have received a copy of the GNU Affero General Public License
+  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+require_once('../core/validation.php');
+require_once('../core/session.php');
+require_once('../core/requetes.php');
+
+session_start();
+
+if (isset($_SESSION['id'])
+  && $_SESSION['systeme'] === "oressource"
+  && is_allowed_gestion()) {
+  require_once('dbconfig.php');
+
+  $id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
+  $visible = bool_to_oui_non(filter_input(INPUT_GET, 'visible', FILTER_VALIDATE_BOOLEAN));
+  if ($id && $visible) {
+    grille_objects_update_visible($bdd, $id, $visible);
+  } else {
+    header('Location:../moteur/destroy.php');
+  }
+
+  header('Location:../ifaces/grilles_prix.php?typo=' . $id);
+} else {
+  header('Location:../moteur/destroy.php');
 }
-catch(Exception $e)
-{
-        die('Erreur : '.$e->getMessage());
-}
- 
-// Insertion du post à l'aide d'une requête préparée
-// mot de passe crypté md5 
-
-// Insertion du post à l'aide d'une requête préparée
-$req = $bdd->prepare('UPDATE grille_objets SET visible = :visible WHERE id = :id');
-$req->execute(array('visible' => $_POST['visible'],'id' => $_POST['id']));
-
-  $req->closeCursor();
-
-
-
-
-// Redirection du visiteur vers la page de gestion des affectation
-header('Location:../ifaces/grilles_prix.php'."?typo=".$_POST['typo']);
-
-}
-else { 
-header('Location:../moteur/destroy.php');
-     }
-?>
-
