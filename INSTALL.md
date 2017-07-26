@@ -11,8 +11,6 @@ sudo apt-get install mysql-server apache2 php7.0-mysql libapache2-mod-php7.0 git
 Note: Il est aussi possible d'utiliser `php7.0-fpm` ou d'utiliser un autre
 serveur web tel que `ngnix`. De même `mariadb` remplace très bien `mysql`.
 
-Ou bien d'utiliser `php5`.
-
 ## Clone du projet
 
 ```shell
@@ -28,9 +26,9 @@ Créer l'utilisateur oressource
 
 ```shell
 mysql --user=root --host=localhost -e \
-  'CREATE USER 'oressource'@'localhost' IDENTIFIED BY 'mot_de_passe_a_changer'; \
-  GRANT ALL PRIVILEGES ON oressource.* TO 'oressource'@'localhost' ; \
-  CREATE DATABASE oressource;'
+  "CREATE USER 'oressource'@'localhost' IDENTIFIED BY 'mot_de_passe_a_changer';
+  GRANT ALL PRIVILEGES ON oressource.* TO 'oressource'@'localhost';
+  CREATE DATABASE oressource;"
 ```
 
 ### Charger les données
