@@ -20,18 +20,10 @@
 
 session_start();
 if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($_SESSION['niveau'], 'k') !== false)) {
-  try {
-    include('dbconfig.php');
-  } catch (Exception $e) {
-    die('Erreur : ' . $e->getMessage());
-  }
-
+  require_once '../moteur/dbconfig.php';
   $req = $bdd->prepare('UPDATE type_sortie SET nom = :nom,  description = :description, couleur = :couleur  WHERE id = :id');
   $req->execute(['nom' => $_POST['nom'], 'description' => $_POST['description'], 'couleur' => $_POST['couleur'], 'id' => $_POST['id']]);
-
   $req->closeCursor();
-
-
   header('Location:../ifaces/edition_types_sortie.php');
 } else {
   header('Location:../moteur/destroy.php');

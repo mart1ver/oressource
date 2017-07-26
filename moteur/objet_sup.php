@@ -20,14 +20,9 @@
 
 session_start();
 if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($_SESSION['niveau'], 'g') !== false)) {
-  try {
-    include('dbconfig.php');
-  } catch (Exception $e) {
-    die('Erreur : ' . $e->getMessage());
-  }
+  require_once '../moteur/dbconfig.php';
   $req = $bdd->prepare('DELETE FROM grille_objets WHERE id = :id');
   $req->execute(['id' => $_POST['id']]);
-
   $req->closeCursor();
   header('Location:../ifaces/grilles_prix.php?msg=Objet definitivement supprimé des grilles de prix.' . '&typo=' . $_POST['typo']);
 } else {

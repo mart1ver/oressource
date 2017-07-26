@@ -20,12 +20,7 @@
 
 session_start();
 if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($_SESSION['niveau'], 'k') !== false)) {
-  try {
-    include('../moteur/dbconfig.php');
-  } catch (Exception $e) {
-    die('Erreur : ' . $e->getMessage());
-  }
-
+  require_once '../moteur/dbconfig.php';
 
   $req = $bdd->prepare('SELECT SUM(id) FROM points_sortie WHERE nom = :nom ');
   $req->execute(['nom' => $_POST['nom']]);
@@ -34,15 +29,7 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($
 
   if ($donnees['SUM(id)'] > 0) { // SI le titre existe
     header('Location:../ifaces/edition_points_sortie.php?err=Un point de sortie porte deja le meme nom!&nom=' . $_POST['nom'] . '&adresse=' . $_POST['adresse'] . '&pesee_max=' . $_POST['pesee_max'] . '&commentaire=' . $_POST['commentaire'] . '&couleur=' . substr($_POST['couleur'], 1));
-    $req->closeCursor();
   } else {
-    $req->closeCursor();
-    try {
-      include('dbconfig.php');
-    } catch (Exception $e) {
-      die('Erreur : ' . $e->getMessage());
-    }
-
     $req = $bdd->prepare('INSERT INTO points_sortie (nom, adresse, couleur, commentaire, pesee_max, visible) VALUES(?, ?, ?, ?, ?, ?)');
     $req->execute([$_POST['nom'], $_POST['adresse'], $_POST['couleur'], $_POST['commentaire'], $_POST['pesee_max'], 'oui']);
     $req->closeCursor();

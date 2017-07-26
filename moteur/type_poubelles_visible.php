@@ -20,11 +20,10 @@
 
 session_start();
 if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($_SESSION['niveau'], 'g') !== false)) {
-  include('dbconfig.php');
 
+  require_once '../moteur/dbconfig.php';
   $req = $bdd->prepare('UPDATE types_poubelles SET visible = :visible WHERE id = :id');
   $req->execute(['visible' => $_POST['visible'], 'id' => $_POST['id']]);
-
   header('Location:../ifaces/edition_types_poubelles.php');
 } else {
   header('Location:../moteur/destroy.php');

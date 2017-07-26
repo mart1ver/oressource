@@ -66,7 +66,6 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && is_allowe
     $req->bindvalue(':nom', $nom, PDO::PARAM_STR);
     $req->bindValue(':id', $id, PDO::PARAM_INT);
     $req->execute();
-
     header('Location:../ifaces/edition_points_vente.php?msg=' . $nom . ' bien mis a jour');
   }
 } else {

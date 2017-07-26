@@ -20,14 +20,8 @@
 
 session_start();
 if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($_SESSION['niveau'], 'j') !== false)) {
-
-  //on determine le nombre total de type dechets evac
+  require_once '../moteur/dbconfig.php';
   $id_dechets = '';
-  try {
-    include('dbconfig.php');
-  } catch (Exception $e) {
-    die('Erreur : ' . $e->getMessage());
-  }
   $reponsesa = $bdd->query('SELECT id FROM type_dechets_evac');
 
   while ($donneessa = $reponsesa->fetch()) {
@@ -35,19 +29,12 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($
       $id_dechets = $id_dechets . 'a' . $donneessa['id'];
     }
   }
-  $reponsesa->closeCursor();
-  try {
-    include('dbconfig.php');
-  } catch (Exception $e) {
-    die('Erreur : ' . $e->getMessage());
-  }
 
+  $reponsesa->closeCursor();
   $req = $bdd->prepare('UPDATE filieres_sortie SET nom = :nom, id_type_dechet_evac = :id_type_dechet_evac, description = :description, couleur = :couleur  WHERE id = :id');
   $req->execute(['nom' => $_POST['nom'], 'id_type_dechet_evac' => $id_dechets,
     'description' => $_POST['description'], 'couleur' => $_POST['couleur'], 'id' => $_POST['id']]);
-
   $req->closeCursor();
-
 
   header('Location:../ifaces/edition_filieres_sortie.php');
 } else {

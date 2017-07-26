@@ -20,11 +20,9 @@
 
 session_start();
 if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($_SESSION['niveau'], 'g') !== false)) {
-  include('dbconfig.php');
-
+  require_once '../moteur/dbconfig.php';
   $req = $bdd->prepare('UPDATE type_contenants SET visible = :visible WHERE id = :id');
   $req->execute(['visible' => $_POST['visible'], 'id' => $_POST['id']]);
-
   header('Location:../ifaces/edition_types_contenants.php');
 } else {
   header('Location:../moteur/destroy.php');

@@ -20,20 +20,11 @@
 
 session_start();
 if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($_SESSION['niveau'], 'h') !== false)) {
-  try {
-    include('dbconfig.php');
-  } catch (Exception $e) {
-    die('Erreur : ' . $e->getMessage());
-  }
-
-
-
+  require_once '../moteur/dbconfig.php';
   $req = $bdd->prepare('UPDATE sorties SET   id_last_hero = :id_last_hero, last_hero_timestamp = NOW(),  commentaire = :commentaire
     WHERE id = :id');
   $req->execute(['id' => $_POST['id'], 'id_last_hero' => $_SESSION['id'], 'commentaire' => $_POST['commentaire']]);
   $req->closeCursor();
-
-
   header('Location:../ifaces/verif_sorties.php?numero=' . $_POST['npoint'] . '&date1=' . $_POST['date1'] . '&date2=' . $_POST['date2']);
 } else {
   header('Location:../moteur/destroy.php');

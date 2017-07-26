@@ -19,104 +19,68 @@
  */
 
 session_start();
-if (isset($_POST['adh'])) {
-  $adh = 'oui';
-} else {
-  $adh = 'non';
-}
 
-if ($_POST['saisiec_user'] === 'oui' && (strpos($_POST['niveau_user'], 'e') !== false)) {
-  $antidate = $_POST['antidate'] . date(' H:i:s');
-  try {
-    include('dbconfig.php');
-  } catch (Exception $e) {
-    die('Erreur : ' . $e->getMessage());
-  }
-
-  $req = $bdd->prepare('INSERT INTO ventes (timestamp, adherent, commentaire, id_point_vente, id_moyen_paiement, id_createur) VALUES(?,?, ?, ?, ?, ?)');
-  $req->execute([$antidate, $adh, $_POST['comm'], $_POST['id_point_vente'], $_POST['moyen'], $_POST['id_user']]);
-  $id_vente = $bdd->lastInsertId();
-  $req->closeCursor();
-
-  $i = 1;
-  while ($i <= $_POST['nlignes']) {
-    if (isset($_POST[$tid_type_objet])) {
-      $tid_objet = 'tid_objet' . $i;
-      $tquantite = 'tquantite' . $i;
-      $tprix = 'tprix' . $i;
-      try {
-        include('dbconfig.php');
-      } catch (Exception $e) {
-        die('Erreur : ' . $e->getMessage());
-      }
-      $req = $bdd->prepare('INSERT INTO vendus (timestamp, id_vente,  id_type_dechet, id_objet, quantite, prix, id_createur) VALUES(?, ?,?, ?, ?, ?, ?)');
-      $req->execute([$antidate, $id_vente, $_POST[$tid_type_objet], $_POST[$tid_objet], $_POST[$tquantite], $_POST[$tprix], $_POST['id_user']]);
-      $id_vendu = $bdd->lastInsertId();
-      $req->closeCursor();
-
-      $tmasse = 'tmasse' . $i;
-      if (isset($_POST[$tmasse])) {
-        try {
-          include('dbconfig.php');
-        } catch (Exception $e) {
-          die('Erreur : ' . $e->getMessage());
-        }
-        $req = $bdd->prepare('INSERT INTO pesees_vendus (timestamp,id_vendu,  masse,quantite, id_createur) VALUES(?,?,?,?,?)');
-        $req->execute([$antidate, $id_vendu, $_POST[$tmasse], $_POST[$tquantite], $_POST['id_user']]);
-        $req->closeCursor();
-      }
-    }
-    $i++;
-  }
-
-  header('Location:../ifaces/ventes.php?numero=' . $_POST['id_point_vente']);
-} else {
-  try {
-    include('dbconfig.php');
-  } catch (Exception $e) {
-    die('Erreur : ' . $e->getMessage());
-  }
-
-  $req = $bdd->prepare('INSERT INTO ventes (adherent, commentaire, id_point_vente, id_moyen_paiement, id_createur) VALUES(?, ?, ?, ?, ?)');
-  $req->execute([$adh, $_POST['comm'], $_POST['id_point_vente'], $_POST['moyen'], $_POST['id_user']]);
-  $id_vente = $bdd->lastInsertId();
-  $req->closeCursor();
-  $i = 1;
-
-  while ($i <= $_POST['nlignes']) {
-    if (isset($_POST[$tid_type_objet])) {
-      $tid_objet = 'tid_objet' . $i;
-      $tquantite = 'tquantite' . $i;
-      $tprix = 'tprix' . $i;
-      try {
-        include('dbconfig.php');
-      } catch (Exception $e) {
-        die('Erreur : ' . $e->getMessage());
-      }
-
-      $req = $bdd->prepare('INSERT INTO vendus (id_vente,  id_type_dechet, id_objet, quantite, prix, id_createur) VALUES(?,?, ?, ?, ?, ?)');
-      $req->execute([$id_vente, $_POST[$tid_type_objet], $_POST[$tid_objet], $_POST[$tquantite], $_POST[$tprix], $_POST['id_user']]);
-      $id_vendu = $bdd->lastInsertId();
-      $req->closeCursor();
-      $tmasse = 'tmasse' . $i;
-
-      if (isset($_POST[$tmasse])) {
-        try {
-          include('dbconfig.php');
-        } catch (Exception $e) {
-          die('Erreur : ' . $e->getMessage());
-        }
-        $req = $bdd->prepare('INSERT INTO pesees_vendus (id_vendu,  masse,quantite, id_createur) VALUES(?,?,?,?)');
-        $req->execute([$id_vendu, $_POST[$tmasse], $_POST[$tquantite], $_POST['id_user']]);
-        $req->closeCursor();
-      }
-    }
-    $i++;
-  }
-  header('Location:../ifaces/ventes.php?numero=' . $_POST['id_point_vente']);
-}
 if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($_SESSION['niveau'], 'v' . $_GET['numero']) !== false)) {
+  require_once '../moteur/dbconfig.php';
+  $adh = isset($_POST['adh']) ? 'oui' : 'non';
 
+  if ($_POST['saisiec_user'] === 'oui' && (strpos($_POST['niveau_user'], 'e') !== false)) {
+    $antidate = $_POST['antidate'] . date(' H:i:s');
+    $req = $bdd->prepare('INSERT INTO ventes (timestamp, adherent, commentaire, id_point_vente, id_moyen_paiement, id_createur) VALUES(?,?, ?, ?, ?, ?)');
+    $req->execute([$antidate, $adh, $_POST['comm'], $_POST['id_point_vente'], $_POST['moyen'], $_POST['id_user']]);
+    $id_vente = $bdd->lastInsertId();
+    $req->closeCursor();
+
+    $i = 1;
+    while ($i <= $_POST['nlignes']) {
+      if (isset($_POST[$tid_type_objet])) {
+        $tid_objet = 'tid_objet' . $i;
+        $tquantite = 'tquantite' . $i;
+        $tprix = 'tprix' . $i;
+        $req = $bdd->prepare('INSERT INTO vendus (timestamp, id_vente,  id_type_dechet, id_objet, quantite, prix, id_createur) VALUES(?, ?,?, ?, ?, ?, ?)');
+        $req->execute([$antidate, $id_vente, $_POST[$tid_type_objet], $_POST[$tid_objet], $_POST[$tquantite], $_POST[$tprix], $_POST['id_user']]);
+        $id_vendu = $bdd->lastInsertId();
+        $req->closeCursor();
+
+        $tmasse = 'tmasse' . $i;
+        if (isset($_POST[$tmasse])) {
+          $req = $bdd->prepare('INSERT INTO pesees_vendus (timestamp,id_vendu,  masse,quantite, id_createur) VALUES(?,?,?,?,?)');
+          $req->execute([$antidate, $id_vendu, $_POST[$tmasse], $_POST[$tquantite], $_POST['id_user']]);
+          $req->closeCursor();
+        }
+      }
+      $i++;
+    }
+    header('Location:../ifaces/ventes.php?numero=' . $_POST['id_point_vente']);
+  } else {
+
+    $req = $bdd->prepare('INSERT INTO ventes (adherent, commentaire, id_point_vente, id_moyen_paiement, id_createur) VALUES(?, ?, ?, ?, ?)');
+    $req->execute([$adh, $_POST['comm'], $_POST['id_point_vente'], $_POST['moyen'], $_POST['id_user']]);
+    $id_vente = $bdd->lastInsertId();
+    $req->closeCursor();
+    $i = 1;
+
+    while ($i <= $_POST['nlignes']) {
+      if (isset($_POST[$tid_type_objet])) {
+        $tid_objet = 'tid_objet' . $i;
+        $tquantite = 'tquantite' . $i;
+        $tprix = 'tprix' . $i;
+        $req = $bdd->prepare('INSERT INTO vendus (id_vente,  id_type_dechet, id_objet, quantite, prix, id_createur) VALUES(?,?, ?, ?, ?, ?)');
+        $req->execute([$id_vente, $_POST[$tid_type_objet], $_POST[$tid_objet], $_POST[$tquantite], $_POST[$tprix], $_POST['id_user']]);
+        $id_vendu = $bdd->lastInsertId();
+        $req->closeCursor();
+        $tmasse = 'tmasse' . $i;
+
+        if (isset($_POST[$tmasse])) {
+          $req = $bdd->prepare('INSERT INTO pesees_vendus (id_vendu,  masse,quantite, id_createur) VALUES(?,?,?,?)');
+          $req->execute([$id_vendu, $_POST[$tmasse], $_POST[$tquantite], $_POST['id_user']]);
+          $req->closeCursor();
+        }
+      }
+      $i++;
+    }
+    header('Location:../ifaces/ventes.php?numero=' . $_POST['id_point_vente']);
+  }
 } else {
   header('Location:../moteur/destroy.php?motif=1');
 }

@@ -20,12 +20,7 @@
 
 session_start();
 if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($_SESSION['niveau'], 'v' . $_GET['numero']) !== false)) {
-  try {
-    include('../moteur/dbconfig.php');
-  } catch (Exception $e) {
-    die('Erreur : ' . $e->getMessage());
-  }
-  // On recupère tout le contenu de la table point de collecte
+  require_once '../moteur/dbconfig.php';
   $reponse = $bdd->query('SELECT cr FROM `description_structure`');
   while ($donnees = $reponse->fetch()) {
     $code = $donnees['cr'];

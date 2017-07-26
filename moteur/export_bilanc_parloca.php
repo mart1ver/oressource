@@ -49,11 +49,7 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($
     $xls_output .= "\n\r";
     $xls_output .= 'localité:' . "\t" . 'masse collecté:' . "\t" . 'nombre de collectes:' . "\t";
     $xls_output .= "\n\r";
-    try {
-      include('../moteur/dbconfig.php');
-    } catch (Exception $e) {
-      die('Erreur : ' . $e->getMessage());
-    }
+    require_once '../moteur/dbconfig.php';
     $reponse = $bdd->prepare('SELECT
       localites.nom,SUM(pesees_collectes.masse) somme,pesees_collectes.timestamp,localites.id id,COUNT(distinct collectes.id) ncol
       FROM pesees_collectes,collectes,localites
@@ -64,11 +60,8 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($
 
     while ($donnees = $reponse->fetch()) {
       $xls_output .= $donnees['nom'] . "\t" . $donnees['somme'] . "\t" . $donnees['ncol'] . "\t" . "\n";
-      try {
-        include('../moteur/dbconfig.php');
-      } catch (Exception $e) {
-        die('Erreur : ' . $e->getMessage());
-      }
+      require_once '../moteur/dbconfig.php';
+
       $reponse2 = $bdd->prepare('SELECT localites.couleur,type_dechets.nom, sum(pesees_collectes.masse) somme
         FROM type_dechets,pesees_collectes ,localites , collectes
         WHERE pesees_collectes.timestamp BETWEEN :du AND :au
@@ -101,11 +94,7 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($
     $xls_output .= "\n\r";
 
     // on determine les masses totales collèctés sur cete periode(pour un point donné)
-    try {
-      include('../moteur/dbconfig.php');
-    } catch (Exception $e) {
-      die('Erreur : ' . $e->getMessage());
-    }
+    require_once '../moteur/dbconfig.php';
     $reponse = $bdd->prepare('SELECT
       localites.nom,SUM(pesees_collectes.masse) somme,pesees_collectes.timestamp,localites.id,COUNT(distinct collectes.id) ncol
       FROM pesees_collectes,collectes,localites
@@ -119,11 +108,8 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($
     while ($donnees = $reponse->fetch()) {
       $xls_output .= $donnees['nom'] . "\t" . $donnees['somme'] . "\t" . $donnees['ncol'] . "\t" . "\n";
 
-      try {
-        include('../moteur/dbconfig.php');
-      } catch (Exception $e) {
-        die('Erreur : ' . $e->getMessage());
-      }
+      require_once '../moteur/dbconfig.php';
+
       $reponse2 = $bdd->prepare('SELECT type_dechets.couleur,type_dechets.nom, sum(pesees_collectes.masse) somme
         FROM type_dechets,pesees_collectes ,type_collecte , collectes
         WHERE pesees_collectes.timestamp BETWEEN :du AND :au
