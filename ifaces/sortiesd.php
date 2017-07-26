@@ -25,11 +25,7 @@ require_once('../moteur/dbconfig.php');
 
 $numero = filter_input(INPUT_GET, 'numero', FILTER_VALIDATE_INT);
 
-//Vérification des autorisations de l'utilisateur et des variables de session requises pour l'affichage de cette page:
-if (isset($_SESSION['id'])
-  && $_SESSION['systeme'] === "oressource"
-  && is_allowed_sortie_id($numero)) {
-
+if (is_valid_session() && is_allowed_sortie_id($numero)) {
   if (!affichage_sortie_dechetterie()) {
     header("Location:sortiesp.php?numero=" . $numero);
     die();
@@ -46,7 +42,7 @@ if (isset($_SESSION['id'])
 
     <nav class="navbar">
       <div class="header-header">
-        <h1><?= $point_sortie['nom'] ?></h1>
+        <h1><?= $point_sortie['nom']; ?></h1>
       </div>
       <ul class="nav nav-tabs">
         <?php if (affichage_sortie_poubelle()) { ?><li><a href="sortiesp.php?numero=<?= $numero ?>">Poubelles</a></li><?php } ?>
@@ -68,7 +64,7 @@ if (isset($_SESSION['id'])
           <form id="formulaire">
             <?php if (is_allowed_edit_date()) { ?>
               <label for="antidate">Date de la sortie: </label>
-              <input type="date" id="antidate" name="antidate" style="width:130px; height:20px;" value="<?= $date->format('Y-m-d') ?>">
+              <input type="date" id="antidate" name="antidate" style="width:130px; height:20px;" value="<?= $date->format('Y-m-d'); ?>">
             <?php } ?>
             <ul class="list-group" id="transaction">  <!--start Ticket Caisse -->
               <!-- Remplis via JavaScript voir script de la page -->
@@ -84,27 +80,27 @@ if (isset($_SESSION['id'])
     <!-- Pavee de saisie numerique vcir numpad.js -->
     <div id="numpad" class="col-md-4"" style="width: 220px;"></div>
 
-  <div class="col-md-4">
-    <div class="panel panel-info">
-      <div class="panel-heading">
-        <h3 class="panel-title">
-          <label>Materiaux et déchets:</label>
-        </h3>
-      </div>
+    <div class="col-md-4">
+      <div class="panel panel-info">
+        <div class="panel-heading">
+          <h3 class="panel-title">
+            <label>Materiaux et déchets:</label>
+          </h3>
+        </div>
 
-      <div class="panel-body">
-        <div id="list_evac" class="btn-group">
-          <!-- Rempli via JS -->
+        <div class="panel-body">
+          <div id="list_evac" class="btn-group">
+            <!-- Rempli via JS -->
+          </div>
         </div>
       </div>
-    </div>
 
-    <div class="btn-group" role="group">
-      <button id="encaissement" class="btn btn-success btn-lg">C'est pesé!</button>
-      <button id="impression" class="btn btn-primary btn-lg" value="Print"><span class="glyphicon glyphicon-print"></span></button>
-      <button id="reset" class="btn btn-warning btn-lg"><span class="glyphicon glyphicon-refresh"></button>
-    </div>
-  </div> <!-- .col-md-4 -->
+      <div class="btn-group" role="group">
+        <button id="encaissement" class="btn btn-success btn-lg">C'est pesé!</button>
+        <button id="impression" class="btn btn-primary btn-lg" value="Print"><span class="glyphicon glyphicon-print"></span></button>
+        <button id="reset" class="btn btn-warning btn-lg"><span class="glyphicon glyphicon-refresh"></button>
+      </div>
+    </div> <!-- .col-md-4 -->
 
   </div> <!-- .container -->
 
@@ -112,7 +108,7 @@ if (isset($_SESSION['id'])
     // Variables d'environnement de Oressource.
     'use scrict';
     window.OressourceEnv = {
-      structure: <?= json_encode($_SESSION['structure']) ?>,
+      structure: <?= json_encode($_SESSION['structure']); ?>,
       adresse: <?= json_encode($_SESSION['adresse']); ?>,
       id_user: <?= json_encode($_SESSION['id'], JSON_NUMERIC_CHECK); ?>,
       saisie_collecte: <?= json_encode(is_allowed_saisie_collecte()); ?>,
@@ -120,7 +116,7 @@ if (isset($_SESSION['id'])
       id_point: <?= json_encode($numero, JSON_NUMERIC_CHECK); ?>,
       masse_max: <?= json_encode($point_sortie['pesee_max'], JSON_NUMERIC_CHECK); ?>,
       types_evac: <?= json_encode(types_dechets_evac($bdd), JSON_NUMERIC_CHECK); ?>,
-      conteneurs: <?= json_encode(types_contenants($bdd), JSON_NUMERIC_CHECK) ?>
+      conteneurs: <?= json_encode(types_contenants($bdd), JSON_NUMERIC_CHECK); ?>
     };
   </script>
   <script src="../js/ticket.js" type="text/javascript"></script>
@@ -130,13 +126,11 @@ if (isset($_SESSION['id'])
 
     document.addEventListener('DOMContentLoaded', () => {
       const numpad = new NumPad(document.getElementById('numpad'),
-      window.OressourceEnv.conteneurs);
+              window.OressourceEnv.conteneurs);
 
       // Hack en attendant de trouver une solution pour gerer differament les dechets
       // et les objets qui ont les memes id...
       // On retourne une closure avec connection_UI_ticket du coup...
-
-
       const typesEvacs = window.OressourceEnv.types_evac;
       const ticketEvac = new Ticket();
       const pushEvac = connection_UI_ticket(numpad, ticketEvac, typesEvacs);
@@ -147,7 +141,7 @@ if (isset($_SESSION['id'])
         div_list_evac.appendChild(button);
       });
 
-      const metadata = {classe: 'sortiesd'};
+      const metadata = { classe: 'sortiesd' };
       const encaisse = make_encaissement('../api/sorties.php', {
         evacs: ticketEvac
       }, metadata);
@@ -158,12 +152,12 @@ if (isset($_SESSION['id'])
         tickets_clear(metadata);
       }, false);
 
-      window.tickets = [ticketEvac];
+      window.tickets = [ ticketEvac ];
     }, false);
   </script>
 
   <?php
-  include "pied.php";
+  require_once 'pied.php';
 } else {
   header('Location:../moteur/destroy.php');
 }

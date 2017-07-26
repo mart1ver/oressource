@@ -24,9 +24,7 @@ require_once('../core/requetes.php');
 
 session_start();
 
-if (isset($_SESSION['id'])
-  && $_SESSION['systeme'] === "oressource"
-  && is_allowed_gestion()) {
+if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && is_allowed_gestion()) {
   require_once('dbconfig.php');
 
   $id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);

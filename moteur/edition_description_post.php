@@ -20,9 +20,7 @@
 
 session_start();
 
-if (isset($_SESSION['id'])
-  && $_SESSION['systeme'] === "oressource"
-  && (strpos($_SESSION['niveau'], 'k') !== false)) {
+if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($_SESSION['niveau'], 'k') !== false)) {
   require_once('dbconfig.php');
 
   $mail = filter_input(INPUT_POST, 'mail', FILTER_VALIDATE_EMAIL);
@@ -63,29 +61,29 @@ if (isset($_SESSION['id'])
     force_pes_vente = :force_pes_vente
     WHERE id = :id');
 
-    $req->execute([
-      'id' => 1,
-      'nom' => $_POST['nom'],
-      'description' => $_POST['description'],
-      'siret' => $_POST['siret'],
-      'mail' => $mail,
-      'adresse' => $_POST['adresse'],
-      'telephone' => $_POST['telephone'],
-      'id_localite' => $_POST['localite'],
-      'taux_tva' => $_POST['ttva'],
-      'tva_active' => $atva,
-      'lot' => $lot,
-      'viz' => $viz,
-      'saisiec' => $saisiec,
-      'nb_viz' => $_POST['nb_viz'],
-      'cr' => $_POST['cr'],
-      'affsp' => $affsp,
-      'affss' => $affss,
-      'affsr' => $affsr,
-      'affsd' => $affsd,
-      'affsde' => $affsde,
-      'pes_vente' => $pes_vente,
-      'force_pes_vente' => $force_pes_vente
+  $req->execute([
+    'id' => 1,
+    'nom' => $_POST['nom'],
+    'description' => $_POST['description'],
+    'siret' => $_POST['siret'],
+    'mail' => $mail,
+    'adresse' => $_POST['adresse'],
+    'telephone' => $_POST['telephone'],
+    'id_localite' => $_POST['localite'],
+    'taux_tva' => $_POST['ttva'],
+    'tva_active' => $atva,
+    'lot' => $lot,
+    'viz' => $viz,
+    'saisiec' => $saisiec,
+    'nb_viz' => $_POST['nb_viz'],
+    'cr' => $_POST['cr'],
+    'affsp' => $affsp,
+    'affss' => $affss,
+    'affsr' => $affsr,
+    'affsd' => $affsd,
+    'affsde' => $affsde,
+    'pes_vente' => $pes_vente,
+    'force_pes_vente' => $force_pes_vente
   ]);
 
   $req->closeCursor();

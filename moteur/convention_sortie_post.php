@@ -20,13 +20,11 @@
 
 session_start();
 
-if (isset($_SESSION['id'])
-  && $_SESSION['systeme'] === 'oressource'
-  && is_allowed_partners()) {
+if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && is_allowed_partners()) {
   include('../moteur/dbconfig.php');
 
-  $req = $bdd->prepare("SELECT SUM(id) FROM conventions_sorties WHERE nom = :nom ");
-  $req->execute(array('nom' => $_POST['nom']));
+  $req = $bdd->prepare('SELECT SUM(id) FROM conventions_sorties WHERE nom = :nom ');
+  $req->execute(['nom' => $_POST['nom']]);
   $donnees = $req->fetch();
   $req->closeCursor();
 

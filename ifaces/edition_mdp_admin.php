@@ -1,5 +1,4 @@
 <?php
-
 /*
   Oressource
   Copyright (C) 2014-2017  Martin Vert and Oressource devellopers
@@ -24,9 +23,7 @@ require_once('../moteur/dbconfig.php');
 require_once('../core/session.php');
 require_once('../core/requetes.php');
 
-if (isset($_SESSION['id'])
-  && $_SESSION['systeme'] === 'oressource'
-  && is_allowed_users()) {
+if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && is_allowed_users()) {
   require_once 'tete.php';
 
   $id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
@@ -34,8 +31,8 @@ if (isset($_SESSION['id'])
   ?>
 
   <div class="container">
-    <h1>Édition du mot de passe de l'utilisateur n°:<?= $id ?>, <?= $mail ?></h1>
-    <p>L'identifiant de cet utilisateur est son adresse E-mail: <?= $mail ?>, elle lui est demandée à chaque connexion à Oressource.</p>
+    <h1>Édition du mot de passe de l'utilisateur n°:<?= $id; ?>, <?= $mail; ?></h1>
+    <p>L'identifiant de cet utilisateur est son adresse E-mail: <?= $mail; ?>, elle lui est demandée à chaque connexion à Oressource.</p>
     <br>
     <div class="panel-body">
       <div class="row">
@@ -43,7 +40,7 @@ if (isset($_SESSION['id'])
           <div class="col-md-3 col-md-offset-2">
             <div class="panel panel-default">
               <div class="panel-body">
-                <input type="hidden" name="id" id="id" value="<?= $id ?>">
+                <input type="hidden" name="id" id="id" value="<?= $id; ?>">
                 <br>
                 <label for="pass1">Nouveau mot de passe:</label>
                 <input type="password"  name="pass1" id="pass1" class="form-control" required >

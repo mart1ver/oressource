@@ -23,8 +23,8 @@ require_once('../moteur/dbconfig.php');
 require_once('../core/session.php');
 
 //Vérification des autorisations de l'utilisateur et des variables de session requisent pour l'affichage de cette page:
-if (isset($_SESSION['id']) && $_SESSION['systeme'] === "oressource" && is_allowed_config()) {
-  include_once("tete.php");
+if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && is_allowed_config()) {
+  include_once('tete.php');
 
   $nom = isset($_GET['nom']) ? $_GET['nom'] : '';
   $reponse = $bdd->prepare('SELECT id, timestamp, nom, adresse, couleur, commentaire, surface_vente, visible FROM points_vente');
@@ -99,8 +99,8 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === "oressource" && is_allowe
             <td>
               <form action="../moteur/ventes_visibles_post.php" method="post">
                 <input type="hidden" name="id" id="id" value="<?= $point_vente['id']; ?>">
-                <input type="hidden" name="visible" id="visible" value="<?=($vente_visible); ?>">
-                <button type="submit" class="btn btn-sm <?=($btn_class); ?>"><?= $point_vente['visible']; ?></button>
+                <input type="hidden" name="visible" id="visible" value="<?= ($vente_visible); ?>">
+                <button type="submit" class="btn btn-sm <?= ($btn_class); ?>"><?= $point_vente['visible']; ?></button>
               </form>
             </td>
             <td>
@@ -115,7 +115,7 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === "oressource" && is_allowe
     </table>
   </div> <!-- /.container -->
   <?php
-  include_once("pied.php");
+  include_once('pied.php');
 } else {
   header('Location: ../moteur/destroy.php');
 }

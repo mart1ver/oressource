@@ -26,13 +26,12 @@ require_once('../moteur/dbconfig.php');
 $numero = filter_input(INPUT_GET, 'numero', FILTER_VALIDATE_INT);
 
 if (is_valid_session() && is_allowed_sortie_id($numero)) {
-
-  require_once('tete.php');
-
   if (!affichage_sortie_recyclage()) {
     header("Location:sorties.php?numero=" . $numero);
     die();
   }
+
+  require_once('tete.php');
 
   $point_sortie = point_sorties_id($bdd, $numero);
   $pesee_max = (float) $point_sortie['pesee_max'];
@@ -47,7 +46,7 @@ if (is_valid_session() && is_allowed_sortie_id($numero)) {
 
     <nav class="navbar">
       <div class="header-header">
-        <h1><?= $point_sortie['nom'] ?></h1>
+        <h1><?= $point_sortie['nom']; ?></h1>
       </div>
       <ul class="nav nav-tabs">
         <?php if (affichage_sortie_poubelle()) { ?><li><a href="sortiesp.php?numero=<?= $numero; ?>">Poubelles</a></li><?php } ?>
@@ -57,8 +56,6 @@ if (is_valid_session() && is_allowed_sortie_id($numero)) {
         <?php if (affichage_sortie_dechetterie()) { ?><li><a href="sortiesd.php?numero=<?= $numero; ?>">Déchetterie</a></li><?php } ?>
       </ul>
     </nav>
-
-
     <div class="col-md-4">
       <div id="ticket" class="panel panel-info" >
         <div class="panel-heading">
@@ -70,7 +67,7 @@ if (is_valid_session() && is_allowed_sortie_id($numero)) {
           <form id="formulaire"> <!-- ONSUBMIT="EnableControl(true)" -->
             <?php if (is_allowed_edit_date()) { ?>
               <label for="antidate">Date de la sortie: </label>
-              <input type="date" id="antidate" name="antidate" style="width:130px; height:20px;" value="<?= $date->format('Y-m-d') ?>">
+              <input type="date" id="antidate" name="antidate" style="width:130px; height:20px;" value="<?= $date->format('Y-m-d'); ?>">
             <?php } ?>
             <ul class="list-group" id="transaction">  <!--start Ticket Caisse -->
               <!-- Remplis via JavaScript voir script de la page -->
@@ -131,14 +128,14 @@ if (is_valid_session() && is_allowed_sortie_id($numero)) {
     // Variables d'environnement de Oressource.
     'use scrict';
     window.OressourceEnv = {
-      structure: <?= json_encode($_SESSION['structure']) ?>,
-      adresse: <?= json_encode($_SESSION['adresse']) ?>,
-      id_user: <?= json_encode($_SESSION['id'], JSON_NUMERIC_CHECK) ?>,
-      id_point: <?= json_encode($numero, JSON_NUMERIC_CHECK) ?>,
-      id_type_action: <?= json_encode($filieres_sorties, JSON_NUMERIC_CHECK) ?>,
-      types_evac: <?= json_encode(types_dechets_evac($bdd), JSON_NUMERIC_CHECK) ?>,
-      masse_max: <?= json_encode($point_sortie['pesee_max'], JSON_NUMERIC_CHECK) ?>,
-      conteneurs: <?= json_encode(types_contenants($bdd), JSON_NUMERIC_CHECK) ?>
+      structure: <?= json_encode($_SESSION['structure']); ?>,
+      adresse: <?= json_encode($_SESSION['adresse']); ?>,
+      id_user: <?= json_encode($_SESSION['id'], JSON_NUMERIC_CHECK); ?>,
+      id_point: <?= json_encode($numero, JSON_NUMERIC_CHECK); ?>,
+      id_type_action: <?= json_encode($filieres_sorties, JSON_NUMERIC_CHECK); ?>,
+      types_evac: <?= json_encode(types_dechets_evac($bdd), JSON_NUMERIC_CHECK); ?>,
+      masse_max: <?= json_encode($point_sortie['pesee_max'], JSON_NUMERIC_CHECK); ?>,
+      conteneurs: <?= json_encode(types_contenants($bdd), JSON_NUMERIC_CHECK); ?>
     };
   </script>
   <script src="../js/ticket.js" type="text/javascript"></script>
@@ -189,7 +186,7 @@ if (is_valid_session() && is_allowed_sortie_id($numero)) {
         div_list_item.appendChild(button);
       });
 
-      const metadata = {classe: 'sortiesr'};
+      const metadata = { classe: 'sortiesr' };
       const encaisse = make_encaissement('../api/sorties.php', {
         evacs: ticketsItem
       }, metadata);
@@ -204,11 +201,11 @@ if (is_valid_session() && is_allowed_sortie_id($numero)) {
 
       document.getElementById('id_type_action').addEventListener('change', recycleur_choix, false);
 
-      window.tickets = [ticketsItem];
+      window.tickets = [ ticketsItem ];
     }, false);
   </script>
   <?php
-  include "pied.php";
+  require_once 'pied.php';
 } else {
   header('Location:../moteur/destroy.php');
   die();

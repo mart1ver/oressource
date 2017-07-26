@@ -23,11 +23,8 @@ require_once('../core/session.php');
 
 $numero = filter_input(INPUT_GET, 'numero', FILTER_VALIDATE_INT);
 
-if (isset($_SESSION['id'])
-  && $_SESSION['systeme'] === "oressource"
-  && is_allowed_vente_id($numero)) {
-
-  require_once "tete.php";
+if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && is_allowed_vente_id($numero)) {
+  require_once 'tete.php';
   require_once '../moteur/dbconfig.php';
 
   // on détermine la référence de la prochaine vente.
@@ -37,7 +34,7 @@ if (isset($_SESSION['id'])
   $numero_vente = $donnees['Auto_increment'];
 
   // On affiche le nom du point de vente
-  $req = $bdd->prepare("SELECT * FROM points_vente WHERE id = :id ");
+  $req = $bdd->prepare('SELECT * FROM points_vente WHERE id = :id ');
   $req->execute(['id' => $numero]);
   $donnees = $req->fetch();
   $req->closeCursor(); // Libère la connexion au serveur
@@ -47,7 +44,7 @@ if (isset($_SESSION['id'])
 
   <div class="panel-body">
     <fieldset>
-      <legend><?= $nom_pv ?></legend>
+      <legend><?= $nom_pv; ?></legend>
     </fieldset>
     <div class="row">
       <br>
@@ -61,11 +58,11 @@ if (isset($_SESSION['id'])
           <div class="panel-body" id="divID">
             <form action="../moteur/vente_post.php" id="formulaire" method="post">
               <?php if (is_allowed_saisie_collecte() && is_allowed_edit_date()) { ?>
-                Date de la vente:  <input type="date" id="antidate" name="antidate" style="height:20px;" value="<?= date("Y-m-d") ?>">
+                Date de la vente:  <input type="date" id="antidate" name="antidate" style="height:20px;" value="<?= date('Y-m-d'); ?>">
               <?php } ?>
 
               <ul id="liste" class="list-group">
-                <li class="list-group-item">Vente: <?= $numero ?>#<?= $numero_vente ?>, date: <?= date("d-m-Y") ?><br><?= $nom_pv; ?><br><?= $adresse_pv; ?>,<br>siret: <?= $_SESSION['siret']; ?></li>
+                <li class="list-group-item">Vente: <?= $numero; ?>#<?= $numero_vente; ?>, date: <?= date('d-m-Y'); ?><br><?= $nom_pv; ?><br><?= $adresse_pv; ?>,<br>siret: <?= $_SESSION['siret']; ?></li>
               </ul>
               <ul class="list-group" id="total">
               </ul>
@@ -74,10 +71,10 @@ if (isset($_SESSION['id'])
               <input type="hidden" id="nlignes" name="nlignes">
               <input type="hidden" id="narticles" name="narticles">
               <input type="hidden" id="ptot" name="ptot">
-              <input type="hidden" id="id_user" name="id_user" value="<?= $_SESSION['id'] ?>">
-              <input type="hidden" id="saisiec_user" name="saisiec_user" value="<?= $_SESSION['saisiec'] ?>">
-              <input type="hidden" id="niveau_user" name="niveau_user" value="<?= $_SESSION['niveau'] ?>">
-              <input type="hidden" name ="id_point_vente" id="id_point_vente" value="<?= $_GET['numero'] ?>">
+              <input type="hidden" id="id_user" name="id_user" value="<?= $_SESSION['id']; ?>">
+              <input type="hidden" id="saisiec_user" name="saisiec_user" value="<?= $_SESSION['saisiec']; ?>">
+              <input type="hidden" id="niveau_user" name="niveau_user" value="<?= $_SESSION['niveau']; ?>">
+              <input type="hidden" name ="id_point_vente" id="id_point_vente" value="<?= $_GET['numero']; ?>">
             </form>
           </div>
         </div>
@@ -107,7 +104,8 @@ if (isset($_SESSION['id'])
               <?php if ($_SESSION['pes_vente']) { ?>
                 <b id = "labelmasse">Masse unitaire:</b>
                 <input type="text" class="form-control" placeholder="Kgs." id="masse" name="masse" onfocus="fokus(this)">
-              <?php }; ?>
+              <?php };
+              ?>
               <input type="hidden"  id="id_type_objet" name="id_type_objet">
               <input type="hidden"  id="id_objet" name="id_objet">
               <input type="hidden"  id="nom_objet0" name="nom_objet0">
@@ -182,35 +180,35 @@ if (isset($_SESSION['id'])
               $nom_dechet = $d['nom'];
               $action_dechet = "javascript:edite('$nom_dechet','0','$id_dechet','0')";
 
-              print "<div class='btn-group'>";
+              echo "<div class='btn-group'>";
 
               // On récupère la grille de tarifs pour ce type de déchets
               $tarifs = $bdd->prepare('SELECT * FROM grille_objets WHERE id_type_dechet = :id_type_dechet AND visible = "oui"  ORDER BY nom ');
-              $tarifs->execute(array('id_type_dechet' => $id_dechet));
+              $tarifs->execute(['id_type_dechet' => $id_dechet]);
 
               // S'il n'y pas de tarif pour ce type de déchets
               // Alors on affiche un bouton tout simple
-              if ($tarifs->rowCount() == 0) {
-                print "<button type='button' class='btn btn-default' onclick=" . '"' . substr($action_dechet, 11) . ';"' . " style='margin-left:8px; margin-top:16px;'>";
-                print "<span class='badge' id='cool' style='background-color:$couleur_dechet'>";
-                print $nom_dechet;
-                print "</span>";
-                print "</button>";
+              if ($tarifs->rowCount() === 0) {
+                echo "<button type='button' class='btn btn-default' onclick=" . '"' . substr($action_dechet, 11) . ';"' . " style='margin-left:8px; margin-top:16px;'>";
+                echo "<span class='badge' id='cool' style='background-color:$couleur_dechet'>";
+                echo $nom_dechet;
+                echo '</span>';
+                echo '</button>';
               } else {
 
                 // S'il y a une grille de tarif pour ce type
                 // Alors on affiche un menu déroulant
                 // Le premier item du menu déroulant c'est le type de déchet lui-même (avec un prix pré-défini à 0)
-                print "<button type='button' class='btn btn-default dropdown-toggle' data-toggle='dropdown' style='margin-left:8px; margin-top:16px;'>";
-                print "<span class='badge' id='cool' style='background-color:$couleur_dechet'>$nom_dechet</span>";
-                print "</button>";
-                print "<ul class='dropdown-menu' role='menu'>";
-                print "<li style='font-size:18px'>";
-                print "<a href=\"$action_dechet\" >$nom_dechet</a>";
-                print "</li>";
+                echo "<button type='button' class='btn btn-default dropdown-toggle' data-toggle='dropdown' style='margin-left:8px; margin-top:16px;'>";
+                echo "<span class='badge' id='cool' style='background-color:$couleur_dechet'>$nom_dechet</span>";
+                echo '</button>';
+                echo "<ul class='dropdown-menu' role='menu'>";
+                echo "<li style='font-size:18px'>";
+                echo "<a href=\"$action_dechet\" >$nom_dechet</a>";
+                echo '</li>';
 
                 // un séparateur
-                print "<li class='divider'></li>";
+                echo "<li class='divider'></li>";
 
                 // Ensuite on récupère chaque ligne de la grille de tarif
                 // et on ajoute un item dans le menu déroulant
@@ -220,18 +218,18 @@ if (isset($_SESSION['id'])
                   $nom_tarif = $t['nom'];
                   $action_tarif = "javascript:edite('$nom_tarif','$prix_tarif','$id_dechet',$id_tarif)";
 
-                  print "<li style='font-size:18px'>";
-                  print "<a href=\"$action_tarif\">$nom_tarif</a>";
-                  print "</li>";
+                  echo "<li style='font-size:18px'>";
+                  echo "<a href=\"$action_tarif\">$nom_tarif</a>";
+                  echo '</li>';
                 }
 
                 // Fin du menu déroulant
-                print "</ul>";
+                echo '</ul>';
               }
               $tarifs->closeCursor();
 
               // Fin du groupe de boutons
-              print "</div>";
+              echo '</div>';
             }
             $dechets->closeCursor();
             ?>
@@ -263,29 +261,27 @@ if (isset($_SESSION['id'])
               <?php
               // On recupère tout le contenu de la table point de collecte
               $reponse = $bdd->query('SELECT id, nom, couleur FROM moyens_paiement WHERE visible = "oui"');
-
-              // On affiche chaque entree une à une
               while ($donnees = $reponse->fetch()) {
                 $id = $donnees['id'];
-                if ($id == 1) {
-                  $active = "active";
-                  $checked = "checked";
+                if ($id === 1) {
+                  $active = 'active';
+                  $checked = 'checked';
                 } else {
-                  $active = "";
-                  $checked = "";
+                  $active = '';
+                  $checked = '';
                 }
 
                 $nom = $donnees['nom'];
                 $couleur = $donnees['couleur'];
-                print "<label class='btn ors_btn_pay  btn-default $active' ";
-                print "onclick=\"moyens('$id');\" ";
-                print "style='background-color:$couleur;' ";
-                print ">";
-                print "<input type='radio' name='paiement' id='paiement' autocomplete='off' value='$id' $checked >";
-                print "$nom";
-                print "</label>";
+                echo "<label class='btn ors_btn_pay  btn-default $active' ";
+                echo "onclick=\"moyens('$id');\" ";
+                echo "style='background-color:$couleur;' ";
+                echo '>';
+                echo "<input type='radio' name='paiement' id='paiement' autocomplete='off' value='$id' $checked >";
+                echo "$nom";
+                echo '</label>';
               }
-              $reponse->closeCursor(); // Termine le traitement de la requête
+              $reponse->closeCursor();
               ?>
             </div>
             <br><br>
@@ -310,7 +306,7 @@ if (isset($_SESSION['id'])
 
           <div class="collapse" id="collapserembou">
             <div class="well">
-              <form action="../moteur/verif_remb_post.php?numero=<?= $_GET['numero'] ?>" id="champpassrmb" method="post">
+              <form action="../moteur/verif_remb_post.php?numero=<?= $_GET['numero']; ?>" id="champpassrmb" method="post">
                 <div class="input-group">
                   <input name="passrmb" id="passrmb" type="password" class="form-control" placeholder="Mot de passe...">
                   <span class="input-group-btn">
@@ -327,59 +323,59 @@ if (isset($_SESSION['id'])
 
   <?php if ($_SESSION['viz_caisse']) { ?>
     <div class="col-md-2 col-md-offset-2" style="width: 330px;" >
-      <a href="viz_caisse.php?numero=<?= $numero ?>" target="_blank">visualiser les <?= $_SESSION['nb_viz_caisse'] ?> dernieres ventes</a>
+      <a href="viz_caisse.php?numero=<?= $numero; ?>" target="_blank">visualiser les <?= $_SESSION['nb_viz_caisse']; ?> dernieres ventes</a>
     </div>
   <?php } ?>
 
   <script defer type="text/javascript" src="../js/bootstrap-switch.js"></script>
   <script src="../js/ventes.js"></script>
   <script>
-    'use strict';
-    const force_pes_vente = <?= json_encode($_SESSION['force_pes_vente']) ?>;
-    const tva_active = <?= json_encode($_SESSION['tva_active']) ?>;
-    const taux_tva = <?= json_encode($_SESSION['taux_tva'], JSON_NUMERIC_CHECK) ?>;
+            'use strict';
+            const force_pes_vente = <?= json_encode($_SESSION['force_pes_vente']); ?>;
+            const tva_active = <?= json_encode($_SESSION['tva_active']); ?>;
+            const taux_tva = <?= json_encode($_SESSION['taux_tva'], JSON_NUMERIC_CHECK); ?>;
 
-    document.addEventListener('DOMContentLoaded', () => {
-      $("#typeVente").bootstrapSwitch();
-      $("#typeVente").on('switchChange.bootstrapSwitch', (event, state) => {
-        switchlot(state); // true | false
-      });
-    }, false);
+            document.addEventListener('DOMContentLoaded', () => {
+              $("#typeVente").bootstrapSwitch();
+              $("#typeVente").on('switchChange.bootstrapSwitch', (event, state) => {
+                switchlot(state); // true | false
+              });
+            }, false);
 
-    function printdiv(divID) {
-      if (parseInt(document.getElementById('nlignes').value) >= 1) {
-        const headstr = "<html><head><title></title></head><body><small>";
-        if (tva_active) {
-          const prixtot = parseFloat(document.getElementById('ptot').value).toFixed(2);
-          const prixht = (prixtot / (1 + taux_tva.toFixed(2) / 100)).toFixed(2);
-          const ptva = (prixtot - prixht).toFixed(2);
-          const footstr = `TVA à ${taux_tva}% Prix H.T. = ${prixht} + € TVA=  ${ptva} €`;
-        } else {
-          const footstr = "Association non assujettie à la TVA.</body></small> ";
-        }
-        const commentaire = document.getElementById('commentaire').value.strip();
-        const comstr = `<ul id='liste' class='list-group'><li class='list-group-item'><b>${commentaire}</b></li></ul>`;
-        const newstr = document.all.item(divID).innerHTML;
-        const oldstr = document.body.innerHTML;
-        document.body.innerHTML = headstr + comstr + newstr + footstr;
-        window.print();
-        document.body.innerHTML = oldstr;
-      }
+            function printdiv(divID) {
+              if (parseInt(document.getElementById('nlignes').value) >= 1) {
+                const headstr = "<html><head><title></title></head><body><small>";
+                if (tva_active) {
+                  const prixtot = parseFloat(document.getElementById('ptot').value).toFixed(2);
+                  const prixht = (prixtot / (1 + taux_tva.toFixed(2) / 100)).toFixed(2);
+                  const ptva = (prixtot - prixht).toFixed(2);
+                  const footstr = `TVA à ${taux_tva}% Prix H.T. = ${prixht} + € TVA=  ${ptva} €`;
+                } else {
+                  const footstr = "Association non assujettie à la TVA.</body></small> ";
+                }
+                const commentaire = document.getElementById('commentaire').value.strip();
+                const comstr = `<ul id='liste' class='list-group'><li class='list-group-item'><b>${commentaire}</b></li></ul>`;
+                const newstr = document.all.item(divID).innerHTML;
+                const oldstr = document.body.innerHTML;
+                document.body.innerHTML = headstr + comstr + newstr + footstr;
+                window.print();
+                document.body.innerHTML = oldstr;
+              }
 
-      //puis encaisse
-      if ((parseInt(document.getElementById('nlignes').value) >= 1)
-              && ((document.getElementById('quantite').value == "")
-                      || (document.getElementById('quantite').value == "0"))
-              && ((document.getElementById('prix').value == "")
-                      || (document.getElementById('prix').value == "0"))) {
-        document.getElementById('comm').value = document.getElementById('commentaire').value;
-        document.getElementById("formulaire").submit();
-      }
-    }
+              //puis encaisse
+              if ((parseInt(document.getElementById('nlignes').value) >= 1)
+                      && ((document.getElementById('quantite').value == "")
+                              || (document.getElementById('quantite').value == "0"))
+                      && ((document.getElementById('prix').value == "")
+                              || (document.getElementById('prix').value == "0"))) {
+                document.getElementById('comm').value = document.getElementById('commentaire').value;
+                document.getElementById("formulaire").submit();
+              }
+            }
   </script>
 
   <?php
-  require_once "pied.php";
+  require_once 'pied.php';
 } else {
   header('Location:../moteur/destroy.php');
 }

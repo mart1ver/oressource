@@ -24,13 +24,7 @@ require_once('../core/session.php');
 require_once('../moteur/dbconfig.php');
 
 $numero = filter_input(INPUT_GET, 'numero', FILTER_VALIDATE_INT);
-
-//Vérification des autorisations de l'utilisateur et des variables de session requises pour l'affichage de cette page:
-if (isset($_SESSION['id'])
-  && $_SESSION['systeme'] === "oressource"
-  && is_allowed_sortie_id($numero)) {
-
-
+if (is_valid_session() && is_allowed_sortie_id($numero)) {
   if (!affichage_sortie_poubelle()) {
     header("Location:sortiesc.php?numero=" . $numero);
     die();
@@ -48,7 +42,7 @@ if (isset($_SESSION['id'])
 
     <nav class="navbar">
       <div class="header-header">
-        <h1><?= $point_sortie['nom'] ?></h1>
+        <h1><?= $point_sortie['nom']; ?></h1>
       </div>
       <ul class="nav nav-tabs">
         <li class="active"><a href="#">Poubelles</a></li>
@@ -70,7 +64,7 @@ if (isset($_SESSION['id'])
           <form id="formulaire">
             <?php if (is_allowed_edit_date()) { ?>
               <label for="antidate">Date de la sortie: </label>
-              <input type="date" id="antidate" name="antidate" style="width:130px; height:20px;" value="<?= $date->format('Y-m-d') ?>">
+              <input type="date" id="antidate" name="antidate" style="width:130px; height:20px;" value="<?= $date->format('Y-m-d'); ?>">
             <?php } ?>
             <ul class="list-group" id="transaction">  <!--start Ticket Caisse -->
               <!-- Remplis via JavaScript voir script de la page -->
@@ -82,8 +76,6 @@ if (isset($_SESSION['id'])
         </div>
       </div>
     </div> <!-- .col-md-4 -->
-
-
     <div id="numpad" class="col-md-4" style="width: 220px;">
       <p>La masse des différents bacs est automatiquement déduite.</p>
     </div>
@@ -110,20 +102,18 @@ if (isset($_SESSION['id'])
     </div> <!-- .col-md-4 -->
 
   </div> <!-- .container -->
-
-
   <script type="text/javascript">
     // Variables d'environnement de Oressource.
     'use scrict';
     window.OressourceEnv = {
-      structure: <?= json_encode($_SESSION['structure']) ?>,
-      adresse: <?= json_encode($_SESSION['adresse']) ?>,
-      id_user: <?= json_encode($_SESSION['id'], JSON_NUMERIC_CHECK) ?>,
-      saisie_collecte: <?= json_encode(is_allowed_saisie_collecte()) ?>,
-      user_droit: <?= json_encode($_SESSION['niveau']) ?>,
+      structure: <?= json_encode($_SESSION['structure']); ?>,
+      adresse: <?= json_encode($_SESSION['adresse']); ?>,
+      id_user: <?= json_encode($_SESSION['id'], JSON_NUMERIC_CHECK); ?>,
+      saisie_collecte: <?= json_encode(is_allowed_saisie_collecte()); ?>,
+      user_droit: <?= json_encode($_SESSION['niveau']); ?>,
       id_point: <?= json_encode($numero, JSON_NUMERIC_CHECK); ?>,
-      masse_max: <?= json_encode($point_sortie['pesee_max'], JSON_NUMERIC_CHECK) ?>,
-      types_evac: <?= json_encode(types_poubelles($bdd), JSON_NUMERIC_CHECK) ?>
+      masse_max: <?= json_encode($point_sortie['pesee_max'], JSON_NUMERIC_CHECK); ?>,
+      types_evac: <?= json_encode(types_poubelles($bdd), JSON_NUMERIC_CHECK); ?>
     };
   </script>
   <script src="../js/ticket.js" type="text/javascript"></script>
@@ -132,13 +122,11 @@ if (isset($_SESSION['id'])
     'use strict';
 
     document.addEventListener('DOMContentLoaded', () => {
-      const numpad = new NumPad(document.getElementById('numpad'), []);
+      const numpad = new NumPad(document.getElementById('numpad'), [ ]);
 
       // Hack en attendant de trouver une solution pour gerer differament les dechets
       // et les objets qui ont les memes id...
       // On retourne une closure avec connection_UI_ticket du coup...
-
-
       const typesEvacs = window.OressourceEnv.types_evac;
       const ticketEvac = new Ticket();
       // TODO prendre en compte la masse des bacs!!
@@ -150,17 +138,17 @@ if (isset($_SESSION['id'])
       const div_list_evac = document.getElementById('list_poubelle');
       const fragment = document.createDocumentFragment();
       typesEvacs.forEach(({ id, nom, couleur, masse_bac }) => {
-          const button = document.createElement('button');
-          button.setAttribute('id', id);
-          button.setAttribute('class', 'btn btn-default');
-          button.setAttribute('style', 'padding: 8px 3px 8px 3px; margin: 4px 0px 4px 2px');
-          button.innerHTML = `<span class="badge" id="cool" style="background-color:${couleur}">${nom}: ${masse_bac}kg</span>`;
-          button.addEventListener('click', pushEvac, false);
-          fragment.appendChild(button);
+        const button = document.createElement('button');
+        button.setAttribute('id', id);
+        button.setAttribute('class', 'btn btn-default');
+        button.setAttribute('style', 'padding: 8px 3px 8px 3px; margin: 4px 0px 4px 2px');
+        button.innerHTML = `<span class="badge" id="cool" style="background-color:${couleur}">${nom}: ${masse_bac}kg</span>`;
+        button.addEventListener('click', pushEvac, false);
+        fragment.appendChild(button);
       });
       div_list_evac.appendChild(fragment);
 
-      const metadata = {classe: 'sortiesp'};
+      const metadata = { classe: 'sortiesp' };
       const encaisse = make_encaissement('../api/sorties.php', {
         evacs: ticketEvac
       }, metadata);
@@ -171,11 +159,11 @@ if (isset($_SESSION['id'])
         tickets_clear(metadata);
       }, false);
 
-      window.tickets = [ticketEvac];
+      window.tickets = [ ticketEvac ];
     }, false);
   </script>
   <?php
-  include "pied.php";
+  require_once 'pied.php';
 } else {
   header('Location:../moteur/destroy.php');
 }

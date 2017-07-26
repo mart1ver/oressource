@@ -5,7 +5,9 @@
       <p class="text-right">
         <a href="../moteur/destroy.php">Déconnexion</a>
       </p>
-    <?php } ?>
+      <?php
+    }
+    ?>
   </footer>
 </div>
 </body>

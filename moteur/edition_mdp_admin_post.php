@@ -24,21 +24,19 @@ require_once('../moteur/dbconfig.php');
 require_once('../core/session.php');
 require_once('../core/requetes.php');
 
-if (isset($_SESSION['id'])
-  && $_SESSION['systeme'] === "oressource"
-  && is_allowed_users()) {
+if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && is_allowed_users()) {
   $id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
 
   if ($_POST['pass1'] === $_POST['pass2']) {
     require_once('dbconfig.php');
 
     $req = $bdd->prepare('UPDATE utilisateurs SET pass = :pass WHERE id = :id');
-    $req->execute(array('pass' => md5($_POST['pass1']), 'id' => $id));
+    $req->execute(['pass' => md5($_POST['pass1']), 'id' => $id]);
     $req->closeCursor();
 
     header("Location: ../ifaces/edition_utilisateurs.php?msg=Mot de passe modifié avec succes, utilisateur:{$_SESSION['nom']}, mail: {$_SESSION['mail']}");
   } else {
-    header("Location: ../ifaces/edition_mdp_admin.php?err=Veuillez inscrire deux mots de passe semblables");
+    header('Location: ../ifaces/edition_mdp_admin.php?err=Veuillez inscrire deux mots de passe semblables');
   }
 } else {
   header('Location:../moteur/destroy.php');
