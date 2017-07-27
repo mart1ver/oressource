@@ -51,25 +51,26 @@ function objet_update_nom(PDO $bdd, $id, $nom): void {
   $req->execute();
   $req->closeCursor();
 }
+
 function objet_update(PDO $bdd, int $id, $prix, $nom, $description): void {
   $req = $bdd->prepare('
       update grille_objets
       set nom = :nom1,
-          description = :description,
-          prix = :prix
+    description = :description,
+    prix = :prix
       where BINARY nom <> :nom2
       and id = :id');
-  $req->bindValue(':id', $id, PDO::PARAM_INT);
-  $req->bindValue(':prix', $prix);
-  $req->bindParam(':nom1', $nom, PDO::PARAM_STR);
-  $req->bindParam(':nom2', $nom, PDO::PARAM_STR);
-  $req->bindParam(':description', $description, PDO::PARAM_STR);
-  $req->execute();
-  if ($req->rowCount() === 0) {
-    $req->closeCursor();
-    throw new UnexpectedValueException('Un objet avec le meme nom existe deja.');
-  }
+    $req->bindValue(':id', $id, PDO::PARAM_INT);
+    $req->bindValue(':prix', $prix);
+    $req->bindParam(':nom1', $nom, PDO::PARAM_STR);
+    $req->bindParam(':nom2', $nom, PDO::PARAM_STR);
+    $req->bindParam(':description', $description, PDO::PARAM_STR);
+    $req->execute();
+    if ($req->rowCount() === 0) {
   $req->closeCursor();
+  throw new UnexpectedValueException('Un objet avec le meme nom existe deja.');
+    }
+    $req->closeCursor();
 }
 
 function utilisateurs_id(PDO $bdd, int $id) {
@@ -115,9 +116,9 @@ function convention_sortie_by_id(PDO $bdd, int $id): array {
 
 function point_collecte_id(PDO $bdd, int $id): array {
   $sql = 'SELECT pesee_max, nom
-          FROM points_collecte
-          WHERE id = :id
-          LIMIT 1';
+    FROM points_collecte
+    WHERE id = :id
+    LIMIT 1';
   $stmt = $bdd->prepare($sql);
   $stmt->bindValue(':id', $id, PDO::PARAM_INT);
   $stmt->execute();
@@ -270,12 +271,12 @@ function types_collectes_id(PDO $bdd, int $id): array {
 
 function filieres_sorties(PDO $bdd): array {
   $sql = 'SELECT filieres_sortie.id, filieres_sortie.nom, filieres_sortie.id_type_dechet_evac AS type_dechet
-          FROM filieres_sortie
-          WHERE filieres_sortie.visible = "oui"';
+    FROM filieres_sortie
+    WHERE filieres_sortie.visible = "oui"';
   $stmt = $bdd->prepare($sql);
   $stmt->execute();
   $filieres_sorties = $stmt->fetchAll(PDO::FETCH_ASSOC);
-  return array_map(function($filiere) {
+  return array_map(function ($filiere) {
     $filiere['accepte_type_dechet'] = explode('a', $filiere['type_dechet']);
     return $filiere;
   }, $filieres_sorties);
@@ -315,8 +316,8 @@ function nb_categories_poubelles(PDO $bdd): int {
 function insert_items_collecte(PDO $bdd, int $id_collecte, $collecte, $items): void {
   $nombreCategories = nb_categories_dechets_item($bdd);
   $req = $bdd->prepare('INSERT INTO pesees_collectes
-                            (timestamp, masse, id_collecte, id_type_dechet, id_createur)
-                        VALUES (:timestamp, :masse, :id_collecte, :id_type_dechet, :id_createur)');
+    (timestamp, masse, id_collecte, id_type_dechet, id_createur)
+    VALUES (:timestamp, :masse, :id_collecte, :id_type_dechet, :id_createur)');
   $req->bindValue(':timestamp', $collecte['timestamp']->format('Y-m-d H:i:s'), PDO::PARAM_STR);
   $req->bindValue(':id_collecte', $id_collecte, PDO::PARAM_INT);
   $req->bindValue(':id_createur', $collecte['id_user'], PDO::PARAM_INT);
@@ -369,15 +370,15 @@ function collecte_id(PDO $bdd, int $id): array {
 // En attendant de faire des objets on fait un tableau associatif.
 function insert_collecte(PDO $bdd, array $collecte): int {
   $req = $bdd->prepare('INSERT INTO collectes
-                            (timestamp, id_type_collecte,
-                            localisation, id_point_collecte,
-                            commentaire, id_createur)
-                          VALUES (:timestamp, :id_type_action,
-                                  :localite, :id_point,
-                                  :commentaire, :id_createur)');
+    (timestamp, id_type_collecte,
+    localisation, id_point_collecte,
+    commentaire, id_createur)
+    VALUES (:timestamp, :id_type_action,
+      :localite, :id_point,
+      :commentaire, :id_createur)');
   $req->bindValue(':timestamp', $collecte['timestamp']->format('Y-m-d H:i:s'), PDO::PARAM_STR);
   $req->bindValue(':id_type_action', $collecte['id_type_action'], PDO::PARAM_INT);
-  // HACK: virer les adherants de la base ou juste changer le type en booleen serieusement...
+// HACK: virer les adherants de la base ou juste changer le type en booleen serieusement...
   $req->bindValue(':localite', $collecte['localite'], PDO::PARAM_INT);
   $req->bindValue(':id_point', $collecte['id_point'], PDO::PARAM_INT);
   $req->bindValue(':commentaire', $bdd->quote($collecte['commentaire']), PDO::PARAM_STR);
@@ -389,7 +390,7 @@ function insert_collecte(PDO $bdd, array $collecte): int {
 function insert_items_sorties(PDO $bdd, int $id_sorties, $sortie, $items): void {
   $nombreCategories = nb_categories_dechets_item($bdd);
   $req = $bdd->prepare('INSERT INTO pesees_sorties (timestamp, masse,  id_sortie, id_type_dechet, id_createur)
-                            VALUES(:timestamp, :masse, :id_sortie, :id_type_dechet, :id_createur)');
+    VALUES(:timestamp, :masse, :id_sortie, :id_type_dechet, :id_createur)');
   $req->bindValue(':timestamp', $sortie['timestamp']->format('Y-m-d H:i:s'), PDO::PARAM_STR);
   $req->bindValue(':id_sortie', $id_sorties, PDO::PARAM_INT);
   $req->bindValue(':id_createur', $sortie['id_user'], PDO::PARAM_INT);
@@ -410,7 +411,7 @@ function insert_items_sorties(PDO $bdd, int $id_sorties, $sortie, $items): void 
 function insert_evac_sorties(PDO $bdd, int$id_sorties, $sortie, $items): void {
   $nombreCategories = nb_categories_dechets_evac($bdd);
   $req = $bdd->prepare('INSERT INTO pesees_sorties (timestamp, masse,  id_sortie, id_type_dechet_evac, id_createur)
-                            VALUES(:timestamp, :masse, :id_sortie, :id_type_dechet_evac, :id_createur)');
+    VALUES(:timestamp, :masse, :id_sortie, :id_type_dechet_evac, :id_createur)');
   $req->bindValue(':timestamp', $sortie['timestamp']->format('Y-m-d H:i:s'), PDO::PARAM_STR);
   $req->bindValue(':id_sortie', $id_sorties, PDO::PARAM_INT);
   $req->bindValue(':id_createur', $sortie['id_user'], PDO::PARAM_INT);
@@ -431,7 +432,7 @@ function insert_evac_sorties(PDO $bdd, int$id_sorties, $sortie, $items): void {
 function insert_poubelle_sorties(PDO $bdd, int $id_sorties, $sortie, $items): void {
   $nombreCategories = nb_categories_poubelles($bdd);
   $req = $bdd->prepare('INSERT INTO pesees_sorties (timestamp, masse, id_sortie, id_type_poubelle, id_createur)
-                            VALUES(:timestamp, :masse, :id_sortie, :id_type_poubelle, :id_createur)');
+    VALUES(:timestamp, :masse, :id_sortie, :id_type_poubelle, :id_createur)');
   $req->bindValue(':timestamp', $sortie['timestamp']->format('Y-m-d H:i:s'), PDO::PARAM_STR);
   $req->bindValue(':id_sortie', $id_sorties, PDO::PARAM_INT);
   $req->bindValue(':id_createur', $sortie['id_user'], PDO::PARAM_INT);
@@ -451,17 +452,17 @@ function insert_poubelle_sorties(PDO $bdd, int $id_sorties, $sortie, $items): vo
 
 function specialise_sortie(PDOStatement $stmt, $sortie) {
   $classe = $sortie['classe'];
-  // Sorties Dons
+// Sorties Dons
   if ($classe === 'sorties') {
     $stmt->bindvalue(':type_sortie', $sortie['type_sortie'], PDO::PARAM_INT);
     $stmt->bindvalue(':id_filiere', 0, PDO::PARAM_INT);
     $stmt->bindvalue(':id_convention', 0, PDO::PARAM_INT);
-    // Sorties recycleur
+// Sorties recycleur
   } elseif ($classe === 'sortiesr') {
     $stmt->bindvalue(':type_sortie', 0, PDO::PARAM_INT);
     $stmt->bindvalue(':id_filiere', $sortie['type_sortie'], PDO::PARAM_INT);
     $stmt->bindvalue(':id_convention', 0, PDO::PARAM_INT);
-    // Sorties conventions
+// Sorties conventions
   } elseif ($classe === 'sortiesc') {
     $stmt->bindvalue(':type_sortie', 0, PDO::PARAM_INT);
     $stmt->bindvalue(':id_filiere', 0, PDO::PARAM_INT);
@@ -478,11 +479,11 @@ function specialise_sortie(PDOStatement $stmt, $sortie) {
 
 function insert_sortie(PDO $bdd, array $sortie): array {
   $sql = 'INSERT INTO sorties (timestamp, id_filiere, id_convention,
-                                id_type_sortie, classe,
-                                id_point_sortie, commentaire, id_createur)
-          VALUES(:timestamp, :id_filiere, :id_convention,
-                 :type_sortie, :classe,
-                 :id_point_sortie, :commentaire, :id_createur)  ';
+    id_type_sortie, classe,
+    id_point_sortie, commentaire, id_createur)
+    VALUES(:timestamp, :id_filiere, :id_convention,
+      :type_sortie, :classe,
+      :id_point_sortie, :commentaire, :id_createur)  ';
   $req = $bdd->prepare($sql);
   $req->bindvalue(':timestamp', $sortie['timestamp']->format('Y-m-d H:i:s'), PDO::PARAM_STR);
   $req->bindvalue(':classe', $sortie['classe'], PDO::PARAM_STR);
@@ -555,8 +556,8 @@ function structure_update(PDO $bdd, array $structure): void {
 function login_user(PDO $bdd, string $email, string $password): array {
   $passmd5 = md5($password);
   $req = $bdd->prepare('SELECT id, niveau, nom, prenom, mail
-                        FROM utilisateurs
-                        WHERE mail = :mail AND pass = :pass LIMIT 1');
+    FROM utilisateurs
+    WHERE mail = :mail AND pass = :pass LIMIT 1');
   $req->bindValue(':mail', $email, PDO::PARAM_STR);
   $req->bindValue(':pass', $passmd5, PDO::PARAM_INT);
   $req->execute();
@@ -606,15 +607,15 @@ function chiffre_affaire_par_mode_paiement(PDO $bdd, $start, $stop) {
     COUNT(DISTINCT(ventes.id)) AS quantite_vendue,
     SUM(vendus.prix * vendus.quantite) AS total,
     SUM(vendus.remboursement) AS remboursement
-  FROM
+    FROM
     ventes,
     vendus,
     moyens_paiement
-  WHERE
+    WHERE
     vendus.id_vente = ventes.id
-     AND moyens_paiement.id = ventes.id_moyen_paiement
-     AND DATE(vendus.timestamp)
-     BETWEEN :du AND :au
+    AND moyens_paiement.id = ventes.id_moyen_paiement
+    AND DATE(vendus.timestamp)
+    BETWEEN :du AND :au
     GROUP BY ventes.id_moyen_paiement';
   $stmt = $bdd->prepare($sql);
   $stmt->bindValue(':du', $start, PDO::PARAM_STR);
@@ -630,16 +631,16 @@ function chiffre_affaire_mode_paiement_point_vente(PDO $bdd, $start, $stop, $id_
     COUNT(DISTINCT(ventes.id)) AS quantite_vendue,
     SUM(vendus.prix * vendus.quantite) AS total,
     SUM(vendus.remboursement) AS remboursement
-  FROM
+    FROM
     ventes,
     vendus,
     moyens_paiement
-  WHERE
+    WHERE
     vendus.id_vente = ventes.id
-     AND moyens_paiement.id = ventes.id_moyen_paiement
-     AND DATE(vendus.timestamp) BETWEEN :du AND :au
-     AND ventes.id_point_vente = :id_point_vente
-  GROUP BY ventes.id_moyen_paiement';
+    AND moyens_paiement.id = ventes.id_moyen_paiement
+    AND DATE(vendus.timestamp) BETWEEN :du AND :au
+    AND ventes.id_point_vente = :id_point_vente
+    GROUP BY ventes.id_moyen_paiement';
   $stmt = $bdd->prepare($sql);
   $stmt->bindValue(':du', $start, PDO::PARAM_STR);
   $stmt->bindValue(':au', $stop, PDO::PARAM_STR);
@@ -650,7 +651,7 @@ function chiffre_affaire_mode_paiement_point_vente(PDO $bdd, $start, $stop, $id_
 
 function nb_points_ventes($bdd) {
   $sql = 'SELECT COUNT(id) as nb_points_ventes
-                          FROM points_vente LIMIT 1';
+    FROM points_vente LIMIT 1';
   $stmt = $bdd->query($sql);
   $nb_point_ventes = (int) $stmt->fetch(PDO::FETCH_ASSOC)['nb_points_ventes'];
   $stmt->closeCursor();
@@ -680,7 +681,7 @@ function nb_ventes_point_vente(PDO $bdd, $start, $stop, $id_point_vente) {
     FROM ventes
     INNER JOIN vendus
     ON ventes.id_point_vente = :id_point_vente
-      AND vendus.id_vente = ventes.id
+    AND vendus.id_vente = ventes.id
     AND DATE(vendus.timestamp)
     BETWEEN :du AND :au
     AND vendus.prix > 0';
@@ -700,7 +701,7 @@ function nb_remboursements_point_vente(PDO $bdd, $start, $stop, $id_point_vente)
     FROM ventes
     INNER JOIN vendus
     ON ventes.id_point_vente = :id_point_vente
-      AND vendus.id_vente = ventes.id
+    AND vendus.id_vente = ventes.id
     AND DATE(vendus.timestamp)
     BETWEEN :du AND :au
     AND vendus.remboursement > 0';
@@ -830,13 +831,13 @@ function bilan_ventes_par_type_point_vente(PDO $bdd, $start, $stop, $id_point_ve
 
 function bilan_ventes_pesees(PDO $bdd, $start, $stop) {
   $sql = 'SELECT
-      type_dechets.id as id,
-      type_dechets.nom as nom,
-      type_dechets.couleur as couleur,
-      COUNT(DISTINCT(pesees_vendus.id)) as nb_pesees_ventes,
-      COALESCE(SUM(pesees_vendus.quantite), 0) as quantite_pesee_vendu,
-      COALESCE(SUM(pesees_vendus.masse), 0) as vendu_masse,
-      COALESCE(AVG(pesees_vendus.masse), 0) as moy_masse_vente
+    type_dechets.id as id,
+    type_dechets.nom as nom,
+    type_dechets.couleur as couleur,
+    COUNT(DISTINCT(pesees_vendus.id)) as nb_pesees_ventes,
+    COALESCE(SUM(pesees_vendus.quantite), 0) as quantite_pesee_vendu,
+    COALESCE(SUM(pesees_vendus.masse), 0) as vendu_masse,
+    COALESCE(AVG(pesees_vendus.masse), 0) as moy_masse_vente
     FROM pesees_vendus
     INNER JOIN vendus
     ON vendus.id = pesees_vendus.id_vendu
@@ -861,13 +862,13 @@ function bilan_ventes_pesees(PDO $bdd, $start, $stop) {
 
 function bilan_ventes_pesees_point_vente(PDO $bdd, $start, $stop, $id_point_vente) {
   $sql = 'SELECT
-      type_dechets.id as id,
-      type_dechets.nom as nom,
-      type_dechets.couleur as couleur,
-      COUNT(DISTINCT(pesees_vendus.id)) as nb_pesees_ventes,
-      COALESCE(SUM(pesees_vendus.quantite), 0) as quantite_pesee_vendu,
-      COALESCE(SUM(pesees_vendus.masse), 0) as vendu_masse,
-      COALESCE(AVG(pesees_vendus.masse), 0) as moy_masse_vente
+    type_dechets.id as id,
+    type_dechets.nom as nom,
+    type_dechets.couleur as couleur,
+    COUNT(DISTINCT(pesees_vendus.id)) as nb_pesees_ventes,
+    COALESCE(SUM(pesees_vendus.quantite), 0) as quantite_pesee_vendu,
+    COALESCE(SUM(pesees_vendus.masse), 0) as vendu_masse,
+    COALESCE(AVG(pesees_vendus.masse), 0) as moy_masse_vente
     FROM pesees_vendus
     INNER JOIN vendus
     ON vendus.id = pesees_vendus.id_vendu
@@ -875,7 +876,7 @@ function bilan_ventes_pesees_point_vente(PDO $bdd, $start, $stop, $id_point_vent
     ON vendus.id_type_dechet = type_dechets.id
     INNER JOIN ventes
     ON vendus.id_vente = ventes.id
-      AND ventes.id_point_vente = :id_point_vente
+    AND ventes.id_point_vente = :id_point_vente
     WHERE DATE(pesees_vendus.timestamp)
     BETWEEN :du AND :au
     GROUP BY type_dechets.id';

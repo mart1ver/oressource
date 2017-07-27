@@ -58,6 +58,27 @@ function structure_validate(array $json) {
   return $structure;
 }
 
+function structure_validate(Array $json) {
+  $structure = [
+    'nom' => filter_input($json, 'nom', FILTER_SANITIZE_STRING),
+    'description' => filter_input($json, 'description', FILTER_SANITIZE_STRING),
+    'mail' => filter_input($json, 'mail', FILTER_VALIDATE_EMAIL),
+    'lot' => filter_input($json, 'lot', FILTER_VALIDATE_BOOLEAN),
+    'viz' => filter_input($json, 'viz', FILTER_VALIDATE_BOOLEAN),
+    'saisiec' => filter_input($json, 'saisiec', FILTER_VALIDATE_BOOLEAN),
+    'affsp' => filter_input($json, 'affsp', FILTER_VALIDATE_BOOLEAN),
+    'affss' => filter_input($json, 'affss', FILTER_VALIDATE_BOOLEAN),
+    'affsr' => filter_input($json, 'affsr', FILTER_VALIDATE_BOOLEAN),
+    'affsde' => filter_input($json, 'affsde', FILTER_VALIDATE_BOOLEAN),
+    'pes_vente' => filter_input($json, 'pes_vente', FILTER_VALIDATE_BOOLEAN),
+    'force_pes_vente' => filter_input($json, 'force_pes_vente', FILTER_VALIDATE_BOOLEAN),
+    'atva' => filter_input($json, 'atva', FILTER_VALIDATE_BOOLEAN),
+    'taux_tva' => filter_input($json, 'taux_tva', FILTER_VALIDATE_FLOAT),
+    'cr' => filter_input($json, 'cr', FILTER_VALIDATE_INT), // devrait etre une regex sur les nombres.
+  ];
+  return $structure;
+}
+
 function validate_json_login($unsafe_json) {
   $unsafe_json['username'] = filter_var($unsafe_json['username'], FILTER_VALIDATE_EMAIL);
   return $unsafe_json;
