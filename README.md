@@ -41,6 +41,10 @@ Idealement essayez d'utiliser un editeur ou un outil de verification syntaxique
 avant de soumettre une pull-request tel que [eslint](http://eslint.org/) pour
 Javascript ou bien pour php `php -l votre_fichier.php`.
 
+Vous pouvez aussi installer le plugin [Editor Config]http://editorconfig.org
+afin que votre Editor se régle automatiquement sur les paramètres de Coding
+Style du code actuel.
+
 Pour dévellopper vous pouvez utiliser le serveur interne de php7 via la
 commande:
 
@@ -49,7 +53,7 @@ cd oressource
 php -S localhost:8080
 ```
 
-Vous retrouverez Oressource dans votre navigateur en local sur le port 8080.
+Vous retrouverez Oressource dans votre navigateur en local sur le port `8080`.
 
 N'hesitez pas a ouvrir une issue pour toute question!
 
