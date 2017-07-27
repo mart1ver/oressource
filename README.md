@@ -41,11 +41,11 @@ Idealement essayez d'utiliser un editeur ou un outil de verification syntaxique
 avant de soumettre une pull-request tel que [eslint](http://eslint.org/) pour
 Javascript ou bien pour php `php -l votre_fichier.php`.
 
-Vous pouvez aussi installer le plugin [Editor Config]http://editorconfig.org
-afin que votre Editeur se régle automatiquement sur les paramètres de Coding
-Style du code actuel.
+Vous pouvez aussi installer le plugin [Editor Config](http://editorconfig.org)
+afin que votre editeur se régle automatiquement sur les paramètres de style de code
+du projet presents dans le fichier `.editorconfig`.
 
-Pour dévellopper vous pouvez utiliser le serveur interne de php7 via la
+Pour dévellopper vous pouvez utiliser le serveur interne de `php7` via la
 commande:
 
 ```shell
