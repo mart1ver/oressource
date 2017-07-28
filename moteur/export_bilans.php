@@ -19,18 +19,12 @@
  */
 
 session_start();
-if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($_SESSION['niveau'], 'bi') !== false)) {
 
+if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($_SESSION['niveau'], 'bi') !== false)) {
+  require_once '../moteur/dbconfig.php';
   //Premiere ligne = nom des champs (
   $xls_output = "Numéro d'indicateur" . "\t" . 'date' . "\t" . 'nom' . "\t" . 'description';
   $xls_output .= "\n\r";
-  try {
-    include('../moteur/dbconfig.php');
-  } catch (Exception $e) {
-    die('Erreur : ' . $e->getMessage());
-  }
-
-
 
   $reponse = $bdd->query('SELECT * FROM type_dechets WHERE visible = "oui" ');
   while ($donnees = $reponse->fetch()) {

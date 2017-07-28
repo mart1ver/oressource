@@ -19,21 +19,18 @@
  */
 
 session_start();
+
 if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($_SESSION['niveau'], 'l') !== false)) {
-  try {
-    include('dbconfig.php');
-  } catch (Exception $e) {
-    die('Erreur : ' . $e->getMessage());
-  }
+  require_once '../moteur/dbconfig.php';
   // si l'addresse mail est deja utillisée
   $req = $bdd->prepare('SELECT SUM(id) FROM utilisateurs WHERE mail = :amail ');
   $req->execute(['amail' => $_POST['mail']]);
   $donnees = $req->fetch();
+
+  $req->closeCursor();
   if ($donnees['SUM(id)'] > 0) {
-    $req->closeCursor();
     header('Location:../ifaces/utilisateurs.php?err=Cette addresse email est deja utilisée par un autre utilisateur!&nom=' . $_POST['nom'] . '&prenom=' . $_POST['prenom'] . '&mail=' . $_POST['mail']);
-  } else {
-    $req->closeCursor();
+    die();
   }
 
   if ($_POST['pass1'] = $_POST['pass2']) {
@@ -41,11 +38,6 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($
     $niveau = $_POST['niveaua'] . $_POST['niveaubi'] . $_POST['niveaug'] . $_POST['niveauh'] . $_POST['niveaul'] . $_POST['niveauj'] . $_POST['niveauk'] . $_POST['niveaum'] . $_POST['niveaup'] . $_POST['niveaue'];
     //recuperation des eventuelles autorisations liées au points de collectes à concatener avec la variable $niveau (c1,c2,c3...)
     $niveaucollecte = '';
-    try {
-      include('dbconfig.php');
-    } catch (Exception $e) {
-      die('Erreur : ' . $e->getMessage());
-    }
     $reponsec = $bdd->query('SELECT id FROM points_collecte');
 
     while ($donneesc = $reponsec->fetch()) {
@@ -56,11 +48,6 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($
     $reponsec->closeCursor();
     //recuperation des eventuelles autorisations liées au points de vente à concatener avec la variable $niveau (v1,v2,v3...)
     $niveauvente = '';
-    try {
-      include('dbconfig.php');
-    } catch (Exception $e) {
-      die('Erreur : ' . $e->getMessage());
-    }
     $reponsev = $bdd->query('SELECT id FROM points_vente');
 
     while ($donneesv = $reponsev->fetch()) {
@@ -71,11 +58,6 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($
     $reponsev->closeCursor();
     //recuperation des eventuelles autorisations liées au points de sortie hors boutique à concatener avec la variable $niveau (s1,s2,s3...)
     $niveausortie = '';
-    try {
-      include('dbconfig.php');
-    } catch (Exception $e) {
-      die('Erreur : ' . $e->getMessage());
-    }
     $reponses = $bdd->query('SELECT id FROM points_sortie');
 
     while ($donneess = $reponses->fetch()) {
@@ -90,7 +72,6 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($
 
     header('Location: ../ifaces/utilisateurs.php?msg=Utilisateur ajouté avec succes!');
   } else {
-    $req->closeCursor();
     header('Location: ../ifaces/utilisateurs.php?err=Veuillez confirmer votre mot de passe&nom=' . $_POST['nom'] . '&prenom=' . $_POST['prenom'] . '&mail=' . $_POST['mail']);
   }
 } else {

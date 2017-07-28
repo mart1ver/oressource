@@ -20,17 +20,11 @@
 
 session_start();
 if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($_SESSION['niveau'], 'k') !== false)) {
-  try {
-    include('dbconfig.php');
-  } catch (Exception $e) {
-    die('Erreur : ' . $e->getMessage());
-  }
+  require_once '../moteur/dbconfig.php';
 
   $req = $bdd->prepare('UPDATE localites SET nom = :nom, relation_openstreetmap = :relation_openstreetmap , commentaire = :commentaire, couleur = :couleur  WHERE id = :id');
   $req->execute(['nom' => $_POST['nom'], 'relation_openstreetmap' => $_POST['lien'], 'commentaire' => $_POST['commentaire'], 'couleur' => $_POST['couleur'], 'id' => $_POST['id']]);
-
   $req->closeCursor();
-
 
   header('Location:../ifaces/edition_localites.php');
 } else {

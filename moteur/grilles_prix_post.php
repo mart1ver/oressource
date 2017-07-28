@@ -19,14 +19,9 @@
  */
 
 session_start();
+
 if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($_SESSION['niveau'], 'g') !== false)) {
-  try {
-    include('../moteur/dbconfig.php');
-  } catch (Exception $e) {
-    die('Erreur : ' . $e->getMessage());
-  }
-
-
+  require_once '../moteur/dbconfig.php';
   $req = $bdd->prepare('SELECT SUM(id) FROM grille_objets WHERE nom = :nom ');
   $req->execute(['nom' => $_POST['nom']]);
   $donnees = $req->fetch();
@@ -34,15 +29,8 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($
 
   if ($donnees['SUM(id)'] > 0) { // SI le titre existe
     header('Location:../ifaces/grilles_prix.php?err=Un objet porte deja le meme nom!&nom=' . $_POST['nom'] . '&description=' . $_POST['description'] . '&typo=' . $_POST['typo'] . '&prix=' . $_POST['prix']);
-    $req->closeCursor();
+    die();
   } else {
-    $req->closeCursor();
-    try {
-      include('dbconfig.php');
-    } catch (Exception $e) {
-      die('Erreur : ' . $e->getMessage());
-    }
-
     $req = $bdd->prepare('INSERT INTO grille_objets (nom,  prix, description, id_type_dechet, visible) VALUES(?, ?, ?, ?,? )');
     $req->execute([$_POST['nom'], $_POST['prix'], $_POST['description'], $_POST['typo'], 'oui']);
     $req->closeCursor();

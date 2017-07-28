@@ -20,31 +20,16 @@
 
 session_start();
 if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($_SESSION['niveau'], 'h') !== false)) {
-  try {
-    include('dbconfig.php');
-  } catch (Exception $e) {
-    die('Erreur : ' . $e->getMessage());
-  }
+  require_once '../moteur/dbconfig.php';
 
   $req = $bdd->prepare('UPDATE vendus SET  remboursement = :remboursement, quantite = :quantite, id_last_hero = :id_last_hero, last_hero_timestamp = NOW()
     WHERE id = :id');
   $req->execute(['remboursement' => $_POST['remboursement'], 'quantite' => $_POST['quantite'], 'id' => $_POST['id'], 'id_last_hero' => $_SESSION['id']]);
-
   $req->closeCursor();
-
-  try {
-    include('dbconfig.php');
-  } catch (Exception $e) {
-    die('Erreur : ' . $e->getMessage());
-  }
-
   $req = $bdd->prepare('UPDATE ventes SET  id_last_hero = :id_last_hero, last_hero_timestamp = NOW()
     WHERE id = :id');
   $req->execute(['id' => $_POST['nvente'], 'id_last_hero' => $_SESSION['id']]);
-
   $req->closeCursor();
-
-
   header('Location:../ifaces/verif_vente.php?numero=' . $_POST['npoint'] . '&date1=' . $_POST['date1'] . '&date2=' . $_POST['date2']);
 } else {
   header('Location:../moteur/destroy.php');

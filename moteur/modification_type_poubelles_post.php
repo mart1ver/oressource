@@ -20,24 +20,11 @@
 
 session_start();
 if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($_SESSION['niveau'], 'g') !== false)) {
-  if (isset($_POST['ultime'])) {
-    $ultime = 'oui';
-  } else {
-    $ultime = 'non';
-  }
-
-  try {
-    include('dbconfig.php');
-  } catch (Exception $e) {
-    die('Erreur : ' . $e->getMessage());
-  }
-
+  require_once '../moteur/dbconfig.php';
+  $ultime = isset($_POST['ultime']) ? 'oui' : 'non';
   $req = $bdd->prepare('UPDATE types_poubelles SET nom = :nom,  description = :description,  masse_bac = :masse_bac,  ultime = :ultime , couleur = :couleur  WHERE id = :id');
   $req->execute(['nom' => $_POST['nom'], 'description' => $_POST['description'], 'masse_bac' => $_POST['masse_bac'], 'ultime' => $ultime, 'couleur' => $_POST['couleur'], 'id' => $_POST['id']]);
-
   $req->closeCursor();
-
-
   header('Location:../ifaces/edition_types_poubelles.php');
 } else {
   header('Location:../moteur/destroy.php');

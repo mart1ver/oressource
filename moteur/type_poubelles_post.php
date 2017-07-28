@@ -20,18 +20,8 @@
 
 session_start();
 if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($_SESSION['niveau'], 'g') !== false)) {
-  if (isset($_POST['ultime'])) {
-    $ultime = 'oui';
-  } else {
-    $ultime = 'non';
-  }
-
-  try {
-    include('../moteur/dbconfig.php');
-  } catch (Exception $e) {
-    die('Erreur : ' . $e->getMessage());
-  }
-
+  require_once '../moteur/dbconfig.php';
+  $ultime = isset($_POST['ultime']) ? 'oui' : 'non';
 
   $req = $bdd->prepare('SELECT SUM(id) FROM types_poubelles WHERE nom = :nom ');
   $req->execute(['nom' => $_POST['nom']]);
@@ -40,15 +30,7 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($
 
   if ($donnees['SUM(id)'] > 0) { // SI le titre existe
     header('Location:../ifaces/edition_types_poubelles.php?err=Un type de bac porte deja le meme nom!&nom=' . $_POST['nom'] . '&description=' . $_POST['description'] . '&masse_bac=' . $_POST['masse_bac'] . '&ultime=' . $_POST['ultime'] . '&couleur=' . substr($_POST['couleur'], 1));
-    $req->closeCursor();
   } else {
-    $req->closeCursor();
-    try {
-      include('dbconfig.php');
-    } catch (Exception $e) {
-      die('Erreur : ' . $e->getMessage());
-    }
-
     $req = $bdd->prepare('INSERT INTO types_poubelles (nom,  couleur, description, masse_bac ,ultime , visible) VALUES(?, ?, ?, ?,  ?, ?)');
     $req->execute([$_POST['nom'], $_POST['couleur'], $_POST['description'], $_POST['masse_bac'], $ultime, 'oui']);
     $req->closeCursor();

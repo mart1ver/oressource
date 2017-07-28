@@ -20,7 +20,7 @@
 
 session_start();
 if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($_SESSION['niveau'], 'j') !== false)) {
-  include('dbconfig.php');
+  require_once '../moteur/dbconfig.php';
 
   $req = $bdd->prepare('UPDATE filieres_sortie SET visible = :visible WHERE id = :id');
   $req->execute(['visible' => $_POST['visible'], 'id' => $_POST['id']]);

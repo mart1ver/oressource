@@ -19,9 +19,9 @@
  */
 
 session_start();
-if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($_SESSION['niveau'], 'bi') !== false)) {
 
-  //on convertit les deux dates en un format compatible avec la bdd
+if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($_SESSION['niveau'], 'bi') !== false)) {
+  require_once '../moteur/dbconfig.php';
 
   $txt1 = $_GET['date1'];
   $date1ft = DateTime::createFromFormat('d-m-Y', $txt1);
@@ -49,11 +49,6 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($
     $xls_output .= "\n\r";
     $xls_output .= 'type de collecte:' . "\t" . 'masse collecté:' . "\t" . 'nombre de collectes:' . "\t";
     $xls_output .= "\n\r";
-    try {
-      include('../moteur/dbconfig.php');
-    } catch (Exception $e) {
-      die('Erreur : ' . $e->getMessage());
-    }
     $reponse = $bdd->prepare('SELECT
       type_collecte.nom,SUM(`pesees_collectes`.`masse`) somme,pesees_collectes.timestamp,type_collecte.id,COUNT(distinct collectes.id) ncol
       FROM
@@ -67,11 +62,6 @@ GROUP BY id_type_collecte');
 
     while ($donnees = $reponse->fetch()) {
       $xls_output .= $donnees['nom'] . "\t" . $donnees['somme'] . "\t" . $donnees['ncol'] . "\t" . "\n";
-      try {
-        include('../moteur/dbconfig.php');
-      } catch (Exception $e) {
-        die('Erreur : ' . $e->getMessage());
-      }
       $reponse2 = $bdd->prepare('SELECT type_dechets.couleur,type_dechets.nom, sum(pesees_collectes.masse) somme
     FROM type_dechets,pesees_collectes ,type_collecte , collectes
 WHERE
@@ -102,13 +92,6 @@ ORDER BY somme DESC');
     $xls_output .= "\n\r";
     $xls_output .= 'type de collecte:' . "\t" . 'masse collecté:' . "\t" . 'nombre de collectes:' . "\t";
     $xls_output .= "\n\r";
-
-    // on determine les masses totales collèctés sur cete periode(pour un point donné)
-    try {
-      include('../moteur/dbconfig.php');
-    } catch (Exception $e) {
-      die('Erreur : ' . $e->getMessage());
-    }
     $reponse = $bdd->prepare('SELECT
       type_collecte.nom,SUM(`pesees_collectes`.`masse`) somme,pesees_collectes.timestamp,type_collecte.id,COUNT(distinct collectes.id) ncol
       FROM pesees_collectes,collectes,type_collecte
@@ -120,12 +103,6 @@ ORDER BY somme DESC');
 
     while ($donnees = $reponse->fetch()) {
       $xls_output .= $donnees['nom'] . "\t" . $donnees['somme'] . "\t" . $donnees['ncol'] . "\t" . "\n";
-
-      try {
-        include('../moteur/dbconfig.php');
-      } catch (Exception $e) {
-        die('Erreur : ' . $e->getMessage());
-      }
       $reponse2 = $bdd->prepare('SELECT type_dechets.couleur,type_dechets.nom, sum(pesees_collectes.masse) somme
         FROM type_dechets,pesees_collectes ,type_collecte , collectes
         WHERE
@@ -148,8 +125,6 @@ ORDER BY somme DESC');
     }
     $reponse->closeCursor();
   }
-
-  //=====================================================================================================================================
 
   header('Content-type: application/vnd.ms-excel');
   header('Content-disposition: attachment; filename=collectes_par_types_objet_' . date('Ymd') . '.xls');

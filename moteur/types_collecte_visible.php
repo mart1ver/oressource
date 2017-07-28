@@ -20,15 +20,9 @@
 
 session_start();
 if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($_SESSION['niveau'], 'k') !== false)) {
-  try {
-    include('dbconfig.php');
-  } catch (Exception $e) {
-    die('Erreur : ' . $e->getMessage());
-  }
-
+  require_once '../moteur/dbconfig.php';
   $req = $bdd->prepare('UPDATE type_collecte SET visible = :visible WHERE id = :id');
   $req->execute(['visible' => $_POST['visible'], 'id' => $_POST['id']]);
-
   $req->closeCursor();
   header('Location:../ifaces/types_collecte.php');
 } else {

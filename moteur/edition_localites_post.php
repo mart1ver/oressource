@@ -21,7 +21,7 @@
 session_start();
 
 if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($_SESSION['niveau'], 'k') !== false)) {
-  require_once('../moteur/dbconfig.php');
+  require_once '../moteur/dbconfig.php';
 
   $req = $bdd->prepare('SELECT SUM(id) FROM localites WHERE nom = :nom ');
   $req->execute(['nom' => $_POST['nom']]);

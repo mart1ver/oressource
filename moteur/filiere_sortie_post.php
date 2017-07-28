@@ -20,13 +20,7 @@
 
 session_start();
 if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($_SESSION['niveau'], 'j') !== false)) {
-  try {
-    include('../moteur/dbconfig.php');
-  } catch (Exception $e) {
-    die('Erreur : ' . $e->getMessage());
-  }
-
-
+  require_once '../moteur/dbconfig.php';
   $req = $bdd->prepare('SELECT SUM(id) FROM filieres_sortie WHERE nom = :nom ');
   $req->execute(['nom' => $_POST['nom']]);
   $donnees = $req->fetch();
@@ -39,11 +33,6 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($
     $req->closeCursor();
     //on determine le nombre total de type dechets evac
     $id_dechets = '';
-    try {
-      include('dbconfig.php');
-    } catch (Exception $e) {
-      die('Erreur : ' . $e->getMessage());
-    }
     $reponsesa = $bdd->query('SELECT id FROM type_dechets_evac');
 
     while ($donneessa = $reponsesa->fetch()) {
@@ -53,11 +42,6 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($
     }
     $reponsesa->closeCursor();
     //on inssere la filiere de recyclage en base
-    try {
-      include('dbconfig.php');
-    } catch (Exception $e) {
-      die('Erreur : ' . $e->getMessage());
-    }
 
     $req = $bdd->prepare('INSERT INTO filieres_sortie (nom,  couleur, description, id_type_dechet_evac, visible) VALUES(?, ?, ?,  ?, ?)');
     $req->execute([$_POST['nom'], $_POST['couleur'], $_POST['description'], $id_dechets, 'oui']);

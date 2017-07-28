@@ -21,8 +21,8 @@
 require_once('../core/session.php');
 
 session_start();
-if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && is_allowed_config()) {
-  include_once('../moteur/dbconfig.php');
+if (is_valid_session() && is_allowed_config()) {
+  require_once '../moteur/dbconfig.php';
 
   $nom = filter_input(INPUT_POST, 'nom', FILTER_SANITIZE_STRING);
   $adresse = filter_input(INPUT_POST, 'adresse', FILTER_SANITIZE_STRING);
