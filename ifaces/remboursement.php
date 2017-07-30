@@ -174,29 +174,29 @@ if (is_valid_session() && is_allowed_vente_id($numero)) {
             <script type="text/javascript">
               "use strict";
 
-              var what;
+              let what;
 
               function fokus(that) {
                 what = that;
               }
               function printdiv(divID) {
                 if (parseInt(document.getElementById('nlignes').value) >= 1) {
-                  var headstr = "<html><head><title></title></head><body><small>";
+                  let headstr = "<html><head><title></title></head><body><small>";
 
   <?php if ($_SESSION['tva_active']) { ?>
-                    var prixtot = parseFloat(document.getElementById('ptot').value).toFixed(2);
-                    var prixht = parseFloat(prixtot).toFixed(2) / (1 + parseFloat(<?= $_SESSION['taux_tva']; ?>).toFixed(2) / 100);
-                    var ptva = parseFloat(prixtot).toFixed(2) - parseFloat(prixht).toFixed(2)
-                    var footstr = "TVA à <?= $_SESSION['taux_tva']; ?>%" + " Prix H.T. =" + parseFloat(prixht).toFixed(2) + "€ TVA=" + parseFloat(ptva).toFixed(2) + "€";
+                    let prixtot = parseFloat(document.getElementById('ptot').value).toFixed(2);
+                    let prixht = parseFloat(prixtot).toFixed(2) / (1 + parseFloat(<?= $_SESSION['taux_tva']; ?>).toFixed(2) / 100);
+                    let ptva = parseFloat(prixtot).toFixed(2) - parseFloat(prixht).toFixed(2)
+                    let footstr = "TVA à <?= $_SESSION['taux_tva']; ?>%" + " Prix H.T. =" + parseFloat(prixht).toFixed(2) + "€ TVA=" + parseFloat(ptva).toFixed(2) + "€";
     <?php
   } else { ?>
-                    var footstr = "Association non assujettie à la TVA.</body></small> ";
+                    let footstr = "Association non assujettie à la TVA.</body></small> ";
   <?php } ?>
-                  var comstr = "<ul id='liste' class='list-group'><li class='list-group-item'><b>";
+                  let comstr = "<ul id='liste' class='list-group'><li class='list-group-item'><b>";
                   comstr += document.getElementById('comm').value;
                   comstr += "</b></li></ul>";
-                  var newstr = document.all.item(divID).innerHTML;
-                  var oldstr = document.body.innerHTML;
+                  let newstr = document.all.item(divID).innerHTML;
+                  let oldstr = document.body.innerHTML;
                   document.body.innerHTML = headstr + comstr + newstr + footstr;
                   window.print();
                   document.body.innerHTML = oldstr;
