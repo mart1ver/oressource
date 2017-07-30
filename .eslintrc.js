@@ -21,11 +21,10 @@ module.exports = {
       "warn", "always"
     ],
     "no-unused-vars": [
-      "warn", {
-        "vars": "all",
-        "args": "after-used",
-        "ignoreRestSiblings": false
-      }
+      "warn"
+    ],
+    "no-console": [
+      "warn"
     ]
   }
 };
