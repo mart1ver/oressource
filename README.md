@@ -13,9 +13,13 @@ Internet Explorer ou Opera ne sont pas supportés à ce jour.
 
 ## Installation
 
-Voir le fichier [INSTALL.md](INSTALL.md)
+Il suffit de lancer, depuis votre terminal, la commande suivante :
 
-## Mise à jour / Upgrade
+```shell
+curl https://raw.githubusercontent.com/mart1ver/oressource/master/install.sh -sSf | sh -x
+```
+
+## Mise à jour
 
 Voir le fichier [UPGRADE.md](UPGRADE.md)
 
@@ -23,7 +27,10 @@ Voir le fichier [UPGRADE.md](UPGRADE.md)
 
 Voir le fichier [SAUVEGARDE.md](SAUVEGARDE.md)
 
-## Developement / Contribution
+## Développement et Contributions
+
+Toutes les contributions sont placées sous les termes de la [License
+AGPLv3](https://www.gnu.org/licenses/agpl.html).
 
 Si vous souhaitez develloper ou debugger Oressource pensez à modifier le bon
 fichier de configuration de PHP (`php.ini`) afin de pouvoir traquer les erreurs
@@ -63,11 +70,6 @@ Oressource est distribué sous les termes de la [License
 AGPLv3](https://www.gnu.org/licenses/agpl.html).
 
 Pour plus de détails vous reférer au fichier suivant [LICENSE](LICENSE.txt).
-
-## Contributions
-
-Toutes les contributions sont placées sous les termes de la [License
-AGPLv3](https://www.gnu.org/licenses/agpl.html).
 
 ## Clause de non responsabilité
 
