@@ -25,14 +25,14 @@ function stripIndent(html) {
 }
 
 function number_write(x) {
-  const text_box = document.getElementById("number");
+  const text_box = document.getElementById('number');
   text_box.value = text_box.value + x;
 }
 
 function number_clear() {
-  const input = document.getElementById("number");
-  input.value = "";
-  input.setCustomValidity("");
+  const input = document.getElementById('number');
+  input.value = '';
+  input.setCustomValidity('');
 }
 
 /*
@@ -115,7 +115,7 @@ class NumPad {
     if (new_value > 0.0) {
       this.value = (this.value - masse_conteneur).toFixed(2);
     } else {
-      this.error("La masse de l'objet pesee est inferieur au poids du conteneur!");
+      this.error('La masse de l\'objet pesee est inferieur au poids du conteneur!');
     }
   }
 
