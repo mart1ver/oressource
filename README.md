@@ -21,7 +21,11 @@ curl https://raw.githubusercontent.com/mart1ver/oressource/master/install.sh -sS
 
 ## Mise à jour
 
-Voir le fichier [UPGRADE.md](UPGRADE.md)
+Il suffit de lancer, depuis votre terminal, la commande suivante :
+
+```shell
+curl https://raw.githubusercontent.com/mart1ver/oressource/master/upgrade.sh -sSf | sh -x
+```
 
 ## Sauvegarde et Restauration
 
