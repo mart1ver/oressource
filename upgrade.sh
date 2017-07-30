@@ -16,6 +16,14 @@ then
   cat mysql/upgrade_20150612.sql | mysql -u oressource -h localhost oressource -p
 fi
 
+## Si Oressource a été installé avant le 25 juin 2015
+
+if [ $timestamp -lt 1435236960 ]
+then
+  # Mise à jour de la base de données :
+  cat mysql/upgrade_20150625.sql | mysql -u oressource -h localhost oressource -p
+fi
+
 
 ## Installation des dépendances du client
 
