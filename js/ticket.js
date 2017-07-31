@@ -17,7 +17,7 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-class Ticket {
+export class Ticket {
   /*
    * Construit un Ticket vide. Cet Object represente un ticket
    * dans les interfaces de sortie et de collecte.
