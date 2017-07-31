@@ -41,6 +41,10 @@ $can_config = is_allowed_config();
     <title>Oressource</title>
     <link href="../css/oressource.css" type="text/css" rel="stylesheet">
     <script src="../dist/bundle.js" type="text/javascript"></script>
+    <script src="../js/numpad.js" type="text/javascript"></script>
+    <script src="../js/ticket.js" type="text/javascript"></script>
+    <script src="../js/utils.js" type="text/javascript"></script>
+    <script src="../js/ventes.js" type="text/javascript"></script>
   </head>
 
   <body>
