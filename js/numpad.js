@@ -40,7 +40,7 @@ function number_clear() {
  * Le design actuel est minimaliste a terme cela serait pratique d'en faire un
  * widget a la Morris.js.
  */
-export class NumPad {
+class NumPad {
   /*
    * Cree un Numpad cote JS on lui passe l'element input HTML associee au numpad.
    * ainsi que la liste des conteneurs disponnibles.
