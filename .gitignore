@@ -8,6 +8,7 @@ moteur/dbconfig\.php\.example
 
 # Builds
 _build
+dist
 
 # Logs
 logs
