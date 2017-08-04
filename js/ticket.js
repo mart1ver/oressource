@@ -42,7 +42,7 @@ class Ticket {
   remove(id) {
     const item = this.items.get(id);
     this.items.delete(id);
-    this._total -= item.value;
+    this._total -= item.masse;
     return item;
   }
 
@@ -62,8 +62,9 @@ class Ticket {
   push(item) {
     this.items.set(this.id_interne, item);
     this._total += item.masse;
+    const id = this.id_interne;
     this.id_interne += 1;
-    return this.id_interne;
+    return id;
   }
 
   /*
