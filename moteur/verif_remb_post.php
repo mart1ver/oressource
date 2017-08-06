@@ -22,11 +22,10 @@ session_start();
 if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($_SESSION['niveau'], 'v' . $_GET['numero']) !== false)) {
   require_once '../moteur/dbconfig.php';
   $reponse = $bdd->query('SELECT cr FROM `description_structure`');
-  while ($donnees = $reponse->fetch()) {
-    $code = $donnees['cr'];
-  }
+  $donnees = $reponse->fetch();
+  $code = $donnees['cr'];
   $reponse->closeCursor();
-  if ($_POST['passrmb'] === $code) {
+  if (intval($_POST['passrmb'], 10) === $code) {
     header('Location:../ifaces/remboursement.php?numero=' . $_GET['numero']);
   } else {
     header('Location:../ifaces/ventes.php?numero=' . $_GET['numero'] . '&err=mauvais mot de passe');
