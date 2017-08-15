@@ -251,5 +251,8 @@ $can_config = is_allowed_config();
     ?>
 
     <!-- Pour les menus deroulants de bootstrap -->
-    <script  src="../js/jquery-2.1.1.min.js"></script>
-    <script  src="../js/bootstrap.min.js"></script>
+    <script src="../js/jquery-2.1.1.min.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+    <script async defer src="../js/daterangepicker.js"></script>
+    <script async defer src="../js/moment.js"></script>
+    <script async defer src="../js/utils.js"></script>

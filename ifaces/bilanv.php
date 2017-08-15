@@ -316,88 +316,14 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && is_allowe
 
   <script src="../js/raphael.js"></script>
   <script src="../js/morris/morris.js"></script>
-  <script type="text/javascript" src="../js/moment.js"></script>
-  <script type="text/javascript" src="../js/daterangepicker.js"></script>
   <script type="text/javascript">
     'use strict';
-    function process_get() {
-      const val = { };
-      const query = new URLSearchParams(window.location.search.slice(1)).entries();
-      for (const pair of query) {
-        val[pair[0]] = pair[1];
-      }
-      return val;
-    }
-
-    function cb(start, end, label) {
-      $('#reportrange span').html(`${start.format('DD, MMMM, YYYY')} - ${end.format('DD, MMMM, YYYY')}`);
-    }
 
     $(document).ready(() => {
-      {
-        const get = process_get();
-        const startDate = moment(get.date1, 'DD-MM-YYYY');
-        const endDate = moment(get.date2, 'DD-MM-YYYY');
-
-        const now = moment();
-        const optionSet1 = {
-          startDate: startDate.format('DD/MM/YYYY'),
-          endDate: endDate.format('DD/MM/YYYY'),
-          minDate: '01/01/2010',
-          maxDate: '12/31/2020',
-          dateLimit: { days: 800 },
-          showDropdowns: true,
-          showWeekNumbers: true,
-          timePicker: false,
-          timePickerIncrement: 1,
-          timePicker12Hour: true,
-          ranges: {
-            "Aujoud'hui": [ now, now ],
-            'hier': [ now.subtract(1, 'days'), now.subtract(1, 'days') ],
-            '7 derniers jours': [ now.subtract(6, 'days'), now ],
-            '30 derniers jours': [ now.subtract(29, 'days'), now ],
-            'Ce mois': [
-              now.startOf('month'),
-              now.endOf('month')
-            ],
-            'Le mois deriner': [
-              now.subtract(1, 'month').startOf('month'),
-              now.subtract(1, 'month').endOf('month')
-            ]
-          },
-          opens: 'left',
-          buttonClasses: [ 'btn btn-default' ],
-          applyClass: 'btn-small btn-primary',
-          cancelClass: 'btn-small',
-          format: 'DD/MM/YYYY',
-          separator: ' to ',
-          locale: {
-            applyLabel: 'Appliquer',
-            cancelLabel: 'Annuler',
-            fromLabel: 'Du',
-            toLabel: 'Au',
-            customRangeLabel: 'Période libre',
-            daysOfWeek: [ 'Di', 'Lu', 'Ma', 'Me', 'Je', 'Ve', 'Sa' ],
-            monthNames: [ 'Janvier', 'Fevrier', 'Mars'
-                      , 'Avril', 'Mai', 'Juin'
-                      , 'Juillet', 'Aout', 'Septembre'
-                      , 'Octobre', 'Novembre', 'Decembre' ],
-            firstDay: 1
-          }
-        };
-
-        const picker_element = $('#reportrange');
-        picker_element.daterangepicker(optionSet1, cb);
-
-        $('#reportrange span').html(`${startDate.format('DD/MM/YYYY')} - ${endDate.format('DD/MM/YYYY')}`);
-
-        picker_element.on('apply.daterangepicker',
-                (ev, picker) => {
-          const start = picker.startDate.format('DD-MM-YYYY');
-          const end = picker.endDate.format('DD-MM-YYYY');
-          window.location.href = `./bilanv.php?date1=${start}&date2=${end}&numero=${get.numero}`;
-        });
-      }
+      const get = process_get();
+      const options = set_datepicker(get, url);
+      const url = 'bilanv';
+      bind_datepicker(options, get, url);
 
       try {
         const dataMv = <?= json_encode($graphMv, JSON_NUMERIC_CHECK); ?>;

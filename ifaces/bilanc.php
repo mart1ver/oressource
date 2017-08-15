@@ -29,10 +29,7 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && is_allowe
   require_once('../moteur/dbconfig.php');
   ?>
 
-  <script type="text/javascript" src="../js/moment.js"></script>
-  <script type="text/javascript" src="../js/daterangepicker.js"></script>
   <div class="container">
-
     <div class="row">
       <div class="col-md-11 " >
         <h1>Bilan global</h1>
@@ -43,114 +40,6 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && is_allowe
             <i class="fa fa-calendar"></i>
             <span></span> <b class="caret"></b>
           </div>
-
-          <script type="text/javascript">
-            "use strict";
-            function $_GET(param) {
-              var vars = { };
-              window.location.href.replace(
-                      /[?&]+([^=&]+)=?([^&]*)?/gi,
-                      function(m, key, value) {
-                        vars[key] = value !== undefined ? value : '';
-                      }
-              );
-
-              if (param) {
-                return vars[param] ? vars[param] : null;
-              }
-              return vars;
-            }
-            $(document).ready(function() {
-
-              var cb = function(start, end, label) {
-                console.log(start.toISOString(), end.toISOString(), label);
-                $('#reportrange span').html(start.format('DD, MMMM, YYYY') + ' - ' + end.format('DD, MMMM, YYYY'));
-
-              }
-              var dateuno = $_GET('date1');
-              var moisuno = dateuno.substring(0, 2);
-              var jouruno = dateuno.substring(3, 5);
-              var anneeuno = dateuno.substring(6, 10);
-              var dateunogf = moisuno + '/' + jouruno + "/" + anneeuno;
-              var datedos = $_GET('date2');
-              var moisdos = datedos.substring(0, 2);
-              var jourdos = datedos.substring(3, 5);
-              var anneedos = datedos.substring(6, 10);
-              var datedosgf = moisdos + '/' + jourdos + "/" + anneedos;
-              var optionSet1 = {
-                startDate: dateunogf,
-                endDate: datedosgf,
-                minDate: '01/01/2010',
-                maxDate: '12/31/2020',
-                dateLimit: { days: 800 },
-                showDropdowns: true,
-                showWeekNumbers: true,
-                timePicker: false,
-                timePickerIncrement: 1,
-                timePicker12Hour: true,
-                ranges: {
-                  "Aujoud'hui": [ moment(), moment() ],
-                  'hier': [ moment().subtract(1, 'days'), moment().subtract(1, 'days') ],
-                  '7 derniers jours': [ moment().subtract(6, 'days'), moment() ],
-                  '30 derniers jours': [ moment().subtract(29, 'days'), moment() ],
-                  'Ce mois': [ moment().startOf('month'), moment().endOf('month') ],
-                  'Le mois deriner': [ moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month') ]
-                },
-                opens: 'left',
-                buttonClasses: [ 'btn btn-default' ],
-                applyClass: 'btn-small btn-primary',
-                cancelClass: 'btn-small',
-                format: 'DD/MM/YYYY',
-                separator: ' to ',
-                locale: {
-                  applyLabel: 'Appliquer',
-                  cancelLabel: 'Anuler',
-                  fromLabel: 'Du',
-                  toLabel: 'Au',
-                  customRangeLabel: 'Période libre',
-                  daysOfWeek: [ 'Di', 'Lu', 'Ma', 'Me', 'Je', 'Ve', 'Sa' ],
-                  monthNames: [ 'Janvier', 'Fevrier', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Aout', 'Septembre', 'Octobre', 'Novembre', 'Decembre' ],
-                  firstDay: 1
-                }
-              };
-
-              $('#reportrange span').html($_GET('date1') + ' - ' + $_GET('date2'));
-
-              $('#reportrange').daterangepicker(optionSet1, cb);
-
-              $('#reportrange').on('show.daterangepicker', function() {
-                console.log("show event fired");
-              });
-              $('#reportrange').on('hide.daterangepicker', function() {
-                console.log("hide event fired");
-              });
-              $('#reportrange').on('apply.daterangepicker', function(ev, picker) {
-                console.log("apply event fired, start/end dates are "
-                        + picker.startDate.format('DD MM, YYYY')
-                        + " to "
-                        + picker.endDate.format('DD MM, YYYY')
-                        );
-                window.location.href = "bilanc.php?date1=" + picker.startDate.format('DD-MM-YYYY') + "&date2=" + picker.endDate.format('DD-MM-YYYY') + "&numero=<?= $_GET['numero']; ?>";
-              });
-              $('#reportrange').on('cancel.daterangepicker', function(ev, picker) {
-                console.log("cancel event fired");
-              });
-
-              $('#options1').click(function() {
-                $('#reportrange').data('daterangepicker').setOptions(optionSet1, cb);
-              });
-
-              $('#options2').click(function() {
-                $('#reportrange').data('daterangepicker').setOptions(optionSet2, cb);
-              });
-
-              $('#destroy').click(function() {
-                $('#reportrange').data('daterangepicker').remove();
-              });
-
-            });
-          </script>
-
           <script src="../js/raphael.js"></script>
           <script src="../js/morris/morris.js"></script>
         </div>
@@ -831,6 +720,15 @@ GROUP BY nom');
 
     </div>
   </div>
+  <script type="text/javascript">
+    'use strict';
+    $(document).ready(() => {
+      const get = process_get();
+      const url = 'bilanc';
+      const options = set_datepicker(get, url);
+      bind_datepicker(options, get, url);
+    });
+  </script>
   <?php
   require_once 'pied.php';
 } else {

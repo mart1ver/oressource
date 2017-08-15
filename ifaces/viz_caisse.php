@@ -30,8 +30,6 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && $_SESSION
   $nb_viz_caisse = (int) ($_SESSION['nb_viz_caisse']);
   ?>
 
-  <script type="text/javascript" src="../js/moment.js"></script>
-  <script type="text/javascript" src="../js/daterangepicker.js"></script>
   <div class="container">
     <h1>Visualisation des <?= $nb_viz_caisse; ?> derniere ventes</h1>
     <p align="right">
