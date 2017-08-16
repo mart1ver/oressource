@@ -137,20 +137,7 @@ AND utilisateurs.id = vendus.id_createur');
         $req->closeCursor();
         ?>
       </tbody>
-      <tfoot>
-        <tr>
-          <th></th>
-
-          <th></th>
-
-          <th></th>
-          <th></th>
-          <th></th>
-
-      </tfoot>
-
     </table>
-
   </div><!-- /.container -->
 
   <?php

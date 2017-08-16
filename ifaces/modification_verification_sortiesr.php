@@ -147,18 +147,7 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($
         $req->closeCursor();
         ?>
       </tbody>
-      <tfoot>
-        <tr>
-          <th></th>
-
-          <th></th>
-          <th></th>
-          <th></th>
-
-      </tfoot>
-
     </table>
-
   </div><!-- /.container -->
   <?php
   require_once 'pied.php';
