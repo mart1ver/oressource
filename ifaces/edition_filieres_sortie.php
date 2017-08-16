@@ -156,28 +156,7 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($
         $reponse->closeCursor();
         ?>
       </tbody>
-      <tfoot>
-        <tr>
-          <th></th>
-          <th></th>
-          <th></th>
-          <th></th>
-          <th></th>
-          <th></th>
-          <th></th>
-          <th></th>
-
-      </tfoot>
-
     </table>
-    <br>
-    <div class="row">
-      <div class="col-md-4"></div>
-      <div class="col-md-4"><br> </div>
-      <div class="col-md-4"></div>
-    </div>
-  </div>
-  </div>
   </div><!-- /.container -->
 
   <?php

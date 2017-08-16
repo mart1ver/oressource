@@ -205,20 +205,7 @@ pesees_vendus.id_vendu = :id_vendu');
         $req->closeCursor();
         ?>
       </tbody>
-      <tfoot>
-        <tr>
-          <th></th>
-
-          <th></th>
-
-          <th></th>
-          <th></th>
-          <th></th>
-
-      </tfoot>
-
     </table>
-
   </div><!-- /.container -->
 
   <?php
