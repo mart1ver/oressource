@@ -38,7 +38,7 @@ $numero = filter_input(INPUT_GET, 'numero', FILTER_VALIDATE_INT);
 if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && is_allowed_collecte_id($numero)) {
   require_once('tete.php');
 
-  $point_collecte = point_collecte_id($bdd, $numero);
+  $point_collecte = points_collecte_id($bdd, $numero);
   $types_action = types_collectes($bdd);
   $date = new Datetime('now');
   ?>
@@ -132,8 +132,6 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && is_allowe
       localites: <?= json_encode(localites($bdd), JSON_NUMERIC_CHECK); ?>,
     };
   </script>
-  <script src="../js/ticket.js" type="text/javascript"></script>
-  <script src="../js/numpad.js" type="text/javascript"></script>
   <script type="text/javascript">
     'use strict';
 

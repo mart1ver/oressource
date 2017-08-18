@@ -132,8 +132,7 @@ if (is_valid_session()) {
   <!-- Bootstrap core JavaScript + morris + raphael
   ================================================== -->
   <!-- Placed at the end of the document so the pages load faster -->
-  <script src="../js/raphael.js"></script>
-  <script src="../js/morris/morris.js"></script>
+
   <script type="text/javascript">
     'use strict';
     // FIXME: Recuperer les donnees en AJAX au lieu de recalculer toute la page a chaque fois.

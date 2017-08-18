@@ -19,7 +19,7 @@
  */
 
 // TODO a virer une fois la base nettoyee des oui et non.
-function oui_non_to_bool($s) {
+function oui_non_to_bool(string $s): bool {
   if ($s === 'oui') {
     return true;
   } elseif ($s === 'non') {
@@ -30,14 +30,14 @@ function oui_non_to_bool($s) {
 }
 
 // TODO a virer une fois la base nettoyee des oui et non.
-function bool_to_oui_non($b) {
+function bool_to_oui_non(bool $b): string {
   if ($b === true) {
     return 'oui';
   }
   return 'non';
 }
 
-function structure_validate(array $json) {
+function structure_validate(array $json): array {
   $structure = [
     'nom' => filter_input($json, 'nom', FILTER_SANITIZE_STRING),
     'description' => filter_input($json, 'description', FILTER_SANITIZE_STRING),
@@ -98,7 +98,7 @@ function validate_json_sorties($unsafe_json) {
   return $json;
 }
 
-function validate_json_collecte($unsafe_json) {
+function validate_json_collecte($unsafe_json): array {
   $filters = [
     'id_type_action' => FILTER_VALIDATE_INT,
     'antidate' => FILTER_DEFAULT,
@@ -128,7 +128,7 @@ function validate_json_collecte($unsafe_json) {
   return $json;
 }
 
-function parseDate_Post($key) {
+function parseDate_Post(string $key): DateTime {
   $result = filter_input(INPUT_POST, $key, FILTER_SANITIZE_STRING);
   if ($result) {
     return DateTime::createFromFormat('Y-m-d', $result);
@@ -137,7 +137,7 @@ function parseDate_Post($key) {
   }
 }
 
-function parseDate($str) {
+function parseDate($str): DateTime {
   if ($str) {
     return DateTime::createFromFormat('Y-m-d', $str);
   } else {
@@ -145,48 +145,21 @@ function parseDate($str) {
   }
 }
 
-function parseFloat($key) {
+function parseFloat($key): float {
   $result = filter_var($key, FILTER_VALIDATE_FLOAT);
-  if ($result) {
-    return (float) $result;
-  } else {
+  if ($result === false) {
     throw new UnexpectedValueException('Erreur: Donnee POST invalide float attendu.');
-  }
-}
-
-function parseInt($key) {
-  $result = filter_var($key, FILTER_VALIDATE_INT);
-  if ($result) {
-    return (int) $result;
   } else {
-    throw new UnexpectedValueException('Erreur: Donnee POST invalide int attendu.');
-  }
-}
-
-function parseInt_Post($key) {
-  $result = filter_input(INPUT_POST, $key, FILTER_VALIDATE_INT);
-  if ($result) {
-    return (int) $result;
-  } else {
-    throw new UnexpectedValueException('Erreur: Donnee POST invalide int attendu.');
-  }
-}
-
-function parseFloat_Post($key) {
-  $result = filter_input(INPUT_POST, $key, FILTER_VALIDATE_FLOAT);
-  if ($result) {
-    return (float) $result;
-  } else {
-    throw new UnexpectedValueException('Erreur: Donnee POST invalide float attendu.');
-  }
-}
-
-function parseString_Post($key) {
-  $result = filter_input(INPUT_POST, $key, FILTER_SANITIZE_STRING);
-  if ($result !== null) {
     return $result;
+  }
+}
+
+function parseInt($key): int {
+  $result = filter_var($key, FILTER_VALIDATE_INT);
+  if ($result === false) {
+    throw new UnexpectedValueException('Erreur: Donnee invalide int attendu.');
   } else {
-    throw new UnexpectedValueException('Erreur: Donnee POST invalide chaine de caractere attendue.');
+    return $result;
   }
 }
 

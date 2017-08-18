@@ -36,7 +36,7 @@ if (is_valid_session() && is_allowed_sortie_id($numero)) {
 
   require_once('tete.php');
 
-  $point_sortie = point_sorties_id($bdd, $numero);
+  $point_sortie = points_sorties_id($bdd, $numero);
   $conventions = convention_sortie($bdd);
   $pesee_max = (float) $point_sortie['pesee_max'];
 
@@ -155,8 +155,6 @@ if (is_valid_session() && is_allowed_sortie_id($numero)) {
       conteneurs: <?= json_encode(types_contenants($bdd), JSON_NUMERIC_CHECK); ?>
     };
   </script>
-  <script src="../js/ticket.js" type="text/javascript"></script>
-  <script src="../js/numpad.js" type="text/javascript"></script>
   <script type="text/javascript">
     'use strict';
 
