@@ -24,7 +24,7 @@ global $_SESSION;
 function set_session(array $user, array $structure): void {
   $_SESSION['systeme'] = 'oressource';
   $_SESSION['id'] = $user['id'];
-  $_SESSION['niveau']  = $user['niveau'];
+  $_SESSION['niveau'] = $user['niveau'];
   $_SESSION['nom'] = $user['nom'];
   $_SESSION['prenom'] = $user['prenom'];
   $_SESSION['mail'] = $user['mail'];
@@ -50,10 +50,18 @@ function set_session(array $user, array $structure): void {
 }
 
 function destroy_session(): void {
-  session_unset();
-  session_destroy();
   setcookie('login', '');
   setcookie('pass', '');
+  session_unset();
+  session_destroy();
+}
+
+function pesees_ventes(): bool {
+  return $_SESSION['pes_vente'];
+}
+
+function ventes_lots(): bool {
+  return $_SESSION['lot_caisse'];
 }
 
 /**

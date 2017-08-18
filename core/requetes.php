@@ -51,6 +51,7 @@ function objet_update_nom(PDO $bdd, $id, $nom): void {
   $req->execute();
   $req->closeCursor();
 }
+
 function objet_update(PDO $bdd, int $id, $prix, $nom, $description): void {
   $req = $bdd->prepare('
       update grille_objets
@@ -70,6 +71,26 @@ function objet_update(PDO $bdd, int $id, $prix, $nom, $description): void {
     throw new UnexpectedValueException('Un objet avec le meme nom existe deja.');
   }
   $req->closeCursor();
+}
+
+function objets_visibles(PDO $bdd): array {
+  $sql = 'SELECT * FROM grille_objets';
+  $stmt = $bdd->prepare($sql);
+  $stmt->execute();
+  return array_map(function (array $e): array {
+    $e['visible'] = $e['visible'] === 'oui';
+    return $e;
+  }, $stmt->fetchAll(PDO::FETCH_ASSOC));
+}
+
+function objets(PDO $bdd): array {
+  $sql = 'SELECT * FROM grille_objets';
+  $stmt = $bdd->prepare($sql);
+  $stmt->execute();
+  $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+  return array_filter($result, function (array $e): bool {
+    return $e['visible'];
+  });
 }
 
 function utilisateurs_id(PDO $bdd, int $id) {
@@ -113,7 +134,7 @@ function convention_sortie_by_id(PDO $bdd, int $id): array {
   return $result;
 }
 
-function point_collecte_id(PDO $bdd, int $id): array {
+function points_collecte_id(PDO $bdd, int $id): array {
   $sql = 'SELECT pesee_max, nom
           FROM points_collecte
           WHERE id = :id
@@ -126,8 +147,8 @@ function point_collecte_id(PDO $bdd, int $id): array {
   return $point_collecte;
 }
 
-function point_sorties_id(PDO $bdd, int $id): array {
-  $sql = 'SELECT pesee_max, nom FROM points_sortie WHERE id = :id LIMIT 1';
+function points_sorties_id(PDO $bdd, int $id): array {
+  $sql = 'SELECT id, pesee_max, nom, adresse, visible FROM points_sortie WHERE id = :id';
   $stmt = $bdd->prepare($sql);
   $stmt->bindValue(':id', $id, PDO::PARAM_INT);
   $stmt->execute();
@@ -137,7 +158,7 @@ function point_sorties_id(PDO $bdd, int $id): array {
 }
 
 function points_collectes(PDO $bdd): array {
-  $stmt = $bdd->prepare('SELECT id, nom, adresse FROM points_collecte WHERE visible = "oui"');
+  $stmt = $bdd->prepare('SELECT id, nom, adresse, pesee_max FROM points_collecte WHERE visible = "oui"');
   $stmt->execute();
   return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
@@ -146,15 +167,6 @@ function points_sorties(PDO $bdd): array {
   $stmt = $bdd->prepare('SELECT id, nom, adresse FROM points_sortie WHERE visible = "oui"');
   $stmt->execute();
   return $stmt->fetchAll(PDO::FETCH_ASSOC);
-}
-
-function points_sorties_id(PDO $bdd, int $id): array {
-  $stmt = $bdd->prepare('SELECT id, nom, adresse, description, visible FROM points_sortie WHERE id = :id');
-  $stmt->bindValue(':id', $id, PDO::PARAM_INT);
-  $stmt->execute();
-  $result = $stmt->fetch(PDO::FETCH_ASSOC);
-  $stmt->closeCursor();
-  return $result;
 }
 
 function points_ventes(PDO $bdd): array {
@@ -366,7 +378,20 @@ function collecte_id(PDO $bdd, int $id): array {
   return $collecte;
 }
 
-// En attendant de faire des objets on fait un tableau associatif.
+function moyens_paiements(PDO $bdd): array {
+  $sql = 'SELECT id, nom, couleur, visible FROM moyens_paiement';
+  $stmt = $bdd->prepare($sql);
+  $stmt->execute();
+  return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+function moyens_paiements_visibles(PDO $bdd): array {
+  $sql = 'SELECT id, nom, couleur, visible FROM moyens_paiement WHERE visible = "oui"';
+  $stmt = $bdd->prepare($sql);
+  $stmt->execute();
+  return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
 function insert_collecte(PDO $bdd, array $collecte): int {
   $req = $bdd->prepare('INSERT INTO collectes
                             (timestamp, id_type_collecte,
@@ -507,18 +532,18 @@ function structure(PDO $bdd): array {
   $result = $req->fetch(PDO::FETCH_ASSOC);
 
   /* a activé une fois les changements prets.
-  $result['tva_active'] = oui_non_to_bool($result['tva_active']);
-  $result['lot'] = oui_non_to_bool($result['lot']);
-  $result['viz'] = oui_non_to_bool($result['viz']);
-  $result['saisiec'] = oui_non_to_bool($result['saisiec']);
-  $result['affsp'] = oui_non_to_bool($result['affsp']);
-  $result['affss'] = oui_non_to_bool($result['affss']);
-  $result['affsr'] = oui_non_to_bool($result['affsr']);
-  $result['affsd'] = oui_non_to_bool($result['affsd']);
-  $result['affsde'] = oui_non_to_bool($result['affsde']);
-  $result['pes_vente'] = oui_non_to_bool($result['pes_vente']);
-  $result['force_pes_vente'] = oui_non_to_bool($result['force_pes_vente']);
-  */
+    $result['tva_active'] = oui_non_to_bool($result['tva_active']);
+    $result['lot'] = oui_non_to_bool($result['lot']);
+    $result['viz'] = oui_non_to_bool($result['viz']);
+    $result['saisiec'] = oui_non_to_bool($result['saisiec']);
+    $result['affsp'] = oui_non_to_bool($result['affsp']);
+    $result['affss'] = oui_non_to_bool($result['affss']);
+    $result['affsr'] = oui_non_to_bool($result['affsr']);
+    $result['affsd'] = oui_non_to_bool($result['affsd']);
+    $result['affsde'] = oui_non_to_bool($result['affsde']);
+    $result['pes_vente'] = oui_non_to_bool($result['pes_vente']);
+    $result['force_pes_vente'] = oui_non_to_bool($result['force_pes_vente']);
+   */
   $req->closeCursor();
   return $result;
 }
