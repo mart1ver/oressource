@@ -36,7 +36,7 @@ function objet_id(PDO $bdd, $id_obj) {
   return $result;
 }
 
-function objet_update_visible(PDO $bdd, $id, $visible): void {
+function objet_update_visible(PDO $bdd, $id, $visible) {
   $req = $bdd->prepare('update grille_objets set visible = :visible where id = :id');
   $req->bindValue(':id', $id, PDO::PARAM_INT);
   $req->bindValue(':visible', $visible, PDO::PARAM_STR);
@@ -44,7 +44,7 @@ function objet_update_visible(PDO $bdd, $id, $visible): void {
   $req->closeCursor();
 }
 
-function objet_update_nom(PDO $bdd, $id, $nom): void {
+function objet_update_nom(PDO $bdd, $id, $nom) {
   $req = $bdd->prepare('update grille_objets set nom = :nom where id = :id');
   $req->bindValue(':id', $id, PDO::PARAM_INT);
   $req->bindValue(':nom', $nom, PDO::PARAM_STR);
@@ -52,7 +52,7 @@ function objet_update_nom(PDO $bdd, $id, $nom): void {
   $req->closeCursor();
 }
 
-function objet_update(PDO $bdd, int $id, $prix, $nom, $description): void {
+function objet_update(PDO $bdd, int $id, $prix, $nom, $description) {
   $req = $bdd->prepare('
       update grille_objets
       set nom = :nom1,
@@ -324,7 +324,7 @@ function nb_categories_poubelles(PDO $bdd): int {
 // Mais d'un cote niveau tracabilite ils devraient pas supprimer de categories...
 // genere une exception si les masses sont inferieurs a 0.
 
-function insert_items_collecte(PDO $bdd, int $id_collecte, $collecte, $items): void {
+function insert_items_collecte(PDO $bdd, int $id_collecte, $collecte, $items) {
   $nombreCategories = nb_categories_dechets_item($bdd);
   $req = $bdd->prepare('INSERT INTO pesees_collectes
                             (timestamp, masse, id_collecte, id_type_dechet, id_createur)
@@ -411,7 +411,7 @@ function insert_collecte(PDO $bdd, array $collecte): int {
   return (int) $bdd->lastInsertId();
 }
 
-function insert_items_sorties(PDO $bdd, int $id_sorties, $sortie, $items): void {
+function insert_items_sorties(PDO $bdd, int $id_sorties, $sortie, $items) {
   $nombreCategories = nb_categories_dechets_item($bdd);
   $req = $bdd->prepare('INSERT INTO pesees_sorties (timestamp, masse,  id_sortie, id_type_dechet, id_createur)
                             VALUES(:timestamp, :masse, :id_sortie, :id_type_dechet, :id_createur)');
@@ -432,7 +432,7 @@ function insert_items_sorties(PDO $bdd, int $id_sorties, $sortie, $items): void 
   }
 }
 
-function insert_evac_sorties(PDO $bdd, int$id_sorties, $sortie, $items): void {
+function insert_evac_sorties(PDO $bdd, int$id_sorties, $sortie, $items) {
   $nombreCategories = nb_categories_dechets_evac($bdd);
   $req = $bdd->prepare('INSERT INTO pesees_sorties (timestamp, masse,  id_sortie, id_type_dechet_evac, id_createur)
                             VALUES(:timestamp, :masse, :id_sortie, :id_type_dechet_evac, :id_createur)');
@@ -453,7 +453,7 @@ function insert_evac_sorties(PDO $bdd, int$id_sorties, $sortie, $items): void {
   }
 }
 
-function insert_poubelle_sorties(PDO $bdd, int $id_sorties, $sortie, $items): void {
+function insert_poubelle_sorties(PDO $bdd, int $id_sorties, $sortie, $items) {
   $nombreCategories = nb_categories_poubelles($bdd);
   $req = $bdd->prepare('INSERT INTO pesees_sorties (timestamp, masse, id_sortie, id_type_poubelle, id_createur)
                             VALUES(:timestamp, :masse, :id_sortie, :id_type_poubelle, :id_createur)');
@@ -548,7 +548,7 @@ function structure(PDO $bdd): array {
   return $result;
 }
 
-function structure_update(PDO $bdd, array $structure): void {
+function structure_update(PDO $bdd, array $structure) {
   $sql = 'UPDATE description_structure
     SET nom = :nom,
     adresse = :adresse,

@@ -21,7 +21,7 @@
 global $_SESSION;
 
 // Appellée au login.
-function set_session(array $user, array $structure): void {
+function set_session(array $user, array $structure) {
   $_SESSION['systeme'] = 'oressource';
   $_SESSION['id'] = $user['id'];
   $_SESSION['niveau'] = $user['niveau'];
@@ -49,7 +49,7 @@ function set_session(array $user, array $structure): void {
   $_SESSION['saisiec'] = $structure['saisiec'];
 }
 
-function destroy_session(): void {
+function destroy_session() {
   setcookie('login', '');
   setcookie('pass', '');
   session_unset();
