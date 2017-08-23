@@ -530,21 +530,23 @@ function structure(PDO $bdd): array {
   $req = $bdd->prepare($sql);
   $req->execute();
   $result = $req->fetch(PDO::FETCH_ASSOC);
-
-  /* a activé une fois les changements prets.
-    $result['tva_active'] = oui_non_to_bool($result['tva_active']);
-    $result['lot'] = oui_non_to_bool($result['lot']);
-    $result['viz'] = oui_non_to_bool($result['viz']);
-    $result['saisiec'] = oui_non_to_bool($result['saisiec']);
-    $result['affsp'] = oui_non_to_bool($result['affsp']);
-    $result['affss'] = oui_non_to_bool($result['affss']);
-    $result['affsr'] = oui_non_to_bool($result['affsr']);
-    $result['affsd'] = oui_non_to_bool($result['affsd']);
-    $result['affsde'] = oui_non_to_bool($result['affsde']);
-    $result['pes_vente'] = oui_non_to_bool($result['pes_vente']);
-    $result['force_pes_vente'] = oui_non_to_bool($result['force_pes_vente']);
-   */
   $req->closeCursor();
+  return $result;
+}
+
+function structure_bool(PDO $bdd): array {
+  $result = structure($bdd);
+  $result['tva_active'] = oui_non_to_bool($result['tva_active']);
+  $result['lot'] = oui_non_to_bool($result['lot']);
+  $result['viz'] = oui_non_to_bool($result['viz']);
+  $result['saisiec'] = oui_non_to_bool($result['saisiec']);
+  $result['affsp'] = oui_non_to_bool($result['affsp']);
+  $result['affss'] = oui_non_to_bool($result['affss']);
+  $result['affsr'] = oui_non_to_bool($result['affsr']);
+  $result['affsd'] = oui_non_to_bool($result['affsd']);
+  $result['affsde'] = oui_non_to_bool($result['affsde']);
+  $result['pes_vente'] = oui_non_to_bool($result['pes_vente']);
+  $result['force_pes_vente'] = oui_non_to_bool($result['force_pes_vente']);
   return $result;
 }
 
@@ -552,17 +554,18 @@ function structure_update(PDO $bdd, array $structure) {
   $sql = 'UPDATE description_structure
     SET nom = :nom,
     adresse = :adresse,
+    id_localite = :id_localite,
     description = :description,
     siret = :siret,
     telephone = :telephone,
-    mail =:mail,
+    mail = :mail,
     taux_tva = :taux_tva,
-    tva_active= :tva_active,
+    tva_active = :tva_active,
     cr = :cr,
     lot = :lot,
     viz = :viz,
     nb_viz = :nb_viz,
-    saisiec =: saisiec,
+    saisiec = :saisiec,
     affsp = :affsp,
     affss = :affss,
     affsr = :affsr,
@@ -572,7 +575,29 @@ function structure_update(PDO $bdd, array $structure) {
     force_pes_vente = :force_pes_vente
     WHERE id = :id';
   $stmt = $bdd->prepare($sql);
-  $stmt->execute($structure);
+  $stmt->bindValue(':nom', $structure['nom']);
+  $stmt->bindValue(':adresse', $structure['adresse']);
+  $stmt->bindValue(':id_localite', $structure['id_localite'], PDO::PARAM_INT);
+  $stmt->bindValue(':description', $structure['description']);
+  $stmt->bindValue(':siret', $structure['siret']);
+  $stmt->bindValue(':telephone', $structure['telephone']);
+  $stmt->bindValue(':mail', $structure['mail']);
+  $stmt->bindValue(':taux_tva', $structure['taux_tva']);
+  $stmt->bindValue(':tva_active', $structure['tva_active']);
+  $stmt->bindValue(':cr', $structure['cr']);
+  $stmt->bindValue(':lot', $structure['lot']);
+  $stmt->bindValue(':viz', $structure['viz']);
+  $stmt->bindValue(':nb_viz', $structure['nb_viz']);
+  $stmt->bindValue(':saisiec', $structure['saisiec']);
+  $stmt->bindValue(':affsp', $structure['affsp']);
+  $stmt->bindValue(':affss', $structure['affss']);
+  $stmt->bindValue(':affsr', $structure['affsr']);
+  $stmt->bindValue(':affsd', $structure['affsd']);
+  $stmt->bindValue(':affsde', $structure['affsde']);
+  $stmt->bindValue(':pes_vente', $structure['pes_vente']);
+  $stmt->bindValue(':force_pes_vente', $structure['force_pes_vente']);
+  $stmt->bindValue(':id', $structure['id'], PDO::PARAM_INT);
+  $stmt->execute();
   $stmt->closeCursor();
 }
 

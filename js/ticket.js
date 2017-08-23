@@ -294,7 +294,7 @@ function status(response) {
 function post_data(url, data, onSuccess) {
 // See https://github.com/github/fetch
   fetch(url, {
-    credentials: 'same-origin',
+    credentials: 'include',
     method: 'POST',
     headers: {
       'Accept': 'application/json',

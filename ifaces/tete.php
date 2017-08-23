@@ -204,7 +204,7 @@ $can_config = is_allowed_config();
                       <a href="../ifaces/edition_localites.php">Localités</a>
                     </li>
                     <li>
-                      <a href="../ifaces/edition_description.php">Configuration de Oressource</a>
+                      <a href="../ifaces/structures.php">Configuration de Oressource</a>
                     </li>
                   <?php } ?>
                 </ul>

@@ -39,21 +39,27 @@ function bool_to_oui_non(bool $b): string {
 
 function structure_validate(array $json): array {
   $structure = [
-    'nom' => filter_input($json, 'nom', FILTER_SANITIZE_STRING),
-    'description' => filter_input($json, 'description', FILTER_SANITIZE_STRING),
-    'mail' => filter_input($json, 'mail', FILTER_VALIDATE_EMAIL),
-    'lot' => filter_input($json, 'lot', FILTER_VALIDATE_BOOLEAN),
-    'viz' => filter_input($json, 'viz', FILTER_VALIDATE_BOOLEAN),
-    'saisiec' => filter_input($json, 'saisiec', FILTER_VALIDATE_BOOLEAN),
-    'affsp' => filter_input($json, 'affsp', FILTER_VALIDATE_BOOLEAN),
-    'affss' => filter_input($json, 'affss', FILTER_VALIDATE_BOOLEAN),
-    'affsr' => filter_input($json, 'affsr', FILTER_VALIDATE_BOOLEAN),
-    'affsde' => filter_input($json, 'affsde', FILTER_VALIDATE_BOOLEAN),
-    'pes_vente' => filter_input($json, 'pes_vente', FILTER_VALIDATE_BOOLEAN),
-    'force_pes_vente' => filter_input($json, 'force_pes_vente', FILTER_VALIDATE_BOOLEAN),
-    'atva' => filter_input($json, 'atva', FILTER_VALIDATE_BOOLEAN),
-    'taux_tva' => filter_input($json, 'taux_tva', FILTER_VALIDATE_FLOAT),
-    'cr' => filter_input($json, 'cr', FILTER_VALIDATE_INT), // devrait etre une regex sur les nombres.
+    'siret' => filter_var($json['siret'], FILTER_SANITIZE_STRING),
+    'nom' => filter_var($json['nom'], FILTER_SANITIZE_STRING),
+    'id_localite' => filter_var($json['id_localite'], FILTER_VALIDATE_INT),
+    'adresse' => filter_var($json['adresse'], FILTER_SANITIZE_STRING),
+    'description' => filter_var($json['description'], FILTER_SANITIZE_STRING),
+    'telephone' => filter_var($json['telephone'], FILTER_SANITIZE_STRING), // TODO: regex sur les nombres.
+    'mail' => filter_var($json['mail'], FILTER_VALIDATE_EMAIL),
+    'lot' => bool_to_oui_non(filter_var($json['lot'], FILTER_VALIDATE_BOOLEAN)),
+    'viz' => bool_to_oui_non(filter_var($json['viz'], FILTER_VALIDATE_BOOLEAN)),
+    'saisiec' => bool_to_oui_non(filter_var($json['saisiec'], FILTER_VALIDATE_BOOLEAN)),
+    'affsp' => bool_to_oui_non(filter_var($json['affsp'],  FILTER_VALIDATE_BOOLEAN)),
+    'affss' => bool_to_oui_non(filter_var($json['affss'],  FILTER_VALIDATE_BOOLEAN)),
+    'affsr' => bool_to_oui_non(filter_var($json['affsr'], FILTER_VALIDATE_BOOLEAN)),
+    'affsde' => bool_to_oui_non(filter_var($json['affsde'], FILTER_VALIDATE_BOOLEAN)),
+    'affsd' => bool_to_oui_non(filter_var($json['affsd'], FILTER_VALIDATE_BOOLEAN)),
+    'pes_vente' => bool_to_oui_non(filter_var($json['pes_vente'], FILTER_VALIDATE_BOOLEAN)),
+    'force_pes_vente' => bool_to_oui_non(filter_var($json['force_pes_vente'], FILTER_VALIDATE_BOOLEAN)),
+    'tva_active' => bool_to_oui_non(filter_var($json['tva_active'], FILTER_VALIDATE_BOOLEAN)),
+    'taux_tva' => filter_var($json['taux_tva'], FILTER_VALIDATE_FLOAT),
+    'nb_viz' => filter_var($json['nb_viz'], FILTER_VALIDATE_INT),
+    'cr' => filter_var($json['cr'], FILTER_VALIDATE_INT), // TODO: regex sur les nombres.
   ];
   return $structure;
 }
