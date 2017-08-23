@@ -20,6 +20,8 @@
 
 global $_SESSION;
 
+require_once 'validation.php';
+
 // Appellée au login.
 function set_session(array $user, array $structure) {
   $_SESSION['systeme'] = 'oressource';
