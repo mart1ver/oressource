@@ -65,3 +65,72 @@ function textInput(array $props, string $state) {
   <?php
   return ob_get_clean();
 }
+
+function mailInput(array $props, string $state) {
+  ob_start();
+  ?>
+  <label>Mail:
+    <input type="email"
+           value="<?= $state ?>"
+           name="<?= $props['name'] ?>"
+           id="<?= $props['name'] ?>"
+           class="form-control"
+           required>
+  </label>
+  <?php
+  return ob_get_clean();
+}
+
+function linkNav(array $props) {
+  ob_start();
+  ?>
+  <li class="<?= $props['state'] ?? '' ?>">
+    <a href="<?= $props['href'] ?>"><?= $props['text'] ?></a>
+  </li>
+  <?php
+  return ob_get_clean();
+}
+
+function configNav(array $props) {
+  ob_start();
+  ?>
+  <nav class="navbar">
+    <div class="header-header">
+      <h1><?= $props['text'] ?></h1>
+    </div>
+    <ul class="nav nav-tabs">
+      <?php foreach ($props['links'] as $link) { ?>
+        <?= linkNav($link) ?>
+      <?php } ?>
+    </ul>
+  </nav>
+  <?php
+  return ob_get_clean();
+}
+
+function configInfo(array $props) {
+  ?>
+  <div class="panel panel-info">
+    <div class="panel-heading">
+      <h3 class="panel-title">Informations</h3>
+    </div>
+    <div class = "panel-body">
+      <?= textInput(['name' => 'nom', 'text' => "Nom:"], $props['nom']) ?>
+      <?= textInput(['name' => 'prenom', 'text' => "Prénom:"], $props['prenom']) ?>
+      <?= mailInput(['name' => 'mail', 'text' => "Courriel:"], $props['mail']) ?>
+      <?php if ($props['type'] === 'edit') { ?>
+        <a href="edition_mdp_admin.php?id=<?= $props['id']; ?>&mail=<?= $props['mail'] ?>">
+          <button name="creer" type="button" class="btn btn btn-danger">Changer le mot de passe</button>
+        </a>
+      <?php } else { ?>
+        <label>Mot de passe
+          <input type="password" name="pass1" id="pass1" class="form-control" required>
+        </label>
+        <label>Répetez le mot de passe
+          <input type="password" name="pass2" id="pass2" class="form-control" required>
+        </label>
+      <?php } ?>
+    </div>
+  </div>
+  <?php
+}

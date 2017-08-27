@@ -63,7 +63,7 @@ if (is_valid_session() && is_allowed_users()) {
             <td><?= $u['prenom']; ?></td>
             <td><?= $u['mail']; ?></td>
             <td>
-              <form action="edition_utilisateur.php" method="get">
+              <form action="utilisateurs.php" method="get">
                 <input type="hidden" name="id" id="id" value="<?= $u['id']; ?>">
                 <button class="btn btn-warning btn-sm">Éditer</button>
               </form>

@@ -201,3 +201,43 @@ function new_utilisateur(string $nom, string $prenom, string $mail, string $droi
     'niveau' => $droits
   ];
 }
+
+function utilisateur_vente(array $utilisateur, int $id): bool {
+  return strpos($utilisateur['niveau'], 'v' . $id) !== false;
+}
+
+function utilisateur_sortie(array $utilisateur, int $id): bool {
+  return strpos($utilisateur['niveau'], 's' . $id) !== false;
+}
+
+function utilisateur_collecte(array $utilisateur, int $id): bool {
+  return strpos($utilisateur['niveau'], 'c' . $id) !== false;
+}
+
+function utilisateur_bilan(array $utilisateur): bool {
+  return strpos($utilisateur['niveau'], 'bi') !== false;
+}
+
+function utilisateur_gestion(array $utilisateur): bool {
+  return strpos($utilisateur['niveau'], 'g') !== false;
+}
+
+function utilisateur_partners(array $utilisateur): bool {
+  return strpos($utilisateur['niveau'], 'j') !== false;
+}
+
+function utilisateur_config(array $utilisateur): bool {
+  return strpos($utilisateur['niveau'], 'k') !== false;
+}
+
+function utilisateur_users(array $utilisateur): bool {
+  return strpos($utilisateur['niveau'], 'l') !== false;
+}
+
+function utilisateur_verifications(array $utilisateur): bool {
+  return strpos($utilisateur['niveau'], 'h') !== false;
+}
+
+function utilisateur_edit_date(array $utilisateur): bool {
+  return strpos($utilisateur['niveau'], 'e') !== false;
+}
