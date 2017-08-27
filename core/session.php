@@ -113,7 +113,6 @@ function is_allowed_sortie(): bool {
   return strpos($_SESSION['niveau'], 's') !== false;
 }
 
-// Test si l'utilisateur a les droits sur un point de collecte donnee.
 function is_allowed_sortie_id(int $id): bool {
   return strpos($_SESSION['niveau'], 's' . ((string) $id)) !== false;
 }
@@ -126,7 +125,6 @@ function is_allowed_gestion_id(int $id): bool {
   return strpos($_SESSION['niveau'], 'g' . ((string) $id)) !== false;
 }
 
-// Test si l'utilisateur a les droits sur un point de collecte donnee.
 function is_allowed_collecte_id(int $id): bool {
   return strpos($_SESSION['niveau'], 'c' . ((string) $id)) !== false;
 }
@@ -169,4 +167,37 @@ function is_sortie_visible(array $point_sortie): bool {
 
 function is_vente_visible(array $point_vente): bool {
   return is_allowed_vente_id($point_vente['id']) && $point_vente['visible'] === 'oui';
+}
+
+function droits(array $points, string $type, array $droits): string {
+  $d = '';
+  $niveau = 'niveau' . $type;
+  foreach ($points as $p) {
+    if (isset($droits[$niveau . $p['id']])) {
+      $d .= $type . $p['id'];
+    }
+  }
+  return $d;
+}
+
+function new_droits(PDO $bdd, array $droits): string {
+  $f = function ($type) use ($droits) {
+    return ($droits['niveau' . $type] ?? false) ? $type : '';
+  };
+  return ($f('a') . $f('bi') . $f('g')
+    . $f('h') . $f('l') . $f('j')
+    . $f('k') . $f('m') . $f('p')
+    . $f('e')
+    . droits(points_collectes($bdd), 'c', $droits) . droits(points_ventes($bdd), 'v', $droits) . droits(points_sorties($bdd), 's', $droits));
+}
+
+function new_utilisateur(string $nom, string $prenom, string $mail, string $droits, int $id = 0, string $pass = null): array {
+  return [
+    'id' => $id,
+    'nom' => $nom,
+    'prenom' => $prenom,
+    'mail' => $mail,
+    'pass' => md5($pass),
+    'niveau' => $droits
+  ];
 }
