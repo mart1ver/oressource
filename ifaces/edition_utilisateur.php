@@ -67,6 +67,39 @@ if (is_valid_session() && is_allowed_users()) {
   require_once 'tete.php';
   require_once '../moteur/dbconfig.php';
   $utilisateur = utilisateurs_id($bdd, $_GET['id']);
+    $droits = [
+    'text' => "Permissions d'accès",
+    'data' => [
+      [['name' => 'niveaubi', 'text' => "Bilans"], utilisateur_bilan($utilisateur)],
+      [['name' => 'niveaug', 'text' => "Gestion quotidienne"], utilisateur_gestion($utilisateur)],
+      [['name' => 'niveaug', 'text' => "Gestion quotidienne"], utilisateur_verifications($utilisateur)],
+      [['name' => 'niveauh', 'text' => "Verif. formulaires"], utilisateur_users($utilisateur)],
+      [['name' => 'niveaul', 'text' => "Utilisateurs"], utilisateur_partners($utilisateur)],
+      [['name' => 'niveauj', 'text' => "Recycleurs et convention partenaires"], utilisateur_config($utilisateur)],
+      [['name' => 'niveaue', 'text' => "Saisir la date dans les formulaires"], utilisateur_edit_date($utilisateur)]
+    ]
+  ];
+
+  $collectes = [
+    'text' => "Points de collecte:",
+    'data' => array_map(function ($a) use ($utilisateur) {
+        return [['name' => "niveauc{$a['id']}", 'text' => $a['nom']], utilisateur_collecte($utilisateur, $a['id'])];
+      }, points_collectes($bdd))
+  ];
+
+  $ventes = [
+    'text' => "Points de vente:",
+    'data' => array_map(function ($a) use ($utilisateur) {
+        return [['name' => "niveauv{$a['id']}", 'text' => $a['nom']], utilisateur_vente($utilisateur, $a['id'])];
+      }, points_ventes($bdd))
+  ];
+
+  $sorties = [
+    'text' => "Points de sortie hors-boutique:",
+    'data' => array_map(function ($a) use ($utilisateur) {
+        return [['name' => "niveaus{$a['id']}", 'text' => $a['nom']], utilisateur_sortie($utilisateur, $a['id'])];
+      }, points_sorties($bdd))
+  ];
   ?>
 
   <div class="container">
@@ -105,57 +138,13 @@ if (is_valid_session() && is_allowed_users()) {
         </div>
 
         <div class="col-md-4">
-          <div class="panel panel-info">
-            <div class="panel-heading">
-              <h3 class="panel-title">Permissions d'accès</h3>
-            </div>
-            <div class="panel-body form-group custom-controls-stacked">
-              <?= checkBox(['name' => 'niveaubi', 'text' => "Bilans"], utilisateur_bilan($utilisateur)) ?>
-              <?= checkBox(['name' => 'niveaug', 'text' => "Gestion quotidienne"], utilisateur_gestion($utilisateur)) ?>
-              <?= checkBox(['name' => 'niveauh', 'text' => "Verif. formulaires"], utilisateur_verifications($utilisateur)) ?>
-              <?= checkBox(['name' => 'niveaul', 'text' => "Utilisateurs"], utilisateur_users($utilisateur)) ?>
-              <?= checkBox(['name' => 'niveauj', 'text' => "Recycleurs et convention partenaires"], utilisateur_partners($utilisateur)) ?>
-              <?= checkBox(['name' => 'niveauk', 'text' => "Configuration des structures"], utilisateur_config($utilisateur)) ?>
-              <?php if ($_SESSION['saisiec'] === 'oui') { ?>
-                <?= checkBox(['name' => 'niveaue', 'text' => "Saisir la date dans les formulaires"], utilisateur_edit_date($utilisateur)) ?>
-              <?php } ?>
-            </div>
-          </div>
+          <?= configCheckboxArea($droits) ?>
         </div>
 
         <div class="col-md-4">
-          <div class="panel panel-info">
-            <div class="panel-heading">
-              <h3 class="panel-title">Points de collecte:</h3>
-            </div>
-            <div class="panel-body custom-controls-stacked">
-              <?php foreach (points_collectes($bdd) as $collecte) { ?>
-                <?= checkBox(['name' => "niveauc{$collecte['id']}", 'text' => $collecte['nom']], utilisateur_collecte($utilisateur, $collecte['id'])) ?>
-              <?php } ?>
-            </div>
-          </div>
-
-          <div class="panel panel-info">
-            <div class="panel-heading">
-              <h3 class="panel-title">Points de vente:</h3>
-            </div>
-            <div class="panel-body custom-controls-stacked">
-              <?php foreach (points_ventes($bdd) as $vente) { ?>
-                <?= checkBox(['name' => "niveauv{$vente['id']}", 'text' => $vente['nom']], utilisateur_vente($utilisateur, $vente['id'])) ?>
-              <?php } ?>
-            </div>
-
-          </div>
-          <div class="panel panel-info">
-            <div class="panel-heading">
-              <h3 class="panel-title">Points de sortie hors-boutique:</h3>
-            </div>
-            <div class="panel-body custom-controls-stacked">
-              <?php foreach (points_sorties($bdd) as $sortie) { ?>
-                <?= checkBox(['name' => "niveaus{$sortie['id']}", 'text' => $sortie['nom']], utilisateur_sortie($utilisateur, $sortie['id'])) ?>
-              <?php } ?>
-            </div>
-          </div>
+          <?= configCheckboxArea($collectes) ?>
+          <?= configCheckboxArea($ventes) ?>
+          <?= configCheckboxArea($sorties) ?>
         </div>
 
         <div class="row">

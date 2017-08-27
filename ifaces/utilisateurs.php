@@ -26,6 +26,40 @@ require_once '../core/composants.php';
 if (is_valid_session() && is_allowed_users()) {
   require_once 'tete.php';
   require_once '../moteur/dbconfig.php';
+
+  $droits = [
+    'text' => "Permissions d'accès",
+    'data' => [
+      [['name' => 'niveaubi', 'text' => "Bilans"], false],
+      [['name' => 'niveaug', 'text' => "Gestion quotidienne"], false],
+      [['name' => 'niveaug', 'text' => "Gestion quotidienne"], false],
+      [['name' => 'niveauh', 'text' => "Verif. formulaires"], false],
+      [['name' => 'niveaul', 'text' => "Utilisateurs"], false],
+      [['name' => 'niveauj', 'text' => "Recycleurs et convention partenaires"], false],
+      [['name' => 'niveaue', 'text' => "Saisir la date dans les formulaires"], false]
+    ]
+  ];
+
+  $collectes = [
+    'text' => "Points de collecte:",
+    'data' => array_map(function ($a) {
+        return [['name' => "niveauc{$a['id']}", 'text' => $a['nom']], false];
+      }, points_collectes($bdd))
+  ];
+
+  $ventes = [
+    'text' => "Points de vente:",
+    'data' => array_map(function ($a) {
+        return [['name' => "niveauv{$a['id']}", 'text' => $a['nom']], false];
+      }, points_ventes($bdd))
+  ];
+
+  $sorties = [
+    'text' => "Points de sortie hors-boutique:",
+    'data' => array_map(function ($a) {
+        return [['name' => "niveaus{$a['id']}", 'text' => $a['nom']], false];
+      }, points_sorties($bdd))
+  ];
   ?>
   <div class="container">
     <nav class="navbar">
@@ -66,66 +100,22 @@ if (is_valid_session() && is_allowed_users()) {
         </div>
 
         <div class="col-md-4">
-          <div class="panel panel-info">
-            <div class="panel-heading">
-              <h3 class="panel-title">Permissions d'accès</h3>
-            </div>
-            <div class="panel-body form-group custom-controls-stacked">
-              <?= checkBox(['name' => 'niveaubi', 'text' => "Bilans"], false) ?>
-              <?= checkBox(['name' => 'niveaug', 'text' => "Gestion quotidienne"], false) ?>
-              <?= checkBox(['name' => 'niveauh', 'text' => "Verif. formulaires"], false) ?>
-              <?= checkBox(['name' => 'niveaul', 'text' => "Utilisateurs"], false) ?>
-              <?= checkBox(['name' => 'niveauj', 'text' => "Recycleurs et convention partenaires"], false) ?>
-              <?= checkBox(['name' => 'niveauk', 'text' => "Configuration des structures"], false) ?>
-              <?php if ($_SESSION['saisiec'] === 'oui') { ?>
-                <?= checkBox(['name' => 'niveaue', 'text' => "Saisir la date dans les formulaires"], false) ?>
-              <?php } ?>
-            </div>
-          </div>
+          <?= configCheckboxArea($droits) ?>
         </div>
-
+        <?php
+        ?>
         <div class="col-md-4">
-          <div class="panel panel-info">
-            <div class="panel-heading">
-              <h3 class="panel-title">Points de collecte:</h3>
-            </div>
-            <div class="panel-body custom-controls-stacked">
-              <?php foreach (points_collectes($bdd) as $collecte) { ?>
-                <?= checkBox(['name' => "niveauc{$collecte['id']}", 'text' => $collecte['nom']], false) ?>
-              <?php } ?>
-            </div>
-          </div>
+          <?= configCheckboxArea($collectes) ?>
+          <?= configCheckboxArea($ventes) ?>
+          <?= configCheckboxArea($sorties) ?>
+        </div>
 
-          <div class="panel panel-info">
-            <div class="panel-heading">
-              <h3 class="panel-title">Points de vente:</h3>
-            </div>
-            <div class="panel-body custom-controls-stacked">
-              <?php foreach (points_ventes($bdd) as $vente) { ?>
-                <?= checkBox(['name' => "niveauv{$vente['id']}", 'text' => $vente['nom']], false) ?>
-              <?php } ?>
-            </div>
-          </div>
-
-          <div class="panel panel-info">
-            <div class="panel-heading">
-              <h3 class="panel-title">Points de sortie hors-boutique:</h3>
-            </div>
-            <div class="panel-body custom-controls-stacked">
-              <?php foreach (points_sorties($bdd) as $sortie) { ?>
-                <?= checkBox(['name' => "niveaus{$sortie['id']}", 'text' => $sortie['nom']], false) ?>
-              <?php } ?>
-            </div>
+        <div class="row">
+          <div class="col-md-5 col-md-offset-5">
+            <br>
+            <button name="creer" class="btn btn-default">Créer!</button>
           </div>
         </div>
-      </div>
-
-      <div class="row">
-        <div class="col-md-5 col-md-offset-5">
-          <br>
-          <button name="creer" class="btn btn-default">Créer!</button>
-        </div>
-      </div>
     </form>
   </div>
   <?php

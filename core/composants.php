@@ -35,6 +35,23 @@ function checkBox(array $props, bool $state) {
   return ob_get_clean();
 }
 
+function configCheckboxArea(array $props) {
+  ob_start();
+  ?>
+  <div class="panel panel-info">
+    <div class="panel-heading">
+      <h3 class="panel-title"><?= $props['text'] ?></h3>
+    </div>
+    <div class="panel-body form-group custom-controls-stacked">
+      <?php foreach ($props['data'] as $data) { ?>
+        <?= checkBox($data[0], $data[1]) ?>
+      <?php } ?>
+    </div>
+  </div>
+  <?php
+  return ob_get_clean();
+}
+
 function textInput(array $props, string $state) {
   ob_start();
   ?>
