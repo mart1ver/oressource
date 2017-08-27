@@ -21,29 +21,24 @@ session_start();
 
 require_once '../core/session.php';
 require_once '../core/requetes.php';
+require_once '../core/composants.php';
 
 if (is_valid_session() && is_allowed_users()) {
   require_once 'tete.php';
   require_once '../moteur/dbconfig.php';
 
   $utilisateurs = utilisateurs($bdd);
+  $nav = [
+    'text' => "Gestion des utilisateurs",
+    'links' => [
+      ['href' => 'utilisateurs.php', 'text' => 'Inscription'],
+      ['href' => 'edition_utilisateurs.php', 'text' => 'Édition', 'state' => 'active']
+    ]
+  ];
   ?>
 
   <div class="container">
-    <nav class="navbar">
-      <div class="header-header">
-        <h1>Gestion des utilisateurs</h1>
-      </div>
-      <ul class="nav nav-tabs">
-        <li>
-          <a href="utilisateurs.php">Inscription</a>
-        </li>
-        <li class="active">
-          <a href="edition_utilisateurs.php">Édition</a>
-        </li>
-      </ul>
-    </nav>
-
+    <?= configInfo($info) ?>
     <table class="table">
       <thead>
         <tr>
