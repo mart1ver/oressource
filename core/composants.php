@@ -19,23 +19,32 @@
 
 function checkBox(array $props, bool $state) {
   ob_start();
-  ?><label class="custom-control custom-checkbox">
-    <input
-      name="<?= $props['name'] ?>"
-      id="<?= $props['name'] ?>"
-      <?= $state ? 'checked' : '' ?>
-      type="checkbox"><?= $props['text'] ?></label><?php
+  ?>
+  <div class="checkbox">
+    <label>
+      <input
+        name="<?= $props['name'] ?>"
+        id="<?= $props['name'] ?>"
+        <?= $state ? 'checked' : '' ?>
+        value="<?= json_encode($state) ?>"
+        type="checkbox">
+        <?= $props['text'] ?>
+    </label>
+  </div>
+  <?php
   return ob_get_clean();
 }
 
 function textInput(array $props, string $state) {
-    ob_start();
-    ?><label><?= $props['text'] ?>
+  ob_start();
+  ?>
+  <label><?= $props['text'] ?>
     <input type="text"
            name="<?= $props['name'] ?>"
            id="<?= $props['name'] ?>"
            value="<?= $state ?>"
            class="form-control" required autofocus>
-  </label><?php
+  </label>
+  <?php
   return ob_get_clean();
 }
