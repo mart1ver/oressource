@@ -18,128 +18,157 @@
  */
 
 session_start();
-require_once('../moteur/dbconfig.php');
 
-//Vérification des autorisations de l'utilisateur et des variables de session requisent pour l'affichage de cette page:
-if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($_SESSION['niveau'], 'l') !== false)) {
+require_once '../core/session.php';
+require_once '../core/requetes.php';
+require_once '../core/composants.php';
+
+function utilisateur_vente(array $utilisateur, int $id): bool {
+  return strpos($utilisateur['niveau'], 'v' . $id) !== false;
+}
+
+function utilisateur_sortie(array $utilisateur, int $id): bool {
+  return strpos($utilisateur['niveau'], 's' . $id) !== false;
+}
+
+function utilisateur_collecte(array $utilisateur, int $id): bool {
+  return strpos($utilisateur['niveau'], 'c' . $id) !== false;
+}
+
+function utilisateur_bilan(array $utilisateur): bool {
+  return strpos($utilisateur['niveau'], 'bi') !== false;
+}
+
+function utilisateur_gestion(array $utilisateur): bool {
+  return strpos($utilisateur['niveau'], 'g') !== false;
+}
+
+function utilisateur_partners(array $utilisateur): bool {
+  return strpos($utilisateur['niveau'], 'j') !== false;
+}
+
+function utilisateur_config(array $utilisateur): bool {
+  return strpos($utilisateur['niveau'], 'k') !== false;
+}
+
+function utilisateur_users(array $utilisateur): bool {
+  return strpos($utilisateur['niveau'], 'l') !== false;
+}
+
+function utilisateur_verifications(array $utilisateur): bool {
+  return strpos($utilisateur['niveau'], 'h') !== false;
+}
+
+function utilisateur_edit_date(array $utilisateur): bool {
+  return strpos($utilisateur['niveau'], 'e') !== false;
+}
+
+if (is_valid_session() && is_allowed_users()) {
   require_once 'tete.php';
+  require_once '../moteur/dbconfig.php';
+  $utilisateur = utilisateurs_id($bdd, $_GET['id']);
   ?>
 
   <div class="container">
-    <h1>Édition du profil utilisateur n°:<?= $_POST['id']; ?>, <?= $_POST['mail']; ?></h1>
-    <br>
-    <div class="panel-body">
-      <div class="row">
-        <form action="../moteur/modification_utilisateur_post.php" method="post">
-          <div class="col-md-2"><label for="nom">Nom:</label> <input type="text" value ="<?= $_POST['nom']; ?>" name="nom" id="nom" class="form-control " required autofocus><br>
-            <label for="prenom">Prénom:</label> <input type="text" value ="<?= $_POST['prenom']; ?>" name="prenom" id="prenom" class="form-control " required><br>
-            <label for="mail">Mail:</label> <input type="email" value ="<?= $_POST['mail']; ?>" name="mail" id="mail" class="form-control" required><br>
-            <a href="edition_mdp_admin.php?id=<?= $_POST['id']; ?>&mail=<?= $_POST['mail']; ?>">
-              <button name="creer" type="button" class="btn btn btn-danger">Changer le mot de passe</button>
-            </a>
-
-          </div>
-          <div class="col-md-4"><div class="alert alert-info"><label>Permissions d'accès</label> <br>
-
-              <input type="checkbox" name="niveaubi" id="niveaubi" value="bi"<?php
-              if ((strpos($_POST['niveau'], 'bi') !== false)) {
-                echo 'checked';
-              }
-              ?>> <label for="niveaubi">Bilans</label><br>
-
-              <input type="checkbox" name="niveaug" id="niveaug" value="g"<?php
-              if ((strpos($_POST['niveau'], 'g') !== false)) {
-                echo 'checked';
-              }
-              ?>> <label for="niveaug">Gestion quotidienne</label><br>
-              <input type="checkbox" name="niveauh" id="niveauh" value="h"<?php
-              if ((strpos($_POST['niveau'], 'h') !== false)) {
-                echo 'checked';
-              }
-              ?>> <label for="niveauh">Verif. formulaires</label><br>
-              <input type="checkbox" name="niveaul" id="niveaul" value="l"<?php
-              if ((strpos($_POST['niveau'], 'l') !== false)) {
-                echo 'checked';
-              }
-              ?>> <label for="niveaul">Utilisateurs</label><br>
-              <input type="checkbox" name="niveauj" id="niveauj" value="j"<?php
-              if ((strpos($_POST['niveau'], 'j') !== false)) {
-                echo 'checked';
-              }
-              ?>> <label for="niveauj">Recycleurs et convention partenaires</label><br>
-              <input type="checkbox" name="niveauk" id="niveauk" value="k"<?php
-              if ((strpos($_POST['niveau'], 'k') !== false)) {
-                echo 'checked';
-              }
-              ?>> <label for="niveauk">Configuration de Oressource</label><br>
-                     <?php if ($_SESSION['saisiec'] === 'oui') { ?>
-                <input type="checkbox" name="niveaue" id="niveaue" value="e"<?php
-                if ((strpos($_POST['niveau'], 'e') !== false)) {
-                  echo 'checked';
-                }
-                ?>> <label for="niveaue">Saisir la date dans les formulaires</label><br>
-                     <?php } ?>
-
-            </div>
-
-            <input type="hidden" name ="id" id="id" value="<?= $_POST['id']; ?>">
-          </div>
-          <div class="col-md-4"><div class="alert alert-info"><label for="niveauc">Points de collecte:</label><br>
-              <?php
-              $reponse = $bdd->query('SELECT * FROM points_collecte');
-
-              while ($donnees = $reponse->fetch()) { ?>
-                <input type="checkbox" name="niveauc<?= $donnees['id']; ?>" id="niveauc<?= $donnees['id']; ?>" <?php
-                if ((strpos($_POST['niveau'], 'c' . $donnees['id']) !== false)) {
-                  echo 'checked';
-                }
-                ?>> <?= '<label for="niveauc' . $donnees['id'] . '">' . $donnees['nom'] . '</label>'; ?> <br><br>
-                       <?php
-                     }
-                     $reponse->closeCursor();
-                     ?>
-            </div>
-
-            <div class="alert alert-info"><label for="niveauv">Points de vente:</label><br>
-              <?php
-              $reponse = $bdd->query('SELECT * FROM points_vente');
-
-              while ($donnees = $reponse->fetch()) { ?>
-                <input type="checkbox" name="niveauv<?= $donnees['id']; ?>" id="niveauv<?= $donnees['id']; ?>" value="v<?= $donnees['id']; ?>"<?php
-                if ((strpos($_POST['niveau'], 'v' . $donnees['id']) !== false)) {
-                  echo 'checked';
-                }
-                ?>> <?= '<label for="niveauv' . $donnees['id'] . '">' . $donnees['nom'] . '</label>'; ?> <br><br>
-                       <?php
-                     }
-                     $reponse->closeCursor();
-                     ?></div>
-            <div class="alert alert-info"><label for="niveaus">Points de sortie hors-boutique:</label><br>
-              <?php
-              $reponse = $bdd->query('SELECT * FROM points_sortie');
-
-              while ($donnees = $reponse->fetch()) { ?>
-                <input type="checkbox" name="niveaus<?= $donnees['id']; ?>" id="niveaus<?= $donnees['id']; ?>" value="s<?= $donnees['id']; ?>"<?php
-                if ((strpos($_POST['niveau'], 's' . $donnees['id']) !== false)) {
-                  echo 'checked';
-                }
-                ?>> <?= '<label for="niveaus' . $donnees['id'] . '">' . $donnees['nom'] . '</label>'; ?> <br><br>
-
-                <?php
-              }
-              $reponse->closeCursor();
-              ?>
-            </div></div>
-          <div class="col-md-4"><br></div>
+    <nav class="navbar">
+      <div class="header-header">
+        <h1>Édition du profil utilisateur n°:<?= $utilisateur['id']; ?> - <?= $utilisateur['mail']; ?></h1>
       </div>
-      <div class="row"><div class="col-md-3 col-md-offset-3"><br><button name="modifier" class="btn btn-warning">MODIFIER!</button></form>
-          <a href="edition_utilisateurs.php">
-            <button name="creer" class="btn btn">Annuler</button>
-          </a>
-        </div></div>
-    </div>
-  </div>
+      <ul class="nav nav-tabs">
+        <li>
+          <a href="utilisateurs.php">Inscription</a>
+        </li>
+        <li>
+          <a href="edition_utilisateurs.php">Édition</a>
+        </li>
+      </ul>
+    </nav>
+    <form action="../moteur/modification_utilisateur_post.php" method="post">
+      <input type="hidden" name="id" id="id" value="<?= $utilisateur['id']; ?>">
+      <div class="row">
+        <div class="col-md-4">
+          <div class="panel panel-info">
+            <div class="panel-heading">
+              <h3 class="panel-title">Informations</h3>
+            </div>
+            <div class="panel-body">
+              <?= textInput(['name' => 'nom', 'text' => "Nom:"], $utilisateur['nom']) ?>
+              <?= textInput(['name' => 'prenom', 'text' => "Prénom:"], $utilisateur['prenom']) ?>
+              <label>Mail:
+                <input type="email" value ="<?= $utilisateur['mail'] ?>" name="mail" id="mail" class="form-control" required>
+              </label>
+              <a href="edition_mdp_admin.php?id=<?= $utilisateur['id']; ?>&mail=<?= $utilisateur['mail'] ?>">
+                <button name="creer" type="button" class="btn btn btn-danger">Changer le mot de passe</button>
+              </a>
+            </div>
+          </div>
+        </div>
 
+        <div class="col-md-4">
+          <div class="panel panel-info">
+            <div class="panel-heading">
+              <h3 class="panel-title">Permissions d'accès</h3>
+            </div>
+            <div class="panel-body form-group custom-controls-stacked">
+              <?= checkBox(['name' => 'niveaubi', 'text' => "Bilans"], utilisateur_bilan($utilisateur)) ?>
+              <?= checkBox(['name' => 'niveaug', 'text' => "Gestion quotidienne"], utilisateur_gestion($utilisateur)) ?>
+              <?= checkBox(['name' => 'niveauh', 'text' => "Verif. formulaires"], utilisateur_verifications($utilisateur)) ?>
+              <?= checkBox(['name' => 'niveaul', 'text' => "Utilisateurs"], utilisateur_users($utilisateur)) ?>
+              <?= checkBox(['name' => 'niveauj', 'text' => "Recycleurs et convention partenaires"], utilisateur_partners($utilisateur)) ?>
+              <?= checkBox(['name' => 'niveauk', 'text' => "Configuration des structures"], utilisateur_config($utilisateur)) ?>
+              <?php if ($_SESSION['saisiec'] === 'oui') { ?>
+                <?= checkBox(['name' => 'niveaue', 'text' => "Saisir la date dans les formulaires"], utilisateur_edit_date($utilisateur)) ?>
+              <?php } ?>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <div class="panel panel-info">
+            <div class="panel-heading">
+              <h3 class="panel-title">Points de collecte:</h3>
+            </div>
+            <div class="panel-body custom-controls-stacked">
+              <?php foreach (points_collectes($bdd) as $collecte) { ?>
+                <?= checkBox(['name' => "niveauc{$collecte['id']}", 'text' => $collecte['nom']], utilisateur_collecte($utilisateur, $collecte['id'])) ?>
+              <?php } ?>
+            </div>
+          </div>
+
+          <div class="panel panel-info">
+            <div class="panel-heading">
+              <h3 class="panel-title">Points de vente:</h3>
+            </div>
+            <div class="panel-body custom-controls-stacked">
+              <?php foreach (points_ventes($bdd) as $vente) { ?>
+                <?= checkBox(['name' => "niveauv{$vente['id']}", 'text' => $vente['nom']], utilisateur_vente($utilisateur, $vente['id'])) ?>
+              <?php } ?>
+            </div>
+
+          </div>
+          <div class="panel panel-info">
+            <div class="panel-heading">
+              <h3 class="panel-title">Points de sortie hors-boutique:</h3>
+            </div>
+            <div class="panel-body custom-controls-stacked">
+              <?php foreach (points_sorties($bdd) as $sortie) { ?>
+                <?= checkBox(['name' => "niveaus{$sortie['id']}", 'text' => $sortie['nom']], utilisateur_sortie($utilisateur, $sortie['id'])) ?>
+              <?php } ?>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6 col-md-offset-6">
+            <button name="modifier" class="btn btn-warning">Modifier</button>
+            <a href="edition_utilisateurs.php">
+              <button name="creer" class="btn btn">Annuler</button>
+            </a>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
   <?php
   require_once 'pied.php';
 } else {
