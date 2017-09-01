@@ -109,6 +109,7 @@ function configNav(array $props) {
 }
 
 function configInfo(array $props) {
+  ob_start();
   ?>
   <div class="panel panel-info">
     <div class="panel-heading">
@@ -133,4 +134,5 @@ function configInfo(array $props) {
     </div>
   </div>
   <?php
+  return ob_get_clean();
 }

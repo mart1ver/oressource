@@ -28,7 +28,7 @@ if (is_valid_session() && is_allowed_users()) {
   require_once '../moteur/dbconfig.php';
 
   $utilisateurs = utilisateurs($bdd);
-  $nav = [
+  $info = [
     'text' => "Gestion des utilisateurs",
     'links' => [
       ['href' => 'utilisateurs.php', 'text' => 'Inscription'],
@@ -38,7 +38,7 @@ if (is_valid_session() && is_allowed_users()) {
   ?>
 
   <div class="container">
-    <?= configInfo($info) ?>
+    <?= configNav($info) ?>
     <table class="table">
       <thead>
         <tr>
