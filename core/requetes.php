@@ -95,7 +95,11 @@ function objets(PDO $bdd): array {
 
 function utilisateurs_id(PDO $bdd, int $id) {
   $sql = 'SELECT
-    utilisateurs.mail mail
+    id,
+    prenom,
+    mail,
+    nom,
+    niveau
     FROM utilisateurs
     WHERE utilisateurs.id = :id';
   $stmt = $bdd->prepare($sql);
@@ -108,12 +112,59 @@ function utilisateurs_id(PDO $bdd, int $id) {
 
 function utilisateurs(PDO $bdd): array {
   $sql = 'SELECT
-    utilisateurs.mail mail
+    id,
+    prenom,
+    mail,
+    nom,
+    niveau
     FROM utilisateurs';
   $stmt = $bdd->prepare($sql);
   $stmt->execute();
   $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
   return $result;
+}
+
+function utilisateur_insert(PDO $bdd, array $utilisateur): int {
+  $sql = 'INSERT INTO utilisateurs (
+      nom,
+      prenom,
+      mail,
+      pass,
+      niveau
+      ) VALUES (
+        :nom,
+        :prenom,
+        :mail,
+        :pass,
+        :niveau)';
+  $stmt = $bdd->prepare($sql);
+  $stmt->bindParam(':nom', $utilisateur['nom'], PDO::PARAM_STR);
+  $stmt->bindParam(':prenom', $utilisateur['prenom'], PDO::PARAM_STR);
+  $stmt->bindParam(':mail', $utilisateur['mail'], PDO::PARAM_STR);
+  $stmt->bindParam(':pass', $utilisateur['pass'], PDO::PARAM_STR);
+  $stmt->bindParam(':niveau', $utilisateur['niveau'], PDO::PARAM_STR);
+  $stmt->execute();
+  $id = $bdd->lastInsertId();
+  $stmt->closeCursor();
+  return $id;
+}
+
+function utilisateur_update(PDO $bdd, array $utilisateur) {
+  $sql = 'UPDATE utilisateurs SET
+      nom = :nom,
+      prenom = :prenom,
+      mail = :mail,
+      niveau = :niveau
+      WHERE
+      id = :id';
+  $stmt = $bdd->prepare($sql);
+  $stmt->bindValue(':id', $utilisateur['id'], PDO::PARAM_INT);
+  $stmt->bindParam(':nom', $utilisateur['nom'], PDO::PARAM_STR);
+  $stmt->bindParam(':prenom', $utilisateur['prenom'], PDO::PARAM_STR);
+  $stmt->bindParam(':mail', $utilisateur['mail'], PDO::PARAM_STR);
+  $stmt->bindParam(':niveau', $utilisateur['niveau'], PDO::PARAM_STR);
+  $stmt->execute();
+  $stmt->closeCursor();
 }
 
 function convention_sortie(PDO $bdd): array {

@@ -19,21 +19,27 @@
 
 session_start();
 
-require_once('../moteur/dbconfig.php');
+require_once '../core/session.php';
+require_once '../core/requetes.php';
+require_once '../core/composants.php';
 
-//Vérification des autorisations de l'utilisateur et des variables de session requisent pour l'affichage de cette page:
-if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($_SESSION['niveau'], 'l') !== false)) {
+if (is_valid_session() && is_allowed_users()) {
   require_once 'tete.php';
+  require_once '../moteur/dbconfig.php';
+
+  $utilisateurs = utilisateurs($bdd);
+  $nav = [
+    'text' => "Gestion des utilisateurs",
+    'links' => [
+      ['href' => 'utilisateurs.php', 'text' => 'Inscription'],
+      ['href' => 'edition_utilisateurs.php', 'text' => 'Édition', 'state' => 'active']
+    ]
+  ];
   ?>
 
   <div class="container">
-    <h1>Gestion des utilisateurs</h1>
-    <ul class="nav nav-tabs">
-      <li><a href="utilisateurs.php">Inscription</a></li>
-      <li class="active"><a>Édition</a></li>
-
-    </ul>
-    <br>    <table class="table">
+    <?= configInfo($info) ?>
+    <table class="table">
       <thead>
         <tr>
           <th>#</th>
@@ -42,49 +48,32 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($
           <th>Mail</th>
           <th>Éditer</th>
           <th>Supprimer!</th>
-
         </tr>
       </thead>
       <tbody>
-        <?php
-        $reponse = $bdd->query('SELECT * FROM utilisateurs');
-        while ($donnees = $reponse->fetch()) { ?>
+        <?php foreach ($utilisateurs as $u) { ?>
           <tr>
-            <td><?= $donnees['id']; ?></td>
-            <td><?= $donnees['nom']; ?></td>
-            <td><?= $donnees['prenom']; ?></td>
-            <td><?= $donnees['mail']; ?></td>
+            <td><?= $u['id']; ?></td>
+            <td><?= $u['nom']; ?></td>
+            <td><?= $u['prenom']; ?></td>
+            <td><?= $u['mail']; ?></td>
             <td>
-
-              <form action="edition_utilisateur.php" method="post">
-
-                <input type="hidden" name ="id" id="id" value="<?= $donnees['id']; ?>">
-                <input type="hidden" name ="nom" id="nom" value="<?= $donnees['nom']; ?>">
-                <input type="hidden" name ="prenom" id="prenom" value="<?= $donnees['prenom']; ?>">
-                <input type="hidden" name ="mail" id="mail" value="<?= $donnees['mail']; ?>">
-                <input type="hidden" name ="niveau" id="id" value="<?= $donnees['niveau']; ?>">
-                <button  class="btn btn-warning btn-sm ">ÉDITER!
-                </button>
+              <form action="utilisateurs.php" method="get">
+                <input type="hidden" name="id" id="id" value="<?= $u['id']; ?>">
+                <button class="btn btn-warning btn-sm">Éditer</button>
               </form>
             </td>
             <td>
-
               <form action="../moteur/sup_utilisateur.php" method="post">
-
-                <input type="hidden" name ="id" id="id" value="<?= $donnees['id']; ?>">
-                <button  class="btn btn-danger btn-sm ">SUPPRIMER!
-                </button>
+                <input type="hidden" name ="id" id="id" value="<?= $u['id']; ?>">
+                <button class="btn btn-danger btn-sm ">Supprimer</button>
               </form>
             </td>
           </tr>
-          <?php
-        }
-        $reponse->closeCursor();
-        ?>
+        <?php } ?>
       </tbody>
     </table>
   </div><!-- /.container -->
-
   <?php
   require_once 'pied.php';
 } else {
