@@ -40,7 +40,7 @@ if (is_valid_session() && is_allowed_users()) {
       'data' => [
         [['name' => 'niveaubi', 'text' => "Bilans"], false],
         [['name' => 'niveaug', 'text' => "Gestion quotidienne"], false],
-        [['name' => 'niveaug', 'text' => "Gestion quotidienne"], false],
+        [['name' => 'niveauk', 'text' => "Configuration de Oressource"], false],
         [['name' => 'niveauh', 'text' => "Verif. formulaires"], false],
         [['name' => 'niveaul', 'text' => "Utilisateurs"], false],
         [['name' => 'niveauj', 'text' => "Recycleurs et convention partenaires"], false],
@@ -91,10 +91,10 @@ if (is_valid_session() && is_allowed_users()) {
       'data' => [
         [['name' => 'niveaubi', 'text' => "Bilans"], utilisateur_bilan($utilisateur)],
         [['name' => 'niveaug', 'text' => "Gestion quotidienne"], utilisateur_gestion($utilisateur)],
-        [['name' => 'niveaug', 'text' => "Gestion quotidienne"], utilisateur_verifications($utilisateur)],
-        [['name' => 'niveauh', 'text' => "Verif. formulaires"], utilisateur_users($utilisateur)],
-        [['name' => 'niveaul', 'text' => "Utilisateurs"], utilisateur_partners($utilisateur)],
-        [['name' => 'niveauj', 'text' => "Recycleurs et convention partenaires"], utilisateur_config($utilisateur)],
+        [['name' => 'niveauk', 'text' => "Configuration de Oressource"], utilisateur_config($utilisateur)],
+        [['name' => 'niveauh', 'text' => "Verif. formulaires"], utilisateur_verifications($utilisateur)],
+        [['name' => 'niveaul', 'text' => "Utilisateurs"], utilisateur_users($utilisateur)],
+        [['name' => 'niveauj', 'text' => "Recycleurs et convention partenaires"], utilisateur_partners($utilisateur)],
         [['name' => 'niveaue', 'text' => "Saisir la date dans les formulaires"], utilisateur_edit_date($utilisateur)]
       ]
     ];
@@ -133,6 +133,9 @@ if (is_valid_session() && is_allowed_users()) {
   <div class="container">
     <?= configNav($nav); ?>
     <form action="<?= $urlPost ?>" method="post">
+      <?php if (isset($_GET['id'])) { ?>
+        <input type="hidden" name="id" id="id" value="<?= $_GET['id']; ?>">
+      <?php } ?>
       <div class="row">
         <div class="col-md-4">
           <?= configInfo($info) ?>
@@ -162,8 +165,8 @@ if (is_valid_session() && is_allowed_users()) {
           <?php } ?>
         </div>
       </div>
+    </form>
   </div>
-  </form>
   </div>
   <?php
   require_once 'pied.php';
