@@ -67,7 +67,7 @@ $can_config = is_allowed_config();
                 <ul class="dropdown-menu">
                   <?php foreach (points_collectes($bdd) as $point_collecte) { ?>
                     <li>
-                      <a href="../ifaces/collecte.php?numero=<?= "{$point_collecte['id']}&nom={$point_collecte['nom']}&adresse={$point_collecte['adresse']}"; ?>"><?= $point_collecte['nom']; ?></a>
+                      <a href="../ifaces/collecte.php?numero=<?= "{$point_collecte['id']}"; ?>"><?= $point_collecte['nom']; ?></a>
                     </li>
                   <?php } ?>
                 </ul>
@@ -82,7 +82,7 @@ $can_config = is_allowed_config();
                 <ul class="dropdown-menu">
                   <?php foreach (points_sorties($bdd) as $point_sortie) { ?>
                     <li>
-                      <a href="../ifaces/sortiesc.php?numero=<?= "{$point_sortie['id']}&nom={$point_sortie['nom']}&adresse={$point_sortie['adresse']}"; ?>"><?= $point_sortie['nom']; ?></a>
+                      <a href="../ifaces/sortiesc.php?numero=<?= "{$point_sortie['id']}"; ?>"><?= $point_sortie['nom']; ?></a>
                     </li>
                   <?php } ?>
                 </ul>
@@ -97,7 +97,7 @@ $can_config = is_allowed_config();
                 <ul class="dropdown-menu">
                   <?php foreach (points_ventes($bdd) as $point_vente) { ?>
                     <li>
-                      <a href="../ifaces/ventes.php?numero=<?= "{$point_vente['id']}&nom={$point_vente['nom']}&adresse={$point_vente['adresse']}"; ?>"
+                      <a href="../ifaces/ventes.php?numero=<?= "{$point_vente['id']}"; ?>"
                          ><?= $point_vente['nom']; ?></a>
                     </li>
                   <?php } ?>
