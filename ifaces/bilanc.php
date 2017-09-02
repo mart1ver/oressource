@@ -19,36 +19,33 @@
 
 session_start();
 
-require_once('../core/session.php');
-require_once('../core/requetes.php');
+require_once '../core/session.php';
+require_once '../core/requetes.php';
 
 // Bilan des collectes
 
-if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && is_allowed_bilan()) {
-  require_once('./tete.php');
-  require_once('../moteur/dbconfig.php');
+if (is_valid_session() && is_allowed_bilan()) {
+  require_once './tete.php';
+  require_once '../moteur/dbconfig.php';
+
+  $points_collectes = points_collectes($bdd);
   ?>
 
   <div class="container">
     <div class="row">
       <div class="col-md-11 " >
         <h1>Bilan global</h1>
-
         <div class="col-md-4 col-md-offset-8" >
           <label for="reportrange">Choisissez la période à inspecter:</label><br>
           <div id="reportrange" class="pull-left" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc">
             <i class="fa fa-calendar"></i>
             <span></span> <b class="caret"></b>
           </div>
-          <script src="../js/raphael.js"></script>
-          <script src="../js/morris/morris.js"></script>
         </div>
         <ul class="nav nav-tabs">
-
           <li class="active"><a>Collectes</a></li>
           <li><a href="<?= 'bilanhb.php?date1=' . $_GET['date1'] . '&date2=' . $_GET['date2'] . '&numero=0'; ?>">Sorties hors-boutique</a></li>
           <li><a href="<?= 'bilanv.php?date1=' . $_GET['date1'] . '&date2=' . $_GET['date2'] . '&numero=0'; ?>">Ventes</a></li>
-
         </ul>
       </div>
     </div>

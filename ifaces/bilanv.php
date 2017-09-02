@@ -23,7 +23,7 @@ require_once('../moteur/dbconfig.php');
 require_once('../core/session.php');
 require_once('../core/requetes.php');
 
-if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && is_allowed_bilan()) {
+if (is_valid_session() && is_allowed_bilan()) {
   require_once('./tete.php');
 
   // On convertit les deux dates en un format compatible avec la bdd
@@ -321,8 +321,8 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && is_allowe
 
     $(document).ready(() => {
       const get = process_get();
-      const options = set_datepicker(get, url);
       const url = 'bilanv';
+      const options = set_datepicker(get, url);
       bind_datepicker(options, get, url);
 
       try {
