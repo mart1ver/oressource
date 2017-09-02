@@ -32,14 +32,12 @@ function process_get() {
 function set_datepicker(data) {
   const startDate = moment(data.date1, 'DD-MM-YYYY');
   const endDate = moment(data.date2, 'DD-MM-YYYY');
-  const now = moment();
+  $('#reportrange span').html(`${startDate.format('DD MMMM YYYY')} - ${endDate.format('DD MMMM YYYY')}`);
   const options = {
-    rawStart: startDate,
-    rawEnd: endDate,
-    startDate: startDate.format('DD/MM/YYYY'),
-    endDate: endDate.format('DD/MM/YYYY'),
-    minDate: '01/01/2010',
-    maxDate: '12/31/2020',
+    startDate: startDate,
+    endDate: endDate,
+    minDate: moment('01/01/2010', 'MM/DD/YYYY'),
+    maxDate: moment('12/31/2020', 'MM/DD/YYYY'),
     dateLimit: { days: 800 },
     showDropdowns: true,
     showWeekNumbers: true,
@@ -47,26 +45,26 @@ function set_datepicker(data) {
     timePickerIncrement: 1,
     timePicker12Hour: true,
     ranges: {
-      "Aujoud'hui": [ now, now ],
-      'hier': [ now.subtract(1, 'days'), now.subtract(1, 'days') ],
-      '7 derniers jours': [ now.subtract(6, 'days'), now ],
-      '30 derniers jours': [ now.subtract(29, 'days'), now ],
+      "Aujourd'hui": [ moment(), moment() ],
+      'hier': [ moment().subtract(1, 'days'), moment().subtract(1, 'days') ],
+      '7 derniers jours': [ moment().subtract(6, 'days'), moment() ],
+      '30 derniers jours': [ moment().subtract(29, 'days'), moment() ],
       'Ce mois': [
-        now.startOf('month'),
-        now.endOf('month')
+        moment().startOf('month'),
+        moment().endOf('month')
       ],
       'Le mois deriner': [
-        now.subtract(1, 'month').startOf('month'),
-        now.subtract(1, 'month').endOf('month')
+        moment().subtract(1, 'month').startOf('month'),
+        moment().subtract(1, 'month').endOf('month')
       ]
     },
     opens: 'left',
     buttonClasses: [ 'btn btn-default' ],
     applyClass: 'btn-small btn-primary',
     cancelClass: 'btn-small',
-    format: 'DD/MM/YYYY',
-    separator: ' to ',
     locale: {
+      separator: ' au ',
+      format: 'DD/MM/YYYY',
       applyLabel: 'Appliquer',
       cancelLabel: 'Annuler',
       fromLabel: 'Du',
@@ -84,16 +82,23 @@ function set_datepicker(data) {
 }
 
 function cb(start, end, label) {
-  $('#reportrange span').html(`${start.format('DD, MMMM, YYYY')} - ${end.format('DD, MMMM, YYYY')}`);
+  $('#reportrange span').html(`${start.format('DD MMMM YYYY')} - ${end.format('DD MMMM YYYY')}`);
 }
 
 function bind_datepicker(options, data, url) {
-  const picker_element = $('#reportrange');
-  picker_element.daterangepicker(options, cb);
-  $('#reportrange span').html(`${options.rawStart.format('DD/MM/YYYY')} - ${options.rawEnd.format('DD/MM/YYYY')}`);
-  picker_element.on('apply.daterangepicker', (ev, picker) => {
+  $('#reportrange').daterangepicker(options, cb);
+  $('#reportrange').on('apply.daterangepicker', (ev, picker) => {
+    console.log(picker);
+    debugger;
     const start = picker.startDate.format('DD-MM-YYYY');
     const end = picker.endDate.format('DD-MM-YYYY');
     window.location.href = `./${url}.php?date1=${start}&date2=${end}&numero=${data.numero}`;
+  });
+  $('#options1').click(() => {
+    $('#reportrange').data('daterangepicker').setOptions(options, cb);
+  });
+
+  $('#destroy').click(() => {
+    $('#reportrange').data('daterangepicker').remove();
   });
 }

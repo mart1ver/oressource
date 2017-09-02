@@ -20,9 +20,13 @@
 // Bilan des sorties hors boutique
 session_start();
 
-require_once('../moteur/dbconfig.php');
-if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($_SESSION['niveau'], 'bi') !== false)) {
+require_once '../core/session.php';
+require_once '../core/requetes.php';
+
+
+if (is_valid_session() && is_allowed_bilan()) {
   require_once 'tete.php';
+  require_once '../moteur/dbconfig.php';
   ?>
 
   <div class="container">
@@ -35,8 +39,6 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($
             <i class="fa fa-calendar"></i>
             <span></span> <b class="caret"></b>
           </div>
-          <script src="../js/raphael.js"></script>
-          <script src="../js/morris/morris.js"></script>
         </div>
         <ul class="nav nav-tabs">
           <li><a href="<?= 'bilanc.php?date1=' . $_GET['date1'] . '&date2=' . $_GET['date2'] . '&numero=0'; ?>">Collectes</a></li>
