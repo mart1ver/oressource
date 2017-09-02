@@ -483,7 +483,7 @@ function insert_items_sorties(PDO $bdd, int $id_sorties, $sortie, $items) {
   }
 }
 
-function insert_evac_sorties(PDO $bdd, int$id_sorties, $sortie, $items) {
+function insert_evac_sorties(PDO $bdd, int $id_sorties, $sortie, $items) {
   $nombreCategories = nb_categories_dechets_evac($bdd);
   $req = $bdd->prepare('INSERT INTO pesees_sorties (timestamp, masse,  id_sortie, id_type_dechet_evac, id_createur)
                             VALUES(:timestamp, :masse, :id_sortie, :id_type_dechet_evac, :id_createur)');
@@ -552,7 +552,7 @@ function specialise_sortie(PDOStatement $stmt, $sortie) {
   return $stmt;
 }
 
-function insert_sortie(PDO $bdd, array $sortie): array {
+function insert_sortie(PDO $bdd, array $sortie): int {
   $sql = 'INSERT INTO sorties (timestamp, id_filiere, id_convention,
                                 id_type_sortie, classe,
                                 id_point_sortie, commentaire, id_createur)
@@ -569,7 +569,7 @@ function insert_sortie(PDO $bdd, array $sortie): array {
   $req->bindvalue(':commentaire', $bdd->quote($sortie['commentaire']), PDO::PARAM_STR);
   $req->bindvalue(':id_createur', $sortie['id_user'], PDO::PARAM_INT);
   $req->execute();
-  return (int) $bdd->lastInsertId();
+  return $bdd->lastInsertId();
 }
 
 function structure(PDO $bdd): array {
