@@ -121,10 +121,12 @@ function encaisse_vente(event) {
       id_point: window.ventes.point.id,
       id_user: window.ventes.id_user,
       id_moyen: state.moyen,
-      date: date.value || null,
       commentaire: document.getElementById('commentaire').value.trim(),
       items: state.ticket.to_array()
     };
+    if (date !== null) {
+      data.date = date.value;
+    }
     post_data(url, data, reset);
   }
 }
