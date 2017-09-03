@@ -22,11 +22,8 @@
 function oui_non_to_bool(string $s): bool {
   if ($s === 'oui') {
     return true;
-  } elseif ($s === 'non') {
-    return false;
-  } else {
-    throw new InvalidArgumentException('$s different de oui ou non.');
   }
+  return false;
 }
 
 // TODO a virer une fois la base nettoyee des oui et non.
@@ -49,8 +46,8 @@ function structure_validate(array $json): array {
     'lot' => bool_to_oui_non(filter_var($json['lot'], FILTER_VALIDATE_BOOLEAN)),
     'viz' => bool_to_oui_non(filter_var($json['viz'], FILTER_VALIDATE_BOOLEAN)),
     'saisiec' => bool_to_oui_non(filter_var($json['saisiec'], FILTER_VALIDATE_BOOLEAN)),
-    'affsp' => bool_to_oui_non(filter_var($json['affsp'],  FILTER_VALIDATE_BOOLEAN)),
-    'affss' => bool_to_oui_non(filter_var($json['affss'],  FILTER_VALIDATE_BOOLEAN)),
+    'affsp' => bool_to_oui_non(filter_var($json['affsp'], FILTER_VALIDATE_BOOLEAN)),
+    'affss' => bool_to_oui_non(filter_var($json['affss'], FILTER_VALIDATE_BOOLEAN)),
     'affsr' => bool_to_oui_non(filter_var($json['affsr'], FILTER_VALIDATE_BOOLEAN)),
     'affsde' => bool_to_oui_non(filter_var($json['affsde'], FILTER_VALIDATE_BOOLEAN)),
     'affsd' => bool_to_oui_non(filter_var($json['affsd'], FILTER_VALIDATE_BOOLEAN)),
