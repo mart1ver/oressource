@@ -27,16 +27,17 @@ use Datetime;
 
 global $bdd;
 
-require_once('../core/session.php');
-require_once('../core/requetes.php');
-require_once('../moteur/dbconfig.php');
+require_once '../core/requetes.php';
+require_once '../core/session.php';
+require_once '../core/composants.php';
 
 session_start();
 
 $numero = filter_input(INPUT_GET, 'numero', FILTER_VALIDATE_INT);
 
-if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && is_allowed_collecte_id($numero)) {
-  require_once('tete.php');
+if (is_valid_session() && is_allowed_collecte_id($numero)) {
+  require_once 'tete.php';
+  require_once '../moteur/dbconfig.php';
 
   $point_collecte = points_collecte_id($bdd, $numero);
   $types_action = types_collectes($bdd);
@@ -48,27 +49,8 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && is_allowe
       <h1><?= $point_collecte['nom']; ?></h1>
     </div>
     <div class="row">
-      <div class="col-md-4 " >
-        <div class="panel panel-info" >
-          <div class="panel-heading">
-            <h3 class="panel-title"><label id="massetot">Bon d'apport: 0 Kg.</label></h3>
-          </div>
-          <div class="panel-body" style="padding-top:5px">
-            <form id="formulaire">
-              <?php if (is_allowed_saisie_collecte() && is_allowed_edit_date()) { ?>
-                <label  for="antidate">Date de l'apport: </label>
-                <input type="date" id="antidate" name="antidate" style="width:120px; height:20px;" value="<?= $date->format('Y-m-d'); ?>">
-              <?php } ?>
-              <ul class="list-group" id="transaction">  <!--start Ticket Caisse -->
-                <!-- Remplis via JavaScript voir script de la page -->
-              </ul> <!--end TicketCaisse -->
-            </form>
-          </div>
-          <div class="panel-footer">
-            <input type="text" form="formulaire" class="form-control" name="commentaire" id="commentaire" placeholder="Commentaire">
-          </div>
-        </div>
-      </div>
+
+      <?= cartList(['text' => "Bon d'apport: 0 Kg.", 'date' => $date->format('Y-m-d')]) ?>
 
       <div class="col-md-4"  >
         <div class="panel panel-info">
@@ -76,7 +58,6 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && is_allowe
             <h3 class="panel-title"><label>Informations :</label></h3>
           </div>
           <div class="panel-body" style="padding-top:5px">
-
             <label for="id_type_action">Type de collecte:</label>
             <select name="id_type_action" form="formulaire" id="id_type_action" class="form-control" style="font-size: 12pt" required>
               <option value="" hidden disabled selected>Selectionez un type de collecte</option>

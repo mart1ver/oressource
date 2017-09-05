@@ -61,7 +61,7 @@ if (is_valid_session() && is_allowed_vente_id($numero)) {
         </div>
 
         <div class="panel-body" id="ticket">
-          <?php if (is_allowed_saisie_collecte() && is_allowed_edit_date()) { ?>
+          <?php if (is_allowed_saisie_date() && is_allowed_edit_date()) { ?>
             <label for="date">Date de la vente:</label>
             <input type="date" id="date" name="antidate" style="width:130px; height:20px;" value="<?= date('Y-m-d'); ?>">
           <?php } ?>

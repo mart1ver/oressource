@@ -53,29 +53,7 @@ if (is_valid_session() && is_allowed_sortie_id($numero)) {
       </ul>
     </nav>
 
-    <div class="col-md-4">
-      <div id="ticket" class="panel panel-info" >
-        <div class="panel-heading">
-          <h3 class="panel-title">
-            <label id="massetot">Masse totale: 0 Kg.</label>
-          </h3>
-        </div>
-        <div class="panel-body">
-          <form id="formulaire">
-            <?php if (is_allowed_edit_date()) { ?>
-              <label for="antidate">Date de la sortie: </label>
-              <input type="date" id="antidate" name="antidate" style="width:130px; height:20px;" value="<?= $date->format('Y-m-d'); ?>">
-            <?php } ?>
-            <ul class="list-group" id="transaction">  <!--start Ticket Caisse -->
-              <!-- Remplis via JavaScript voir script de la page -->
-            </ul> <!--end TicketCaisse -->
-          </form>
-        </div>
-        <div class="panel-footer">
-          <input type="text" form="formulaire" class="form-control" name="commentaire" id="commentaire" placeholder="Commentaire">
-        </div>
-      </div>
-    </div> <!-- .col-md-4 -->
+    <?= cartList(['text' => "Masse totale: 0 Kg.", 'date' => $date->format('Y-m-d')]) ?>
 
     <!-- Pavee de saisie numerique vcir numpad.js -->
     <div id="numpad" class="col-md-4"" style="width: 220px;"></div>
@@ -111,7 +89,7 @@ if (is_valid_session() && is_allowed_sortie_id($numero)) {
       structure: <?= json_encode($_SESSION['structure']); ?>,
       adresse: <?= json_encode($_SESSION['adresse']); ?>,
       id_user: <?= json_encode($_SESSION['id'], JSON_NUMERIC_CHECK); ?>,
-      saisie_collecte: <?= json_encode(is_allowed_saisie_collecte()); ?>,
+      saisie_collecte: <?= json_encode(is_allowed_saisie_date()); ?>,
       user_droit: <?= json_encode($_SESSION['niveau']); ?>,
       id_point: <?= json_encode($numero, JSON_NUMERIC_CHECK); ?>,
       masse_max: <?= json_encode($point_sortie['pesee_max'], JSON_NUMERIC_CHECK); ?>,
