@@ -32,7 +32,7 @@ session_start();
 
 header("content-type:application/json");
 
-if (is_valid_session() && is_allowed_saisie_collecte()) {
+if (is_valid_session()) {
 
   $json_raw = file_get_contents('php://input');
   $unsafe_json = json_decode($json_raw, true);
@@ -52,7 +52,7 @@ if (is_valid_session() && is_allowed_saisie_collecte()) {
 
   if (is_allowed_collecte_id($json['id_point'])) {
     try {
-      $timestamp = (is_allowed_edit_date() ? parseDate($json['antidate']) : new DateTime('now'));
+      $timestamp = allowDate($json) ? parseDate($json['date']) : new DateTime('now');
       $collecte = [
         'timestamp' => $timestamp,
         'id_type_action' => $json['id_type_action'],
@@ -73,6 +73,9 @@ if (is_valid_session() && is_allowed_saisie_collecte()) {
       echo(json_encode(['id_collecte' => $id_collecte], JSON_NUMERIC_CHECK));
     } catch (InvalidArgumentException $e) {
       $bdd->rollback();
+      http_response_code(400); // Bad Request
+      echo(json_encode(['error' => $e->getMessage()]));
+    } catch (UnexpectedValueException $e) {
       http_response_code(400); // Bad Request
       echo(json_encode(['error' => $e->getMessage()]));
     }
