@@ -136,3 +136,40 @@ function configInfo(array $props) {
   <?php
   return ob_get_clean();
 }
+
+/*
+ * Il ne faut pas changer les id, ni les noms des inputs de ce composant sans modifier
+ * le javascript associée.
+ */
+function cartList(array $props) {
+  ob_start();
+  ?>
+  <div class="col-md-4">
+    <div id="ticket" class="panel panel-info" >
+      <div class="panel-heading">
+        <h3 class="panel-title">
+          <label id="massetot"><?= $props['text'] ?></label>
+        </h3>
+      </div>
+      <div class="panel-body">
+        <form id="formulaire">
+          <?php if (is_allowed_saisie_date() && is_allowed_edit_date()) { ?>
+            <label>Date:
+              <input type="date" id="antidate" name="antidate"
+                   style="width:130px; height:20px;" value="<?= $props['date'] ?>">
+            </label>
+          <?php } ?>
+          <ul class="list-group" id="transaction">
+            <!-- Filled by Javascript -->
+          </ul>
+        </form>
+      </div>
+      <div class="panel-footer">
+        <input type="text" form="formulaire" class="form-control"
+               name="commentaire" id="commentaire" placeholder="Commentaire">
+      </div>
+    </div>
+  </div>
+  <?php
+  return ob_get_clean();
+}

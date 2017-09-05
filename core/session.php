@@ -153,7 +153,7 @@ function is_allowed_edit_date(): bool {
   return strpos($_SESSION['niveau'], 'e') !== false;
 }
 
-function is_allowed_saisie_collecte(): bool {
+function is_allowed_saisie_date(): bool {
   return $_SESSION['saisiec'] === 'oui';
 }
 
@@ -171,7 +171,7 @@ function is_vente_visible(array $point_vente): bool {
 
 function allowDate(array $json): bool {
   return (is_allowed_edit_date()
-          && is_allowed_saisie_collecte()
+          && is_allowed_saisie_date()
           && isset($json['date']));
 }
 
