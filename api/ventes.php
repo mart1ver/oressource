@@ -108,14 +108,22 @@ if (is_valid_session()) {
   $json_raw = file_get_contents('php://input');
   $unsafe_json = json_decode($json_raw, true);
   $json = $unsafe_json;
-  $json['date'] = is_allowed_edit_date() && isset($json['date']) ? parseDate($json['date']) : new DateTime('now');
+
   if (!is_allowed_vente_id($json['id_point'])) {
     http_response_code(403); // Forbiden.
     echo(json_encode(['error' => 'Action interdite.'], JSON_FORCE_OBJECT));
     die();
   }
-  $bdd->beginTransaction();
 
+  try {
+    $json['date'] = allowDate($json) ? parseDate($json['date']) : new DateTime('now');
+  } catch (UnexpectedValueException $ex) {
+    http_response_code(400); // Bad Request
+    echo(json_encode(['error' => $e->getMessage()]));
+    die();
+  }
+
+  $bdd->beginTransaction();
   try {
     $vente_id = vente_insert($bdd, $json);
     vendus_insert($bdd, $vente_id, $json);

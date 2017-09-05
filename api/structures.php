@@ -29,7 +29,13 @@ session_start();
 
 header("content-type:application/json");
 
-if (is_valid_session() && is_allowed_config()) {
+if (is_valid_session()) {
+  if (!is_allowed_config()) {
+    http_response_code(403); // Forbiden.
+    echo(json_encode(['error' => 'Action interdite.'], JSON_FORCE_OBJECT));
+    die();
+  }
+
   $json_raw = file_get_contents('php://input');
   $unsafe_json = json_decode($json_raw, true);
 
@@ -39,7 +45,8 @@ if (is_valid_session() && is_allowed_config()) {
   structure_update($bdd, array_merge($structure, [
     'id' => 1,
   ]));
-  http_response_code(200); // Unauthorized.
+
+  http_response_code(200); // Sucess.
   echo(json_encode(['success' => 'Configuration saved']));
 } else {
   http_response_code(401); // Unauthorized.

@@ -169,6 +169,12 @@ function is_vente_visible(array $point_vente): bool {
   return is_allowed_vente_id($point_vente['id']) && $point_vente['visible'] === 'oui';
 }
 
+function allowDate(array $json): bool {
+  return (is_allowed_edit_date()
+          && is_allowed_saisie_collecte()
+          && isset($json['date']));
+}
+
 function droits(array $points, string $type, array $droits): string {
   $d = '';
   $niveau = 'niveau' . $type;
