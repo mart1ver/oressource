@@ -4,3 +4,5 @@ moteur/dbconfig.php
 _build
 
 moteur/dbconfig\.php\.example
+*~
+.*~
