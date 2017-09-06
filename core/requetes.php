@@ -860,7 +860,9 @@ function viz_caisse(PDO $bdd, int $id_point_vente, int $offset): array {
   $reqVentes->bindValue('id_point_vente', $id_point_vente, PDO::PARAM_INT);
   $reqVentes->bindValue('offset', $offset, PDO::PARAM_INT);
   $reqVentes->execute();
-  return $reqVentes->fetchAll(PDO::FETCH_ASSOC);
+  $resultat = $reqVentes->fetchAll(PDO::FETCH_ASSOC);
+  $reqVentes->closeCursor();
+  return $resultat;
 }
 
 function bilan_ventes_par_type(PDO $bdd, $start, $stop) {

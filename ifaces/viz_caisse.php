@@ -86,7 +86,6 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && $_SESSION
     </table>
   </div><!-- /.container -->
   <?php
-  $reqVentes->closeCursor();
   require_once 'pied.php';
 } else {
   header('Location: ../moteur/destroy.php');
