@@ -4,6 +4,8 @@ Instalation sous linux (debian/ubuntu)
 
 ## Dépendances
 
+Il faut une version de MySQL >= 5.6.5 et MariaDB >= 10.0.1.
+
 ```shell
 sudo apt-get install mysql-server apache2 php7.0-mysql libapache2-mod-php7.0 git
 ```
