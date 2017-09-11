@@ -6,6 +6,8 @@
 -- base de données.
 --
 
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='';
+
 BEGIN;
 
 ALTER TABLE `description_structure`
@@ -30,3 +32,5 @@ CREATE TABLE IF NOT EXISTS `pesees_vendus` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 COMMIT;
+
+SET SQL_MODE=@OLD_SQL_MODE;
