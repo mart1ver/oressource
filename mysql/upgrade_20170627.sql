@@ -6,6 +6,8 @@
 -- base de données.
 --
 
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='';
+
 BEGIN;
 
 ALTER TABLE `collectes`
@@ -124,3 +126,5 @@ MODIFY `id_last_hero` int(11) NOT NULL DEFAULT 0,
 MODIFY `last_hero_timestamp` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP;
 
 COMMIT;
+
+SET SQL_MODE=@OLD_SQL_MODE;
