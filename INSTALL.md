@@ -3,6 +3,8 @@
 Instalation sous linux (debian/ubuntu)
 
 ## Dépendances
+Il faut une version de MySQL >= à 5.6.5.
+
 ```shell
 sudo apt-get install mysql-server apache2 php5-mysql libapache2-mod-php5 git
 ```
