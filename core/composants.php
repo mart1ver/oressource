@@ -173,3 +173,66 @@ function cartList(array $props) {
   <?php
   return ob_get_clean();
 }
+
+function bilanTableHeader3(array $props) {
+  ob_start();
+  ?>
+  <tr>
+    <th style="width:300px"><?= $props['td0'] ?></th>
+    <th><?= $props['td1'] ?></th>
+    <th><?= $props['td2'] ?></th>
+  </tr>
+  <?php
+  return ob_get_clean();
+}
+
+function bilanTableBody3(array $props) {
+  ob_start();
+  ?>
+  <tbody>
+    <?php foreach ($props['data'] as $data) { ?>
+      <tr>
+        <td><?= $data['nom']; ?></td>
+        <td><?= $data['somme']; ?></td>
+        <td><?= round($data['somme'] * 100 / $props['masse'], 2); ?></td>
+      </tr>
+    <?php } ?>
+  </tbody>
+  <?php
+  return ob_get_clean();
+}
+
+function bilanTable3Hover(array $props) {
+  ?>
+  <table class="table table-condensed table-striped table table-bordered table-hover" style="border-collapse:collapse;">
+    <thead>
+    <th style="width:300px"><?= $props['text'] ?></th>
+    <thead>
+      <?= bilanTableHeader3($props) ?>
+    </thead>
+    <?= bilanTableBody3($props) ?>
+  </table>
+  <?php
+}
+
+function bilanTable3(array $props) {
+  ob_start();
+  ?>
+  <div class="list-group">
+    <a class="list-group-item" data-toggle="collapse"
+       href="#collapse<?= $props['id'] ?>" aria-expanded="false"
+       aria-controls="collapse<?= $props['id'] ?>"><?= $props['text'] ?></a>
+  </div>
+  <div class="collapse" id="collapse<?= $props['id'] ?>">
+    <table class="table table-condensed s
+           table-striped table
+           table-bordered table-hover" style="border-collapse:collapse;">
+      <thead>
+        <?= bilanTableHeader3($props) ?>
+      </thead>
+      <?= bilanTableBody3($props) ?>
+    </table>
+  </div>
+  <?php
+  return ob_get_clean();
+}
