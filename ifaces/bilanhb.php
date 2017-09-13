@@ -22,11 +22,214 @@ session_start();
 
 require_once '../core/session.php';
 require_once '../core/requetes.php';
+require_once '../core/composants.php';
+
+function sortie_type(string $type): string {
+  switch ($type) {
+    case 'sortiesc';
+      return 'don aux partenaires';
+    case 'sorties';
+      return 'don';
+    case 'sortiesd';
+      return 'dechetterie';
+    case 'sortiesp';
+      return 'poubelles';
+    case 'sortiesr';
+      return 'recycleurs';
+    default;
+      return 'base érronée';
+  }
+}
+
+function bilansSortiesRepartition(PDO $bdd, int $id, $start, $fin): array {
+  $numero = ($id > 0 ? " AND sorties.id_point_sortie = $id " : ' ');
+  $sql = 'SELECT
+    SUM(pesees_sorties.masse) somme,
+    pesees_sorties.timestamp,
+    sorties.classe,
+    COUNT(distinct sorties.id) ncol
+  FROM
+    pesees_sorties, sorties
+  WHERE
+    pesees_sorties.timestamp BETWEEN :du AND :au
+  AND pesees_sorties.id_sortie = sorties.id ' . $numero . '
+  GROUP BY classe';
+  $stmt = $bdd->prepare($sql);
+  $stmt->bindParam(':du', $start, PDO::PARAM_STR);
+  $stmt->bindParam(':au', $fin, PDO::PARAM_STR);
+  $stmt->execute();
+  return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+function _bilansSortiesPrepare(PDO $bdd, int $id, $start, $fin, string $type): PDOStatement {
+  $numero = ($id > 0 ? " AND sorties.id_point_sortie = $id " : ' ');
+  $sql = 'SELECT type_dechets.nom, sum(pesees_sorties.masse) somme
+FROM type_dechets, pesees_sorties, sorties
+WHERE type_dechets.id = pesees_sorties.id_type_dechet
+AND   pesees_sorties.id_sortie = sorties.id
+AND   sorties.classe = :type0
+AND   pesees_sorties.timestamp BETWEEN :du0 AND :au0 ' . $numero . '
+GROUP BY nom
+UNION
+SELECT type_dechets_evac.nom nom2, sum(pesees_sorties.masse) somme
+FROM type_dechets_evac, pesees_sorties, sorties
+WHERE type_dechets_evac.id = pesees_sorties.id_type_dechet_evac
+AND   pesees_sorties.id_sortie = sorties.id
+AND   sorties.classe = :type1
+AND   pesees_sorties.timestamp BETWEEN :du1 AND :au1 ' . $numero . '
+GROUP BY nom2';
+  $stmt = $bdd->prepare($sql);
+  $stmt->bindParam(':type0', $type, PDO::PARAM_STR);
+  $stmt->bindParam(':type1', $type, PDO::PARAM_STR);
+  $stmt->bindParam(':du0', $start, PDO::PARAM_STR);
+  $stmt->bindParam(':du1', $start, PDO::PARAM_STR);
+  $stmt->bindParam(':au0', $fin, PDO::PARAM_STR);
+  $stmt->bindParam(':au1', $fin, PDO::PARAM_STR);
+  return $stmt;
+}
+
+function poubelles(PDO $bdd, int $id, $start, $fin): array {
+  $numero = ($id > 0 ? " AND sorties.id_point_sortie = $id " : ' ');
+  $sql = '
+  SELECT types_poubelles.nom, sum(pesees_sorties.masse) somme
+FROM types_poubelles, pesees_sorties, sorties
+WHERE
+pesees_sorties.id_sortie = sorties.id
+AND
+types_poubelles.id = pesees_sorties.id_type_poubelle
+AND sorties.classe = "sortiesp"
+AND pesees_sorties.timestamp BETWEEN :du AND :au ' . $numero . '
+GROUP BY nom';
+  $stmt = $bdd->prepare($sql);
+  $stmt->bindParam(':du', $start, PDO::PARAM_STR);
+  $stmt->bindParam(':au', $fin, PDO::PARAM_STR);
+  $stmt->execute();
+  return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+function donsSimples(PDO $bdd, int $id, $start, $fin): array {
+  $stmt = _bilansSortiesPrepare($bdd, $id, $start, $fin, 'sorties');
+  $stmt->execute();
+  return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+function recycleurs(PDO $bdd, int $id, $start, $fin): array {
+  $stmt = _bilansSortiesPrepare($bdd, $id, $start, $fin, 'sortiesr');
+  $stmt->execute();
+  return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+function partenaires(PDO $bdd, int $id, $start, $fin): array {
+  $stmt = _bilansSortiesPrepare($bdd, $id, $start, $fin, 'sortiesc');
+  $stmt->execute();
+  return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+function dechetteries(PDO $bdd, int $id, $start, $fin): array {
+  $stmt = _bilansSortiesPrepare($bdd, $id, $start, $fin, 'sortiesd');
+  $stmt->execute();
+  return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+function masse_evacue(PDO $bdd, int $id, $start, $fin): float {
+  $numero = ($id > 0 ? " AND sorties.id_point_sortie = $id " : ' ');
+  $sql = 'SELECT
+    SUM(pesees_sorties.masse) AS total
+    FROM pesees_sorties, sorties
+    WHERE pesees_sorties.id_sortie = sorties.id
+    AND pesees_sorties.timestamp BETWEEN :du AND :au ' . $numero;
+  $stmt = $bdd->prepare($sql);
+  $stmt->bindParam(':du', $start, PDO::PARAM_STR);
+  $stmt->bindParam(':au', $fin, PDO::PARAM_STR);
+  $stmt->execute();
+  $donnees = $stmt->fetch();
+  $masse = $donnees['total'];
+  $stmt->closeCursor();
+  return $masse;
+}
+
+function bilanSortiesDon(PDO $bdd, int $id, $start, $fin): array {
+  $numero = ($id > 0 ? " AND sorties.id_point_sortie = $id " : ' ');
+  $sql = 'SELECT type_sortie.nom, sum(pesees_sorties.masse) somme
+FROM type_sortie, pesees_sorties, sorties
+WHERE
+type_sortie.id=sorties.id_type_sortie
+AND
+pesees_sorties.id_sortie = sorties.id
+AND sorties.classe = "sorties"
+AND pesees_sorties.timestamp BETWEEN :du AND :au ' . $numero . '
+GROUP BY nom';
+  $stmt = $bdd->prepare($sql);
+  $stmt->bindParam(':du', $start, PDO::PARAM_STR);
+  $stmt->bindParam(':au', $fin, PDO::PARAM_STR);
+  $stmt->execute();
+  return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+function bilanSortiesConvention(PDO $bdd, int $id, $start, $fin): array {
+  $numero = ($id > 0 ? " AND sorties.id_point_sortie = $id " : ' ');
+  $sql = 'SELECT conventions_sorties.nom, sum(pesees_sorties.masse) somme, COUNT(sorties.id) nombre
+FROM conventions_sorties, pesees_sorties, sorties
+WHERE
+conventions_sorties.id=sorties.id_convention
+AND
+pesees_sorties.id_sortie = sorties.id
+AND sorties.classe = "sortiesc"
+AND pesees_sorties.timestamp BETWEEN :du AND :au ' . $numero . '
+GROUP BY nom';
+  $stmt = $bdd->prepare($sql);
+  $stmt->bindParam(':du', $start, PDO::PARAM_STR);
+  $stmt->bindParam(':au', $fin, PDO::PARAM_STR);
+  $stmt->execute();
+  return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+function bilanSortiesRecycleur(PDO $bdd, int $id, $start, $fin): array {
+  $numero = ($id > 0 ? " AND sorties.id_point_sortie = $id " : ' ');
+  $sql = 'SELECT filieres_sortie.nom, sum(pesees_sorties.masse) somme
+FROM filieres_sortie, pesees_sorties, sorties
+WHERE
+filieres_sortie.id=sorties.id_filiere
+AND
+pesees_sorties.id_sortie = sorties.id
+AND sorties.classe = "sortiesr"
+AND pesees_sorties.timestamp BETWEEN :du AND :au ' . $numero . '
+GROUP BY nom';
+  $stmt = $bdd->prepare($sql);
+  $stmt->bindParam(':du', $start, PDO::PARAM_STR);
+  $stmt->bindParam(':au', $fin, PDO::PARAM_STR);
+  $stmt->execute();
+  return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+function strategie(PDO $bdd, int $id, $start, $fin) {
+  return [
+    'donsSimples' => donsSimples($bdd, $id, $start, $fin),
+    'recycleurs' => recycleurs($bdd, $id, $start, $fin),
+    'partenaires' => partenaires($bdd, $id, $start, $fin),
+    'dechetteries' => dechetteries($bdd, $id, $start, $fin),
+    'poubelles' => poubelles($bdd, $id, $start, $fin),
+    'masse' => masse_evacue($bdd, $id, $start, $fin),
+    'repartitions' => bilansSortiesRepartition($bdd, $id, $start, $fin),
+  ];
+}
 
 
 if (is_valid_session() && is_allowed_bilan()) {
   require_once 'tete.php';
   require_once '../moteur/dbconfig.php';
+
+  $numero = (int) filter_input(INPUT_GET, 'numero', FILTER_VALIDATE_INT);
+  $points_sortie = points_sorties($bdd);
+
+
+  $date1 = $_GET['date1'];
+  $date2 = $_GET['date2'];
+  $date1ft = DateTime::createFromFormat('d-m-Y', $date1);
+  $time_debut = $date1ft->format('Y-m-d') . ' 00:00:00';
+  $date2ft = DateTime::createFromFormat('d-m-Y', $date2);
+  $time_fin = $date2ft->format('Y-m-d') . ' 23:59:59';
+  $data = strategie($bdd, $numero, $time_debut, $time_fin);
   ?>
 
   <div class="container">
@@ -41,231 +244,67 @@ if (is_valid_session() && is_allowed_bilan()) {
           </div>
         </div>
         <ul class="nav nav-tabs">
-          <li><a href="<?= 'bilanc.php?date1=' . $_GET['date1'] . '&date2=' . $_GET['date2'] . '&numero=0'; ?>">Collectes</a></li>
+          <li><a href="bilanc.php?date1=<?= $date1 . '&date2=' . $date2 . '&numero=0'; ?>">Collectes</a></li>
           <li class="active"><a>Sorties hors-boutique</a></li>
-          <li><a href="<?= 'bilanv.php?date1=' . $_GET['date1'] . '&date2=' . $_GET['date2'] . '&numero=0'; ?>">Ventes</a></li>
+          <li><a href="bilanv.php?date1=<?= $date1 . '&date2=' . $date2 . '&numero=0'; ?>">Ventes</a></li>
         </ul>
       </div>
     </div>
-
   </div>
-  <div class="row">
-    <div class="col-md-8 col-md-offset-1" >
-      <h2> Bilan des sorties hors-boutique de la structure
-      </h2>
-      <ul class="nav nav-tabs">
-        <?php
-        $reponse = $bdd->query('SELECT * FROM points_sortie');
-        while ($donnees = $reponse->fetch()) { ?>
-          <li<?php
-          if ($_GET['numero'] === $donnees['id']) {
-            echo ' class="active"';
-          }
-          ?>><a href="<?= 'bilanhb.php?numero=' . $donnees['id'] . '&date1=' . $_GET['date1'] . '&date2=' . $_GET['date2']; ?>"> <?= $donnees['nom']; ?> </a></li>
-            <?php
-          }
-          $reponse->closeCursor();
-          ?>
-        <li<?php
-        if ($_GET['numero'] === 0) {
-          echo ' class="active"';
-        }
-        ?>><a href="<?= 'bilanhb.php?numero=0' . '&date1=' . $_GET['date1'] . '&date2=' . $_GET['date2']; ?>">Tous les points</a></li>
-      </ul>
 
+  <div class="row">
+    <div class="col-md-8 col-md-offset-1">
+      <h2> Bilan des sorties hors-boutique de la structure</h2>
+      <ul class="nav nav-tabs">
+        <?php foreach ($points_sortie as $p) { ?>
+          <li class="<?= $numero === $p['id'] ? 'active' : '' ?>">
+            <a href="bilanhb.php?numero=<?= $p['id'] . '&date1=' . $date1 . '&date2=' . $date2; ?>"> <?= $p['nom']; ?></a>
+          </li>
+        <?php } ?>
+        <li class="<?= $numero === 0 ? 'active' : '' ?>">
+          <a href="bilanhb.php?numero=0<?= '&date1=' . $date1 . '&date2=' . $date2; ?>">Tous les points</a>
+        </li>
+      </ul>
       <br>
     </div>
   </div>
+  `
   <div class="row">
     <div class="col-md-8 col-md-offset-1">
-      <h2>
-        <?php
-        if ($_GET['date1'] === $_GET['date2']) {
-          echo' Le ' . $_GET['date1'] . ' ,';
-        } else {
-          echo' Du ' . $_GET['date1'] . ' au ' . $_GET['date2'] . ' ,';
-        }
-        //on convertit les deux dates en un format compatible avec la bdd
-        $txt1 = $_GET['date1'];
-        $date1ft = DateTime::createFromFormat('d-m-Y', $txt1);
-        $time_debut = $date1ft->format('Y-m-d');
-        $time_debut = $time_debut . ' 00:00:00';
-        $txt2 = $_GET['date2'];
-        $date2ft = DateTime::createFromFormat('d-m-Y', $txt2);
-        $time_fin = $date2ft->format('Y-m-d');
-        $time_fin = $time_fin . ' 23:59:59';
-        ?>
-        masse totale évacuée: <?php
-        if ($_GET['numero'] === 0) {
-          $req = $bdd->prepare('SELECT SUM(pesees_sorties.masse)AS total   FROM pesees_sorties  WHERE  pesees_sorties.timestamp BETWEEN :du AND :au ');
-          $req->execute(['du' => $time_debut, 'au' => $time_fin]);
-          $donnees = $req->fetch();
-          $mtotcolo = $donnees['total'];
-          echo $donnees['total'] . ' Kgs.';
-
-          $req->closeCursor();
-        } else {
-          //si on observe un point en particulier
-
-          $req = $bdd->prepare('SELECT SUM(pesees_sorties.masse)AS total
-FROM pesees_sorties ,sorties
-WHERE pesees_sorties.id_sortie = sorties.id
-AND pesees_sorties.timestamp BETWEEN :du AND :au  AND sorties.id_point_sortie = :numero ');
-          $req->execute(['du' => $time_debut, 'au' => $time_fin, 'numero' => $_GET['numero']]);
-          $donnees = $req->fetch();
-          $mtotcolo = $donnees['total'];
-          echo $donnees['total'] . ' Kgs.';
-
-          $req->closeCursor();
-        }
-        if ($_GET['numero'] === 0) { ?>
-          , sur <?php
-// on determine le nombre de points de collecte
-          /*
-           */
-          $req = $bdd->prepare('SELECT COUNT(id) FROM points_sortie');
-          $req->execute(['au' => $time_fin]);
-          $donnees = $req->fetch();
-
-          echo $donnees['COUNT(id)'];
-          $req->closeCursor();
-          ?> Point(s) de sorties.
-
-        <?php } ?></h2>
+      <h2><?= $date1 === $date2 ? " Le {$date1}," : " Du {$date1} au {$date2}," ?>
+        masse totale évacuée: <?= $data['masse'] ?>kg<?= $numero === 0 ? ' sur ' . count($points_sortie) . ' Point(s) de sorties.' : '.' ?></h2>
     </div>
   </div>
+
   <div class="row">
     <div class="col-md-5 col-md-offset-1">
       <div class="panel panel-default">
         <div class="panel-heading">
-          <h3 class="panel-title">Répartition par classe de sorties
-          </h3>
+          <h3 class="panel-title">Répartition par classe de sorties</h3>
         </div>
         <div class="panel-body">
-
           <table class="table table-condensed table-striped table table-bordered table-hover" style="border-collapse:collapse;">
             <thead>
               <tr>
                 <th style="width:300px">Classe:</th>
                 <th>Nbr.de bons de sortie</th>
                 <th>Masse évacuée</th>
-
                 <th>%</th>
-
               </tr>
             </thead>
             <tbody>
-
-              <?php
-              if ($_GET['numero'] === 0) {
-                $reponse = $bdd->prepare('SELECT
-SUM(pesees_sorties.masse) somme,pesees_sorties.timestamp,sorties.classe,COUNT(distinct sorties.id) ncol
-FROM
-pesees_sorties,sorties
-WHERE
-  pesees_sorties.timestamp BETWEEN :du AND :au  AND pesees_sorties.id_sortie = sorties.id
-GROUP BY classe');
-                $reponse->execute(['du' => $time_debut, 'au' => $time_fin]);
-
-                while ($donnees = $reponse->fetch()) { ?>
-                  <tr data-toggle="collapse" data-target=".parmasse<?= $donnees['classe']; ?>">
-
-                    <?php
-                    switch ($donnees['classe']) {
-                      case 'sortiesc';
-                        ?>
-                        <td>don aux partenaires</td>
-                        <?php
-                        break;
-                      case 'sorties';
-                        ?>
-                        <td>don</td>
-                        <?php
-                        break;
-                      case 'sortiesd';
-                        ?>
-                        <td>dechetterie</td>
-                        <?php
-                        break;
-                      case 'sortiesp';
-                        ?>
-                        <td>poubelles</td>
-                        <?php
-                        break;
-                      case 'sortiesr';
-                        ?>
-                        <td>recycleurs</td>
-                        <?php
-                        break;
-                      default;
-                        ?>
-                        <td>base érronée</td>
-                    <?php } ?>
-
-                    <td><?= $donnees['ncol']; ?></td>
-                    <td><?= $donnees['somme']; ?></td>
-                    <td><?= round($donnees['somme'] * 100 / $mtotcolo, 2); ?></td>
-                  </tr>
-                  <?php
-                }
-                $reponse->closeCursor();
-              } else {
-                $reponse = $bdd->prepare('SELECT
-SUM(pesees_sorties.masse) somme,pesees_sorties.timestamp,sorties.classe,COUNT(distinct sorties.id) ncol
-FROM
-pesees_sorties,sorties
-WHERE
-  pesees_sorties.timestamp BETWEEN :du AND :au  AND pesees_sorties.id_sortie = sorties.id AND sorties.id_point_sortie = :numero
-GROUP BY classe');
-                $reponse->execute(['du' => $time_debut, 'au' => $time_fin, 'numero' => $_GET['numero']]);
-
-                while ($donnees = $reponse->fetch()) { ?>
-                  <tr data-toggle="collapse" data-target=".parmasse<?= $donnees['classe']; ?>">
-                    <?php
-                    switch ($donnees['classe']) {
-                      case 'sortiesc';
-                        ?>
-                        <td>don aux partenaires</td>
-                        <?php
-                        break;
-                      case 'sorties';
-                        ?>
-                        <td>don</td>
-                        <?php
-                        break;
-                      case 'sortiesd';
-                        ?>
-                        <td>dechetterie</td>
-                        <?php
-                        break;
-                      case 'sortiesp';
-                        ?>
-                        <td>poubelles</td>
-                        <?php
-                        break;
-                      case 'sortiesr';
-                        ?>
-                        <td>recycleurs</td>
-                        <?php
-                        break;
-                      default;
-                        ?>
-                        <td>base érronée</td>
-                    <?php } ?>
-                    <td><?= $donnees['ncol']; ?></td>
-                    <td><?= $donnees['somme']; ?></td>
-                    <td><?= round($donnees['somme'] * 100 / $mtotcolo, 2); ?></td>
-                  </tr>
-                  <?php
-                }
-                $reponse->closeCursor();
-              }
-              ?>
+              <?php foreach ($data['repartitions'] as $rep) { ?>
+                <tr data-toggle="collapse" data-target=".parmasse<?= $rep['classe'] ?>">
+                  <td><?= sortie_type($rep['classe']) ?></td>
+                  <td><?= $rep['ncol'] ?></td>
+                  <td><?= $rep['somme'] ?></td>
+                  <td><?= round($rep['somme'] * 100 / $data['masse'], 2); ?></td>
+                </tr>
+              <?php } ?>
             </tbody>
           </table>
           <br>
-          <a href="<?= '../moteur/export_bilanc_partype.php?numero=' . $_GET['numero'] . '&date1=' . $_GET['date1'] . '&date2=' . $_GET['date2']; ?>">
-
+          <a href="../moteur/export_bilanc_partype.php?numero=<?= $numero . '&date1=' . $date1 . '&date2=' . $date2; ?>">
             <button type="button" class="btn btn-default btn-xs" disabled>exporter ces données (.csv) </button>
           </a>
         </div>
@@ -273,786 +312,72 @@ GROUP BY classe');
 
       <div class="panel panel-default">
         <div class="panel-heading">
-          <h3 class="panel-title">détail par type d'objets
-          </h3>
+          <h3 class="panel-title">détail par type d'objets</h3>
         </div>
         <div class="panel-body">
-
-          <?php if ($_GET['numero'] === 0) { ?>
-            <div class="list-group"><a class="list-group-item" data-toggle="collapse" href="#collapse0" aria-expanded="false" aria-controls="collapse0">
-                Dons simples
-              </a></div>
-            <div class="collapse" id="collapse0">
-              <table class="table table-condensed table-striped table table-bordered table-hover" style="border-collapse:collapse;">
-                <thead>
-                  <tr>
-                    <th style="width:300px">typo</th>
-                    <th>masse</th>
-                    <th>%</th>
-                  </tr>
-                </thead>
-
-                <?php
-                $reponse = $bdd->prepare('SELECT type_dechets.nom, sum(pesees_sorties.masse) somme
-FROM type_dechets, pesees_sorties, sorties
-WHERE
-type_dechets.id=pesees_sorties.id_type_dechet
-AND
-pesees_sorties.id_sortie = sorties.id
-AND sorties.classe = "sorties"
-AND pesees_sorties.timestamp BETWEEN :du AND :au
-GROUP BY nom
-UNION
-SELECT type_dechets_evac.nom nom2, sum(pesees_sorties.masse) somme
-FROM type_dechets_evac, pesees_sorties, sorties
-WHERE
-type_dechets_evac.id=pesees_sorties.id_type_dechet_evac
-AND
-pesees_sorties.id_sortie = sorties.id
-AND sorties.classe = "sorties"
-AND pesees_sorties.timestamp BETWEEN :du AND :au
-GROUP BY nom2');
-                $reponse->execute(['du' => $time_debut, 'au' => $time_fin]);
-
-                while ($donnees = $reponse->fetch()) { ?>
-                  <tr>
-                    <td><?= $donnees['nom']; ?></td>
-                    <td><?= $donnees['somme']; ?></td>
-                    <td><?= round($donnees['somme'] * 100 / $mtotcolo, 2); ?></td>
-                  </tr>
-                  <?php
-                }
-                $reponse->closeCursor();
-                ?>
-
-                </tbody>
-              </table>
-            </div>
-            <div class="list-group"><a class="list-group-item" data-toggle="collapse" href="#collapse1" aria-expanded="false" aria-controls="collapse0">
-                Dons aux partenaires
-              </a></div>
-            <div class="collapse" id="collapse1">
-              <table class="table table-condensed table-striped table table-bordered table-hover" style="border-collapse:collapse;">
-                <thead>
-                  <tr>
-                    <th style="width:300px">typo</th>
-                    <th>masse</th>
-                    <th>%</th>
-                  </tr>
-                </thead>
-                <tbody>
-
-                  <?php
-                  $reponse = $bdd->prepare('SELECT type_dechets.nom, sum(pesees_sorties.masse) somme
-FROM type_dechets, pesees_sorties, sorties
-WHERE
-type_dechets.id=pesees_sorties.id_type_dechet
-AND
-pesees_sorties.id_sortie = sorties.id
-AND sorties.classe = "sortiesc"
-AND pesees_sorties.timestamp BETWEEN :du AND :au
-GROUP BY nom
-UNION
-SELECT type_dechets_evac.nom nom2, sum(pesees_sorties.masse) somme
-FROM type_dechets_evac, pesees_sorties, sorties
-WHERE
-type_dechets_evac.id=pesees_sorties.id_type_dechet_evac
-AND
-pesees_sorties.id_sortie = sorties.id
-AND sorties.classe = "sortiesc"
-AND pesees_sorties.timestamp BETWEEN :du AND :au
-GROUP BY nom2');
-                  $reponse->execute(['du' => $time_debut, 'au' => $time_fin]);
-
-                  while ($donnees = $reponse->fetch()) { ?>
-
-                  <td><?= $donnees['nom']; ?></td>
-                  <td><?= $donnees['somme']; ?></td>
-                  <td><?= round($donnees['somme'] * 100 / $mtotcolo, 2); ?></td>
-                  </tr>
-                  <?php
-                }
-                $reponse->closeCursor();
-                ?>
-
-                </tbody>
-              </table>
-
-            </div>
-            <div class="list-group">
-              <a class="list-group-item" data-toggle="collapse" href="#collapse2" aria-expanded="false" aria-controls="collapse0">
-                dechetterie
-              </a>
-            </div>
-            <div class="collapse" id="collapse2">
-              <table class="table table-condensed table-striped table table-bordered table-hover" style="border-collapse:collapse;">
-                <thead>
-                  <tr>
-                    <th style="width:300px">typo</th>
-                    <th>masse</th>
-                    <th>%</th>
-                  </tr>
-                </thead>
-                <tbody>
-
-                  <?php
-                  $reponse = $bdd->prepare('SELECT type_dechets.nom, sum(pesees_sorties.masse) somme
-FROM type_dechets, pesees_sorties, sorties
-WHERE
-type_dechets.id=pesees_sorties.id_type_dechet
-AND
-pesees_sorties.id_sortie = sorties.id
-AND sorties.classe = "sortiesd"
-AND pesees_sorties.timestamp BETWEEN :du AND :au
-GROUP BY nom
-UNION
-SELECT type_dechets_evac.nom nom2, sum(pesees_sorties.masse) somme
-FROM type_dechets_evac, pesees_sorties, sorties
-WHERE
-type_dechets_evac.id=pesees_sorties.id_type_dechet_evac
-AND
-pesees_sorties.id_sortie = sorties.id
-AND sorties.classe = "sortiesd"
-AND pesees_sorties.timestamp BETWEEN :du AND :au
-GROUP BY nom2');
-                  $reponse->execute(['du' => $time_debut, 'au' => $time_fin]);
-
-                  while ($donnees = $reponse->fetch()) { ?>
-
-                  <td><?= $donnees['nom']; ?></td>
-                  <td><?= $donnees['somme']; ?></td>
-                  <td><?= round($donnees['somme'] * 100 / $mtotcolo, 2); ?></td>
-                  </tr>
-                  <?php
-                }
-                $reponse->closeCursor();
-                ?>
-
-                </tbody>
-              </table>
-            </div>
-            <div class="list-group"><a class="list-group-item" data-toggle="collapse" href="#collapse3" aria-expanded="false" aria-controls="collapse0">
-                poubelles
-              </a></div>
-            <div class="collapse" id="collapse3">
-              <table class="table table-condensed table-striped table table-bordered table-hover" style="border-collapse:collapse;">
-                <thead>
-                  <tr>
-                    <th style="width:300px">type de bac</th>
-                    <th>masse</th>
-                    <th>%</th>
-                  </tr>
-                </thead>
-                <tbody>
-
-                  <?php
-                  $reponse = $bdd->prepare('SELECT types_poubelles.nom, sum(pesees_sorties.masse) somme
-FROM types_poubelles, pesees_sorties, sorties
-WHERE
-pesees_sorties.id_sortie = sorties.id
-AND
-types_poubelles.id = pesees_sorties.id_type_poubelle
-AND sorties.classe = "sortiesp"
-AND pesees_sorties.timestamp BETWEEN :du AND :au
-GROUP BY nom
-');
-                  $reponse->execute(['du' => $time_debut, 'au' => $time_fin]);
-
-                  while ($donnees = $reponse->fetch()) { ?>
-
-                  <td><?= $donnees['nom']; ?></td>
-                  <td><?= $donnees['somme']; ?></td>
-                  <td><?= round($donnees['somme'] * 100 / $mtotcolo, 2); ?></td>
-                  </tr>
-                  <?php
-                }
-                $reponse->closeCursor();
-                ?>
-
-                </tbody>
-              </table>
-
-            </div>
-            <div class="list-group">
-              <a class="list-group-item" data-toggle="collapse" href="#collapse4" aria-expanded="false" aria-controls="collapse0">
-                recycleurs
-              </a>
-            </div>
-            <div class="collapse" id="collapse4">
-
-              <table class="table table-condensed table-striped table table-bordered table-hover" style="border-collapse:collapse;">
-                <thead>
-                  <tr>
-                    <th style="width:300px">typo</th>
-                    <th>masse</th>
-                    <th>%</th>
-                  </tr>
-                </thead>
-                <tbody>
-
-                  <?php
-                  $reponse = $bdd->prepare('SELECT type_dechets.nom, sum(pesees_sorties.masse) somme
-FROM type_dechets, pesees_sorties, sorties
-WHERE
-type_dechets.id=pesees_sorties.id_type_dechet
-AND
-pesees_sorties.id_sortie = sorties.id
-AND sorties.classe = "sortiesr"
-AND pesees_sorties.timestamp BETWEEN :du AND :au
-GROUP BY nom
-UNION
-SELECT type_dechets_evac.nom nom2, sum(pesees_sorties.masse) somme
-FROM type_dechets_evac, pesees_sorties, sorties
-WHERE
-type_dechets_evac.id=pesees_sorties.id_type_dechet_evac
-AND
-pesees_sorties.id_sortie = sorties.id
-AND sorties.classe = "sortiesr"
-AND pesees_sorties.timestamp BETWEEN :du AND :au
-GROUP BY nom2');
-                  $reponse->execute(['du' => $time_debut, 'au' => $time_fin]);
-
-                  while ($donnees = $reponse->fetch()) { ?>
-
-                  <td><?= $donnees['nom']; ?></td>
-                  <td><?= $donnees['somme']; ?></td>
-                  <td><?= round($donnees['somme'] * 100 / $mtotcolo, 2); ?></td>
-                  </tr>
-                  <?php
-                }
-                $reponse->closeCursor();
-              } else { ?>
-
-                <div class="list-group"><a class="list-group-item" data-toggle="collapse" href="#collapse0" aria-expanded="false" aria-controls="collapse0">
-                    Dons simples
-                  </a></div>
-                <div class="collapse" id="collapse0">
-                  <table class="table table-condensed table-striped table table-bordered table-hover" style="border-collapse:collapse;">
-                    <thead>
-
-                      <tr>
-                        <th style="width:300px">typo</th>
-                        <th>masse</th>
-                        <th>%</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <?php
-                      $reponse = $bdd->prepare('SELECT type_dechets.nom, sum(pesees_sorties.masse) somme
-FROM type_dechets, pesees_sorties, sorties
-WHERE
-type_dechets.id=pesees_sorties.id_type_dechet
-AND
-pesees_sorties.id_sortie = sorties.id
-AND sorties.classe = "sorties"
-AND pesees_sorties.timestamp BETWEEN :du AND :au
-AND sorties.id_point_sortie = :numero
-GROUP BY nom
-UNION
-SELECT type_dechets_evac.nom nom2, sum(pesees_sorties.masse) somme
-FROM type_dechets_evac, pesees_sorties, sorties
-WHERE
-type_dechets_evac.id=pesees_sorties.id_type_dechet_evac
-AND
-pesees_sorties.id_sortie = sorties.id
-AND sorties.classe = "sorties"
-AND pesees_sorties.timestamp BETWEEN :du AND :au
-AND sorties.id_point_sortie = :numero
-GROUP BY nom2');
-                      $reponse->execute(['du' => $time_debut, 'au' => $time_fin, 'numero' => $_GET['numero']]);
-
-                      while ($donnees = $reponse->fetch()) { ?>
-                        <tr>
-                          <td><?= $donnees['nom']; ?></td>
-                          <td><?= $donnees['somme']; ?></td>
-                          <td><?= round($donnees['somme'] * 100 / $mtotcolo, 2); ?></td>
-                        </tr>
-                        <?php
-                      }
-                      $reponse->closeCursor();
-                      ?>
-
-                    </tbody>
-                  </table>
-
-                </div>
-                <div class="list-group"><a class="list-group-item" data-toggle="collapse" href="#collapse1" aria-expanded="false" aria-controls="collapse0">
-                    Dons aux partenaires
-                  </a></div>
-                <div class="collapse" id="collapse1">
-
-                  <table class="table table-condensed table-striped table table-bordered table-hover" style="border-collapse:collapse;">
-                    <thead>
-
-                      <tr>
-                        <th style="width:300px">typo</th>
-                        <th>masse</th>
-                        <th>%</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-
-                      <?php
-                      $reponse = $bdd->prepare('SELECT type_dechets.nom, sum(pesees_sorties.masse) somme
-FROM type_dechets, pesees_sorties, sorties
-WHERE
-type_dechets.id=pesees_sorties.id_type_dechet
-AND
-pesees_sorties.id_sortie = sorties.id
-AND sorties.classe = "sortiesc"
-AND pesees_sorties.timestamp BETWEEN :du AND :au
-AND sorties.id_point_sortie = :numero
-GROUP BY nom
-UNION
-SELECT type_dechets_evac.nom nom2, sum(pesees_sorties.masse) somme
-FROM type_dechets_evac, pesees_sorties, sorties
-WHERE
-type_dechets_evac.id=pesees_sorties.id_type_dechet_evac
-AND
-pesees_sorties.id_sortie = sorties.id
-AND sorties.classe = "sortiesc"
-AND pesees_sorties.timestamp BETWEEN :du AND :au
-AND sorties.id_point_sortie = :numero
-GROUP BY nom2');
-                      $reponse->execute(['du' => $time_debut, 'au' => $time_fin, 'numero' => $_GET['numero']]);
-
-                      while ($donnees = $reponse->fetch()) { ?>
-
-                      <td><?= $donnees['nom']; ?></td>
-                      <td><?= $donnees['somme']; ?></td>
-                      <td><?= round($donnees['somme'] * 100 / $mtotcolo, 2); ?></td>
-                      </tr>
-                      <?php
-                    }
-                    $reponse->closeCursor();
-                    ?>
-
-                    </tbody>
-                  </table>
-
-                </div>
-                <div class="list-group"><a class="list-group-item" data-toggle="collapse" href="#collapse2" aria-expanded="false" aria-controls="collapse0">
-                    dechetterie
-                  </a></div>
-                <div class="collapse" id="collapse2">
-                  <table class="table table-condensed table-striped table table-bordered table-hover" style="border-collapse:collapse;">
-
-                    <tr>
-                      <th style="width:300px">typo</th>
-                      <th>masse</th>
-                      <th>%</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-
-                      <?php
-                      $reponse = $bdd->prepare('SELECT type_dechets.nom, sum(pesees_sorties.masse) somme
-FROM type_dechets, pesees_sorties, sorties
-WHERE
-type_dechets.id=pesees_sorties.id_type_dechet
-AND
-pesees_sorties.id_sortie = sorties.id
-AND sorties.classe = "sortiesd"
-AND pesees_sorties.timestamp BETWEEN :du AND :au
-AND sorties.id_point_sortie = :numero
-GROUP BY nom
-UNION
-SELECT type_dechets_evac.nom nom2, sum(pesees_sorties.masse) somme
-FROM type_dechets_evac, pesees_sorties, sorties
-WHERE
-type_dechets_evac.id=pesees_sorties.id_type_dechet_evac
-AND
-pesees_sorties.id_sortie = sorties.id
-AND sorties.classe = "sortiesd"
-AND pesees_sorties.timestamp BETWEEN :du AND :au
-AND sorties.id_point_sortie = :numero
-GROUP BY nom2');
-                      $reponse->execute(['du' => $time_debut, 'au' => $time_fin, 'numero' => $_GET['numero']]);
-
-                      while ($donnees = $reponse->fetch()) { ?>
-
-                      <td><?= $donnees['nom']; ?></td>
-                      <td><?= $donnees['somme']; ?></td>
-                      <td><?= round($donnees['somme'] * 100 / $mtotcolo, 2); ?></td>
-                      </tr>
-                      <?php
-                    }
-                    $reponse->closeCursor();
-                    ?>
-
-                    </tbody>
-                  </table>
-
-                </div>
-                <div class="list-group"><a class="list-group-item" data-toggle="collapse" href="#collapse3" aria-expanded="false" aria-controls="collapse0">
-                    poubelles
-                  </a></div>
-                <div class="collapse" id="collapse3">
-
-                  <table class="table table-condensed table-striped table table-bordered table-hover" style="border-collapse:collapse;">
-                    <thead>
-
-                      <tr>
-                        <th style="width:300px">type de bac</th>
-                        <th>masse</th>
-                        <th>%</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-
-                      <?php
-                      $reponse = $bdd->prepare('SELECT types_poubelles.nom, sum(pesees_sorties.masse) somme
-FROM types_poubelles, pesees_sorties, sorties
-WHERE
-pesees_sorties.id_sortie = sorties.id
-AND
-types_poubelles.id = pesees_sorties.id_type_poubelle
-AND sorties.classe = "sortiesp"
-AND pesees_sorties.timestamp BETWEEN :du AND :au
-AND sorties.id_point_sortie = :numero
-GROUP BY nom
-');
-                      $reponse->execute(['du' => $time_debut, 'au' => $time_fin, 'numero' => $_GET['numero']]);
-
-                      while ($donnees = $reponse->fetch()) { ?>
-
-                      <td><?= $donnees['nom']; ?></td>
-                      <td><?= $donnees['somme']; ?></td>
-                      <td><?= round($donnees['somme'] * 100 / $mtotcolo, 2); ?></td>
-                      </tr>
-                      <?php
-                    }
-                    $reponse->closeCursor();
-                    ?>
-
-                    </tbody>
-                  </table>
-
-                </div>
-                <div class="list-group"><a class="list-group-item" data-toggle="collapse" href="#collapse4" aria-expanded="false" aria-controls="collapse0">
-                    recycleurs
-                  </a></div>
-                <div class="collapse" id="collapse4">
-
-                  <table class="table table-condensed table-striped table table-bordered table-hover" style="border-collapse:collapse;">
-                    <thead>
-                      <tr>
-                        <th style="width:300px">typo</th>
-                        <th>masse</th>
-                        <th>%</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-
-                      <?php
-                      $reponse = $bdd->prepare('SELECT type_dechets.nom, sum(pesees_sorties.masse) somme
-FROM type_dechets, pesees_sorties, sorties
-WHERE
-type_dechets.id=pesees_sorties.id_type_dechet
-AND
-pesees_sorties.id_sortie = sorties.id
-AND sorties.classe = "sortiesr"
-AND pesees_sorties.timestamp BETWEEN :du AND :au
-AND sorties.id_point_sortie = :numero
-GROUP BY nom
-UNION
-SELECT type_dechets_evac.nom nom2, sum(pesees_sorties.masse) somme
-FROM type_dechets_evac, pesees_sorties, sorties
-WHERE
-type_dechets_evac.id=pesees_sorties.id_type_dechet_evac
-AND
-pesees_sorties.id_sortie = sorties.id
-AND sorties.classe = "sortiesr"
-AND pesees_sorties.timestamp BETWEEN :du AND :au
-AND sorties.id_point_sortie = :numero
-GROUP BY nom2');
-                      $reponse->execute(['du' => $time_debut, 'au' => $time_fin, 'numero' => $_GET['numero']]);
-
-                      while ($donnees = $reponse->fetch()) { ?>
-
-                      <td><?= $donnees['nom']; ?></td>
-                      <td><?= $donnees['somme']; ?></td>
-                      <td><?= round($donnees['somme'] * 100 / $mtotcolo, 2); ?></td>
-                      </tr>
-                      <?php
-                    }
-                    $reponse->closeCursor();
-                  }
-                  ?>
-
-                  </tbody>
-                </table>
-
-              </div>
-              <br>
-              <a href="<?= '../moteur/export_bilanc_parloca.php?numero=' . $_GET['numero'] . '&date1=' . $_GET['date1'] . '&date2=' . $_GET['date2']; ?>">
-                <button type="button" class="btn btn-default btn-xs" disabled>exporter ces données (.csv) </button>
-              </a>
-          </div>
+          <?= bilanTable3(['id' => 0, 'text' => 'Dons simples', 'td0' => 'typo', 'td1' => 'somme', 'td2' => '%', 'masse' => $data['masse'], 'data' => $data['donsSimples']]) ?>
+          <?= bilanTable3(['id' => 1, 'text' => 'Dons aux partenaires', 'td0' => 'typo', 'td1' => 'somme', 'td2' => '%', 'masse' => $data['masse'], 'data' => $data['partenaires']]) ?>
+          <?= bilanTable3(['id' => 2, 'text' => 'Dechetterie', 'td0' => 'typo', 'td1' => 'somme', 'td2' => '%', 'masse' => $data['masse'], 'data' => $data['dechetteries']]) ?>
+          <?= bilanTable3(['id' => 3, 'text' => 'Poubelles', 'td0' => 'typo', 'td1' => 'somme', 'td2' => '%', 'masse' => $data['masse'], 'data' => $data['poubelles']]) ?>
+          <?= bilanTable3(['id' => 4, 'text' => 'Recycleurs', 'td0' => 'typo', 'td1' => 'somme', 'td2' => '%', 'masse' => $data['masse'], 'data' => $data['recycleurs']]) ?>
+          <a href="<?= '../moteur/export_bilanc_parloca.php?numero=' . $numero . '&date1=' . $date1 . '&date2=' . $date2; ?>">
+            <button type="button" class="btn btn-default btn-xs" disabled>exporter ces données (.csv) </button>
+          </a>
         </div>
-      </div>
-
-      <div class="col-md-5">
-
-        <div class="panel panel-default">
-          <div class="panel-heading">
-            <h3 class="panel-title">Partenaires, recycleurs et dons
-            </h3>
-          </div>
-          <div class="panel-body">
-
-            <?php if ($_GET['numero'] === 0) { ?>
-
-              <table class="table table-condensed table-striped table table-bordered table-hover" style="border-collapse:collapse;">
-                <thead>
-                <th style="width:300px">Dons simples</th>
-                <tr>
-                  <th style="width:300px">type de sortie</th>
-                  <th>masse</th>
-                  <th>%</th>
-                </tr>
-                </thead>
-                <tbody>
-
-                  <?php
-                  $reponse = $bdd->prepare('SELECT type_sortie.nom, sum(pesees_sorties.masse) somme
-FROM type_sortie, pesees_sorties, sorties
-WHERE
-type_sortie.id=sorties.id_type_sortie
-AND
-pesees_sorties.id_sortie = sorties.id
-AND sorties.classe = "sorties"
-AND pesees_sorties.timestamp BETWEEN :du AND :au
-GROUP BY nom');
-                  $reponse->execute(['du' => $time_debut, 'au' => $time_fin]);
-
-                  while ($donnees = $reponse->fetch()) { ?>
-                    <tr>
-                      <td><?= $donnees['nom']; ?></td>
-                      <td><?= $donnees['somme']; ?></td>
-                      <td><?= round($donnees['somme'] * 100 / $mtotcolo, 2); ?></td>
-                    </tr>
-                    <?php
-                  }
-                  $reponse->closeCursor();
-                  ?>
-
-                </tbody>
-              </table>
-              <table class="table table-condensed table-striped table table-bordered table-hover" style="border-collapse:collapse;">
-                <thead>
-                <th style="width:300px">Dons aux partenaires</th>
-                <tr>
-                  <th style="width:300px">Nom du partenaire</th>
-                  <th>Nbr. de sorties</th>
-                  <th>masse</th>
-                  <th>%</th>
-                </tr>
-                </thead>
-                <tbody>
-
-                  <?php
-                  $reponse = $bdd->prepare('SELECT conventions_sorties.nom, sum(pesees_sorties.masse) somme, COUNT(sorties.id) nombre
-FROM conventions_sorties, pesees_sorties, sorties
-WHERE
-conventions_sorties.id=sorties.id_convention
-AND
-pesees_sorties.id_sortie = sorties.id
-AND sorties.classe = "sortiesc"
-AND pesees_sorties.timestamp BETWEEN :du AND :au
-GROUP BY nom');
-                  $reponse->execute(['du' => $time_debut, 'au' => $time_fin]);
-
-                  while ($donnees = $reponse->fetch()) { ?>
-                    <tr>
-                      <td><?= $donnees['nom']; ?></td>
-                      <td><?= $donnees['nombre']; ?></td>
-                      <td><?= $donnees['somme']; ?></td>
-                      <td><?= round($donnees['somme'] * 100 / $mtotcolo, 2); ?></td>
-                    </tr>
-                    <?php
-                  }
-                  $reponse->closeCursor();
-                  ?>
-
-                </tbody>
-              </table>
-              <table class="table table-condensed table-striped table table-bordered table-hover" style="border-collapse:collapse;">
-                <thead>
-                <th style="width:300px">Recycleurs</th>
-                <tr>
-                  <th style="width:300px">Nom du recycleur</th>
-                  <th>masse</th>
-                  <th>%</th>
-                </tr>
-                </thead>
-                <tbody>
-
-                  <?php
-                  $reponse = $bdd->prepare('SELECT filieres_sortie.nom, sum(pesees_sorties.masse) somme
-FROM filieres_sortie, pesees_sorties, sorties
-WHERE
-filieres_sortie.id=sorties.id_filiere
-AND
-pesees_sorties.id_sortie = sorties.id
-AND sorties.classe = "sortiesr"
-AND pesees_sorties.timestamp BETWEEN :du AND :au
-GROUP BY nom');
-                  $reponse->execute(['du' => $time_debut, 'au' => $time_fin]);
-
-                  while ($donnees = $reponse->fetch()) { ?>
-                    <tr>
-                      <td><?= $donnees['nom']; ?></td>
-                      <td><?= $donnees['somme']; ?></td>
-                      <td><?= round($donnees['somme'] * 100 / $mtotcolo, 2); ?></td>
-                    </tr>
-                    <?php
-                  }
-                  $reponse->closeCursor();
-                  ?>
-
-                </tbody>
-              </table>
-              <?php
-            } else { ?>
-
-              <table class="table table-condensed table-striped table table-bordered table-hover" style="border-collapse:collapse;">
-                <thead>
-                <th style="width:300px">Dons simples</th>
-                <tr>
-                  <th style="width:300px">type de sortie</th>
-                  <th>masse</th>
-                  <th>%</th>
-                </tr>
-                </thead>
-                <tbody>
-
-                  <?php
-                  $reponse = $bdd->prepare('SELECT type_sortie.nom, sum(pesees_sorties.masse) somme
-FROM type_sortie, pesees_sorties, sorties
-WHERE
-type_sortie.id=sorties.id_type_sortie
-AND
-pesees_sorties.id_sortie = sorties.id
-AND sorties.classe = "sorties"
-AND pesees_sorties.timestamp BETWEEN :du AND :au
-AND sorties.id_point_sortie = :numero
-GROUP BY nom');
-                  $reponse->execute(['du' => $time_debut, 'au' => $time_fin, 'numero' => $_GET['numero']]);
-
-                  while ($donnees = $reponse->fetch()) { ?>
-                    <tr>
-                      <td><?= $donnees['nom']; ?></td>
-                      <td><?= $donnees['somme']; ?></td>
-                      <td><?= round($donnees['somme'] * 100 / $mtotcolo, 2); ?></td>
-                    </tr>
-                    <?php
-                  }
-                  $reponse->closeCursor();
-                  ?>
-
-                </tbody>
-              </table>
-              <table class="table table-condensed table-striped table table-bordered table-hover" style="border-collapse:collapse;">
-                <thead>
-                <th style="width:300px">Dons aux partenaires</th>
-                <tr>
-                  <th style="width:300px">Nom du partenaire</th>
-                  <th>Nbr. de sorties</th>
-                  <th>masse</th>
-                  <th>%</th>
-                </tr>
-                </thead>
-                <tbody>
-
-                  <?php
-                  $reponse = $bdd->prepare('SELECT conventions_sorties.nom, sum(pesees_sorties.masse) somme, COUNT(sorties.id) nombre
-FROM conventions_sorties, pesees_sorties, sorties
-WHERE
-conventions_sorties.id=sorties.id_convention
-AND
-pesees_sorties.id_sortie = sorties.id
-AND sorties.classe = "sortiesc"
-AND pesees_sorties.timestamp BETWEEN :du AND :au
-AND sorties.id_point_sortie = :numero
-GROUP BY nom');
-                  $reponse->execute(['du' => $time_debut, 'au' => $time_fin, 'numero' => $_GET['numero']]);
-
-                  while ($donnees = $reponse->fetch()) { ?>
-                    <tr>
-                      <td><?= $donnees['nom']; ?></td>
-                      <td><?= $donnees['nombre']; ?></td>
-                      <td><?= $donnees['somme']; ?></td>
-                      <td><?= round($donnees['somme'] * 100 / $mtotcolo, 2); ?></td>
-                    </tr>
-                    <?php
-                  }
-                  $reponse->closeCursor();
-                  ?>
-
-                </tbody>
-              </table>
-              <table class="table table-condensed table-striped table table-bordered table-hover" style="border-collapse:collapse;">
-                <thead>
-                <th style="width:300px">Recycleurs</th>
-                <tr>
-                  <th style="width:300px">Nom du recycleur</th>
-                  <th>masse</th>
-                  <th>%</th>
-                </tr>
-                </thead>
-                <tbody>
-
-                  <?php
-                  $reponse = $bdd->prepare('SELECT filieres_sortie.nom, sum(pesees_sorties.masse) somme
-FROM filieres_sortie, pesees_sorties, sorties
-WHERE
-filieres_sortie.id=sorties.id_filiere
-AND
-pesees_sorties.id_sortie = sorties.id
-AND sorties.classe = "sortiesr"
-AND pesees_sorties.timestamp BETWEEN :du AND :au
-AND sorties.id_point_sortie = :numero
-GROUP BY nom');
-                  $reponse->execute(['du' => $time_debut, 'au' => $time_fin, 'numero' => $_GET['numero']]);
-
-                  while ($donnees = $reponse->fetch()) { ?>
-                    <tr>
-                      <td><?= $donnees['nom']; ?></td>
-                      <td><?= $donnees['somme']; ?></td>
-                      <td><?= round($donnees['somme'] * 100 / $mtotcolo, 2); ?></td>
-                    </tr>
-                    <?php
-                  }
-                  $reponse->closeCursor();
-                  ?>
-
-                </tbody>
-              </table>
-            <?php } ?>
-            <br>
-            <a href="<?= '../moteur/export_bilanc_partype.php?numero=' . $_GET['numero'] . '&date1=' . $_GET['date1'] . '&date2=' . $_GET['date2']; ?>">
-
-              <button type="button" class="btn btn-default btn-xs" disabled>exporter ces données (.csv) </button>
-            </a>
-          </div>
-
-        </div>
-
       </div>
     </div>
-    <script type="text/javascript">
-      'use strict';
-      $(document).ready(() => {
-        const get = process_get();
-        const url = 'bilanhb';
-        const options = set_datepicker(get, url);
-        bind_datepicker(options, get, url);
-      });
-    </script>
-    <?php
-    require_once 'pied.php';
-  } else {
-    header('Location: ../moteur/destroy.php');
-  }
-  ?>
+
+    <div class="col-md-5">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">Partenaires, recycleurs et dons</h3>
+        </div>
+
+        <div class="panel-body">
+          <?= bilanTable3Hover(['text' => 'Dons simples', 'td0' => 'Type de sortie', 'td1' => 'masse', 'td2' => '%', 'masse' => $data['masse'], 'data' => bilanSortiesDon($bdd, $numero, $time_debut, $time_fin)]) ?>
+          <?= bilanTable3Hover(['text' => 'Recycleurs', 'td0' => 'Nom du recycleur', 'td1' => 'masse', 'td2' => '%', 'masse' => $data['masse'], 'data' => bilanSortiesRecycleur($bdd, $numero, $time_debut, $time_fin)]) ?>
+
+          <table class="table table-condensed table-striped table table-bordered table-hover" style="border-collapse:collapse;">
+            <thead>
+            <th style="width:300px">Dons aux partenaires</th>
+            <tr>
+              <th style="width:300px">Nom du partenaire</th>
+              <th>Nbr. de sorties</th>
+              <th>masse</th>
+              <th>%</th>
+            </tr>
+            </thead>
+            <tbody>
+              <?php foreach (bilanSortiesConvention($bdd, $numero, $time_debut, $time_fin) as $p) { ?>
+                <tr>
+                  <td><?= $p['nom']; ?></td>
+                  <td><?= $p['nombre']; ?></td>
+                  <td><?= $p['somme']; ?></td>
+                  <td><?= round($p['somme'] * 100 / $data['masse'], 2); ?></td>
+                </tr>
+              <?php } ?>
+            </tbody>
+          </table>
+          <br>
+          <a href="../moteur/export_bilanc_partype.php?numero=<?= $numero . '&date1=' . $date1 . '&date2=' . $date2; ?>">
+            <button type="button" class="btn btn-default btn-xs" disabled>exporter ces données (.csv) </button>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript">
+    'use strict';
+    $(document).ready(() => {
+      const get = process_get();
+      const url = 'bilanhb';
+      const options = set_datepicker(get, url);
+      bind_datepicker(options, get, url);
+    });
+  </script>
+  <?php
+  require_once 'pied.php';
+} else {
+  header('Location: ../moteur/destroy.php');
+}
+?>
