@@ -19,9 +19,9 @@
 
 session_start();
 
-require_once('../core/requetes.php');
-require_once('../core/session.php');
-require_once('../moteur/dbconfig.php');
+require_once '../core/requetes.php';
+require_once '../core/session.php';
+require_once '../core/composants.php';
 
 $numero = filter_input(INPUT_GET, 'numero', FILTER_VALIDATE_INT);
 
@@ -31,7 +31,8 @@ if (is_valid_session() && is_allowed_sortie_id($numero)) {
     die();
   }
 
-  require_once('tete.php');
+  require_once 'tete.php';
+  require_once '../moteur/dbconfig.php';
 
   $point_sortie = points_sorties_id($bdd, $numero);
   $pesee_max = (float) $point_sortie['pesee_max'];
