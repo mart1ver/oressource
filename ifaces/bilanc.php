@@ -33,7 +33,7 @@ AND pesees_collectes.timestamp BETWEEN :du AND :au ' . $numero;
   $stmt->bindParam(':du', $start, PDO::PARAM_STR);
   $stmt->bindParam(':au', $fin, PDO::PARAM_STR);
   $stmt->execute();
-  $masse = $stmt->fetch()['total'];
+  $masse = $stmt->fetch()['total'] ?? 0;
   $stmt->closeCursor();
   return $masse;
 }
