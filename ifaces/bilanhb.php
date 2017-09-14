@@ -134,7 +134,7 @@ function dechetteries(PDO $bdd, int $id, $start, $fin): array {
 function masse_evacue(PDO $bdd, int $id, $start, $fin): float {
   $numero = ($id > 0 ? " AND sorties.id_point_sortie = $id " : ' ');
   $sql = 'SELECT
-    SUM(pesees_sorties.masse) AS total
+    COALESCE(SUM(pesees_sorties.masse), 0) total
     FROM pesees_sorties, sorties
     WHERE pesees_sorties.id_sortie = sorties.id
     AND pesees_sorties.timestamp BETWEEN :du AND :au ' . $numero;
@@ -225,10 +225,8 @@ if (is_valid_session() && is_allowed_bilan()) {
 
   $date1 = $_GET['date1'];
   $date2 = $_GET['date2'];
-  $date1ft = DateTime::createFromFormat('d-m-Y', $date1);
-  $time_debut = $date1ft->format('Y-m-d') . ' 00:00:00';
-  $date2ft = DateTime::createFromFormat('d-m-Y', $date2);
-  $time_fin = $date2ft->format('Y-m-d') . ' 23:59:59';
+  $time_debut = DateTime::createFromFormat('d-m-Y', $date1)->format('Y-m-d') . ' 00:00:00';
+  $time_fin = DateTime::createFromFormat('d-m-Y', $date2)->format('Y-m-d') . ' 23:59:59';
   $data = strategie($bdd, $numero, $time_debut, $time_fin);
   ?>
 
@@ -244,9 +242,9 @@ if (is_valid_session() && is_allowed_bilan()) {
           </div>
         </div>
         <ul class="nav nav-tabs">
-          <li><a href="bilanc.php?date1=<?= $date1 . '&date2=' . $date2 . '&numero=0'; ?>">Collectes</a></li>
+          <li><a href="bilanc.php?numero=0&date1=<?= $date1 ?>&date2=<?= $date2 ?>">Collectes</a></li>
           <li class="active"><a>Sorties hors-boutique</a></li>
-          <li><a href="bilanv.php?date1=<?= $date1 . '&date2=' . $date2 . '&numero=0'; ?>">Ventes</a></li>
+          <li><a href="bilanv.php?numero=0&date1=<?= $date1 ?>&date2=<?= $date2 ?>">Ventes</a></li>
         </ul>
       </div>
     </div>
@@ -258,17 +256,17 @@ if (is_valid_session() && is_allowed_bilan()) {
       <ul class="nav nav-tabs">
         <?php foreach ($points_sortie as $p) { ?>
           <li class="<?= $numero === $p['id'] ? 'active' : '' ?>">
-            <a href="bilanhb.php?numero=<?= $p['id'] . '&date1=' . $date1 . '&date2=' . $date2; ?>"> <?= $p['nom']; ?></a>
+            <a href="bilanhb.php?numero=<?= $p['id'] ?>&date1=<?= $date1 ?>&date2=<?= $date2 ?>"> <?= $p['nom']; ?></a>
           </li>
         <?php } ?>
         <li class="<?= $numero === 0 ? 'active' : '' ?>">
-          <a href="bilanhb.php?numero=0<?= '&date1=' . $date1 . '&date2=' . $date2; ?>">Tous les points</a>
+          <a href="bilanhb.php?numero=0&date1=<?= $date1 ?>&date2=<?= $date2 ?>">Tous les points</a>
         </li>
       </ul>
       <br>
     </div>
   </div>
-  `
+
   <div class="row">
     <div class="col-md-8 col-md-offset-1">
       <h2><?= $date1 === $date2 ? " Le {$date1}," : " Du {$date1} au {$date2}," ?>
@@ -282,6 +280,7 @@ if (is_valid_session() && is_allowed_bilan()) {
         <div class="panel-heading">
           <h3 class="panel-title">Répartition par classe de sorties</h3>
         </div>
+
         <div class="panel-body">
           <table class="table table-condensed table-striped table table-bordered table-hover" style="border-collapse:collapse;">
             <thead>
@@ -304,7 +303,7 @@ if (is_valid_session() && is_allowed_bilan()) {
             </tbody>
           </table>
           <br>
-          <a href="../moteur/export_bilanc_partype.php?numero=<?= $numero . '&date1=' . $date1 . '&date2=' . $date2; ?>">
+          <a href="../moteur/export_bilanc_partype.php?numero=<?= $numero ?>&date1=<?= $date1 ?>&date2=<?= $date2 ?>">
             <button type="button" class="btn btn-default btn-xs" disabled>exporter ces données (.csv) </button>
           </a>
         </div>
@@ -320,8 +319,8 @@ if (is_valid_session() && is_allowed_bilan()) {
           <?= bilanTable3(['id' => 2, 'text' => 'Dechetterie', 'td0' => 'typo', 'td1' => 'somme', 'td2' => '%', 'masse' => $data['masse'], 'data' => $data['dechetteries']]) ?>
           <?= bilanTable3(['id' => 3, 'text' => 'Poubelles', 'td0' => 'typo', 'td1' => 'somme', 'td2' => '%', 'masse' => $data['masse'], 'data' => $data['poubelles']]) ?>
           <?= bilanTable3(['id' => 4, 'text' => 'Recycleurs', 'td0' => 'typo', 'td1' => 'somme', 'td2' => '%', 'masse' => $data['masse'], 'data' => $data['recycleurs']]) ?>
-          <a href="<?= '../moteur/export_bilanc_parloca.php?numero=' . $numero . '&date1=' . $date1 . '&date2=' . $date2; ?>">
-            <button type="button" class="btn btn-default btn-xs" disabled>exporter ces données (.csv) </button>
+          <a href="../moteur/export_bilanc_parloca.php?numero=<?= $numero ?>&date1=<?= $date1 ?>&date2=<?= $date2 ?>">
+            <button type="button" class="btn btn-default btn-xs" disabled>exporter ces données (.csv)</button>
           </a>
         </div>
       </div>
@@ -358,14 +357,16 @@ if (is_valid_session() && is_allowed_bilan()) {
               <?php } ?>
             </tbody>
           </table>
+
           <br>
-          <a href="../moteur/export_bilanc_partype.php?numero=<?= $numero . '&date1=' . $date1 . '&date2=' . $date2; ?>">
+          <a href="../moteur/export_bilanc_partype.php?numero=<?= $numero ?>&date1=<?= $date1 ?>&date2=<?= $date2 ?>">
             <button type="button" class="btn btn-default btn-xs" disabled>exporter ces données (.csv) </button>
           </a>
         </div>
       </div>
     </div>
   </div>
+
   <script type="text/javascript">
     'use strict';
     $(document).ready(() => {
