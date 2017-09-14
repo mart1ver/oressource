@@ -28,6 +28,7 @@ if (is_valid_session() && is_allowed_bilan()) {
   require_once './tete.php';
   require_once '../moteur/dbconfig.php';
 
+  $numero = (int) filter_input(INPUT_GET, 'numero', FILTER_VALIDATE_INT);
   $points_collectes = points_collectes($bdd);
   ?>
 
@@ -53,27 +54,16 @@ if (is_valid_session() && is_allowed_bilan()) {
 
   <div class="row">
     <div class="col-md-8 col-md-offset-1" >
-      <h2> Bilan des collectes de la structure
-      </h2>
+      <h2> Bilan des collectes de la structure</h2>
       <ul class="nav nav-tabs">
-        <?php
-        $reponse = $bdd->query('SELECT * FROM points_collecte');
-        while ($donnees = $reponse->fetch()) { ?>
-          <li<?php
-          if ($_GET['numero'] === $donnees['id']) {
-            echo ' class="active"';
-          }
-          ?>><a href="<?= 'bilanc.php?numero=' . $donnees['id'] . '&date1=' . $_GET['date1'] . '&date2=' . $_GET['date2']; ?>"><?= $donnees['nom']; ?></a></li>
-            <?php
-          }
-          $reponse->closeCursor();
-          ?>
-
-        <li<?php
-        if ($_GET['numero'] === 0) {
-          echo ' class="active"';
-        }
-        ?>><a href="<?= 'bilanc.php?numero=0' . '&date1=' . $_GET['date1'] . '&date2=' . $_GET['date2']; ?>">Tous les points</a></li>
+        <?php foreach ($points_collectes as $p) { ?>
+          <li class="<?= $numero === $p['id'] ? 'active' : '' ?>">
+            <a href="<?= 'bilanc.php?numero=' . $p['id'] . '&date1=' . $_GET['date1'] . '&date2=' . $_GET['date2']; ?>"><?= $p['nom']; ?></a>
+          </li>
+        <?php } ?>
+        <li class="<?= $numero === 0 ? 'active' : '' ?>">
+          <a href="<?= 'bilanc.php?numero=0' . '&date1=' . $_GET['date1'] . '&date2=' . $_GET['date2']; ?>">Tous les points</a>
+        </li>
       </ul>
       <br>
 
@@ -98,7 +88,7 @@ if (is_valid_session() && is_allowed_bilan()) {
           $time_fin = $time_fin . ' 23:59:59';
           ?>
           Masse collectée: <?php
-          if ($_GET['numero'] === 0) {
+          if ($numero === 0) {
             $req = $bdd->prepare('SELECT SUM(pesees_collectes.masse)AS total   FROM pesees_collectes  WHERE  DATE(pesees_collectes.timestamp) BETWEEN :du AND :au  ');
             $req->execute(['du' => $time_debut, 'au' => $time_fin]);
             $donnees = $req->fetch();
@@ -114,14 +104,14 @@ FROM pesees_collectes ,collectes
 WHERE pesees_collectes.id_collecte = collectes.id
 AND pesees_collectes.timestamp BETWEEN :du AND :au  AND collectes.id_point_collecte = :numero ');
 
-            $req->execute(['du' => $time_debut, 'au' => $time_fin, 'numero' => $_GET['numero']]);
+            $req->execute(['du' => $time_debut, 'au' => $time_fin, 'numero' => $numero]);
             $donnees = $req->fetch();
             $mtotcolo = $donnees['total'];
             echo $donnees['total'] . ' Kgs.';
 
             $req->closeCursor();
           }
-          if ($_GET['numero'] === 0) { ?>
+          if ($numero === 0) { ?>
             , sur <?php
 // on determine le nombre de points de collecte
             $req = $bdd->prepare('SELECT COUNT(id) FROM points_collecte');
@@ -152,7 +142,7 @@ AND pesees_collectes.timestamp BETWEEN :du AND :au  AND collectes.id_point_colle
                 </thead>
                 <tbody>
                   <?php
-                  if ($_GET['numero'] === 0) {
+                  if ($numero === 0) {
                     $reponse = $bdd->prepare('SELECT
 type_collecte.nom,SUM(`pesees_collectes`.`masse`) somme,pesees_collectes.timestamp,type_collecte.id,COUNT(distinct collectes.id) ncol
 FROM
@@ -213,7 +203,7 @@ WHERE
 type_collecte.id =  collectes.id_type_collecte AND pesees_collectes.id_collecte = collectes.id
 AND collectes.id_point_collecte = :numero
 GROUP BY id_type_collecte');
-                    $reponse->execute(['du' => $time_debut, 'au' => $time_fin, 'numero' => $_GET['numero']]);
+                    $reponse->execute(['du' => $time_debut, 'au' => $time_fin, 'numero' => $numero]);
 
                     while ($donnees = $reponse->fetch()) { ?>
                       <tr data-toggle="collapse" data-target=".parmasse<?= $donnees['id']; ?>">
@@ -232,7 +222,7 @@ AND type_collecte.id =  collectes.id_type_collecte AND pesees_collectes.id_colle
 AND type_collecte.id = :id_type_collecte AND collectes.id_point_collecte = :numero
 GROUP BY nom
 ORDER BY somme DESC');
-                      $reponse2->execute(['du' => $time_debut, 'au' => $time_fin, 'numero' => $_GET['numero'], 'id_type_collecte' => $donnees['id']]);
+                      $reponse2->execute(['du' => $time_debut, 'au' => $time_fin, 'numero' => $numero, 'id_type_collecte' => $donnees['id']]);
 
                       while ($donnees2 = $reponse2->fetch()) { ?>
                         <tr class="collapse parmasse<?= $donnees['id']; ?> active">
@@ -261,7 +251,7 @@ ORDER BY somme DESC');
               <br>
               <div  id="graph2masse" style="height: 180px;"></div>
               <br>
-              <a href="<?= '../moteur/export_bilanc_partype.php?numero=' . $_GET['numero'] . '&date1=' . $_GET['date1'] . '&date2=' . $_GET['date2']; ?>">
+              <a href="<?= '../moteur/export_bilanc_partype.php?numero=' . $numero . '&date1=' . $_GET['date1'] . '&date2=' . $_GET['date2']; ?>">
                 <button type="button" class="btn btn-default btn-xs" disabled>exporter ces données (.csv) </button>
               </a>
             </div>
@@ -286,7 +276,7 @@ ORDER BY somme DESC');
                 </thead>
                 <tbody>
                   <?php
-                  if ($_GET['numero'] === 0) {
+                  if ($numero === 0) {
 
 // on determine les masses totales collèctés sur cete période(pour Tous les points)
                     $reponse = $bdd->prepare('SELECT
@@ -351,7 +341,7 @@ localites.id =  collectes.localisation AND pesees_collectes.id_collecte = collec
 AND collectes.id_point_collecte = :numero
 GROUP BY id
 ');
-                  $reponse->execute(['du' => $time_debut, 'au' => $time_fin, 'numero' => $_GET['numero']]);
+                  $reponse->execute(['du' => $time_debut, 'au' => $time_fin, 'numero' => $numero]);
 
                   while ($donnees = $reponse->fetch()) { ?>
                     <tr data-toggle="collapse" data-target=".parloc<?= $donnees['id']; ?>">
@@ -370,7 +360,7 @@ AND type_collecte.id =  collectes.id_type_collecte AND pesees_collectes.id_colle
 AND type_collecte.id = :id_type_collecte AND collectes.id_point_collecte = :numero
 GROUP BY nom
 ORDER BY somme DESC');
-                    $reponse2->execute(['du' => $time_debut, 'au' => $time_fin, 'numero' => $_GET['numero'], 'id_type_collecte' => $donnees['id']]);
+                    $reponse2->execute(['du' => $time_debut, 'au' => $time_fin, 'numero' => $numero, 'id_type_collecte' => $donnees['id']]);
 
                     while ($donnees2 = $reponse2->fetch()) { ?>
                       <tr class="collapse parloc<?= $donnees['id']; ?> active">
@@ -401,7 +391,7 @@ ORDER BY somme DESC');
               <div id="graph2loca" style="height: 180px;"></div>
 
               <br>
-              <a href="<?= '../moteur/export_bilanc_parloca.php?numero=' . $_GET['numero'] . '&date1=' . $_GET['date1'] . '&date2=' . $_GET['date2']; ?>">
+              <a href="<?= '../moteur/export_bilanc_parloca.php?numero=' . $numero . '&date1=' . $_GET['date1'] . '&date2=' . $_GET['date2']; ?>">
                 <button type="button" class="btn btn-default btn-xs" disabled>exporter ces données (.csv) </button>
               </a>
             </div>
@@ -413,7 +403,7 @@ ORDER BY somme DESC');
 
               data: [
   <?php
-  if ($_GET['numero'] === 0) {
+  if ($numero === 0) {
     // On recupère tout les masses collectés pour chaque type
     $reponse = $bdd->prepare('SELECT type_collecte.couleur,type_collecte.nom, sum(pesees_collectes.masse) somme
      FROM type_collecte,pesees_collectes,collectes WHERE type_collecte.id = collectes.id_type_collecte AND pesees_collectes.id_collecte = collectes.id AND DATE(collectes.timestamp) BETWEEN :du AND :au
@@ -454,7 +444,7 @@ GROUP BY nom');
               WHERE type_collecte.id = collectes.id_type_collecte AND pesees_collectes.timestamp BETWEEN :du AND :au
               AND pesees_collectes.id_collecte = collectes.id AND collectes.id_point_collecte = :numero
 GROUP BY nom');
-          $reponse->execute(['du' => $time_debut, 'au' => $time_fin, 'numero' => $_GET['numero']]);
+          $reponse->execute(['du' => $time_debut, 'au' => $time_fin, 'numero' => $numero]);
 
           while ($donnees = $reponse->fetch()) {
             echo '{value:' . $donnees['somme'] . ', label:"' . $donnees['nom'] . '"},';
@@ -471,7 +461,7 @@ GROUP BY nom');
               WHERE type_collecte.id = collectes.id_type_collecte AND pesees_collectes.timestamp BETWEEN :du AND :au
               AND pesees_collectes.id_collecte = collectes.id AND collectes.id_point_collecte = :numero
 GROUP BY nom');
-          $reponse->execute(['du' => $time_debut, 'au' => $time_fin, 'numero' => $_GET['numero']]);
+          $reponse->execute(['du' => $time_debut, 'au' => $time_fin, 'numero' => $numero]);
 
           while ($donnees = $reponse->fetch()) {
             echo '"' . $donnees['couleur'] . '"' . ',';
@@ -488,7 +478,7 @@ GROUP BY nom');
 
             data: [
   <?php
-  if ($_GET['numero'] === 0) {
+  if ($numero === 0) {
     // On recupère tout les masses collectés pour chaque type
     $reponse = $bdd->prepare('SELECT type_dechets.couleur,type_dechets.nom, sum(pesees_collectes.masse) somme
      FROM type_dechets,pesees_collectes WHERE type_dechets.id = pesees_collectes.id_type_dechet AND pesees_collectes.timestamp BETWEEN :du AND :au
@@ -529,7 +519,7 @@ GROUP BY nom');
               WHERE type_dechets.id = pesees_collectes.id_type_dechet AND pesees_collectes.timestamp BETWEEN :du AND :au
               AND pesees_collectes.id_collecte = collectes.id AND collectes.id_point_collecte = :numero
 GROUP BY nom');
-          $reponse->execute(['du' => $time_debut, 'au' => $time_fin, 'numero' => $_GET['numero']]);
+          $reponse->execute(['du' => $time_debut, 'au' => $time_fin, 'numero' => $numero]);
 
           while ($donnees = $reponse->fetch()) {
             echo '{value:' . $donnees['somme'] . ', label:"' . $donnees['nom'] . '"},';
@@ -546,7 +536,7 @@ GROUP BY nom');
               WHERE type_dechets.id = pesees_collectes.id_type_dechet AND pesees_collectes.timestamp BETWEEN :du AND :au
               AND pesees_collectes.id_collecte = collectes.id AND collectes.id_point_collecte = :numero
 GROUP BY nom');
-          $reponse->execute(['du' => $time_debut, 'au' => $time_fin, 'numero' => $_GET['numero']]);
+          $reponse->execute(['du' => $time_debut, 'au' => $time_fin, 'numero' => $numero]);
 
           while ($donnees = $reponse->fetch()) {
             echo "'" . $donnees['couleur'] . "'" . ',';
@@ -563,7 +553,7 @@ GROUP BY nom');
 
             data: [
   <?php
-  if ($_GET['numero'] === 0) {
+  if ($numero === 0) {
     // On recupère tout les masses collectés pour chaque type
     $reponse = $bdd->prepare('SELECT localites.couleur,localites.nom, sum(distinct pesees_collectes.masse) somme
      FROM type_dechets,pesees_collectes,collectes,localites WHERE localites.id = collectes.localisation AND pesees_collectes.id_collecte = collectes.id AND pesees_collectes.timestamp BETWEEN :du AND :au
@@ -604,7 +594,7 @@ GROUP BY nom');
               WHERE localites.id = collectes.localisation AND pesees_collectes.timestamp BETWEEN :du AND :au
               AND pesees_collectes.id_collecte = collectes.id AND collectes.id_point_collecte = :numero
 GROUP BY nom');
-          $reponse->execute(['du' => $time_debut, 'au' => $time_fin, 'numero' => $_GET['numero']]);
+          $reponse->execute(['du' => $time_debut, 'au' => $time_fin, 'numero' => $numero]);
 
           while ($donnees = $reponse->fetch()) {
             echo '{value:' . $donnees['somme'] . ', label:"' . $donnees['nom'] . '"},';
@@ -621,7 +611,7 @@ GROUP BY nom');
               WHERE localites.id = collectes.localisation AND pesees_collectes.timestamp BETWEEN :du AND :au
               AND pesees_collectes.id_collecte = collectes.id AND collectes.id_point_collecte = :numero
 GROUP BY nom');
-          $reponse->execute(['du' => $time_debut, 'au' => $time_fin, 'numero' => $_GET['numero']]);
+          $reponse->execute(['du' => $time_debut, 'au' => $time_fin, 'numero' => $numero]);
 
           while ($donnees = $reponse->fetch()) {
             echo "'" . $donnees['couleur'] . "'" . ',';
@@ -640,7 +630,7 @@ GROUP BY nom');
 
             data: [
   <?php
-  if ($_GET['numero'] === 0) {
+  if ($numero === 0) {
     // On recupère tout les masses collectés pour chaque type
     $reponse = $bdd->prepare('SELECT type_dechets.couleur,type_dechets.nom, sum(pesees_collectes.masse) somme
       FROM type_dechets,pesees_collectes WHERE type_dechets.id = pesees_collectes.id_type_dechet AND pesees_collectes.timestamp BETWEEN :du AND :au
@@ -681,7 +671,7 @@ GROUP BY nom');
               WHERE type_dechets.id = pesees_collectes.id_type_dechet AND pesees_collectes.timestamp BETWEEN :du AND :au
               AND pesees_collectes.id_collecte = collectes.id AND collectes.id_point_collecte = :numero
 GROUP BY nom');
-          $reponse->execute(['du' => $time_debut, 'au' => $time_fin, 'numero' => $_GET['numero']]);
+          $reponse->execute(['du' => $time_debut, 'au' => $time_fin, 'numero' => $numero]);
 
           while ($donnees = $reponse->fetch()) {
             echo '{value:' . $donnees['somme'] . ', label:"' . $donnees['nom'] . '"},';
@@ -698,7 +688,7 @@ GROUP BY nom');
               WHERE type_dechets.id = pesees_collectes.id_type_dechet AND pesees_collectes.timestamp BETWEEN :du AND :au
               AND pesees_collectes.id_collecte = collectes.id AND collectes.id_point_collecte = :numero
 GROUP BY nom');
-          $reponse->execute(['du' => $time_debut, 'au' => $time_fin, 'numero' => $_GET['numero']]);
+          $reponse->execute(['du' => $time_debut, 'au' => $time_fin, 'numero' => $numero]);
 
           while ($donnees = $reponse->fetch()) {
             echo "'" . $donnees['couleur'] . "'" . ',';
