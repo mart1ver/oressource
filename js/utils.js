@@ -88,8 +88,6 @@ function cb(start, end, label) {
 function bind_datepicker(options, data, url) {
   $('#reportrange').daterangepicker(options, cb);
   $('#reportrange').on('apply.daterangepicker', (ev, picker) => {
-    console.log(picker);
-    debugger;
     const start = picker.startDate.format('DD-MM-YYYY');
     const end = picker.endDate.format('DD-MM-YYYY');
     window.location.href = `./${url}.php?date1=${start}&date2=${end}&numero=${data.numero}`;
