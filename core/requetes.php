@@ -1030,7 +1030,7 @@ function bilan_ventes_point_vente(PDO $bdd, $start, $stop, $id_point_vente) {
       SUM(vendus.remboursement) as remb_somme,
       SUM(case when vendus.remboursement > 0 then 1 else 0 end) as remb_quantite,
       COALESCE(SUM(pesees_vendus.masse), 0) as vendu_masse
-    FROM vendus
+    FROM ventes, vendus
     LEFT JOIN pesees_vendus
     ON vendus.id = pesees_vendus.id_vendu
     WHERE DATE(vendus.timestamp)

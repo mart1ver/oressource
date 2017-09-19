@@ -19,22 +19,19 @@
 // Oressource 2017, Bilan des ventes
 session_start();
 
-require_once('../moteur/dbconfig.php');
-require_once('../core/session.php');
-require_once('../core/requetes.php');
+require_once '../core/session.php';
+require_once '../core/requetes.php';
 
 if (is_valid_session() && is_allowed_bilan()) {
-  require_once('./tete.php');
+  require_once './tete.php';
+  require_once '../moteur/dbconfig.php';
 
-  // On convertit les deux dates en un format compatible avec la bdd
-  $date1ft = date_create_from_format('d-m-Y', $_GET['date1']);
-  $time_debut = $date1ft->format('Y-m-d');
-  $time_debut = $time_debut . ' 00:00:00';
+  $date1ft = DateTime::createFromFormat('d-m-Y', $_GET['date1']);
+  $time_debut = $date1ft->format('Y-m-d') . ' 00:00:00';
   $date1 = $date1ft->format('d-m-Y');
 
   $date2ft = date_create_from_format('d-m-Y', $_GET['date2']);
-  $time_fin = $date2ft->format('Y-m-d');
-  $time_fin = $time_fin . ' 23:59:59';
+  $time_fin = $date2ft->format('Y-m-d') . ' 23:59:59';
   $date2 = $date2ft->format('d-m-Y');
 
   $date_query = "date1=$date1&date2=$date2";
@@ -56,11 +53,10 @@ if (is_valid_session() && is_allowed_bilan()) {
     $nb_ventes = nb_ventes($bdd, $time_debut, $time_fin);
     $remb_nb = nb_remboursements($bdd, $time_debut, $time_fin);
   } else {
-    $bilans = bilan_ventes_point_vente($bdd, $date1, $date2, $numero);
-    $bilans_types = bilan_ventes_par_type_point_vente(
-      $bdd, $date1, $date2, $numero);
-    $bilans_pesees_types = bilan_ventes_pesees_point_vente($bdd, $date1, $date2, $numero);
-    $chiffre_affaire = chiffre_affaire_mode_paiement_point_vente($bdd, $date1, $date2, $numero);
+    $bilans = bilan_ventes_point_vente($bdd, $time_debut, $time_debut, $numero);
+    $bilans_types = bilan_ventes_par_type_point_vente($bdd, $time_debut, $time_debut, $numero);
+    $bilans_pesees_types = bilan_ventes_pesees_point_vente($bdd, $time_debut, $time_debut, $numero);
+    $chiffre_affaire = chiffre_affaire_mode_paiement_point_vente($bdd, $time_debut, $time_debut, $numero);
     $nb_ventes = nb_ventes_point_vente($bdd, $time_debut, $time_fin, $numero);
     $remb_nb = nb_remboursements_point_vente($bdd, $time_debut, $time_fin, $numero);
   }
@@ -73,6 +69,7 @@ if (is_valid_session() && is_allowed_bilan()) {
     }
     return $acc;
   }, []);
+
   $graphMv = data_graphs_from_bilan($bilans_pesees_types, 'vendu_masse');
   $graphPv = data_graphs_from_bilan($bilans_types, 'chiffre_degage');
   ?>
