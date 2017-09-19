@@ -143,7 +143,7 @@ GROUP BY nom';
   return data_graphs($stmt);
 }
 
-function MorrisCollecteMasse2(PDO $bdd, int $id, $start, $end): array {
+function MorrisCollecteMasseTot(PDO $bdd, int $id, $start, $end): array {
   $numero = ($id > 0 ? " AND collectes.id_point_collecte = $id " : ' ');
   $sql = 'SELECT
     type_dechets.couleur,
@@ -153,7 +153,7 @@ function MorrisCollecteMasse2(PDO $bdd, int $id, $start, $end): array {
     WHERE type_dechets.id = pesees_collectes.id_type_dechet
     AND   pesees_collectes.id_collecte = collectes.id
     AND   DATE(collectes.timestamp) BETWEEN :du AND :au ' . $numero . '
-    GROUP BY nom';
+    GROUP BY type_dechets.nom';
   $stmt = $bdd->prepare($sql);
   $stmt->bindParam(':du', $start, PDO::PARAM_STR);
   $stmt->bindParam(':au', $end, PDO::PARAM_STR);
@@ -164,30 +164,14 @@ function MorrisCollecteLoca(PDO $bdd, int $id, $start, $end): array {
   $numero = ($id > 0 ? " AND collectes.id_point_collecte = $id " : ' ');
   $sql = 'SELECT
         localites.couleur,
-        type_collecte.nom,
-        sum(pesees_collectes.masse) somme
+        localites.nom,
+        SUM(DISTINCT pesees_collectes.masse) somme
 FROM type_collecte, pesees_collectes, collectes, localites
 WHERE localites.id = collectes.localisation
+AND   type_collecte.id = collectes.id_type_collecte
 AND   pesees_collectes.id_collecte = collectes.id
 AND   DATE(collectes.timestamp) BETWEEN :du AND :au ' . $numero . '
-GROUP BY nom';
-  $stmt = $bdd->prepare($sql);
-  $stmt->bindParam(':du', $start, PDO::PARAM_STR);
-  $stmt->bindParam(':au', $end, PDO::PARAM_STR);
-  return data_graphs($stmt);
-}
-
-function MorrisCollecte2Loca(PDO $bdd, int $id, $start, $end): array {
-  $numero = ($id > 0 ? " AND collectes.id_point_collecte = $id " : ' ');
-  $sql = 'SELECT
-        type_dechets.couleur,
-        type_dechets.nom,
-        sum(pesees_collectes.masse) somme
-FROM type_dechets, pesees_collectes, collectes
-WHERE type_dechets.id = pesees_collectes.id_type_dechet
-AND   pesees_collectes.id_collecte = collectes.id
-AND   DATE(collectes.timestamp) BETWEEN :du AND :au ' . $numero . '
-GROUP BY nom';
+GROUP BY localites.nom';
   $stmt = $bdd->prepare($sql);
   $stmt->bindParam(':du', $start, PDO::PARAM_STR);
   $stmt->bindParam(':au', $end, PDO::PARAM_STR);
@@ -212,7 +196,7 @@ if (is_valid_session() && is_allowed_bilan()) {
 
   <div class="container">
     <div class="row">
-      <div class="col-md-11 " >
+      <div class="col-md-11">
         <h1>Bilan global</h1>
         <div class="col-md-4 col-md-offset-8" >
           <label for="reportrange">Choisissez la période à inspecter:</label>
@@ -249,6 +233,7 @@ if (is_valid_session() && is_allowed_bilan()) {
       <div class="row">
         <h2><?= $date1 === $date2 ? "Le {$date1}," : " Du {$date1} au {$date2}," ?>
           Masse collectée: <?= $data['masse'] ?> kg<?= $numero === 0 ? ' , sur ' . count($points_collectes) . ' Point(s) de collecte' : '' ?>.</h2>
+        <div id="graph2masse" style="height: 180px;"></div>
         <div class="col-md-6">
           <div class="panel panel-default">
             <div class="panel-heading">
@@ -288,7 +273,6 @@ if (is_valid_session() && is_allowed_bilan()) {
               </table>
 
               <div id="graphmasse" style="height: 180px;"></div>
-              <div id="graph2masse" style="height: 180px;"></div>
 
               <a href="../moteur/export_bilanc_partype.php?numero=<?= $numero ?>&date1=<?= $date1 ?>&date2=<?= $date2 ?>">
                 <button type="button" class="btn btn-default btn-xs" disabled>exporter ces données (.csv)</button>
@@ -336,7 +320,6 @@ if (is_valid_session() && is_allowed_bilan()) {
               </table>
 
               <div id="graphloca" style="height: 180px;"></div>
-              <div id="graph2loca" style="height: 180px;"></div>
 
               <a href="../moteur/export_bilanc_parloca.php?numero=<?= $numero ?>&date1=<?= $date1 ?>&date2=<?= $date2; ?>">
                 <button type="button" class="btn btn-default btn-xs" disabled>exporter ces données (.csv) </button>
@@ -361,7 +344,7 @@ if (is_valid_session() && is_allowed_bilan()) {
   </script>
 
   <script>
-    const graph2masse = <?= json_encode(MorrisCollecteMasse2($bdd, $numero, $time_debut, $time_fin)) ?>;
+    const graph2masse = <?= json_encode(MorrisCollecteMasseTot($bdd, $numero, $time_debut, $time_fin)) ?>;
     Morris.Donut({
       element: 'graph2masse',
       data: graph2masse.data,
@@ -380,18 +363,6 @@ if (is_valid_session() && is_allowed_bilan()) {
       backgroundColor: '#ccc',
       labelColor: '#060',
       colors: graphloca.color,
-      formatter: (x) => `${x} Kg.`
-    });
-  </script>
-
-  <script>
-    const graph2loca = <?= json_encode(MorrisCollecte2Loca($bdd, $numero, $time_debut, $time_fin)) ?>;
-    Morris.Donut({
-      element: 'graph2loca',
-      data: graph2loca.data,
-      backgroundColor: '#ccc',
-      labelColor: '#060',
-      colors: graph2loca.color,
       formatter: (x) => `${x} Kg.`
     });
   </script>
