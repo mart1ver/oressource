@@ -683,6 +683,7 @@ function data_graphs(PDOStatement $stmt) {
     array_push($data, ['value' => $iter['somme'], 'label' => $iter['nom']]);
     array_push($colors, $iter['couleur']);
   }
+  $stmt->closeCursor();
   return ['data' => $data, 'colors' => $colors];
 }
 
