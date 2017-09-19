@@ -272,11 +272,14 @@ if (is_valid_session() && is_allowed_bilan()) {
                 </tbody>
               </table>
 
+              <!-- TODO: faire une tableau pour la répartion par type d'objets/collecté -->
               <div id="graphmasse" style="height: 180px;"></div>
 
+              <!-- TODO: refaire cette fonctionnalité
               <a href="../moteur/export_bilanc_partype.php?numero=<?= $numero ?>&date1=<?= $date1 ?>&date2=<?= $date2 ?>">
                 <button type="button" class="btn btn-default btn-xs" disabled>exporter ces données (.csv)</button>
               </a>
+              -->
             </div>
           </div>
         </div>
@@ -321,9 +324,11 @@ if (is_valid_session() && is_allowed_bilan()) {
 
               <div id="graphloca" style="height: 180px;"></div>
 
+              <!-- TODO: refaire cette fonctionnalité
               <a href="../moteur/export_bilanc_parloca.php?numero=<?= $numero ?>&date1=<?= $date1 ?>&date2=<?= $date2; ?>">
                 <button type="button" class="btn btn-default btn-xs" disabled>exporter ces données (.csv) </button>
               </a>
+              -->
             </div>
           </div>
         </div>
