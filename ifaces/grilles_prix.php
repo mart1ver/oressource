@@ -19,20 +19,16 @@
 
 session_start();
 
-require_once('../moteur/dbconfig.php');
-require_once('../core/requetes.php');
-require_once('../core/session.php');
+require_once '../moteur/dbconfig.php';
+require_once '../core/requetes.php';
+require_once '../core/session.php';
 
-require_once('../core/validation.php'); // pour oui/non -> bool vis-versa
+require_once '../core/validation.php'; // pour oui/non -> bool vis-versa
 
-$type_obj = filter_input(INPUT_GET, 'id_type_dechet', FILTER_VALIDATE_INT);
+$type_obj = filter_input(INPUT_GET, 'id_type_dechet', FILTER_VALIDATE_INT) ?? 1;
 
-if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && is_allowed_gestion() && $type_obj !== false) {
+if (is_valid_session() && is_allowed_gestion() && $type_obj !== false) {
   require_once('tete.php');
-
-  if ($type_obj === null) {
-    $type_obj = 1;
-  }
 
   $type_dechets = types_dechets($bdd);
   $grille = objet_id_dechet($bdd, $type_obj);
@@ -106,12 +102,7 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && is_allowe
               <form action="../moteur/objet_visible.php" method="post">
                 <input type="hidden" name="id" value="<?= $item['id']; ?>">
                 <input type="hidden" name="visible" value="<?= oui_non_to_bool($item['visible']); ?>">
-                <?php if ($item['visible'] === 'oui') { ?>
-                  <button class="btn btn-sm btn-info "><?= $item['visible']; ?></button>
-                  <?php
-                } else { ?>
-                  <button class="btn btn-sm btn-danger "><?= $item['visible']; ?></button>
-                <?php } ?>
+                <button class="btn btn-sm <?= $item['visible'] === 'oui' ? 'btn-info' : 'btn-danger' ?>"><?= $item['visible']; ?></button>
               </form>
             </td>
 

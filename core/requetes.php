@@ -37,7 +37,7 @@ function objet_id_dechet(PDO $bdd, $id_dechet) {
   $stmt = $bdd->prepare("SELECT * FROM grille_objets WHERE id_type_dechet = :id_type_dechet");
   $stmt->bindValue(':id_type_dechet', $id_dechet, PDO::PARAM_INT);
   $stmt->execute();
-  $result = $stmt->fetch(PDO::FETCH_ASSOC);
+  $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
   $stmt->closeCursor();
   return $result;
 }
