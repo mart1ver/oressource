@@ -38,23 +38,11 @@ if (is_valid_session() && is_allowed_sortie_id($numero)) {
   $pesee_max = (float) $point_sortie['pesee_max'];
   $types_poubelles = filter_visibles(types_poubelles($bdd));
   $date = new Datetime('now');
+  $nav = new_nav($point_sortie['nom'], $numero, 0);
   ?>
 
   <div class="container">
-
-    <nav class="navbar">
-      <div class="header-header">
-        <h1><?= $point_sortie['nom']; ?></h1>
-      </div>
-      <ul class="nav nav-tabs">
-        <li class="active"><a href="#">Poubelles</a></li>
-        <?php if (affichage_sortie_partenaires()) { ?><li><a href="sortiesc.php?numero=<?= $numero; ?>">Sorties partenaires</a></li><?php } ?>
-        <?php if (affichage_sortie_recyclage()) { ?><li><a href="sortiesr.php?numero=<?= $numero; ?>">Recyclage</a></li><?php } ?>
-        <?php if (affichage_sortie_don()) { ?><li><a href="sorties.php?numero=<?= $numero; ?>">Don</a></li><?php } ?>
-        <?php if (affichage_sortie_dechetterie()) { ?><li><a href="sortiesd.php?numero=<?= $numero; ?>">Déchetterie</a></li><?php } ?>
-      </ul>
-    </nav>
-
+    <?= configNav($nav) ?>
     <?= cartList(['text' => "Masse totale: 0 Kg.", 'date' => $date->format('Y-m-d')]) ?>
 
     <div id="numpad" class="col-md-4" style="width: 220px;">

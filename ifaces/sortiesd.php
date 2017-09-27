@@ -37,23 +37,11 @@ if (is_valid_session() && is_allowed_sortie_id($numero)) {
   $point_sortie = points_sorties_id($bdd, $numero);
   $pesee_max = (float) $point_sortie['pesee_max'];
   $date = new Datetime('now');
+  $nav = new_nav($point_sortie['nom'], $numero, 4);
   ?>
 
   <div class="container">
-
-    <nav class="navbar">
-      <div class="header-header">
-        <h1><?= $point_sortie['nom']; ?></h1>
-      </div>
-      <ul class="nav nav-tabs">
-        <?php if (affichage_sortie_poubelle()) { ?><li><a href="sortiesp.php?numero=<?= $numero ?>">Poubelles</a></li><?php } ?>
-        <?php if (affichage_sortie_partenaires()) { ?><li><a href="sortiesc.php?numero=<?= $numero ?>">Sorties partenaires</a></li><?php } ?>
-        <?php if (affichage_sortie_recyclage()) { ?><li><a href="sortiesr.php?numero=<?= $numero ?>">Recyclage</a></li><?php } ?>
-        <?php if (affichage_sortie_don()) { ?><li><a href="sorties.php?numero=<?= $numero ?>">Don</a></li><?php } ?>
-        <li class="active"><a>Déchetterie</a></li>
-      </ul>
-    </nav>
-
+    <?= configNav($nav) ?>
     <?= cartList(['text' => "Masse totale: 0 Kg.", 'date' => $date->format('Y-m-d')]) ?>
 
     <!-- Pavee de saisie numerique vcir numpad.js -->
