@@ -220,7 +220,7 @@ if (is_valid_session() && is_allowed_bilan()) {
   require_once '../moteur/dbconfig.php';
 
   $numero = (int) filter_input(INPUT_GET, 'numero', FILTER_VALIDATE_INT);
-  $points_sortie = points_sorties($bdd);
+  $points_sortie = filter_visibles(points_sorties($bdd));
 
 
   $date1 = $_GET['date1'];

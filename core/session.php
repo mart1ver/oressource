@@ -190,11 +190,16 @@ function new_droits(PDO $bdd, array $droits): string {
   $f = function ($type) use ($droits) {
     return ($droits['niveau' . $type] ?? false) ? $type : '';
   };
+  $collectes = filter_visibles(points_collectes($bdd));
+  $ventes = filter_visibles(points_ventes($bdd));
+  $sorties = filter_visibles(points_sorties($bdd));
   return ($f('a') . $f('bi') . $f('g')
     . $f('h') . $f('l') . $f('j')
     . $f('k') . $f('m') . $f('p')
     . $f('e')
-    . droits(points_collectes($bdd), 'c', $droits) . droits(points_ventes($bdd), 'v', $droits) . droits(points_sorties($bdd), 's', $droits));
+    . droits($collectes, 'c', $droits)
+    . droits($ventes, 'v', $droits)
+    . droits($sorties, 's', $droits));
 }
 
 function new_utilisateur(string $nom, string $prenom, string $mail, string $droits, int $id = 0, string $pass = null): array {

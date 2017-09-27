@@ -40,7 +40,7 @@ if (is_valid_session() && is_allowed_collecte_id($numero)) {
   require_once '../moteur/dbconfig.php';
 
   $point_collecte = points_collecte_id($bdd, $numero);
-  $types_action = types_collectes($bdd);
+  $types_action = filter_visibles(types_collectes($bdd));
   $date = new Datetime('now');
   ?>
 
@@ -106,11 +106,11 @@ if (is_valid_session() && is_allowed_collecte_id($numero)) {
       id_user: <?= json_encode($_SESSION['id'], JSON_NUMERIC_CHECK); ?>,
       id_point: <?= json_encode($numero, JSON_NUMERIC_CHECK); ?>,
       id_type_action: <?= json_encode($types_action, JSON_NUMERIC_CHECK); ?>,
-      types_dechet: <?= json_encode(types_dechets($bdd), JSON_NUMERIC_CHECK); ?>,
+      types_dechet: <?= json_encode(filter_visibles(types_dechets($bdd)), JSON_NUMERIC_CHECK); ?>,
       masse_max: <?= json_encode($point_collecte['pesee_max'], JSON_NUMERIC_CHECK); ?>,
-      conteneurs: <?= json_encode(types_contenants($bdd), JSON_NUMERIC_CHECK); ?>,
+      conteneurs: <?= json_encode(filter_visibles(types_contenants($bdd)), JSON_NUMERIC_CHECK); ?>,
       types_action: <?= json_encode($types_action, JSON_NUMERIC_CHECK); ?>,
-      localites: <?= json_encode(localites($bdd), JSON_NUMERIC_CHECK); ?>,
+      localites: <?= json_encode(filter_visibles(localites($bdd)), JSON_NUMERIC_CHECK); ?>,
     };
   </script>
   <script type="text/javascript">

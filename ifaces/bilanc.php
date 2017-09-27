@@ -188,7 +188,7 @@ if (is_valid_session() && is_allowed_bilan()) {
   $time_fin = DateTime::createFromFormat('d-m-Y', $date2)->format('Y-m-d') . ' 23:59:59';
 
   $numero = (int) filter_input(INPUT_GET, 'numero', FILTER_VALIDATE_INT);
-  $points_collectes = points_collectes($bdd);
+  $points_collectes = filter_visibles(points_collectes($bdd));
   $data = [
     'masse' => bilanCollecteMasse($bdd, $numero, $time_debut, $time_fin),
     ]

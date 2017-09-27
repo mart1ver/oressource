@@ -107,7 +107,7 @@ if (is_valid_session() && is_allowed_bilan()) {
     <div class="col-md-8 col-md-offset-1" >
       <h2>Bilan des ventes de la structure</h2>
       <ul class="nav nav-tabs">
-        <?php foreach (points_ventes($bdd) as $point_vente) { ?>
+        <?php foreach (filter_visibles(points_ventes($bdd)) as $point_vente) { ?>
           <li class="<?= ($numero === $point_vente['id'] ? 'active' : ''); ?>">
             <a href="bilanv.php?<?= $date_query; ?>&numero=<?= $point_vente['id']; ?>"><?= $point_vente['nom']; ?></a>
           </li>

@@ -38,7 +38,7 @@ if (is_valid_session() && is_allowed_sortie_id($numero)) {
   require_once '../moteur/dbconfig.php';
 
   $point_sortie = points_sorties_id($bdd, $numero);
-  $conventions = convention_sortie($bdd);
+  $conventions = filter_visibles(convention_sortie($bdd));
   $pesee_max = (float) $point_sortie['pesee_max'];
 
   $date = new Datetime('now');

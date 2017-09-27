@@ -52,21 +52,21 @@ if (is_valid_session() && is_allowed_users()) {
       'text' => "Points de collecte:",
       'data' => array_map(function ($a) {
           return [['name' => "niveauc{$a['id']}", 'text' => $a['nom']], false];
-        }, points_collectes($bdd))
+        }, filter_visibles(points_collectes($bdd)))
     ];
 
     $ventes = [
       'text' => "Points de vente:",
       'data' => array_map(function ($a) {
           return [['name' => "niveauv{$a['id']}", 'text' => $a['nom']], false];
-        }, points_ventes($bdd))
+        }, filter_visibles(points_ventes($bdd)))
     ];
 
     $sorties = [
       'text' => "Points de sortie hors-boutique:",
       'data' => array_map(function ($a) {
           return [['name' => "niveaus{$a['id']}", 'text' => $a['nom']], false];
-        }, points_sorties($bdd))
+        }, filter_visibles(points_sorties($bdd)))
     ];
 
     $nav = [
@@ -103,21 +103,21 @@ if (is_valid_session() && is_allowed_users()) {
       'text' => "Points de collecte:",
       'data' => array_map(function ($a) use ($utilisateur) {
           return [['name' => "niveauc{$a['id']}", 'text' => $a['nom']], utilisateur_collecte($utilisateur, $a['id'])];
-        }, points_collectes($bdd))
+        }, filter_visibles(points_collectes($bdd)))
     ];
 
     $ventes = [
       'text' => "Points de vente:",
       'data' => array_map(function ($a) use ($utilisateur) {
           return [['name' => "niveauv{$a['id']}", 'text' => $a['nom']], utilisateur_vente($utilisateur, $a['id'])];
-        }, points_ventes($bdd))
+        }, filter_visibles(points_ventes($bdd)))
     ];
 
     $sorties = [
       'text' => "Points de sortie hors-boutique:",
       'data' => array_map(function ($a) use ($utilisateur) {
           return [['name' => "niveaus{$a['id']}", 'text' => $a['nom']], utilisateur_sortie($utilisateur, $a['id'])];
-        }, points_sorties($bdd))
+        }, filter_visibles(points_sorties($bdd)))
     ];
 
     $nav = [

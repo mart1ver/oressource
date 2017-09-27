@@ -26,7 +26,7 @@ require_once('../core/requetes.php');
 if (is_valid_session() && is_allowed_verifications()) {
   require_once 'tete.php';
   require_once('../moteur/dbconfig.php');
-  $points_ventes = points_ventes($bdd);
+  $points_ventes = filter_visibles(points_ventes($bdd));
   $date1 = $_GET['date1'];
   $date2 = $_GET['date2'];
 
