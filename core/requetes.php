@@ -89,7 +89,7 @@ function objets(PDO $bdd): array {
   $stmt->execute();
   $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
   return array_filter($result, function (array $e): bool {
-    return $e['visible'];
+    return $e['visible'] === 'oui';
   });
 }
 
