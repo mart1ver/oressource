@@ -168,14 +168,21 @@ function utilisateur_update(PDO $bdd, array $utilisateur) {
 }
 
 function convention_sortie(PDO $bdd): array {
-  $sql = 'SELECT id, nom FROM conventions_sorties WHERE visible = "oui"';
+  $sql = 'SELECT id, nom, couleur, description, timestamp, visible FROM conventions_sorties';
   $stmt = $bdd->prepare($sql);
   $stmt->execute();
   return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
+function convention_sortie_visibles(PDO $bdd): array {
+  $cs = convention_sortie($bdd);
+  return array_filter(function (array $e): array {
+    return $e['visible'] === 'oui';
+  }, $cs);
+}
+
 function convention_sortie_by_id(PDO $bdd, int $id): array {
-  $sql = 'SELECT id, nom FROM conventions_sorties
+  $sql = 'SELECT id, nom, couleur, description, timestamp, visible FROM conventions_sorties
           WHERE visible = "oui" AND id = :id LIMIT 1';
   $stmt = $bdd->prepare($sql);
   $stmt->bindValue(':id', $id, PDO::PARAM_INT);

@@ -17,29 +17,51 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+// Oressource 2014, formulaire de référencement des conventions
+// avec les partenaires de la structure: liste des conventions déjà référencées et
+// possibilité de les cacher à l'utilisateur ou de modifier les données
+
 session_start();
 
-require_once('../moteur/dbconfig.php');
-if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($_SESSION['niveau'], 'j') !== false)) {
+require_once '../core/session.php';
+require_once '../core/requetes.php';
+require_once '../core/composants.php';
+
+if (is_valid_session() && is_allowed_partners()) {
   require_once 'tete.php';
-  //Oressource 2014, formulaire de référencement des conventions avec les partenaires de la structure
-  //Simple formulaire de saisie , liste des conventions déjà référencées et possibilité de les cacher à l'utilisateur ou de modifier les données
-  //
+  require_once '../moteur/dbconfig.php';
+
+  $conventions = convention_sortie($bdd);
   ?>
 
   <div class="container">
-    <h1>Gestion des conventions avec les partenaires</h1>
-    <div class="panel-heading">Gérez ici la liste de vos partenaires de réemploi.</div>
-    <p>Permet de différencier les partenaires au moment de la mise en bilan </p>
-    <div class="panel-body">
-      <div class="row">
-        <form action="../moteur/convention_sortie_post.php" method="post">
-          <div class="col-md-3"><label for="nom">Nom:</label> <input type="text"                 value ="<?= $_GET['nom']; ?>" name="nom" id="nom" class="form-control " required autofocus></div>
-          <div class="col-md-2"><label for="description">Description:</label> <input type="text" value ="<?= $_GET['description']; ?>" name="description" id="description" class="form-control" required></div>
-
-          <div class="col-md-1"><label for="couleur">Couleur:</label> <input type="color" value="<?= '#' . $_GET['couleur']; ?>" name="couleur" id="couleur" class="form-control" required></div>
-          <div class="col-md-1"><br><button name="creer" class="btn btn-default">Créer!</button></div>
-        </form>
+    <div class='panel'>
+      <div class='panel-title'>
+           <h1>Gestion des conventions avec les partenaires</h1>
+      </div>
+      <div class="panel-heading">
+        <p>Afin de différencier les partenaires de réemploi au moment de la mise en bilan.</p>
+      </div>
+      <div class="panel-body">
+        <div class="row">
+          <form action="../moteur/convention_sortie_post.php" method="post">
+            <div class="col-md-3">
+              <?= textInput(['text' => 'Nom:', 'name' => 'nom'], $_GET['nom'] ?? '') ?>
+            </div>
+            <div class="col-md-2">
+              <?= textInput(['text' => 'Description:', 'name' => 'description'], $_GET['description'] ?? '') ?>
+            </div>
+            <div class="col-md-1">
+              <label>Couleur:
+                <input type="color" value="<?= '#' . ($_GET['couleur'] ?? 'FFFF') ?>" name="couleur" id="couleur" class="form-control" required>
+              </label>
+            </div>
+            <div class="col-md-1">
+              <br>
+              <button name="creer" class="btn btn-default">Créer!</button>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
 
@@ -53,63 +75,41 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($
           <th>Couleur</th>
           <th>Visible</th>
           <th></th>
-
         </tr>
       </thead>
+
       <tbody>
-        <?php
-        $reponse = $bdd->query('SELECT * FROM conventions_sorties');
-        while ($donnees = $reponse->fetch()) { ?>
+        <?php foreach ($conventions as $cs) { ?>
           <tr>
-            <td><?= $donnees['id']; ?></td>
-            <td><?= $donnees['timestamp']; ?></td>
-            <td><?= $donnees['nom']; ?></td>
-            <td><?= $donnees['description']; ?></td>
-            <td><span class="badge" style="background-color:<?= $donnees['couleur']; ?>"><?= $donnees['couleur']; ?></span></td>
+            <td><?= $cs['id']; ?></td>
+            <td><?= $cs['timestamp']; ?></td>
+            <td><?= $cs['nom']; ?></td>
+            <td><?= $cs['description']; ?></td>
+            <td>
+              <span class="badge" style="background-color:<?= $cs['couleur']; ?>"><?= $cs['couleur']; ?></span>
+            </td>
             <td>
               <form action="../moteur/convention_sortie_visible.php" method="post">
-
-                <input type="hidden" name ="id" id="id" value="<?= $donnees['id']; ?>">
-                <input type="hidden" name="visible" id="visible" value="<?php
-                if ($donnees['visible'] === 'oui') {
-                  echo 'non';
-                } else {
-                  echo 'oui';
-                }
-                ?>">
-                       <?php
-                       if ($donnees['visible'] === 'oui') { // SI on a pas de message d'erreur
-                         ?>
-                  <button  class="btn btn-info btn-sm " >
-                    <?php
-                  } else { // SINON
-                    ?>
-                    <button  class="btn btn-danger btn-sm " >
-                      <?php
-                    }
-                    echo $donnees['visible'];
-                    ?>
-                  </button>
+                <input type="hidden" name ="id" id="id" value="<?= $cs['id']; ?>">
+                <input type="hidden" name="visible" id="visible"
+                       value="<?= $cs['visible'] === 'oui' ? 'non' : 'oui' ?>">
+                <button class="btn btn-sm <?= $cs['visible'] === 'oui' ? 'btn-info' : 'btn-danger' ?>">
+                  <?= $cs['visible'] === 'oui' ? 'oui' : 'non' ?>
+                </button>
               </form>
             </td>
+
             <td>
-
               <form action="modification_convention_sortie.php" method="post">
-
-                <input type="hidden" name ="id" id="id" value="<?= $donnees['id']; ?>">
-                <input type="hidden" name ="nom" id="nom" value="<?= $donnees['nom']; ?>">
-                <input type="hidden" name ="description" id="description" value="<?= $donnees['description']; ?>">
-                <input type="hidden" name ="couleur" id="couleur" value="<?= substr($_POST['couleur'], 1); ?>">
-
-                <button  class="btn btn-warning btn-sm" >Modifier!</button>
+                <input type="hidden" name="id" id="id" value="<?= $cs['id']; ?>">
+                <input type="hidden" name="nom" id="nom" value="<?= $cs['nom']; ?>">
+                <input type="hidden" name="description" id="description" value="<?= $cs['description']; ?>">
+                <input type="hidden" name="couleur" id="couleur" value="<?= substr($cs['couleur'], 1); ?>">
+                <button class="btn btn-warning btn-sm" >Modifier!</button>
               </form>
-
             </td>
           </tr>
-          <?php
-        }
-        $reponse->closeCursor();
-        ?>
+        <?php } ?>
       </tbody>
     </table>
   </div><!-- /.container -->
