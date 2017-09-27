@@ -40,7 +40,7 @@ if (is_valid_session() && is_allowed_sortie_id($numero)) {
   require_once '../moteur/dbconfig.php';
 
   $point_sortie = points_sorties_id($bdd, $numero);
-  $types_action = types_sorties($bdd);
+  $types_action = filter_visibles(types_sorties($bdd));
 
   $date = new Datetime('now');
   ?>
@@ -137,7 +137,7 @@ if (is_valid_session() && is_allowed_sortie_id($numero)) {
       types_evac: <?= json_encode(types_dechets_evac($bdd), JSON_NUMERIC_CHECK) ?>,
       conteneurs: <?= json_encode(types_contenants($bdd), JSON_NUMERIC_CHECK) ?>,
       types_action: <?= json_encode($types_action, JSON_NUMERIC_CHECK) ?>,
-      localites: <?= json_encode(localites($bdd), JSON_NUMERIC_CHECK) ?>,
+      localites: <?= json_encode(filter_visibles(localites($bdd)), JSON_NUMERIC_CHECK) ?>,
     };
   </script>
   <script type="text/javascript">

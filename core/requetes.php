@@ -18,6 +18,13 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+function filter_visibles(array $a): array {
+  return array_map(function (array $e): array {
+    $e['visible'] = $e['visible'] === 'oui';
+    return $e;
+  }, $a);
+}
+
 function objet_id_dechet(PDO $bdd, $id_dechet) {
   $stmt = $bdd->prepare("SELECT * FROM grille_objets WHERE id_type_dechet = :id_type_dechet");
   $stmt->bindValue(':id_type_dechet', $id_dechet, PDO::PARAM_INT);
@@ -34,14 +41,6 @@ function objet_id(PDO $bdd, $id_obj) {
   $result = $req->fetch(PDO::FETCH_ASSOC);
   $req->closeCursor();
   return $result;
-}
-
-function objet_update_visible(PDO $bdd, $id, $visible) {
-  $req = $bdd->prepare('update grille_objets set visible = :visible where id = :id');
-  $req->bindValue(':id', $id, PDO::PARAM_INT);
-  $req->bindValue(':visible', $visible, PDO::PARAM_STR);
-  $req->execute();
-  $req->closeCursor();
 }
 
 function objet_update_nom(PDO $bdd, $id, $nom) {
@@ -73,24 +72,13 @@ function objet_update(PDO $bdd, int $id, $prix, $nom, $description) {
   $req->closeCursor();
 }
 
-function objets_visibles(PDO $bdd): array {
-  $sql = 'SELECT * FROM grille_objets';
-  $stmt = $bdd->prepare($sql);
-  $stmt->execute();
-  return array_map(function (array $e): array {
-    $e['visible'] = $e['visible'] === 'oui';
-    return $e;
-  }, $stmt->fetchAll(PDO::FETCH_ASSOC));
-}
-
 function objets(PDO $bdd): array {
   $sql = 'SELECT * FROM grille_objets';
   $stmt = $bdd->prepare($sql);
   $stmt->execute();
   $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-  return array_filter($result, function (array $e): bool {
-    return $e['visible'] === 'oui';
-  });
+  $stmt->closeCursor();
+  return $result;
 }
 
 function utilisateurs_id(PDO $bdd, int $id) {
@@ -174,16 +162,9 @@ function convention_sortie(PDO $bdd): array {
   return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
-function convention_sortie_visibles(PDO $bdd): array {
-  $cs = convention_sortie($bdd);
-  return array_filter(function (array $e): array {
-    return $e['visible'] === 'oui';
-  }, $cs);
-}
-
 function convention_sortie_by_id(PDO $bdd, int $id): array {
   $sql = 'SELECT id, nom, couleur, description, timestamp, visible FROM conventions_sorties
-          WHERE visible = "oui" AND id = :id LIMIT 1';
+  AND id = :i';
   $stmt = $bdd->prepare($sql);
   $stmt->bindValue(':id', $id, PDO::PARAM_INT);
   $stmt->execute();

@@ -36,7 +36,7 @@ if (is_valid_session() && is_allowed_sortie_id($numero)) {
 
   $point_sortie = points_sorties_id($bdd, $numero);
   $pesee_max = (float) $point_sortie['pesee_max'];
-  $types_poubelles = types_poubelles($bdd);
+  $types_poubelles = filter_visibles(types_poubelles($bdd));
   $date = new Datetime('now');
   ?>
 
@@ -94,7 +94,7 @@ if (is_valid_session() && is_allowed_sortie_id($numero)) {
       user_droit: <?= json_encode($_SESSION['niveau']); ?>,
       id_point: <?= json_encode($numero, JSON_NUMERIC_CHECK); ?>,
       masse_max: <?= json_encode($point_sortie['pesee_max'], JSON_NUMERIC_CHECK); ?>,
-      types_evac: <?= json_encode(types_poubelles($bdd), JSON_NUMERIC_CHECK); ?>
+      types_evac: <?= json_encode(filter_visibles(types_poubelles($bdd)), JSON_NUMERIC_CHECK); ?>
     };
   </script>
   <script type="text/javascript">

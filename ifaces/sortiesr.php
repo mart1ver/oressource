@@ -36,9 +36,9 @@ if (is_valid_session() && is_allowed_sortie_id($numero)) {
 
   $point_sortie = points_sorties_id($bdd, $numero);
   $pesee_max = (float) $point_sortie['pesee_max'];
-  $filieres_sorties = filieres_sorties($bdd);
+  $filieres_sorties = filter_visibles(filieres_sorties($bdd));
 
-  $evacs = types_dechets_evac($bdd);
+  $evacs = filter_visibles(types_dechets_evac($bdd));
 
   $date = new Datetime('now');
   ?>
@@ -134,9 +134,9 @@ if (is_valid_session() && is_allowed_sortie_id($numero)) {
       id_user: <?= json_encode($_SESSION['id'], JSON_NUMERIC_CHECK); ?>,
       id_point: <?= json_encode($numero, JSON_NUMERIC_CHECK); ?>,
       id_type_action: <?= json_encode($filieres_sorties, JSON_NUMERIC_CHECK); ?>,
-      types_evac: <?= json_encode(types_dechets_evac($bdd), JSON_NUMERIC_CHECK); ?>,
+      types_evac: <?= json_encode(filter_visibles(types_dechets_evac($bdd)), JSON_NUMERIC_CHECK); ?>,
       masse_max: <?= json_encode($point_sortie['pesee_max'], JSON_NUMERIC_CHECK); ?>,
-      conteneurs: <?= json_encode(types_contenants($bdd), JSON_NUMERIC_CHECK); ?>
+      conteneurs: <?= json_encode(filter_visibles(types_contenants($bdd)), JSON_NUMERIC_CHECK); ?>
     };
   </script>
   <script type="text/javascript">

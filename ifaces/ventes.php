@@ -33,8 +33,9 @@ if (is_valid_session() && is_allowed_vente_id($numero)) {
   $req->closeCursor();
 
   $point_vente = points_ventes_id($bdd, $numero);
-  $dechets = types_dechets($bdd);
-  $objets = objets_visibles($bdd);
+  $dechets = filter_visibles(types_dechets($bdd));
+  $objets = filter_visibles(objets($bdd));
+  $moyens_paiement = filter_visibles(moyens_paiements($bdd));
   ?>
 
   <div class="container">
@@ -217,7 +218,7 @@ if (is_valid_session() && is_allowed_vente_id($numero)) {
         <div class="panel-body">
           <label>Moyen de paiement:</label>
           <div id="moyens" class="btn-group" data-toggle="buttons">
-            <?php foreach (moyens_paiements_visibles($bdd) as $moyen) { ?>
+            <?php foreach ($moyens_paiement as $moyen) { ?>
               <label class="btn ors_btn_pay btn-default <?= $moyen['id'] === 1 ? 'active' : '' ?>"
                      onclick="moyens(<?= $moyen['id'] ?>);"
                      style="background-color: <?= $moyen['couleur']; ?>">
@@ -268,7 +269,7 @@ if (is_valid_session() && is_allowed_vente_id($numero)) {
       taux_tva: <?= json_encode($_SESSION['taux_tva'], JSON_NUMERIC_CHECK); ?>,
       point: <?= json_encode(points_ventes_id($bdd, $numero), JSON_NUMERIC_CHECK); ?>,
       id_user: <?= json_encode($_SESSION['id'], JSON_NUMERIC_CHECK) ?>,
-      moyens_paiement: <?= json_encode(moyens_paiements($bdd), JSON_NUMERIC_CHECK) ?>
+      moyens_paiement: <?= json_encode($moyens_paiement, JSON_NUMERIC_CHECK) ?>
     };
   </script>
   <script src="../js/ventes.js"></script>
