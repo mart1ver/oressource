@@ -51,14 +51,6 @@ function objet_id(PDO $bdd, $id_obj) {
   return $result;
 }
 
-function objet_update_nom(PDO $bdd, $id, $nom) {
-  $req = $bdd->prepare('update grille_objets set nom = :nom where id = :id');
-  $req->bindValue(':id', $id, PDO::PARAM_INT);
-  $req->bindValue(':nom', $nom, PDO::PARAM_STR);
-  $req->execute();
-  $req->closeCursor();
-}
-
 function objet_update(PDO $bdd, int $id, $prix, $nom, $description) {
   $req = $bdd->prepare('
       update grille_objets

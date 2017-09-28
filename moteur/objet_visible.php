@@ -18,24 +18,30 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-require_once('../core/validation.php');
-require_once('../core/session.php');
-require_once('../core/requetes.php');
+require_once '../core/validation.php';
+require_once '../core/session.php';
+require_once '../core/requetes.php';
+
+function objet_update_visible(PDO $bdd, int $id, bool $visible) {
+  $req = $bdd->prepare('update grille_objets set visible = :visible where id = :id');
+  $req->bindValue(':id', $id, PDO::PARAM_INT);
+  $req->bindValue(':visible', bool_to_oui_non($visible), PDO::PARAM_STR);
+  $req->execute();
+  $req->closeCursor();
+}
 
 session_start();
 
-if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && is_allowed_gestion()) {
-  require_once('dbconfig.php');
-
-  $id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
-  $visible = bool_to_oui_non(filter_input(INPUT_GET, 'visible', FILTER_VALIDATE_BOOLEAN));
-  if ($id && $visible) {
-    grille_objects_update_visible($bdd, $id, $visible);
-  } else {
-    header('Location:../moteur/destroy.php');
+if (is_valid_session() && is_allowed_gestion()) {
+  require_once 'dbconfig.php';
+  $id = filter_input(INPUT_POST, 'id', FILTER_VALIDATE_INT);
+  $visible = ($_POST['visible'] ?? 'false') === 'true';
+  if (!is_null($id)) {
+    objet_update_visible($bdd, $id, $visible);
+    header("Location:../ifaces/grilles_prix.php?typo=$id");
+    die;
   }
-
-  header('Location:../ifaces/grilles_prix.php?typo=' . $id);
 } else {
   header('Location:../moteur/destroy.php');
+  die;
 }

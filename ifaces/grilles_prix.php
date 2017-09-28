@@ -101,7 +101,7 @@ if (is_valid_session() && is_allowed_gestion() && $type_obj !== false) {
             <td>
               <form action="../moteur/objet_visible.php" method="post">
                 <input type="hidden" name="id" value="<?= $item['id']; ?>">
-                <input type="hidden" name="visible" value="<?= oui_non_to_bool($item['visible']); ?>">
+                <input type="hidden" name="visible" value="<?= json_encode(!oui_non_to_bool($item['visible'])); ?>">
                 <button class="btn btn-sm <?= $item['visible'] === 'oui' ? 'btn-info' : 'btn-danger' ?>"><?= $item['visible']; ?></button>
               </form>
             </td>
