@@ -260,3 +260,25 @@ function bilanTable3(array $props) {
   <?php
   return ob_get_clean();
 }
+
+/*
+ * Attention le champ `key` de `$props` sera utilisé par le JavaScript pour
+ * remplir la liste.
+ */
+function listSaisie(array $props) {
+  ob_start();
+  ?>
+  <div class="panel panel-info">
+    <div class="panel-heading">
+      <h3 class="panel-title">
+        <label><?= $props['text'] ?></label>
+      </h3>
+    </div>
+    <div class="panel-body">
+      <div id="<?= $props['key'] ?>" class="btn-group" >
+      </div>
+    </div>
+  </div>
+  <?php
+  return ob_get_clean();
+}

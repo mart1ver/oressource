@@ -50,18 +50,7 @@ if (is_valid_session() && is_allowed_sortie_id($numero)) {
     </div>
 
     <div class="col-md-4">
-      <div class="panel panel-info">
-        <div class="panel-heading">
-          <h3 class="panel-title">
-            <label>Bacs de sortie des poubelles:</label>
-          </h3>
-        </div>
-        <div class="panel-body">
-          <div id="list_poubelle" class="btn-group">
-            <!-- Rempli via JS -->
-          </div>
-        </div>
-      </div>
+      <?= listSaisie(['text' => 'Bacs de sortie des poubelles:', 'key' => 'list_poubelle']) ?>
 
       <div class="btn-group" role="group">
         <button id="encaissement" class="btn btn-success btn-lg">C'est pesé!</button>

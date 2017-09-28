@@ -48,19 +48,7 @@ if (is_valid_session() && is_allowed_sortie_id($numero)) {
     <div id="numpad" class="col-md-4"" style="width: 220px;"></div>
 
     <div class="col-md-4">
-      <div class="panel panel-info">
-        <div class="panel-heading">
-          <h3 class="panel-title">
-            <label>Materiaux et déchets:</label>
-          </h3>
-        </div>
-
-        <div class="panel-body">
-          <div id="list_evac" class="btn-group">
-            <!-- Rempli via JS -->
-          </div>
-        </div>
-      </div>
+      <?= listSaisie(['text' => 'Materiaux et déchets:', 'key' => 'list_evac']) ?>
 
       <div class="btn-group" role="group">
         <button id="encaissement" class="btn btn-success btn-lg">C'est pesé!</button>

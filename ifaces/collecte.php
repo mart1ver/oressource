@@ -78,16 +78,8 @@ if (is_valid_session() && is_allowed_collecte_id($numero)) {
       </div>
 
       <div class="col-md-4" >
-        <div class="panel panel-info">
-          <div class="panel-heading">
-            <h3 class="panel-title"><label>Type d'objet:</label></h3>
-          </div>
-          <div class="panel-body" style="padding-top:0px">
-            <div class="btn-group" id="list_item">
-              <!-- Remplis via JavaScript voir script de la page -->
-            </div>
-          </div>
-        </div>
+        <?= listSaisie(['text' => "Type d'objet:", 'key' => 'list_item']) ?>
+
         <div class="btn-group" role="group">
           <button id="encaissement" class="btn btn-success btn-lg">C'est pesé!</button>
           <button id="impression" class="btn btn-primary btn-lg" value="Print" ><span class="glyphicon glyphicon-print"></span></button>
