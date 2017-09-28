@@ -41,22 +41,12 @@ if (is_valid_session() && is_allowed_sortie_id($numero)) {
   $evacs = filter_visibles(types_dechets_evac($bdd));
 
   $date = new Datetime('now');
+  $nav = new_nav($point_sortie['nom'], $numero, 2);
   ?>
 
   <div class="container">
+    <?= configNav($nav) ?>
 
-    <nav class="navbar">
-      <div class="header-header">
-        <h1><?= $point_sortie['nom']; ?></h1>
-      </div>
-      <ul class="nav nav-tabs">
-        <?php if (affichage_sortie_poubelle()) { ?><li><a href="sortiesp.php?numero=<?= $numero; ?>">Poubelles</a></li><?php } ?>
-        <?php if (affichage_sortie_partenaires()) { ?><li><a href="sortiesc.php?numero=<?= $numero; ?>">Sorties partenaires</a></li><?php } ?>
-        <li class="active"><a href="#">Recyclage</a></li>
-        <?php if (affichage_sortie_don()) { ?><li><a href="sorties.php?numero=<?= $numero; ?>">Don</a></li><?php } ?>
-        <?php if (affichage_sortie_dechetterie()) { ?><li><a href="sortiesd.php?numero=<?= $numero; ?>">Déchetterie</a></li><?php } ?>
-      </ul>
-    </nav>
     <div class="col-md-4">
       <div id="ticket" class="panel panel-info" >
         <div class="panel-heading">
@@ -103,18 +93,7 @@ if (is_valid_session() && is_allowed_sortie_id($numero)) {
     </div>
 
     <div class="col-md-4" >
-      <div class="panel panel-info">
-        <div class="panel-heading">
-          <h3 class="panel-title">
-            <label>Materiaux et déchets:</label>
-          </h3>
-        </div>
-        <div class="panel-body">
-          <div id="list_evac" class="btn-group">
-            <!-- Rempli via JS -->
-          </div>
-        </div>
-      </div>
+      <?= listSaisie(['text' => 'Materiaux et déchets:', 'key' => 'list_evac']) ?>
 
       <div class="btn-group" role="group">
         <button id="encaissement" class="btn btn-success btn-lg">C'est pesé!</button>

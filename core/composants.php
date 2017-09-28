@@ -17,6 +17,29 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/* Fonction utile pour la nav des sorties. */
+
+function new_nav(string $text, int $numero, int $active): array {
+  $links = [
+    [affichage_sortie_poubelle(), ['href' => "sortiesp.php?numero=$numero", 'text' => 'Poubelles']],
+    [affichage_sortie_partenaires(), ['href' => "sortiesc.php?numero=$numero", 'text' => 'Sorties partenaires']],
+    [affichage_sortie_recyclage(), ['href' => "sortiesr.php?numero=$numero", 'text' => 'Recyclage']],
+    [affichage_sortie_don(), ['href' => "sorties.php?numero=$numero", 'text' => 'Dons']],
+    [affichage_sortie_dechetterie(), ['href' => "sortiesd.php?numero=$numero", 'text' => 'Déchetterie']],
+  ];
+  $l = array_map(function ($e) {
+    if ($e[0] === true) {
+      return $e[1];
+    }
+  }, $links);
+  $l[$active]['state'] = true;
+  $nav = [
+    'text' => $text,
+    'links' => $l
+  ];
+  return $nav;
+}
+
 function checkBox(array $props, bool $state) {
   ob_start();
   ?>
@@ -84,7 +107,7 @@ function mailInput(array $props, string $state) {
 function linkNav(array $props) {
   ob_start();
   ?>
-  <li class="<?= $props['state'] ?? '' ?>">
+  <li class="<?= ($props['state'] ?? false) ? 'active' : '' ?>">
     <a href="<?= $props['href'] ?>"><?= $props['text'] ?></a>
   </li>
   <?php
@@ -141,6 +164,7 @@ function configInfo(array $props) {
  * Il ne faut pas changer les id, ni les noms des inputs de ce composant sans modifier
  * le javascript associée.
  */
+
 function cartList(array $props) {
   ob_start();
   ?>
@@ -156,7 +180,7 @@ function cartList(array $props) {
           <?php if (is_allowed_saisie_date() && is_allowed_edit_date()) { ?>
             <label>Date:
               <input type="date" id="antidate" name="antidate"
-                   style="width:130px; height:20px;" value="<?= $props['date'] ?>">
+                     style="width:130px; height:20px;" value="<?= $props['date'] ?>">
             </label>
           <?php } ?>
           <ul class="list-group" id="transaction">
@@ -232,6 +256,28 @@ function bilanTable3(array $props) {
       </thead>
       <?= bilanTableBody3($props) ?>
     </table>
+  </div>
+  <?php
+  return ob_get_clean();
+}
+
+/*
+ * Attention le champ `key` de `$props` sera utilisé par le JavaScript pour
+ * remplir la liste.
+ */
+function listSaisie(array $props) {
+  ob_start();
+  ?>
+  <div class="panel panel-info">
+    <div class="panel-heading">
+      <h3 class="panel-title">
+        <label><?= $props['text'] ?></label>
+      </h3>
+    </div>
+    <div class="panel-body">
+      <div id="<?= $props['key'] ?>" class="btn-group" >
+      </div>
+    </div>
   </div>
   <?php
   return ob_get_clean();
