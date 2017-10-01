@@ -1,5 +1,4 @@
 <?php
-
 /*
   Oressource
   Copyright (C) 2014-2017  Martin Vert and Oressource devellopers
@@ -18,1084 +17,373 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+// Bilan des collectes
 session_start();
 
-require_once('../core/session.php');
-require_once('../core/requetes.php');
-
-// Bilan des collectes
-
-if (isset($_SESSION['id'])
-  && $_SESSION['systeme'] === "oressource"
-  && is_allowed_bilan()) {
-
-  require_once('./tete.php');
-  require_once('../moteur/dbconfig.php');
-
-?>
-
-  <script type="text/javascript" src="../js/moment.js"></script>
-  <script type="text/javascript" src="../js/daterangepicker.js"></script>
-  <div class="container">
-
-<div class="row">
-  <div class="col-md-11 " >
-<h1>Bilan global</h1>
-
-   <div class="col-md-4 col-md-offset-8" >
-<label for="reportrange">Choisissez la période à inspecter:</label><br>
-<div id="reportrange" class="pull-left" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc">
-                  <i class="fa fa-calendar"></i>
-                  <span></span> <b class="caret"></b>
-               </div>
-
-
-
-               <script type="text/javascript">
-"use strict";
-function $_GET(param) {
-  var vars = {};
-  window.location.href.replace(
-    /[?&]+([^=&]+)=?([^&]*)?/gi, // regexp
-    function( m, key, value ) { // callback
-      vars[key] = value !== undefined ? value : '';
-    }
-  );
-
-  if ( param ) {
-    return vars[param] ? vars[param] : null;
-  }
-  return vars;
-}
-               $(document).ready(function() {
-
-                  var cb = function(start, end, label) {
-                    console.log(start.toISOString(), end.toISOString(), label);
-                    $('#reportrange span').html(start.format('DD, MMMM, YYYY') + ' - ' + end.format('DD, MMMM, YYYY'));
-                    //alert("Callback has fired: [" + start.format('MMMM D, YYYY') + " to " + end.format('MMMM D, YYYY') + ", label = " + label + "]");
-                  }
-var dateuno = $_GET('date1');
-var moisuno = dateuno.substring(0,2);
-var jouruno = dateuno.substring(3,5);
-var anneeuno = dateuno.substring(6,10);
-var dateunogf = moisuno+'/'+jouruno+"/"+anneeuno;
-
-
-var datedos = $_GET('date2');
-var moisdos = datedos.substring(0,2);
-var jourdos = datedos.substring(3,5);
-var anneedos = datedos.substring(6,10);
-var datedosgf = moisdos+'/'+jourdos+"/"+anneedos;
-
-                  var optionSet1 = {
-                     startDate: dateunogf,
-                    endDate: datedosgf,
-                    minDate: '01/01/2010',
-                    maxDate: '12/31/2020',
-                    dateLimit: { days: 800 },
-                    showDropdowns: true,
-                    showWeekNumbers: true,
-                    timePicker: false,
-                    timePickerIncrement: 1,
-                    timePicker12Hour: true,
-                    ranges: {
-                       "Aujoud'hui": [moment(), moment()],
-                       'hier': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-                       '7 derniers jours': [moment().subtract(6, 'days'), moment()],
-                       '30 derniers jours': [moment().subtract(29, 'days'), moment()],
-                       'Ce mois': [moment().startOf('month'), moment().endOf('month')],
-                       'Le mois deriner': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
-                    },
-                    opens: 'left',
-                    buttonClasses: ['btn btn-default'],
-                    applyClass: 'btn-small btn-primary',
-                    cancelClass: 'btn-small',
-                    format: 'DD/MM/YYYY',
-                    separator: ' to ',
-                    locale: {
-                        applyLabel: 'Appliquer',
-                        cancelLabel: 'Anuler',
-                        fromLabel: 'Du',
-                        toLabel: 'Au',
-                        customRangeLabel: 'Période libre',
-                        daysOfWeek: ['Di','Lu', 'Ma', 'Me', 'Je', 'Ve', 'Sa'],
-                        monthNames: ['Janvier', 'Fevrier', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Aout', 'Septembre', 'Octobre', 'Novembre', 'Decembre'],
-                        firstDay: 1
-                    }
-                  };
-
-
-
-                     $('#reportrange span').html($_GET('date1') + ' - ' + $_GET('date2'));
-
-                  $('#reportrange').daterangepicker(optionSet1, cb);
-
-                  $('#reportrange').on('show.daterangepicker', function() { console.log("show event fired"); });
-                  $('#reportrange').on('hide.daterangepicker', function() { console.log("hide event fired"); });
-                  $('#reportrange').on('apply.daterangepicker', function(ev, picker) {
-                    console.log("apply event fired, start/end dates are "
-                      + picker.startDate.format('DD MM, YYYY')
-                      + " to "
-                      + picker.endDate.format('DD MM, YYYY')
-                    );
-                    window.location.href = "bilanc.php?date1="+picker.startDate.format('DD-MM-YYYY')+"&date2="+picker.endDate.format('DD-MM-YYYY')+"&numero=<?= $_GET['numero'] ?>";
-                  });
-                  $('#reportrange').on('cancel.daterangepicker', function(ev, picker) { console.log("cancel event fired"); });
-
-                  $('#options1').click(function() {
-                    $('#reportrange').data('daterangepicker').setOptions(optionSet1, cb);
-                  });
-
-                  $('#options2').click(function() {
-                    $('#reportrange').data('daterangepicker').setOptions(optionSet2, cb);
-                  });
-
-                  $('#destroy').click(function() {
-                    $('#reportrange').data('daterangepicker').remove();
-                  });
-
-               });
-               </script>
-
-
-
-<script src="../js/raphael.js"></script>
-      <script src="../js/morris/morris.js"></script>
-
-
-
-
-</div>
-<ul class="nav nav-tabs">
-
-  <li class="active"><a >Collectes</a></li>
-  <li><a href="<?=  "bilanhb.php?date1=" . $_GET['date1'].'&date2='.$_GET['date2'].'&numero=0'?>">Sorties hors-boutique</a></li>
-  <li><a href="<?=  "bilanv.php?date1=" . $_GET['date1'].'&date2='.$_GET['date2'].'&numero=0'?>">Ventes</a></li>
-
-</ul>
-
-
-  </div>
-
-      </div>
-
-
-
-      </div>
-
-
-
-
-<div class="row">
-   <div class="col-md-8 col-md-offset-1" >
-  <h2> Bilan des collectes de la structure
-  </h2>
-  <ul class="nav nav-tabs">
-
-
- <?php
-          //on affiche un onglet par type d'objet
-
-            // On recupère tout le contenu des visibles de la table type_dechets
-            $reponse = $bdd->query('SELECT * FROM points_collecte');
-
-           // On affiche chaque entree une à une
-           while ($donnees = $reponse->fetch())
-           {
-           ?>
-            <li<?php if ($_GET['numero'] == $donnees['id']){ echo ' class="active"';}?>><a href="<?=  "bilanc.php?numero=" . $donnees['id']."&date1=" . $_GET['date1']."&date2=" . $_GET['date2']?>"><?=$donnees['nom']?></a></li>
-           <?php }
-              $reponse->closeCursor(); // Termine le traitement de la requête
-           ?>
-
-           <li<?php if ($_GET['numero'] == 0){ echo ' class="active"';}?>><a href="<?=  "bilanc.php?numero=0" ."&date1=" . $_GET['date1']."&date2=" . $_GET['date2']?>">Tous les points</a></li>
-
-       </ul>
-
-  <br>
-
-<div class="row">
-  <h2>
-    <?php
-
-// on affiche la période visée
-  if($_GET['date1'] == $_GET['date2']){
-    echo' Le '.$_GET['date1']." ,";
-
-  }
-  else
-  {
-  echo' Du '.$_GET['date1']." au ".$_GET['date2']." ,";
-}
-//on convertit les deux dates en un format compatible avec la bdd
-
-$txt1  = $_GET['date1'];
-$date1ft = DateTime::createFromFormat('d-m-Y', $txt1);
-$time_debut = $date1ft->format('Y-m-d');
-$time_debut = $time_debut." 00:00:00";
-
-$txt2  = $_GET['date2'];
-$date2ft = DateTime::createFromFormat('d-m-Y', $txt2);
-$time_fin = $date2ft->format('Y-m-d');
-$time_fin = $time_fin." 23:59:59";
-
-
-    ?>
-  Masse collectée: <?php
-
-
-// on determine la masse totale collecté sur cette période (pour tous les points)
-
-//****************************************************************************************************************************************************************************************************************************************
-
-if ($_GET['numero'] == 0) {
-
-
-            // On recupère tout le contenu de la table point de vente
-
-
-$req = $bdd->prepare("SELECT SUM(pesees_collectes.masse)AS total   FROM pesees_collectes  WHERE  DATE(pesees_collectes.timestamp) BETWEEN :du AND :au  ");
-$req->execute(array('du' => $time_debut,'au' => $time_fin ));
-$donnees = $req->fetch();
-$mtotcolo = $donnees['total'];
-echo $donnees['total']." Kgs.";
-
-              $req->closeCursor(); // Termine le traitement de la requête
-
-}
-else //si on observe un point en particulier
-{
-
-            // On recupère tout le contenu de la table point de vente
-
-
-$req = $bdd->prepare("SELECT SUM(pesees_collectes.masse)AS total
-FROM pesees_collectes ,collectes
+require_once '../core/session.php';
+require_once '../core/requetes.php';
+
+function bilanCollecteMasse(PDO $bdd, int $id, $start, $fin): float {
+  $numero = ($id > 0 ? " AND collectes.id_point_collecte = $id " : ' ');
+  $sql = 'SELECT SUM(pesees_collectes.masse) total
+FROM pesees_collectes, collectes
 WHERE pesees_collectes.id_collecte = collectes.id
-AND pesees_collectes.timestamp BETWEEN :du AND :au  AND collectes.id_point_collecte = :numero ");
-
-
-
-$req->execute(array('du' => $time_debut,'au' => $time_fin,'numero' => $_GET['numero'] ));
-$donnees = $req->fetch();
-$mtotcolo = $donnees['total'];
-echo $donnees['total']." Kgs.";
-
-              $req->closeCursor(); // Termine le traitement de la requête
-
+AND pesees_collectes.timestamp BETWEEN :du AND :au ' . $numero;
+  $stmt = $bdd->prepare($sql);
+  $stmt->bindParam(':du', $start, PDO::PARAM_STR);
+  $stmt->bindParam(':au', $fin, PDO::PARAM_STR);
+  $stmt->execute();
+  $masse = $stmt->fetch()['total'] ?? 0;
+  $stmt->closeCursor();
+  return $masse;
 }
-if ($_GET['numero'] == 0) {
 
+function bilansCollectes0(PDO $bdd, int $id, $start, $fin): array {
+  $numero = ($id > 0 ? " AND collectes.id_point_collecte = $id " : ' ');
+  $sql = 'SELECT
+type_collecte.nom,
+SUM(pesees_collectes.masse) somme,
+pesees_collectes.timestamp,
+type_collecte.id,
+COUNT(distinct collectes.id) ncol
+FROM pesees_collectes,collectes, type_collecte
+WHERE pesees_collectes.timestamp BETWEEN :du AND :au
+AND   type_collecte.id = collectes.id_type_collecte
+AND   pesees_collectes.id_collecte = collectes.id ' . $numero . '
+GROUP BY id_type_collecte';
+  $stmt = $bdd->prepare($sql);
+  $stmt->bindParam(':du', $start, PDO::PARAM_STR);
+  $stmt->bindParam(':au', $fin, PDO::PARAM_STR);
+  $stmt->execute();
+  return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
 
+function bilanCollecte2(PDO $bdd, int $id, $start, $fin): array {
+  $numero = ($id > 0 ? " AND collectes.id_point_collecte = $id " : ' ');
+  $sql = 'SELECT
+  localites.nom,
+  SUM(pesees_collectes.masse) somme,
+  pesees_collectes.timestamp,
+  localites.id localite,
+  COUNT(distinct collectes.id) ncol
+FROM  pesees_collectes, collectes, localites
+WHERE
+  pesees_collectes.timestamp BETWEEN :du AND :au
+  AND localites.id = collectes.localisation
+  AND pesees_collectes.id_collecte = collectes.id' . $numero . '
+GROUP BY localites.id';
+  $stmt = $bdd->prepare($sql);
+  $stmt->bindParam(':du', $start, PDO::PARAM_STR);
+  $stmt->bindParam(':au', $fin, PDO::PARAM_STR);
+  $stmt->execute();
+  return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+function BilanCollectes1(PDO $bdd, int $id, int $typeCollecte, $start, $fin): array {
+  $numero = ($id > 0 ? " AND collectes.id_point_collecte = $id " : ' ');
+  $sql = 'SELECT
+  type_dechets.id,
+  type_dechets.couleur,
+  type_dechets.nom,
+sum(pesees_collectes.masse) somme
+FROM  type_dechets, pesees_collectes, type_collecte, collectes
+WHERE pesees_collectes.timestamp BETWEEN :du AND :au
+AND   type_dechets.id = pesees_collectes.id_type_dechet
+AND   type_collecte.id = collectes.id_type_collecte
+AND   pesees_collectes.id_collecte = collectes.id
+AND   type_collecte.id = :id_type_collecte ' . $numero . '
+GROUP BY nom
+ORDER BY somme DESC';
+  $stmt = $bdd->prepare($sql);
+  $stmt->bindParam(':du', $start, PDO::PARAM_STR);
+  $stmt->bindParam(':au', $fin, PDO::PARAM_STR);
+  $stmt->bindParam(':id_type_collecte', $typeCollecte, PDO::PARAM_INT);
+  $stmt->execute();
+  return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+function BilanCollecte3(PDO $bdd, int $id, int $localite, $start, $fin): array {
+  $numero = ($id > 0 ? " AND collectes.id_point_collecte = $id " : ' ');
+  $sql = 'SELECT
+  type_dechets.id id,
+  localites.id,
+  type_dechets.couleur,
+  type_dechets.nom,
+  sum(pesees_collectes.masse) somme
+ FROM type_dechets, pesees_collectes,localites, collectes
+WHERE pesees_collectes.timestamp BETWEEN :du AND :au
+AND   type_dechets.id = pesees_collectes.id_type_dechet
+AND   localites.id = collectes.localisation
+AND   pesees_collectes.id_collecte = collectes.id
+AND   localites.id = :id_loc ' . $numero . '
+GROUP BY nom
+ORDER BY somme DESC';
+  $stmt = $bdd->prepare($sql);
+  $stmt->bindParam(':du', $start, PDO::PARAM_STR);
+  $stmt->bindParam(':au', $fin, PDO::PARAM_STR);
+  $stmt->bindParam(':id_loc', $localite, PDO::PARAM_STR);
+  $stmt->execute();
+  return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+function MorrisCollecteMasse(PDO $bdd, int $id, $start, $end): array {
+  $numero = ($id > 0 ? " AND collectes.id_point_collecte = $id " : ' ');
+  $sql = 'SELECT
+        type_collecte.couleur,
+        type_collecte.nom,
+        sum(pesees_collectes.masse) somme
+FROM type_collecte, pesees_collectes, collectes
+WHERE type_collecte.id = collectes.id_type_collecte
+AND   pesees_collectes.id_collecte = collectes.id
+AND   DATE(collectes.timestamp) BETWEEN :du AND :au ' . $numero . '
+GROUP BY nom';
+  $stmt = $bdd->prepare($sql);
+  $stmt->bindParam(':du', $start, PDO::PARAM_STR);
+  $stmt->bindParam(':au', $end, PDO::PARAM_STR);
+  return data_graphs($stmt);
+}
+
+function MorrisCollecteMasseTot(PDO $bdd, int $id, $start, $end): array {
+  $numero = ($id > 0 ? " AND collectes.id_point_collecte = $id " : ' ');
+  $sql = 'SELECT
+    type_dechets.couleur,
+    type_dechets.nom,
+    sum(pesees_collectes.masse) somme
+    FROM type_dechets, pesees_collectes, collectes
+    WHERE type_dechets.id = pesees_collectes.id_type_dechet
+    AND   pesees_collectes.id_collecte = collectes.id
+    AND   DATE(collectes.timestamp) BETWEEN :du AND :au ' . $numero . '
+    GROUP BY type_dechets.nom';
+  $stmt = $bdd->prepare($sql);
+  $stmt->bindParam(':du', $start, PDO::PARAM_STR);
+  $stmt->bindParam(':au', $end, PDO::PARAM_STR);
+  return data_graphs($stmt);
+}
+
+function MorrisCollecteLoca(PDO $bdd, int $id, $start, $end): array {
+  $numero = ($id > 0 ? " AND collectes.id_point_collecte = $id " : ' ');
+  $sql = 'SELECT
+        localites.couleur,
+        localites.nom,
+        SUM(DISTINCT pesees_collectes.masse) somme
+FROM type_collecte, pesees_collectes, collectes, localites
+WHERE localites.id = collectes.localisation
+AND   type_collecte.id = collectes.id_type_collecte
+AND   pesees_collectes.id_collecte = collectes.id
+AND   DATE(collectes.timestamp) BETWEEN :du AND :au ' . $numero . '
+GROUP BY localites.nom';
+  $stmt = $bdd->prepare($sql);
+  $stmt->bindParam(':du', $start, PDO::PARAM_STR);
+  $stmt->bindParam(':au', $end, PDO::PARAM_STR);
+  return data_graphs($stmt);
+}
+
+if (is_valid_session() && is_allowed_bilan()) {
+  require_once './tete.php';
+  require_once '../moteur/dbconfig.php';
+
+  $date1 = $_GET['date1'];
+  $date2 = $_GET['date2'];
+  $time_debut = DateTime::createFromFormat('d-m-Y', $date1)->format('Y-m-d') . ' 00:00:00';
+  $time_fin = DateTime::createFromFormat('d-m-Y', $date2)->format('Y-m-d') . ' 23:59:59';
+
+  $numero = (int) filter_input(INPUT_GET, 'numero', FILTER_VALIDATE_INT);
+  $points_collectes = filter_visibles(points_collectes($bdd));
+  $data = [
+    'masse' => bilanCollecteMasse($bdd, $numero, $time_debut, $time_fin),
+    ]
   ?>
-  , sur <?php
-// on determine le nombre de points de collecte
 
-
- $req = $bdd->prepare("SELECT COUNT(id) FROM points_collecte");//SELECT `titre_affectation` FROM affectations WHERE titre_affectation = "conssomables" LIMIT 1
-$req->execute(array('au' => $time_fin ));
-$donnees = $req->fetch();
-
-echo $donnees['COUNT(id)'];
-
-$req->closeCursor(); // Termine le traitement de la requête
-
-
-
-  ?> Point(s) de collecte.
-
-<?php } ?></h2>
-  <div class="col-md-6">
-
-
-<div class="panel panel-default">
-  <div class="panel-heading">
-    <h3 class="panel-title">Répartition par type de collecte
-</h3>
-  </div>
-  <div class="panel-body">
-
-<table class="table table-condensed table-striped table table-bordered table-hover" style="border-collapse:collapse;">
-    <thead>
-        <tr>
-            <th  style="width:300px">Type de collecte</th>
-            <th>Nbr.de collectes</th>
-            <th>Masse collectée</th>
-
-            <th>%</th>
-
-        </tr>
-    </thead>
-    <tbody>
-
-
-
-        <?php
-        if ($_GET['numero'] == 0) {
-
-// on determine les masses totales collèctés sur cete période(pour Tous les points)
-
-            // On recupère tout le contenu de la table affectations
-
-            $reponse = $bdd->prepare('SELECT
-type_collecte.nom,SUM(`pesees_collectes`.`masse`) somme,pesees_collectes.timestamp,type_collecte.id,COUNT(distinct collectes.id) ncol
-FROM
-pesees_collectes,collectes,type_collecte
-
-WHERE
-  pesees_collectes.timestamp BETWEEN :du AND :au AND
-type_collecte.id =  collectes.id_type_collecte AND pesees_collectes.id_collecte = collectes.id
-GROUP BY id_type_collecte');
- $reponse->execute(array('du' => $time_debut,'au' => $time_fin ));
-           // On affiche chaque entree une à une
-           while ($donnees = $reponse->fetch())
-           {
-            ?>
-            <tr data-toggle="collapse" data-target=".parmasse<?= $donnees['id']?>" >
-            <td><?= $donnees['nom'] ?></td>
-            <td><?= $donnees['ncol'] ?></td>
-            <td><?= $donnees['somme'] ?></td>
-            <td><?=  round($donnees['somme']*100/$mtotcolo, 2)   ; ?></td>
-        </tr>
-
-      <?php
-
-            // On recupère tout le contenu de la table affectations
-            $reponse2 = $bdd->prepare('SELECT type_dechets.id,type_dechets.couleur,type_dechets.nom, sum(pesees_collectes.masse) somme
- FROM type_dechets,pesees_collectes ,type_collecte , collectes
-WHERE
-pesees_collectes.timestamp BETWEEN :du AND :au
-AND type_dechets.id = pesees_collectes.id_type_dechet
-AND type_collecte.id =  collectes.id_type_collecte AND pesees_collectes.id_collecte = collectes.id
-AND type_collecte.id = :id_type_collecte
-GROUP BY nom
-ORDER BY somme DESC');
-  $reponse2->execute(array('du' => $time_debut,'au' => $time_fin ,'id_type_collecte' => $donnees['id'] ));
-           // On affiche chaque entree une à une
-           while ($donnees2 = $reponse2->fetch())
-           {
-            ?>
-
-    <tr class="collapse parmasse<?= $donnees['id']?> " >
-            <td  >
-
-              <a href=" jours.php?date1=<?= $_GET['date1']?>&date2=<?= $_GET['date2']?>&type=<?=  $donnees2['id'] ?>" > <?= $donnees2['nom'] ?> </a>
-            </td >
-            <td >
-                <?= $donnees2['somme']." Kgs." ?>
-            </td>
-            <td >
-                <?=  round($donnees2['somme']*100/$donnees['somme'], 2)." %"  ; ?>
-            </td>
-          </tr>
-
- <?php
-             }
-              $reponse2->closeCursor(); // Termine le traitement de la requête
-                ?>
-
-      <?php
-           }
-              $reponse->closeCursor(); // Termine le traitement de la requête
-
-                     //********************************************************************************************************************************************************************************************************************
-               }else//*********************************************************************************************************************************************************************************************************************
-
-               {
-
-
-
-// on determine les masses totales collèctés sur cete période(pour un point donné)
-            // On recupère tout le contenu de la table affectations
-
-            $reponse = $bdd->prepare('SELECT
-type_collecte.nom,SUM(`pesees_collectes`.`masse`) somme,pesees_collectes.timestamp,type_collecte.id,COUNT(distinct collectes.id) ncol
-FROM
-pesees_collectes,collectes,type_collecte
-
-WHERE
-  pesees_collectes.timestamp BETWEEN :du AND :au AND
-type_collecte.id =  collectes.id_type_collecte AND pesees_collectes.id_collecte = collectes.id
-AND collectes.id_point_collecte = :numero
-GROUP BY id_type_collecte');
- $reponse->execute(array('du' => $time_debut,'au' => $time_fin,'numero' => $_GET['numero']  ));
-           // On affiche chaque entree une à une
-           while ($donnees = $reponse->fetch())
-           {
-            ?>
-            <tr data-toggle="collapse" data-target=".parmasse<?= $donnees['id']?>" >
-            <td><?= $donnees['nom'] ?></td>
-             <td><?= $donnees['ncol'] ?></td>
-            <td><?= $donnees['somme'] ?></td>
-            <td><?=  round($donnees['somme']*100/$mtotcolo, 2)   ; ?></td>
-        </tr>
-      <?php
-
-            // On recupère tout le contenu de la table affectations
-            $reponse2 = $bdd->prepare('SELECT type_dechets.id,type_dechets.couleur,type_dechets.nom, sum(pesees_collectes.masse) somme
- FROM type_dechets,pesees_collectes ,type_collecte , collectes
-WHERE
-pesees_collectes.timestamp BETWEEN :du AND :au
-AND type_dechets.id = pesees_collectes.id_type_dechet
-AND type_collecte.id =  collectes.id_type_collecte AND pesees_collectes.id_collecte = collectes.id
-AND type_collecte.id = :id_type_collecte AND collectes.id_point_collecte = :numero
-GROUP BY nom
-ORDER BY somme DESC');
-  $reponse2->execute(array('du' => $time_debut,'au' => $time_fin,'numero' => $_GET['numero'] ,'id_type_collecte' => $donnees['id'] ));
-           // On affiche chaque entree une à une
-           while ($donnees2 = $reponse2->fetch())
-           {
-            ?>
- <tr class="collapse parmasse<?= $donnees['id']?> active">
-
-            <td class="hiddenRow">
-               <a href=" jours.php?date1=<?= $_GET['date1']?>&date2=<?= $_GET['date2']?>&type=<?=  $donnees2['id'] ?>" > <?= $donnees2['nom'] ?> </a>
-            </td >
-            <td class="hiddenRow">
-                <?= $donnees2['somme']." Kgs." ?>
-            </td>
-            <td class="hiddenRow">
-                <?=  round($donnees2['somme']*100/$donnees['somme'], 2)." %"  ; ?>
-            </td>
-        </tr>
- <?php
-             }
-              $reponse2->closeCursor(); // Termine le traitement de la requête
-                ?>
-      <?php
-           }
-              $reponse->closeCursor(); // Termine le traitement de la requête
-
-               } ?>
-
-
-
-
-
-
-
-
-
-
-    </tbody>
-</table>
-
-
-
-
-<br>
-
-
-
-          <div  id="graphmasse" style="height: 180px;"></div>
-          <br>
-          <div  id="graph2masse" style="height: 180px;"></div>
-
-
-       <br>
-<a href="<?=  "../moteur/export_bilanc_partype.php?numero=". $_GET['numero']."&date1=" . $_GET['date1']."&date2=" . $_GET['date2']?>">
-
-
-
-
-        <button type="button" class="btn btn-default btn-xs" disabled>exporter ces données (.csv) </button>
-      </a>
-</div>
-  </div>
-
-
-
-  </div>
-
-
-
-  <div class="col-md-6">
-
-<div class="panel panel-default">
-  <div class="panel-heading">
-    <h3 class="panel-title">Répartition par localité
-</h3>
-  </div>
-  <div class="panel-body">
-
-<table class="table table-condensed table-striped table table-bordered table-hover" style="border-collapse:collapse;">
-    <thead>
-        <tr>
-            <th  style="width:300px">Localité</th>
-            <th>Nbr.de collectes</th>
-            <th>Masse collectée</th>
-
-            <th>%</th>
-
-        </tr>
-    </thead>
-    <tbody>
-
-
-
-        <?php
-        if ($_GET['numero'] == 0) {
-
-// on determine les masses totales collèctés sur cete période(pour Tous les points)
-
-            // On recupère tout le contenu de la table affectations
-
-            $reponse = $bdd->prepare('SELECT
-localites.nom,SUM(pesees_collectes.masse) somme,pesees_collectes.timestamp,localites.id id,COUNT(distinct collectes.id) ncol
-FROM
-pesees_collectes,collectes,localites
-
-WHERE
-  pesees_collectes.timestamp BETWEEN :du AND :au AND
-localites.id =  collectes.localisation AND pesees_collectes.id_collecte = collectes.id
-GROUP BY id');
- $reponse->execute(array('du' => $time_debut,'au' => $time_fin ));
-           // On affiche chaque entree une à une
-           while ($donnees = $reponse->fetch())
-           {
-            ?>
-            <tr data-toggle="collapse" data-target=".parloc<?= $donnees['id']?>" >
-            <td><?= $donnees['nom'] ?></td>
-            <td><?= $donnees['ncol'] ?></td>
-            <td><?= $donnees['somme'] ?></td>
-            <td><?=  round($donnees['somme']*100/$mtotcolo, 2)   ; ?></td>
-        </tr>
-
-      <?php
-
-            // On recupère tout le contenu de la table affectations
-            $reponse2 = $bdd->prepare('SELECT type_dechets.id AS idd,localites.id,type_dechets.couleur,type_dechets.nom, sum(pesees_collectes.masse) somme
- FROM type_dechets,pesees_collectes ,localites , collectes
-WHERE
-pesees_collectes.timestamp BETWEEN :du AND :au
-AND type_dechets.id = pesees_collectes.id_type_dechet
-AND localites.id =  collectes.localisation AND pesees_collectes.id_collecte = collectes.id
-AND localites.id = :id_loc
-GROUP BY nom
-ORDER BY somme DESC');
-  $reponse2->execute(array('du' => $time_debut,'au' => $time_fin ,'id_loc' => $donnees['id'] ));
-           // On affiche chaque entree une à une
-           while ($donnees2 = $reponse2->fetch())
-           {
-            ?>
-
-    <tr class="collapse parloc<?= $donnees['id']?> " >
-            <td  >
-           <a href=" jours.php?date1=<?= $_GET['date1']?>&date2=<?= $_GET['date2']?>&type=<?=  $donnees2['idd'] ?>" > <?= $donnees2['nom'] ?> </a>
-            </td >
-            <td >
-                <?= $donnees2['somme']." Kgs." ?>
-            </td>
-            <td >
-                <?=  round($donnees2['somme']*100/$donnees['somme'], 2)." %"  ; ?>
-            </td>
-          </tr>
-
- <?php
-             }
-              $reponse2->closeCursor(); // Termine le traitement de la requête
-                ?>
-
-      <?php
-           }
-              $reponse->closeCursor(); // Termine le traitement de la requête
-               }else
-
-               {
-
-
-
-// on determine les masses totales collèctés sur cete période(pour un point donné)
-            // On recupère tout le contenu de la table affectations
-
-            $reponse = $bdd->prepare('SELECT
-localites.nom,SUM(pesees_collectes.masse) somme,pesees_collectes.timestamp,localites.id,COUNT(distinct collectes.id) ncol
-FROM
-pesees_collectes,collectes,localites
-
-WHERE
-  pesees_collectes.timestamp BETWEEN :du AND :au AND
-localites.id =  collectes.localisation AND pesees_collectes.id_collecte = collectes.id
-AND collectes.id_point_collecte = :numero
-GROUP BY id
-');
- $reponse->execute(array('du' => $time_debut,'au' => $time_fin,'numero' => $_GET['numero']  ));
-           // On affiche chaque entree une à une
-           while ($donnees = $reponse->fetch())
-           {
-            ?>
-            <tr data-toggle="collapse" data-target=".parloc<?= $donnees['id']?>" >
-            <td><?= $donnees['nom'] ?></td>
-             <td><?= $donnees['ncol'] ?></td>
-            <td><?= $donnees['somme'] ?></td>
-            <td><?=  round($donnees['somme']*100/$mtotcolo, 2)   ; ?></td>
-        </tr>
-      <?php
-            // On recupère tout le contenu de la table affectations
-            $reponse2 = $bdd->prepare('SELECT type_dechets.id,type_dechets.couleur,type_dechets.nom, sum(pesees_collectes.masse) somme
- FROM type_dechets,pesees_collectes ,type_collecte , collectes
-WHERE
-pesees_collectes.timestamp BETWEEN :du AND :au
-AND type_dechets.id = pesees_collectes.id_type_dechet
-AND type_collecte.id =  collectes.id_type_collecte AND pesees_collectes.id_collecte = collectes.id
-AND type_collecte.id = :id_type_collecte AND collectes.id_point_collecte = :numero
-GROUP BY nom
-ORDER BY somme DESC');
-  $reponse2->execute(array('du' => $time_debut,'au' => $time_fin,'numero' => $_GET['numero'] ,'id_type_collecte' => $donnees['id'] ));
-           // On affiche chaque entree une à une
-           while ($donnees2 = $reponse2->fetch())
-           {
-            ?>
- <tr class="collapse parloc<?= $donnees['id']?> active">
-
-            <td class="hiddenRow">
-               <a href=" jours.php?date1=<?= $_GET['date1']?>&date2=<?= $_GET['date2']?>&type=<?=  $donnees2['id'] ?>" > <?= $donnees2['nom'] ?> </a>
-            </td >
-            <td class="hiddenRow">
-                <?= $donnees2['somme']." Kgs." ?>
-            </td>
-            <td class="hiddenRow">
-                <?=  round($donnees2['somme']*100/$donnees['somme'], 2)." %"  ; ?>
-            </td>
-        </tr>
- <?php
-             }
-              $reponse2->closeCursor(); // Termine le traitement de la requête
-                ?>
-      <?php
-           }
-              $reponse->closeCursor(); // Termine le traitement de la requête
-
-               } ?>
-
-
-
-
-
-
-
-
-
-
-    </tbody>
-</table>
-
-
-
-
-<br>
-
-<div id="graphloca" style="height: 180px;"></div>
-<br>
-<div id="graph2loca" style="height: 180px;"></div>
-
-<br>
-       <a href="<?=  "../moteur/export_bilanc_parloca.php?numero=". $_GET['numero']."&date1=" . $_GET['date1']."&date2=" . $_GET['date2']?>">
-        <button type="button" class="btn btn-default btn-xs" disabled>exporter ces données (.csv) </button>
-      </a>
-  </div>
-</div>
-
-  </div>
-
-
- <script>       Morris.Donut({
-    element: 'graphmasse',
-
-data: [
-<?php
-if ($_GET['numero'] == 0) {
-            // On recupère tout les masses collectés pour chaque type
-            $reponse = $bdd->prepare('SELECT type_collecte.couleur,type_collecte.nom, sum(pesees_collectes.masse) somme
-              FROM type_collecte,pesees_collectes,collectes WHERE type_collecte.id = collectes.id_type_collecte AND pesees_collectes.id_collecte = collectes.id AND DATE(collectes.timestamp) BETWEEN :du AND :au
-GROUP BY nom');
- $reponse->execute(array('du' => $time_debut,'au' => $time_fin ));
-           // On affiche chaque entree une à une
-           while ($donnees = $reponse->fetch())
-           {
-
-            echo '{value:'.$donnees['somme'].', label:"'.$donnees['nom'].'"},';
-
-
-             }
-              $reponse->closeCursor(); // Termine le traitement de la requête
-                ?>
-],
-    backgroundColor: '#ccc',
-    labelColor: '#060',
-    colors: [
-<?php
-            // On recupère les couleurs de chaque type
-            $reponse = $bdd->prepare('SELECT type_collecte.couleur,type_collecte.nom, sum(pesees_collectes.masse) somme
-              FROM type_collecte,pesees_collectes,collectes WHERE type_collecte.id = collectes.id_type_collecte AND pesees_collectes.id_collecte = collectes.id AND DATE(collectes.timestamp) BETWEEN :du AND :au
-GROUP BY nom');
-  $reponse->execute(array('du' => $time_debut,'au' => $time_fin ));
-           // On affiche chaque entree une à une
-           while ($donnees = $reponse->fetch())
-           {
-
-            echo '"'.$donnees['couleur'].'"'.',';
-
-
-             }
-              $reponse->closeCursor(); // Termine le traitement de la requête
-                ?>
-    ],
-    formatter: function (x) { return x + " Kg."}
-    });
-</script>
-<?php }
-else {
-            // On recupère tout le contenu de la table affectations
-            $reponse = $bdd->prepare('SELECT type_collecte.couleur,type_collecte.nom, sum(pesees_collectes.masse) somme
-              FROM type_collecte,pesees_collectes,collectes
-              WHERE type_collecte.id = collectes.id_type_collecte AND pesees_collectes.timestamp BETWEEN :du AND :au
-              AND pesees_collectes.id_collecte = collectes.id AND collectes.id_point_collecte = :numero
-GROUP BY nom');
- $reponse->execute(array('du' => $time_debut,'au' => $time_fin,'numero' => $_GET['numero'] ));
-           // On affiche chaque entree une à une
-           while ($donnees = $reponse->fetch())
-           {
-
-            echo '{value:'.$donnees['somme'].', label:"'.$donnees['nom'].'"},';
-
-
-             }
-              $reponse->closeCursor(); // Termine le traitement de la requête
-                ?>
-],
-    backgroundColor: '#ccc',
-    labelColor: '#060',
-    colors: [
-<?php
-            // On recupère tout le contenu de la table affectations
-            $reponse = $bdd->prepare('SELECT type_collecte.couleur,type_collecte.nom, sum(pesees_collectes.masse) somme
-              FROM type_collecte,pesees_collectes,collectes
-              WHERE type_collecte.id = collectes.id_type_collecte AND pesees_collectes.timestamp BETWEEN :du AND :au
-              AND pesees_collectes.id_collecte = collectes.id AND collectes.id_point_collecte = :numero
-GROUP BY nom');
- $reponse->execute(array('du' => $time_debut,'au' => $time_fin,'numero' => $_GET['numero'] ));
-           // On affiche chaque entree une à une
-           while ($donnees = $reponse->fetch())
-           {
-
-            echo '"'.$donnees['couleur'].'"'.',';
-
-
-             }
-              $reponse->closeCursor(); // Termine le traitement de la requête
-                ?>
-    ],
-    formatter: function (x) { return x + " Kg."}
-    });
-</script>
-<?php } ?>
-
-
- <script>       Morris.Donut({
-    element: 'graph2masse',
-
-data: [
-<?php
-if ($_GET['numero'] == 0) {
-            // On recupère tout les masses collectés pour chaque type
-            $reponse = $bdd->prepare('SELECT type_dechets.couleur,type_dechets.nom, sum(pesees_collectes.masse) somme
-              FROM type_dechets,pesees_collectes WHERE type_dechets.id = pesees_collectes.id_type_dechet AND pesees_collectes.timestamp BETWEEN :du AND :au
-GROUP BY nom');
- $reponse->execute(array('du' => $time_debut,'au' => $time_fin ));
-           // On affiche chaque entree une à une
-           while ($donnees = $reponse->fetch())
-           {
-
-            echo '{value:'.$donnees['somme'].', label:"'.$donnees['nom'].'"},';
-
-
-             }
-              $reponse->closeCursor(); // Termine le traitement de la requête
-                ?>
-],
-    backgroundColor: '#ccc',
-    labelColor: '#060',
-    colors: [
-<?php
-            // On recupère les couleurs de chaque type
-            $reponse = $bdd->prepare('SELECT type_dechets.couleur,type_dechets.nom, sum(pesees_collectes.masse) somme
-              FROM type_dechets,pesees_collectes WHERE type_dechets.id = pesees_collectes.id_type_dechet AND pesees_collectes.timestamp BETWEEN :du AND :au
-GROUP BY nom');
-  $reponse->execute(array('du' => $time_debut,'au' => $time_fin ));
-           // On affiche chaque entree une à une
-           while ($donnees = $reponse->fetch())
-           {
-
-            echo "'".$donnees['couleur']."'".",";
-
-
-             }
-              $reponse->closeCursor(); // Termine le traitement de la requête
-                ?>
-    ],
-    formatter: function (x) { return x + " Kg."}
-    });
-</script>
-<?php }
-else {
-            // On recupère tout le contenu de la table affectations
-            $reponse = $bdd->prepare('SELECT type_dechets.couleur,type_dechets.nom, sum(pesees_collectes.masse) somme
-              FROM type_dechets,pesees_collectes,collectes
-              WHERE type_dechets.id = pesees_collectes.id_type_dechet AND pesees_collectes.timestamp BETWEEN :du AND :au
-              AND pesees_collectes.id_collecte = collectes.id AND collectes.id_point_collecte = :numero
-GROUP BY nom');
- $reponse->execute(array('du' => $time_debut,'au' => $time_fin,'numero' => $_GET['numero'] ));
-           // On affiche chaque entree une à une
-           while ($donnees = $reponse->fetch())
-           {
-
-            echo '{value:'.$donnees['somme'].', label:"'.$donnees['nom'].'"},';
-
-
-             }
-              $reponse->closeCursor(); // Termine le traitement de la requête
-                ?>
-],
-    backgroundColor: '#ccc',
-    labelColor: '#060',
-    colors: [
-<?php
-            // On recupère tout le contenu de la table affectations
-            $reponse = $bdd->prepare('SELECT type_dechets.couleur,type_dechets.nom, sum(pesees_collectes.masse) somme
-              FROM type_dechets,pesees_collectes,collectes
-              WHERE type_dechets.id = pesees_collectes.id_type_dechet AND pesees_collectes.timestamp BETWEEN :du AND :au
-              AND pesees_collectes.id_collecte = collectes.id AND collectes.id_point_collecte = :numero
-GROUP BY nom');
- $reponse->execute(array('du' => $time_debut,'au' => $time_fin,'numero' => $_GET['numero'] ));
-           // On affiche chaque entree une à une
-           while ($donnees = $reponse->fetch())
-           {
-
-            echo "'".$donnees['couleur']."'".",";
-
-
-             }
-              $reponse->closeCursor(); // Termine le traitement de la requête
-                ?>
-    ],
-    formatter: function (x) { return x + " Kg."}
-    });
-</script>
-<?php } ?>
-
-
- <script>       Morris.Donut({
-    element: 'graphloca',
-
-data: [
-<?php
-if ($_GET['numero'] == 0) {
-            // On recupère tout les masses collectés pour chaque type
-            $reponse = $bdd->prepare('SELECT localites.couleur,localites.nom, sum(distinct pesees_collectes.masse) somme
-              FROM type_dechets,pesees_collectes,collectes,localites WHERE localites.id = collectes.localisation AND pesees_collectes.id_collecte = collectes.id AND pesees_collectes.timestamp BETWEEN :du AND :au
-GROUP BY nom');
- $reponse->execute(array('du' => $time_debut,'au' => $time_fin ));
-           // On affiche chaque entree une à une
-           while ($donnees = $reponse->fetch())
-           {
-
-            echo '{value:'.$donnees['somme'].', label:"'.$donnees['nom'].'"},';
-
-
-             }
-              $reponse->closeCursor(); // Termine le traitement de la requête
-                ?>
-],
-    backgroundColor: '#ccc',
-    labelColor: '#060',
-    colors: [
-<?php
-            // On recupère les couleurs de chaque type
-            $reponse = $bdd->prepare('SELECT localites.couleur,localites.nom, sum(distinct pesees_collectes.masse) somme
-              FROM type_dechets,pesees_collectes,collectes,localites WHERE localites.id = collectes.localisation AND pesees_collectes.id_collecte = collectes.id AND pesees_collectes.timestamp BETWEEN :du AND :au
-GROUP BY nom');
-  $reponse->execute(array('du' => $time_debut,'au' => $time_fin ));
-           // On affiche chaque entree une à une
-           while ($donnees = $reponse->fetch())
-           {
-
-            echo "'".$donnees['couleur']."'".",";
-
-
-             }
-              $reponse->closeCursor(); // Termine le traitement de la requête
-                ?>
-    ],
-    formatter: function (x) { return x + " Kg."}
-    });
-</script>
-<?php }
-else {
-            // On recupère tout le contenu de la table affectations
-            $reponse = $bdd->prepare('SELECT localites.couleur,localites.nom, sum(pesees_collectes.masse) somme
-              FROM localites,pesees_collectes,collectes
-              WHERE localites.id = collectes.localisation AND pesees_collectes.timestamp BETWEEN :du AND :au
-              AND pesees_collectes.id_collecte = collectes.id AND collectes.id_point_collecte = :numero
-GROUP BY nom');
- $reponse->execute(array('du' => $time_debut,'au' => $time_fin,'numero' => $_GET['numero'] ));
-           // On affiche chaque entree une à une
-           while ($donnees = $reponse->fetch())
-           {
-
-            echo '{value:'.$donnees['somme'].', label:"'.$donnees['nom'].'"},';
-
-
-             }
-              $reponse->closeCursor(); // Termine le traitement de la requête
-                ?>
-],
-    backgroundColor: '#ccc',
-    labelColor: '#060',
-    colors: [
-<?php
-            // On recupère tout le contenu de la table affectations
-            $reponse = $bdd->prepare('SELECT localites.couleur,localites.nom, sum(pesees_collectes.masse) somme
-              FROM localites,pesees_collectes,collectes
-              WHERE localites.id = collectes.localisation AND pesees_collectes.timestamp BETWEEN :du AND :au
-              AND pesees_collectes.id_collecte = collectes.id AND collectes.id_point_collecte = :numero
-GROUP BY nom');
- $reponse->execute(array('du' => $time_debut,'au' => $time_fin,'numero' => $_GET['numero'] ));
-           // On affiche chaque entree une à une
-           while ($donnees = $reponse->fetch())
-           {
-
-            echo "'".$donnees['couleur']."'".",";
-
-
-             }
-              $reponse->closeCursor(); // Termine le traitement de la requête
-                ?>
-    ],
-    formatter: function (x) { return x + " Kg."}
-    });
-</script>
-
-
-
-<?php } ?>
-
-<script>       Morris.Donut({
-    element: 'graph2loca',
-
-data: [
-<?php
-if ($_GET['numero'] == 0) {
-            // On recupère tout les masses collectés pour chaque type
-            $reponse = $bdd->prepare('SELECT type_dechets.couleur,type_dechets.nom, sum(pesees_collectes.masse) somme
-              FROM type_dechets,pesees_collectes WHERE type_dechets.id = pesees_collectes.id_type_dechet AND pesees_collectes.timestamp BETWEEN :du AND :au
-GROUP BY nom');
- $reponse->execute(array('du' => $time_debut,'au' => $time_fin ));
-           // On affiche chaque entree une à une
-           while ($donnees = $reponse->fetch())
-           {
-
-            echo '{value:'.$donnees['somme'].', label:"'.$donnees['nom'].'"},';
-
-
-             }
-              $reponse->closeCursor(); // Termine le traitement de la requête
-                ?>
-],
-    backgroundColor: '#ccc',
-    labelColor: '#060',
-    colors: [
-<?php
-            // On recupère les couleurs de chaque type
-            $reponse = $bdd->prepare('SELECT type_dechets.couleur,type_dechets.nom, sum(pesees_collectes.masse) somme
-              FROM type_dechets,pesees_collectes WHERE type_dechets.id = pesees_collectes.id_type_dechet AND pesees_collectes.timestamp BETWEEN :du AND :au
-GROUP BY nom');
-  $reponse->execute(array('du' => $time_debut,'au' => $time_fin ));
-           // On affiche chaque entree une à une
-           while ($donnees = $reponse->fetch())
-           {
-
-            echo "'".$donnees['couleur']."'".",";
-
-
-             }
-              $reponse->closeCursor(); // Termine le traitement de la requête
-                ?>
-    ],
-    formatter: function (x) { return x + " Kg."}
-    });
-</script>
-<?php }
-else {
-            // On recupère tout le contenu de la table affectations
-            $reponse = $bdd->prepare('SELECT type_dechets.couleur,type_dechets.nom, sum(pesees_collectes.masse) somme
-              FROM type_dechets,pesees_collectes,collectes
-              WHERE type_dechets.id = pesees_collectes.id_type_dechet AND pesees_collectes.timestamp BETWEEN :du AND :au
-              AND pesees_collectes.id_collecte = collectes.id AND collectes.id_point_collecte = :numero
-GROUP BY nom');
- $reponse->execute(array('du' => $time_debut,'au' => $time_fin,'numero' => $_GET['numero'] ));
-           // On affiche chaque entree une à une
-           while ($donnees = $reponse->fetch())
-           {
-
-            echo '{value:'.$donnees['somme'].', label:"'.$donnees['nom'].'"},';
-
-
-             }
-              $reponse->closeCursor(); // Termine le traitement de la requête
-                ?>
-],
-    backgroundColor: '#ccc',
-    labelColor: '#060',
-    colors: [
-<?php
-            // On recupère tout le contenu de la table affectations
-            $reponse = $bdd->prepare('SELECT type_dechets.couleur,type_dechets.nom, sum(pesees_collectes.masse) somme
-              FROM type_dechets,pesees_collectes,collectes
-              WHERE type_dechets.id = pesees_collectes.id_type_dechet AND pesees_collectes.timestamp BETWEEN :du AND :au
-              AND pesees_collectes.id_collecte = collectes.id AND collectes.id_point_collecte = :numero
-GROUP BY nom');
- $reponse->execute(array('du' => $time_debut,'au' => $time_fin,'numero' => $_GET['numero'] ));
-           // On affiche chaque entree une à une
-           while ($donnees = $reponse->fetch())
-           {
-
-            echo "'".$donnees['couleur']."'".",";
-
-
-             }
-              $reponse->closeCursor(); // Termine le traitement de la requête
-                ?>
-    ],
-    formatter: function (x) { return x + " Kg."}
-    });
-</script>
-
-
-
-<?php } ?>
-</div>
-
-<br>
-
-
-
-</div>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-11">
+        <h1>Bilan global</h1>
+        <div class="col-md-4 col-md-offset-8" >
+          <label for="reportrange">Choisissez la période à inspecter:</label>
+          <div id="reportrange" class="pull-left" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc">
+            <i class="fa fa-calendar"></i>
+            <span></span> <b class="caret"></b>
+          </div>
         </div>
 
+        <ul class="nav nav-tabs">
+          <li class="active"><a>Collectes</a></li>
+          <li><a href="bilanhb.php?numero=0&date1=<?= $date1 ?>&date2=<?= $date2 ?>">Sorties hors-boutique</a></li>
+          <li><a href="bilanv.php?numero=0&date1=<?= $date1 ?>&date2=<?= $date2 ?>">Ventes</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
 
+  <div class="row">
+    <div class="col-md-8 col-md-offset-1" >
+      <h2> Bilan des collectes de la structure</h2>
+      <ul class="nav nav-tabs">
+        <?php foreach ($points_collectes as $p) { ?>
+          <li class="<?= $numero === $p['id'] ? 'active' : '' ?>">
+            <a href="bilanc.php?numero=<?= $p['id'] ?>&date1=<?= $date1 ?>&date2=<?= $date2; ?>"><?= $p['nom']; ?></a>
+          </li>
+        <?php } ?>
+        <li class="<?= $numero === 0 ? 'active' : '' ?>">
+          <a href="bilanc.php?numero=0&date1=<?= $date1 ?>&date2=<?= $date2; ?>">Tous les points</a>
+        </li>
+      </ul>
+      <br>
 
+      <div class="row">
+        <h2><?= $date1 === $date2 ? "Le {$date1}," : " Du {$date1} au {$date2}," ?>
+          Masse collectée: <?= $data['masse'] ?> kg<?= $numero === 0 ? ' , sur ' . count($points_collectes) . ' Point(s) de collecte' : '' ?>.</h2>
+        <div id="graph2masse" style="height: 180px;"></div>
+        <div class="col-md-6">
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h3 class="panel-title">Répartition par type de collecte</h3>
+            </div>
 
+            <div class="panel-body">
+              <table class="table table-condensed table-striped table table-bordered table-hover" style="border-collapse:collapse;">
+                <thead>
+                  <tr>
+                    <th style="width:300px">Type de collecte</th>
+                    <th>Nbr.de collectes</th>
+                    <th>Masse collectée</th>
+                    <th>%</th>
+                  </tr>
+                </thead>
 
+                <tbody>
+                  <?php foreach (bilansCollectes0($bdd, $numero, $time_debut, $time_fin) as $p) { ?>
+                    <tr data-toggle="collapse" data-target=".parmasse<?= $p['id']; ?>">
+                      <td><?= $p['nom']; ?></td>
+                      <td><?= $p['ncol']; ?></td>
+                      <td><?= $p['somme']; ?></td>
+                      <td><?= round($p['somme'] * 100 / $data['masse'], 2); ?></td>
+                    </tr>
+                    <?php foreach (BilanCollectes1($bdd, $numero, $p['id'], $time_debut, $time_fin) as $d) { ?>
+                      <tr class="collapse parmasse<?= $p['id']; ?>">
+                        <td>
+                          <a href="jours.php?date1=<?= $date1 ?>&date2=<?= $date2 ?>&type=<?= $d['id'] ?>"><?= $d['nom']; ?></a>
+                        </td>
+                        <td><?= $d['somme'] ?> kg</td>
+                        <td><?= round($d['somme'] * 100 / $p['somme'], 2) ?> %</td>
+                      </tr>
+                    <?php } ?>
+                  <?php } ?>
+                </tbody>
+              </table>
 
+              <!-- TODO: faire une tableau pour la répartion par type d'objets/collecté -->
+              <div id="graphmasse" style="height: 180px;"></div>
 
+              <!-- TODO: refaire cette fonctionnalité
+              <a href="../moteur/export_bilanc_partype.php?numero=<?= $numero ?>&date1=<?= $date1 ?>&date2=<?= $date2 ?>">
+                <button type="button" class="btn btn-default btn-xs" disabled>exporter ces données (.csv)</button>
+              </a>
+              -->
+            </div>
+          </div>
+        </div>
 
+        <div class="col-md-6">
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h3 class="panel-title">Répartition par localité</h3>
+            </div>
 
+            <div class="panel-body">
+              <table class="table table-condensed table-striped table table-bordered table-hover" style="border-collapse:collapse;">
+                <thead>
+                  <tr>
+                    <th style="width:300px">Localité</th>
+                    <th>Nbr.de collectes</th>
+                    <th>Masse collectée</th>
+                    <th>%</th>
+                  </tr>
+                </thead>
 
+                <tbody>
+                  <?php foreach (BilanCollecte2($bdd, $numero, $time_debut, $time_fin) as $a) { ?>
+                    <tr data-toggle="collapse" data-target=".parloc<?= $a['localite']; ?>">
+                      <td><?= $a['nom']; ?></td>
+                      <td><?= $a['ncol']; ?></td>
+                      <td><?= $a['somme']; ?></td>
+                      <td><?= round($a['somme'] * 100 / $a['somme'], 2); ?></td>
+                    </tr>
+                    <?php foreach (BilanCollecte3($bdd, $numero, $a['localite'], $time_debut, $time_fin) as $b) { ?>
+                      <tr class="collapse parloc<?= $a['localite'] ?>">
+                        <td class="hiddenRow">
+                          <a href="jours.php?date1=<?= $date1 ?>&date2=<?= $date2 ?>&type=<?= $b['id'] ?>"><?= $b['nom'] ?></a>
+                        </td>
+                        <td class="hiddenRow"><?= $b['somme'] ?> kg</td>
+                        <td class="hiddenRow"><?= round($b['somme'] * 100 / $a['somme'], 2) ?> %</td>
+                      </tr>
+                    <?php } ?>
+                  <?php } ?>
+                </tbody>
+              </table>
 
+              <div id="graphloca" style="height: 180px;"></div>
 
-<?php include "pied.php";
+              <!-- TODO: refaire cette fonctionnalité
+              <a href="../moteur/export_bilanc_parloca.php?numero=<?= $numero ?>&date1=<?= $date1 ?>&date2=<?= $date2; ?>">
+                <button type="button" class="btn btn-default btn-xs" disabled>exporter ces données (.csv) </button>
+              </a>
+              -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const graphmass = <?= json_encode(MorrisCollecteMasse($bdd, $numero, $time_debut, $time_fin)) ?>;
+    Morris.Donut({
+      element: 'graphmasse',
+      data: graphmass.data,
+      backgroundColor: '#ccc',
+      labelColor: '#060',
+      colors: graphmass.color,
+      formatter: (x) => `${x} Kg.`
+    });
+  </script>
+
+  <script>
+    const graph2masse = <?= json_encode(MorrisCollecteMasseTot($bdd, $numero, $time_debut, $time_fin)) ?>;
+    Morris.Donut({
+      element: 'graph2masse',
+      data: graph2masse.data,
+      backgroundColor: '#ccc',
+      labelColor: '#060',
+      colors: graph2masse.color,
+      formatter: (x) => `${x} Kg.`
+    });
+  </script>
+
+  <script>
+    const graphloca = <?= json_encode(MorrisCollecteLoca($bdd, $numero, $time_debut, $time_fin)) ?>;
+    Morris.Donut({
+      element: 'graphloca',
+      data: graphloca.data,
+      backgroundColor: '#ccc',
+      labelColor: '#060',
+      colors: graphloca.color,
+      formatter: (x) => `${x} Kg.`
+    });
+  </script>
+
+  <script type="text/javascript">
+    'use strict';
+    $(document).ready(() => {
+      const get = process_get();
+      const url = 'bilanc';
+      const options = set_datepicker(get, url);
+      bind_datepicker(options, get, url);
+    });
+  </script>
+  <?php
+  require_once 'pied.php';
+} else {
+  header('Location: ../moteur/destroy.php');
 }
-    else
-    {header('Location: ../moteur/destroy.php') ;}
 ?>

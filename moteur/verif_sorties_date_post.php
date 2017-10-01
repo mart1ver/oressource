@@ -18,4 +18,4 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-header('Location:../ifaces/verif_sorties.php?numero='.$_POST['point']."&date=".$_POST['date']);
+header('Location:../ifaces/verif_sorties.php?numero=' . $_POST['point'] . '&date=' . $_POST['date']);

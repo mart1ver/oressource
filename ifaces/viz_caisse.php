@@ -24,19 +24,14 @@ require_once('../core/requetes.php');
 
 $numero = filter_input(INPUT_GET, 'numero', FILTER_VALIDATE_INT);
 
-if (isset($_SESSION['id'])
-  && $_SESSION['systeme'] === 'oressource'
-  && $_SESSION['viz_caisse']
-  && is_allowed_vente_id($_GET['numero'])) {
-  require_once "tete.php";
+if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && $_SESSION['viz_caisse'] && is_allowed_vente_id($_GET['numero'])) {
+  require_once 'tete.php';
 
-  $nb_viz_caisse = intval($_SESSION['nb_viz_caisse']);
+  $nb_viz_caisse = (int) ($_SESSION['nb_viz_caisse']);
   ?>
 
-  <script type="text/javascript" src="../js/moment.js"></script>
-  <script type="text/javascript" src="../js/daterangepicker.js"></script>
   <div class="container">
-    <h1>Visualisation des <?= $nb_viz_caisse ?> derniere ventes</h1>
+    <h1>Visualisation des <?= $nb_viz_caisse; ?> derniere ventes</h1>
     <p align="right">
       <input class="btn btn-default btn-lg" type='button'name='quitter' value='Quitter' OnClick="window.close();"/></p>
     <div class="panel-body">
@@ -61,25 +56,26 @@ if (isset($_SESSION['id'])
       <tbody>
         <?php foreach (viz_caisse($bdd, $numero, $nb_viz_caisse) as $vente) { ?>
           <tr>
-            <td><?= $vente['id'] ?></td>
-            <td><?= $vente['date_creation'] ?></td>
-            <td><?= $vente['credit'] ?></td>
-            <td><?= $vente['debit'] ?></td>
-            <td><?= $vente['quantite'] ?></td>
-            <td><span class="badge" style="background-color: <?= $vente['coul'] ?>"><?= $vente['moyen'] ?></span></td>
-            <td style="width:100px"><?= $vente['commentaire'] ?></td>
-            <td><?= $vente['mail'] ?></td>
+            <td><?= $vente['id']; ?></td>
+            <td><?= $vente['date_creation']; ?></td>
+            <td><?= $vente['credit']; ?></td>
+            <td><?= $vente['debit']; ?></td>
+            <td><?= $vente['quantite']; ?></td>
+            <td><span class="badge" style="background-color: <?= $vente['coul']; ?>"><?= $vente['moyen']; ?></span></td>
+            <td style="width:100px"><?= $vente['commentaire']; ?></td>
+            <td><?= $vente['mail']; ?></td>
             <td>
               <?php if ($vente['credit'] > 0 && !($vente['debit'] > 0)) { ?>
-                <form action="viz_vente.php?nvente=<?= $vente['id'] ?>" method="post">
-                  <input type="hidden" name="id" id="id" value="<?= $vente['id'] ?>">
-                  <input type="hidden" name="npoint" id="npoint" value="<?= $numero ?>">
+                <form action="viz_vente.php?nvente=<?= $vente['id']; ?>" method="post">
+                  <input type="hidden" name="id" id="id" value="<?= $vente['id']; ?>">
+                  <input type="hidden" name="npoint" id="npoint" value="<?= $numero; ?>">
                   <button class="btn btn-warning btn-sm" >Remboursement</button>
                 </form>
-              <?php } else { ?>
-                <form action="viz_remboursement.php?nvente=<?= $vente['id'] ?>" method="post">
-                  <input type="hidden" name="id" id="id" value="<?= $vente['id'] ?>">
-                  <input type="hidden" name="npoint" id="npoint" value="<?= $numero ?>">
+                <?php
+              } else { ?>
+                <form action="viz_remboursement.php?nvente=<?= $vente['id']; ?>" method="post">
+                  <input type="hidden" name="id" id="id" value="<?= $vente['id']; ?>">
+                  <input type="hidden" name="npoint" id="npoint" value="<?= $numero; ?>">
                   <button class="btn btn-warning btn-sm">Vente</button>
                 </form>
               <?php } ?>
@@ -90,8 +86,7 @@ if (isset($_SESSION['id'])
     </table>
   </div><!-- /.container -->
   <?php
-  $reqVentes->closeCursor();
-  require_once "pied.php";
+  require_once 'pied.php';
 } else {
   header('Location: ../moteur/destroy.php');
 }

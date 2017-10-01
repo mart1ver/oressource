@@ -1,5 +1,4 @@
 <?php
-
 /*
   Oressource
   Copyright (C) 2014-2017  Martin Vert and Oressource devellopers
@@ -20,139 +19,100 @@
 
 session_start();
 require_once('../moteur/dbconfig.php');
+if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($_SESSION['niveau'], 'k') !== false)) {
+  require_once 'tete.php';
+  ?>
+  <div class="container">
+    <h1>Gestion des moyens de paiement en caisse</h1>
+    <div class="panel-heading">Gérez ici les moyens de paiement disponibles aux différents points de vente</div>
+    <p>Permet de définir les différents moyens de paiement disponibles aux différents points de vente.</p>
 
-//Vérification des autorisations de l'utilisateur et des variables de session requises pour l'affichage de cette page:
-  if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 'k') !== false))
-      { include "tete.php" ?>
-    <div class="container">
-        <h1>Gestion des moyens de paiement en caisse</h1>
-         <div class="panel-heading">Gérez ici les moyens de paiement disponibles aux différents points de vente</div>
-         <p>Permet de définir les différents moyens de paiement disponibles aux différents points de vente.</p>
-
-      <div class="panel-body">
-        <div class="row">
-        	<form action="../moteur/moyens_paiement_post.php" method="post">
-  <div class="col-md-3"><label for="nom">Nom:</label> <input type="text"                 value ="<?= $_GET['nom']?>" name="nom" id="nom" class="form-control " required autofocus></div>
-    <div class="col-md-2"><label for="commentaire">Description:</label> <input type="text" value ="<?= $_GET['description']?>" name="description" id="description" class="form-control " required ></div>
-
-  <div class="col-md-1"><label for="couleur">Couleur:</label> <input type="color"        value ="<?= "#".$_GET['couleur']?>" name="couleur" id="couleur" class="form-control " required ></div>
-  <div class="col-md-1"><br><button name="creer" class="btn btn-default">Créer!</button></div>
-</form>
-</div>
-      </div>
-      <!-- Table -->
-      <table class="table">
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Date de création</th>
-            <th>Nom</th>
-            <th>Description</th>
-            <th>Couleur</th>
-            <th>Visible</th>
-            <th></th>
-
-          </tr>
-        </thead>
-        <tbody>
-        <?php
-            // On recupère tout le contenu de la table affectations
-            $reponse = $bdd->query('SELECT * FROM moyens_paiement');
-
-           // On affiche chaque entree une à une
-           while ($donnees = $reponse->fetch())
-           {
-
-           ?>
-            <tr>
-            <td><?= $donnees['id']?></td>
-            <td><?= $donnees['timestamp']?></td>
-            <td><?= $donnees['nom']?></td>
-            <td><?= $donnees['description']?></td>
-            <td><span class="badge" style="background-color:<?=$donnees['couleur']?>"><?=$donnees['couleur']?></span></td>
-<td>
-<form action="../moteur/moyens_paiement_visible.php" method="post">
-
-  <input type="hidden" name ="id" id="id" value="<?= $donnees['id']?>">
-  <input type="hidden"name ="visible" id ="visible" value="<?php if ($donnees['visible'] == "oui")
-{echo "non";}
-else
-{echo "oui";}?>">
-<?php
-if ($donnees['visible'] == "oui") // SI on a pas de message d'erreur
-{?>
- <button  class="btn btn-info btn-sm " >
-  <?php
-}
-
-else // SINON
-{?>
-   <button  class="btn btn-danger btn-sm " >
- <?php
-}
- echo $donnees['visible']?>
-  </button>
-</form>
-</td>
-
-
-
-
-<td>
-
-<form action="modification_moyens_paiement.php" method="post">
-
-<input type="hidden" name ="id" id="id" value="<?= $donnees['id']?>">
-<input type="hidden" name ="nom" id="nom" value="<?= $donnees['nom']?>">
-<input type="hidden" name ="description" id="description" value="<?= $donnees['description']?>">
-<input type="hidden" name ="couleur" id="couleur" value="<?= substr($_POST['couleur'],1)?>">
-
-  <button  class="btn btn-warning btn-sm" >Modifier</button>
-
-
-</form>
-
-
-
-</td>
-
-
-
-
-
-
-          </tr>
-           <?php }
-              $reponse->closeCursor(); // Termine le traitement de la requête
-                ?>
-       </tbody>
-        <tfoot>
-          <tr>
-            <th></th>
-            <th></th>
-            <th></th>
-            <th></th>
-            <th></th>
-            <th></th>
-            <th></th>
-
-          </tfoot>
-
-      </table>
-      <br>
+    <div class="panel-body">
       <div class="row">
-  <div class="col-md-4"></div>
-  <div class="col-md-4"><br> </div>
-  <div class="col-md-4"></div>
-  </div>
-  </div>
-  </div>
-    </div><!-- /.container -->
+        <form action="../moteur/moyens_paiement_post.php" method="post">
+          <div class="col-md-3"><label for="nom">Nom:</label> <input type="text"                 value ="<?= $_GET['nom']; ?>" name="nom" id="nom" class="form-control " required autofocus></div>
+          <div class="col-md-2"><label for="commentaire">Description:</label> <input type="text" value ="<?= $_GET['description']; ?>" name="description" id="description" class="form-control" required></div>
 
-<?php include "pied.php";
-}
-    else
-{
-    header('Location: ../moteur/destroy.php') ;
+          <div class="col-md-1"><label for="couleur">Couleur:</label> <input type="color" value="<?= '#' . $_GET['couleur']; ?>" name="couleur" id="couleur" class="form-control" required></div>
+          <div class="col-md-1"><br><button name="creer" class="btn btn-default">Créer!</button></div>
+        </form>
+      </div>
+    </div>
+
+    <table class="table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Date de création</th>
+          <th>Nom</th>
+          <th>Description</th>
+          <th>Couleur</th>
+          <th>Visible</th>
+          <th></th>
+
+        </tr>
+      </thead>
+      <tbody>
+        <?php
+        $reponse = $bdd->query('SELECT * FROM moyens_paiement');
+        while ($donnees = $reponse->fetch()) { ?>
+          <tr>
+            <td><?= $donnees['id']; ?></td>
+            <td><?= $donnees['timestamp']; ?></td>
+            <td><?= $donnees['nom']; ?></td>
+            <td><?= $donnees['description']; ?></td>
+            <td><span class="badge" style="background-color:<?= $donnees['couleur']; ?>"><?= $donnees['couleur']; ?></span></td>
+            <td>
+              <form action="../moteur/moyens_paiement_visible.php" method="post">
+
+                <input type="hidden" name ="id" id="id" value="<?= $donnees['id']; ?>">
+                <input type="hidden" name="visible" id="visible" value="<?php
+                if ($donnees['visible'] === 'oui') {
+                  echo 'non';
+                } else {
+                  echo 'oui';
+                }
+                ?>">
+                       <?php
+                       if ($donnees['visible'] === 'oui') { // SI on a pas de message d'erreur
+                         ?>
+                  <button  class="btn btn-info btn-sm " >
+                    <?php
+                  } else { // SINON
+                    ?>
+                    <button  class="btn btn-danger btn-sm " >
+                      <?php
+                    }
+                    echo $donnees['visible'];
+                    ?>
+                  </button>
+              </form>
+            </td>
+            <td>
+
+              <form action="modification_moyens_paiement.php" method="post">
+
+                <input type="hidden" name ="id" id="id" value="<?= $donnees['id']; ?>">
+                <input type="hidden" name ="nom" id="nom" value="<?= $donnees['nom']; ?>">
+                <input type="hidden" name ="description" id="description" value="<?= $donnees['description']; ?>">
+                <input type="hidden" name ="couleur" id="couleur" value="<?= substr($_POST['couleur'], 1); ?>">
+
+                <button  class="btn btn-warning btn-sm" >Modifier</button>
+              </form>
+
+            </td>
+          </tr>
+          <?php
+        }
+        $reponse->closeCursor();
+        ?>
+      </tbody>
+    </table>
+  </div><!-- /.container -->
+
+  <?php
+  require_once 'pied.php';
+} else {
+  header('Location: ../moteur/destroy.php');
 }
 ?>

@@ -1,5 +1,4 @@
 <?php
-
 /*
   Oressource
   Copyright (C) 2014-2017  Martin Vert and Oressource devellopers
@@ -30,7 +29,6 @@ $can_verif = is_allowed_verifications();
 $can_users = is_allowed_users();
 $can_parners = is_allowed_partners();
 $can_config = is_allowed_config();
-
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -67,57 +65,57 @@ $can_config = is_allowed_config();
               <li class="nav navbar-nav dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Points de collecte<b class="caret"></b></a>
                 <ul class="dropdown-menu">
-                  <?php foreach (points_collectes($bdd) as $point_collecte) { ?>
+                  <?php foreach (filter_visibles(points_collectes($bdd)) as $point_collecte) { ?>
                     <li>
-                      <a href="../ifaces/collecte.php?numero=<?= "{$point_collecte['id']}&nom={$point_collecte['nom']}&adresse={$point_collecte['adresse']}";
-                    ?>"><?= $point_collecte['nom']; ?></a>
+                      <a href="../ifaces/collecte.php?numero=<?= "{$point_collecte['id']}"; ?>"><?= $point_collecte['nom']; ?></a>
                     </li>
                   <?php } ?>
                 </ul>
               </li>
-            <?php } ?>
+              <?php
+            }
+            ?>
 
             <?php if (is_allowed_sortie()) { ?>
               <li class="nav navbar-nav dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Sorties hors-boutique<b class="caret"></b></a>
                 <ul class="dropdown-menu">
-                  <?php foreach (points_sorties($bdd) as $point_sortie) { ?>
+                  <?php foreach (filter_visibles(points_sorties($bdd)) as $point_sortie) { ?>
                     <li>
-                      <a href="../ifaces/sortiesc.php?numero=<?= "{$point_sortie['id']}&nom={$point_sortie['nom']}&adresse={$point_sortie['adresse']}";
-                    ?>"><?= $point_sortie['nom']; ?></a>
+                      <a href="../ifaces/sortiesc.php?numero=<?= "{$point_sortie['id']}"; ?>"><?= $point_sortie['nom']; ?></a>
                     </li>
                   <?php } ?>
                 </ul>
               </li>
-            <?php } ?>
+              <?php
+            }
+            ?>
 
             <?php if (is_allowed_vente()) { ?>
               <li class="nav navbar-nav dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Points de vente<b class="caret"></b></a>
                 <ul class="dropdown-menu">
-                  <?php foreach (points_ventes($bdd) as $point_vente) { ?>
+                  <?php foreach (filter_visibles(points_ventes($bdd)) as $point_vente) { ?>
                     <li>
-                      <a href="../ifaces/ventes.php?numero=<?= "{$point_vente['id']}&nom={$point_vente['nom']}&adresse={$point_vente['adresse']}" ?>"
+                      <a href="../ifaces/ventes.php?numero=<?= "{$point_vente['id']}"; ?>"
                          ><?= $point_vente['nom']; ?></a>
                     </li>
                   <?php } ?>
                 </ul>
               </li>
-            <?php } ?>
+              <?php
+            }
+            ?>
 
             <?php if (is_allowed_bilan()) { ?>
               <li>
-                <a href="../ifaces/bilanc.php?date1=<?= $now_date ?>&date2=<?= $now_date ?>&numero=0">Bilans</a>
+                <a href="../ifaces/bilanc.php?date1=<?= $now_date; ?>&date2=<?= $now_date; ?>&numero=0">Bilans</a>
               </li>
-            <?php } ?>
+              <?php
+            }
+            ?>
 
-            <?php
-            if ($can_gestion
-              || $can_verif
-              || $can_users
-              || $can_parners
-              || $can_config) {
-              ?>
+            <?php if ($can_gestion || $can_verif || $can_users || $can_parners || $can_config) { ?>
               <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Gestion<b class="caret"></b></a>
                 <ul class="dropdown-menu">
@@ -138,13 +136,13 @@ $can_config = is_allowed_config();
                   <!-- Gestion et verification -->
                   <?php if ($can_verif) { ?>
                     <li>
-                      <a href="../ifaces/verif_collecte.php?date1=<?= $now_date ?>&date2=<?= $now_date ?>&numero=1">Vérifier les collectes</a>
+                      <a href="../ifaces/verif_collecte.php?date1=<?= $now_date; ?>&date2=<?= $now_date; ?>&numero=1">Vérifier les collectes</a>
                     </li>
                     <li>
-                      <a href="../ifaces/verif_sorties.php?date1=<?= $now_date ?>&date2=<?= $now_date ?>&numero=1">Vérifier les sorties hors-boutique</a>
+                      <a href="../ifaces/verif_sorties.php?date1=<?= $now_date; ?>&date2=<?= $now_date; ?>&numero=1">Vérifier les sorties hors-boutique</a>
                     </li>
                     <li>
-                      <a href="../ifaces/verif_vente.php?date1=<?= $now_date ?>&date2=<?= $now_date ?>&numero=1">Vérifier les ventes</a>
+                      <a href="../ifaces/verif_vente.php?date1=<?= $now_date; ?>&date2=<?= $now_date; ?>&numero=1">Vérifier les ventes</a>
                     </li>
                     <li class="divider"></li>
                   <?php } ?>
@@ -206,26 +204,30 @@ $can_config = is_allowed_config();
                       <a href="../ifaces/edition_localites.php">Localités</a>
                     </li>
                     <li>
-                      <a href="../ifaces/edition_description.php">Configuration de Oressource</a>
+                      <a href="../ifaces/structures.php">Configuration de Oressource</a>
                     </li>
                   <?php } ?>
                 </ul>
               </li>
-            <?php } ?>
+              <?php
+            }
+            ?>
 
             <?php if (is_valid_session()) { ?>
-            <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-user"></span><b class="caret"></b></a>
-              <ul class="dropdown-menu">
-                <li>
-                  <a href="../ifaces/edition_mdp_utilisateur.php">Mot de passe</a>
-                </li>
-                <li>
-                  <a href="../moteur/destroy.php">Déconnexion</a>
-                </li>
-              </ul>
-            </li>
-            <?php } ?>
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-user"></span><b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                  <li>
+                    <a href="../ifaces/edition_mdp_utilisateur.php">Mot de passe</a>
+                  </li>
+                  <li>
+                    <a href="../moteur/destroy.php">Déconnexion</a>
+                  </li>
+                </ul>
+              </li>
+              <?php
+            }
+            ?>
           </ul>
         </div><!--/.navbar-collapse -->
       </div>
@@ -235,15 +237,26 @@ $can_config = is_allowed_config();
       <div class='alert alert-danger' style='width:80%;margin:auto;'>
         <p><?= $_GET['err']; ?></p>
       </div>
-    <?php } ?>
+      <?php
+    }
+    ?>
 
     <?php if (isset($_GET['msg'])) { ?>
       <div class='alert alert-success alert-dismissable' style='width:80%;margin:auto;'>
         <button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;</button>
         <p><?= $_GET['msg']; ?></p>
       </div>
-    <?php } ?>
+      <?php
+    }
+    ?>
 
-    <!-- Pour les menus deroulants de bootstrap -->
-    <script  src="../js/jquery-2.1.1.min.js"></script>
-    <script  src="../js/bootstrap.min.js"></script>
+    <script src="../js/jquery-2.1.1.min.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+    <script src="../js/bootstrap-switch.js"></script>
+    <script src="../js/raphael.js"></script>
+    <script src="../js/morris/morris.js"></script>
+    <script src="../js/moment.js"></script>
+    <script src="../js/daterangepicker.js"></script>
+    <script src="../js/utils.js"></script>
+    <script src="../js/ticket.js"></script>
+    <script src="../js/numpad.js"></script>

@@ -23,7 +23,7 @@ require_once('../core/session.php');
 session_start();
 
 // Vérification des autorisations de l'utilisateur et des variables de session requises pour l'utilisation de cette requête:
-if (isset($_SESSION['id']) && $_SESSION['systeme'] === "oressource" && is_allowed_config()) {
+if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && is_allowed_config()) {
   include_once('../moteur/dbconfig.php');
 
   $id = filter_input(INPUT_POST, 'id', FILTER_VALIDATE_INT);
@@ -32,16 +32,16 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === "oressource" && is_allowe
   $surface = filter_input(INPUT_POST, 'surface', FILTER_VALIDATE_INT);
   $commentaire = filter_input(INPUT_POST, 'commentaire', FILTER_SANITIZE_STRING);
   // La regex capture SEULEMENT les couleurs en HEXA.
-  $couleur = filter_input(INPUT_POST, 'couleur', FILTER_VALIDATE_REGEXP, ['options' => ['regexp' =>'/(^#[0-9A-Fa-f]{6})/']]);
+  $couleur = filter_input(INPUT_POST, 'couleur', FILTER_VALIDATE_REGEXP, ['options' => ['regexp' => '/(^#[0-9A-Fa-f]{6})/']]);
 
   // TODO: rejeter si une des variables nulle.
 
-  $req = $bdd->prepare("SELECT
+  $req = $bdd->prepare('SELECT
     id
     FROM points_vente
     WHERE
     id = :id
-    LIMIT 1");
+    LIMIT 1');
   $req->bindValue(':id', (int) $id, PDO::PARAM_INT);
   $donnees = $req->fetch(PDO::FETCH_ASSOC);
 
@@ -66,7 +66,6 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === "oressource" && is_allowe
     $req->bindvalue(':nom', $nom, PDO::PARAM_STR);
     $req->bindValue(':id', $id, PDO::PARAM_INT);
     $req->execute();
-    // Redirection du visiteur vers la page de gestion des points de collecte
     header('Location:../ifaces/edition_points_vente.php?msg=' . $nom . ' bien mis a jour');
   }
 } else {

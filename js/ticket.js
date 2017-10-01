@@ -42,7 +42,7 @@ class Ticket {
   remove(id) {
     const item = this.items.get(id);
     this.items.delete(id);
-    this._total -= item.value;
+    this._total -= item.masse;
     return item;
   }
 
@@ -62,8 +62,9 @@ class Ticket {
   push(item) {
     this.items.set(this.id_interne, item);
     this._total += item.masse;
+    const id = this.id_interne;
     this.id_interne += 1;
-    return this.id_interne;
+    return id;
   }
 
   /*
@@ -86,7 +87,11 @@ class Ticket {
   }
 
   to_array() {
-    return [...this.items.values()];
+    return [ ...this.items.values() ];
+  }
+
+  entries() {
+    return [ ...this.items.entries() ];
   }
 
   /*
@@ -103,15 +108,13 @@ class Ticket {
 // Gros Hack pour pouvoir gerer les sorties... On revoie une
 // fonction specialisee.
 // Attention pretrairement ne fait que retourner la masse sauf si on est une sortie poubelles.
-function connection_UI_ticket(numpad, ticket, typesItems, pretraitement=((a, ..._) => a)) {
+function connection_UI_ticket(numpad, ticket, typesItems, pretraitement = ((a, ..._) => a)) {
   const totalUI = document.getElementById('massetot');
   const transaction = document.getElementById('transaction');
-
   // Ne bind pas this... A explorer.
   return (event) => {
     const id = parseInt(event.currentTarget.id, 10);
     const type_dechet = typesItems[id - 1];
-
     const value = pretraitement(numpad.value, type_dechet.masse_bac); // retourne la masse sauf pour les poubelles.
     if (value > 0.00) {
       if (value <= window.OressourceEnv.masse_max) {
@@ -120,11 +123,9 @@ function connection_UI_ticket(numpad, ticket, typesItems, pretraitement=((a, ...
           masse: value,
           type: id
         });
-
         // Update UI pour du ticket
         const type_dechet = typesItems[id - 1];
         ticket_update_ui(transaction, totalUI, type_dechet, value, ticket.total);
-
         // Clear du numpad.
         numpad.reset_numpad();
       } else {
@@ -155,7 +156,7 @@ function html_saisie_item( { id, nom, couleur }, action) {
 // TODO revoir le design...
 function ticket_update_ui(container, totalUI, type_item, value, total) {
   // Constitution du panier
-  const {_, nom, couleur} = type_item;
+  const { _, nom, couleur } = type_item;
   const li = document.createElement('li');
   li.setAttribute('class', 'list-group-item');
   li.innerHTML = `<span class="badge" style="background-color:${couleur}">${value}</span>${nom}`;
@@ -176,7 +177,6 @@ function recycleur_reset() {
     element.disabled = false;
     element.selected = false;
   });
-
   const ui = document.getElementById('list_evac');
   const btnList = Array.from(ui.children).forEach((button) => {
     button.setAttribute('style', 'display: none; visibility: hidden');
@@ -191,10 +191,8 @@ function tickets_clear(data) {
   const range = document.createRange();
   range.selectNodeContents(document.getElementById('transaction'));
   range.deleteContents();
-
   document.getElementById('commentaire').value = '';
   document.getElementById('massetot').textContent = 'Masse totale: 0 Kg.';
-
   const type = data.classe;
   if (type === 'collecte' || type === 'sorties') {
     document.getElementById('localite').selectedIndex = '0';
@@ -227,13 +225,12 @@ function impression_ticket(encaisse) {
       <p>---------------------------------------------------------------------</p>
       <p>${document.getElementById('transaction').innerHTML}<p>
     </body>`;
-    const oldstr = document.body.innerHTML;
-    document.body.innerHTML = print_html;
-    window.print();
-    document.body.innerHTML = oldstr;
-    encaisse();
-    tickets_clear();
-
+  const oldstr = document.body.innerHTML;
+  document.body.innerHTML = print_html;
+  window.print();
+  document.body.innerHTML = oldstr;
+  encaisse();
+  tickets_clear();
 }
 
 function login(onSuccess = undefined) {
@@ -253,7 +250,6 @@ function login(onSuccess = undefined) {
   container.innerHTML = html;
   document.getElementsByTagName('body')[0].appendChild(container);
   container.setAttribute('style', 'visibility: visible; opacity: 1;');
-
   document.getElementById('formLogin').addEventListener('submit', (event) => {
     event.preventDefault();
     const form = new FormData(document.getElementById('formLogin'));
@@ -263,8 +259,8 @@ function login(onSuccess = undefined) {
       method: 'POST',
       credidentials: 'include',
       headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json; charset=utf-8'
+        'Accept': 'application/json',
+        'Content-Type': 'application/json; charset=utf-8'
       },
       body: JSON.stringify({ username, password })
     }).then(status)
@@ -286,16 +282,19 @@ function status(response) {
   } else if (response.status === 401) {
     const error = new Error(response.statusText);
     error.response = response;
+    error.status = response.status;
     throw error;
   } else {
     console.error(response.statusText);
+    return response;
   }
 }
 
-function post_data(url, data) {
-  // See https://github.com/github/fetch
+// TODO Vrai gestion de la reponse... (future mise en attente...)
+function post_data(url, data, onSuccess) {
+// See https://github.com/github/fetch
   fetch(url, {
-    credentials: 'same-origin',
+    credentials: 'include',
     method: 'POST',
     headers: {
       'Accept': 'application/json',
@@ -303,14 +302,15 @@ function post_data(url, data) {
     },
     body: JSON.stringify(data)
   }).then(status)
-    .then((json) => {
-      // TODO Vrai gestion de la reponse... (future mise en attente...)
-      // console.log('response in Json:', json);
-      tickets_clear(data);
-  }).catch((ex) => {
-    // Reloging and resending!
-    login(() => { post_data(url, data); });
-    console.log('Error:', ex);
+    .then(onSuccess)
+    .catch((ex) => {
+      if (ex.status === 401) {
+        login(() => {
+          post_data(url, data, onSuccess);
+        });
+      } else {
+        console.log('Error:', ex);
+      }
   });
 }
 
@@ -340,14 +340,11 @@ function make_encaissement(url, tickets, metadata) {
     const sum = Object.values(tickets).reduce((acc, ticket) => {
       return acc + ticket.size;
     }, 0);
-
     const form = new FormData(document.getElementById('formulaire'));
     const formdata = {
       localite: parseInt(form.get('localite'), 10),
       id_type_action: parseInt(form.get('id_type_action'), 10),
     };
-
-
     const test = strategie_validation(metadata);
     if (sum > 0 && test(formdata)) {
       const commentaire = form.get('commentaire').trim(); // On enleve les espaces inutiles.
@@ -358,14 +355,13 @@ function make_encaissement(url, tickets, metadata) {
         commentaire,
         antidate
       };
-
       // Petit hack pour merger differents types d'objets a envoyer.
       const items = Object.entries(tickets).reduce((acc, [type, ticket]) => {
         // [type] c'est parceque la clef est a calculee
-        return Object.assign({}, acc, {[type]: ticket.to_array()});
-      }, {});
+        return Object.assign({ }, acc, { [type]: ticket.to_array() });
+      }, { });
       // Object.assign sert a mixer des Objets Javascript.
-      post_data(url, Object.assign({}, data, formdata, items, metadata));
+      post_data(url, Object.assign({ }, data, formdata, items, metadata), tickets_clear);
     }
   };
 }

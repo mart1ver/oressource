@@ -20,11 +20,13 @@
 
 global $_SESSION;
 
+require_once 'validation.php';
+
 // Appellée au login.
-function set_session(array $user, array $structure): void {
+function set_session(array $user, array $structure) {
   $_SESSION['systeme'] = 'oressource';
   $_SESSION['id'] = $user['id'];
-  $_SESSION['niveau']  = $user['niveau'];
+  $_SESSION['niveau'] = $user['niveau'];
   $_SESSION['nom'] = $user['nom'];
   $_SESSION['prenom'] = $user['prenom'];
   $_SESSION['mail'] = $user['mail'];
@@ -49,18 +51,26 @@ function set_session(array $user, array $structure): void {
   $_SESSION['saisiec'] = $structure['saisiec'];
 }
 
-function destroy_session(): void {
-  session_unset();
-  session_destroy();
+function destroy_session() {
   setcookie('login', '');
   setcookie('pass', '');
+  session_unset();
+  session_destroy();
+}
+
+function pesees_ventes(): bool {
+  return $_SESSION['pes_vente'];
+}
+
+function ventes_lots(): bool {
+  return $_SESSION['lot_caisse'];
 }
 
 /**
  * Renvoie `true` si la session est valide.
  */
 function is_valid_session(): bool {
-  return (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource');
+  return isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource';
 }
 
 function affichage_sortie_don(): bool {
@@ -88,8 +98,7 @@ function affichage_sortie_recyclage(): bool {
  * On suppose que la session a deja ete verifiee avant.
  */
 function is_allowed_bilan(): bool {
-  // FIXME: Pourquoi pas mettre la session en parametre?
-  return (strpos($_SESSION['niveau'], 'bi') !== false);
+  return strpos($_SESSION['niveau'], 'bi') !== false;
 }
 
 function is_allowed_vente(): bool {
@@ -104,7 +113,6 @@ function is_allowed_sortie(): bool {
   return strpos($_SESSION['niveau'], 's') !== false;
 }
 
-// Test si l'utilisateur a les droits sur un point de collecte donnee.
 function is_allowed_sortie_id(int $id): bool {
   return strpos($_SESSION['niveau'], 's' . ((string) $id)) !== false;
 }
@@ -117,7 +125,6 @@ function is_allowed_gestion_id(int $id): bool {
   return strpos($_SESSION['niveau'], 'g' . ((string) $id)) !== false;
 }
 
-// Test si l'utilisateur a les droits sur un point de collecte donnee.
 function is_allowed_collecte_id(int $id): bool {
   return strpos($_SESSION['niveau'], 'c' . ((string) $id)) !== false;
 }
@@ -146,18 +153,102 @@ function is_allowed_edit_date(): bool {
   return strpos($_SESSION['niveau'], 'e') !== false;
 }
 
-function is_allowed_saisie_collecte(): bool {
+function is_allowed_saisie_date(): bool {
   return $_SESSION['saisiec'] === 'oui';
 }
 
 function is_collecte_visible(array $point_collecte): bool {
-  return is_allowed_collecte_id($point_collecte['id']) && $point_collecte['visible'] === "oui";
+  return is_allowed_collecte_id($point_collecte['id']) && $point_collecte['visible'] === 'oui';
 }
 
 function is_sortie_visible(array $point_sortie): bool {
-  return is_allowed_sortie_id($point_sortie['id']) && $point_sortie['visible'] === "oui";
+  return is_allowed_sortie_id($point_sortie['id']) && $point_sortie['visible'] === 'oui';
 }
 
 function is_vente_visible(array $point_vente): bool {
-  return is_allowed_vente_id($point_vente['id']) && $point_vente['visible'] === "oui";
+  return is_allowed_vente_id($point_vente['id']) && $point_vente['visible'] === 'oui';
+}
+
+function allowDate(array $json): bool {
+  return (is_allowed_edit_date()
+          && is_allowed_saisie_date()
+          && isset($json['date']));
+}
+
+function droits(array $points, string $type, array $droits): string {
+  $d = '';
+  $niveau = 'niveau' . $type;
+  foreach ($points as $p) {
+    if (isset($droits[$niveau . $p['id']])) {
+      $d .= $type . $p['id'];
+    }
+  }
+  return $d;
+}
+
+function new_droits(PDO $bdd, array $droits): string {
+  $f = function ($type) use ($droits) {
+    return ($droits['niveau' . $type] ?? false) ? $type : '';
+  };
+  $collectes = filter_visibles(points_collectes($bdd));
+  $ventes = filter_visibles(points_ventes($bdd));
+  $sorties = filter_visibles(points_sorties($bdd));
+  return ($f('a') . $f('bi') . $f('g')
+    . $f('h') . $f('l') . $f('j')
+    . $f('k') . $f('m') . $f('p')
+    . $f('e')
+    . droits($collectes, 'c', $droits)
+    . droits($ventes, 'v', $droits)
+    . droits($sorties, 's', $droits));
+}
+
+function new_utilisateur(string $nom, string $prenom, string $mail, string $droits, int $id = 0, string $pass = null): array {
+  return [
+    'id' => $id,
+    'nom' => $nom,
+    'prenom' => $prenom,
+    'mail' => $mail,
+    'pass' => md5($pass),
+    'niveau' => $droits
+  ];
+}
+
+function utilisateur_vente(array $utilisateur, int $id): bool {
+  return strpos($utilisateur['niveau'], 'v' . $id) !== false;
+}
+
+function utilisateur_sortie(array $utilisateur, int $id): bool {
+  return strpos($utilisateur['niveau'], 's' . $id) !== false;
+}
+
+function utilisateur_collecte(array $utilisateur, int $id): bool {
+  return strpos($utilisateur['niveau'], 'c' . $id) !== false;
+}
+
+function utilisateur_bilan(array $utilisateur): bool {
+  return strpos($utilisateur['niveau'], 'bi') !== false;
+}
+
+function utilisateur_gestion(array $utilisateur): bool {
+  return strpos($utilisateur['niveau'], 'g') !== false;
+}
+
+function utilisateur_partners(array $utilisateur): bool {
+  return strpos($utilisateur['niveau'], 'j') !== false;
+}
+
+function utilisateur_config(array $utilisateur): bool {
+  return strpos($utilisateur['niveau'], 'k') !== false;
+}
+
+function utilisateur_users(array $utilisateur): bool {
+  return strpos($utilisateur['niveau'], 'l') !== false;
+}
+
+function utilisateur_verifications(array $utilisateur): bool {
+  return strpos($utilisateur['niveau'], 'h') !== false;
+}
+
+function utilisateur_edit_date(array $utilisateur): bool {
+  return strpos($utilisateur['niveau'], 'e') !== false;
 }

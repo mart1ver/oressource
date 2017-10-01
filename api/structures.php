@@ -18,26 +18,37 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-session_start();
 
-require_once('../moteur/dbconfig.php');
 require_once('../core/session.php');
+require_once('../core/validation.php');
 require_once('../core/requetes.php');
 
-if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && is_allowed_users()) {
-  $id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
+global $bdd;
 
-  if ($_POST['pass1'] === $_POST['pass2']) {
-    require_once('dbconfig.php');
+session_start();
 
-    $req = $bdd->prepare('UPDATE utilisateurs SET pass = :pass WHERE id = :id');
-    $req->execute(['pass' => md5($_POST['pass1']), 'id' => $id]);
-    $req->closeCursor();
+header("content-type:application/json");
 
-    header("Location: ../ifaces/edition_utilisateurs.php?msg=Mot de passe modifié avec succes, utilisateur:{$_SESSION['nom']}, mail: {$_SESSION['mail']}");
-  } else {
-    header('Location: ../ifaces/edition_mdp_admin.php?err=Veuillez inscrire deux mots de passe semblables');
+if (is_valid_session()) {
+  if (!is_allowed_config()) {
+    http_response_code(403); // Forbiden.
+    echo(json_encode(['error' => 'Action interdite.'], JSON_FORCE_OBJECT));
+    die();
   }
+
+  $json_raw = file_get_contents('php://input');
+  $unsafe_json = json_decode($json_raw, true);
+
+  require_once('../moteur/dbconfig.php');
+
+  $structure = structure_validate($unsafe_json);
+  structure_update($bdd, array_merge($structure, [
+    'id' => 1,
+  ]));
+
+  http_response_code(200); // Sucess.
+  echo(json_encode(['success' => 'Configuration saved']));
 } else {
-  header('Location:../moteur/destroy.php');
+  http_response_code(401); // Unauthorized.
+  echo(json_encode(['error' => "Session Invalide ou expiree."], JSON_FORCE_OBJECT));
 }

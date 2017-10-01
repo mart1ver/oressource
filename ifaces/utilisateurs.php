@@ -1,5 +1,4 @@
 <?php
-
 /*
   Oressource
   Copyright (C) 2014-2017  Martin Vert and Oressource devellopers
@@ -19,119 +18,159 @@
  */
 
 session_start();
-require_once('../moteur/dbconfig.php');
 
-//Vérification des autorisations de l'utilisateur et des variables de session requises pour l'affichage de cette page:
-if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 'l') !== false))
-      {  include "tete.php" ?>
-    <div class="container">
-        <h1>Gestion des utilisateurs</h1>
-         <ul class="nav nav-tabs">
-  <li class="active"><a>Inscription</a></li>
-  <li><a href="edition_utilisateurs.php">Édition</a></li>
+require_once '../core/session.php';
+require_once '../core/requetes.php';
+require_once '../core/composants.php';
 
-</ul>
-    <br>
-<div class="panel-body">
+if (is_valid_session() && is_allowed_users()) {
+  require_once 'tete.php';
+  require_once '../moteur/dbconfig.php';
+  $url = null;
+  $droits = null;
+  $collectes = null;
+  $ventes = null;
+  $sorties = null;
+  $nav = null;
+  $info = null;
+  if (!isset($_GET['id'])) {
+    $urlPost = '../moteur/inscription_post.php';
+    $droits = [
+      'text' => "Permissions d'accès",
+      'data' => [
+        [['name' => 'niveaubi', 'text' => "Bilans"], false],
+        [['name' => 'niveaug', 'text' => "Gestion quotidienne"], false],
+        [['name' => 'niveauk', 'text' => "Configuration de Oressource"], false],
+        [['name' => 'niveauh', 'text' => "Verif. formulaires"], false],
+        [['name' => 'niveaul', 'text' => "Utilisateurs"], false],
+        [['name' => 'niveauj', 'text' => "Recycleurs et convention partenaires"], false],
+        [['name' => 'niveaue', 'text' => "Saisir la date dans les formulaires"], false]
+      ]
+    ];
+
+    $collectes = [
+      'text' => "Points de collecte:",
+      'data' => array_map(function ($a) {
+          return [['name' => "niveauc{$a['id']}", 'text' => $a['nom']], false];
+        }, filter_visibles(points_collectes($bdd)))
+    ];
+
+    $ventes = [
+      'text' => "Points de vente:",
+      'data' => array_map(function ($a) {
+          return [['name' => "niveauv{$a['id']}", 'text' => $a['nom']], false];
+        }, filter_visibles(points_ventes($bdd)))
+    ];
+
+    $sorties = [
+      'text' => "Points de sortie hors-boutique:",
+      'data' => array_map(function ($a) {
+          return [['name' => "niveaus{$a['id']}", 'text' => $a['nom']], false];
+        }, filter_visibles(points_sorties($bdd)))
+    ];
+
+    $nav = [
+      'text' => "Gestion des utilisateurs",
+      'links' => [
+        ['href' => 'utilisateurs.php', 'text' => 'Inscription', 'state' => 'active'],
+        ['href' => 'edition_utilisateurs.php', 'text' => 'Édition']
+      ]
+    ];
+
+    $info = [
+      'type' => 'create',
+      'nom' => $_GET['nom'] ?? '',
+      'prenom' => $_GET['prenom'] ?? '',
+      'mail' => $_GET['mail'] ?? ''
+    ];
+  } else {
+    $urlPost = '../moteur/modification_utilisateur_post.php';
+    $utilisateur = utilisateurs_id($bdd, $_GET['id']);
+    $droits = [
+      'text' => "Permissions d'accès",
+      'data' => [
+        [['name' => 'niveaubi', 'text' => "Bilans"], utilisateur_bilan($utilisateur)],
+        [['name' => 'niveaug', 'text' => "Gestion quotidienne"], utilisateur_gestion($utilisateur)],
+        [['name' => 'niveauk', 'text' => "Configuration de Oressource"], utilisateur_config($utilisateur)],
+        [['name' => 'niveauh', 'text' => "Verif. formulaires"], utilisateur_verifications($utilisateur)],
+        [['name' => 'niveaul', 'text' => "Utilisateurs"], utilisateur_users($utilisateur)],
+        [['name' => 'niveauj', 'text' => "Recycleurs et convention partenaires"], utilisateur_partners($utilisateur)],
+        [['name' => 'niveaue', 'text' => "Saisir la date dans les formulaires"], utilisateur_edit_date($utilisateur)]
+      ]
+    ];
+
+    $collectes = [
+      'text' => "Points de collecte:",
+      'data' => array_map(function ($a) use ($utilisateur) {
+          return [['name' => "niveauc{$a['id']}", 'text' => $a['nom']], utilisateur_collecte($utilisateur, $a['id'])];
+        }, filter_visibles(points_collectes($bdd)))
+    ];
+
+    $ventes = [
+      'text' => "Points de vente:",
+      'data' => array_map(function ($a) use ($utilisateur) {
+          return [['name' => "niveauv{$a['id']}", 'text' => $a['nom']], utilisateur_vente($utilisateur, $a['id'])];
+        }, filter_visibles(points_ventes($bdd)))
+    ];
+
+    $sorties = [
+      'text' => "Points de sortie hors-boutique:",
+      'data' => array_map(function ($a) use ($utilisateur) {
+          return [['name' => "niveaus{$a['id']}", 'text' => $a['nom']], utilisateur_sortie($utilisateur, $a['id'])];
+        }, filter_visibles(points_sorties($bdd)))
+    ];
+
+    $nav = [
+      'text' => "Édition du profil utilisateur n°: {$utilisateur['id']} - {$utilisateur['mail']}",
+      'links' => [
+        ['href' => 'utilisateurs.php', 'text' => 'Inscription'],
+        ['href' => 'edition_utilisateurs.php', 'text' => 'Édition', 'state' => 'active']
+      ]
+    ];
+    $info = array_merge($utilisateur, ['type' => 'edit']);
+  }
+  ?>
+  <div class="container">
+    <?= configNav($nav); ?>
+    <form action="<?= $urlPost ?>" method="post">
+      <?php if (isset($_GET['id'])) { ?>
+        <input type="hidden" name="id" id="id" value="<?= $_GET['id']; ?>">
+      <?php } ?>
+      <div class="row">
+        <div class="col-md-4">
+          <?= configInfo($info) ?>
+        </div>
+
+        <div class="col-md-4">
+          <?= configCheckboxArea($droits) ?>
+        </div>
+        <?php
+        ?>
+        <div class="col-md-4">
+          <?= configCheckboxArea($collectes) ?>
+          <?= configCheckboxArea($ventes) ?>
+          <?= configCheckboxArea($sorties) ?>
+        </div>
+
         <div class="row">
-            <form action="../moteur/inscription_post.php" method="post">
-  <div class="col-md-2"><label for="nom">Nom:</label> <input type="text" value ="<?= $_GET['nom']?>" name="nom" id="nom" class="form-control " required autofocus><br>
-                        <label for="prenom">Prénom:</label> <input type="text" value ="<?= $_GET['prenom']?>" name="prenom" id="prenom" class="form-control " required><br>
-                        <label for="mail">Mail:</label> <input type="email" value ="<?= $_GET['mail']?>" name="mail" id="mail" class="form-control " required ><br>
-                        <label>Mot de passe</label> <input type="password"  name="pass1" id="pass1" class="form-control" required ><br>
-                                                       Répetez le mot de passe</label> <input type="password"  name="pass2" id="pass2" class="form-control" required >
-  </div>
-  <div class="col-md-4"><div class="alert alert-info"><label for="niveau">Permissions d'accès</label> <br>
-
-          <input type="checkbox" name="niveaubi" id="niveaubi" value="bi"><label for="niveaubi">Bilans</label><br>
-
-          <input type="checkbox" name="niveaug" id="niveaug" value="g"> <label for="niveaug">Gestion quotidienne</label><br>
-          <input type="checkbox" name="niveauh" id="niveauh" value="h"> <label for="niveauh">Verif. formulaires</label><br>
-          <input type="checkbox" name="niveaul" id="niveaul" value="l"> <label for="niveaul">Utilisateurs</label><br>
-          <input type="checkbox" name="niveauj" id="niveauj" value="j"> <label for="niveauj">Recycleurs et convention partenaires</label><br>
-          <input type="checkbox" name="niveauk" id="niveauk" value="k"> <label for="niveauk">Configuration de Oressource</label><br>
-       <?php if ($_SESSION['saisiec'] == 'oui'){ ?>
-          <input type="checkbox" name="niveaue" id="niveaue" value="e"> <label for="niveaue">Saisir la date dans les formulaires</label><br>
-       <?php }?>
-<br></div>
-  </div>
-<div class="col-md-4"><div class="alert alert-info"><label for="niveauc">Points de collecte:</label><br>
-<?php
-            // On recupère tout le contenu de la table point de collecte
-            $reponse = $bdd->query('SELECT * FROM points_collecte');
-            // On affiche chaque entree une à une
-           while ($donnees = $reponse->fetch())
-           {?>
-
-
-            <input type="checkbox" name="niveauc<?= $donnees['id']; ?>" id="niveauc<?= $donnees['id']; ?>"> <?= '<label for="niveauc'.$donnees['id'].'">'.$donnees['nom'].'</label>'; ?> <br><br>
-              <?php }
-              $reponse->closeCursor(); // Termine le traitement de la requête
-                 ?>
-</div>
-
-                                            <div class="alert alert-info"><label for="niveauv">Points de vente:</label><br>
-          <?php
-            // On recupère tout le contenu de la table point de vente
-            $reponse = $bdd->query('SELECT * FROM points_vente');
-            // On affiche chaque entree une à une
-           while ($donnees = $reponse->fetch())
-           {?>
-
-
-            <input type="checkbox" name="niveauv<?= $donnees['id']; ?>" id="niveauv<?= $donnees['id']; ?>"> <?= '<label for="niveauv'.$donnees['id'].'">'.$donnees['nom'].'</label>'; ?> <br><br>
-
-
-
-
-
-
-              <?php }
-              $reponse->closeCursor(); // Termine le traitement de la requête
-                 ?></div>
-                                            <div class="alert alert-info"><label for="niveaus">Points de sortie hors-boutique:</label><br>
-          <?php
-            // On recupère tout le contenu de la table point de vente
-            $reponse = $bdd->query('SELECT * FROM points_sortie');
-            // On affiche chaque entree une à une
-           while ($donnees = $reponse->fetch())
-           {?>
-                     <input type="checkbox" name="niveaus<?= $donnees['id']; ?>" id="niveaus<?= $donnees['id']; ?>"> <?= '<label for="niveaus'.$donnees['id'].'">'.$donnees['nom'].'</label>'; ?> <br><br>
-
-              <?php }
-              $reponse->closeCursor(); // Termine le traitement de la requête
-                 ?>
-
-
-
-
-
-
-
-
-
-
-
-
-        </div></div>
-  <div class="col-md-4"><br></div>
-
-
-
-
-</div>
-<div class="row"><div class="col-md-3 col-md-offset-3"><br><button name="creer" class="btn btn-default">Créer!</button></div></div>
+          <div class="col-md-5 col-md-offset-5">
+            <?php if (isset($_GET['id'])) { ?>
+              <button name="modifier" class="btn btn-warning">Modifier</button>
+              <a href="edition_utilisateurs.php">
+                <button name="creer" class="btn btn">Annuler</button>
+              </a>
+            </div>
+          <?php } else { ?>
+            <button name="creer" class="btn btn-default">Créer!</button>
+          <?php } ?>
+        </div>
       </div>
-
-
+    </form>
   </div>
-
-
-
-<?php include "pied.php";
-}
-    else
-{
-    header('Location: ../moteur/destroy.php') ;
+  </div>
+  <?php
+  require_once 'pied.php';
+} else {
+  header('Location: ../moteur/destroy.php');
 }
 ?>

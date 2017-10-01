@@ -48,8 +48,7 @@ require_once('../core/requetes.php');
 session_start();
 header("content-type:application/json");
 
-if (is_valid_session() && is_allowed_sortie()) {
-
+if (is_valid_session()) {
   try {
     $json_raw = file_get_contents('php://input');
     $unsafe_json = json_decode($json_raw, true);
@@ -67,8 +66,7 @@ if (is_valid_session() && is_allowed_sortie()) {
       echo(json_encode(['error' => 'Action interdite.'], JSON_FORCE_OBJECT));
       die();
     }
-
-    $timestamp = (is_allowed_edit_date() ? parseDate($json['antidate']) : new DateTime('now'));
+    $timestamp = allowDate($json) ? parseDate($json['date']) : new DateTime('now');
     $sortie = [
       'timestamp' => $timestamp,
       'type_sortie' => $json['id_type_action'],

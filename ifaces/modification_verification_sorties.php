@@ -1,5 +1,4 @@
 <?php
-
 /*
   Oressource
   Copyright (C) 2014-2017  Martin Vert and Oressource devellopers
@@ -20,410 +19,282 @@
 
 session_start();
 require_once('../moteur/dbconfig.php');
-
-//Vérification des autorisations de l'utilisateur et des variables de session requises pour l'affichage de cette page:
-    if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 'h') !== false))
-      {  include "tete.php" ?>
-   <div class="container">
-        <h1>Modifier la sortie n° <?= $_GET['nsortie']?></h1>
- <div class="panel-body">
-
-
-
-
-<br>
-
-
-<div class="row">
-
-          <form action="../moteur/modification_verification_sorties_post.php?nsortie=<?= $_GET['nsortie']?>" method="post">
-            <input type="hidden" name ="id" id="id" value="<?= $_GET['nsortie']?>">
-
-<input type="hidden" name ="date1" id="date1" value="<?= $_POST['date1']?>">
-  <input type="hidden" name ="date2" id="date2" value="<?= $_POST['date2']?>">
-    <input type="hidden" name ="npoint" id="npoint" value="<?= $_POST['npoint']?>">
-
-
-
-<div class="col-md-3">
-
-<label for="id_type_sortie">Type de sortie:</label>
-<select name="id_type_sortie" id="id_type_sortie" class="form-control " required>
-            <?php
-            // On affiche une liste deroulante des type de sortie visibles
-            $reponse = $bdd->query('SELECT * FROM type_sortie WHERE visible = "oui"');
-            // On affiche chaque entree une à une
-            while ($donnees = $reponse->fetch())
-            {
-              if ($_POST['nom'] == $donnees['nom'])  // SI on a pas de message d'erreur
-{
+if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($_SESSION['niveau'], 'h') !== false)) {
+  require_once 'tete.php';
   ?>
-    <option value = "<?=$donnees['id']?>" selected ><?=$donnees['nom']?></option>
-<?php
-} else {
-            ?>
+  <div class="container">
+    <h1>Modifier la sortie n° <?= $_GET['nsortie']; ?></h1>
+    <div class="panel-body">
+      <br>
+      <div class="row">
 
-      <option value = "<?=$donnees['id']?>" ><?=$donnees['nom']?></option>
-            <?php }}
-            $reponse->closeCursor(); // Termine le traitement de la requête
-            ?>
-    </select>
+        <form action="../moteur/modification_verification_sorties_post.php?nsortie=<?= $_GET['nsortie']; ?>" method="post">
+          <input type="hidden" name ="id" id="id" value="<?= $_GET['nsortie']; ?>">
 
-  </div>
+          <input type="hidden" name ="date1" id="date1" value="<?= $_POST['date1']; ?>">
+          <input type="hidden" name ="date2" id="date2" value="<?= $_POST['date2']; ?>">
+          <input type="hidden" name ="npoint" id="npoint" value="<?= $_POST['npoint']; ?>">
 
+          <div class="col-md-3">
 
-  <div class="col-md-3">
+            <label for="id_type_sortie">Type de sortie:</label>
+            <select name="id_type_sortie" id="id_type_sortie" class="form-control " required>
+              <?php
+              // On affiche une liste deroulante des type de sortie visibles
+              $reponse = $bdd->query('SELECT * FROM type_sortie WHERE visible = "oui"');
 
-    <label for="commentaire">Commentaire</label>
+              while ($donnees = $reponse->fetch()) {
+                if ($_POST['nom'] === $donnees['nom']) {  // SI on a pas de message d'erreur
+                  ?>
+                  <option value="<?= $donnees['id']; ?>" selected ><?= $donnees['nom']; ?></option>
+                  <?php
+                } else { ?>
 
+                  <option value="<?= $donnees['id']; ?>"><?= $donnees['nom']; ?></option>
+                  <?php
+                }
+              }
+              $reponse->closeCursor();
+              ?>
+            </select>
 
+          </div>
+          <div class="col-md-3">
 
- <textarea name="commentaire" id="commentaire" class="form-control"><?php
-            // On affiche le commentaire
-            $reponse = $bdd->prepare('SELECT commentaire FROM sorties WHERE id = :id_sortie');
-            $reponse->execute(array('id_sortie' => $_GET['nsortie']));
-            // On affiche chaque entree une à une
-            while ($donnees = $reponse->fetch()){
+            <label for="commentaire">Commentaire</label>
 
-           echo $donnees['commentaire'];
-             }
-            $reponse->closeCursor(); // Termine le traitement de la requête
-            ?></textarea>
+            <textarea name="commentaire" id="commentaire" class="form-control"><?php
+              // On affiche le commentaire
+              $reponse = $bdd->prepare('SELECT commentaire FROM sorties WHERE id = :id_sortie');
+              $reponse->execute(['id_sortie' => $_GET['nsortie']]);
 
+              while ($donnees = $reponse->fetch()) {
+                echo $donnees['commentaire'];
+              }
+              $reponse->closeCursor();
+              ?></textarea>
 
+          </div>
 
+          <div class="col-md-3">
 
+            <br>
+            <button name="creer" class="btn btn-warning">Modifier</button>
+          </div>
+        </form>
+      </div>
 
- </div>
+    </div>
+    <h1>Pesées incluses dans ce don</h1>
 
-  <div class="col-md-3">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Date de création</th>
+          <th>Type de dechet:</th>
+          <th>Masse</th>
+          <th>Auteur de la ligne</th>
+          <th></th>
+          <th>Modifié par</th>
+          <th>Le:</th>
 
-  <br>
-<button name="creer" class="btn btn-warning">Modifier</button>
-</div>
-</form>
-</div>
-
-
-
-</div>
-<h1>Pesées incluses dans ce don</h1>
-  <!-- Table -->
-      <table class="table">
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Date de création</th>
-            <th>Type de dechet:</th>
-            <th>Masse</th>
-            <th>Auteur de la ligne</th>
-            <th></th>
-            <th>Modifié par</th>
-            <th>Le:</th>
-
-          </tr>
-        </thead>
-        <tbody>
+        </tr>
+      </thead>
+      <tbody>
         <?php
-/*
-'SELECT type_dechets.couleur,type_dechets.nom, sum(pesees_collectes.masse) somme
-FROM type_dechets,pesees_collectes
-WHERE type_dechets.id = pesees_collectes.id_type_dechet AND DATE(pesees_collectes.timestamp) = CURDATE()
-GROUP BY nom'
+        /*
+          'SELECT type_dechets.couleur,type_dechets.nom, sum(pesees_collectes.masse) somme
+          FROM type_dechets,pesees_collectes
+          WHERE type_dechets.id = pesees_collectes.id_type_dechet AND DATE(pesees_collectes.timestamp) = CURDATE()
+          GROUP BY nom'
 
-SELECT pesees_collectes.id ,pesees_collectes.timestamp  ,type_dechets.nom  , pesees_collectes.masse
-                       FROM pesees_collectes ,type_dechets
-                       WHERE type_dechets.id = pesees_collectes.id_type_dechet AND pesees_collectes.id_collecte = :id_collecte
-*/
+          SELECT pesees_collectes.id ,pesees_collectes.timestamp  ,type_dechets.nom  , pesees_collectes.masse
+          FROM pesees_collectes ,type_dechets
+          WHERE type_dechets.id = pesees_collectes.id_type_dechet AND pesees_collectes.id_collecte = :id_collecte
+         */
 
+        // On recupère toute la liste des filieres de sortie
+        //   $reponse = $bdd->query('SELECT * FROM grille_objets');
 
-
-            // On recupère toute la liste des filieres de sortie
-            //   $reponse = $bdd->query('SELECT * FROM grille_objets');
-
-$req = $bdd->prepare('SELECT pesees_sorties.id ,pesees_sorties.timestamp  ,type_dechets.nom , pesees_sorties.masse ,type_dechets.couleur
+        $req = $bdd->prepare('SELECT pesees_sorties.id ,pesees_sorties.timestamp  ,type_dechets.nom , pesees_sorties.masse ,type_dechets.couleur
                        FROM pesees_sorties ,type_dechets
                        WHERE type_dechets.id = pesees_sorties.id_type_dechet AND pesees_sorties.id_sortie = :id_sortie
                                             ');
-$req->execute(array('id_sortie' => $_GET['nsortie']));
+        $req->execute(['id_sortie' => $_GET['nsortie']]);
 
+        while ($donnees = $req->fetch()) { ?>
+          <tr>
+            <td><?= $donnees['id']; ?></td>
+            <td><?= $donnees['timestamp']; ?></td>
+            <td><span class="badge" id="cool" style="background-color:<?= $donnees['couleur']; ?>"><?= $donnees['nom']; ?></span></td>
+            <td><?= $donnees['masse']; ?></td>
 
-           // On affiche chaque entree une à une
-           while ($donnees = $req->fetch())
-           {
-
-           ?>
-            <tr>
-            <td><?= $donnees['id']?></td>
-            <td><?= $donnees['timestamp']?></td>
-            <td><span class="badge" id="cool" style="background-color:<?=$donnees['couleur']?>"><?=$donnees['nom']?></span></td>
-            <td><?= $donnees['masse']?></td>
-
-
-
-<td>
- <?php
-
-$req3 = $bdd->prepare('SELECT utilisateurs.mail mail
+            <td>
+              <?php
+              $req3 = $bdd->prepare('SELECT utilisateurs.mail mail
                        FROM utilisateurs ,pesees_sorties
                        WHERE  pesees_sorties.id_sortie = :id_sortie
                        AND  utilisateurs.id = pesees_sorties.id_createur
                        GROUP BY mail');
-$req3->execute(array('id_sortie' => $_GET['nsortie']));
+              $req3->execute(['id_sortie' => $_GET['nsortie']]);
 
+              while ($donnees3 = $req3->fetch()) { ?>
 
-           // On affiche chaque entree une à une
-           while ($donnees3 = $req3->fetch())
-           { ?>
+                <?= $donnees3['mail']; ?>
+              <?php } ?>
+            </td>
 
+            <td>
 
+              <form action="modification_verification_pesee_sorties.php" method="post">
 
-<?= $donnees3['mail']?>
+                <input type="hidden" name ="id" id="id" value="<?= $donnees['id']; ?>">
+                <input type="hidden" name ="nomtypo" id="nomtypo" value="<?= $donnees['nom']; ?>">
+                <input type="hidden" name ="nsortie" id="nsortie" value="<?= $_GET['nsortie']; ?>">
+                <input type="hidden" name ="masse" id="masse" value="<?= $donnees['masse']; ?>">
+                <input type="hidden" name ="date1" id="date1" value="<?= $_POST['date1']; ?>">
+                <input type="hidden" name ="date2" id="date2" value="<?= $_POST['date2']; ?>">
+                <input type="hidden" name ="npoint" id="npoint" value="<?= $_POST['npoint']; ?>">
 
+                <button  class="btn btn-warning btn-sm" >Modifier</button>
+              </form>
 
-         <?php }
+            </td>
 
-                ?>
-</td>
-
-<td>
-
-<form action="modification_verification_pesee_sorties.php" method="post">
-
-<input type="hidden" name ="id" id="id" value="<?= $donnees['id']?>">
-<input type="hidden" name ="nomtypo" id="nomtypo" value="<?= $donnees['nom']?>">
-<input type="hidden" name ="nsortie" id="nsortie" value="<?= $_GET['nsortie']?>">
-<input type="hidden" name ="masse" id="masse" value="<?= $donnees['masse']?>">
-<input type="hidden" name ="date1" id="date1" value="<?= $_POST['date1']?>">
-  <input type="hidden" name ="date2" id="date2" value="<?= $_POST['date2']?>">
-<input type="hidden" name ="npoint" id="npoint" value="<?= $_POST['npoint']?>">
-
-  <button  class="btn btn-warning btn-sm" >Modifier</button>
-
-
-</form>
-
-
-
-</td>
-
-<td><?php
-
-$req5 = $bdd->prepare('SELECT utilisateurs.mail mail
+            <td><?php
+              $req5 = $bdd->prepare('SELECT utilisateurs.mail mail
                        FROM pesees_sorties, utilisateurs
                        WHERE  pesees_sorties.id = :id_sortie
                        AND  utilisateurs.id = pesees_sorties.id_last_hero
                        ');
-$req5->execute(array('id_sortie' => $donnees['id']));
+              $req5->execute(['id_sortie' => $donnees['id']]);
 
+              while ($donnees5 = $req5->fetch()) { ?>
 
-           // On affiche chaque entree une à une
-           while ($donnees5 = $req5->fetch())
-           { ?>
+                <?= $donnees5['mail']; ?>
 
-
-
-<?= $donnees5['mail'];?>
-
-         <?php }
-
-                ?></td>
-<td><?php
-
-$req4 = $bdd->prepare('SELECT pesees_sorties.last_hero_timestamp lht
+              <?php } ?></td>
+            <td><?php
+              $req4 = $bdd->prepare('SELECT pesees_sorties.last_hero_timestamp lht
                        FROM pesees_sorties
                        WHERE  pesees_sorties.id = :id_sortie
                        ');
-$req4->execute(array('id_sortie' => $donnees['id']));
+              $req4->execute(['id_sortie' => $donnees['id']]);
 
-
-           // On affiche chaque entree une à une
-           while ($donnees4 = $req4->fetch())
-           { ?>
-
-
-
-<?php if ($donnees4['lht'] !== '0000-00-00 00:00:00'){echo $donnees4['lht'];}?>
-
-         <?php }
-
-?>
-
-
+              while ($donnees4 = $req4->fetch()) {
+                if ($donnees4['lht'] !== '0000-00-00 00:00:00') {
+                  echo $donnees4['lht'];
+                }
+              }
+              ?>
 
           </tr>
-           <?php }
-              $req->closeCursor(); // Termine le traitement de la requête
-              $req3->closeCursor(); // Termine le traitement de la requête3
-              $req4->closeCursor(); // Termine le traitement de la requête3
-              $req5->closeCursor(); // Termine le traitement de la requête3
+          <?php
+        }
+        $req->closeCursor();
+        $req3->closeCursor();
+        $req4->closeCursor();
+        $req5->closeCursor();
 
+        /*
+          'SELECT type_dechets.couleur,type_dechets.nom, sum(pesees_collectes.masse) somme
+          FROM type_dechets,pesees_collectes
+          WHERE type_dechets.id = pesees_collectes.id_type_dechet AND DATE(pesees_collectes.timestamp) = CURDATE()
+          GROUP BY nom'
 
+          SELECT pesees_collectes.id ,pesees_collectes.timestamp  ,type_dechets.nom  , pesees_collectes.masse
+          FROM pesees_collectes ,type_dechets
+          WHERE type_dechets.id = pesees_collectes.id_type_dechet AND pesees_collectes.id_collecte = :id_collecte
+         */
 
-                ?>
+        // On recupère toute la liste des filieres de sortie
+        //   $reponse = $bdd->query('SELECT * FROM grille_objets');
 
- <?php
-/*
-'SELECT type_dechets.couleur,type_dechets.nom, sum(pesees_collectes.masse) somme
-FROM type_dechets,pesees_collectes
-WHERE type_dechets.id = pesees_collectes.id_type_dechet AND DATE(pesees_collectes.timestamp) = CURDATE()
-GROUP BY nom'
-
-SELECT pesees_collectes.id ,pesees_collectes.timestamp  ,type_dechets.nom  , pesees_collectes.masse
-                       FROM pesees_collectes ,type_dechets
-                       WHERE type_dechets.id = pesees_collectes.id_type_dechet AND pesees_collectes.id_collecte = :id_collecte
-*/
-
-
-
-            // On recupère toute la liste des filieres de sortie
-            //   $reponse = $bdd->query('SELECT * FROM grille_objets');
-
-$req = $bdd->prepare('SELECT pesees_sorties.id ,pesees_sorties.timestamp  ,type_dechets_evac.nom , pesees_sorties.masse ,type_dechets_evac.couleur
+        $req = $bdd->prepare('SELECT pesees_sorties.id ,pesees_sorties.timestamp  ,type_dechets_evac.nom , pesees_sorties.masse ,type_dechets_evac.couleur
                        FROM pesees_sorties ,type_dechets_evac
                        WHERE type_dechets_evac.id = pesees_sorties.id_type_dechet_evac AND pesees_sorties.id_sortie = :id_sortie
-
-
                        ');
-$req->execute(array('id_sortie' => $_GET['nsortie']));
+        $req->execute(['id_sortie' => $_GET['nsortie']]);
 
+        while ($donnees = $req->fetch()) { ?>
+          <tr>
+            <td><?= $donnees['id']; ?></td>
+            <td><?= $donnees['timestamp']; ?></td>
+            <td><span class="badge" id="cool" style="background-color:<?= $donnees['couleur']; ?>"><?= $donnees['nom']; ?></span></td>
+            <td><?= $donnees['masse']; ?></td>
 
-           // On affiche chaque entree une à une
-           while ($donnees = $req->fetch())
-           {
-
-           ?>
-            <tr>
-            <td><?= $donnees['id']?></td>
-            <td><?= $donnees['timestamp']?></td>
-            <td><span class="badge" id="cool" style="background-color:<?=$donnees['couleur']?>"><?=$donnees['nom']?></span></td>
-            <td><?= $donnees['masse']?></td>
-
-
-
-<td>
- <?php
-
-$req3 = $bdd->prepare('SELECT utilisateurs.mail mail
+            <td>
+              <?php
+              $req3 = $bdd->prepare('SELECT utilisateurs.mail mail
                        FROM utilisateurs ,pesees_sorties
                        WHERE  pesees_sorties.id = :id_sortie
                        AND  utilisateurs.id = pesees_sorties.id_createur
                        GROUP BY mail');
-$req3->execute(array('id_sortie' => $_GET['nsortie']));
+              $req3->execute(['id_sortie' => $_GET['nsortie']]);
 
+              while ($donnees3 = $req3->fetch()) { ?>
 
-           // On affiche chaque entree une à une
-           while ($donnees3 = $req3->fetch())
-           { ?>
+                <?= $donnees3['mail']; ?>
+              <?php } ?>
+            </td>
 
+            <td>
 
+              <form action="modification_verification_pesee_sorties.php" method="post">
 
-<?= $donnees3['mail']?>
+                <input type="hidden" name ="id" id="id" value="<?= $donnees['id']; ?>">
+                <input type="hidden" name ="nomtypo_evac" id="nomtypo_evac" value="<?= $donnees['nom']; ?>">
+                <input type="hidden" name ="nsortie" id="nsortie" value="<?= $_GET['nsortie']; ?>">
+                <input type="hidden" name ="masse" id="masse" value="<?= $donnees['masse']; ?>">
+                <input type="hidden" name ="npoint" id="npoint" value="<?= $_POST['npoint']; ?>">
 
+                <button  class="btn btn-warning btn-sm" >Modifier</button>
+              </form>
 
-         <?php }
+            </td>
 
-                ?>
-</td>
-
-<td>
-
-<form action="modification_verification_pesee_sorties.php" method="post">
-
-<input type="hidden" name ="id" id="id" value="<?= $donnees['id']?>">
-<input type="hidden" name ="nomtypo_evac" id="nomtypo_evac" value="<?= $donnees['nom']?>">
-<input type="hidden" name ="nsortie" id="nsortie" value="<?= $_GET['nsortie']?>">
-<input type="hidden" name ="masse" id="masse" value="<?= $donnees['masse']?>">
-<input type="hidden" name ="npoint" id="npoint" value="<?= $_POST['npoint']?>">
-
-  <button  class="btn btn-warning btn-sm" >Modifier</button>
-
-
-</form>
-
-
-
-</td>
-
-<td><?php
-
-$req5 = $bdd->prepare('SELECT utilisateurs.mail mail
+            <td><?php
+              $req5 = $bdd->prepare('SELECT utilisateurs.mail mail
                        FROM pesees_sorties, utilisateurs
                        WHERE  pesees_sorties.id = :id_sortie
                        AND  utilisateurs.id = pesees_sorties.id_last_hero
                        ');
-$req5->execute(array('id_sortie' => $donnees['id']));
+              $req5->execute(['id_sortie' => $donnees['id']]);
 
+              while ($donnees5 = $req5->fetch()) { ?>
 
-           // On affiche chaque entree une à une
-           while ($donnees5 = $req5->fetch())
-           { ?>
+                <?= $donnees5['mail']; ?>
 
-
-
-<?= $donnees5['mail'];?>
-
-         <?php }
-
-                ?></td>
-<td><?php
-
-$req4 = $bdd->prepare('SELECT pesees_sorties.last_hero_timestamp lht
+              <?php } ?></td>
+            <td><?php
+              $req4 = $bdd->prepare('SELECT pesees_sorties.last_hero_timestamp lht
                        FROM pesees_sorties
                        WHERE  pesees_sorties.id = :id_sortie
                        ');
-$req4->execute(array('id_sortie' => $donnees['id']));
+              $req4->execute(['id_sortie' => $donnees['id']]);
 
-
-           // On affiche chaque entree une à une
-           while ($donnees4 = $req4->fetch())
-           { ?>
-
-
-
-<?php if ($donnees4['lht'] !== '0000-00-00 00:00:00'){echo $donnees4['lht'];}?>
-
-         <?php }
-
-?>
-
-
+              while ($donnees4 = $req4->fetch()) {
+                if ($donnees4['lht'] !== '0000-00-00 00:00:00') {
+                  echo $donnees4['lht'];
+                }
+              }
+              ?>
 
           </tr>
-           <?php }
-              $req->closeCursor(); // Termine le traitement de la requête
-              $req3->closeCursor(); // Termine le traitement de la requête3
-              $req4->closeCursor(); // Termine le traitement de la requête3
-              $req5->closeCursor(); // Termine le traitement de la requête3
-
-
-
-                ?>
-
-       </tbody>
-        <tfoot>
-          <tr>
-            <th></th>
-
-            <th></th>
-
-            <th></th>
-            <th></th>
-            <th></th>
-
-          </tfoot>
-
-      </table>
-
-
-
-
-
+          <?php
+        }
+        $req->closeCursor();
+        $req3->closeCursor();
+        $req4->closeCursor();
+        $req5->closeCursor();
+        ?>
+      </tbody>
+    </table>
   </div><!-- /.container -->
-<?php include "pied.php";
-}
-    else
-{
-    header('Location: ../moteur/destroy.php') ;
+  <?php
+  require_once 'pied.php';
+} else {
+  header('Location: ../moteur/destroy.php');
 }
 ?>

@@ -19,45 +19,33 @@
 
 session_start();
 
-require_once('../core/requetes.php');
-require_once('../core/session.php');
-require_once('../moteur/dbconfig.php');
+require_once '../core/requetes.php';
+require_once '../core/session.php';
+require_once '../core/composants.php';
 
 $numero = filter_input(INPUT_GET, 'numero', FILTER_VALIDATE_INT);
 
 if (is_valid_session() && is_allowed_sortie_id($numero)) {
-
-  require_once('tete.php');
-
   if (!affichage_sortie_recyclage()) {
     header("Location:sorties.php?numero=" . $numero);
     die();
   }
 
-  $point_sortie = point_sorties_id($bdd, $numero);
-  $pesee_max = (float) $point_sortie['pesee_max'];
-  $filieres_sorties = filieres_sorties($bdd);
+  require_once 'tete.php';
+  require_once '../moteur/dbconfig.php';
 
-  $evacs = types_dechets_evac($bdd);
+  $point_sortie = points_sorties_id($bdd, $numero);
+  $pesee_max = (float) $point_sortie['pesee_max'];
+  $filieres_sorties = filter_visibles(filieres_sorties($bdd));
+
+  $evacs = filter_visibles(types_dechets_evac($bdd));
 
   $date = new Datetime('now');
+  $nav = new_nav($point_sortie['nom'], $numero, 2);
   ?>
 
   <div class="container">
-
-    <nav class="navbar">
-      <div class="header-header">
-        <h1><?= $point_sortie['nom'] ?></h1>
-      </div>
-      <ul class="nav nav-tabs">
-        <?php if (affichage_sortie_poubelle()) { ?><li><a href="sortiesp.php?numero=<?= $numero; ?>">Poubelles</a></li><?php } ?>
-        <?php if (affichage_sortie_partenaires()) { ?><li><a href="sortiesc.php?numero=<?= $numero; ?>">Sorties partenaires</a></li><?php } ?>
-        <li class="active"><a href="#">Recyclage</a></li>
-        <?php if (affichage_sortie_don()) { ?><li><a href="sorties.php?numero=<?= $numero; ?>">Don</a></li><?php } ?>
-        <?php if (affichage_sortie_dechetterie()) { ?><li><a href="sortiesd.php?numero=<?= $numero; ?>">Déchetterie</a></li><?php } ?>
-      </ul>
-    </nav>
-
+    <?= configNav($nav) ?>
 
     <div class="col-md-4">
       <div id="ticket" class="panel panel-info" >
@@ -70,7 +58,7 @@ if (is_valid_session() && is_allowed_sortie_id($numero)) {
           <form id="formulaire"> <!-- ONSUBMIT="EnableControl(true)" -->
             <?php if (is_allowed_edit_date()) { ?>
               <label for="antidate">Date de la sortie: </label>
-              <input type="date" id="antidate" name="antidate" style="width:130px; height:20px;" value="<?= $date->format('Y-m-d') ?>">
+              <input type="date" id="antidate" name="antidate" style="width:130px; height:20px;" value="<?= $date->format('Y-m-d'); ?>">
             <?php } ?>
             <ul class="list-group" id="transaction">  <!--start Ticket Caisse -->
               <!-- Remplis via JavaScript voir script de la page -->
@@ -105,18 +93,7 @@ if (is_valid_session() && is_allowed_sortie_id($numero)) {
     </div>
 
     <div class="col-md-4" >
-      <div class="panel panel-info">
-        <div class="panel-heading">
-          <h3 class="panel-title">
-            <label>Materiaux et déchets:</label>
-          </h3>
-        </div>
-        <div class="panel-body">
-          <div id="list_evac" class="btn-group">
-            <!-- Rempli via JS -->
-          </div>
-        </div>
-      </div>
+      <?= listSaisie(['text' => 'Materiaux et déchets:', 'key' => 'list_evac']) ?>
 
       <div class="btn-group" role="group">
         <button id="encaissement" class="btn btn-success btn-lg">C'est pesé!</button>
@@ -131,18 +108,16 @@ if (is_valid_session() && is_allowed_sortie_id($numero)) {
     // Variables d'environnement de Oressource.
     'use scrict';
     window.OressourceEnv = {
-      structure: <?= json_encode($_SESSION['structure']) ?>,
-      adresse: <?= json_encode($_SESSION['adresse']) ?>,
-      id_user: <?= json_encode($_SESSION['id'], JSON_NUMERIC_CHECK) ?>,
-      id_point: <?= json_encode($numero, JSON_NUMERIC_CHECK) ?>,
-      id_type_action: <?= json_encode($filieres_sorties, JSON_NUMERIC_CHECK) ?>,
-      types_evac: <?= json_encode(types_dechets_evac($bdd), JSON_NUMERIC_CHECK) ?>,
-      masse_max: <?= json_encode($point_sortie['pesee_max'], JSON_NUMERIC_CHECK) ?>,
-      conteneurs: <?= json_encode(types_contenants($bdd), JSON_NUMERIC_CHECK) ?>
+      structure: <?= json_encode($_SESSION['structure']); ?>,
+      adresse: <?= json_encode($_SESSION['adresse']); ?>,
+      id_user: <?= json_encode($_SESSION['id'], JSON_NUMERIC_CHECK); ?>,
+      id_point: <?= json_encode($numero, JSON_NUMERIC_CHECK); ?>,
+      id_type_action: <?= json_encode($filieres_sorties, JSON_NUMERIC_CHECK); ?>,
+      types_evac: <?= json_encode(filter_visibles(types_dechets_evac($bdd)), JSON_NUMERIC_CHECK); ?>,
+      masse_max: <?= json_encode($point_sortie['pesee_max'], JSON_NUMERIC_CHECK); ?>,
+      conteneurs: <?= json_encode(filter_visibles(types_contenants($bdd)), JSON_NUMERIC_CHECK); ?>
     };
   </script>
-  <script src="../js/ticket.js" type="text/javascript"></script>
-  <script src="../js/numpad.js" type="text/javascript"></script>
   <script type="text/javascript">
     'use strict';
     function make_choix_recycleur(ui, filieres) {
@@ -189,7 +164,7 @@ if (is_valid_session() && is_allowed_sortie_id($numero)) {
         div_list_item.appendChild(button);
       });
 
-      const metadata = {classe: 'sortiesr'};
+      const metadata = { classe: 'sortiesr' };
       const encaisse = make_encaissement('../api/sorties.php', {
         evacs: ticketsItem
       }, metadata);
@@ -204,11 +179,11 @@ if (is_valid_session() && is_allowed_sortie_id($numero)) {
 
       document.getElementById('id_type_action').addEventListener('change', recycleur_choix, false);
 
-      window.tickets = [ticketsItem];
+      window.tickets = [ ticketsItem ];
     }, false);
   </script>
   <?php
-  include "pied.php";
+  require_once 'pied.php';
 } else {
   header('Location:../moteur/destroy.php');
   die();

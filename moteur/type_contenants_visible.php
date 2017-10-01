@@ -19,16 +19,10 @@
  */
 
 session_start();
-
-//Vérification des autorisations de l'utilisateur et des variables de session requises pour l'utilisation de cette requête:
-if (isset($_SESSION['id']) && $_SESSION['systeme'] === "oressource" && (strpos($_SESSION['niveau'], 'g') !== false)) {
-  //martin vert
-  // Connexion à la base de données
-  include('dbconfig.php');
-  // Insertion du post à l'aide d'une requête préparée
+if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($_SESSION['niveau'], 'g') !== false)) {
+  require_once '../moteur/dbconfig.php';
   $req = $bdd->prepare('UPDATE type_contenants SET visible = :visible WHERE id = :id');
-  $req->execute(array('visible' => $_POST['visible'], 'id' => $_POST['id']));
-  // Redirection du visiteur vers la page de gestion des affectation
+  $req->execute(['visible' => $_POST['visible'], 'id' => $_POST['id']]);
   header('Location:../ifaces/edition_types_contenants.php');
 } else {
   header('Location:../moteur/destroy.php');

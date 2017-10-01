@@ -144,3 +144,36 @@ input:valid {
   width: 45px;
   height: 45px;
 }
+
+/* Ventes.php */
+.ors_btn_pay {
+  opacity: 0.5;
+  color: #dddddd;
+  font-weight: bold;
+}
+
+.ors_btn_pay.active, .ors_btn_pay:active {
+  opacity: 1.0;
+  color: #dddddd;
+  font-weight: bold;
+}
+
+pre {
+    display: block;
+    font-family: inherit;
+    padding: 0px;
+    margin: 0 0 10px;
+    font-size: inherit;
+    line-height: 1.42857143;
+    color: #333;
+    word-break: break-all;
+    word-wrap: break-word;
+    background-color: transparent;
+    border: 0px;
+    border-radius: 0px;
+}
+
+.btn-num {
+  margin-left: 8px;
+  margin-top: 8px;
+}

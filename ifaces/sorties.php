@@ -22,69 +22,33 @@
 // Doit etre fonctionnel avec un ecran tactille.
 // Du javascript permet l'interactivité du keypad et des boutons centraux avec le bon de collecte
 
-require_once('../core/requetes.php');
-require_once('../core/session.php');
-require_once('../moteur/dbconfig.php');
+require_once '../core/requetes.php';
+require_once '../core/session.php';
+require_once '../core/composants.php';
 
 session_start();
 
 $numero = filter_input(INPUT_GET, 'numero', FILTER_VALIDATE_INT);
 
-if (isset($_SESSION['id'])
-  && $_SESSION['systeme'] === "oressource"
-  && is_allowed_sortie_id($numero)) {
-
+if (is_valid_session() && is_allowed_sortie_id($numero)) {
   if (!affichage_sortie_don()) {
     header("Location:sortiesd.php?numero=" . $numero);
     die();
   }
 
-  require_once('tete.php');
+  require_once 'tete.php';
+  require_once '../moteur/dbconfig.php';
 
-  $point_sortie = point_sorties_id($bdd, $numero);
-  $types_action = types_sorties($bdd);
+  $point_sortie = points_sorties_id($bdd, $numero);
+  $types_action = filter_visibles(types_sorties($bdd));
 
   $date = new Datetime('now');
+  $nav = new_nav($point_sortie['nom'], $numero, 3);
   ?>
 
   <div class="container">
-
-    <nav class="navbar">
-      <div class="header-header">
-        <h1><?= $point_sortie['nom'] ?></h1>
-      </div>
-      <ul class="nav nav-tabs">
-        <?php if (affichage_sortie_poubelle()) { ?><li><a href="sortiesp.php?numero=<?= $numero ?>">Poubelles</a></li><?php } ?>
-        <?php if (affichage_sortie_partenaires()) { ?><li><a href="sortiesc.php?numero=<?= $numero ?>">Sorties partenaires</a></li><?php } ?>
-        <?php if (affichage_sortie_recyclage()) { ?><li><a href="sortiesr.php?numero=<?= $numero ?>">Recyclage</a></li><?php } ?>
-        <li class="active"><a href="#">Don</a></li>
-        <?php if (affichage_sortie_dechetterie()) { ?><li><a href="sortiesd.php?numero=<?= $numero ?>">Déchetterie</a></li><?php } ?>
-      </ul>
-    </nav>
-
-    <div class="col-md-4">
-      <div id="ticket" class="panel panel-info" >
-        <div class="panel-heading">
-          <h3 class="panel-title">
-            <label id="massetot">Masse totale: 0 Kg.</label>
-          </h3>
-        </div>
-        <div class="panel-body">
-          <form id="formulaire">
-            <?php if (is_allowed_edit_date()) { ?>
-              <label for="antidate">Date de la sortie: </label>
-              <input type="date" id="antidate" name="antidate" style="width:130px; height:20px;" value="<?= $date->format('Y-m-d') ?>">
-            <?php } ?>
-            <ul class="list-group" id="transaction">  <!--start Ticket Caisse -->
-              <!-- Remplis via JavaScript voir script de la page -->
-            </ul> <!--end TicketCaisse -->
-          </form>
-        </div>
-        <div class="panel-footer">
-          <input type="text" form="formulaire" class="form-control" name="commentaire" id="commentaire" placeholder="Commentaire">
-        </div>
-      </div>
-    </div>
+    <?= configNav($nav) ?>
+    <?= cartList(['text' => "Masse totale: 0 Kg.", 'date' => $date->format('Y-m-d')]) ?>
 
     <div class="col-md-4" >
       <div class="panel panel-info">
@@ -112,31 +76,8 @@ if (isset($_SESSION['id'])
     </div>
 
     <div class="col-md-4">
-      <div class="panel panel-info">
-        <div class="panel-heading">
-          <h3 class="panel-title">
-            <label>Type d'objet:</label>
-          </h3>
-        </div>
-        <div class="panel-body">
-          <div id="list_item" class="btn-group" >
-            <!-- Cree via JS -->
-          </div>
-        </div>
-      </div>
-
-      <div class="panel panel-info">
-        <div class="panel-heading">
-          <h3 class="panel-title">
-            <label>Materiaux et déchets:</label>
-          </h3>
-        </div>
-        <div class="panel-body">
-          <div id="list_evac" class="btn-group">
-            <!-- Rempli via JS -->
-          </div>
-        </div>
-      </div>
+      <?= listSaisie(['text' => "Type d'objet:", 'key' => 'list_item']) ?>
+      <?= listSaisie(['text' => 'Materiaux et déchets:', 'key' => 'list_evac']) ?>
 
       <div class="btn-group" role="group">
         <button id="encaissement" class="btn btn-success btn-lg">C'est pesé!</button>
@@ -145,8 +86,6 @@ if (isset($_SESSION['id'])
       </div>
     </div> <!-- .col-md-4 -->
   </div> <!-- container -->
-
-
   <script type="text/javascript">
     // Variables d'environnement de Oressource.
     'use scrict';
@@ -154,7 +93,7 @@ if (isset($_SESSION['id'])
       structure: <?= json_encode($_SESSION['structure']) ?>,
       adresse: <?= json_encode($_SESSION['adresse']) ?>,
       id_user: <?= json_encode($_SESSION['id'], JSON_NUMERIC_CHECK) ?>,
-      saisie_collecte: <?= json_encode(is_allowed_saisie_collecte()) ?>,
+      saisie_collecte: <?= json_encode(is_allowed_saisie_date()) ?>,
       user_droit: <?= json_encode($_SESSION['niveau']) ?>,
       id_point: <?= json_encode($numero, JSON_NUMERIC_CHECK) ?>,
       id_type_action: <?= json_encode($types_action, JSON_NUMERIC_CHECK) ?>,
@@ -163,11 +102,9 @@ if (isset($_SESSION['id'])
       types_evac: <?= json_encode(types_dechets_evac($bdd), JSON_NUMERIC_CHECK) ?>,
       conteneurs: <?= json_encode(types_contenants($bdd), JSON_NUMERIC_CHECK) ?>,
       types_action: <?= json_encode($types_action, JSON_NUMERIC_CHECK) ?>,
-      localites: <?= json_encode(localites($bdd), JSON_NUMERIC_CHECK) ?>,
+      localites: <?= json_encode(filter_visibles(localites($bdd)), JSON_NUMERIC_CHECK) ?>,
     };
   </script>
-  <script src="../js/ticket.js" type="text/javascript"></script>
-  <script src="../js/numpad.js" type="text/javascript"></script>
   <script type="text/javascript">
     'use strict';
 
@@ -215,7 +152,7 @@ if (isset($_SESSION['id'])
         div_localite.appendChild(item);
       });
 
-      const metadata = {classe: 'sorties'};
+      const metadata = { classe: 'sorties' };
       const encaisse = make_encaissement('../api/sorties.php', {
         items: ticketItems,
         evacs: ticketEvac,
@@ -227,12 +164,12 @@ if (isset($_SESSION['id'])
         tickets_clear(metadata);
       }, false);
 
-      window.tickets = [ticketItems, ticketEvac];
+      window.tickets = [ ticketItems, ticketEvac ];
     }, false);
   </script>
 
   <?php
-  include "pied.php";
+  require_once 'pied.php';
 } else {
   header('Location:../moteur/destroy.php');
 }

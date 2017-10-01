@@ -45,7 +45,7 @@ require_once('dbconfig.php');
  * HTTP Status code: 401 - Unauthorized
  * { 'error': 'Mauvais identifiant ou mot de passe' }
  */
-header("content-type:application/json");
+header('content-type:application/json');
 $json_raw = file_get_contents('php://input');
 $unsafe_json = json_decode($json_raw, true);
 $json = validate_json_login($unsafe_json);
@@ -58,10 +58,10 @@ try {
   $structure = structure($bdd);
   set_session($user, $structure);
   http_response_code(200); // OK
-  echo(json_encode(['status' => 'OK'], JSON_FORCE_OBJECT));
+  echo json_encode(['status' => 'OK'], JSON_FORCE_OBJECT);
   // A terme on revera un document json decrivant l'utilisateur connecter.
   // echo(json_encode($user, JSON_NUMERIC_CHECK | JSON_FORCE_OBJECT));
 } catch (Exception $e) {
   http_response_code(401); // Unauthorized
-  echo(json_encode(['error' => 'Mauvais identifiant ou mot de passe !'], JSON_FORCE_OBJECT));
+  echo json_encode(['error' => 'Mauvais identifiant ou mot de passe !'], JSON_FORCE_OBJECT);
 }

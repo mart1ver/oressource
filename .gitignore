@@ -3,3 +3,7 @@ data
 /nbproject/private/
 /nbproject
 _build
+
+moteur/dbconfig\.php\.example
+*~
+.*~

@@ -1,5 +1,4 @@
 <?php
-
 /*
   Oressource
   Copyright (C) 2014-2017  Martin Vert and Oressource devellopers
@@ -23,8 +22,8 @@ require_once('../moteur/dbconfig.php');
 require_once('../core/session.php');
 
 // Vérification des autorisations de l'utilisateur et des variables de session requises pour l'affichage de cette page:
-if (isset($_SESSION['id']) && $_SESSION['systeme'] === "oressource" && is_allowed_config()) {
-  include_once("tete.php");
+if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && is_allowed_config()) {
+  include_once('tete.php');
 
   // POST ou GET ?
   if (isset($_POST['id']) !== false) {
@@ -40,7 +39,6 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === "oressource" && is_allowe
   $req->bindValue(':id', $id, PDO::PARAM_INT);
   $req->execute();
   $point_vente = $req->fetch(PDO::FETCH_ASSOC);
-
   ?>
   <div class="container">
     <h1>Gestion des points de vente</h1>
@@ -63,7 +61,7 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === "oressource" && is_allowe
           </div>
           <div class="col-md-2">
             <label for="surface">Surface de vente (m²):</label>
-            <input type="text"value="<?= $point_vente['surface'];?>" name="surface" id="surface" class="form-control " required>
+            <input type="text"value="<?= $point_vente['surface']; ?>" name="surface" id="surface" class="form-control " required>
           </div>
           <div class="col-md-1">
             <label for="couleur">Couleur:</label>
@@ -80,8 +78,8 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === "oressource" && is_allowe
     </div>
   </div> <!-- /.container -->
 
-<?php
-  include_once("pied.php");
+  <?php
+  include_once('pied.php');
 } else {
   header('Location: ../moteur/destroy.php');
 }

@@ -21,17 +21,15 @@
 require_once('../core/session.php');
 
 session_start();
-
-//Vérification des autorisations de l'utilisateur et des variables de session requises pour l'utilisation de cette requête:
-if (isset($_SESSION['id']) && $_SESSION['systeme'] === "oressource" && is_allowed_config()) {
-  include_once('../moteur/dbconfig.php');
+if (is_valid_session() && is_allowed_config()) {
+  require_once '../moteur/dbconfig.php';
 
   $nom = filter_input(INPUT_POST, 'nom', FILTER_SANITIZE_STRING);
   $adresse = filter_input(INPUT_POST, 'adresse', FILTER_SANITIZE_STRING);
   $surface = filter_input(INPUT_POST, 'surface', FILTER_VALIDATE_INT);
   $commentaire = filter_input(INPUT_POST, 'commentaire', FILTER_SANITIZE_STRING);
   // La regex capture SEULEMENT les couleurs en HEXA.
-  $couleur = filter_input(INPUT_POST, 'couleur', FILTER_VALIDATE_REGEXP, ['options' => ['regexp' =>'/(^#[0-9A-Fa-f]{6})/']]);
+  $couleur = filter_input(INPUT_POST, 'couleur', FILTER_VALIDATE_REGEXP, ['options' => ['regexp' => '/(^#[0-9A-Fa-f]{6})/']]);
   $req = $bdd->prepare('SELECT id
     FROM points_vente
     WHERE nom = :nom');
@@ -46,7 +44,7 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === "oressource" && is_allowe
     header($base . $error . '&nom=' . $nom . '&adresse=' . $adresse . '&surface='
       . $surface . '&commentaire=' . $commentaire . '&couleur=' . substr($couleur, 1));
     header($base . $error . '&nom=' . $nom
-      . "&adresse=" . $adresse . '&surface=' . $surface
+      . '&adresse=' . $adresse . '&surface=' . $surface
       . '&commentaire=' . $commentaire . '&couleur=' . substr($couleur, 1));
   } else {
     $req = $bdd->prepare('INSERT INTO points_vente

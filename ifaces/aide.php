@@ -1,5 +1,4 @@
 <?php
-
 /*
   Oressource
   Copyright (C) 2014-2017  Martin Vert and Oressource devellopers
@@ -21,12 +20,12 @@
 session_start();
 
 if (isset($_SESSION['id'])) {
-    require_once "tete.php";
-    ?>
-    <h1>need help? call me!</h1>
-    <p>...and if I don't answer, bear in mind that a help file is actually under construction...and please be patient</p>
-    <?php
-    require_once "pied.php";
+  require_once 'tete.php';
+  ?>
+  <h1>need help? call me!</h1>
+  <p>...and if I don't answer, bear in mind that a help file is actually under construction...and please be patient</p>
+  <?php
+  require_once 'pied.php';
 } else {
-    header('Location: ../moteur/destroy.php');
+  header('Location: ../moteur/destroy.php');
 }

@@ -1,5 +1,4 @@
 <?php
-
 /*
   Oressource
   Copyright (C) 2014-2017  Martin Vert and Oressource devellopers
@@ -20,12 +19,11 @@
 
 session_start();
 
-require_once("../moteur/dbconfig.php");
+require_once('../moteur/dbconfig.php');
 require_once('../core/session.php');
 require_once('../core/requetes.php');
 
 if (is_valid_session()) {
-
   require_once 'tete.php';
 
   // On determine les masses collectés...
@@ -85,7 +83,7 @@ if (is_valid_session()) {
 
   <div class="page-header">
     <div class="container">
-      <h1>Bienvenue à bord d'Oressource <?= $_SESSION['prenom'] ?>!</h1>
+      <h1>Bienvenue à bord d'Oressource <?= $_SESSION['prenom']; ?>!</h1>
       <p>Oressource est un outil libre de quantification et de mise en bilan dédié aux structures du ré-emploi</p>
     </div>
   </div> <!-- /container -->
@@ -93,35 +91,38 @@ if (is_valid_session()) {
   <div class="container" id="actualise">
     <div class="row">
       <div class="col-md-4" >
-        <h3>Collecté aujourd'hui: <?= $masse_collectes . " Kgs."; ?></h3>
+        <h3>Collecté aujourd'hui: <?= $masse_collectes . ' Kgs.'; ?></h3>
         <?php if ($masse_collectes > 0.000) { ?>
           <div id="graphj" style="height: 180px;"></div>
           <?php if ($validUser) { ?>
-            <p><a href="../ifaces/bilanc.php?date1=<?= date("d-m-Y") ?>&date2=<?= date("d-m-Y") ?>&numero=0" class="btn btn-default"  role="button">Détails &raquo;</a></p>
-          <?php } ?>
-        <?php } else { ?>
+            <p><a href="../ifaces/bilanc.php?date1=<?= date('d-m-Y'); ?>&date2=<?= date('d-m-Y'); ?>&numero=0" class="btn btn-default"  role="button">Détails &raquo;</a></p>
+            <?php
+          }
+        } else { ?>
           <img src="../images/nodata.jpg" class="img-responsive" alt="Responsive image">
         <?php } ?>
       </div>
       <div class="col-md-4">
-        <h3>Evacué aujourd'hui: <?= $masse_sorties . " Kgs."; ?></h3>
+        <h3>Evacué aujourd'hui: <?= $masse_sorties . ' Kgs.'; ?></h3>
         <?php if ($masse_sorties > 0.000) { ?>
           <div id="grapha" style="height: 180px;"></div>
           <?php if ($validUser) { ?>
-            <p><a class="btn btn-default" href="../ifaces/bilanhb.php?date1=<?= date("d-m-Y") ?>&date2=<?= date("d-m-Y") ?>" role="button">Détails &raquo;</a></p>
-          <?php } ?>
-        <?php } else { ?>
+            <p><a class="btn btn-default" href="../ifaces/bilanhb.php?date1=<?= date('d-m-Y'); ?>&date2=<?= date('d-m-Y'); ?>" role="button">Détails &raquo;</a></p>
+            <?php
+          }
+        } else { ?>
           <img src="../images/nodata.jpg" class="img-responsive" alt="Responsive image">
         <?php } ?>
       </div>
       <div class="col-md-4">
-        <h3>Vendu aujourd'hui: <?= $quantite_vendu . " Pcs."; ?></h3>
+        <h3>Vendu aujourd'hui: <?= $quantite_vendu . ' Pcs.'; ?></h3>
         <?php if ($quantite_vendu > 0) { ?>
           <div id="graphm" style="height: 180px;"></div>
           <?php if ($validUser) { ?>
-            <p><a class="btn btn-default" href="../ifaces/bilanv.php?date1=<?= date("d-m-Y") ?>&date2=<?= date("d-m-Y") ?>" role="button">Détails &raquo;</a></p>
-          <?php } ?>
-        <?php } else { ?>
+            <p><a class="btn btn-default" href="../ifaces/bilanv.php?date1=<?= date('d-m-Y'); ?>&date2=<?= date('d-m-Y'); ?>" role="button">Détails &raquo;</a></p>
+            <?php
+          }
+        } else { ?>
           <img src="../images/nodata.jpg" class="img-responsive" alt="Responsive image">
         <?php } ?>
       </div>
@@ -131,15 +132,14 @@ if (is_valid_session()) {
   <!-- Bootstrap core JavaScript + morris + raphael
   ================================================== -->
   <!-- Placed at the end of the document so the pages load faster -->
-  <script src="../js/raphael.js"></script>
-  <script src="../js/morris/morris.js"></script>
+
   <script type="text/javascript">
     'use strict';
     // FIXME: Recuperer les donnees en AJAX au lieu de recalculer toute la page a chaque fois.
     // Actuellement tout est recuperer via PHP a la generation de la page.
     document.addEventListener('DOMContentLoaded', () => {
       // graphj
-      const graphj = <?=(json_encode($graphj, JSON_NUMERIC_CHECK, JSON_FORCE_OBJECT)); ?>;
+      const graphj = <?= (json_encode($graphj, JSON_NUMERIC_CHECK, JSON_FORCE_OBJECT)); ?>;
       if (graphj.data.length !== 0) {
         Morris.Donut({
           element: 'graphj',
@@ -152,7 +152,7 @@ if (is_valid_session()) {
       }
 
       // graphm
-      const graphm = <?=(json_encode($graphm, JSON_NUMERIC_CHECK, JSON_FORCE_OBJECT)); ?>;
+      const graphm = <?= (json_encode($graphm, JSON_NUMERIC_CHECK, JSON_FORCE_OBJECT)); ?>;
       if (graphm.data.length !== 0) {
         Morris.Donut({
           element: 'graphm',
@@ -165,7 +165,7 @@ if (is_valid_session()) {
       }
 
       // grapha
-      const grapha = <?=(json_encode($grapha, JSON_NUMERIC_CHECK, JSON_FORCE_OBJECT)); ?>;
+      const grapha = <?= (json_encode($grapha, JSON_NUMERIC_CHECK, JSON_FORCE_OBJECT)); ?>;
       if (grapha.data.length !== 0) {
         Morris.Donut({
           element: 'grapha',
@@ -181,7 +181,7 @@ if (is_valid_session()) {
     });
   </script>
   <?php
-  require_once "pied.php";
+  require_once 'pied.php';
 } else {
   header('Location: ./login.html');
 }
