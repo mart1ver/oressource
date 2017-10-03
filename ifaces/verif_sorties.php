@@ -724,10 +724,10 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($
   <script type="text/javascript">
     'use strict';
     $(document).ready(() => {
-      const get = process_get();
-      const url = 'verif_sorties';
-      const options = set_datepicker(get, url);
-      bind_datepicker(options, get, url);
+      const query = process_get();
+      const base = 'verif_sorties.php';
+      const options = set_datepicker(query);
+      bind_datepicker(options, { base, query });
     });
   </script>
   <?php

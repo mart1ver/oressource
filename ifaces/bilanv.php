@@ -318,9 +318,9 @@ if (is_valid_session() && is_allowed_bilan()) {
 
     $(document).ready(() => {
       const get = process_get();
-      const url = 'bilanv';
-      const options = set_datepicker(get, url);
-      bind_datepicker(options, get, url);
+      const url = 'bilanv.php';
+      const options = set_datepicker(get);
+      bind_datepicker(options, Object.assign({ base, get }));
 
       try {
         const dataMv = <?= json_encode($graphMv, JSON_NUMERIC_CHECK); ?>;

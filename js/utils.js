@@ -16,6 +16,20 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+function toQueryString(obj) {
+    var parts = [];
+    for (var i in obj) {
+        if (obj.hasOwnProperty(i)) {
+            parts.push(encodeURIComponent(i) + "=" + encodeURIComponent(obj[i]));
+        }
+    }
+    return parts.join("&");
+}
+
+const dateUStoFR = ({label}) => {
+  return new moment(label, 'YYYY-MM-DD').format('DD/MM/YYYY');
+};
+
 /**
  * Permet d'acceder aux parametres de l'url (query/search/get parameters)
  * sous la forme d'un objet js.
@@ -85,12 +99,16 @@ function cb(start, end, label) {
   $('#reportrange span').html(`${start.format('DD MMMM YYYY')} - ${end.format('DD MMMM YYYY')}`);
 }
 
-function bind_datepicker(options, data, url) {
+// TODO: Fix a potential XSS problem with query string.
+function bind_datepicker(options, {base, query}) {
   $('#reportrange').daterangepicker(options, cb);
   $('#reportrange').on('apply.daterangepicker', (ev, picker) => {
-    const start = picker.startDate.format('DD-MM-YYYY');
-    const end = picker.endDate.format('DD-MM-YYYY');
-    window.location.href = `./${url}.php?date1=${start}&date2=${end}&numero=${data.numero}`;
+    const date1 = picker.startDate.format('DD-MM-YYYY');
+    const date2 = picker.endDate.format('DD-MM-YYYY');
+
+    const queryString = toQueryString(Object.assign({}, query, {date1, date2}));
+    const url = `./${base}?${queryString}`;
+    window.location.href = url;
   });
   $('#options1').click(() => {
     $('#reportrange').data('daterangepicker').setOptions(options, cb);
