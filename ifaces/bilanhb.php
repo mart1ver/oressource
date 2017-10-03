@@ -370,10 +370,10 @@ if (is_valid_session() && is_allowed_bilan()) {
   <script type="text/javascript">
     'use strict';
     $(document).ready(() => {
-      const get = process_get();
-      const url = 'bilanhb';
-      const options = set_datepicker(get, url);
-      bind_datepicker(options, get, url);
+      const query = process_get();
+      const base = 'bilanhb.php';
+      const options = set_datepicker(query);
+      bind_datepicker(options, { base, query });
     });
   </script>
   <?php

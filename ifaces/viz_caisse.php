@@ -24,7 +24,7 @@ require_once('../core/requetes.php');
 
 $numero = filter_input(INPUT_GET, 'numero', FILTER_VALIDATE_INT);
 
-if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && $_SESSION['viz_caisse'] && is_allowed_vente_id($_GET['numero'])) {
+if (is_valid_session() && $_SESSION['viz_caisse'] && is_allowed_vente_id($numero)) {
   require_once 'tete.php';
 
   $nb_viz_caisse = (int) ($_SESSION['nb_viz_caisse']);
