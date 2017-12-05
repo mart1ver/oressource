@@ -36,7 +36,6 @@ if (is_valid_session() && is_allowed_sortie_id($numero)) {
 
   $point_sortie = points_sorties_id($bdd, $numero);
   $pesee_max = (float) $point_sortie['pesee_max'];
-  $types_poubelles = filter_visibles(types_poubelles($bdd));
   $date = new Datetime('now');
   $nav = new_nav($point_sortie['nom'], $numero, 0);
   ?>
@@ -92,6 +91,7 @@ if (is_valid_session() && is_allowed_sortie_id($numero)) {
 
       const div_list_evac = document.getElementById('list_poubelle');
       const fragment = document.createDocumentFragment();
+      console.log(typesEvacs);
       typesEvacs.forEach(({ id, nom, couleur, masse_bac }) => {
         const button = document.createElement('button');
         button.setAttribute('id', id);

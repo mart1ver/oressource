@@ -93,9 +93,9 @@ if (is_valid_session() && is_allowed_sortie_id($numero)) {
       user_droit: <?= json_encode($_SESSION['niveau']); ?>,
       id_point: <?= json_encode($numero, JSON_NUMERIC_CHECK); ?>,
       id_type_action: <?= json_encode($conventions, JSON_NUMERIC_CHECK); ?>,
-      types_dechet: <?= json_encode(types_dechets($bdd), JSON_NUMERIC_CHECK); ?>,
+      types_dechet: <?= json_encode(filter_visibles(types_dechets($bdd), JSON_NUMERIC_CHECK)); ?>,
       masse_max: <?= json_encode($point_sortie['pesee_max'], JSON_NUMERIC_CHECK); ?>,
-      types_evac: <?= json_encode(types_dechets_evac($bdd), JSON_NUMERIC_CHECK); ?>,
+      types_evac: <?= json_encode(filter_visibles(types_dechets_evac($bdd), JSON_NUMERIC_CHECK)); ?>,
       conteneurs: <?= json_encode(types_contenants($bdd), JSON_NUMERIC_CHECK); ?>
     };
   </script>

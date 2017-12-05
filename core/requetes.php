@@ -19,10 +19,9 @@
  */
 
 function filter_visibles(array $a): array {
-  return array_map(function (array $e): array {
-    $e['visible'] = $e['visible'] === 'oui';
-    return $e;
-  }, $a);
+  return array_values(array_filter($a, function (array $e) {
+    return $e['visible'] === 'oui';
+    }));
 }
 
 function fetch_all(string $sql, PDO $bdd): array {
