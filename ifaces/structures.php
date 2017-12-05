@@ -35,7 +35,7 @@ if (is_valid_session() && is_allowed_config()) {
   <div class="container">
     <h1>Configuration de Oressource</h1>
     <div class="panel-heading">
-      <h2 class="panel-title">Description de la structure</h2>
+      <h1 class="panel-title"><b>Déscription de la structure:<b></h1>
     </div>
     <form id="form">
       <div class="panel-body">
@@ -101,7 +101,11 @@ if (is_valid_session() && is_allowed_config()) {
           <div class="row">
             <div class="col-md-1 col-md-offset-6">
               <br>
-              <button id="send" class="btn btn-default">Enregistrer</button>
+              <button id="send" class="btn btn-warning ">Enregistrer</button>
+            </div>
+            <div class="col-md-1 col-md-offset-1">
+              <br>
+              <button id="back" class="btn btn-primary">Sauvegarder la base de données</button>
             </div>
           </div>
         </div>
@@ -165,7 +169,7 @@ if (is_valid_session() && is_allowed_config()) {
         }).catch((ex) => {
           if (ex.status === 401) {
             login(() => {
-              window.alert('Votre session avait expirée, reappuyé sur enregistrer.');
+              window.alert('Votre session à expirée, reappuyez sur enregistrer.');
             });
           } else {
             console.log('Error:', ex);

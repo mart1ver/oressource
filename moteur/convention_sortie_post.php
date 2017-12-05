@@ -19,7 +19,7 @@
  */
 
 session_start();
-
+require_once '../core/session.php';
 if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && is_allowed_partners()) {
   require_once '../moteur/dbconfig.php';
   $req = $bdd->prepare('SELECT SUM(id) FROM conventions_sorties WHERE nom = :nom ');

@@ -149,7 +149,7 @@ function utilisateur_update(PDO $bdd, array $utilisateur) {
 }
 
 function convention_sortie(PDO $bdd): array {
-  $sql = 'SELECT id, nom, couleur, description, timestamp, visible FROM conventions_sorties';
+  $sql = 'SELECT id, nom, couleur, description, timestamp, visible FROM conventions_sorties ORDER BY nom';
   return fetch_all($sql, $bdd);
 }
 

@@ -126,6 +126,27 @@ ORDER BY somme DESC';
   return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
+function bilanCollecte4(PDO $bdd, int $id, $start, $fin): array {
+  $numero = ($id > 0 ? " AND collectes.id_point_collecte = $id " : ' ');
+  $sql = 'SELECT
+  type_dechets.nom nom ,
+  SUM(pesees_collectes.masse) somme,
+  pesees_collectes.timestamp
+FROM  pesees_collectes, collectes, type_dechets
+WHERE
+  pesees_collectes.timestamp BETWEEN :du AND :au
+  AND type_dechets.id = pesees_collectes.id_type_dechet
+  AND pesees_collectes.id_collecte = collectes.id' . $numero . '
+GROUP BY nom';
+  $stmt = $bdd->prepare($sql);
+  $stmt->bindParam(':du', $start, PDO::PARAM_STR);
+  $stmt->bindParam(':au', $fin, PDO::PARAM_STR);
+  $stmt->execute();
+  return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+
+
 function MorrisCollecteMasse(PDO $bdd, int $id, $start, $end): array {
   $numero = ($id > 0 ? " AND collectes.id_point_collecte = $id " : ' ');
   $sql = 'SELECT
@@ -220,9 +241,9 @@ if (is_valid_session() && is_allowed_bilan()) {
       <h2> Bilan des collectes de la structure</h2>
       <ul class="nav nav-tabs">
         <?php foreach ($points_collectes as $p) { ?>
-          <li class="<?= $numero === $p['id'] ? 'active' : '' ?>">
-            <a href="bilanc.php?numero=<?= $p['id'] ?>&date1=<?= $date1 ?>&date2=<?= $date2; ?>"><?= $p['nom']; ?></a>
-          </li>
+        <li <?php if($numero == $p['id']){echo"class='active'";}  ?> >
+          <a href="bilanc.php?numero=<?= $p['id'] ?>&date1=<?= $date1 ?>&date2=<?= $date2; ?>"><?= $p['nom']; ?></a>
+        </li>
         <?php } ?>
         <li class="<?= $numero === 0 ? 'active' : '' ?>">
           <a href="bilanc.php?numero=0&date1=<?= $date1 ?>&date2=<?= $date2; ?>">Tous les points</a>
@@ -233,11 +254,11 @@ if (is_valid_session() && is_allowed_bilan()) {
       <div class="row">
         <h2><?= $date1 === $date2 ? "Le {$date1}," : " Du {$date1} au {$date2}," ?>
           Masse collectée: <?= $data['masse'] ?> kg<?= $numero === 0 ? ' , sur ' . count($points_collectes) . ' Point(s) de collecte' : '' ?>.</h2>
-        <div id="graph2masse" style="height: 180px;"></div>
+        <?php if($data['masse'] > 0){ ?>
         <div class="col-md-6">
           <div class="panel panel-default">
             <div class="panel-heading">
-              <h3 class="panel-title">Répartition par type de collecte</h3>
+              <h3 class="panel-title">Répartition par types de collectes</h3>
             </div>
 
             <div class="panel-body">
@@ -264,6 +285,7 @@ if (is_valid_session() && is_allowed_bilan()) {
                         <td>
                           <a href="jours.php?date1=<?= $date1 ?>&date2=<?= $date2 ?>&type=<?= $d['id'] ?>"><?= $d['nom']; ?></a>
                         </td>
+                        <td></td>
                         <td><?= $d['somme'] ?> kg</td>
                         <td><?= round($d['somme'] * 100 / $p['somme'], 2) ?> %</td>
                       </tr>
@@ -314,6 +336,7 @@ if (is_valid_session() && is_allowed_bilan()) {
                         <td class="hiddenRow">
                           <a href="jours.php?date1=<?= $date1 ?>&date2=<?= $date2 ?>&type=<?= $b['id'] ?>"><?= $b['nom'] ?></a>
                         </td>
+                        <td></td>
                         <td class="hiddenRow"><?= $b['somme'] ?> kg</td>
                         <td class="hiddenRow"><?= round($b['somme'] * 100 / $a['somme'], 2) ?> %</td>
                       </tr>
@@ -332,7 +355,47 @@ if (is_valid_session() && is_allowed_bilan()) {
             </div>
           </div>
         </div>
+      </div>          
+    <div class="col-md-6">
+                <div class="panel panel-default">
+            <div class="panel-heading">
+              <h3 class="panel-title">Répartition par types d'objets</h3>
+            </div>
+
+            <div class="panel-body">
+              <table class="table table-condensed table-striped table table-bordered table-hover" style="border-collapse:collapse;">
+                <thead>
+                  <tr>
+                    <th style="width:300px">type d'objet</th>
+                    <th>Masse collectée</th>
+                    <th>%</th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  <?php foreach (BilanCollecte4($bdd, $numero, $time_debut, $time_fin) as $a) { ?>
+                    <tr data-toggle="collapse" data-target=".partyp<?= $a['nom']; ?>">
+                      <td><a href="jours.php?date1=<?= $date1 ?>&date2=<?= $date2 ?>&type=<?= $b['id'] ?>"><?= $b['nom'] ?></a></td>
+                      <td><?= $a['somme']; ?></td>
+                      <td><?= round($a['somme'] * 100 / $a['somme'], 2); ?></td>
+                    </tr>
+
+                  <?php } ?>
+                </tbody>
+              </table>
+
+              <div id="graph2masse" style="height: 180px;"></div> <br><br>
+
+              <!-- TODO: refaire cette fonctionnalité
+              <a href="../moteur/export_bilanc_parloca.php?numero=<?= $numero ?>&date1=<?= $date1 ?>&date2=<?= $date2; ?>">
+                <button type="button" class="btn btn-default btn-xs" disabled>exporter ces données (.csv) </button>
+              </a>
+              -->
+            </div>
+          </div>
+      <?php }else{echo "<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>";} ?>
       </div>
+
     </div>
   </div>
 

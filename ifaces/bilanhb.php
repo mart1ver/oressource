@@ -255,7 +255,7 @@ if (is_valid_session() && is_allowed_bilan()) {
       <h2> Bilan des sorties hors-boutique de la structure</h2>
       <ul class="nav nav-tabs">
         <?php foreach ($points_sortie as $p) { ?>
-          <li class="<?= $numero === $p['id'] ? 'active' : '' ?>">
+          <li class="<?= $numero == $p['id'] ? 'active' : '' ?>">
             <a href="bilanhb.php?numero=<?= $p['id'] ?>&date1=<?= $date1 ?>&date2=<?= $date2 ?>"> <?= $p['nom']; ?></a>
           </li>
         <?php } ?>
