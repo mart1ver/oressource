@@ -38,7 +38,7 @@ if (is_valid_session() && is_allowed_gestion() && $type_obj !== false) {
     <h1>Grille des prix</h1>
     <ul class="nav nav-tabs">
       <?php foreach ($type_dechets as $type_dechet) { ?>
-        <li class="<?= ($type_obj === $type_dechet['id'] ? 'active' : ''); ?>">
+        <li class="<?= ($type_obj == $type_dechet['id'] ? 'active' : ''); ?>">
           <a href="grilles_prix.php?id_type_dechet=<?= $type_dechet['id']; ?>"><?= $type_dechet['nom']; ?></a>
         </li>
       <?php } ?>

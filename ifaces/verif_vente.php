@@ -52,7 +52,7 @@ if (is_valid_session() && is_allowed_verifications()) {
     <div class="panel-body">
       <ul class="nav nav-tabs">
         <?php foreach ($points_ventes as $point) { ?>
-          <li<?= $_GET['numero'] === $point['id'] ? 'class="active"' : '' ?>>
+          <li <?= $_GET['numero'] === $point['id'] ? 'class="active"' : '' ?>>
             <a href="<?= "verif_vente.php?numero={$point['id']}&date1={$date1}&date2={$date2}" ?>"><?= $point['nom']; ?></a>
           </li>
         <?php } ?>
@@ -67,7 +67,7 @@ if (is_valid_session() && is_allowed_verifications()) {
             <span></span><b class="caret"></b>
           </div>
         </div>
-        <?= $date1 === $date2 ? "le '{$date1['date1']}:" : "du {$date1} au  {$date1}:" ?>
+        <?= $date1 === $date2 ? " Le {$date1}," : " Du {$date1} au {$date2}," ?>
       </div>
     </div>
 

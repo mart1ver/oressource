@@ -46,7 +46,6 @@ if (is_valid_session() && is_allowed_sortie_id($numero)) {
     <?= cartList(['text' => "Masse totale: 0 Kg.", 'date' => $date->format('Y-m-d')]) ?>
 
     <div id="numpad" class="col-md-4" style="width: 220px;">
-      <p>La masse des différents bacs est automatiquement déduite.</p>
     </div>
 
     <div class="col-md-4">

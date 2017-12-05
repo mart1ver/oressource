@@ -137,7 +137,7 @@ WHERE
   pesees_collectes.timestamp BETWEEN :du AND :au
   AND type_dechets.id = pesees_collectes.id_type_dechet
   AND pesees_collectes.id_collecte = collectes.id' . $numero . '
-GROUP BY nom';
+  ';
   $stmt = $bdd->prepare($sql);
   $stmt->bindParam(':du', $start, PDO::PARAM_STR);
   $stmt->bindParam(':au', $fin, PDO::PARAM_STR);
@@ -287,7 +287,7 @@ if (is_valid_session() && is_allowed_bilan()) {
                         </td>
                         <td></td>
                         <td><?= $d['somme'] ?> kg</td>
-                        <td><?= round($d['somme'] * 100 / $p['somme'], 2) ?> %</td>
+                        <td><?= round($d['somme'] * 100 / $data['masse'], 2) ?> %</td>
                       </tr>
                     <?php } ?>
                   <?php } ?>
@@ -329,7 +329,7 @@ if (is_valid_session() && is_allowed_bilan()) {
                       <td><?= $a['nom']; ?></td>
                       <td><?= $a['ncol']; ?></td>
                       <td><?= $a['somme']; ?></td>
-                      <td><?= round($a['somme'] * 100 / $a['somme'], 2); ?></td>
+                      <td><?= round($a['somme'] * 100 / $data['masse'], 2); ?></td>
                     </tr>
                     <?php foreach (BilanCollecte3($bdd, $numero, $a['localite'], $time_debut, $time_fin) as $b) { ?>
                       <tr class="collapse parloc<?= $a['localite'] ?>">
@@ -338,7 +338,7 @@ if (is_valid_session() && is_allowed_bilan()) {
                         </td>
                         <td></td>
                         <td class="hiddenRow"><?= $b['somme'] ?> kg</td>
-                        <td class="hiddenRow"><?= round($b['somme'] * 100 / $a['somme'], 2) ?> %</td>
+                        <td class="hiddenRow"><?= round($b['somme'] * 100 / $data['masse'], 2) ?> %</td>
                       </tr>
                     <?php } ?>
                   <?php } ?>
@@ -377,7 +377,7 @@ if (is_valid_session() && is_allowed_bilan()) {
                     <tr data-toggle="collapse" data-target=".partyp<?= $a['nom']; ?>">
                       <td><a href="jours.php?date1=<?= $date1 ?>&date2=<?= $date2 ?>&type=<?= $b['id'] ?>"><?= $b['nom'] ?></a></td>
                       <td><?= $a['somme']; ?></td>
-                      <td><?= round($a['somme'] * 100 / $a['somme'], 2); ?></td>
+                      <td><?= round($a['somme'] * 100 / $data['masse'], 2); ?></td>
                     </tr>
 
                   <?php } ?>
