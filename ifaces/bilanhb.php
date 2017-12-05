@@ -271,6 +271,7 @@ if (is_valid_session() && is_allowed_bilan()) {
     <div class="col-md-8 col-md-offset-1">
       <h2><?= $date1 === $date2 ? " Le {$date1}," : " Du {$date1} au {$date2}," ?>
         masse totale évacuée: <?= $data['masse'] ?>kg<?= $numero === 0 ? ' sur ' . count($points_sortie) . ' Point(s) de sorties.' : '.' ?></h2>
+          <?php if($data['masse'] > 0){ ?>
     </div>
   </div>
 
@@ -364,6 +365,7 @@ if (is_valid_session() && is_allowed_bilan()) {
           </a>
         </div>
       </div>
+          <?php }else{echo '<img src="../images/nodata.jpg" class="img-responsive" alt="Responsive image">';} ?>
     </div>
   </div>
 

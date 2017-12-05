@@ -393,7 +393,7 @@ if (is_valid_session() && is_allowed_bilan()) {
               -->
             </div>
           </div>
-      <?php }else{echo "<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>";} ?>
+      <?php }else{echo '<img src="../images/nodata.jpg" class="img-responsive" alt="Responsive image">';} ?>
       </div>
 
     </div>
