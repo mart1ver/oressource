@@ -318,7 +318,7 @@ if (is_valid_session() && is_allowed_bilan()) {
 
     $(document).ready(() => {
       const get = process_get();
-      const url = 'bilanv.php';
+      const base = 'bilanv.php';
       const options = set_datepicker(get);
       bind_datepicker(options, Object.assign({ base, get }));
 
