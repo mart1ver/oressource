@@ -129,15 +129,16 @@ ORDER BY somme DESC';
 function bilanCollecte4(PDO $bdd, int $id, $start, $fin): array {
   $numero = ($id > 0 ? " AND collectes.id_point_collecte = $id " : ' ');
   $sql = 'SELECT
-  type_dechets.nom nom ,
+  type_dechets.id id,
+  type_dechets.nom nom,
   SUM(pesees_collectes.masse) somme,
   pesees_collectes.timestamp
-FROM  pesees_collectes, collectes, type_dechets
+FROM pesees_collectes, collectes, type_dechets
 WHERE
   pesees_collectes.timestamp BETWEEN :du AND :au
   AND type_dechets.id = pesees_collectes.id_type_dechet
   AND pesees_collectes.id_collecte = collectes.id' . $numero . '
-  ';
+ GROUP By type_dechets.id';
   $stmt = $bdd->prepare($sql);
   $stmt->bindParam(':du', $start, PDO::PARAM_STR);
   $stmt->bindParam(':au', $fin, PDO::PARAM_STR);
@@ -375,7 +376,7 @@ if (is_valid_session() && is_allowed_bilan()) {
                 <tbody>
                   <?php foreach (BilanCollecte4($bdd, $numero, $time_debut, $time_fin) as $a) { ?>
                     <tr data-toggle="collapse" data-target=".partyp<?= $a['nom']; ?>">
-                      <td><a href="jours.php?date1=<?= $date1 ?>&date2=<?= $date2 ?>&type=<?= $b['id'] ?>"><?= $b['nom'] ?></a></td>
+                      <td><a href="jours.php?date1=<?= $date1 ?>&date2=<?= $date2 ?>&type=<?= $a['id'] ?>"><?= $a['nom'] ?></a></td>
                       <td><?= $a['somme']; ?></td>
                       <td><?= round($a['somme'] * 100 / $data['masse'], 2); ?></td>
                     </tr>
