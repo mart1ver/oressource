@@ -53,10 +53,10 @@ if (is_valid_session() && is_allowed_bilan()) {
     $nb_ventes = nb_ventes($bdd, $time_debut, $time_fin);
     $remb_nb = nb_remboursements($bdd, $time_debut, $time_fin);
   } else {
-    $bilans = bilan_ventes_point_vente($bdd, $time_debut, $time_debut, $numero);
-    $bilans_types = bilan_ventes_par_type_point_vente($bdd, $time_debut, $time_debut, $numero);
-    $bilans_pesees_types = bilan_ventes_pesees_point_vente($bdd, $time_debut, $time_debut, $numero);
-    $chiffre_affaire = chiffre_affaire_mode_paiement_point_vente($bdd, $time_debut, $time_debut, $numero);
+    $bilans = bilan_ventes_point_vente($bdd, $time_debut, $time_fin, $numero);
+    $bilans_types = bilan_ventes_par_type_point_vente($bdd, $time_debut, $time_fin, $numero);
+    $bilans_pesees_types = bilan_ventes_pesees_point_vente($bdd, $time_debut, $time_fin, $numero);
+    $chiffre_affaire = chiffre_affaire_mode_paiement_point_vente($bdd, $time_debut, $time_fin, $numero);
     $nb_ventes = nb_ventes_point_vente($bdd, $time_debut, $time_fin, $numero);
     $remb_nb = nb_remboursements_point_vente($bdd, $time_debut, $time_fin, $numero);
   }
