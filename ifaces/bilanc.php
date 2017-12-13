@@ -43,14 +43,13 @@ function bilansCollectes0(PDO $bdd, int $id, $start, $fin): array {
   $sql = 'SELECT
 type_collecte.nom,
 SUM(pesees_collectes.masse) somme,
-pesees_collectes.timestamp,
 type_collecte.id,
 COUNT(distinct collectes.id) ncol
 FROM pesees_collectes,collectes, type_collecte
 WHERE pesees_collectes.timestamp BETWEEN :du AND :au
 AND   type_collecte.id = collectes.id_type_collecte
 AND   pesees_collectes.id_collecte = collectes.id ' . $numero . '
-GROUP BY collectes.id_type_collecte';
+GROUP BY type_collecte.id';
   $stmt = $bdd->prepare($sql);
   $stmt->bindParam(':du', $start, PDO::PARAM_STR);
   $stmt->bindParam(':au', $fin, PDO::PARAM_STR);
@@ -63,10 +62,9 @@ function bilanCollecte2(PDO $bdd, int $id, $start, $fin): array {
   $sql = 'SELECT
   localites.nom,
   SUM(pesees_collectes.masse) somme,
-  pesees_collectes.timestamp,
   localites.id localite,
   COUNT(distinct collectes.id) ncol
-FROM  pesees_collectes, collectes, localites
+FROM pesees_collectes, collectes, localites
 WHERE
   pesees_collectes.timestamp BETWEEN :du AND :au
   AND localites.id = collectes.localisation
@@ -109,7 +107,7 @@ function BilanCollecte3(PDO $bdd, int $id, int $localite, $start, $fin): array {
   type_dechets.couleur,
   type_dechets.nom,
   sum(pesees_collectes.masse) somme
- FROM type_dechets, pesees_collectes,localites, collectes
+ FROM type_dechets, pesees_collectes, localites, collectes
 WHERE pesees_collectes.timestamp BETWEEN :du AND :au
 AND   type_dechets.id = pesees_collectes.id_type_dechet
 AND   localites.id = collectes.localisation
@@ -130,8 +128,7 @@ function bilanCollecte4(PDO $bdd, int $id, $start, $fin): array {
   $sql = 'SELECT
   type_dechets.id id,
   type_dechets.nom nom,
-  SUM(pesees_collectes.masse) somme,
-  pesees_collectes.timestamp
+  SUM(pesees_collectes.masse) somme
 FROM pesees_collectes, collectes, type_dechets
 WHERE
   pesees_collectes.timestamp BETWEEN :du AND :au
