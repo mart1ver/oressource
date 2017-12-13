@@ -50,7 +50,7 @@ FROM pesees_collectes,collectes, type_collecte
 WHERE pesees_collectes.timestamp BETWEEN :du AND :au
 AND   type_collecte.id = collectes.id_type_collecte
 AND   pesees_collectes.id_collecte = collectes.id ' . $numero . '
-GROUP BY id_type_collecte';
+GROUP BY collectes.id_type_collecte';
   $stmt = $bdd->prepare($sql);
   $stmt->bindParam(':du', $start, PDO::PARAM_STR);
   $stmt->bindParam(':au', $fin, PDO::PARAM_STR);
@@ -92,7 +92,7 @@ AND   type_dechets.id = pesees_collectes.id_type_dechet
 AND   type_collecte.id = collectes.id_type_collecte
 AND   pesees_collectes.id_collecte = collectes.id
 AND   type_collecte.id = :id_type_collecte ' . $numero . '
-GROUP BY nom
+GROUP BY type_dechets.id
 ORDER BY somme DESC';
   $stmt = $bdd->prepare($sql);
   $stmt->bindParam(':du', $start, PDO::PARAM_STR);
@@ -106,7 +106,6 @@ function BilanCollecte3(PDO $bdd, int $id, int $localite, $start, $fin): array {
   $numero = ($id > 0 ? " AND collectes.id_point_collecte = $id " : ' ');
   $sql = 'SELECT
   type_dechets.id id,
-  localites.id,
   type_dechets.couleur,
   type_dechets.nom,
   sum(pesees_collectes.masse) somme
@@ -116,7 +115,7 @@ AND   type_dechets.id = pesees_collectes.id_type_dechet
 AND   localites.id = collectes.localisation
 AND   pesees_collectes.id_collecte = collectes.id
 AND   localites.id = :id_loc ' . $numero . '
-GROUP BY nom
+GROUP BY type_dechets.id
 ORDER BY somme DESC';
   $stmt = $bdd->prepare($sql);
   $stmt->bindParam(':du', $start, PDO::PARAM_STR);
@@ -158,7 +157,7 @@ FROM type_collecte, pesees_collectes, collectes
 WHERE type_collecte.id = collectes.id_type_collecte
 AND   pesees_collectes.id_collecte = collectes.id
 AND   DATE(collectes.timestamp) BETWEEN :du AND :au ' . $numero . '
-GROUP BY nom';
+GROUP BY type_collecte.id';
   $stmt = $bdd->prepare($sql);
   $stmt->bindParam(':du', $start, PDO::PARAM_STR);
   $stmt->bindParam(':au', $end, PDO::PARAM_STR);
@@ -175,7 +174,7 @@ function MorrisCollecteMasseTot(PDO $bdd, int $id, $start, $end): array {
     WHERE type_dechets.id = pesees_collectes.id_type_dechet
     AND   pesees_collectes.id_collecte = collectes.id
     AND   DATE(collectes.timestamp) BETWEEN :du AND :au ' . $numero . '
-    GROUP BY type_dechets.nom';
+    GROUP BY type_dechets.id';
   $stmt = $bdd->prepare($sql);
   $stmt->bindParam(':du', $start, PDO::PARAM_STR);
   $stmt->bindParam(':au', $end, PDO::PARAM_STR);
@@ -193,7 +192,7 @@ WHERE localites.id = collectes.localisation
 AND   type_collecte.id = collectes.id_type_collecte
 AND   pesees_collectes.id_collecte = collectes.id
 AND   DATE(collectes.timestamp) BETWEEN :du AND :au ' . $numero . '
-GROUP BY localites.nom';
+GROUP BY localites.id';
   $stmt = $bdd->prepare($sql);
   $stmt->bindParam(':du', $start, PDO::PARAM_STR);
   $stmt->bindParam(':au', $end, PDO::PARAM_STR);
