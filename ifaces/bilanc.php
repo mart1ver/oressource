@@ -406,7 +406,7 @@ if (is_valid_session() && is_allowed_bilan()) {
       data: graphmass.data,
       backgroundColor: '#ccc',
       labelColor: '#060',
-      colors: graphmass.color,
+      colors: graphmass.colors,
       formatter: (x) => `${x} Kg.`
     });
   </script>
@@ -418,7 +418,7 @@ if (is_valid_session() && is_allowed_bilan()) {
       data: graph2masse.data,
       backgroundColor: '#ccc',
       labelColor: '#060',
-      colors: graph2masse.color,
+      colors: graph2masse.colors,
       formatter: (x) => `${x} Kg.`
     });
   </script>
@@ -430,7 +430,7 @@ if (is_valid_session() && is_allowed_bilan()) {
       data: graphloca.data,
       backgroundColor: '#ccc',
       labelColor: '#060',
-      colors: graphloca.color,
+      colors: graphloca.colors,
       formatter: (x) => `${x} Kg.`
     });
   </script>
