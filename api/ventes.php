@@ -56,7 +56,7 @@ function vendus_insert(PDO $bdd, int $id_vente, array $vente): int {
   return $bdd->lastInsertId();
 }
 
-function pesee_vendu_insert(PDO $bdd, int $id_vente, array $vente): int {
+function pesee_vendu_insert(PDO $bdd, int $id_vendus, array $vente): int {
   $sql = 'INSERT INTO pesees_vendus (
       timestamp, id_vendu, masse,
       quantite, id_createur
@@ -65,7 +65,7 @@ function pesee_vendu_insert(PDO $bdd, int $id_vente, array $vente): int {
       :masse, :quantite, :id_createur)';
   $req = $bdd->prepare($sql);
   $req->bindValue(':timestamp', $vente['date']->format('Y-m-d H:i:s'), PDO::PARAM_STR);
-  $req->bindValue(':id_vendu', $id_vente, PDO::PARAM_INT);
+  $req->bindValue(':id_vendu', $id_vendus, PDO::PARAM_INT);
   $req->bindValue(':id_createur', $vente['id_user'], PDO::PARAM_INT);
   foreach ($vente['items'] as $vendu) {
     $masse = parseFloat($vendu['masse']);
@@ -126,9 +126,9 @@ if (is_valid_session()) {
   $bdd->beginTransaction();
   try {
     $vente_id = vente_insert($bdd, $json);
-    vendus_insert($bdd, $vente_id, $json);
+    $vendu_id = vendus_insert($bdd, $vente_id, $json);
     if (pesees_ventes()) {
-      pesee_vendu_insert($bdd, $vente_id, $json);
+      pesee_vendu_insert($bdd, $vendu_id, $json);
     }
     $bdd->commit();
     http_response_code(200); // Created

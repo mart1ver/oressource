@@ -980,11 +980,12 @@ function bilan_ventes_point_vente(PDO $bdd, $start, $stop, $id_point_vente) {
       SUM(vendus.remboursement) as remb_somme,
       SUM(case when vendus.remboursement > 0 then 1 else 0 end) as remb_quantite,
       COALESCE(SUM(pesees_vendus.masse), 0) as vendu_masse
-    FROM ventes, vendus
+    FROM ventes
+    INNER JOIN vendus
+    ON vendus.id_vente = ventes.id
     LEFT JOIN pesees_vendus
     ON vendus.id = pesees_vendus.id_vendu
-    WHERE DATE(vendus.timestamp)
-    BETWEEN :du AND :au
+    WHERE DATE(ventes.timestamp) BETWEEN :du AND :au
     AND ventes.id_point_vente = :id_point_vente';
   $stmt = $bdd->prepare($sql);
   $stmt->bindValue(':du', $start, PDO::PARAM_STR);
