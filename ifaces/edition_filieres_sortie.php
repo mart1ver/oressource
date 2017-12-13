@@ -32,13 +32,13 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($
     <div class="panel-body">
       <div class="row">
         <form action="../moteur/filiere_sortie_post.php" method="post">
-          <div class="col-md-3"><label for="nom">Nom:</label> <input type="text"value ="<?= $_GET['nom']; ?>" name="nom" id="nom" class="form-control " required autofocus>
+          <div class="col-md-3"><label for="nom">Nom:</label> <input type="text"value ="<?= $_GET['nom'] ?? ''; ?>" name="nom" id="nom" class="form-control " required autofocus>
 
           </div>
 
-          <div class="col-md-4"><label for="description">Description:</label> <input type="text" value ="<?= $_GET['description']; ?>" name="description" id="description" class="form-control" required>
+          <div class="col-md-4"><label for="description">Description:</label> <input type="text" value ="<?= $_GET['description'] ?? ''; ?>" name="description" id="description" class="form-control" required>
           </div>
-          <div class="col-md-1"><label for="couleur">Couleur:</label> <input type="color" value="<?= '#' . $_GET['couleur']; ?>" name="couleur" id="couleur" class="form-control" required></div>
+          <div class="col-md-1"><label for="couleur">Couleur:</label> <input type="color" value="<?= '#' . $_GET['couleur'] ?? ''; ?>" name="couleur" id="couleur" class="form-control" required></div>
           <div class="col-md-1"><br><button name="creer" class="btn btn-default">Créer!</button></div>
 
       </div>
