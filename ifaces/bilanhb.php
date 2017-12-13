@@ -45,7 +45,6 @@ function bilansSortiesRepartition(PDO $bdd, int $id, $start, $fin): array {
   $numero = ($id > 0 ? " AND sorties.id_point_sortie = $id " : ' ');
   $sql = 'SELECT
     SUM(pesees_sorties.masse) somme,
-    pesees_sorties.timestamp,
     sorties.classe,
     COUNT(distinct sorties.id) ncol
   FROM
@@ -53,7 +52,7 @@ function bilansSortiesRepartition(PDO $bdd, int $id, $start, $fin): array {
   WHERE
     pesees_sorties.timestamp BETWEEN :du AND :au
   AND pesees_sorties.id_sortie = sorties.id ' . $numero . '
-  GROUP BY classe';
+  GROUP BY sorties.classe';
   $stmt = $bdd->prepare($sql);
   $stmt->bindParam(':du', $start, PDO::PARAM_STR);
   $stmt->bindParam(':au', $fin, PDO::PARAM_STR);
@@ -69,7 +68,7 @@ WHERE type_dechets.id = pesees_sorties.id_type_dechet
 AND   pesees_sorties.id_sortie = sorties.id
 AND   sorties.classe = :type0
 AND   pesees_sorties.timestamp BETWEEN :du0 AND :au0 ' . $numero . '
-GROUP BY nom
+GROUP BY type_dechet.id
 UNION
 SELECT type_dechets_evac.nom nom2, sum(pesees_sorties.masse) somme
 FROM type_dechets_evac, pesees_sorties, sorties
@@ -77,7 +76,7 @@ WHERE type_dechets_evac.id = pesees_sorties.id_type_dechet_evac
 AND   pesees_sorties.id_sortie = sorties.id
 AND   sorties.classe = :type1
 AND   pesees_sorties.timestamp BETWEEN :du1 AND :au1 ' . $numero . '
-GROUP BY nom2';
+GROUP BY type_dechets_evac.id';
   $stmt = $bdd->prepare($sql);
   $stmt->bindParam(':type0', $type, PDO::PARAM_STR);
   $stmt->bindParam(':type1', $type, PDO::PARAM_STR);
@@ -99,7 +98,7 @@ AND
 types_poubelles.id = pesees_sorties.id_type_poubelle
 AND sorties.classe = "sortiesp"
 AND pesees_sorties.timestamp BETWEEN :du AND :au ' . $numero . '
-GROUP BY nom';
+GROUP BY types_poubelles.id';
   $stmt = $bdd->prepare($sql);
   $stmt->bindParam(':du', $start, PDO::PARAM_STR);
   $stmt->bindParam(':au', $fin, PDO::PARAM_STR);
@@ -158,7 +157,7 @@ AND
 pesees_sorties.id_sortie = sorties.id
 AND sorties.classe = "sorties"
 AND pesees_sorties.timestamp BETWEEN :du AND :au ' . $numero . '
-GROUP BY nom';
+GROUP BY type_sortie.id';
   $stmt = $bdd->prepare($sql);
   $stmt->bindParam(':du', $start, PDO::PARAM_STR);
   $stmt->bindParam(':au', $fin, PDO::PARAM_STR);
@@ -176,7 +175,7 @@ AND
 pesees_sorties.id_sortie = sorties.id
 AND sorties.classe = "sortiesc"
 AND pesees_sorties.timestamp BETWEEN :du AND :au ' . $numero . '
-GROUP BY nom';
+GROUP BY conventions_sorties.id';
   $stmt = $bdd->prepare($sql);
   $stmt->bindParam(':du', $start, PDO::PARAM_STR);
   $stmt->bindParam(':au', $fin, PDO::PARAM_STR);
@@ -194,7 +193,7 @@ AND
 pesees_sorties.id_sortie = sorties.id
 AND sorties.classe = "sortiesr"
 AND pesees_sorties.timestamp BETWEEN :du AND :au ' . $numero . '
-GROUP BY nom';
+GROUP BY filieres_sortie.id';
   $stmt = $bdd->prepare($sql);
   $stmt->bindParam(':du', $start, PDO::PARAM_STR);
   $stmt->bindParam(':au', $fin, PDO::PARAM_STR);

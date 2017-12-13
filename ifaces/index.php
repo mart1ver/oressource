@@ -54,31 +54,31 @@ if (is_valid_session()) {
                   FROM type_dechets, vendus
                   WHERE type_dechets.id = vendus.id_type_dechet
                   AND DATE(vendus.timestamp) = CURDATE() AND vendus.prix > 0
-                  GROUP BY nom'));
+                  GROUP BY type_dechets.id'));
 
   $grapha = data_graphs($bdd->prepare('SELECT type_dechets.couleur,type_dechets.nom, sum(pesees_sorties.masse) somme
-                      FROM type_dechets,pesees_sorties
+                      FROM type_dechets, pesees_sorties
                       WHERE type_dechets.id = pesees_sorties.id_type_dechet
                       AND DATE(pesees_sorties.timestamp) = CURDATE()
-                      GROUP BY nom
+                      GROUP BY type_dechets.id
                       UNION
                       SELECT types_poubelles.couleur,types_poubelles.nom, sum(pesees_sorties.masse) somme
                       FROM types_poubelles,pesees_sorties
                       WHERE types_poubelles.id = pesees_sorties.id_type_poubelle
                       AND DATE(pesees_sorties.timestamp) = CURDATE()
-                      GROUP BY nom
+                      GROUP BY types_poubelles.id
                       UNION
                       SELECT type_dechets_evac.couleur,type_dechets_evac.nom, sum(pesees_sorties.masse) somme
                       FROM type_dechets_evac ,pesees_sorties
                       WHERE type_dechets_evac.id=pesees_sorties.id_type_dechet_evac
                       AND DATE(pesees_sorties.timestamp) = CURDATE()
-                      GROUP BY nom'));
+                      GROUP BY type_dechets_evac.id'));
 
   $graphj = data_graphs($bdd->prepare('SELECT type_dechets.couleur, type_dechets.nom, sum(pesees_collectes.masse) somme
                   FROM type_dechets, pesees_collectes
                   WHERE type_dechets.id = pesees_collectes.id_type_dechet
                   AND DATE(pesees_collectes.timestamp) = CURDATE()
-                  GROUP BY nom'));
+                  GROUP BY type_dechets.id'));
   ?>
 
   <div class="page-header">
