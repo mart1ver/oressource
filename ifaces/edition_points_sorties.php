@@ -29,10 +29,10 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($
     <div class="panel-body">
       <div class="row">
         <form action="../moteur/edition_points_sortie_post.php" method="post">
-          <div class="col-md-3"><label for="nom">Nom:</label><br><br><input type="text"                 value ="<?= $_GET['nom']; ?>" name="nom" id="nom" class="form-control " required autofocus></div>
-          <div class="col-md-3"><label for="addresse">Adresse:</label><br><br><input type="text" value="<?= $_GET['adresse']; ?>" name="adresse" id="adresse" class="form-control" required></div>
-          <div class="col-md-2"><label for="commentaire">Commentaire:</label><br><br><input type="text" value ="<?= $_GET['commentaire']; ?>" name="commentaire" id="commentaire" class="form-control" required></div>
-          <div class="col-md-2"><label for="pesee_max">Masse maxi. d'une pesée (Kg):</label> <input type="text" value ="<?= $_GET['pesee_max']; ?>" name="pesee_max" id="pesee_max" class="form-control" required></div>
+          <div class="col-md-3"><label for="nom">Nom:</label><br><br><input type="text"                 value ="<?= $_GET['nom'] ?? ''; ?>" name="nom" id="nom" class="form-control " required autofocus></div>
+          <div class="col-md-3"><label for="addresse">Adresse:</label><br><br><input type="text" value="<?= $_GET['adresse'] ?? ''; ?>" name="adresse" id="adresse" class="form-control" required></div>
+          <div class="col-md-2"><label for="commentaire">Commentaire:</label><br><br><input type="text" value ="<?= $_GET['commentaire'] ?? ''; ?>" name="commentaire" id="commentaire" class="form-control" required></div>
+          <div class="col-md-2"><label for="pesee_max">Masse maxi. d'une pesée (Kg):</label> <input type="text" value ="<?= $_GET['pesee_max'] ?? ''; ?>" name="pesee_max" id="pesee_max" class="form-control" required></div>
           <div class="col-md-1"><label for="couleur">Couleur:</label><br><br><input type="color" value="<?php
             if (isset($_GET['couleur'])) {
               echo '#' . $_GET['couleur'];
