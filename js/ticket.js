@@ -186,14 +186,13 @@ function recycleur_reset() {
 /* Fonction de remise à zéro de l'interface graphique et des tickets en cours.
  * @return {undefined}
  */
-function tickets_clear(data) {
+function tickets_clear(type) {
   // On supprime tout le ticket en cours.
   const range = document.createRange();
   range.selectNodeContents(document.getElementById('transaction'));
   range.deleteContents();
   document.getElementById('commentaire').value = '';
   document.getElementById('massetot').textContent = 'Masse totale: 0 Kg.';
-  const type = data.classe;
   if (type === 'collecte' || type === 'sorties') {
     document.getElementById('localite').selectedIndex = '0';
   }
@@ -302,11 +301,11 @@ function post_data(url, data, onSuccess) {
     },
     body: JSON.stringify(data)
   }).then(status)
-    .then(onSuccess)
+    .then(() => onSuccess(data.classe))
     .catch((ex) => {
       if (ex.status === 401) {
         login(() => {
-          post_data(url, data, onSuccess);
+          post_data(url, data, onSuccess.classe);
         });
       } else {
         console.log('Error:', ex);
