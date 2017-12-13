@@ -65,11 +65,15 @@ $can_config = is_allowed_config();
               <li class="nav navbar-nav dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Points de collecte<b class="caret"></b></a>
                 <ul class="dropdown-menu">
-                  <?php foreach (filter_visibles(points_collectes($bdd)) as $point_collecte) { ?>
-                    <li>
-                      <a href="../ifaces/collecte.php?numero=<?= "{$point_collecte['id']}"; ?>"><?= $point_collecte['nom']; ?></a>
-                    </li>
-                  <?php } ?>
+                  <?php foreach (filter_visibles(points_collectes($bdd)) as $point_collecte) {
+                    if (is_allowed_collecte_id($point_collecte['id'])) {
+                      ?>
+                      <li>
+                        <a href="../ifaces/collecte.php?numero=<?= "{$point_collecte['id']}"; ?>"><?= $point_collecte['nom']; ?></a>
+                      </li>
+                    <?php }
+                  }
+                  ?>
                 </ul>
               </li>
               <?php
@@ -79,12 +83,17 @@ $can_config = is_allowed_config();
             <?php if (is_allowed_sortie()) { ?>
               <li class="nav navbar-nav dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Sorties hors-boutique<b class="caret"></b></a>
-                <ul class="dropdown-menu">
-                  <?php foreach (filter_visibles(points_sorties($bdd)) as $point_sortie) { ?>
-                    <li>
-                      <a href="../ifaces/sortiesc.php?numero=<?= "{$point_sortie['id']}"; ?>"><?= $point_sortie['nom']; ?></a>
-                    </li>
-                  <?php } ?>
+                  <ul class="dropdown-menu">
+                    <?php foreach (filter_visibles(points_sorties($bdd)) as $point_sortie) {
+                      if (is_allowed_sortie_id($point_sortie['id'])) {
+                        ?>
+                        <li>
+                          <a href="../ifaces/sortiesc.php?numero=<?= "{$point_sortie['id']}"; ?>"><?= $point_sortie['nom']; ?></a>
+                        </li>
+                        <?php
+                      }
+                    }
+                    ?>
                 </ul>
               </li>
               <?php
@@ -95,12 +104,17 @@ $can_config = is_allowed_config();
               <li class="nav navbar-nav dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Points de vente<b class="caret"></b></a>
                 <ul class="dropdown-menu">
-                  <?php foreach (filter_visibles(points_ventes($bdd)) as $point_vente) { ?>
-                    <li>
-                      <a href="../ifaces/ventes.php?numero=<?= "{$point_vente['id']}"; ?>"
-                         ><?= $point_vente['nom']; ?></a>
-                    </li>
-                  <?php } ?>
+                  <?php foreach (filter_visibles(points_ventes($bdd)) as $point_vente) {
+                    if (is_allowed_vente_id($point_vente['id'])) {
+                        ?>
+                        <li>
+                          <a href="../ifaces/ventes.php?numero=<?= "{$point_vente['id']}"; ?>"
+                             ><?= $point_vente['nom']; ?></a>
+                        </li>
+                        <?php
+                      }
+                    }
+                    ?>
                 </ul>
               </li>
               <?php
