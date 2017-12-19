@@ -18,26 +18,18 @@
  */
 
 session_start();
-require_once('../moteur/dbconfig.php');
+require_once '../core/composants.php';
+
 if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($_SESSION['niveau'], 'k') !== false)) {
+  require_once '../moteur/dbconfig.php';
   require_once 'tete.php';
   ?>
   <div class="container">
-    <h1>Gestion des moyens de paiement en caisse</h1>
-    <div class="panel-heading">Gérez ici les moyens de paiement disponibles aux différents points de vente</div>
-    <p>Permet de définir les différents moyens de paiement disponibles aux différents points de vente.</p>
-
-    <div class="panel-body">
-      <div class="row">
-        <form action="../moteur/moyens_paiement_post.php" method="post">
-          <div class="col-md-3"><label for="nom">Nom:</label> <input type="text"                 value ="<?= $_GET['nom'] ?? ''; ?>" name="nom" id="nom" class="form-control " required autofocus></div>
-          <div class="col-md-2"><label for="commentaire">Description:</label> <input type="text" value ="<?= $_GET['description'] ?? ''; ?>" name="description" id="description" class="form-control" required></div>
-
-          <div class="col-md-1"><label for="couleur">Couleur:</label> <input type="color" value="<?= '#' . $_GET['couleur'] ?? ''; ?>" name="couleur" id="couleur" class="form-control" required></div>
-          <div class="col-md-1"><br><button name="creer" class="btn btn-default">Créer!</button></div>
-        </form>
-      </div>
-    </div>
+    <?= config_types3([
+      'h1' => 'Gestion des moyens de paiement en caisse',
+      'heading' => "Gérez ici les moyens de paiement disponibles aux différents points de vente",
+      'text' => "Permet de définir les différents moyens de paiement disponibles aux différents points de vente.",
+      'url' => '../moteur/moyens_paiement_post.php']) ?>
 
     <table class="table">
       <thead>
@@ -49,7 +41,6 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($
           <th>Couleur</th>
           <th>Visible</th>
           <th></th>
-
         </tr>
       </thead>
       <tbody>
@@ -89,17 +80,13 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($
               </form>
             </td>
             <td>
-
               <form action="modification_moyens_paiement.php" method="post">
-
                 <input type="hidden" name ="id" id="id" value="<?= $donnees['id']; ?>">
                 <input type="hidden" name ="nom" id="nom" value="<?= $donnees['nom']; ?>">
                 <input type="hidden" name ="description" id="description" value="<?= $donnees['description']; ?>">
                 <input type="hidden" name ="couleur" id="couleur" value="<?= substr($_POST['couleur'], 1); ?>">
-
                 <button  class="btn btn-warning btn-sm" >Modifier</button>
               </form>
-
             </td>
           </tr>
           <?php

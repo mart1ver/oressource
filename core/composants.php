@@ -282,3 +282,34 @@ function listSaisie(array $props) {
   <?php
   return ob_get_clean();
 }
+
+/*
+ * A utiliser dans les configurations qui neccessitent les champs nom, description, couleur.
+ */
+function config_types3_param(array $props): string {
+      ob_start();
+  ?>
+<h1><?= $props['h1'] ?></h1>
+    <div class="panel-heading"><?= $props['heading'] ?></div>
+    <p><?= $props['text'] ?></p>
+    <div class="panel-body">
+      <div class="row">
+        <form action="<?= $props['url'] ?>" method="post">
+          <?= textInput(['name' => 'nom', 'text' => "Nom:"], $props['nom']) ?>
+          <?= textInput(['name' => 'commentaire', 'text' => "Description:"], $props['description']) ?>
+          <div class="col-md-1"><label for="saisiecouleur">Couleur:</label><input type="color" value="#<?= $props['couleur'] ?>" name="couleur" id="couleur" class="form-control" required></div>
+          <div class="col-md-1"><br><button name="creer" class="btn btn-default">Créer</button></div>
+        </form>
+      </div>
+    </div>
+  <?php
+  return ob_get_clean();
+}
+
+function config_types3(array $props): string {
+  return config_types3_param(array_merge($props, [
+    'nom' => $_GET['nom'] ?? '',
+    'commentaire' => $_GET['description'] ?? '',
+    'couleur' => $_GET['couleur'] ?? ''
+  ]));
+}

@@ -17,25 +17,21 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
+
 session_start();
-require_once('../moteur/dbconfig.php');
+require_once '../core/composants.php';
+
 if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($_SESSION['niveau'], 'k') !== false)) {
+  require_once '../moteur/dbconfig.php';
   require_once 'tete.php';
   ?>
   <div class="container">
-    <h1>Gestion de la typologie des sorties hors-boutique</h1>
-    <div class="panel-heading">Gérez ici les différents types de sorties hors-boutique.</div>
-    <p>Permet de différencier les différentes destinations des dons (don a un particulier , une association, lié à une convention,...) </p>
-    <div class="panel-body">
-      <div class="row">
-        <form action="../moteur/types_sortie_post.php" method="post">
-          <div class="col-md-3"><label for="nom">Nom:</label> <input type="text"                 value ="<?= $_GET['nom'] ?? ''; ?>" name="nom" id="nom" class="form-control " required autofocus></div>
-          <div class="col-md-2"><label for="commentaire">Description:</label> <input type="text" value ="<?= $_GET['description'] ?? ''; ?>" name="description" id="description" class="form-control" required></div>
-          <div class="col-md-1"><label for="saisiecouleur">Couleur:</label> <input type="color" value="<?= '#' . $_GET['couleur'] ?? ''; ?>" name="couleur" id="couleur" class="form-control" required></div>
-          <div class="col-md-1"><br><button name="creer" class="btn btn-default">Créer!</button></div>
-        </form>
-      </div>
-    </div>
+    <?= config_types3([
+       'h1' => 'Gestion de la typologie des sorties hors-boutique',
+       'heading' => "Gérez ici les différents types de sorties hors-boutique.",
+       'text' => "Permet de différencier les différentes destinations des dons (don a un particulier, une association, lié à une convention, ...).",
+       'url' => '../moteur/types_sortie_post.php']) ?>
 
     <table class="table">
       <thead>
@@ -47,7 +43,6 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($
           <th>Couleur</th>
           <th>Visible</th>
           <th></th>
-
         </tr>
       </thead>
       <tbody>
@@ -87,17 +82,13 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($
               </form>
             </td>
             <td>
-
               <form action="modification_types_sortie.php" method="post">
-
                 <input type="hidden" name ="id" id="id" value="<?= $donnees['id']; ?>">
                 <input type="hidden" name ="nom" id="nom" value="<?= $donnees['nom']; ?>">
                 <input type="hidden" name ="description" id="description" value="<?= $donnees['description']; ?>">
                 <input type="hidden" name ="couleur" id="couleur" value="<?= substr($_POST['couleur'], 1); ?>">
-
                 <button  class="btn btn-warning btn-sm" >Modifier!</button>
               </form>
-
             </td>
           </tr>
           <?php
