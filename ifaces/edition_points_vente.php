@@ -26,7 +26,7 @@ require_once('../core/session.php');
 if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && is_allowed_config()) {
   include_once('tete.php');
 
-  $nom = isset($_GET['nom']) ? $_GET['nom'] : '';
+  $nom = $_GET['nom'] ?? '';
   $reponse = $bdd->prepare('SELECT id, timestamp, nom, adresse, couleur, commentaire, surface_vente, visible FROM points_vente');
   $reponse->execute();
   $points_ventes = $reponse->fetchAll(PDO::FETCH_ASSOC);
