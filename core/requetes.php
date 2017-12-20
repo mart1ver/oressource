@@ -393,7 +393,7 @@ function collecte_id(PDO $bdd, int $id): array {
 }
 
 function moyens_paiements(PDO $bdd): array {
-  $sql = 'SELECT id, nom, couleur, visible FROM moyens_paiement';
+  $sql = 'SELECT id, nom, couleur, visible, description, timestamp FROM moyens_paiement';
   return fetch_all($sql, $bdd);
 }
 
