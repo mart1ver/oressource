@@ -17,10 +17,10 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
+require_once '../core/requetes.php';
+require_once '../core/composants.php';
 
 session_start();
-require_once '../core/composants.php';
 
 if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($_SESSION['niveau'], 'k') !== false)) {
   require_once '../moteur/dbconfig.php';
@@ -33,70 +33,7 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($
        'text' => "Permet de différencier les différentes destinations des dons (don a un particulier, une association, lié à une convention, ...).",
        'url' => '../moteur/types_sortie_post.php']) ?>
 
-    <table class="table">
-      <thead>
-        <tr>
-          <th>#</th>
-          <th>Date de création</th>
-          <th>Nom</th>
-          <th>Description</th>
-          <th>Couleur</th>
-          <th>Visible</th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody>
-        <?php
-        $reponse = $bdd->query('SELECT * FROM type_sortie');
-        while ($donnees = $reponse->fetch()) { ?>
-          <tr>
-            <td><?= $donnees['id']; ?></td>
-            <td><?= $donnees['timestamp']; ?></td>
-            <td><?= $donnees['nom']; ?></td>
-            <td><?= $donnees['description']; ?></td>
-            <td><span class="badge" style="background-color:<?= $donnees['couleur']; ?>"><?= $donnees['couleur']; ?></span></td>
-            <td>
-              <form action="../moteur/types_sortie_visible.php" method="post">
-
-                <input type="hidden" name ="id" id="id" value="<?= $donnees['id']; ?>">
-                <input type="hidden" name="visible" id="visible" value="<?php
-                if ($donnees['visible'] === 'oui') {
-                  echo 'non';
-                } else {
-                  echo 'oui';
-                }
-                ?>">
-                       <?php
-                       if ($donnees['visible'] === 'oui') { // SI on a pas de message d'erreur
-                         ?>
-                  <button  class="btn btn-info btn-sm " >
-                    <?php
-                  } else { // SINON
-                    ?>
-                    <button  class="btn btn-danger btn-sm " >
-                      <?php
-                    }
-                    echo $donnees['visible'];
-                    ?>
-                  </button>
-              </form>
-            </td>
-            <td>
-              <form action="modification_types_sortie.php" method="post">
-                <input type="hidden" name ="id" id="id" value="<?= $donnees['id']; ?>">
-                <input type="hidden" name ="nom" id="nom" value="<?= $donnees['nom']; ?>">
-                <input type="hidden" name ="description" id="description" value="<?= $donnees['description']; ?>">
-                <input type="hidden" name ="couleur" id="couleur" value="<?= substr($_POST['couleur'], 1); ?>">
-                <button  class="btn btn-warning btn-sm" >Modifier!</button>
-              </form>
-            </td>
-          </tr>
-          <?php
-        }
-        $reponse->closeCursor();
-        ?>
-      </tbody>
-    </table>
+    <?= configModif(['data' => types_sorties($bdd), 'url' => 'types_sortie']) ?>
   </div><!-- /.container -->
 
   <?php
