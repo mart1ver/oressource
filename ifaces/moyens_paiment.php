@@ -67,7 +67,7 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($
                        <?php
                        if ($donnees['visible'] === 'oui') { // SI on a pas de message d'erreur
                          ?>
-                  <button  class="btn btn-info btn-sm " >
+                  <button class="btn btn-info btn-sm ">
                     <?php
                   } else { // SINON
                     ?>

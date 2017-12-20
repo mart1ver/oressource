@@ -164,7 +164,6 @@ function configInfo(array $props) {
  * Il ne faut pas changer les id, ni les noms des inputs de ce composant sans modifier
  * le javascript associée.
  */
-
 function cartList(array $props) {
   ob_start();
   ?>
@@ -283,29 +282,6 @@ function listSaisie(array $props) {
   return ob_get_clean();
 }
 
-/*
- * A utiliser dans les configurations qui neccessitent les champs nom, description, couleur.
- */
-function config_types3_param(array $props): string {
-      ob_start();
-  ?>
-<h1><?= $props['h1'] ?></h1>
-    <div class="panel-heading"><?= $props['heading'] ?></div>
-    <p><?= $props['text'] ?></p>
-    <div class="panel-body">
-      <div class="row">
-        <form action="<?= $props['url'] ?>" method="post">
-          <?= textInput(['name' => 'nom', 'text' => "Nom:"], $props['nom']) ?>
-          <?= textInput(['name' => 'commentaire', 'text' => "Description:"], $props['description']) ?>
-          <div class="col-md-1"><label for="saisiecouleur">Couleur:</label><input type="color" value="#<?= $props['couleur'] ?>" name="couleur" id="couleur" class="form-control" required></div>
-          <div class="col-md-1"><br><button name="creer" class="btn btn-default">Créer</button></div>
-        </form>
-      </div>
-    </div>
-  <?php
-  return ob_get_clean();
-}
-
 function config_types3(array $props): string {
   return config_types3_param(array_merge($props, [
     'nom' => $_GET['nom'] ?? '',
@@ -313,3 +289,78 @@ function config_types3(array $props): string {
     'couleur' => $_GET['couleur'] ?? ''
   ]));
 }
+
+/*
+ * A utiliser dans les configurations qui neccessitent les champs nom, description, couleur.
+ */
+function config_types3_param(array $props): string {
+  ob_start();
+  ?>
+  <h1><?= $props['h1'] ?></h1>
+  <div class="panel-heading"><?= $props['heading'] ?></div>
+  <p><?= $props['text'] ?></p>
+  <div class="panel-body">
+    <div class="row">
+      <form action="<?= $props['url'] ?>" method="post">
+        <?= textInput(['name' => 'nom', 'text' => "Nom:"], $props['nom']) ?>
+        <?= textInput(['name' => 'commentaire', 'text' => "Description:"], $props['commentaire']) ?>
+        <div class="col-md-1"><label for="saisiecouleur">Couleur:</label><input type="color" value="#<?= $props['couleur'] ?>" name="couleur" id="couleur" class="form-control" required></div>
+        <div class="col-md-1"><br><button name="creer" class="btn btn-default">Créer</button></div>
+      </form>
+    </div>
+  </div>
+  <?php
+  return ob_get_clean();
+}
+
+function configBtnVisible(array $props): string {
+  ob_start();
+  ?>
+  <form action="../moteur/<?= $props['url'] ?>_visible.php" method="post">
+    <input type="hidden" name="id" id="id" value="<?= $props['id']; ?>">
+    <input type="hidden" name="visible" id="visible" value="<?= $props['visible'] === 'oui' ? 'non' : 'oui' ?>">
+    <button class="btn btn-info btn-sm <?= $props['visible'] === 'oui' ? 'btn-info' : 'btn-danger' ?>"><?= $props['visible'] ?></button>
+  </form>
+  <?php
+  return ob_get_clean();
+}
+
+function configModif(array $props): string {
+  ob_start();
+  ?>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Date de création</th>
+        <th>Nom</th>
+        <th>Description</th>
+        <th>Couleur</th>
+        <th>Visible</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+  <?php foreach ($props['data'] as $e) { ?>
+        <tr>
+          <td><?= $e['id']; ?></td>
+          <td><?= $e['timestamp']; ?></td>
+          <td><?= $e['nom']; ?></td>
+          <td><?= $e['description']; ?></td>
+          <td><span class="badge" style="background-color:<?= $e['couleur']; ?>"><?= $e['couleur']; ?></span></td>
+          <td><?= configBtnVisible(['url' => $props['url'], 'id' => $e['id'], 'visible' => $e['visible']]) ?></td>
+          <td>
+            <form action="modification_<?= $props['url'] ?>.php" method="post">
+              <input type="hidden" name="id" id="id" value="<?= $e['id']; ?>">
+              <input type="hidden" name="nom" id="nom" value="<?= $e['nom']; ?>">
+              <input type="hidden" name="description" id="description" value="<?= $e['description']; ?>">
+              <input type="hidden" name="couleur" id="couleur" value="<?= substr($e['couleur'], 1); ?>">
+              <button class="btn btn-warning btn-sm">Modifier</button>
+            </form>
+          </td>
+        </tr>
+    <?php } ?>
+    </tbody>
+    <?php
+    return ob_get_clean();
+  }

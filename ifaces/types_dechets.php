@@ -43,6 +43,7 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($
           <th></th>
         </tr>
       </thead>
+
       <tbody>
         <?php
         $reponse = $bdd->query('SELECT * FROM type_dechets');
@@ -55,28 +56,9 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($
             <td><span class="badge" style="background-color:<?= $donnees['couleur']; ?>"><?= $donnees['couleur']; ?></span></td>
             <td>
               <form action="../moteur/types_dechets_visible.php" method="post">
-
-                <input type="hidden" name ="id" id="id" value="<?= $donnees['id']; ?>">
-                <input type="hidden" name="visible" id="visible" value="<?php
-                if ($donnees['visible'] === 'oui') {
-                  echo 'non';
-                } else {
-                  echo 'oui';
-                }
-                ?>">
-                       <?php
-                       if ($donnees['visible'] === 'oui') { // SI on a pas de message d'erreur
-                         ?>
-                  <button  class="btn btn-info btn-sm " >
-                    <?php
-                  } else { // SINON
-                    ?>
-                    <button  class="btn btn-danger btn-sm " >
-                      <?php
-                    }
-                    echo $donnees['visible'];
-                    ?>
-                  </button>
+                <input type="hidden" name="id" id="id" value="<?= $donnees['id']; ?>">
+                <input type="hidden" name="visible" id="visible" value="<?= $donnees['visible'] === 'oui' ? 'oui' : 'non' ?>">
+                  <button class="btn btn-info btn-sm <?= $donnees['visible'] === 'oui' ? 'btn-info' : 'btn-danger' ?>"><?= $donnees['visible'] ?></button>
               </form>
             </td>
             <td>
