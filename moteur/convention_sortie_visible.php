@@ -23,7 +23,7 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($
   include('dbconfig.php');
   $req = $bdd->prepare('UPDATE conventions_sorties SET visible = :visible WHERE id = :id');
   $req->execute(['visible' => $_POST['visible'], 'id' => $_POST['id']]);
-  header('Location:../ifaces/edition_conventions_sortie.php');
+  header('Location:../ifaces/conventions_sortie.php');
 } else {
   header('Location:../moteur/destroy.php');
 }

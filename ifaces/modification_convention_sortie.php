@@ -48,7 +48,7 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($
           <div class="col-md-1"><br><button name="creer" class="btn btn-warning">Modifier</button></div>
         </form>
         <br>
-        <a href="edition_conventions_sortie.php">
+        <a href="conventions_sortie.php">
           <button name="creer" class="btn btn">Annuler</button>
         </a>
 

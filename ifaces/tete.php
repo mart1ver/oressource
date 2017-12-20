@@ -175,7 +175,7 @@ $can_config = is_allowed_config();
                       <a href="../ifaces/edition_filieres_sortie.php">Entreprises de recyclage</a>
                     </li>
                     <li>
-                      <a href="../ifaces/edition_conventions_sortie.php">Conventions avec les partenaires</a>
+                      <a href="../ifaces/conventions_sortie.php">Conventions avec les partenaires</a>
                     </li>
                     <li class="divider"></li>
                   <?php } ?>

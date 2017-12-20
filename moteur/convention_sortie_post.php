@@ -28,12 +28,12 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && is_allowe
   $req->closeCursor();
 
   if ($donnees['SUM(id)'] > 0) {
-    header("Location:../ifaces/edition_conventions_sortie.php?err=Une convention porte deja le meme nom!&nom={$_POST['nom']}&description={$_POST['description']}&couleur=" . substr($_POST['couleur'], 1));
+    header("Location:../ifaces/conventions_sortie.php?err=Une convention porte deja le meme nom!&nom={$_POST['nom']}&description={$_POST['description']}&couleur=" . substr($_POST['couleur'], 1));
   } else {
     $req = $bdd->prepare('INSERT INTO conventions_sorties (nom,  couleur, description, visible) VALUES(?, ?, ?, ?)');
     $req->execute([$_POST['nom'], $_POST['couleur'], $_POST['description'], 'oui']);
     $req->closeCursor();
-    header('Location:../ifaces/edition_conventions_sortie.php?msg=Convention enregistrée avec succes!');
+    header('Location:../ifaces/conventions_sortie.php?msg=Convention enregistrée avec succes!');
   }
 } else {
   header('Location:../moteur/destroy.php');

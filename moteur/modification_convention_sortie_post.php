@@ -26,7 +26,7 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($
   $req->execute(['nom' => $_POST['nom'], 'description' => $_POST['description'], 'couleur' => $_POST['couleur'], 'id' => $_POST['id']]);
   $req->closeCursor();
 
-  header('Location:../ifaces/edition_conventions_sortie.php');
+  header('Location:../ifaces/conventions_sortie.php');
 } else {
   header('Location: ../moteur/destroy.php');
 }

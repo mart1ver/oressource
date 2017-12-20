@@ -64,54 +64,7 @@ if (is_valid_session() && is_allowed_partners()) {
         </div>
       </div>
     </div>
-
-    <table class="table">
-      <thead>
-        <tr>
-          <th>#</th>
-          <th>Date de création</th>
-          <th>Nom</th>
-          <th>Description</th>
-          <th>Couleur</th>
-          <th>Visible</th>
-          <th></th>
-        </tr>
-      </thead>
-
-      <tbody>
-        <?php foreach ($conventions as $cs) { ?>
-          <tr>
-            <td><?= $cs['id']; ?></td>
-            <td><?= $cs['timestamp']; ?></td>
-            <td><?= $cs['nom']; ?></td>
-            <td><?= $cs['description']; ?></td>
-            <td>
-              <span class="badge" style="background-color:<?= $cs['couleur']; ?>"><?= $cs['couleur']; ?></span>
-            </td>
-            <td>
-              <form action="../moteur/convention_sortie_visible.php" method="post">
-                <input type="hidden" name ="id" id="id" value="<?= $cs['id']; ?>">
-                <input type="hidden" name="visible" id="visible"
-                       value="<?= $cs['visible'] === 'oui' ? 'non' : 'oui' ?>">
-                <button class="btn btn-sm <?= $cs['visible'] === 'oui' ? 'btn-info' : 'btn-danger' ?>">
-                  <?= $cs['visible'] === 'oui' ? 'oui' : 'non' ?>
-                </button>
-              </form>
-            </td>
-
-            <td>
-              <form action="modification_convention_sortie.php" method="post">
-                <input type="hidden" name="id" id="id" value="<?= $cs['id']; ?>">
-                <input type="hidden" name="nom" id="nom" value="<?= $cs['nom']; ?>">
-                <input type="hidden" name="description" id="description" value="<?= $cs['description']; ?>">
-                <input type="hidden" name="couleur" id="couleur" value="<?= substr($cs['couleur'], 1); ?>">
-                <button class="btn btn-warning btn-sm" >Modifier!</button>
-              </form>
-            </td>
-          </tr>
-        <?php } ?>
-      </tbody>
-    </table>
+    <?= configModif(['data' => convention_sortie($bdd), 'url' => 'convention_sortie']) ?>
   </div><!-- /.container -->
 
   <?php
