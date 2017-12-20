@@ -28,12 +28,12 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($
   ?>
   <div class="container">
     <?= config_types3([
-      'h1' => 'Gestion de la typologie des collectes',
-      'heading' => "Gérez ici les différents types de collectes",
-      'text' => "Permet de différencier les collectes en fonction de leur origine (apport volontaire, collecte à domicile, collecte en pied d'immeuble...).",
-      'url' => '../moteur/types_collecte_post.php']) ?>
+       'h1' => 'Gestion de la typologie des sorties hors-boutique',
+       'heading' => "Gérez ici les différents types de sorties hors-boutique.",
+       'text' => "Permet de différencier les différentes destinations des dons (don a un particulier, une association, lié à une convention, ...).",
+       'url' => '../moteur/types_sortie_post.php']) ?>
 
-    <?= configModif(['data' => types_collectes($bdd), 'url' => 'types_collecte']) ?>
+    <?= configModif(['data' => types_sorties($bdd), 'url' => 'types_sortie']) ?>
   </div><!-- /.container -->
 
   <?php

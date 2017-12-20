@@ -17,10 +17,12 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-session_start();
+require_once '../core/session.php';
+require_once '../core/requetes.php';
 require_once '../core/composants.php';
 
-if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($_SESSION['niveau'], 'k') !== false)) {
+session_start();
+if (is_valid_session() && is_allowed_config()) {
   require_once '../moteur/dbconfig.php';
   require_once 'tete.php';
   ?>
@@ -31,70 +33,7 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($
       'text' => "Permet de définir les différents moyens de paiement disponibles aux différents points de vente.",
       'url' => '../moteur/moyens_paiement_post.php']) ?>
 
-    <table class="table">
-      <thead>
-        <tr>
-          <th>#</th>
-          <th>Date de création</th>
-          <th>Nom</th>
-          <th>Description</th>
-          <th>Couleur</th>
-          <th>Visible</th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody>
-        <?php
-        $reponse = $bdd->query('SELECT * FROM moyens_paiement');
-        while ($donnees = $reponse->fetch()) { ?>
-          <tr>
-            <td><?= $donnees['id']; ?></td>
-            <td><?= $donnees['timestamp']; ?></td>
-            <td><?= $donnees['nom']; ?></td>
-            <td><?= $donnees['description']; ?></td>
-            <td><span class="badge" style="background-color:<?= $donnees['couleur']; ?>"><?= $donnees['couleur']; ?></span></td>
-            <td>
-              <form action="../moteur/moyens_paiement_visible.php" method="post">
-
-                <input type="hidden" name ="id" id="id" value="<?= $donnees['id']; ?>">
-                <input type="hidden" name="visible" id="visible" value="<?php
-                if ($donnees['visible'] === 'oui') {
-                  echo 'non';
-                } else {
-                  echo 'oui';
-                }
-                ?>">
-                       <?php
-                       if ($donnees['visible'] === 'oui') { // SI on a pas de message d'erreur
-                         ?>
-                  <button  class="btn btn-info btn-sm " >
-                    <?php
-                  } else { // SINON
-                    ?>
-                    <button  class="btn btn-danger btn-sm " >
-                      <?php
-                    }
-                    echo $donnees['visible'];
-                    ?>
-                  </button>
-              </form>
-            </td>
-            <td>
-              <form action="modification_moyens_paiement.php" method="post">
-                <input type="hidden" name ="id" id="id" value="<?= $donnees['id']; ?>">
-                <input type="hidden" name ="nom" id="nom" value="<?= $donnees['nom']; ?>">
-                <input type="hidden" name ="description" id="description" value="<?= $donnees['description']; ?>">
-                <input type="hidden" name ="couleur" id="couleur" value="<?= substr($_POST['couleur'], 1); ?>">
-                <button  class="btn btn-warning btn-sm" >Modifier</button>
-              </form>
-            </td>
-          </tr>
-          <?php
-        }
-        $reponse->closeCursor();
-        ?>
-      </tbody>
-    </table>
+  <?= configModif(['data' => moyens_paiements($bdd), 'url' => 'moyens_paiement']) ?>
   </div><!-- /.container -->
 
   <?php

@@ -24,7 +24,7 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($
   $req = $bdd->prepare('UPDATE type_sortie SET visible = :visible WHERE id = :id');
   $req->execute(['visible' => $_POST['visible'], 'id' => $_POST['id']]);
   $req->closeCursor();
-  header('Location:../ifaces/edition_types_sortie.php');
+  header('Location:../ifaces/types_sortie.php');
 } else {
   header('Location:../moteur/destroy.php');
 }

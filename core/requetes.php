@@ -248,7 +248,7 @@ function types_conteneurs(PDO $bdd): array {
 }
 
 function types_dechets_evac(PDO $bdd): array {
-  $sql = 'SELECT id, nom, couleur, visible FROM type_dechets_evac';
+  $sql = 'SELECT id, nom, couleur, visible, description, timestamp FROM type_dechets_evac';
   return fetch_all($sql, $bdd);
 }
 
@@ -262,7 +262,7 @@ function types_dechets_evac_id(PDO $bdd, int $id): array {
 }
 
 function types_dechets(PDO $bdd): array {
-  $sql = 'SELECT id, nom, couleur, description, visible FROM type_dechets';
+  $sql = 'SELECT id, nom, couleur, description, visible, timestamp FROM type_dechets';
   return fetch_all($sql, $bdd);
 }
 
@@ -276,12 +276,12 @@ function types_dechets_id(PDO $bdd, int $id): array {
 }
 
 function types_sorties(PDO $bdd): array {
-  $sql = 'SELECT id, nom, couleur, visible FROM type_sortie';
+  $sql = 'SELECT id, nom, couleur, visible, description, timestamp FROM type_sortie';
   return fetch_all($sql, $bdd);
 }
 
 function types_collectes(PDO $bdd): array {
-  $sql = 'SELECT id, nom, couleur, visible FROM type_collecte WHERE visible = "oui"';
+  $sql = 'SELECT id, nom, couleur, visible, timestamp, description FROM type_collecte';
   return fetch_all($sql, $bdd);
 }
 
@@ -393,7 +393,7 @@ function collecte_id(PDO $bdd, int $id): array {
 }
 
 function moyens_paiements(PDO $bdd): array {
-  $sql = 'SELECT id, nom, couleur, visible FROM moyens_paiement';
+  $sql = 'SELECT id, nom, couleur, visible, description, timestamp FROM moyens_paiement';
   return fetch_all($sql, $bdd);
 }
 

@@ -27,12 +27,12 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($
   $req->closeCursor();
 
   if ($donnees['SUM(id)'] > 0) { // SI le titre existe
-    header('Location:../ifaces/types_collecte.php?err=Un type de sortie porte deja le meme nom!&nom=' . $_POST['nom'] . '&description=' . $_POST['description'] . '&couleur=' . substr($_POST['couleur'], 1));
+    header('Location:../ifaces/types_sortie.php?err=Un type de sortie porte deja le meme nom!&nom=' . $_POST['nom'] . '&description=' . $_POST['description'] . '&couleur=' . substr($_POST['couleur'], 1));
   } else {
     $req = $bdd->prepare('INSERT INTO type_sortie (nom,  couleur, description, visible) VALUES(?, ?,  ?, ?)');
     $req->execute([$_POST['nom'], $_POST['couleur'], $_POST['description'], 'oui']);
     $req->closeCursor();
-    header('Location:../ifaces/edition_types_sortie.php?msg=Type de sortie enregistré avec succes!');
+    header('Location:../ifaces/types_sortie.php?msg=Type de sortie enregistré avec succes!');
   }
 } else {
   header('Location:../moteur/destroy.php');
