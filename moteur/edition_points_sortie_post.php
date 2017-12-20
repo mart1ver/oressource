@@ -33,7 +33,7 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($
     $req = $bdd->prepare('INSERT INTO points_sortie (nom, adresse, couleur, commentaire, pesee_max, visible) VALUES(?, ?, ?, ?, ?, ?)');
     $req->execute([$_POST['nom'], $_POST['adresse'], $_POST['couleur'], $_POST['commentaire'], $_POST['pesee_max'], 'oui']);
     $req->closeCursor();
-    header('Location:../ifaces/edition_points_sorties.php?msg=Point de collecte cree avec succes!');
+    header('Location:../ifaces/points_sorties.php?msg=Point de collecte cree avec succes!');
   }
 } else {
   header('Location:../moteur/destroy.php');
