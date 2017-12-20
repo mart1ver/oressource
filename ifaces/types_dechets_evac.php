@@ -18,25 +18,18 @@
  */
 
 session_start();
-require_once('../moteur/dbconfig.php');
+require_once '../core/composants.php';
+
 if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($_SESSION['niveau'], 'k') !== false)) {
+  require_once '../moteur/dbconfig.php';
   require_once 'tete.php';
   ?>
   <div class="container">
-    <h1>Gestion de la typologie des déchets évacués</h1>
-    <div class="panel-heading">Gérez ici les différents types de déchets évacués par la structure.</div>
-    <p>Permet de gérer par classes les déchets et matériaux sortant de la structure</p>
-    <div class="panel-body">
-      <div class="row">
-        <form action="../moteur/types_dechets_evac_post.php" method="post">
-          <div class="col-md-3"><label for="nom">Nom:</label> <input type="text"                 value ="<?= $_GET['nom'] ?? ''; ?>" name="nom" id="nom" class="form-control " required autofocus></div>
-          <div class="col-md-2"><label for="commentaire">Description:</label> <input type="text" value ="<?= $_GET['description'] ?? ''; ?>" name="description" id="description" class="form-control" required></div>
-
-          <div class="col-md-1"><label for="couleur">Couleur:</label> <input type="color" value="<?= '#' . $_GET['couleur'] ?? ''; ?>" name="couleur" id="couleur" class="form-control" required></div>
-          <div class="col-md-1"><br><button name="creer" class="btn btn-default">Créer!</button></div>
-        </form>
-      </div>
-    </div>
+    <?= config_types3([
+      'h1' => 'Gestion de la typologie des déchets évacués',
+      'heading' => "Gérez ici les différents types de déchets évacués par la structure.",
+      'text' => "Permet de gérer par classes les déchets et matériaux sortant de la structure",
+      'url' => '../moteur/types_dechets_evac_post.php']) ?>
 
     <table class="table">
       <thead>
@@ -48,7 +41,6 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($
           <th>Couleur</th>
           <th>Visible</th>
           <th></th>
-
         </tr>
       </thead>
       <tbody>
@@ -88,17 +80,13 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($
               </form>
             </td>
             <td>
-
               <form action="modification_types_dechets_evac.php" method="post">
-
                 <input type="hidden" name ="id" id="id" value="<?= $donnees['id']; ?>">
                 <input type="hidden" name ="nom" id="nom" value="<?= $donnees['nom']; ?>">
                 <input type="hidden" name ="description" id="description" value="<?= $donnees['description']; ?>">
                 <input type="hidden" name ="couleur" id="couleur" value="<?= substr($_POST['couleur'], 1); ?>">
-
                 <button  class="btn btn-warning btn-sm" >Modifier</button>
               </form>
-
             </td>
           </tr>
           <?php
