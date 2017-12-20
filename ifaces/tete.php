@@ -183,7 +183,7 @@ $can_config = is_allowed_config();
                   <!-- Configuration -->
                   <?php if ($can_config) { ?>
                     <li>
-                      <a href="../ifaces/edition_types_sortie.php">Types de sorties hors-boutique</a>
+                      <a href="../ifaces/types_sortie.php">Types de sorties hors-boutique</a>
                     </li>
                     <li>
                       <a href="../ifaces/types_collecte.php">Types de collectes</a>

@@ -308,7 +308,6 @@ function config_types3_param(array $props): string {
         <div class="col-md-1"><br><button name="creer" class="btn btn-default">Créer</button></div>
       </form>
     </div>
-  </div>
   <?php
   return ob_get_clean();
 }
@@ -341,26 +340,27 @@ function configModif(array $props): string {
       </tr>
     </thead>
     <tbody>
-  <?php foreach ($props['data'] as $e) { ?>
-        <tr>
-          <td><?= $e['id']; ?></td>
-          <td><?= $e['timestamp']; ?></td>
-          <td><?= $e['nom']; ?></td>
-          <td><?= $e['description']; ?></td>
-          <td><span class="badge" style="background-color:<?= $e['couleur']; ?>"><?= $e['couleur']; ?></span></td>
-          <td><?= configBtnVisible(['url' => $props['url'], 'id' => $e['id'], 'visible' => $e['visible']]) ?></td>
-          <td>
-            <form action="modification_<?= $props['url'] ?>.php" method="post">
-              <input type="hidden" name="id" id="id" value="<?= $e['id']; ?>">
-              <input type="hidden" name="nom" id="nom" value="<?= $e['nom']; ?>">
-              <input type="hidden" name="description" id="description" value="<?= $e['description']; ?>">
-              <input type="hidden" name="couleur" id="couleur" value="<?= substr($e['couleur'], 1); ?>">
-              <button class="btn btn-warning btn-sm">Modifier</button>
-            </form>
-          </td>
-        </tr>
-    <?php } ?>
+      <?php foreach ($props['data'] as $e) { ?>
+          <tr>
+            <td><?= $e['id']; ?></td>
+            <td><?= $e['timestamp']; ?></td>
+            <td><?= $e['nom']; ?></td>
+            <td><?= $e['description']; ?></td>
+            <td><span class="badge" style="background-color:<?= $e['couleur']; ?>"><?= $e['couleur']; ?></span></td>
+            <td><?= configBtnVisible(['url' => $props['url'], 'id' => $e['id'], 'visible' => $e['visible']]) ?></td>
+            <td>
+              <form action="modification_<?= $props['url'] ?>.php" method="post">
+                <input type="hidden" name="id" id="id" value="<?= $e['id']; ?>">
+                <input type="hidden" name="nom" id="nom" value="<?= $e['nom']; ?>">
+                <input type="hidden" name="description" id="description" value="<?= $e['description']; ?>">
+                <input type="hidden" name="couleur" id="couleur" value="<?= substr($e['couleur'], 1); ?>">
+                <button class="btn btn-warning btn-sm">Modifier</button>
+              </form>
+            </td>
+          </tr>
+      <?php } ?>
     </tbody>
-    <?php
-    return ob_get_clean();
-  }
+  </table>
+  <?php
+  return ob_get_clean();
+}
