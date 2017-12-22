@@ -1,4 +1,5 @@
 <?php
+
 /*
   Oressource
   Copyright (C) 2014-2017  Martin Vert and Oressource devellopers
@@ -17,28 +18,12 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-require_once '../core/requetes.php';
 require_once '../core/composants.php';
 
-session_start();
-
-if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($_SESSION['niveau'], 'k') !== false)) {
-  require_once '../moteur/dbconfig.php';
-  require_once 'tete.php';
-  ?>
-  <div class="container">
-    <?= config_types3([
-      'h1' => 'Gestion de la typologie des déchets évacués',
-      'heading' => "Gérez ici les différents types de déchets évacués par la structure.",
-      'text' => "Permet de gérer par classes les déchets et matériaux sortant de la structure",
-      'url' => '../moteur/types_dechets_evac_post.php']) ?>
-
-    <?= configModif(['data' => types_dechets_evac($bdd), 'url' => 'types_dechets_evac']) ?>
-  </div><!-- /.container -->
-
-  <?php
-  require_once 'pied.php';
-} else {
-  header('Location: ../moteur/destroy.php');
-}
-?>
+echo page_config3([
+  'h1' => 'Gestion de la typologie des déchets évacués',
+  'heading' => "Gérez ici les différents types de déchets évacués par la structure.",
+  'text' => "Permet de gérer par classes les déchets et matériaux sortant de la structure",
+  'url' => 'types_dechets_evac',
+  'functData' => 'types_dechets_evac'
+]);
