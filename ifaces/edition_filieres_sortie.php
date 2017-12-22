@@ -38,7 +38,7 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($
 
           <div class="col-md-4"><label for="description">Description:</label> <input type="text" value ="<?= $_GET['description'] ?? ''; ?>" name="description" id="description" class="form-control" required>
           </div>
-          <div class="col-md-1"><label for="couleur">Couleur:</label> <input type="color" value="<?= '#' . $_GET['couleur'] ?? ''; ?>" name="couleur" id="couleur" class="form-control" required></div>
+          <div class="col-md-1"><label for="couleur">Couleur:</label> <input type="color" value="#<?= $_GET['couleur'] ?? ''; ?>" name="couleur" id="couleur" class="form-control" required></div>
           <div class="col-md-1"><br><button name="creer" class="btn btn-default">Créer!</button></div>
 
       </div>
@@ -144,7 +144,7 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($
                 <input type="hidden" name ="id" id="id" value="<?= $donnees['id']; ?>">
                 <input type="hidden" name ="nom" id="nom" value="<?= $donnees['nom']; ?>">
                 <input type="hidden" name ="description" id="description" value="<?= $donnees['description']; ?>">
-                <input type="hidden" name ="couleur" id="couleur" value="<?= substr($_POST['couleur'], 1); ?>">
+                <input type="hidden" name ="couleur" id="couleur" value="<?= substr($donnees['couleur'], 1); ?>">
                 <input type="hidden" name ="id_type_dechet_evac" id="id_type_dechet_evac" value="<?= $donnees['id_type_dechet_evac']; ?>">
                 <button  class="btn btn-warning btn-sm" >Modifier!</button>
               </form>
