@@ -19,7 +19,9 @@
 
 session_start();
 
-require_once('../moteur/dbconfig.php');
+require_once '../moteur/dbconfig.php';
+require_once '../core/composants.php';
+
 if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($_SESSION['niveau'], 'k') !== false)) {
   require_once 'tete.php';
   ?>
@@ -33,7 +35,7 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($
           <div class="col-md-3"><label for="adresse">Adresse:</label><br><br><input type="text" value ="<?= $_GET['adresse'] ?? ''; ?>" name="adresse" id="adresse" class="form-control" required></div>
           <div class="col-md-2"><label for="commentaire">Commentaire:</label><br><br> <input type="text" value ="<?= $_GET['commentaire'] ?? ''; ?>" name="commentaire" id="commentaire" class="form-control" required></div>
           <div class="col-md-2"><label for="pesee_max">Masse maxi. d'une pesée (Kg):</label> <input type="text" value ="<?= $_GET['pesee_max'] ?? ''; ?>" name="pesee_max" id="pesee_max" class="form-control" required></div>
-          <div class="col-md-1"><label for="couleur">Couleur:</label><br><br><input type="color" value="<?= '#' . $_GET['couleur'] ?? ''; ?>" name="couleur" id="couleur" class="form-control" required></div>
+          <div class="col-md-1"><label for="couleur">Couleur:</label><br><br><input type="color" value="#<?= $_GET['couleur'] ?? ''; ?>" name="couleur" id="couleur" class="form-control" required></div>
           <div class="col-md-1"><br><br><button name="creer" class="btn btn-default">Creer!</button></div>
         </form>
       </div>
@@ -57,7 +59,6 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($
       <tbody>
         <?php
         $reponse = $bdd->query('SELECT * FROM points_collecte');
-
         while ($donnees = $reponse->fetch()) {
           ?>
           <tr>
@@ -68,13 +69,7 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($
             <td><span class="badge" style="background-color:<?= $donnees['couleur']; ?>"><?= $donnees['couleur']; ?></span></td>
             <td><?= $donnees['commentaire']; ?></td>
             <td><?= $donnees['pesee_max']; ?></td>
-            <td>
-              <form action="../moteur/collectes_visibles_post.php" method="post">
-                <input type="hidden" name ="id" id="id" value="<?= $donnees['id']; ?>">
-                <input type="hidden" name="visible" id="visible" value="<?= $props['visible'] === 'oui' ? 'non' : 'oui' ?>">
-                <button class="btn btn-info btn-sm <?= $props['visible'] === 'oui' ? 'btn-info' : 'btn-danger' ?>"><?= $props['visible'] ?></button>
-              </form>
-            </td>
+            <td><?= configBtnVisible(['url' => 'collectes_visibles', 'id' => $donnees['id'], 'visible' => $donnees['visible']]) ?></td>
             <td>
               <form action="modification_points_collecte.php" method="post">
                 <input type="hidden" name ="id" id="id" value="<?= $donnees['id']; ?>">
@@ -82,7 +77,7 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($
                 <input type="hidden" name ="adresse" id="adresse" value="<?= $donnees['adresse']; ?>">
                 <input type="hidden" name ="commentaire" id="commentaire" value="<?= $donnees['commentaire']; ?>">
                 <input type="hidden" name ="pesee_max" id="pesee_max" value="<?= $donnees['pesee_max']; ?>">
-                <input type="hidden" name ="couleur" id="couleur" value="<?= substr($_POST['couleur'], 1); ?>">
+                <input type="hidden" name ="couleur" id="couleur" value="<?= substr($donnees['couleur'], 1); ?>">
                 <button  class="btn btn-warning btn-sm " >modifier</button>
               </form>
             </td>

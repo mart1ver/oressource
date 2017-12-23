@@ -19,12 +19,12 @@
 
 session_start();
 
-require_once('../moteur/dbconfig.php');
-require_once('../core/session.php');
+require_once '../moteur/dbconfig.php';
+require_once '../core/session.php';
+require_once '../core/composants.php';
 
-//Vérification des autorisations de l'utilisateur et des variables de session requisent pour l'affichage de cette page:
-if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && is_allowed_config()) {
-  include_once('tete.php');
+if (is_valid_session() && is_allowed_config()) {
+  require_once 'tete.php';
 
   $nom = $_GET['nom'] ?? '';
   $reponse = $bdd->prepare('SELECT id, timestamp, nom, adresse, couleur, commentaire, surface_vente, visible FROM points_vente');
@@ -82,12 +82,7 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && is_allowe
         </tr>
       </thead>
       <tbody>
-        <?php
-        foreach ($points_ventes as $point_vente) {
-          $visible_bool = $point_vente['visible'] === 'oui';
-          $vente_visible = ($visible_bool ? 'non' : 'oui');
-          $btn_class = $visible_bool ? 'btn-info' : 'btn-danger';
-          ?>
+        <?php foreach ($points_ventes as $point_vente) { ?>
           <tr>
             <td><?= $point_vente['id']; ?></td>
             <td><?= $point_vente['timestamp']; ?></td>
@@ -96,17 +91,11 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && is_allowe
             <td><span class="badge" style="background-color:<?= $point_vente['couleur']; ?>"><?= $point_vente['couleur']; ?></span></td>
             <td><?= $point_vente['commentaire']; ?></td>
             <td><?= $point_vente['surface_vente']; ?></td>
-            <td>
-              <form action="../moteur/ventes_visibles_post.php" method="post">
-                <input type="hidden" name="id" id="id" value="<?= $point_vente['id']; ?>">
-                <input type="hidden" name="visible" id="visible" value="<?= ($vente_visible); ?>">
-                <button type="submit" class="btn btn-sm <?= ($btn_class); ?>"><?= $point_vente['visible']; ?></button>
-              </form>
-            </td>
+            <td><?= configBtnVisible(['url' => 'ventes', 'id' => $point_vente['id'], 'visible' => $point_vente['visible']]) ?></td>
             <td>
               <form action="modification_points_vente.php" method="post">
                 <input type="hidden" name="id" id="id" value="<?= $point_vente['id']; ?>">
-                <button class="btn btn-warning btn-sm" type="submit" >Modifier!</button>
+                <button class="btn btn-warning btn-sm" type="submit">Modifier!</button>
               </form>
             </td>
           </tr>

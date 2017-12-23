@@ -19,7 +19,9 @@
 
 session_start();
 
-require_once('../moteur/dbconfig.php');
+require_once '../moteur/dbconfig.php';
+require_once '../core/composants.php';
+
 if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($_SESSION['niveau'], 'k') !== false)) {
   require_once 'tete.php';
   ?>
@@ -33,7 +35,7 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($
           <div class="col-md-3"><label for="addresse">Adresse:</label><br><br><input type="text" value="<?= $_GET['adresse'] ?? ''; ?>" name="adresse" id="adresse" class="form-control" required></div>
           <div class="col-md-2"><label for="commentaire">Commentaire:</label><br><br><input type="text" value ="<?= $_GET['commentaire'] ?? ''; ?>" name="commentaire" id="commentaire" class="form-control" required></div>
           <div class="col-md-2"><label for="pesee_max">Masse maxi. d'une pesée (Kg):</label> <input type="text" value ="<?= $_GET['pesee_max'] ?? ''; ?>" name="pesee_max" id="pesee_max" class="form-control" required></div>
-          <div class="col-md-1"><label for="couleur">Couleur:</label><br><br><input type="color" value="<?= '#' . $_GET['couleur'] ?? ''; ?>" name="couleur" id="couleur" class="form-control" required></div>
+          <div class="col-md-1"><label for="couleur">Couleur:</label><br><br><input type="color" value="#<?= $_GET['couleur'] ?? ''; ?>" name="couleur" id="couleur" class="form-control" required></div>
           <div class="col-md-1"><br><br><button name="creer" class="btn btn-default">Créer!</button></div>
         </form>
       </div>
@@ -52,10 +54,10 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($
           <th>Modifier</th>
         </tr>
       </thead>
+
       <tbody>
         <?php
         $reponse = $bdd->query('SELECT * FROM points_sortie');
-
         while ($donnees = $reponse->fetch()) { ?>
           <tr>
             <td><?= $donnees['id']; ?></td>
@@ -65,31 +67,7 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($
             <td><span class="badge" style="background-color:<?= $donnees['couleur']; ?>"><?= $donnees['couleur']; ?></span></td>
             <td><?= $donnees['commentaire']; ?></td>
             <td><?= $donnees['pesee_max']; ?></td>
-            <td>
-              <form action="../moteur/sorties_visibles_post.php" method="post">
-                <input type="hidden" name ="id" id="id" value="<?= $donnees['id']; ?>">
-                <input type="hidden" name="visible" id="visible" value="<?php
-                if ($donnees['visible'] === 'oui') {
-                  echo 'non';
-                } else {
-                  echo 'oui';
-                }
-                ?>">
-                       <?php
-                       if ($donnees['visible'] === 'oui') { // SI on a pas de message d'erreur
-                         ?>
-                  <button  class="btn btn-info btn-sm " >
-                    <?php
-                  } else { // SINON
-                    ?>
-                    <button  class="btn btn-danger btn-sm " >
-                      <?php
-                    }
-                    echo $donnees['visible'];
-                    ?>
-                  </button>
-              </form>
-            </td>
+            <td><?= configBtnVisible(['url' => 'sorties', 'id' => $donnees['id'], 'visible' => $donnees['visible']]) ?></td>
             <td>
               <form action="modification_points_sortie.php" method="post">
                 <input type="hidden" name ="id" id="id" value="<?= $donnees['id']; ?>">
@@ -97,7 +75,7 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($
                 <input type="hidden" name ="adresse" id="adresse" value="<?= $donnees['adresse']; ?>">
                 <input type="hidden" name ="commentaire" id="commentaire" value="<?= $donnees['commentaire']; ?>">
                 <input type="hidden" name ="pesee_max" id="pesee_max" value="<?= $donnees['pesee_max']; ?>">
-                <input type="hidden" name ="couleur" id="couleur" value="<?= substr($_POST['couleur'], 1); ?>">
+                <input type="hidden" name ="couleur" id="couleur" value="<?= substr($donnees['couleur'], 1); ?>">
                 <button  class="btn btn-warning  btn-sm" >Modifier</button>
               </form>
             </td>
