@@ -35,7 +35,7 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($
         <form action="../moteur/filiere_sortie_post.php" method="post">
           <div class="col-md-3"><label for="nom">Nom:</label> <input type="text"value ="<?= $_GET['nom'] ?? ''; ?>" name="nom" id="nom" class="form-control " required autofocus></div>
           <div class="col-md-4"><label for="description">Description:</label> <input type="text" value ="<?= $_GET['description'] ?? ''; ?>" name="description" id="description" class="form-control" required></div>
-          <div class="col-md-1"><label for="couleur">Couleur:</label> <input type="color" value="<?= '#' . $_GET['couleur'] ?? ''; ?>" name="couleur" id="couleur" class="form-control" required></div>
+          <div class="col-md-1"><label for="couleur">Couleur:</label> <input type="color" value="#<?= $_GET['couleur'] ?? ''; ?>" name="couleur" id="couleur" class="form-control" required></div>
           <div class="col-md-1"><br><button name="creer" class="btn btn-default">Créer!</button></div>
       </div>
       <div class="row">
@@ -44,15 +44,13 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($
           <div class="alert alert-info">
             <?php
             $reponse = $bdd->query('SELECT * FROM type_dechets_evac');
-            while ($donnees = $reponse->fetch()) {
-              ?>
+            while ($donnees = $reponse->fetch()) { ?>
               <input type="checkbox" name="tde<?= $donnees['id']; ?>" id="tde<?= $donnees['id']; ?>"> <?= '<label for="tde' . $donnees['id'] . '">' . $donnees['nom'] . '.   </label>'; ?>
               <?php
             }
             $reponse->closeCursor();
             ?>
           </div>
-
         </div>
       </div>
       </form>
@@ -71,7 +69,6 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($
           <th></th>
         </tr>
       </thead>
-
       <tbody>
         <?php
         $reponse = $bdd->query('SELECT filieres_sortie.id,
@@ -114,7 +111,7 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($
                 <input type="hidden" name ="id" id="id" value="<?= $donnees['id']; ?>">
                 <input type="hidden" name ="nom" id="nom" value="<?= $donnees['nom']; ?>">
                 <input type="hidden" name ="description" id="description" value="<?= $donnees['description']; ?>">
-                <input type="hidden" name ="couleur" id="couleur" value="<?= substr($_POST['couleur'], 1); ?>">
+                <input type="hidden" name ="couleur" id="couleur" value="<?= substr($donnees['couleur'], 1); ?>">
                 <input type="hidden" name ="id_type_dechet_evac" id="id_type_dechet_evac" value="<?= $donnees['id_type_dechet_evac']; ?>">
                 <button  class="btn btn-warning btn-sm" >Modifier!</button>
               </form>
