@@ -28,7 +28,6 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($
   } else {
     echo' du ' . $_GET['date1'] . ' au ' . $_GET['date2'] . ' :';
   }
-  //on convertit les deux dates en un format compatible avec la bdd
 
   $txt1 = $_GET['date1'];
   $date1ft = DateTime::createFromFormat('d-m-Y', $txt1);
@@ -46,7 +45,8 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($
       <ul class="nav nav-tabs">
         <?php
         $reponse = $bdd->query('SELECT * FROM points_collecte');
-        while ($donnees = $reponse->fetch()) { ?>
+        while ($donnees = $reponse->fetch()) {
+          ?>
           <li class="<?= $_GET['numero'] === $donnees['id'] ? 'active' : '' ?>">
             <a href="verif_collecte.php?numero=<?= $donnees['id'] ?>&date1=<?= $_GET['date1'] ?>&date2=<?= $_GET['date2'] ?>"><?= $donnees['nom']; ?></a>
           </li>
@@ -77,6 +77,14 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($
     while ($donnees = $req->fetch()) {
       if ($donnees['nid'] > 0) {
         $req->closeCursor();
+        $req = $bdd->prepare('SELECT collectes.id,collectes.timestamp ,type_collecte.nom, collectes.commentaire, localites.nom localisation, utilisateurs.mail mail , collectes.last_hero_timestamp lht
+                       FROM collectes ,type_collecte, localites,utilisateurs
+                       WHERE type_collecte.id = collectes.id_type_collecte
+                        AND utilisateurs.id = collectes.id_createur
+                        AND localites.id = collectes.localisation
+                        AND collectes.id_point_collecte = :id_point_collecte
+                        AND DATE(collectes.timestamp) BETWEEN :du AND :au  ');
+        $req->execute(['id_point_collecte' => $_GET['numero'], 'du' => $time_debut, 'au' => $time_fin]);
         ?>
 
         <table class="table">
@@ -96,33 +104,26 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($
           </thead>
           <tbody>
             <?php
-            $req = $bdd->prepare('SELECT collectes.id,collectes.timestamp ,type_collecte.nom, collectes.commentaire, localites.nom localisation, utilisateurs.mail mail , collectes.last_hero_timestamp lht
-                       FROM collectes ,type_collecte, localites,utilisateurs
-                       WHERE type_collecte.id = collectes.id_type_collecte
-
-                        AND utilisateurs.id = collectes.id_createur
-                        AND localites.id = collectes.localisation
-                        AND collectes.id_point_collecte = :id_point_collecte
-                        AND DATE(collectes.timestamp) BETWEEN :du AND :au  ');
-            $req->execute(['id_point_collecte' => $_GET['numero'], 'du' => $time_debut, 'au' => $time_fin]);
-
-            while ($donnees = $req->fetch()) { ?>
+            while ($donnees = $req->fetch()) {
+              $req2 = $bdd->prepare('SELECT SUM(pesees_collectes.masse) masse
+                       FROM pesees_collectes
+                       WHERE  pesees_collectes.id_collecte = :id_collecte ');
+              $req2->execute(['id_collecte' => $donnees['id']]);
+              $donnees2 = $req2->fetch();
+              $req3 = $bdd->prepare('SELECT utilisateurs.mail mail
+                       FROM utilisateurs, collectes
+                       WHERE  collectes.id = :id_collecte
+                       AND utilisateurs.id = collectes.id_last_hero');
+              $req3->execute(['id_collecte' => $donnees['id']]);
+              $donnees3 = $req3->fetch();
+              ?>
               <tr>
                 <td style="height:20px"><?= $donnees['id']; ?></td>
                 <td style="height:20px"><?= $donnees['timestamp']; ?></td>
                 <td style="height:20px"><?= $donnees['nom']; ?></td>
                 <td width="20%" style="height:20px"><?= $donnees['commentaire']; ?></td>
                 <td style="height:20px"><?= $donnees['localisation']; ?></td>
-                <td style="height:20px">
-                  <?php
-                  $req2 = $bdd->prepare('SELECT SUM(pesees_collectes.masse) masse
-                       FROM pesees_collectes
-                       WHERE  pesees_collectes.id_collecte = :id_collecte ');
-                  $req2->execute(['id_collecte' => $donnees['id']]);
-                  while ($donnees2 = $req2->fetch()) { ?>
-                    <?= $donnees2['masse']; ?>
-                  <?php } ?>
-                </td>
+                <td style="height:20px"><?= $donnees2['masse']; ?></td>
                 <td><?= $donnees['mail']; ?></td>
                 <td>
                   <form action="modification_verification_collecte.php?ncollecte=<?= $donnees['id']; ?>" method="post">
@@ -135,31 +136,17 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($
                     <button  class="btn btn-warning btn-sm" >Modifier</button>
                   </form>
                 </td>
-                <td>
-                  <?php
-                  $req3 = $bdd->prepare('SELECT utilisateurs.mail mail
-                       FROM utilisateurs, collectes
-                       WHERE  collectes.id = :id_collecte
-                       AND utilisateurs.id = collectes.id_last_hero');
-                  $req3->execute(['id_collecte' => $donnees['id']]);
-                  while ($donnees3 = $req3->fetch()) { ?>
-                    <?= $donnees3['mail']; ?>
-                    <?php
-                  }
-                  $req3->closeCursor();
-                  ?>
-                </td>
+                <td><?= $donnees3['mail']; ?></td>
                 <td><?= $donnees['lht'] !== '0000-00-00 00:00:00' ? $donnees['lht'] : '' ?></td>
               </tr>
               <?php
             }
             $req->closeCursor();
             $req2->closeCursor();
-            2;
+            $req3->closeCursor();
             ?>
           </tbody>
         </table>
-
         <?php
       } else {
         echo 'Pas de correspondance trouvée pour cette période<br><br>';
@@ -168,6 +155,7 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($
     }
     ?>
   </div><!-- /.container -->
+
   <script type="text/javascript">
     'use strict';
     $(document).ready(() => {
