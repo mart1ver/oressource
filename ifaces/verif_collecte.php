@@ -23,25 +23,37 @@ require_once('../moteur/dbconfig.php');
 if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($_SESSION['niveau'], 'h') !== false)) {
   require_once('../moteur/dbconfig.php');
   require_once 'tete.php';
+  if ($_GET['date1'] === $_GET['date2']) {
+    echo' le ' . $_GET['date1'];
+  } else {
+    echo' du ' . $_GET['date1'] . ' au ' . $_GET['date2'] . ' :';
+  }
+
+  $txt1 = $_GET['date1'];
+  $date1ft = DateTime::createFromFormat('d-m-Y', $txt1);
+  $time_debut = $date1ft->format('Y-m-d');
+  $time_debut = $time_debut . ' 00:00:00';
+
+  $txt2 = $_GET['date2'];
+  $date2ft = DateTime::createFromFormat('d-m-Y', $txt2);
+  $time_fin = $date2ft->format('Y-m-d');
+  $time_fin = $time_fin . ' 23:59:59';
   ?>
-
-
   <div class="container" style="width:1300px">
     <h1>Vérification des collectes</h1>
     <div class="panel-body">
       <ul class="nav nav-tabs">
         <?php
         $reponse = $bdd->query('SELECT * FROM points_collecte');
-        while ($donnees = $reponse->fetch()) { ?>
-          <li<?php
-          if ($_GET['numero'] === $donnees['id']) {
-            echo ' class="active"';
-          }
-          ?>><a href="<?= 'verif_collecte.php?numero=' . $donnees['id'] . '&date1=' . $_GET['date1'] . '&date2=' . $_GET['date2']; ?>"><?= $donnees['nom']; ?></a></li>
-            <?php
-          }
-          $reponse->closeCursor();
+        while ($donnees = $reponse->fetch()) {
           ?>
+          <li class="<?= $_GET['numero'] === $donnees['id'] ? 'active' : '' ?>">
+            <a href="verif_collecte.php?numero=<?= $donnees['id'] ?>&date1=<?= $_GET['date1'] ?>&date2=<?= $_GET['date2'] ?>"><?= $donnees['nom']; ?></a>
+          </li>
+          <?php
+        }
+        $reponse->closeCursor();
+        ?>
       </ul>
 
       <br>
@@ -54,31 +66,9 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($
           </div>
         </div>
       </div>
-      <?php
-      if ($_GET['date1'] === $_GET['date2']) {
-        echo' le ' . $_GET['date1'];
-      } else {
-        echo' du ' . $_GET['date1'] . ' au ' . $_GET['date2'] . ' :';
-      }
-      //on convertit les deux dates en un format compatible avec la bdd
-
-      $txt1 = $_GET['date1'];
-      $date1ft = DateTime::createFromFormat('d-m-Y', $txt1);
-      $time_debut = $date1ft->format('Y-m-d');
-      $time_debut = $time_debut . ' 00:00:00';
-
-      $txt2 = $_GET['date2'];
-      $date2ft = DateTime::createFromFormat('d-m-Y', $txt2);
-      $time_fin = $date2ft->format('Y-m-d');
-      $time_fin = $time_fin . ' 23:59:59';
-      ?>
-
     </div>
 
     <?php
-    // On recupère toute la liste des filieres de sortie
-    //   $reponse = $bdd->query('SELECT * FROM grille_objets');
-
     $req = $bdd->prepare('SELECT COUNT(id) nid
                         FROM `collectes`
                        WHERE collectes.id_point_collecte = :id_point_collecte AND DATE(collectes.timestamp) BETWEEN :du AND :au   ');
@@ -87,6 +77,14 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($
     while ($donnees = $req->fetch()) {
       if ($donnees['nid'] > 0) {
         $req->closeCursor();
+        $req = $bdd->prepare('SELECT collectes.id,collectes.timestamp ,type_collecte.nom, collectes.commentaire, localites.nom localisation, utilisateurs.mail mail , collectes.last_hero_timestamp lht
+                       FROM collectes ,type_collecte, localites,utilisateurs
+                       WHERE type_collecte.id = collectes.id_type_collecte
+                        AND utilisateurs.id = collectes.id_createur
+                        AND localites.id = collectes.localisation
+                        AND collectes.id_point_collecte = :id_point_collecte
+                        AND DATE(collectes.timestamp) BETWEEN :du AND :au  ');
+        $req->execute(['id_point_collecte' => $_GET['numero'], 'du' => $time_debut, 'au' => $time_fin]);
         ?>
 
         <table class="table">
@@ -106,52 +104,29 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($
           </thead>
           <tbody>
             <?php
-            /*
-              'SELECT type_dechets.couleur,type_dechets.nom, sum(pesees_collectes.masse) somme
-              FROM type_dechets,pesees_collectes
-              WHERE type_dechets.id = pesees_collectes.id_type_dechet AND DATE(pesees_collectes.timestamp) = CURDATE()
-              GROUP BY nom'
-             */
-
-            // On recupère toute la liste des filieres de sortie
-            //   $reponse = $bdd->query('SELECT * FROM grille_objets');
-
-            $req = $bdd->prepare('SELECT collectes.id,collectes.timestamp ,type_collecte.nom, collectes.commentaire, localites.nom localisation, utilisateurs.mail mail , collectes.last_hero_timestamp lht
-                       FROM collectes ,type_collecte, localites,utilisateurs
-                       WHERE type_collecte.id = collectes.id_type_collecte
-
-                        AND utilisateurs.id = collectes.id_createur
-                        AND localites.id = collectes.localisation
-                        AND collectes.id_point_collecte = :id_point_collecte
-                        AND DATE(collectes.timestamp) BETWEEN :du AND :au  ');
-            $req->execute(['id_point_collecte' => $_GET['numero'], 'du' => $time_debut, 'au' => $time_fin]);
-
-            while ($donnees = $req->fetch()) { ?>
+            while ($donnees = $req->fetch()) {
+              $req2 = $bdd->prepare('SELECT SUM(pesees_collectes.masse) masse
+                       FROM pesees_collectes
+                       WHERE  pesees_collectes.id_collecte = :id_collecte ');
+              $req2->execute(['id_collecte' => $donnees['id']]);
+              $donnees2 = $req2->fetch();
+              $req3 = $bdd->prepare('SELECT utilisateurs.mail mail
+                       FROM utilisateurs, collectes
+                       WHERE  collectes.id = :id_collecte
+                       AND utilisateurs.id = collectes.id_last_hero');
+              $req3->execute(['id_collecte' => $donnees['id']]);
+              $donnees3 = $req3->fetch();
+              ?>
               <tr>
                 <td style="height:20px"><?= $donnees['id']; ?></td>
                 <td style="height:20px"><?= $donnees['timestamp']; ?></td>
                 <td style="height:20px"><?= $donnees['nom']; ?></td>
                 <td width="20%" style="height:20px"><?= $donnees['commentaire']; ?></td>
                 <td style="height:20px"><?= $donnees['localisation']; ?></td>
-                <td style="height:20px">
-                  <?php
-                  $req2 = $bdd->prepare('SELECT SUM(pesees_collectes.masse) masse
-                       FROM pesees_collectes
-                       WHERE  pesees_collectes.id_collecte = :id_collecte ');
-                  $req2->execute(['id_collecte' => $donnees['id']]);
-
-                  while ($donnees2 = $req2->fetch()) { ?>
-
-                    <?= $donnees2['masse']; ?>
-                  <?php } ?>
-                </td>
-
+                <td style="height:20px"><?= $donnees2['masse']; ?></td>
                 <td><?= $donnees['mail']; ?></td>
-
                 <td>
-
                   <form action="modification_verification_collecte.php?ncollecte=<?= $donnees['id']; ?>" method="post">
-
                     <input type="hidden" name ="id" id="id" value="<?= $donnees['id']; ?>">
                     <input type="hidden" name ="nom" id="nom" value="<?= $donnees['nom']; ?>">
                     <input type="hidden" name ="localisation" id="localisation" value="<?= $donnees['localisation']; ?>">
@@ -160,43 +135,18 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($
                     <input type="hidden" name ="npoint" id="npoint" value="<?= $_GET['numero']; ?>">
                     <button  class="btn btn-warning btn-sm" >Modifier</button>
                   </form>
-
                 </td>
-
-                <td>
-
-                  <?php
-                  $req3 = $bdd->prepare('SELECT utilisateurs.mail mail
-                       FROM utilisateurs, collectes
-                       WHERE  collectes.id = :id_collecte
-                       AND utilisateurs.id = collectes.id_last_hero');
-                  $req3->execute(['id_collecte' => $donnees['id']]);
-
-                  while ($donnees3 = $req3->fetch()) { ?>
-
-                    <?= $donnees3['mail']; ?>
-                    <?php
-                  }
-                  $req3->closeCursor();
-                  3;
-                  ?>
-
-                </td>
-                <td><?php
-                  if ($donnees['lht'] !== '0000-00-00 00:00:00') {
-                    echo $donnees['lht'];
-                  }
-                  ?></td>
+                <td><?= $donnees3['mail']; ?></td>
+                <td><?= $donnees['lht'] !== '0000-00-00 00:00:00' ? $donnees['lht'] : '' ?></td>
               </tr>
               <?php
             }
             $req->closeCursor();
             $req2->closeCursor();
-            2;
+            $req3->closeCursor();
             ?>
           </tbody>
         </table>
-
         <?php
       } else {
         echo 'Pas de correspondance trouvée pour cette période<br><br>';
@@ -205,13 +155,14 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($
     }
     ?>
   </div><!-- /.container -->
+
   <script type="text/javascript">
     'use strict';
     $(document).ready(() => {
       const query = process_get();
       const base = 'verif_collecte.php';
       const options = set_datepicker(query);
-      bind_datepicker(options, { base, query });
+      bind_datepicker(options, {base, query});
     });
   </script>
   <?php
