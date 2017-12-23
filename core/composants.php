@@ -18,7 +18,6 @@
  */
 
 /* Fonction utile pour la nav des sorties. */
-
 function new_nav(string $text, int $numero, int $active): array {
   $links = [
     [affichage_sortie_poubelle(), ['href' => "sortiesp.php?numero=$numero", 'text' => 'Poubelles']],
@@ -78,13 +77,12 @@ function configCheckboxArea(array $props) {
 function textInput(array $props, string $state) {
   ob_start();
   ?>
-  <label><?= $props['text'] ?>
-    <input type="text"
-           name="<?= $props['name'] ?>"
-           id="<?= $props['name'] ?>"
-           value="<?= $state ?>"
-           class="form-control" required autofocus>
-  </label>
+  <label for="<?= $props['name'] ?>"><?= $props['text'] ?></label>
+  <input type="text"
+         name="<?= $props['name'] ?>"
+         id="<?= $props['name'] ?>"
+         value="<?= $state ?>"
+         class="form-control" required/>
   <?php
   return ob_get_clean();
 }
@@ -92,14 +90,13 @@ function textInput(array $props, string $state) {
 function mailInput(array $props, string $state) {
   ob_start();
   ?>
-  <label>Mail:
+  <label for="<?= $props['name'] ?>">Courriel :</label>
     <input type="email"
            value="<?= $state ?>"
            name="<?= $props['name'] ?>"
            id="<?= $props['name'] ?>"
            class="form-control"
-           required>
-  </label>
+           required/>
   <?php
   return ob_get_clean();
 }
@@ -290,24 +287,45 @@ function config_types3(array $props): string {
   ]));
 }
 
+function config_types3_header(array $props): string {
+  ob_start();
+  ?>
+  <h1><?= $props['h1'] ?></h1>
+  <div class="panel-heading"><?= $props['heading'] ?></div>
+  <p><?= $props['text'] ?></p>
+
+  <?php
+  return ob_get_clean();
+}
+
+function config_types3_form(array $props): string {
+  ob_start();
+  ?>
+  <div class="row">
+    <form action="../moteur/<?= $props['url'] ?>_post.php" method="post">
+      <div class="col-md-3"><?= textInput(['name' => 'nom', 'text' => "Nom:"], $props['nom']) ?></div>
+      <div class="col-md-4"><?= textInput(['name' => 'commentaire', 'text' => "Description:"], $props['commentaire']) ?></div>
+      <div class="col-md-1"><label for="saisiecouleur">Couleur:</label><input type="color" value="#<?= $props['couleur'] ?>" name="couleur" id="couleur" class="form-control" required></div>
+      <div class="col-md-1"><br><button name="creer" class="btn btn-default">Créer</button></div>
+    </form>
+  </div>
+  <?php
+  return ob_get_clean();
+}
+
 /*
  * A utiliser dans les configurations qui neccessitent les champs nom, description, couleur.
  */
 function config_types3_param(array $props): string {
   ob_start();
   ?>
-  <h1><?= $props['h1'] ?></h1>
-  <div class="panel-heading"><?= $props['heading'] ?></div>
-  <p><?= $props['text'] ?></p>
-  <div class="panel-body">
-    <div class="row">
-      <form action="<?= $props['url'] ?>" method="post">
-        <?= textInput(['name' => 'nom', 'text' => "Nom:"], $props['nom']) ?>
-        <?= textInput(['name' => 'commentaire', 'text' => "Description:"], $props['commentaire']) ?>
-        <div class="col-md-1"><label for="saisiecouleur">Couleur:</label><input type="color" value="#<?= $props['couleur'] ?>" name="couleur" id="couleur" class="form-control" required></div>
-        <div class="col-md-1"><br><button name="creer" class="btn btn-default">Créer</button></div>
-      </form>
+  <?= config_types3_header($props) ?>
+  <div class="container">
+    <div class="panel-body">
+      <?= config_types3_form($props) ?>
     </div>
+    <?= configModif($props) ?>
+  </div>
   <?php
   return ob_get_clean();
 }
@@ -341,26 +359,49 @@ function configModif(array $props): string {
     </thead>
     <tbody>
       <?php foreach ($props['data'] as $e) { ?>
-          <tr>
-            <td><?= $e['id']; ?></td>
-            <td><?= $e['timestamp']; ?></td>
-            <td><?= $e['nom']; ?></td>
-            <td><?= $e['description']; ?></td>
-            <td><span class="badge" style="background-color:<?= $e['couleur']; ?>"><?= $e['couleur']; ?></span></td>
-            <td><?= configBtnVisible(['url' => $props['url'], 'id' => $e['id'], 'visible' => $e['visible']]) ?></td>
-            <td>
-              <form action="modification_<?= $props['url'] ?>.php" method="post">
-                <input type="hidden" name="id" id="id" value="<?= $e['id']; ?>">
-                <input type="hidden" name="nom" id="nom" value="<?= $e['nom']; ?>">
-                <input type="hidden" name="description" id="description" value="<?= $e['description']; ?>">
-                <input type="hidden" name="couleur" id="couleur" value="<?= substr($e['couleur'], 1); ?>">
-                <button class="btn btn-warning btn-sm">Modifier</button>
-              </form>
-            </td>
-          </tr>
+        <tr>
+          <td><?= $e['id']; ?></td>
+          <td><?= $e['timestamp']; ?></td>
+          <td><?= $e['nom']; ?></td>
+          <td><?= $e['description']; ?></td>
+          <td><span class="badge" style="background-color:<?= $e['couleur']; ?>"><?= $e['couleur']; ?></span></td>
+          <td><?= configBtnVisible(['url' => $props['url'], 'id' => $e['id'], 'visible' => $e['visible']]) ?></td>
+          <td>
+            <form action="modification_<?= $props['url'] ?>.php" method="post">
+              <input type="hidden" name="id" id="id" value="<?= $e['id']; ?>">
+              <input type="hidden" name="nom" id="nom" value="<?= $e['nom']; ?>">
+              <input type="hidden" name="description" id="description" value="<?= $e['description']; ?>">
+              <input type="hidden" name="couleur" id="couleur" value="<?= substr($e['couleur'], 1); ?>">
+              <button class="btn btn-warning btn-sm">Modifier</button>
+            </form>
+          </td>
+        </tr>
       <?php } ?>
     </tbody>
   </table>
   <?php
   return ob_get_clean();
+}
+
+function page_config3($props) {
+  require_once 'session.php';
+  require_once 'requetes.php';
+
+  session_start();
+
+  if (is_valid_session() && is_allowed_config()) {
+    global $bdd;
+    ob_start();
+    require_once 'tete.php';
+    $props['data'] = $props['functData']($bdd);
+    ?>
+    <div class="container">
+      <?= config_types3($props) ?>
+    </div><!-- /.container -->
+    <?php
+    require_once 'pied.php';
+    return ob_get_clean();
+  } else {
+    header('Location: ../moteur/destroy.php');
+  }
 }
