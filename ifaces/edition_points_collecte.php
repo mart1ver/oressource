@@ -53,12 +53,13 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($
           <th>Modifier</th>
         </tr>
       </thead>
+
       <tbody>
         <?php
-        // On recupère tout le contenu de la table points-collecte
         $reponse = $bdd->query('SELECT * FROM points_collecte');
 
-        while ($donnees = $reponse->fetch()) { ?>
+        while ($donnees = $reponse->fetch()) {
+          ?>
           <tr>
             <td><?= $donnees['id']; ?></td>
             <td><?= $donnees['timestamp']; ?></td>
@@ -70,26 +71,8 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($
             <td>
               <form action="../moteur/collectes_visibles_post.php" method="post">
                 <input type="hidden" name ="id" id="id" value="<?= $donnees['id']; ?>">
-                <input type="hidden" name="visible" id="visible" value="<?php
-                if ($donnees['visible'] === 'oui') {
-                  echo 'non';
-                } else {
-                  echo 'oui';
-                }
-                ?>">
-                       <?php
-                       if ($donnees['visible'] === 'oui') { // SI on a pas de message d'erreur
-                         ?>
-                  <button  class="btn btn-info btn-sm" >
-                    <?php
-                  } else { // SINON
-                    ?>
-                    <button  class="btn btn-danger btn-sm " >
-                      <?php
-                    }
-                    echo $donnees['visible'];
-                    ?>
-                  </button>
+                <input type="hidden" name="visible" id="visible" value="<?= $props['visible'] === 'oui' ? 'non' : 'oui' ?>">
+                <button class="btn btn-info btn-sm <?= $props['visible'] === 'oui' ? 'btn-info' : 'btn-danger' ?>"><?= $props['visible'] ?></button>
               </form>
             </td>
             <td>
