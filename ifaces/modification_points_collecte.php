@@ -20,36 +20,28 @@
 session_start();
 require_once('../moteur/dbconfig.php');
 
-//Vérification des autorisations de l'utilisateur et des variables de session requisent pour l'affichage de cette page:
 if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($_SESSION['niveau'], 'k') !== false)) {
   require_once 'tete.php';
+  //POST ou GET ?
+  if (isset($_POST['id']) !== false) {
+    $id = $_POST['id'];
+  } else {
+    $id = $_GET['id'];
+  }
+
+  $req = $bdd->prepare('SELECT couleur FROM points_collecte WHERE id = :id ');
+  $req->execute(['id' => $id]);
+  $donnees = $req->fetch();
+  $couleur = $donnees['couleur'];
+  $req->closeCursor();
   ?>
   <div class="container">
     <h1>Gestions des points de collecte</h1>
     <div class="panel-heading">Modifier les données concernant le point numero <?= $_POST['id']; ?>, <?= $_POST['nom']; ?>. </div>
-    <?php
-//POST ou GET ?
-    if (isset($_POST['id']) !== false) {
-      $id = $_POST['id'];
-    } else {
-      $id = $_GET['id'];
-    }
-    //on obtient la couleur de la localité dans la base
-
-    $req = $bdd->prepare('SELECT couleur FROM points_collecte WHERE id = :id ');
-    $req->execute(['id' => $id]);
-    $donnees = $req->fetch();
-
-    $couleur = $donnees['couleur'];
-
-    $req->closeCursor();
-    ?>
-
     <div class="panel-body">
       <div class="row">
         <form action="../moteur/modification_points_collecte_post.php" method="post">
           <input type="hidden" name ="id" id="id" value="<?= $id; ?>">
-
           <div class="col-md-3"><label for="nom">Nom:</label><br><br> <input type="text"                 value ="<?= $_POST['nom'] . $_GET['nom']; ?>" name="nom" id="nom" class="form-control " required autofocus></div>
           <div class="col-md-2"><label for="addresse">Addresse:</label><br><br> <input type="text" value="<?= $_POST['adresse'] . $_GET['adresse']; ?>" name="adresse" id="adresse" class="form-control" required></div>
           <div class="col-md-2"><label for="commentaire">Commentaire:</label><br><br> <input type="text" value ="<?= $_POST['commentaire'] . $_GET['commentaire']; ?>" name="commentaire" id="commentaire" class="form-control" required></div>
@@ -63,15 +55,6 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($
         </a>
       </div>
     </div>
-
-    <br>
-    <div class="row">
-      <div class="col-md-4"></div>
-      <div class="col-md-4"><br> </div>
-      <div class="col-md-4"></div>
-    </div>
-  </div>
-  </div>
   </div><!-- /.container -->
 
   <?php

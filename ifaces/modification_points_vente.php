@@ -21,7 +21,6 @@ session_start();
 require_once('../moteur/dbconfig.php');
 require_once('../core/session.php');
 
-// Vérification des autorisations de l'utilisateur et des variables de session requises pour l'affichage de cette page:
 if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && is_allowed_config()) {
   include_once('tete.php');
 
