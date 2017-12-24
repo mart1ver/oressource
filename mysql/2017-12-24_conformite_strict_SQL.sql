@@ -252,10 +252,5 @@ UPDATE `pesees_vendus` set
     then `timestamp` else `last_hero_timestamp`
   end);
 
-if @@ERROR <> 0
-  SET autocommit = 1;
-	rollback
-end);
-
 Commit;
 SET autocommit = 1;

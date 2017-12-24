@@ -115,7 +115,7 @@ if (is_valid_session() && is_allowed_verifications()) {
           $req_masse = $bdd->prepare('SELECT SUM(pesees_vendus.masse) masse
                        FROM vendus,pesees_vendus
                        WHERE vendus.id_vente = :id_vente
-                       AND pesees_vendus.id_vendu =  vendus.id');
+                       AND pesees_vendus.id = vendus.id');
           $req_masse->execute(['id_vente' => $donnees['id']]);
           $masse = $req_masse->fetch()['masse'];
           $req_masse->closeCursor();

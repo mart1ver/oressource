@@ -973,7 +973,7 @@ function bilan_ventes(PDO $bdd, $start, $stop) {
       COALESCE(SUM(pesees_vendus.masse), 0) as vendu_masse
     FROM vendus
     LEFT JOIN pesees_vendus
-    ON vendus.id = pesees_vendus.id_vendu
+    ON vendus.id = pesees_vendus.id
     WHERE DATE(vendus.timestamp)
     BETWEEN :du AND :au';
   $stmt = $bdd->prepare($sql);
