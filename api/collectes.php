@@ -24,9 +24,9 @@ use DateTime;
 
 global $bdd;
 
-require_once('../core/session.php');
-require_once('../core/validation.php');
-require_once('../core/requetes.php');
+require_once '../core/session.php';
+require_once '../core/validation.php';
+require_once '../core/requetes.php';
 
 session_start();
 

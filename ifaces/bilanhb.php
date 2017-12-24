@@ -68,7 +68,7 @@ WHERE type_dechets.id = pesees_sorties.id_type_dechet
 AND   pesees_sorties.id_sortie = sorties.id
 AND   sorties.classe = :type0
 AND   pesees_sorties.timestamp BETWEEN :du0 AND :au0 ' . $numero . '
-GROUP BY type_dechet.id
+GROUP BY type_dechets.id, type_dechets.nom
 UNION
 SELECT type_dechets_evac.nom nom2, sum(pesees_sorties.masse) somme
 FROM type_dechets_evac, pesees_sorties, sorties
@@ -76,7 +76,7 @@ WHERE type_dechets_evac.id = pesees_sorties.id_type_dechet_evac
 AND   pesees_sorties.id_sortie = sorties.id
 AND   sorties.classe = :type1
 AND   pesees_sorties.timestamp BETWEEN :du1 AND :au1 ' . $numero . '
-GROUP BY type_dechets_evac.id';
+GROUP BY type_dechets_evac.nom';
   $stmt = $bdd->prepare($sql);
   $stmt->bindParam(':type0', $type, PDO::PARAM_STR);
   $stmt->bindParam(':type1', $type, PDO::PARAM_STR);
@@ -98,7 +98,7 @@ AND
 types_poubelles.id = pesees_sorties.id_type_poubelle
 AND sorties.classe = "sortiesp"
 AND pesees_sorties.timestamp BETWEEN :du AND :au ' . $numero . '
-GROUP BY types_poubelles.id';
+GROUP BY types_poubelles.nom';
   $stmt = $bdd->prepare($sql);
   $stmt->bindParam(':du', $start, PDO::PARAM_STR);
   $stmt->bindParam(':au', $fin, PDO::PARAM_STR);
@@ -151,13 +151,11 @@ function bilanSortiesDon(PDO $bdd, int $id, $start, $fin): array {
   $numero = ($id > 0 ? " AND sorties.id_point_sortie = $id " : ' ');
   $sql = 'SELECT type_sortie.nom, sum(pesees_sorties.masse) somme
 FROM type_sortie, pesees_sorties, sorties
-WHERE
-type_sortie.id=sorties.id_type_sortie
-AND
-pesees_sorties.id_sortie = sorties.id
+WHERE type_sortie.id = sorties.id_type_sortie
+AND pesees_sorties.id_sortie = sorties.id
 AND sorties.classe = "sorties"
 AND pesees_sorties.timestamp BETWEEN :du AND :au ' . $numero . '
-GROUP BY type_sortie.id';
+GROUP BY type_sortie.nom';
   $stmt = $bdd->prepare($sql);
   $stmt->bindParam(':du', $start, PDO::PARAM_STR);
   $stmt->bindParam(':au', $fin, PDO::PARAM_STR);
@@ -169,13 +167,11 @@ function bilanSortiesConvention(PDO $bdd, int $id, $start, $fin): array {
   $numero = ($id > 0 ? " AND sorties.id_point_sortie = $id " : ' ');
   $sql = 'SELECT conventions_sorties.nom, sum(pesees_sorties.masse) somme, COUNT(sorties.id) nombre
 FROM conventions_sorties, pesees_sorties, sorties
-WHERE
-conventions_sorties.id=sorties.id_convention
-AND
-pesees_sorties.id_sortie = sorties.id
+WHERE conventions_sorties.id=sorties.id_convention
+AND pesees_sorties.id_sortie = sorties.id
 AND sorties.classe = "sortiesc"
 AND pesees_sorties.timestamp BETWEEN :du AND :au ' . $numero . '
-GROUP BY conventions_sorties.id';
+GROUP BY conventions_sorties.nom';
   $stmt = $bdd->prepare($sql);
   $stmt->bindParam(':du', $start, PDO::PARAM_STR);
   $stmt->bindParam(':au', $fin, PDO::PARAM_STR);
@@ -193,7 +189,7 @@ AND
 pesees_sorties.id_sortie = sorties.id
 AND sorties.classe = "sortiesr"
 AND pesees_sorties.timestamp BETWEEN :du AND :au ' . $numero . '
-GROUP BY filieres_sortie.id';
+GROUP BY filieres_sortie.nom';
   $stmt = $bdd->prepare($sql);
   $stmt->bindParam(':du', $start, PDO::PARAM_STR);
   $stmt->bindParam(':au', $fin, PDO::PARAM_STR);
