@@ -70,8 +70,6 @@ if (is_valid_session() && is_allowed_verifications()) {
     'th4' => 'Masse totale',
     'data' => $collectes,
     'users' => $users,
-    'start' => $_GET['date2'],
-    'end' => $_GET['date1']
   ];
 
   require_once 'tete.php';
