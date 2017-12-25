@@ -83,27 +83,27 @@ function textInput(array $props, string $state) {
          id="<?= $props['name'] ?>"
          value="<?= $state ?>"
          class="form-control" required/>
-  <?php
-  return ob_get_clean();
-}
+         <?php
+         return ob_get_clean();
+       }
 
-function mailInput(array $props, string $state) {
-  ob_start();
-  ?>
+       function mailInput(array $props, string $state) {
+         ob_start();
+         ?>
   <label for="<?= $props['name'] ?>">Courriel :</label>
-    <input type="email"
-           value="<?= $state ?>"
-           name="<?= $props['name'] ?>"
-           id="<?= $props['name'] ?>"
-           class="form-control"
-           required/>
-  <?php
-  return ob_get_clean();
-}
+  <input type="email"
+         value="<?= $state ?>"
+         name="<?= $props['name'] ?>"
+         id="<?= $props['name'] ?>"
+         class="form-control"
+         required/>
+         <?php
+         return ob_get_clean();
+       }
 
-function linkNav(array $props) {
-  ob_start();
-  ?>
+       function linkNav(array $props) {
+         ob_start();
+         ?>
   <li class="<?= ($props['state'] ?? false) ? 'active' : '' ?>">
     <a href="<?= $props['href'] ?>"><?= $props['text'] ?></a>
   </li>
@@ -404,4 +404,92 @@ function page_config3($props) {
   } else {
     header('Location: ../moteur/destroy.php');
   }
+}
+
+function datePicker(): string {
+  ob_start();
+  ?>
+  <div class="row">
+    <div class="col-md-3 col-md-offset-9" >
+      <label for="reportrange">Choisissez la période à inspecter:</label><br>
+      <div id="reportrange" class="pull-left" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc">
+        <i class="fa fa-calendar"></i>
+        <span></span> <b class="caret"></b>
+      </div>
+    </div>
+  </div>
+  <?php
+  return ob_get_clean();
+}
+
+function headerVerif(array $props): string {
+  ob_start();
+  ?>
+  <h1><?= $props['h1'] ?></h1>
+  <div class="panel-body">
+    <p><?= ($props['start'] === $props['end'] ? "Le " : "Du {$props['start']} au ") . $props['end'] ?> :</p>
+    <ul class="nav nav-tabs">
+      <?php foreach ($props['points'] as $d) { ?>
+        <li class="<?= $props['numero'] === $d['id'] ? 'active' : '' ?>">
+          <a href="<?= $props['endpoint'] ?>.php?numero=<?= $d['id'] ?>&date1=<?= $props['start'] ?>&date2=<?= $props['end'] ?>"><?= $d['nom']; ?></a>
+        </li>
+        <?php
+      }
+      ?>
+    </ul>
+    <br>
+    <?= datePicker() ?>
+  </div>
+  <?php
+  return ob_get_clean();
+}
+
+function tableVerif(array $props): string {
+  $users = $props['users'];
+  ob_start();
+  ?>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Crée le</th>
+        <th><?= $props['th1'] ?></th>
+        <th>Commentaire</th>
+        <th><?= $props['th3'] ?></th>
+        <th><?= $props['th4'] ?></th>
+        <th>Créée par</th>
+        <th></th>
+        <th>Modifié par</th>
+        <th>Le</th>
+      </tr>
+    </thead>
+    <tbody>
+      <?php foreach ($props['data'] as $d) { ?>
+        <tr>
+          <td style="height:20px"><?= $d['id']; ?></td>
+          <td style="height:20px"><?= $d['timestamp']; ?></td>
+          <td style="height:20px"><?= $d['nom']; ?></td>
+          <td width="20%" style="height:20px"><?= $d['commentaire']; ?></td>
+          <td style="height:20px"><?= $d['localisation']; ?></td>
+          <td style="height:20px"><?= $d['masse']; ?></td>
+          <td><?= $users[$d['id_createur']]['mail']; ?></td>
+          <td>
+            <form action="modification_<?= $props['endpoint'] ?>.php" method="post">
+              <input type="hidden" name="id" id="id" value="<?= $d['id']; ?>">
+              <input type="hidden" name="nom" id="nom" value="<?= $d['nom']; ?>">
+              <input type="hidden" name="localisation" id="localisation" value="<?= $d['localisation']; ?>">
+              <input type="hidden" name="date1" id="date1" value="<?= $props['start']; ?>">
+              <input type="hidden" name="date2" id="date2" value="<?= $props['end']; ?>">
+              <input type="hidden" name="npoint" id="npoint" value="<?= $d['localite']; ?>">
+              <button class="btn btn-warning btn-sm">Modifier</button>
+            </form>
+          </td>
+          <td><?= $d['lht'] !== $d['timestamp'] ? $users[$d['id_last_hero']]['mail'] : '' ?></td>
+          <td><?= $d['lht'] !== $d['timestamp'] ? $d['lht'] : '' ?></td>
+        </tr>
+      <?php } ?>
+    </tbody>
+  </table>
+  <?php
+  return ob_get_clean();
 }

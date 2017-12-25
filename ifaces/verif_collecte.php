@@ -18,142 +18,68 @@
  */
 
 session_start();
-require_once('../moteur/dbconfig.php');
+require_once '../core/requetes.php';
+require_once '../core/session.php';
+require_once '../core/composants.php';
 
-if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($_SESSION['niveau'], 'h') !== false)) {
-  require_once('../moteur/dbconfig.php');
+if (is_valid_session() && is_allowed_verifications()) {
+  require_once '../moteur/dbconfig.php';
+
+  $users = array_reduce(utilisateurs($bdd), function ($acc, $e) {
+    $acc[$e['id']] = $e;
+    return $acc;
+  }, []);
+
+  $time_debut = DateTime::createFromFormat('d-m-Y', $_GET['date1'])->format('Y-m-d') . ' 00:00:00';
+  $time_fin = DateTime::createFromFormat('d-m-Y', $_GET['date2'])->format('Y-m-d') . ' 23:59:59';
+  $req = $bdd->prepare('SELECT
+        collectes.id,
+        collectes.timestamp,
+        collectes.id_createur,
+        collectes.id_last_hero,
+        collectes.last_hero_timestamp lht,
+        type_collecte.nom, collectes.commentaire,
+        localites.nom localisation,
+        localites.id localite,
+        SUM(pesees_collectes.masse) masse
+      FROM collectes
+      INNER JOIN pesees_collectes
+      ON collectes.id = pesees_collectes.id_collecte
+      INNER JOIN type_collecte
+      ON type_collecte.id = collectes.id_type_collecte
+      INNER JOIN localites
+      ON localites.id = collectes.localisation
+      WHERE collectes.id_point_collecte = :id_point_collecte
+      AND DATE(collectes.timestamp) BETWEEN :du AND :au
+      GROUP BY collectes.id, collectes.commentaire, collectes.timestamp,
+         collectes.last_hero_timestamp, type_collecte.nom, localites.nom,
+         collectes.id_createur, collectes.id_last_hero, localites.id');
+  $req->execute(['id_point_collecte' => $_GET['numero'], 'du' => $time_debut, 'au' => $time_fin]);
+  $collectes = $req->fetchAll(PDO::FETCH_ASSOC);
+
+  $props = [
+    'h1' => 'Vérification des collectes',
+    'points' => points_collectes($bdd),
+    'numero' => $_GET['numero'],
+    'start' => $_GET['date1'],
+    'end' => $_GET['date2'],
+    'endpoint' => 'verif_collecte',
+    'users' => $users,
+    'th1' => 'Type de collecte',
+    'th3' => 'Localité',
+    'th4' => 'Masse totale',
+    'data' => $collectes,
+    'users' => $users,
+    'start' => $_GET['date2'],
+    'end' => $_GET['date1']
+  ];
+
   require_once 'tete.php';
-  if ($_GET['date1'] === $_GET['date2']) {
-    echo' le ' . $_GET['date1'];
-  } else {
-    echo' du ' . $_GET['date1'] . ' au ' . $_GET['date2'] . ' :';
-  }
-
-  $txt1 = $_GET['date1'];
-  $date1ft = DateTime::createFromFormat('d-m-Y', $txt1);
-  $time_debut = $date1ft->format('Y-m-d');
-  $time_debut = $time_debut . ' 00:00:00';
-
-  $txt2 = $_GET['date2'];
-  $date2ft = DateTime::createFromFormat('d-m-Y', $txt2);
-  $time_fin = $date2ft->format('Y-m-d');
-  $time_fin = $time_fin . ' 23:59:59';
   ?>
+
   <div class="container" style="width:1300px">
-    <h1>Vérification des collectes</h1>
-    <div class="panel-body">
-      <ul class="nav nav-tabs">
-        <?php
-        $reponse = $bdd->query('SELECT * FROM points_collecte');
-        while ($donnees = $reponse->fetch()) {
-          ?>
-          <li class="<?= $_GET['numero'] === $donnees['id'] ? 'active' : '' ?>">
-            <a href="verif_collecte.php?numero=<?= $donnees['id'] ?>&date1=<?= $_GET['date1'] ?>&date2=<?= $_GET['date2'] ?>"><?= $donnees['nom']; ?></a>
-          </li>
-          <?php
-        }
-        $reponse->closeCursor();
-        ?>
-      </ul>
-
-      <br>
-      <div class="row">
-        <div class="col-md-3 col-md-offset-9" >
-          <label for="reportrange">Choisissez la période à inspecter:</label><br>
-          <div id="reportrange" class="pull-left" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc">
-            <i class="fa fa-calendar"></i>
-            <span></span> <b class="caret"></b>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <?php
-    $req = $bdd->prepare('SELECT COUNT(id) nid
-                        FROM `collectes`
-                       WHERE collectes.id_point_collecte = :id_point_collecte AND DATE(collectes.timestamp) BETWEEN :du AND :au   ');
-    $req->execute(['id_point_collecte' => $_GET['numero'], 'du' => $time_debut, 'au' => $time_fin]);
-
-    while ($donnees = $req->fetch()) {
-      if ($donnees['nid'] > 0) {
-        $req->closeCursor();
-        $req = $bdd->prepare('SELECT collectes.id,collectes.timestamp ,type_collecte.nom, collectes.commentaire, localites.nom localisation, utilisateurs.mail mail , collectes.last_hero_timestamp lht
-                       FROM collectes ,type_collecte, localites,utilisateurs
-                       WHERE type_collecte.id = collectes.id_type_collecte
-                        AND utilisateurs.id = collectes.id_createur
-                        AND localites.id = collectes.localisation
-                        AND collectes.id_point_collecte = :id_point_collecte
-                        AND DATE(collectes.timestamp) BETWEEN :du AND :au  ');
-        $req->execute(['id_point_collecte' => $_GET['numero'], 'du' => $time_debut, 'au' => $time_fin]);
-        ?>
-
-        <table class="table">
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>Moment de la collecte</th>
-              <th>Type de collecte</th>
-              <th>Commentaire</th>
-              <th>Localité</th>
-              <th>Masse totale</th>
-              <th>Créée par</th>
-              <th></th>
-              <th>Modifié par</th>
-              <th>Le:</th>
-            </tr>
-          </thead>
-          <tbody>
-            <?php
-            while ($donnees = $req->fetch()) {
-              $req2 = $bdd->prepare('SELECT SUM(pesees_collectes.masse) masse
-                       FROM pesees_collectes
-                       WHERE  pesees_collectes.id_collecte = :id_collecte ');
-              $req2->execute(['id_collecte' => $donnees['id']]);
-              $donnees2 = $req2->fetch();
-              $req3 = $bdd->prepare('SELECT utilisateurs.mail mail
-                       FROM utilisateurs, collectes
-                       WHERE  collectes.id = :id_collecte
-                       AND utilisateurs.id = collectes.id_last_hero');
-              $req3->execute(['id_collecte' => $donnees['id']]);
-              $donnees3 = $req3->fetch();
-              ?>
-              <tr>
-                <td style="height:20px"><?= $donnees['id']; ?></td>
-                <td style="height:20px"><?= $donnees['timestamp']; ?></td>
-                <td style="height:20px"><?= $donnees['nom']; ?></td>
-                <td width="20%" style="height:20px"><?= $donnees['commentaire']; ?></td>
-                <td style="height:20px"><?= $donnees['localisation']; ?></td>
-                <td style="height:20px"><?= $donnees2['masse']; ?></td>
-                <td><?= $donnees['mail']; ?></td>
-                <td>
-                  <form action="modification_verification_collecte.php?ncollecte=<?= $donnees['id']; ?>" method="post">
-                    <input type="hidden" name ="id" id="id" value="<?= $donnees['id']; ?>">
-                    <input type="hidden" name ="nom" id="nom" value="<?= $donnees['nom']; ?>">
-                    <input type="hidden" name ="localisation" id="localisation" value="<?= $donnees['localisation']; ?>">
-                    <input type="hidden" name ="date1" id="date1" value="<?= $_GET['date1']; ?>">
-                    <input type="hidden" name ="date2" id="date2" value="<?= $_GET['date2']; ?>">
-                    <input type="hidden" name ="npoint" id="npoint" value="<?= $_GET['numero']; ?>">
-                    <button  class="btn btn-warning btn-sm" >Modifier</button>
-                  </form>
-                </td>
-                <td><?= $donnees3['mail']; ?></td>
-                <td><?= $donnees['lht'] !== '0000-00-00 00:00:00' ? $donnees['lht'] : '' ?></td>
-              </tr>
-              <?php
-            }
-            $req->closeCursor();
-            $req2->closeCursor();
-            $req3->closeCursor();
-            ?>
-          </tbody>
-        </table>
-        <?php
-      } else {
-        echo 'Pas de correspondance trouvée pour cette période<br><br>';
-        $req->closeCursor();
-      }
-    }
-    ?>
+    <?= headerVerif($props); ?>
+    <?= tableVerif($props); ?>
   </div><!-- /.container -->
 
   <script type="text/javascript">
