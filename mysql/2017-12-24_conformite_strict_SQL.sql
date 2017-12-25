@@ -252,5 +252,8 @@ UPDATE `pesees_vendus` set
     then `timestamp` else `last_hero_timestamp`
   end);
 
+
+ALTER TABLE points_vente ADD CONSTRAINT UN_nom UNIQUE KEY(nom(255));
+
 Commit;
 SET autocommit = 1;

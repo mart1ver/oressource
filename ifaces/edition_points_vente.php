@@ -34,6 +34,7 @@ if (is_valid_session() && is_allowed_config()) {
   <div class="container">
     <h1>Gestion des points de vente</h1>
     <div class="panel-heading">Gérez ici les différents points de vente.</div>
+    <p>Attention les points de ventes doivent impérativement avoir des noms distincts!</p>
     <div class="panel-body">
       <div class="row">
         <form action="../moteur/edition_points_vente_post.php" method="post">
