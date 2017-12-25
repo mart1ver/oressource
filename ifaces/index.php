@@ -50,35 +50,40 @@ if (is_valid_session()) {
   // l'affichage des bilans de collecte, sortie hors-boutique et bilans de vente
   $validUser = is_allowed_bilan();
 
-  $graphm = data_graphs($bdd->prepare('SELECT type_dechets.couleur,type_dechets.nom, sum(vendus.quantite ) somme
-                  FROM type_dechets, vendus
-                  WHERE type_dechets.id = vendus.id_type_dechet
+  $graphm = data_graphs($bdd->prepare('SELECT type_dechets.couleur, type_dechets.nom, sum(vendus.quantite) somme
+                  FROM type_dechets
+                  INNER JOIN vendus
+                  ON type_dechets.id = vendus.id_type_dechet
                   AND DATE(vendus.timestamp) = CURDATE() AND vendus.prix > 0
-                  GROUP BY type_dechets.id'));
+                  GROUP BY type_dechets.nom, type_dechets.couleur'));
 
-  $grapha = data_graphs($bdd->prepare('SELECT type_dechets.couleur,type_dechets.nom, sum(pesees_sorties.masse) somme
-                      FROM type_dechets, pesees_sorties
-                      WHERE type_dechets.id = pesees_sorties.id_type_dechet
+  $grapha = data_graphs($bdd->prepare('SELECT type_dechets.couleur, type_dechets.nom, sum(pesees_sorties.masse) somme
+                      FROM type_dechets
+                      INNER JOIN pesees_sorties
+                      ON type_dechets.id = pesees_sorties.id_type_dechet
                       AND DATE(pesees_sorties.timestamp) = CURDATE()
-                      GROUP BY type_dechets.id
+                      GROUP BY type_dechets.id, type_dechets.nom, type_dechets.couleur
                       UNION
-                      SELECT types_poubelles.couleur,types_poubelles.nom, sum(pesees_sorties.masse) somme
-                      FROM types_poubelles,pesees_sorties
-                      WHERE types_poubelles.id = pesees_sorties.id_type_poubelle
+                      SELECT types_poubelles.couleur, types_poubelles.nom, sum(pesees_sorties.masse) somme
+                      FROM types_poubelles
+                      INNER JOIN pesees_sorties
+                      ON types_poubelles.id = pesees_sorties.id_type_poubelle
                       AND DATE(pesees_sorties.timestamp) = CURDATE()
-                      GROUP BY types_poubelles.id
+                      GROUP BY types_poubelles.id, types_poubelles.nom, types_poubelles.couleur
                       UNION
-                      SELECT type_dechets_evac.couleur,type_dechets_evac.nom, sum(pesees_sorties.masse) somme
-                      FROM type_dechets_evac ,pesees_sorties
-                      WHERE type_dechets_evac.id=pesees_sorties.id_type_dechet_evac
+                      SELECT type_dechets_evac.couleur, type_dechets_evac.nom, sum(pesees_sorties.masse) somme
+                      FROM type_dechets_evac
+                      INNER JOIN pesees_sorties
+                      ON type_dechets_evac.id = pesees_sorties.id_type_dechet_evac
                       AND DATE(pesees_sorties.timestamp) = CURDATE()
-                      GROUP BY type_dechets_evac.id'));
+                      GROUP BY type_dechets_evac.id, type_dechets_evac.nom, type_dechets_evac.couleur'));
 
   $graphj = data_graphs($bdd->prepare('SELECT type_dechets.couleur, type_dechets.nom, sum(pesees_collectes.masse) somme
-                  FROM type_dechets, pesees_collectes
-                  WHERE type_dechets.id = pesees_collectes.id_type_dechet
+                  FROM type_dechets
+                  INNER JOIN pesees_collectes
+                  ON type_dechets.id = pesees_collectes.id_type_dechet
                   AND DATE(pesees_collectes.timestamp) = CURDATE()
-                  GROUP BY type_dechets.id'));
+                  GROUP BY type_dechets.id, type_dechets.nom, type_dechets.couleur'));
   ?>
 
   <div class="page-header">
