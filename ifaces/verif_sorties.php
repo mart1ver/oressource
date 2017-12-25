@@ -100,7 +100,7 @@ if (is_valid_session() && is_allowed_verifications()) {
     'start' => $_GET['date2'],
     'end' => $_GET['date1']
   ];
-  
+
   $sortiesSQL = 'sorties.id,
         sorties.commentaire,
         sorties.timestamp,

@@ -252,8 +252,15 @@ UPDATE `pesees_vendus` set
     then `timestamp` else `last_hero_timestamp`
   end);
 
+ALTER TABLE pesees_sorties MODIFY COLUMN id_type_dechet      int DEFAULT 0;
+ALTER TABLE pesees_sorties MODIFY COLUMN id_type_poubelle    int DEFAULT 0;
+ALTER TABLE pesees_sorties MODIFY COLUMN id_type_dechet_evac int DEFAULT 0;
 
-ALTER TABLE points_vente ADD CONSTRAINT UN_nom UNIQUE KEY(nom(255));
+ALTER TABLE points_vente    ADD CONSTRAINT UN_PointsVente_nom    UNIQUE KEY(nom(255));
+ALTER TABLE points_collecte ADD CONSTRAINT UN_PointsSortie_nom   UNIQUE KEY(nom(255));
+ALTER TABLE points_sortie   ADD CONSTRAINT UN_PointsCollecte_nom UNIQUE KEY(nom(255));
+ALTER TABLE type_dechets    ADD CONSTRAINT UN_TypeDechets_nom    UNIQUE KEY(nom(255));
+
 
 Commit;
 SET autocommit = 1;
