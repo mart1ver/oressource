@@ -430,16 +430,14 @@ function login_user(PDO $bdd, string $email, string $password): array {
  * @param string $sql Requete sql valide
  * @return array Correspondant aux donnees pour morris.js.
  */
-function data_graphs(PDOStatement $stmt) {
-  $stmt->execute();
-  $data = [];
+function data_graphs(array $data): array {
+  $d = [];
   $colors = [];
-  foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $iter) {
-    array_push($data, ['value' => $iter['somme'], 'label' => $iter['nom']]);
+  foreach ($data as $iter) {
+    array_push($d, ['value' => $iter['somme'], 'label' => $iter['nom']]);
     array_push($colors, $iter['couleur']);
   }
-  $stmt->closeCursor();
-  return ['data' => $data, 'colors' => $colors];
+  return ['data' => $d, 'colors' => $colors];
 }
 
 function data_graphs_from_bilan($bilan, $key) {
