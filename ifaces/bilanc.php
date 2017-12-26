@@ -158,7 +158,6 @@ if (is_valid_session() && is_allowed_bilan()) {
   $collectes_loca = MorrisCollecteLoca($bdd, $numero, $time_debut, $time_fin);
   $collectes_MasseTot = MorrisCollecteMasseTot($bdd, $numero, $time_debut, $time_fin);
 
-  var_dump($collectes_MasseTot);
   $data = [
     'masse' => array_reduce($collectes_TypesCollectes, function($acc, $e) {
         return $acc + $e['somme'];
@@ -351,8 +350,9 @@ if (is_valid_session() && is_allowed_bilan()) {
   </div>
 
   <script type="text/javascript">
+    'use strict';
     const graphMorris = (obj, element) => {
-      if (obj.length !== 0) {
+      if (obj.data.length !== 0) {
         Morris.Donut({
           element,
           data: obj.data,
