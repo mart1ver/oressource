@@ -22,7 +22,6 @@ session_start();
 
 require_once '../core/session.php';
 require_once '../core/requetes.php';
-
 function BilanCollectes1(PDO $bdd, int $id, int $typeCollecte, $start, $fin): array {
   $numero = ($id > 0 ? " AND collectes.id_point_collecte = $id " : ' ');
   $sql = 'SELECT
@@ -88,7 +87,7 @@ function MorrisCollecteMasse(PDO $bdd, int $id, $start, $end): array {
   $stmt = $bdd->prepare($sql);
   $stmt->bindParam(':du', $start, PDO::PARAM_STR);
   $stmt->bindParam(':au', $end, PDO::PARAM_STR);
-    $stmt->execute();
+  $stmt->execute();
   $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
   $stmt->closeCursor();
   return $result;
@@ -165,7 +164,6 @@ if (is_valid_session() && is_allowed_bilan()) {
         return $acc + $e['somme'];
       }, 0),
   ];
-
   ?>
 
   <div class="container">
@@ -194,11 +192,7 @@ if (is_valid_session() && is_allowed_bilan()) {
       <h2> Bilan des collectes de la structure</h2>
       <ul class="nav nav-tabs">
         <?php foreach ($points_collectes as $p) { ?>
-          <li <?php
-          if ($numero == $p['id']) {
-            echo"class='active'";
-          }
-          ?> >
+          <li class="<?= $numero == $p['id'] ? 'active' : '' ?>">
             <a href="bilanc.php?numero=<?= $p['id'] ?>&date1=<?= $date1 ?>&date2=<?= $date2; ?>"><?= $p['nom']; ?></a>
           </li>
         <?php } ?>
@@ -251,7 +245,6 @@ if (is_valid_session() && is_allowed_bilan()) {
                   </tbody>
                 </table>
 
-                <!-- TODO: faire une tableau pour la répartion par type d'objets/collecté -->
                 <div id="graphmasse" style="height: 180px;"></div>
 
                 <!-- TODO: refaire cette fonctionnalité
@@ -350,59 +343,36 @@ if (is_valid_session() && is_allowed_bilan()) {
               -->
             </div>
           </div>
-          <?php
-        } else {
-          echo '<img src="../images/nodata.jpg" class="img-responsive" alt="Responsive image">';
-        }
-        ?>
+        <?php } else { ?>
+          <img src="../images/nodata.jpg" class="img-responsive" alt="Responsive image">
+        <?php } ?>
       </div>
-
     </div>
   </div>
 
-  <script>
-    const graphmass = <?= json_encode(data_graphs($collectes_TypesCollectes)) ?>;
-    Morris.Donut({
-      element: 'graphmasse',
-      data: graphmass.data,
-      backgroundColor: '#ccc',
-      labelColor: '#060',
-      colors: graphmass.colors,
-      formatter: (x) => `${x} Kg.`
-    });
-  </script>
-
-  <script>
-    const graph2masse = <?= json_encode(data_graphs($collectes_MasseTot)) ?>;
-    Morris.Donut({
-      element: 'graph2masse',
-      data: graph2masse.data,
-      backgroundColor: '#ccc',
-      labelColor: '#060',
-      colors: graph2masse.colors,
-      formatter: (x) => `${x} Kg.`
-    });
-  </script>
-
-  <script>
-    const graphloca = <?= json_encode(data_graphs($collectes_loca)) ?>;
-    Morris.Donut({
-      element: 'graphloca',
-      data: graphloca.data,
-      backgroundColor: '#ccc',
-      labelColor: '#060',
-      colors: graphloca.colors,
-      formatter: (x) => `${x} Kg.`
-    });
-  </script>
-
   <script type="text/javascript">
+    const graphMorris = (obj, element) => {
+      if (obj.length !== 0) {
+        Morris.Donut({
+          element,
+          data: obj.data,
+          backgroundColor: '  #ccc',
+          labelColor: '#060',
+          colors: obj.colors,
+          formatter: (x) => `${x} Kg.`
+        });
+      }
+    };
+
     'use strict';
     $(document).ready(() => {
       const query = process_get();
       const base = 'bilanc.php';
       const options = set_datepicker(query);
       bind_datepicker(options, {base, query});
+      graphMorris(<?= json_encode(data_graphs($collectes_TypesCollectes)) ?>, 'graphmasse');
+      graphMorris(<?= json_encode(data_graphs($collectes_MasseTot)) ?>, 'graph2masse');
+      graphMorris(<?= json_encode(data_graphs($collectes_loca)) ?>, 'graphloca');
     });
   </script>
   <?php
