@@ -183,37 +183,29 @@ if (is_valid_session()) {
     $id_sortie = (int) insert_sortie($bdd, $sortie);
     $requete_OK = false;
 
-    if ($sortie['classe'] === 'sorties' || $sortie['classe'] === 'sortiesc') {
-      if (count($json['items']) > 0) {
+    if (count($json['items'] ?? 0) > 0) {
+      if ($sortie['classe'] === 'sorties' || $sortie['classe'] === 'sortiesc') {
         insert_pesee_sortie($bdd, $id_sortie, $sortie, $json['items'], 'id_type_dechet');
         $requete_OK = true;
       }
-      if (count($json['evacs']) > 0) {
+    }
+    if (count($json['evacs'] ?? 0) > 0) {
+      if ($sortie['classe'] === 'sortiesd' || $sortie['classe'] === 'sortiesc' || $sortie['classe'] === 'sortiesc') {
         insert_pesee_sortie($bdd, $id_sortie, $sortie, $json['evacs'], 'id_type_dechet_evac');
         $requete_OK = true;
-      }
-    } elseif ($sortie['classe'] === 'sortiesd' || $sortie['classe'] === 'sortiesr') {
-      if (count($json['evacs']) > 0) {
-        insert_pesee_sortie($bdd, $id_sortie, $sortie, $json['evacs']);
-        $requete_OK = true;
-      }
-    } elseif ($sortie['classe'] === 'sortiesp') {
-      if (count($json['evacs']) > 0) {
+      } elseif ($sortie['classe'] === 'sortiesp') {
         $sortie['commentaire'] = '';
         insert_pesee_sortie($bdd, $id_sortie, $sortie, $json['evacs'], 'id_type_poubelle');
         $requete_OK = true;
       }
-    } else {
-      throw new UnexpectedValueException("Classe de sortie inconnue");
     }
 
     if ($requete_OK) {
       $bdd->commit();
-      http_response_code(200); // Created
-      // Note: Renvoyer l'url d'acces a la ressource
+      http_response_code(200); // OK
       echo(json_encode(['id_sortie' => $id_sortie], JSON_NUMERIC_CHECK));
     } else {
-      throw new UnexpectedValueException("Insertion sans objet ni evac abbandon.");
+      throw new UnexpectedValueException("Sortie invalide.");
     }
   } catch (UnexpectedValueException $e) {
     $bdd->rollback();
