@@ -475,12 +475,12 @@ function tableVerif(array $props): string {
           <td><?= $users[$d['id_createur']]['mail']; ?></td>
           <td>
             <form action="modification_<?= $props['endpoint'] ?>.php" method="post">
-              <input type="hidden" name="id" id="id" value="<?= $d['id']; ?>">
-              <input type="hidden" name="nom" id="nom" value="<?= $d['nom']; ?>">
-              <input type="hidden" name="localisation" id="localisation" value="<?= $d['localisation']; ?>">
-              <input type="hidden" name="date1" id="date1" value="<?= $props['start']; ?>">
-              <input type="hidden" name="date2" id="date2" value="<?= $props['end']; ?>">
-              <input type="hidden" name="npoint" id="npoint" value="<?= $d['localite']; ?>">
+              <input type="hidden" name="id" id="id" value="<?= $d['id'] ?>">
+              <input type="hidden" name="nom" id="nom" value="<?= $d['nom'] ?>">
+              <input type="hidden" name="localisation" id="localisation" value="<?= $d['localisation'] ?>">
+              <input type="hidden" name="date1" id="date1" value="<?= $props['start'] ?>">
+              <input type="hidden" name="date2" id="date2" value="<?= $props['end'] ?>">
+              <input type="hidden" name="npoint" id="npoint" value="<?= $d['localite'] ?>">
               <button class="btn btn-warning btn-sm">Modifier</button>
             </form>
           </td>
@@ -490,6 +490,24 @@ function tableVerif(array $props): string {
       <?php } ?>
     </tbody>
   </table>
+  <?php
+  return ob_get_clean();
+}
+
+function formModif(array $props): string {
+  ob_start();
+  $classe = $props['classe'] ?? '';
+  ?>
+  <form action="modification_<?= $props['endpoint'] ?>.php" method="post">
+    <input type="hidden" name="id" value="<?= $props['id'] ?>">
+    <input type="hidden" name="id_type" value="<?= $props['id_type'] ?? 0 ?>">
+    <input type="hidden" name="classe" value="<?= $classe ?>">
+    <input type="hidden" name="commentaire" value="<?= $props['commentaire'] ?? '' ?>">
+    <input type="hidden" name="date1" value="<?= $props['start'] ?>">
+    <input type="hidden" name="date2" value="<?= $props['end'] ?>">
+    <input type="hidden" name="npoint" value="<?= $props['numero'] ?>">
+    <button class="btn btn-warning btn-sm">Modifier</button>
+  </form>
   <?php
   return ob_get_clean();
 }

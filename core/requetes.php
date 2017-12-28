@@ -36,10 +36,10 @@ function fetch_all(string $sql, PDO $bdd): array {
  */
 function fetch_id(PDO $bdd, string $sql, int $id): array {
   $stmt = $bdd->prepare($sql);
-  $req->bindValue(':id', $id, PDO::PARAM_INT);
-  $req->execute();
-  $result = $req->fetch(PDO::FETCH_ASSOC);
-  $req->closeCursor();
+  $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+  $stmt->execute();
+  $result = $stmt->fetch(PDO::FETCH_ASSOC);
+  $stmt->closeCursor();
   return $result;
 }
 

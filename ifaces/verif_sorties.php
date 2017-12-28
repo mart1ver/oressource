@@ -49,14 +49,7 @@ function VerifSortiesTable(array $props) {
               <td><?= $d['masse']; ?></td>
               <td><?= $users[$d['id_createur']]['mail']; ?></td>
               <td>
-                <form action="modification_verification_sorties<?= $props['classe'] ?>.php?nsortie=<?= $d['id']; ?>" method="post">
-                  <input type="hidden" name ="id" id="id" value="<?= $d['id']; ?>">
-                  <input type="hidden" name ="nom" id="nom" value="<?= $d['nom']; ?>">
-                  <input type="hidden" name ="date1" id="date1" value="<?= $props['start']; ?>">
-                  <input type="hidden" name ="date2" id="date2" value="<?= $props['end']; ?>">
-                  <input type="hidden" name ="npoint" id="npoint" value="<?= $props['numero']; ?>">
-                  <button  class="btn btn-warning btn-sm" >Modifier</button>
-                </form>
+                <?= formModif(array_merge($props, $d)) ?>
               </td>
               <td><?= $d['last_hero_timestamp'] !== $d['timestamp'] ? $users[$d['id_last_hero']]['mail'] : '' ?></td>
               <td><?= $d['last_hero_timestamp'] !== $d['timestamp'] ? $d['last_hero_timestamp'] : '' ?></td>
@@ -84,6 +77,7 @@ if (is_valid_session() && is_allowed_verifications()) {
     return $acc;
   }, []);
 
+
   $time_debut = DateTime::createFromFormat('d-m-Y', $_GET['date1'])->format('Y-m-d') . ' 00:00:00';
   $time_fin = DateTime::createFromFormat('d-m-Y', $_GET['date2'])->format('Y-m-d') . ' 23:59:59';
 
@@ -100,16 +94,19 @@ if (is_valid_session() && is_allowed_verifications()) {
     'start' => $_GET['date2'],
     'end' => $_GET['date1']
   ];
-
+  
+  
   $sortiesSQL = 'sorties.id,
         sorties.commentaire,
         sorties.timestamp,
         sorties.id_createur,
         sorties.id_last_hero,
         sorties.last_hero_timestamp';
+  // Sorties Dons
   // FIXME: On à jamais utilisé les localités dans les sorties dons #Oups.
   $req = $bdd->prepare("SELECT
         $sortiesSQL,
+        sorties.id_type_sortie id_type,
         type_sortie.nom,
   --      localites.nom localisation,
   --      localites.id localite,
@@ -125,6 +122,7 @@ if (is_valid_session() && is_allowed_verifications()) {
       AND DATE(sorties.timestamp) BETWEEN :du AND :au
       GROUP BY
       $sortiesSQL,
+      sorties.id_type_sortie,
   --  localites.nom,
   --  localites.id
       type_sortie.nom");
@@ -132,8 +130,10 @@ if (is_valid_session() && is_allowed_verifications()) {
   $sortiesDon = $req->fetchAll(PDO::FETCH_ASSOC);
   $req->closeCursor();
 
+  // Sorties Conventions
   $req = $bdd->prepare("SELECT
         $sortiesSQL,
+        sorties.id_convention id_type,
         conventions_sorties.nom,
         SUM(pesees_sorties.masse) masse
       FROM sorties
@@ -145,15 +145,18 @@ if (is_valid_session() && is_allowed_verifications()) {
       AND DATE(sorties.timestamp) BETWEEN :du AND :au
       AND sorties.classe = 'sortiesc'
       GROUP BY
-      $sortiesSQL,
+      $sortiesSQL,        
+      sorties.id_convention,
       conventions_sorties.nom
       ORDER BY sorties.timestamp DESC");
   $req->execute(['id_point_sortie' => $_GET['numero'], 'du' => $time_debut, 'au' => $time_fin]);
   $sortiesConventions = $req->fetchAll(PDO::FETCH_ASSOC);
   $req->closeCursor();
 
+  // Sorties Recyclages
   $req = $bdd->prepare("SELECT
         $sortiesSQL,
+        sorties.id_filiere id_type,
         filieres_sortie.nom,
         SUM(pesees_sorties.masse) masse
       FROM sorties
@@ -167,12 +170,15 @@ if (is_valid_session() && is_allowed_verifications()) {
       GROUP BY
       $sortiesSQL,
       sorties.id_last_hero,
+      sorties.id_filiere,
+      sorties.id_filiere,
       filieres_sortie.nom
       ORDER BY sorties.timestamp DESC");
   $req->execute(['id_point_sortie' => $_GET['numero'], 'du' => $time_debut, 'au' => $time_fin]);
   $sortiesRecyclage = $req->fetchAll(PDO::FETCH_ASSOC);
   $req->closeCursor();
 
+  // Sorties Poubelles
   $req = $bdd->prepare("SELECT
         $sortiesSQL,
         SUM(pesees_sorties.masse) masse
@@ -188,6 +194,7 @@ if (is_valid_session() && is_allowed_verifications()) {
   $req->execute(['id_point_sortie' => $_GET['numero'], 'du' => $time_debut, 'au' => $time_fin]);
   $sortiesPoubelles = $req->fetchAll(PDO::FETCH_ASSOC);
 
+  // Sorties dechetteries
   $req->closeCursor();
   $req = $bdd->prepare("SELECT
         $sortiesSQL,
@@ -269,13 +276,7 @@ if (is_valid_session() && is_allowed_verifications()) {
                 <td><?= $d['masse']; ?></td>
                 <td><?= $users[$d['id_createur']]['mail']; ?></td>
                 <td>
-                  <form action="modification_verification_sortiesp.php?nsortie=<?= $d['id']; ?>" method="post">
-                    <input type="hidden" name="id" id="id" value="<?= $d['id']; ?>">
-                    <input type="hidden" name="date1" id="date1" value="<?= $base['start']; ?>">
-                    <input type="hidden" name="date2" id="date2" value="<?= $base['end']; ?>">
-                    <input type="hidden" name="npoint" id="npoint" value="<?= $base['numero']; ?>">
-                    <button  class="btn btn-warning btn-sm">Modifier</button>
-                  </form>
+                  <?= formModif(array_merge($base, ['id' => $d['id'], 'classe' => 'p'])) ?>
                 </td>
                 <td><?= $d['last_hero_timestamp'] !== $d['timestamp'] ? $users[$d['id_last_hero']]['mail'] : '' ?></td>
                 <td><?= $d['last_hero_timestamp'] !== $d['timestamp'] ? $d['last_hero_timestamp'] : '' ?></td>
@@ -306,7 +307,7 @@ if (is_valid_session() && is_allowed_verifications()) {
           </thead>
 
           <tbody>
-            <?php foreach ($sortiesPoubelles as $b) { ?>
+            <?php foreach ($sortiesDechetterie as $b) { ?>
               <tr>
                 <td><?= $b['id']; ?></td>
                 <td><?= $b['timestamp']; ?></td>
@@ -314,13 +315,7 @@ if (is_valid_session() && is_allowed_verifications()) {
                 <td><?= $b['masse']; ?></td>
                 <td><?= $users[$b['id_createur']]['mail']; ?></td>
                 <td>
-                  <form action="modification_verification_sortiesd.php?nsortie=<?= $b['id']; ?>" method="post">
-                    <input type="hidden" name="id" id="id" value="<?= $b['id']; ?>">
-                    <input type="hidden" name="date1" id="date1" value="<?= $base['start']; ?>">
-                    <input type="hidden" name="date2" id="date2" value="<?= $base['end']; ?>">
-                    <input type="hidden" name="npoint" id="npoint" value="<?= $base['numero']; ?>">
-                    <button class="btn btn-warning btn-sm">Modifier</button>
-                  </form>
+                  <?= formModif(array_merge($base, ['id' => $b['id'], 'classe' => 'd'])) ?>
                 </td>
                 <td><?= $b['last_hero_timestamp'] !== $b['timestamp'] ? $users[$b['id_last_hero']]['mail'] : '' ?></td>
                 <td><?= $b['last_hero_timestamp'] !== $b['timestamp'] ? $b['last_hero_timestamp'] : '' ?></td>
