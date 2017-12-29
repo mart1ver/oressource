@@ -287,6 +287,7 @@ ALTER TABLE pesees_vendus       MODIFY COLUMN last_hero_timestamp timestamp NOT 
 
 -- Un utilisateur dois avoir un email propre.
 ALTER TABLE utilisateurs        ADD CONSTRAINT UN_Utilisateur_mail    UNIQUE KEY(mail(255));
+ALTER TABLE utilisateurs        ADD CONSTRAINT UN_Utilisateur_mail    UNIQUE KEY(pass(255));
 
 -- Contraintes pour avoir des noms uniques coté base.
 ALTER TABLE conventions_sorties ADD CONSTRAINT UN_ConvSortie_nom      UNIQUE KEY(nom(255));
@@ -305,6 +306,8 @@ ALTER TABLE moyens_paiement     ADD CONSTRAINT UN_MoyensPaiement_nom  UNIQUE KEY
 ALTER TABLE filieres_sortie     ADD CONSTRAINT UN_FilieresSortie_nom  UNIQUE KEY(nom(255));
 
 ALTER TABLE type_dechets_evac ADD CONSTRAINT UN_TypeDechetsEvac_nom UNIQUE KEY(nom(255));
+
+ALTER Table localites DROP COLUMN relation_openstreetmap;
 
 Commit;
 SET autocommit = 1;
