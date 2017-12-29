@@ -32,9 +32,9 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($
   $req->closeCursor();
 
   // si la masse et superieure a 0 on l'ecrit dans la base
-  if ($_POST['quantite'] > 0) {
+  if ($_POST['masse'] > 0) {
     $req = $bdd->prepare('UPDATE pesees_vendus SET  id_last_hero = :id_last_hero,masse = :masse, last_hero_timestamp = NOW()
-      WHERE id_vendu = :id');
+      WHERE id = :id');
     $req->execute(['id' => $_POST['id'], 'id_last_hero' => $_SESSION['id'], 'masse' => $_POST['masse']]);
     $req->closeCursor();
   }
