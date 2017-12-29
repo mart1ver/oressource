@@ -252,15 +252,62 @@ UPDATE `pesees_vendus` set
     then `timestamp` else `last_hero_timestamp`
   end);
 
+ALTER TABLE sorties        MODIFY COLUMN id_filiere          int DEFAULT 0;
+ALTER TABLE sorties        MODIFY COLUMN id_convention       int DEFAULT 0;
+ALTER TABLE sorties        MODIFY COLUMN id_type_sortie      int DEFAULT 0;
+ALTER TABLE sorties        MODIFY COLUMN id_point_sortie     int NOT NULL;
+
 ALTER TABLE pesees_sorties MODIFY COLUMN id_type_dechet      int DEFAULT 0;
 ALTER TABLE pesees_sorties MODIFY COLUMN id_type_poubelle    int DEFAULT 0;
 ALTER TABLE pesees_sorties MODIFY COLUMN id_type_dechet_evac int DEFAULT 0;
+ALTER TABLE grille_objets MODIFY COLUMN prix DECIMAL DEFAULT 0.0 NOT NULL;
 
-ALTER TABLE points_vente    ADD CONSTRAINT UN_PointsVente_nom    UNIQUE KEY(nom(255));
-ALTER TABLE points_collecte ADD CONSTRAINT UN_PointsSortie_nom   UNIQUE KEY(nom(255));
-ALTER TABLE points_sortie   ADD CONSTRAINT UN_PointsCollecte_nom UNIQUE KEY(nom(255));
-ALTER TABLE type_dechets    ADD CONSTRAINT UN_TypeDechets_nom    UNIQUE KEY(nom(255));
 
+
+
+ALTER TABLE collectes           MODIFY COLUMN last_hero_timestamp timestamp NOT NULL default now() ON UPDATE now();
+ALTER TABLE conventions_sorties MODIFY COLUMN last_hero_timestamp timestamp NOT NULL default now() ON UPDATE now();
+ALTER TABLE filieres_sortie     MODIFY COLUMN last_hero_timestamp timestamp NOT NULL default now() ON UPDATE now();
+ALTER TABLE grille_objets       MODIFY COLUMN last_hero_timestamp timestamp NOT NULL default now() ON UPDATE now();
+ALTER TABLE localites           MODIFY COLUMN last_hero_timestamp timestamp NOT NULL default now() ON UPDATE now();
+ALTER TABLE moyens_paiement     MODIFY COLUMN last_hero_timestamp timestamp NOT NULL default now() ON UPDATE now();
+ALTER TABLE pesees_collectes    MODIFY COLUMN last_hero_timestamp timestamp NOT NULL default now() ON UPDATE now();
+ALTER TABLE pesees_sorties      MODIFY COLUMN last_hero_timestamp timestamp NOT NULL default now() ON UPDATE now();
+ALTER TABLE pesees_vendus       MODIFY COLUMN last_hero_timestamp timestamp NOT NULL default now() ON UPDATE now();
+ALTER TABLE points_collecte     MODIFY COLUMN last_hero_timestamp timestamp NOT NULL default now() ON UPDATE now();
+ALTER TABLE points_sortie       MODIFY COLUMN last_hero_timestamp timestamp NOT NULL default now() ON UPDATE now();
+ALTER TABLE points_vente        MODIFY COLUMN last_hero_timestamp timestamp NOT NULL default now() ON UPDATE now();
+ALTER TABLE sorties             MODIFY COLUMN last_hero_timestamp timestamp NOT NULL default now() ON UPDATE now();
+ALTER TABLE type_collecte       MODIFY COLUMN last_hero_timestamp timestamp NOT NULL default now() ON UPDATE now();
+ALTER TABLE type_contenants     MODIFY COLUMN last_hero_timestamp timestamp NOT NULL default now() ON UPDATE now();
+ALTER TABLE type_dechets        MODIFY COLUMN last_hero_timestamp timestamp NOT NULL default now() ON UPDATE now();
+ALTER TABLE type_dechets_evac   MODIFY COLUMN last_hero_timestamp timestamp NOT NULL default now() ON UPDATE now();
+ALTER TABLE types_poubelles     MODIFY COLUMN last_hero_timestamp timestamp NOT NULL default now() ON UPDATE now();
+ALTER TABLE utilisateurs        MODIFY COLUMN last_hero_timestamp timestamp NOT NULL default now() ON UPDATE now();
+ALTER TABLE vendus              MODIFY COLUMN last_hero_timestamp timestamp NOT NULL default now() ON UPDATE now();
+ALTER TABLE ventes              MODIFY COLUMN last_hero_timestamp timestamp NOT NULL default now() ON UPDATE now();
+ALTER TABLE pesees_vendus       MODIFY COLUMN last_hero_timestamp timestamp NOT NULL default now() ON UPDATE now();
+
+-- Un utilisateur dois avoir un email propre.
+ALTER TABLE utilisateurs        ADD CONSTRAINT UN_Utilisateur_mail    UNIQUE KEY(mail(255));
+
+-- Contraintes pour avoir des noms uniques coté base.
+ALTER TABLE conventions_sorties ADD CONSTRAINT UN_ConvSortie_nom      UNIQUE KEY(nom(255));
+ALTER TABLE points_vente        ADD CONSTRAINT UN_PointsVente_nom     UNIQUE KEY(nom(255));
+ALTER TABLE points_collecte     ADD CONSTRAINT UN_PointsSortie_nom    UNIQUE KEY(nom(255));
+ALTER TABLE points_sortie       ADD CONSTRAINT UN_PointsCollecte_nom  UNIQUE KEY(nom(255));
+ALTER TABLE type_dechets        ADD CONSTRAINT UN_TypeDechets_nom     UNIQUE KEY(nom(255));
+ALTER TABLE type_contenants     ADD CONSTRAINT UN_TypeContenants_nom  UNIQUE KEY(nom(255));
+ALTER TABLE type_collecte       ADD CONSTRAINT UN_TypeCollecte_nom    UNIQUE KEY(nom(255));
+ALTER TABLE type_sortie    	    ADD CONSTRAINT UN_TypeSortie_nom      UNIQUE KEY(nom(255));
+ALTER TABLE types_poubelles     ADD CONSTRAINT UN_TypesPoubelles_nom  UNIQUE KEY(nom(255));
+ALTER TABLE type_dechets_evac   ADD CONSTRAINT UN_TypeDechetsEvac_nom UNIQUE KEY(nom(255));
+ALTER TABLE grille_objets       ADD CONSTRAINT UN_GrilleObjets_nom    UNIQUE KEY(nom(255));
+ALTER TABLE localites           ADD CONSTRAINT UN_localites_nom       UNIQUE KEY(nom(255));
+ALTER TABLE moyens_paiement     ADD CONSTRAINT UN_MoyensPaiement_nom  UNIQUE KEY(nom(255));
+ALTER TABLE filieres_sortie     ADD CONSTRAINT UN_FilieresSortie_nom  UNIQUE KEY(nom(255));
+
+ALTER TABLE type_dechets_evac ADD CONSTRAINT UN_TypeDechetsEvac_nom UNIQUE KEY(nom(255));
 
 Commit;
 SET autocommit = 1;
