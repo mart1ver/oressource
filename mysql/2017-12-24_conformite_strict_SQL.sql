@@ -262,9 +262,6 @@ ALTER TABLE pesees_sorties MODIFY COLUMN id_type_poubelle    int DEFAULT 0;
 ALTER TABLE pesees_sorties MODIFY COLUMN id_type_dechet_evac int DEFAULT 0;
 ALTER TABLE grille_objets MODIFY COLUMN prix DECIMAL DEFAULT 0.0 NOT NULL;
 
-
-
-
 ALTER TABLE collectes           MODIFY COLUMN last_hero_timestamp timestamp NOT NULL default now() ON UPDATE now();
 ALTER TABLE conventions_sorties MODIFY COLUMN last_hero_timestamp timestamp NOT NULL default now() ON UPDATE now();
 ALTER TABLE filieres_sortie     MODIFY COLUMN last_hero_timestamp timestamp NOT NULL default now() ON UPDATE now();

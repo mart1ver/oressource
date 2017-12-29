@@ -16,9 +16,7 @@
 
 UPDATE pesees_vendus set id = id_vendus;
 
-ALTER Table pesees_vendus ADD CONSTRAINT FK_pesees_vendus_vendus 
+ALTER Table pesees_vendus ADD CONSTRAINT FK_pesees_vendus_vendus
 foreign key (id) references vendus(id);
 
-ALTER Table pesees_vendus
-DROP COLUMN id_vendus;
-
+ALTER Table pesees_vendus DROP COLUMN id_vendus;

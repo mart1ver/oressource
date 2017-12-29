@@ -741,7 +741,7 @@ function bilan_ventes_pesees_point_vente(PDO $bdd, string $start, string $stop, 
       COALESCE(AVG(pesees_vendus.masse), 0) as moy_masse_vente
     FROM pesees_vendus
     INNER JOIN vendus
-    ON vendus.id = pesees_vendus.id_vendu
+    ON vendus.id = pesees_vendus.id
     INNER JOIN type_dechets
     ON vendus.id_type_dechet = type_dechets.id
     INNER JOIN ventes
@@ -801,7 +801,7 @@ function bilan_ventes_point_vente(PDO $bdd, string $start, string $stop, int $id
     INNER JOIN vendus
     ON vendus.id_vente = ventes.id
     LEFT JOIN pesees_vendus
-    ON vendus.id = pesees_vendus.id_vendu
+    ON vendus.id = pesees_vendus.id
     WHERE DATE(ventes.timestamp) BETWEEN :du AND :au
     AND ventes.id_point_vente = :id_point_vente';
   $stmt = $bdd->prepare($sql);
