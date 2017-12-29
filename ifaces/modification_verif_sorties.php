@@ -21,14 +21,6 @@ session_start();
 
 require_once '../core/requetes.php';
 require_once '../core/session.php';
-function fetch_all_id(PDO $bdd, string $sql, int $id) {
-  $stmt = $bdd->prepare($sql);
-  $stmt->bindParam(':id', $id, PDO::PARAM_INT);
-  $stmt->execute();
-  $r = $stmt->fetchAll(PDO::FETCH_ASSOC);
-  $stmt->closeCursor();
-  return $r;
-}
 
 // Pesée « Evac »
 function pesees_sorties_items(PDO $bdd, int $id): array {
@@ -87,7 +79,6 @@ function pesees_sortie_poubelle(PDO $bdd, int $id): array {
 }
 
 function strategie_sortie(PDO $bdd, string $classe, int $id): array {
-  
   if ($classe === 'p') {
     return [
       'pesees' => pesees_sortie_poubelle($bdd, $id),
@@ -103,7 +94,7 @@ function strategie_sortie(PDO $bdd, string $classe, int $id): array {
       'h2' => 'conventionnés',
       'label' => 'Nom du partenaire:'
     ];
-  } elseif ($classe === 'r') {  
+  } elseif ($classe === 'r') {
     return [
       'meta' => array_reduce(filter_visibles(filieres_sorties($bdd)), function ($acc, $e) {
           $acc[$e['id']] = $e;
@@ -162,8 +153,8 @@ if (is_valid_session() && is_allowed_verifications()) {
       <div class="row">
         <form action="../moteur/modification_verification_sorties_post.php" method="post">
           <input type="hidden" name="id" value="<?= $props['id'] ?>">
-          <input type="hidden" name="classe" value="<?= $props['classe']?>">
-          <?php if (isset($props['meta'])) { ?> 
+          <input type="hidden" name="classe" value="<?= $props['classe'] ?>">
+          <?php if (isset($props['meta'])) { ?>
             <div class="col-md-3">
               <label for="id_meta"><?= $props['label'] ?></label>
               <select name="id_meta" class="form-control" required>
@@ -207,7 +198,7 @@ if (is_valid_session() && is_allowed_verifications()) {
           <tr>
             <td><?= $p['id']; ?></td>
             <td><?= $p['timestamp']; ?></td>
-            <td><span class="badge" 
+            <td><span class="badge"
                       style="background-color:<?= $p['couleur'] ?>"><?= $p['nom']; ?></span></td>
             <td><?= $p['masse']; ?></td>
             <td><?= $users[$p['id_createur']]['mail']; ?></td>

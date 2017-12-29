@@ -43,8 +43,17 @@ function fetch_id(PDO $bdd, string $sql, int $id): array {
   return $result;
 }
 
+function fetch_all_id(PDO $bdd, string $sql, int $id) {
+  $stmt = $bdd->prepare($sql);
+  $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+  $stmt->execute();
+  $r = $stmt->fetchAll(PDO::FETCH_ASSOC);
+  $stmt->closeCursor();
+  return $r;
+}
+
 function objet_id_dechet(PDO $bdd, int $id_dechet) {
-  return fetch_id($bdd, 'SELECT * FROM grille_objets WHERE id_type_dechet = :id', $id_dechet);
+  return fetch_all_id($bdd, 'SELECT * FROM grille_objets WHERE id_type_dechet = :id', $id_dechet);
 }
 
 function objet_id(PDO $bdd, int $id_obj) {
