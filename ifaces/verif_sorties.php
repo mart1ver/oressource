@@ -120,6 +120,7 @@ if (is_valid_session() && is_allowed_verifications()) {
   --    ON localites.id = sorties.localisation
       WHERE sorties.id_point_sortie = :id_point_sortie
       AND DATE(sorties.timestamp) BETWEEN :du AND :au
+      AND sorties.classe = 'sorties'
       GROUP BY
       $sortiesSQL,
       sorties.id_type_sortie,

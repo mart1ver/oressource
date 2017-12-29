@@ -21,6 +21,7 @@ session_start();
 
 require_once '../core/session.php';
 require_once '../core/requetes.php';
+
 function pesees_sorties_id(PDO $bdd, int $id): array {
   $sql = 'SELECT
     pesees_sorties.id,
@@ -32,16 +33,14 @@ function pesees_sorties_id(PDO $bdd, int $id): array {
   FROM pesees_sorties
   WHERE pesees_sorties.id = :id';
   $r = fetch_id($bdd, $sql, $id);
-  $r['id_type'] = $r['poubelle'] || $r['dechet'] || $r['evac'];
+  $r['id_type'] = $r['poubelle'] | $r['dechet'] | $r['evac'];
   return $r;
 }
 
 if (is_valid_session() && is_allowed_verifications()) {
   require_once('../moteur/dbconfig.php');
 
-
-  $id = (int) $_POST['id'];
-
+  $id = (int) ($_GET['id'] ?? 0) | ($_POST['id'] ?? 0);
   $pesee = pesees_sorties_id($bdd, $id);
   $meta = [];
   $type = '';
@@ -67,11 +66,11 @@ if (is_valid_session() && is_allowed_verifications()) {
     <div class="panel-body">
       <div class="row">
         <form action="../moteur/modification_verification_pesee_sorties_post.php" method="post">
-          <input type="hidden" name="nsortie" value="<?= $pesee['id_sortie'] ?>">
+          <input type="hidden" name="id_sortie" value="<?= $pesee['id_sortie'] ?>">
           <input type="hidden" name="id"      value="<?= $pesee['id'] ?>">
           <div class="col-md-3">
             <label for="id_type"><?= $text ?></label>
-            <select id="id_type" name="<?= $pesee['type'] ?>" class="form-control" required>
+            <select id="id_type" name="<?= $type ?>" class="form-control" required>
               <?php foreach ($meta as $p) { ?>
                 <option <?= $pesee['id_type'] === $p['id'] ? 'selected' : '' ?>
                   value="<?= $p['id']; ?>"><?= $p['nom'] ?></option>
@@ -83,7 +82,7 @@ if (is_valid_session() && is_allowed_verifications()) {
             <input class="form-control" id="masse" type="text"
                    value="<?= $pesee['masse'] ?>" name="masse" required>
             <br>
-            <button name="creer" class="btn btn-warning">Modifier</button>
+            <button class="btn btn-warning">Modifier</button>
           </div>
         </form>
       </div>

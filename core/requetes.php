@@ -150,6 +150,11 @@ function utilisateur_update(PDO $bdd, array $utilisateur) {
   $stmt->closeCursor();
 }
 
+function sortie_id(PDO $bdd, int $id): array {
+  $sql = 'SELECT * FROM sorties WHERE id = :id';
+  return fetch_id($bdd, $sql, $id);
+}
+
 function convention_sortie(PDO $bdd): array {
   $sql = 'SELECT id, nom, couleur, description, timestamp, visible FROM conventions_sorties ORDER BY nom';
   return fetch_all($sql, $bdd);

@@ -87,6 +87,7 @@ function pesees_sortie_poubelle(PDO $bdd, int $id): array {
 }
 
 function strategie_sortie(PDO $bdd, string $classe, int $id): array {
+  
   if ($classe === 'p') {
     return [
       'pesees' => pesees_sortie_poubelle($bdd, $id),
@@ -102,7 +103,7 @@ function strategie_sortie(PDO $bdd, string $classe, int $id): array {
       'h2' => 'conventionnés',
       'label' => 'Nom du partenaire:'
     ];
-  } elseif ($classe === 'r') {
+  } elseif ($classe === 'r') {  
     return [
       'meta' => array_reduce(filter_visibles(filieres_sorties($bdd)), function ($acc, $e) {
           $acc[$e['id']] = $e;
@@ -138,13 +139,15 @@ if (is_valid_session() && is_allowed_verifications()) {
   }, []);
 
   $filiere_sortie = filieres_sorties($bdd);
-
+  $id = (int) ($_GET['id'] ?? 0) | ($_POST['id'] ?? 0);
+  $sortie = sortie_id($bdd, $id);
+  $a = $sortie['classe'][strlen($sortie['classe']) - 1];
+  $classe = $_POST['classe'] ?? ($a === 'e' ? '' : $a);
   $props = array_merge([
-    'id' => (int) $_POST['id'],
-    'id_type' => (int) ($_POST['id_type'] ?? 0),
-    'classe' => $_POST['classe'],
-    ], strategie_sortie($bdd, $_POST['classe'], $_POST['id']));
-
+    'id' => $id,
+    'id_type' => (int) ($sortie['id_convention'] | $sortie['id_type_sortie'] | $sortie['id_filiere']),
+    'classe' => $classe,
+    ], strategie_sortie($bdd, $classe, $id));
   //form action="../moteur/modification_verification_sorties_post.php" method="post"
   //form action="modification_verification_pesee_sorties.php" method="post"
   //form action="modification_verification_pesee_sorties.php" method="post"
@@ -152,14 +155,15 @@ if (is_valid_session() && is_allowed_verifications()) {
   require_once 'tete.php';
   ?>
   <div class="container">
-    <h1>Modifier la sortie n° <?= $_POST['id'] ?></h1>
+    <h1>Modifier la sortie n° <?= $id ?></h1>
 
     <div class="panel-body">
       <br>
       <div class="row">
-        <form action="../moteur/modification_verification_sorties<?= $props['classe'] ?>_post.php" method="post">
+        <form action="../moteur/modification_verification_sorties_post.php" method="post">
           <input type="hidden" name="id" value="<?= $props['id'] ?>">
-          <?php if (isset($props['meta'])) { ?>
+          <input type="hidden" name="classe" value="<?= $props['classe']?>">
+          <?php if (isset($props['meta'])) { ?> 
             <div class="col-md-3">
               <label for="id_meta"><?= $props['label'] ?></label>
               <select name="id_meta" class="form-control" required>
@@ -173,12 +177,12 @@ if (is_valid_session() && is_allowed_verifications()) {
 
           <div class="col-md-3">
             <label for="commentaire">Commentaire</label>
-            <textarea name="commentaire" class="form-control"><?= $_POST['commentaire'] ?></textarea>
+            <textarea name="commentaire" class="form-control"><?= $sortie['commentaire'] ?></textarea>
           </div>
 
           <div class="col-md-3">
             <br>
-            <button name="creer" class="btn btn-warning">Modifier</button>
+            <button class="btn btn-warning">Modifier</button>
           </div>
         </form>
       </div>
@@ -210,8 +214,6 @@ if (is_valid_session() && is_allowed_verifications()) {
             <td>
               <form action="modification_verification_pesee_sorties.php" method="post">
                 <input type="hidden" name="id" value="<?= $p['id'] ?>">
-                <input type="hidden" name="date1" value="<?= $_POST['date1'] ?>">
-                <input type="hidden" name="date2" value="<?= $_POST['date2'] ?>">
                 <button class="btn btn-warning btn-sm">Modifier</button>
               </form>
             </td>
