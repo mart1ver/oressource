@@ -24,6 +24,6 @@ echo page_config3([
   'h1' => 'Gestion de la typologie des objets collectés',
   'heading' => "Gérez ici la typologie des différents objets collectés par la structure.",
   'text' => "Permet de créer son propre jeu de sept famille (ou plus) des objets collectés.",
-  'url' => 'types_dechets',
+  'url' => 'type_dechets',
   'functData' => 'types_dechets'
 ]);

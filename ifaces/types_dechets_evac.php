@@ -24,6 +24,6 @@ echo page_config3([
   'h1' => 'Gestion de la typologie des déchets évacués',
   'heading' => "Gérez ici les différents types de déchets évacués par la structure.",
   'text' => "Permet de gérer par classes les déchets et matériaux sortant de la structure",
-  'url' => 'types_dechets_evac',
+  'url' => 'type_dechets_evac',
   'functData' => 'types_dechets_evac'
 ]);

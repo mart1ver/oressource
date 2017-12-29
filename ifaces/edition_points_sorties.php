@@ -67,7 +67,7 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($
             <td><span class="badge" style="background-color:<?= $donnees['couleur']; ?>"><?= $donnees['couleur']; ?></span></td>
             <td><?= $donnees['commentaire']; ?></td>
             <td><?= $donnees['pesee_max']; ?></td>
-            <td><?= configBtnVisible(['url' => 'sorties', 'id' => $donnees['id'], 'visible' => $donnees['visible']]) ?></td>
+            <td><?= configBtnVisible(['url' => 'points_sortie', 'id' => $donnees['id'], 'visible' => $donnees['visible']]) ?></td>
             <td>
               <form action="modification_points_sortie.php" method="post">
                 <input type="hidden" name ="id" id="id" value="<?= $donnees['id']; ?>">

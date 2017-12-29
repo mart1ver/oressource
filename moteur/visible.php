@@ -19,12 +19,23 @@
  */
 
 session_start();
-if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($_SESSION['niveau'], 'k') !== false)) {
-  require_once '../moteur/dbconfig.php';
-  $req = $bdd->prepare('UPDATE type_collecte SET visible = :visible WHERE id = :id');
-  $req->execute(['visible' => $_POST['visible'], 'id' => $_POST['id']]);
+
+require_once '../core/session.php';
+
+function table_visible(PDO $bdd, string $table, int $id, string $visible) {
+  $req = $bdd->prepare("UPDATE $table SET visible = :visible WHERE id = :id");
+  $req->bindParam(':visible', $visible, PDO::PARAM_STR);
+  $req->bindValue(':id', $id, PDO::PARAM_INT);
+  $req->execute();
   $req->closeCursor();
-  header('Location:../ifaces/types_collecte.php');
+}
+
+if (is_valid_session() && (is_allowed_config() || is_allowed_gestion())) {
+  require_once '../moteur/dbconfig.php';
+  $id = filter_input(INPUT_POST, 'id', FILTER_VALIDATE_INT);
+  $visible = $_POST['visible'] === 'oui' ? 'oui' : 'non';
+  table_visible($bdd, $_POST['table'], $id, $visible);
+  header("Location:{$_SERVER['HTTP_REFERER']}");
 } else {
   header('Location:../moteur/destroy.php');
 }

@@ -70,7 +70,7 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($
             <td><?= $donnees['masse_bac']; ?></td>
             <td><?= $donnees['ultime']; ?></td>
             <td><span class="badge" style="background-color:<?= $donnees['couleur']; ?>"><?= $donnees['couleur']; ?></span></td>
-            <td><?= configBtnVisible(['url' => 'type_poubelles', 'id' => $donnees['id'], 'visible' => $donnees['visible']]) ?></td>
+            <td><?= configBtnVisible(['url' => 'types_poubelles', 'id' => $donnees['id'], 'visible' => $donnees['visible']]) ?></td>
             <td>
               <form action="modification_type_poubelles.php" method="post">
                 <input type="hidden" name ="id" id="id" value="<?= $donnees['id']; ?>">

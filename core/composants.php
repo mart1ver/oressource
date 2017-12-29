@@ -333,9 +333,10 @@ function config_types3_param(array $props): string {
 function configBtnVisible(array $props): string {
   ob_start();
   ?>
-  <form action="../moteur/<?= $props['url'] ?>_visible.php" method="post">
-    <input type="hidden" name="id" id="id" value="<?= $props['id']; ?>">
-    <input type="hidden" name="visible" id="visible" value="<?= $props['visible'] === 'oui' ? 'non' : 'oui' ?>">
+  <form action="../moteur/visible.php" method="post">
+    <input type="hidden" name="id" value="<?= $props['id']; ?>"/>
+    <input type="hidden" name="table" value="<?= $props['url'] ?>"/>
+    <input type="hidden" name="visible" value="<?= $props['visible'] === 'oui' ? 'non' : 'oui' ?>"/>
     <button class="btn btn-info btn-sm <?= $props['visible'] === 'oui' ? 'btn-info' : 'btn-danger' ?>"><?= $props['visible'] ?></button>
   </form>
   <?php

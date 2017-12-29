@@ -24,6 +24,6 @@ echo page_config3([
   'h1' => 'Gestion de la typologie des collectes',
   'heading' => "Gérez ici les différents types de collectes",
   'text' => "Permet de différencier les collectes en fonction de leur origine (apport volontaire, collecte à domicile, collecte en pied d'immeuble...).",
-  'url' => 'types_collecte',
+  'url' => 'type_collecte',
   'functData' => 'types_collectes'
 ]);

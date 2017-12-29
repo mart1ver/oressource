@@ -69,16 +69,16 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($
             <td><span class="badge" style="background-color:<?= $donnees['couleur']; ?>"><?= $donnees['couleur']; ?></span></td>
             <td><?= $donnees['commentaire']; ?></td>
             <td><?= $donnees['pesee_max']; ?></td>
-            <td><?= configBtnVisible(['url' => 'collectes_visibles', 'id' => $donnees['id'], 'visible' => $donnees['visible']]) ?></td>
+            <td><?= configBtnVisible(['url' => 'points_collecte', 'id' => $donnees['id'], 'visible' => $donnees['visible']]) ?></td>
             <td>
               <form action="modification_points_collecte.php" method="post">
-                <input type="hidden" name ="id" id="id" value="<?= $donnees['id']; ?>">
-                <input type="hidden" name ="nom" id="nom" value="<?= $donnees['nom']; ?>">
-                <input type="hidden" name ="adresse" id="adresse" value="<?= $donnees['adresse']; ?>">
-                <input type="hidden" name ="commentaire" id="commentaire" value="<?= $donnees['commentaire']; ?>">
-                <input type="hidden" name ="pesee_max" id="pesee_max" value="<?= $donnees['pesee_max']; ?>">
-                <input type="hidden" name ="couleur" id="couleur" value="<?= substr($donnees['couleur'], 1); ?>">
-                <button  class="btn btn-warning btn-sm " >modifier</button>
+                <input type="hidden" name="id"  value="<?= $donnees['id']; ?>">
+                <input type="hidden" name="nom" value="<?= $donnees['nom']; ?>">
+                <input type="hidden" name="adresse"  value="<?= $donnees['adresse']; ?>">
+                <input type="hidden" name="commentaire" value="<?= $donnees['commentaire']; ?>">
+                <input type="hidden" name="pesee_max" value="<?= $donnees['pesee_max']; ?>">
+                <input type="hidden" name="couleur" value="<?= substr($donnees['couleur'], 1); ?>">
+                <button class="btn btn-warning btn-sm">modifier</button>
               </form>
             </td>
           </tr>

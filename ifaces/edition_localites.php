@@ -66,14 +66,14 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($
             <td><?= $donnees['commentaire']; ?></td>
             <td><span class="badge" style="background-color:<?= $donnees['couleur']; ?>"><?= $donnees['couleur']; ?></span></td>
             <td><a href="<?= $donnees['relation_openstreetmap']; ?>" target="_blank"><p style="text-align:center"><span class="glyphicon glyphicon-link"></span></p></a></td>
-            <td><?= configBtnVisible(['url' => 'type_poubelles', 'id' => $donnees['id'], 'visible' => $donnees['visible']]) ?></td>
+            <td><?= configBtnVisible(['url' => 'localites', 'id' => $donnees['id'], 'visible' => $donnees['visible']]) ?></td>
             <td>
               <form action="modification_localites.php" method="post">
-                <input type="hidden" name ="id" id="id" value="<?= $donnees['id']; ?>">
-                <input type="hidden" name ="nom" id="nom" value="<?= $donnees['nom']; ?>">
-                <input type="hidden" name ="lien" id="lien" value="<?= $donnees['relation_openstreetmap']; ?>">
-                <input type="hidden" name ="commentaire" id="commentaire" value="<?= $donnees['commentaire']; ?>">
-                <input type="hidden" name ="couleur" id="couleur" value="<?= substr($donnees['couleur'], 1); ?>">
+                <input type="hidden" name="id" value="<?= $donnees['id']; ?>">
+                <input type="hidden" name="nom" value="<?= $donnees['nom']; ?>">
+                <input type="hidden" name="lien" value="<?= $donnees['relation_openstreetmap']; ?>">
+                <input type="hidden" name="commentaire" value="<?= $donnees['commentaire']; ?>">
+                <input type="hidden" name="couleur" value="<?= substr($donnees['couleur'], 1); ?>">
                 <button  class="btn btn-warning btn-sm" >Modifier!</button>
               </form>
             </td>

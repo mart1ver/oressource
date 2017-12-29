@@ -24,6 +24,6 @@ echo page_config3([
   'h1' => 'Gestion de la typologie des sorties hors-boutique',
   'heading' => "Gérez ici les différents types de sorties hors-boutique.",
   'text' => "Permet de différencier les différentes destinations des dons (don a un particulier, une association, lié à une convention, ...).",
-  'url' => 'types_sortie',
+  'url' => 'type_sortie',
   'functData' => 'types_sorties'
 ]);
