@@ -22,12 +22,10 @@ session_start();
 if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($_SESSION['niveau'], 'v' . $_GET['numero']) !== false)) {
   require_once '../moteur/dbconfig.php';
 
-  $adh = isset($_POST['adh']) ? 'oui' : 'non';
-
   if ($_SESSION['saisiec'] === 'oui' && (strpos($_SESSION['niveau'], 'e') !== false)) {
     $antidate = $_POST['antidate'] . date(' H:i:s');
-    $req = $bdd->prepare('INSERT INTO ventes (timestamp, adherent, commentaire, id_point_vente, id_moyen_paiement, id_createur) VALUES(?,?, ?, ?, ?, ?)');
-    $req->execute([$antidate, $adh, $_POST['comm'], $_POST['id_point_vente'], 1, $_SESSION['id']]);
+    $req = $bdd->prepare('INSERT INTO ventes (timestamp, commentaire, id_point_vente, id_moyen_paiement, id_createur) VALUES(?,?, ?, ?, ?, ?)');
+    $req->execute([$antidate, $_POST['comm'], $_POST['id_point_vente'], 1, $_SESSION['id']]);
     $id_vente = $bdd->lastInsertId();
     $req->closeCursor();
 
@@ -47,8 +45,8 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($
 
     header('Location:../ifaces/ventes.php?msg=Remboursement effectué &numero=' . $_POST['id_point_vente']);
   } else {
-    $req = $bdd->prepare('INSERT INTO ventes (adherent, commentaire, id_point_vente,id_moyen_paiement, id_createur) VALUES(?,?, ?, ? ,?)');
-    $req->execute([$adh, $_POST['comm'], $_POST['id_point_vente'], 1, $_SESSION['id']]);
+    $req = $bdd->prepare('INSERT INTO ventes (commentaire, id_point_vente,id_moyen_paiement, id_createur) VALUES(?,?, ?, ? ,?)');
+    $req->execute([$_POST['comm'], $_POST['id_point_vente'], 1, $_SESSION['id']]);
     $id_vente = $bdd->lastInsertId();
     $req->closeCursor();
 

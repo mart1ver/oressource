@@ -165,13 +165,3 @@ function parseInt($key): int {
     return $result;
   }
 }
-
-// On definit $adh en fonction $_POST['adh']
-function parseAdherant($key) {
-  $adh = filter_input(INPUT_POST, $key, FILTER_SANITIZE_STRING);
-  if ($adh === 'oui') {
-    return 'oui';
-  } else {
-    return 'non';
-  }
-}
