@@ -29,11 +29,11 @@ header("content-type:application/json");
 // TODO Faire le neccessaire pour les ventes en lot.
 function vendus_insert(PDO $bdd, int $id_vente, array $vente): int {
   $sql = 'INSERT INTO vendus (
-      timestamp, last_hero_timestamp, id_vente, id_type_dechet,
+      timestamp, last_hero_timestamp, id_vente, id_type_dechet, lot,
       id_objet, quantite, prix, remboursement, id_createur, id_last_hero
     ) VALUES (
-      :timestamp, :timestamp1, :id_vente, :id_type_dechet,
-      :id_objet, :quantite, :prix, 0, :id_createur, :id_createur1)';
+      :timestamp, :timestamp1, :id_vente, :id_type_dechet, :lot,
+      :id_objet, :quantite, :prix, :remboursement, :id_createur, :id_createur1)';
   $req = $bdd->prepare($sql);
   $req->bindValue(':timestamp', $vente['date']->format('Y-m-d H:i:s'), PDO::PARAM_STR);
   $req->bindValue(':timestamp1', $vente['date']->format('Y-m-d H:i:s'), PDO::PARAM_STR);
@@ -44,7 +44,9 @@ function vendus_insert(PDO $bdd, int $id_vente, array $vente): int {
     $prix = parseFloat($vendu['prix']);
     $quantite = parseInt($vendu['quantite']);
     if ($prix >= 0.000 && $quantite > 0) {
-      $req->bindValue(':prix', $prix);
+      $req->bindValue(':prix', $prix, PDO::PARAM_STR);
+      $req->bindValue(':remboursement', 0, PDO::PARAM_STR);
+      $req->bindValue(':lot', $vendu['lot'], PDO::PARAM_INT);
       $req->bindValue(':id_type_dechet', $vendu['id_type'], PDO::PARAM_INT);
       $req->bindValue(':id_objet', $vendu['id_objet'] ?? 0);
       $req->bindValue(':quantite', $quantite, PDO::PARAM_INT);
