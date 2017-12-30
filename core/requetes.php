@@ -273,11 +273,20 @@ function types_collectes_id(PDO $bdd, int $id): array {
 }
 
 function filieres_sorties(PDO $bdd): array {
-  $sql = 'SELECT id, nom, visible, id_type_dechet_evac type_dechet FROM filieres_sortie';
+  $sql = 'SELECT id, nom, visible, id_type_dechet_evac, description, couleur, timestamp, last_hero_timestamp, id_createur, id_last_hero FROM filieres_sortie';
   return array_map(function($filiere) {
-    $filiere['accepte_type_dechet'] = explode('a', $filiere['type_dechet']);
+    $filiere['accepte_type_dechet'] = array_flip(array_filter(explode('a', $filiere['id_type_dechet_evac']),
+    function ($e) { return $e !== ''; }));
     return $filiere;
   }, fetch_all($sql, $bdd));
+}
+
+function filieres_sorties_id(PDO $bdd, int $id): array {
+  $sql = 'SELECT id, nom, visible, id_type_dechet_evac, description, couleur FROM filieres_sortie WHERE id = :id';
+  $r = fetch_id($bdd, $sql, $id);
+  $r['accepte_type_dechet'] = array_flip(array_filter(explode('a', $r['id_type_dechet_evac']),
+    function ($e) { return $e !== ''; }));
+  return $r;
 }
 
 function nb_categories_dechets_evac(PDO $bdd): int {

@@ -29,7 +29,7 @@ if (is_valid_session() && is_allowed_verifications()) {
   $req = null;
   $baseSql = 'id_last_hero = :id_last_hero, commentaire = :commentaire';
   if ($classe === 'd') {
-    $req = $bdd->prepare("UPDATE sorties SET 
+    $req = $bdd->prepare("UPDATE sorties SET
      $baseSql
     WHERE id = :id");
   } elseif ($classe === 'r') {
