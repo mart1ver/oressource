@@ -74,36 +74,9 @@ function configCheckboxArea(array $props) {
   return ob_get_clean();
 }
 
-function textInput(array $props, string $state) {
+function linkNav(array $props) {
   ob_start();
   ?>
-  <label for="<?= $props['name'] ?>"><?= $props['text'] ?></label>
-  <input type="text"
-         name="<?= $props['name'] ?>"
-         id="<?= $props['name'] ?>"
-         value="<?= $state ?>"
-         class="form-control" required/>
-         <?php
-         return ob_get_clean();
-       }
-
-       function mailInput(array $props, string $state) {
-         ob_start();
-         ?>
-  <label for="<?= $props['name'] ?>">Courriel :</label>
-  <input type="email"
-         value="<?= $state ?>"
-         name="<?= $props['name'] ?>"
-         id="<?= $props['name'] ?>"
-         class="form-control"
-         required/>
-         <?php
-         return ob_get_clean();
-       }
-
-       function linkNav(array $props) {
-         ob_start();
-         ?>
   <li class="<?= ($props['state'] ?? false) ? 'active' : '' ?>">
     <a href="<?= $props['href'] ?>"><?= $props['text'] ?></a>
   </li>
@@ -305,8 +278,25 @@ function config_types3_form(array $props): string {
     <form action="../moteur/<?= $props['url'] ?>_post.php" method="post">
       <div class="col-md-3"><?= textInput(['name' => 'nom', 'text' => "Nom:"], $props['nom']) ?></div>
       <div class="col-md-4"><?= textInput(['name' => 'commentaire', 'text' => "Description:"], $props['commentaire']) ?></div>
-      <div class="col-md-1"><label for="saisiecouleur">Couleur:</label><input type="color" value="#<?= $props['couleur'] ?>" name="couleur" id="couleur" class="form-control" required></div>
-      <div class="col-md-1"><br><button name="creer" class="btn btn-default">Créer</button></div>
+      <div class="col-md-1"><label for="couleur">Couleur:</label><input id="couleur" name="couleur" type="color" value="#<?= $props['couleur'] ?>" class="form-control" required></div>
+      <div class="col-md-1"><br><button class="btn btn-default">Créer</button></div>
+    </form>
+  </div>
+  <?php
+  return ob_get_clean();
+}
+
+function config_types4_form(array $props): string {
+  ob_start();
+  ?>
+  <div class="row">
+    <form action="../moteur/<?= $props['url'] ?>_post.php" method="post">
+      <input type="hidden" name="id" value="<?= $props['id'] ?? '' ?>">
+      <div class="col-md-2"><?= textInput(['name' => 'nom', 'text' => "Nom:"], $props['nom']) ?></div>
+      <div class="col-md-3"><?= textInput(['name' => 'description', 'text' => "Description:"], $props['description']) ?></div>
+      <div class="col-md-2"><?= textInput(['name' => 'masse', 'text' => "Masse en (Kg):"], $props['masse']) ?></div>
+      <div class="col-md-1"><label for="couleur">Couleur:</label><input id="couleur" name="couleur" type="color" value="#<?= $props['couleur'] ?>" class="form-control" required></div>
+      <div class="col-md-1"><br><button class="btn btn-default"><?= $props['textBtn'] ?></button></div>
     </form>
   </div>
   <?php
@@ -509,6 +499,34 @@ function formModif(array $props): string {
     <input type="hidden" name="npoint" value="<?= $props['numero'] ?>">
     <button class="btn btn-warning btn-sm">Modifier</button>
   </form>
+  <?php
+  return ob_get_clean();
+}
+
+function textInput(array $props, string $state): string {
+  ob_start();
+  ?>
+  <label for="<?= $props['name'] ?>"><?= $props['text'] ?></label>
+  <input type="text"
+         name="<?= $props['name'] ?>"
+         id="<?= $props['name'] ?>"
+         value="<?= $state ?>"
+         class="form-control"
+         required/>
+    <?php
+    return ob_get_clean();
+  }
+
+function mailInput(array $props, string $state): string {
+  ob_start();
+  ?>
+  <label for="<?= $props['name'] ?>">Courriel :</label>
+  <input type="email"
+         value="<?= $state ?>"
+         name="<?= $props['name'] ?>"
+         id="<?= $props['name'] ?>"
+         class="form-control"
+         required/>
   <?php
   return ob_get_clean();
 }

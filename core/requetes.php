@@ -208,12 +208,12 @@ function points_ventes_id(PDO $bdd, int $id): array {
 }
 
 function types_contenants(PDO $bdd): array {
-  $sql = 'SELECT masse, nom, couleur, visible FROM type_contenants';
+  $sql = 'SELECT id, masse, nom, couleur, visible, description, timestamp FROM type_contenants';
   return fetch_all($sql, $bdd);
 }
 
 function types_contenants_id(PDO $bdd, int $id): array {
-  $sql = 'SELECT id, masse, nom, couleur, visible FROM type_contenants WHERE id = :id';
+  $sql = 'SELECT id, masse, nom, couleur, visible, description, timestamp FROM type_contenants WHERE id = :id';
   return fetch_id($bdd, $sql, $id);
 }
 
@@ -230,11 +230,6 @@ function types_poubelles(PDO $bdd): array {
 function types_poubelles_id(PDO $bdd, int $id): array {
   $sql = 'SELECT id, nom, masse_bac, couleur, ultime FROM types_poubelles WHERE id = :id';
   return fetch_id($bdd, $sql, $id);
-}
-
-function types_conteneurs(PDO $bdd): array {
-  $sql = 'SELECT id, nom, visible, masse FROM type_contenants';
-  return fetch_all($sql, $bdd);
 }
 
 function types_dechets_evac(PDO $bdd): array {
