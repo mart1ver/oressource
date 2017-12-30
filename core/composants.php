@@ -460,21 +460,11 @@ function tableVerif(array $props): string {
           <td style="height:20px"><?= $d['id']; ?></td>
           <td style="height:20px"><?= $d['timestamp']; ?></td>
           <td style="height:20px"><?= $d['nom']; ?></td>
-          <td width="20%" style="height:20px"><?= $d['commentaire']; ?></td>
+          <td style="height:20px"><?= $d['commentaire']; ?></td>
           <td style="height:20px"><?= $d['localisation']; ?></td>
           <td style="height:20px"><?= $d['masse']; ?></td>
           <td><?= $users[$d['id_createur']]['mail']; ?></td>
-          <td>
-            <form action="modification_<?= $props['endpoint'] ?>.php" method="post">
-              <input type="hidden" name="id" id="id" value="<?= $d['id'] ?>">
-              <input type="hidden" name="nom" id="nom" value="<?= $d['nom'] ?>">
-              <input type="hidden" name="localisation" id="localisation" value="<?= $d['localisation'] ?>">
-              <input type="hidden" name="date1" id="date1" value="<?= $props['start'] ?>">
-              <input type="hidden" name="date2" id="date2" value="<?= $props['end'] ?>">
-              <input type="hidden" name="npoint" id="npoint" value="<?= $d['localite'] ?>">
-              <button class="btn btn-warning btn-sm">Modifier</button>
-            </form>
-          </td>
+          <td><a style="appearance: button" class="btn btn-warning btn-sm" href="../ifaces/modification_<?= $props['endpoint'] ?>.php?id=<?= $d['id'] ?>">Modifier</a></td>
           <td><?= $d['lht'] !== $d['timestamp'] ? $users[$d['id_last_hero']]['mail'] : '' ?></td>
           <td><?= $d['lht'] !== $d['timestamp'] ? $d['lht'] : '' ?></td>
         </tr>
@@ -485,20 +475,71 @@ function tableVerif(array $props): string {
   return ob_get_clean();
 }
 
-function formModif(array $props): string {
+function selectConfig(array $props): string {
   ob_start();
-  $classe = $props['classe'] ?? '';
   ?>
-  <form action="modification_<?= $props['endpoint'] ?>.php" method="post">
-    <input type="hidden" name="id" value="<?= $props['id'] ?>">
-    <input type="hidden" name="id_type" value="<?= $props['id_type'] ?? 0 ?>">
-    <input type="hidden" name="classe" value="<?= $classe ?>">
-    <input type="hidden" name="commentaire" value="<?= $props['commentaire'] ?? '' ?>">
-    <input type="hidden" name="date1" value="<?= $props['start'] ?>">
-    <input type="hidden" name="date2" value="<?= $props['end'] ?>">
-    <input type="hidden" name="npoint" value="<?= $props['numero'] ?>">
-    <button class="btn btn-warning btn-sm">Modifier</button>
-  </form>
+  <div class="col-md-3">
+    <label for="<?= $props['key']; ?>"><?= $props['text']; ?></label>
+      <select name="<?= $props['key']; ?>" id="<?= $props['key']; ?>" class="form-control" required>
+      <?php foreach ($props['data'] as $d) { ?>
+        <option value="<?= $d['id']; ?>" <?= $props['active'] === $d['id'] ? 'selected' : '' ?>><?= $d['nom']; ?></option>
+      <?php } ?>
+    </select>
+  </div>
+  <?php
+  return ob_get_clean();
+}
+
+function formModif(array $props): string {
+ob_start();
+$classe = $props['classe'] ?? '';
+?>
+<form action="modification_<?= $props['endpoint'] ?>.php" method="post">
+  <input type="hidden" name="id" value="<?= $props['id'] ?>">
+  <input type="hidden" name="id_type" value="<?= $props['id_type'] ?? 0 ?>">
+  <input type="hidden" name="classe" value="<?= $classe ?>">
+  <input type="hidden" name="commentaire" value="<?= $props['commentaire'] ?? '' ?>">
+  <input type="hidden" name="date1" value="<?= $props['start'] ?>">
+  <input type="hidden" name="date2" value="<?= $props['end'] ?>">
+  <input type="hidden" name="npoint" value="<?= $props['numero'] ?>">
+  <button class="btn btn-warning btn-sm">Modifier</button>
+</form>
+<?php
+return ob_get_clean();
+}
+
+function listPesees(array $props): string {
+  ob_start();
+  $users = $props['users'];
+  ?>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Date</th>
+        <th>Type de déchet:</th>
+        <th>Masse</th>
+        <th>Auteur de la ligne</th>
+        <th></th>
+        <th>Modifié par</th>
+        <th>Le:</th>
+      </tr>
+    </thead>
+    <tbody>
+      <?php foreach ($props['data'] as $d) { ?>
+        <tr>
+          <td><?= $d['id']; ?></td>
+          <td><?= $d['timestamp']; ?></td>
+          <td><span class="badge" id="cool" style="background-color:<?= $d['couleur']; ?>"><?= $d['nom']; ?></span></td>
+          <td><?= $d['masse']; ?></td>
+          <td><?= $users[$d['id_createur']]['mail']; ?></td>
+          <td><a style="appearance: button" class="btn btn-warning btn-sm" href="../ifaces/modification_<?= $props['endpoint'] ?>.php?id=<?= $d['id'] ?>">Modifier</a></td>
+          <td><?= $d['last_hero_timestamp'] !== $d['timestamp'] ? $users[$d['id_last_hero']]['mail'] : '' ?></td>
+          <td><?= $d['last_hero_timestamp'] !== $d['timestamp'] ? $d['last_hero_timestamp'] : '' ?></td>
+        </tr>
+      <?php } ?>
+    </tbody>
+  </table>
   <?php
   return ob_get_clean();
 }

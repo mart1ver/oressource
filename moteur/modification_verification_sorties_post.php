@@ -28,25 +28,25 @@ if (is_valid_session() && is_allowed_verifications()) {
 
   $req = null;
   $baseSql = 'id_last_hero = :id_last_hero, commentaire = :commentaire';
-  if ($classe === 'd') {
+  if ($classe === 'sortiesd') {
     $req = $bdd->prepare("UPDATE sorties SET
      $baseSql
     WHERE id = :id");
-  } elseif ($classe === 'r') {
+  } elseif ($classe === 'sortiesr') {
     $req = $bdd->prepare("UPDATE sorties SET
         id_filiere = :id_filiere,
         $baseSql
     WHERE id = :id");
     $req->bindParam(':id_filiere', $_POST['id_meta'], PDO::PARAM_INT);
-  } elseif ($classe === 'p') {
+  } elseif ($classe === 'sortiesp') {
     $req = $bdd->prepare("UPDATE sorties SET $baseSql
     WHERE id = :id");
-  } elseif ($classe === 's') {
+  } elseif ($classe === 'sorties') {
     $req = $bdd->prepare("UPDATE sorties SET
       id_type_sortie = :id_type_sortie, $baseSql
     WHERE id = :id");
     $req->bindParam(':id_type_sortie', $_POST['id_meta'], PDO::PARAM_INT);
-  } elseif ($classe === 'c') {
+  } elseif ($classe === 'sortiesc') {
     $req = $bdd->prepare("UPDATE sorties SET
       id_convention = :id_convention,
       $baseSql

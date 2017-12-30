@@ -21,8 +21,8 @@ session_start();
 
 require_once '../core/requetes.php';
 require_once '../core/session.php';
+require_once '../core/composants.php';
 
-// Pesée « Evac »
 function pesees_sorties_items(PDO $bdd, int $id): array {
   $sql = 'SELECT
     pesees_sorties.id,
@@ -41,7 +41,6 @@ function pesees_sorties_items(PDO $bdd, int $id): array {
   return fetch_all_id($bdd, $sql, $id);
 }
 
-// Pesée « Item »
 function pesees_sorties_evac(PDO $bdd, int $id): array {
   $sql = 'SELECT
     pesees_sorties.id,
@@ -81,32 +80,32 @@ function pesees_sortie_poubelle(PDO $bdd, int $id): array {
 function strategie_sortie(PDO $bdd, string $classe, int $id): array {
   if ($classe === 'p') {
     return [
-      'pesees' => pesees_sortie_poubelle($bdd, $id),
+      'data' => pesees_sortie_poubelle($bdd, $id),
       'h2' => 'poubelles',
     ];
-  } elseif ($classe === 'c') {
+  } elseif ($classe === 'sortiesc') {
     return [
       'meta' => array_reduce(filter_visibles(convention_sortie($bdd)), function ($acc, $e) {
           $acc[$e['id']] = $e;
           return $acc;
         }),
-      'pesees' => array_merge(pesees_sorties_evac($bdd, $id), pesees_sorties_items($bdd, $id)),
+      'data' => array_merge(pesees_sorties_evac($bdd, $id), pesees_sorties_items($bdd, $id)),
       'h2' => 'conventionnés',
       'label' => 'Nom du partenaire:'
     ];
-  } elseif ($classe === 'r') {
+  } elseif ($classe === 'sotriesr') {
     return [
       'meta' => array_reduce(filter_visibles(filieres_sorties($bdd)), function ($acc, $e) {
           $acc[$e['id']] = $e;
           return $acc;
         }),
-      'pesees' => pesees_sorties_evac($bdd, $id),
+      'data' => pesees_sorties_evac($bdd, $id),
       'label' => "Nom de l'entreprise de recyclage:",
       'h2' => 'recyclage'
     ];
-  } elseif ($classe === 'd') {
+  } elseif ($classe === 'sortiesd') {
     return [
-      'pesees' => pesees_sorties_evac($bdd, $id),
+      'data' => pesees_sorties_evac($bdd, $id),
       'h2' => 'dechetterie'
     ];
   } else {
@@ -115,7 +114,7 @@ function strategie_sortie(PDO $bdd, string $classe, int $id): array {
           $acc[$e['id']] = $e;
           return $acc;
         }),
-      'pesees' => array_merge(pesees_sorties_evac($bdd, $id), pesees_sorties_items($bdd, $id)),
+      'data' => array_merge(pesees_sorties_evac($bdd, $id), pesees_sorties_items($bdd, $id)),
       'h2' => 'dons',
       'label' => 'Type de sortie:'
     ];
@@ -130,19 +129,16 @@ if (is_valid_session() && is_allowed_verifications()) {
   }, []);
 
   $filiere_sortie = filieres_sorties($bdd);
-  $id = (int) ($_GET['id'] ?? 0) | ($_POST['id'] ?? 0);
+  $id = (int) $_GET['id'];
   $sortie = sortie_id($bdd, $id);
-  $a = $sortie['classe'][strlen($sortie['classe']) - 1];
-  $classe = $_POST['classe'] ?? ($a === 'e' ? '' : $a);
+  $classe = $sortie['classe'];
   $props = array_merge([
     'id' => $id,
     'id_type' => (int) ($sortie['id_convention'] | $sortie['id_type_sortie'] | $sortie['id_filiere']),
     'classe' => $classe,
+    'users' => $users,
+    'endpoint' => 'verification_pesee_sorties'
     ], strategie_sortie($bdd, $classe, $id));
-  //form action="../moteur/modification_verification_sorties_post.php" method="post"
-  //form action="modification_verification_pesee_sorties.php" method="post"
-  //form action="modification_verification_pesee_sorties.php" method="post"
-  // var_dump($_SERVER['HTTP_REFERER']);
   require_once 'tete.php';
   ?>
   <div class="container">
@@ -155,15 +151,7 @@ if (is_valid_session() && is_allowed_verifications()) {
           <input type="hidden" name="id" value="<?= $props['id'] ?>">
           <input type="hidden" name="classe" value="<?= $props['classe'] ?>">
           <?php if (isset($props['meta'])) { ?>
-            <div class="col-md-3">
-              <label for="id_meta"><?= $props['label'] ?></label>
-              <select name="id_meta" class="form-control" required>
-                <?php foreach ($props['meta'] as $p) { ?>
-                  <option <?= $props['id_type'] === $p['id'] ? 'selected' : '' ?>
-                    value="<?= $p['id']; ?>"><?= $p['nom']; ?></option>
-                  <?php } ?>
-              </select>
-            </div>
+            <?= selectConfig(['data' => $props['meta'], 'key' => 'id_meta', 'active' => $props['id_type'], 'text' => $props['label']]) ?>
           <?php } ?>
 
           <div class="col-md-3">
@@ -180,40 +168,7 @@ if (is_valid_session() && is_allowed_verifications()) {
     </div>
 
     <h2>Pesées incluses dans cette sortie <?= $props['h2'] ?>:</h2>
-    <table class="table">
-      <thead>
-        <tr>
-          <th>#</th>
-          <th>Date de création</th>
-          <th>Type de dechet:</th>
-          <th>Masse</th>
-          <th>Crée par</th>
-          <th></th>
-          <th>Modifié par</th>
-          <th>Le:</th>
-        </tr>
-      </thead>
-      <tbody>
-        <?php foreach ($props['pesees'] as $p) { ?>
-          <tr>
-            <td><?= $p['id']; ?></td>
-            <td><?= $p['timestamp']; ?></td>
-            <td><span class="badge"
-                      style="background-color:<?= $p['couleur'] ?>"><?= $p['nom']; ?></span></td>
-            <td><?= $p['masse']; ?></td>
-            <td><?= $users[$p['id_createur']]['mail']; ?></td>
-            <td>
-              <form action="modification_verification_pesee_sorties.php" method="post">
-                <input type="hidden" name="id" value="<?= $p['id'] ?>">
-                <button class="btn btn-warning btn-sm">Modifier</button>
-              </form>
-            </td>
-            <td><?= $p['last_hero_timestamp'] !== $p['timestamp'] ? $users[$p['id_last_hero']]['mail'] : '' ?></td>
-            <td><?= $p['last_hero_timestamp'] !== $p['timestamp'] ? $p['last_hero_timestamp'] : '' ?></td>
-          </tr>
-        <?php } ?>
-      </tbody>
-    </table>
+    <?= listPesees($props) ?>
   </div><!-- /.container -->
   <?php
   require_once 'pied.php';

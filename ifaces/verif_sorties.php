@@ -48,9 +48,7 @@ function VerifSortiesTable(array $props) {
               <td><?= $d['commentaire']; ?></td>
               <td><?= $d['masse']; ?></td>
               <td><?= $users[$d['id_createur']]['mail']; ?></td>
-              <td>
-                <?= formModif(array_merge($props, $d)) ?>
-              </td>
+              <td><a style="appearance: button" class="btn btn-warning btn-sm" href="../ifaces/modification_<?= $props['endpoint'] ?>.php?id=<?= $d['id'] ?>">Modifier</a></td>
               <td><?= $d['last_hero_timestamp'] !== $d['timestamp'] ? $users[$d['id_last_hero']]['mail'] : '' ?></td>
               <td><?= $d['last_hero_timestamp'] !== $d['timestamp'] ? $d['last_hero_timestamp'] : '' ?></td>
             </tr>
@@ -276,9 +274,7 @@ if (is_valid_session() && is_allowed_verifications()) {
                 <td><?= $d['timestamp']; ?></td>
                 <td><?= $d['masse']; ?></td>
                 <td><?= $users[$d['id_createur']]['mail']; ?></td>
-                <td>
-                  <?= formModif(array_merge($base, ['id' => $d['id'], 'classe' => 'p'])) ?>
-                </td>
+                <td><a style="appearance: button" class="btn btn-warning btn-sm" href="../ifaces/modification_<?= $base['endpoint'] ?>.php?id=<?= $d['id'] ?>">Modifier</a></td>
                 <td><?= $d['last_hero_timestamp'] !== $d['timestamp'] ? $users[$d['id_last_hero']]['mail'] : '' ?></td>
                 <td><?= $d['last_hero_timestamp'] !== $d['timestamp'] ? $d['last_hero_timestamp'] : '' ?></td>
               </tr>
@@ -312,12 +308,10 @@ if (is_valid_session() && is_allowed_verifications()) {
               <tr>
                 <td><?= $b['id']; ?></td>
                 <td><?= $b['timestamp']; ?></td>
-                <td><?= $b['timestamp']; ?></td>
+                <td><?= $b['commentaire']; ?></td>
                 <td><?= $b['masse']; ?></td>
                 <td><?= $users[$b['id_createur']]['mail']; ?></td>
-                <td>
-                  <?= formModif(array_merge($base, ['id' => $b['id'], 'classe' => 'd'])) ?>
-                </td>
+                <td><a style="appearance: button" class="btn btn-warning btn-sm" href="../ifaces/modification_<?= $base['endpoint'] ?>.php?id=<?= $b['id'] ?>">Modifier</a></td>
                 <td><?= $b['last_hero_timestamp'] !== $b['timestamp'] ? $users[$b['id_last_hero']]['mail'] : '' ?></td>
                 <td><?= $b['last_hero_timestamp'] !== $b['timestamp'] ? $b['last_hero_timestamp'] : '' ?></td>
               </tr>

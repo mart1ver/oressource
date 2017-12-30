@@ -308,27 +308,6 @@ function nb_categories_poubelles(PDO $bdd): int {
   return (int) $nombre_categories;
 }
 
-// TODO: Refactorer ça trop d'info
-function pesee_collectes_id(PDO $bdd, int $id_collecte): int {
-  $sql = 'SELECT
-    pesees_collectes.id,
-    pesees_collectes.timestamp,
-    type_dechets.nom,
-    pesees_collectes.masse,
-    type_dechets.couleur,
-    utilisateurs.mail mail,
-    pesees_collectes.last_hero_timestamp edit_date,
-    pesees_collectes.id_last_hero id_editeur
-    FROM pesees_collectes, type_dechets, utilisateurs, collectes
-    WHERE type_dechets.id = pesees_collectes.id_type_dechet
-    AND utilisateurs.id = pesees_collectes.id_createur
-    AND pesees_collectes.id_collecte = :id_collecte
-    GROUP BY collectes.id';
-  $stmt = $bdd->prepare($sql);
-  $stmt->prepare(['id_collecte' => $id_collecte]);
-  return $stmt->fetchAll(PDO::FETCH_ASSOC);
-}
-
 function collecte_id(PDO $bdd, int $id): array {
   $sql = 'Select id,
     timestamp, id_type_collecte,

@@ -18,25 +18,32 @@
  */
 
 session_start();
-require_once('../moteur/dbconfig.php');
-if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($_SESSION['niveau'], 'h') !== false)) {
+
+require_once '../core/session.php';
+require_once '../core/requetes.php';
+require_once '../core/composants.php';
+function collectes_id(PDO $bdd, int $id) {
+  $sql = 'SELECT * FROM collectes WHERE id = :id';
+  return fetch_id($bdd, $sql, $id);
+}
+
+if (is_valid_session() && (strpos($_SESSION['niveau'], 'h') !== false)) {
+  require_once '../moteur/dbconfig.php';
   require_once 'tete.php';
 
-    $users = array_reduce(utilisateurs($bdd), function ($acc, $e) {
+  $users = array_reduce(utilisateurs($bdd), function ($acc, $e) {
     $acc[$e['id']] = $e;
     return $acc;
   }, []);
-  $types_collectes = $bdd->query('SELECT * FROM type_collecte WHERE visible = "oui"')->fetchAll(PDO::FETCH_ASSOC);
-  $reponse = $bdd->query('SELECT * FROM localites WHERE visible = "oui"');
-  $reponse = $bdd->prepare('SELECT commentaire FROM collectes WHERE id = :id_collecte');
-  $reponse->execute(['id_collecte' => $_POST['id']]);
-  $commentaire = $reponse->fetch(PDO::FETCH_ASSOC)['commentaire'];
+
+  $id = $_GET['id'];
+  $collecte = collectes_id($bdd, $id);
 
   $req = $bdd->prepare('SELECT
       pesees_collectes.id,
       pesees_collectes.masse,
       pesees_collectes.timestamp,
-      pesees_collectes.last_hero_timestamp lht,
+      pesees_collectes.last_hero_timestamp,
       pesees_collectes.id_createur,
       pesees_collectes.id_last_hero,
       type_dechets.nom,
@@ -54,89 +61,39 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($
       pesees_collectes.id_last_hero,
       type_dechets.nom,
       type_dechets.couleur');
-  $req->execute(['id_collecte' => $_POST['id']]);
+  $req->execute(['id_collecte' => $id]);
   $pesees_collectes = $req->fetchAll(PDO::FETCH_ASSOC);
   $req->closeCursor();
+
+  $props = [
+    'endpoint' => 'verification_pesee',
+    'data' => $pesees_collectes,
+    'users' => $users
+    ]
   ?>
   <div class="container">
-    <h1>Modifier la collecte n° <?= $_POST['id'] ?></h1>
+    <h1>Modifier la collecte n° <?= $id ?></h1>
     <div class="panel-body">
       <br>
       <div class="row">
         <form action="../moteur/modification_verification_collecte_post.php" method="post">
-          <input type="hidden" name="id" id="id" value="<?= $_POST['id']; ?>">
-          <input type="hidden" name="date1" id="date1" value="<?= $_POST['date1']; ?>">
-          <input type="hidden" name="date2" id="date2" value="<?= $_POST['date2']; ?>">
-          <input type="hidden" name="npoint" id="npoint" value="<?= $_POST['npoint']; ?>">
-          <div class="col-md-3">
-            <label for="id_type_collecte">Type de collecte:</label>
-            <select name="id_type_collecte" id="id_type_collecte" class="form-control " required>
-              <?php foreach ($types_collectes as $donnees) { ?>
-                <option value="<?= $donnees['id']; ?>" <?= $_POST['nom'] === $donnees['nom'] ? 'selected' : '' ?>><?= $donnees['nom']; ?></option>
-              <?php } ?>
-            </select>
-          </div>
-
-          <div class="col-md-3">
-            <label for="id_localite">Localisation:</label>
-            <select name="id_localite" id="id_localite" class="form-control " required>
-              <?php foreach ($types_collectes as $donnees) { ?>
-                <option value="<?= $donnees['id']; ?>" <?= $_POST['localisation'] === $donnees['nom'] ? 'selected' : '' ?>><?= $donnees['nom']; ?></option>
-              <?php } ?>
-            </select>
-          </div>
+          <input type="hidden" name="id" id="id" value="<?= $id ?>">
+          <?= selectConfig(['data' => filter_visibles(types_collectes($bdd)), 'key' => 'id_type_collecte', 'active' => $collecte['id_type_collecte'], 'text' => 'Type de collecte:']) ?>
+          <?= selectConfig(['data' => filter_visibles(localites($bdd)), 'key' => 'localisation', 'active' => $collecte['localisation'], 'text' => 'Localisation:']) ?>
           <div class="col-md-3">
             <label for="commentaire">Commentaire</label>
-            <textarea name="commentaire" id="commentaire" class="form-control"><?= $commentaire ?></textarea>
+            <textarea name="commentaire" id="commentaire" class="form-control"><?= $collecte['commentaire'] ?></textarea>
           </div>
           <div class="col-md-3">
             <br>
-            <button name="creer" class="btn btn-warning">Modifier</button>
+            <button class="btn btn-warning">Modifier</button>
           </div>
         </form>
       </div>
     </div>
 
     <h2>Pesées incluses dans cette collecte</h2>
-    <table class="table">
-      <thead>
-        <tr>
-          <th>#</th>
-          <th>Moment de la collecte</th>
-          <th>Type de déchet:</th>
-          <th>Masse</th>
-          <th>Auteur de la ligne</th>
-          <th></th>
-          <th>Modifié par</th>
-          <th>Le:</th>
-        </tr>
-      </thead>
-      <tbody>
-        <?php foreach ($pesees_collectes as $d) { ?>
-          <tr>
-            <td><?= $d['id']; ?></td>
-            <td><?= $d['timestamp']; ?></td>
-            <td><span class="badge" id="cool" style="background-color:<?= $d['couleur']; ?>"><?= $d['nom']; ?></span></td>
-            <td><?= $d['masse']; ?></td>
-            <td><?= $users[$d['id_createur']]['mail']; ?></td>
-            <td>
-              <form action="modification_verification_pesee.php" method="post">
-                <input type="hidden" name="id" id="id" value="<?= $d['id']; ?>">
-                <input type="hidden" name="nomtypo" id="nomtypo" value="<?= $d['nom']; ?>">
-                <input type="hidden" name="ncollecte" id="ncollecte" value="<?= $_POST['id'] ?>">
-                <input type="hidden" name="masse" id="masse" value="<?= $d['masse']; ?>">
-                <input type="hidden" name="date1" id="date1" value="<?= $_POST['date1']; ?>">
-                <input type="hidden" name="date2" id="date2" value="<?= $_POST['date2']; ?>">
-                <input type="hidden" name="npoint" id="npoint" value="<?= $_POST['npoint']; ?>">
-                <button class="btn btn-warning btn-sm">Modifier</button>
-              </form>
-            </td>
-            <td><?= $d['lht'] !== $d['timestamp'] ? $users[$d['id_last_hero']]['mail'] : '' ?></td>
-            <td><?= $d['lht'] !== $d['timestamp'] ? $donnees['lht'] : '' ?></td>
-          </tr>
-        <?php } ?>
-      </tbody>
-    </table>
+    <?= listPesees($props) ?>
   </div><!-- /.container -->
 
   <?php
