@@ -198,7 +198,7 @@ function add() {
       const vente = {
         id_type: current.type.id,
         id_objet: current.objet.id || null,
-        vente_unite: state.vente_unite,
+        lot: !state.vente_unite,
         quantite,
         prix,
         masse
