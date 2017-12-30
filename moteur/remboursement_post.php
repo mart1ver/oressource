@@ -18,11 +18,14 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+require_once '../core/session.php';
+
 session_start();
-if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($_SESSION['niveau'], 'v' . $_GET['numero']) !== false)) {
+
+if (is_valid_session() && is_allowed_vente_id($_GET['numero'])) {
   require_once '../moteur/dbconfig.php';
 
-  if ($_SESSION['saisiec'] === 'oui' && (strpos($_SESSION['niveau'], 'e') !== false)) {
+  if (is_allowed_saisie_date() && (strpos($_SESSION['niveau'], 'e') !== false)) {
     $antidate = $_POST['antidate'] . date(' H:i:s');
     $req = $bdd->prepare('INSERT INTO ventes (timestamp, commentaire, id_point_vente, id_moyen_paiement, id_createur) VALUES(?,?, ?, ?, ?, ?)');
     $req->execute([$antidate, $_POST['comm'], $_POST['id_point_vente'], 1, $_SESSION['id']]);

@@ -17,6 +17,8 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+require_once '../core/validation.php';
+
 /* Fonction utile pour la nav des sorties. */
 function new_nav(string $text, int $numero, int $active): array {
   $links = [
@@ -362,8 +364,8 @@ function configBtnVisible(array $props): string {
   <form action="../moteur/visible.php" method="post">
     <input type="hidden" name="id" value="<?= $props['id']; ?>"/>
     <input type="hidden" name="table" value="<?= $props['url'] ?>"/>
-    <input type="hidden" name="visible" value="<?= $props['visible'] === 'oui' ? 'non' : 'oui' ?>"/>
-    <button class="btn btn-info btn-sm <?= $props['visible'] === 'oui' ? 'btn-info' : 'btn-danger' ?>"><?= $props['visible'] ?></button>
+    <input type="hidden" name="visible" value="<?= json_encode(!((bool)$props['visible'])) ?>"/>
+    <button class="btn btn-info btn-sm <?= $props['visible'] ? 'btn-info' : 'btn-danger' ?>"><?= bool_to_oui_non($props['visible']) ?></button>
   </form>
   <?php
   return ob_get_clean();

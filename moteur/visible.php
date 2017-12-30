@@ -22,9 +22,9 @@ session_start();
 
 require_once '../core/session.php';
 
-function table_visible(PDO $bdd, string $table, int $id, string $visible) {
+function table_visible(PDO $bdd, string $table, int $id, bool $visible) {
   $req = $bdd->prepare("UPDATE $table SET visible = :visible WHERE id = :id");
-  $req->bindParam(':visible', $visible, PDO::PARAM_STR);
+  $req->bindValue(':visible', $visible === true, PDO::PARAM_INT);
   $req->bindValue(':id', $id, PDO::PARAM_INT);
   $req->execute();
   $req->closeCursor();
@@ -33,7 +33,7 @@ function table_visible(PDO $bdd, string $table, int $id, string $visible) {
 if (is_valid_session() && (is_allowed_config() || is_allowed_gestion())) {
   require_once '../moteur/dbconfig.php';
   $id = filter_input(INPUT_POST, 'id', FILTER_VALIDATE_INT);
-  $visible = $_POST['visible'] === 'oui' ? 'oui' : 'non';
+  $visible = json_decode($_POST['visible']) ? true : false;
   table_visible($bdd, $_POST['table'], $id, $visible);
   header("Location:{$_SERVER['HTTP_REFERER']}");
 } else {

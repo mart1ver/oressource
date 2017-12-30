@@ -19,7 +19,7 @@
  */
 function filter_visibles(array $a): array {
   return array_values(array_filter($a, function (array $e) {
-      return $e['visible'] === 'oui';
+      return $e['visible'];
     }));
 }
 
@@ -329,7 +329,7 @@ function structure(PDO $bdd): array {
                 siret, telephone, mail, description, cr, adresse, texte_adhesion, lot, viz,
                 nb_viz, saisiec, affsp, affss, affsr,
                 affsd, affsde, pes_vente, force_pes_vente
-          FROM description_structure LIMIT 1';
+          FROM description_structure';
   $req = $bdd->prepare($sql);
   $req->execute();
   $result = $req->fetch(PDO::FETCH_ASSOC);
@@ -339,17 +339,17 @@ function structure(PDO $bdd): array {
 
 function structure_bool(PDO $bdd): array {
   $result = structure($bdd);
-  $result['tva_active'] = oui_non_to_bool($result['tva_active']);
-  $result['lot'] = oui_non_to_bool($result['lot']);
-  $result['viz'] = oui_non_to_bool($result['viz']);
-  $result['saisiec'] = oui_non_to_bool($result['saisiec']);
-  $result['affsp'] = oui_non_to_bool($result['affsp']);
-  $result['affss'] = oui_non_to_bool($result['affss']);
-  $result['affsr'] = oui_non_to_bool($result['affsr']);
-  $result['affsd'] = oui_non_to_bool($result['affsd']);
-  $result['affsde'] = oui_non_to_bool($result['affsde']);
-  $result['pes_vente'] = oui_non_to_bool($result['pes_vente']);
-  $result['force_pes_vente'] = oui_non_to_bool($result['force_pes_vente']);
+  $result['tva_active'] = $result['tva_active'];
+  $result['lot'] = $result['lot'];
+  $result['viz'] = $result['viz'];
+  $result['saisiec'] = $result['saisiec'];
+  $result['affsp'] = $result['affsp'];
+  $result['affss'] = $result['affss'];
+  $result['affsr'] = $result['affsr'];
+  $result['affsd'] = $result['affsd'];
+  $result['affsde'] = $result['affsde'];
+  $result['pes_vente'] = $result['pes_vente'];
+  $result['force_pes_vente'] = $result['force_pes_vente'];
   return $result;
 }
 
@@ -388,17 +388,17 @@ function structure_update(PDO $bdd, array $structure) {
   $stmt->bindValue(':taux_tva', $structure['taux_tva']);
   $stmt->bindValue(':tva_active', $structure['tva_active']);
   $stmt->bindValue(':cr', $structure['cr']);
-  $stmt->bindValue(':lot', $structure['lot']);
-  $stmt->bindValue(':viz', $structure['viz']);
-  $stmt->bindValue(':nb_viz', $structure['nb_viz']);
-  $stmt->bindValue(':saisiec', $structure['saisiec']);
-  $stmt->bindValue(':affsp', $structure['affsp']);
-  $stmt->bindValue(':affss', $structure['affss']);
-  $stmt->bindValue(':affsr', $structure['affsr']);
-  $stmt->bindValue(':affsd', $structure['affsd']);
-  $stmt->bindValue(':affsde', $structure['affsde']);
-  $stmt->bindValue(':pes_vente', $structure['pes_vente']);
-  $stmt->bindValue(':force_pes_vente', $structure['force_pes_vente']);
+  $stmt->bindValue(':lot', $structure['lot'], PDO::PARAM_INT);
+  $stmt->bindValue(':viz', $structure['viz'], PDO::PARAM_INT);
+  $stmt->bindValue(':nb_viz', $structure['nb_viz'], PDO::PARAM_INT);
+  $stmt->bindValue(':saisiec', $structure['saisiec'], PDO::PARAM_INT);
+  $stmt->bindValue(':affsp', $structure['affsp'], PDO::PARAM_INT);
+  $stmt->bindValue(':affss', $structure['affss'], PDO::PARAM_INT);
+  $stmt->bindValue(':affsr', $structure['affsr'], PDO::PARAM_INT);
+  $stmt->bindValue(':affsd', $structure['affsd'], PDO::PARAM_INT);
+  $stmt->bindValue(':affsde', $structure['affsde'], PDO::PARAM_INT);
+  $stmt->bindValue(':pes_vente', $structure['pes_vente'], PDO::PARAM_INT);
+  $stmt->bindValue(':force_pes_vente', $structure['force_pes_vente'], PDO::PARAM_INT);
   $stmt->bindValue(':id', $structure['id'], PDO::PARAM_INT);
   $stmt->execute();
   $stmt->closeCursor();

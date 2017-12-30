@@ -26,7 +26,6 @@ function oui_non_to_bool(string $s): bool {
   return false;
 }
 
-// TODO a virer une fois la base nettoyee des oui et non.
 function bool_to_oui_non(bool $b): string {
   if ($b === true) {
     return 'oui';
@@ -43,17 +42,17 @@ function structure_validate(array $json): array {
     'description' => filter_var($json['description'], FILTER_SANITIZE_STRING),
     'telephone' => filter_var($json['telephone'], FILTER_SANITIZE_STRING), // TODO: regex sur les nombres.
     'mail' => filter_var($json['mail'], FILTER_VALIDATE_EMAIL),
-    'lot' => bool_to_oui_non(filter_var($json['lot'], FILTER_VALIDATE_BOOLEAN)),
-    'viz' => bool_to_oui_non(filter_var($json['viz'], FILTER_VALIDATE_BOOLEAN)),
-    'saisiec' => bool_to_oui_non(filter_var($json['saisiec'], FILTER_VALIDATE_BOOLEAN)),
-    'affsp' => bool_to_oui_non(filter_var($json['affsp'], FILTER_VALIDATE_BOOLEAN)),
-    'affss' => bool_to_oui_non(filter_var($json['affss'], FILTER_VALIDATE_BOOLEAN)),
-    'affsr' => bool_to_oui_non(filter_var($json['affsr'], FILTER_VALIDATE_BOOLEAN)),
-    'affsde' => bool_to_oui_non(filter_var($json['affsde'], FILTER_VALIDATE_BOOLEAN)),
-    'affsd' => bool_to_oui_non(filter_var($json['affsd'], FILTER_VALIDATE_BOOLEAN)),
-    'pes_vente' => bool_to_oui_non(filter_var($json['pes_vente'], FILTER_VALIDATE_BOOLEAN)),
-    'force_pes_vente' => bool_to_oui_non(filter_var($json['force_pes_vente'], FILTER_VALIDATE_BOOLEAN)),
-    'tva_active' => bool_to_oui_non(filter_var($json['tva_active'], FILTER_VALIDATE_BOOLEAN)),
+    'lot' => filter_var($json['lot'], FILTER_VALIDATE_BOOLEAN),
+    'viz' => filter_var($json['viz'], FILTER_VALIDATE_BOOLEAN),
+    'saisiec' => filter_var($json['saisiec'], FILTER_VALIDATE_BOOLEAN),
+    'affsp' => filter_var($json['affsp'], FILTER_VALIDATE_BOOLEAN),
+    'affss' => filter_var($json['affss'], FILTER_VALIDATE_BOOLEAN),
+    'affsr' => filter_var($json['affsr'], FILTER_VALIDATE_BOOLEAN),
+    'affsde' => filter_var($json['affsde'], FILTER_VALIDATE_BOOLEAN),
+    'affsd' => filter_var($json['affsd'], FILTER_VALIDATE_BOOLEAN),
+    'pes_vente' => filter_var($json['pes_vente'], FILTER_VALIDATE_BOOLEAN),
+    'force_pes_vente' => filter_var($json['force_pes_vente'], FILTER_VALIDATE_BOOLEAN),
+    'tva_active' => filter_var($json['tva_active'], FILTER_VALIDATE_BOOLEAN),
     'taux_tva' => filter_var($json['taux_tva'], FILTER_VALIDATE_FLOAT),
     'nb_viz' => filter_var($json['nb_viz'], FILTER_VALIDATE_INT),
     'cr' => filter_var($json['cr'], FILTER_VALIDATE_INT), // TODO: regex sur les nombres.

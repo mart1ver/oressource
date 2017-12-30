@@ -29,8 +29,8 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($
   if ($donnees['SUM(id)'] > 0) {
     header('Location:../ifaces/moyens_paiment.php?err=Un moyen de paiement porte deja le meme nom!&nom=' . $_POST['nom'] . '&description=' . $_POST['description'] . '&couleur=' . substr($_POST['couleur'], 1));
   } else {
-    $req = $bdd->prepare('INSERT INTO moyens_paiement (nom, couleur, description, visible, id_createur, id_last_hero) VALUES (?, ?, ?, ?, ?, ?)');
-    $req->execute([$_POST['nom'], $_POST['couleur'], $_POST['description'], 'oui', $_SESSION['id'], $_SESSION['id']]);
+    $req = $bdd->prepare('INSERT INTO moyens_paiement (nom, couleur, description, id_createur, id_last_hero) VALUES (?, ?, ?, ?, ?)');
+    $req->execute([$_POST['nom'], $_POST['couleur'], $_POST['description'], $_SESSION['id'], $_SESSION['id']]);
     $req->closeCursor();
     header('Location:../ifaces/moyens_paiment.php?msg=Moyen de paiement enregistrée avec succes!');
   }
