@@ -16,541 +16,310 @@
   You should have received a copy of the GNU Affero General Public License
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+function VerifSortiesTable(array $props) {
+  $users = $props['users'];
+  ob_start();
+  ?>
+  <div class="panel panel-info">
+    <div class="panel-heading">
+      <h3 class="panel-title"><?= $props['h3'] ?></h3>
+    </div>
+    <div class="panel-body">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Date de création</th>
+            <th>Type</th>
+            <th>Commentaire</th>
+            <th>Masse totale</th>
+            <th>Auteur de la ligne</th>
+            <th></th>
+            <th>Modifié par</th>
+            <th>Le</th>
+          </tr>
+        </thead>
+        <tbody>
+          <?php foreach ($props['data'] as $d) { ?>
+            <tr>
+              <td><?= $d['id']; ?></td>
+              <td><?= $d['timestamp']; ?></td>
+              <td><?= $d['nom']; ?></td>
+              <td><?= $d['commentaire']; ?></td>
+              <td><?= $d['masse']; ?></td>
+              <td><?= $users[$d['id_createur']]['mail']; ?></td>
+              <td><a style="appearance: button" class="btn btn-warning btn-sm" href="../ifaces/modification_<?= $props['endpoint'] ?>.php?id=<?= $d['id'] ?>">Modifier</a></td>
+              <td><?= $d['last_hero_timestamp'] !== $d['timestamp'] ? $users[$d['id_last_hero']]['mail'] : '' ?></td>
+              <td><?= $d['last_hero_timestamp'] !== $d['timestamp'] ? $d['last_hero_timestamp'] : '' ?></td>
+            </tr>
+          <?php } ?>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <?php
+  return ob_get_clean();
+}
+
+require_once '../core/session.php';
 
 session_start();
-if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($_SESSION['niveau'], 'h') !== false)) {
-  require_once 'tete.php';
+
+if (is_valid_session() && is_allowed_verifications()) {
   require_once('../moteur/dbconfig.php');
-  if ($_GET['date1'] === $_GET['date2']) {
-    echo' le ' . $_GET['date1'];
-  } else {
-    echo' du ' . $_GET['date1'] . ' au ' . $_GET['date2'] . ' :';
-  }
-  //on convertit les deux dates en un format compatible avec la bdd
+  require_once '../core/requetes.php';
+  require_once '../core/composants.php';
 
-  $txt1 = $_GET['date1'];
-  $date1ft = DateTime::createFromFormat('d-m-Y', $txt1);
-  $time_debut = $date1ft->format('Y-m-d');
-  $time_debut = $time_debut . ' 00:00:00';
+  $users = array_reduce(utilisateurs($bdd), function ($acc, $e) {
+    $acc[$e['id']] = $e;
+    return $acc;
+  }, []);
 
-  $txt2 = $_GET['date2'];
-  $date2ft = DateTime::createFromFormat('d-m-Y', $txt2);
-  $time_fin = $date2ft->format('Y-m-d');
-  $time_fin = $time_fin . ' 23:59:59';
+
+  $time_debut = DateTime::createFromFormat('d-m-Y', $_GET['date1'])->format('Y-m-d') . ' 00:00:00';
+  $time_fin = DateTime::createFromFormat('d-m-Y', $_GET['date2'])->format('Y-m-d') . ' 23:59:59';
+
+  $base = [
+    'numero' => $_GET['numero'],
+    'start' => $_GET['date1'],
+    'end' => $_GET['date2'],
+    'endpoint' => 'verif_collecte',
+    'users' => $users,
+    'th1' => 'Type de collecte',
+    'th3' => 'Localité',
+    'th4' => 'Masse totale',
+    'users' => $users,
+    'start' => $_GET['date2'],
+    'end' => $_GET['date1']
+  ];
+  
+  
+  $sortiesSQL = 'sorties.id,
+        sorties.commentaire,
+        sorties.timestamp,
+        sorties.id_createur,
+        sorties.id_last_hero,
+        sorties.last_hero_timestamp';
+  // Sorties Dons
+  // FIXME: On à jamais utilisé les localités dans les sorties dons #Oups.
+  $req = $bdd->prepare("SELECT
+        $sortiesSQL,
+        sorties.id_type_sortie id_type,
+        type_sortie.nom,
+  --      localites.nom localisation,
+  --      localites.id localite,
+        SUM(pesees_sorties.masse) masse
+      FROM sorties
+      INNER JOIN pesees_sorties
+      ON sorties.id = pesees_sorties.id_sortie
+      INNER JOIN type_sortie
+      ON type_sortie.id = sorties.id_type_sortie
+  --    INNER JOIN localites
+  --    ON localites.id = sorties.localisation
+      WHERE sorties.id_point_sortie = :id_point_sortie
+      AND DATE(sorties.timestamp) BETWEEN :du AND :au
+      AND sorties.classe = 'sorties'
+      GROUP BY
+      $sortiesSQL,
+      sorties.id_type_sortie,
+  --  localites.nom,
+  --  localites.id
+      type_sortie.nom");
+  $req->execute(['id_point_sortie' => $_GET['numero'], 'du' => $time_debut, 'au' => $time_fin]);
+  $sortiesDon = $req->fetchAll(PDO::FETCH_ASSOC);
+  $req->closeCursor();
+
+  // Sorties Conventions
+  $req = $bdd->prepare("SELECT
+        $sortiesSQL,
+        sorties.id_convention id_type,
+        conventions_sorties.nom,
+        SUM(pesees_sorties.masse) masse
+      FROM sorties
+      INNER JOIN pesees_sorties
+      ON sorties.id = pesees_sorties.id_sortie
+      INNER JOIN conventions_sorties
+      ON conventions_sorties.id = sorties.id_convention
+      WHERE sorties.id_point_sortie = :id_point_sortie
+      AND DATE(sorties.timestamp) BETWEEN :du AND :au
+      AND sorties.classe = 'sortiesc'
+      GROUP BY
+      $sortiesSQL,        
+      sorties.id_convention,
+      conventions_sorties.nom
+      ORDER BY sorties.timestamp DESC");
+  $req->execute(['id_point_sortie' => $_GET['numero'], 'du' => $time_debut, 'au' => $time_fin]);
+  $sortiesConventions = $req->fetchAll(PDO::FETCH_ASSOC);
+  $req->closeCursor();
+
+  // Sorties Recyclages
+  $req = $bdd->prepare("SELECT
+        $sortiesSQL,
+        sorties.id_filiere id_type,
+        filieres_sortie.nom,
+        SUM(pesees_sorties.masse) masse
+      FROM sorties
+      INNER JOIN pesees_sorties
+      ON sorties.id = pesees_sorties.id_sortie
+      INNER JOIN filieres_sortie
+      ON filieres_sortie.id = sorties.id_filiere
+      WHERE sorties.id_point_sortie = :id_point_sortie
+      AND DATE(sorties.timestamp) BETWEEN :du AND :au
+      AND sorties.classe = 'sortiesr'
+      GROUP BY
+      $sortiesSQL,
+      sorties.id_last_hero,
+      sorties.id_filiere,
+      sorties.id_filiere,
+      filieres_sortie.nom
+      ORDER BY sorties.timestamp DESC");
+  $req->execute(['id_point_sortie' => $_GET['numero'], 'du' => $time_debut, 'au' => $time_fin]);
+  $sortiesRecyclage = $req->fetchAll(PDO::FETCH_ASSOC);
+  $req->closeCursor();
+
+  // Sorties Poubelles
+  $req = $bdd->prepare("SELECT
+        $sortiesSQL,
+        SUM(pesees_sorties.masse) masse
+      FROM sorties
+      INNER JOIN pesees_sorties
+      ON sorties.id = pesees_sorties.id_sortie
+      WHERE sorties.id_point_sortie = :id_point_sortie
+      AND DATE(sorties.timestamp) BETWEEN :du AND :au
+      AND sorties.classe = 'sortiesp'
+      GROUP BY
+      $sortiesSQL
+      ORDER BY sorties.timestamp DESC");
+  $req->execute(['id_point_sortie' => $_GET['numero'], 'du' => $time_debut, 'au' => $time_fin]);
+  $sortiesPoubelles = $req->fetchAll(PDO::FETCH_ASSOC);
+
+  // Sorties dechetteries
+  $req->closeCursor();
+  $req = $bdd->prepare("SELECT
+        $sortiesSQL,
+        SUM(pesees_sorties.masse) masse
+      FROM sorties
+      INNER JOIN pesees_sorties
+      ON sorties.id = pesees_sorties.id_sortie
+      WHERE sorties.id_point_sortie = :id_point_sortie
+      AND DATE(sorties.timestamp) BETWEEN :du AND :au
+      AND sorties.classe = 'sortiesd'
+      GROUP BY
+      $sortiesSQL
+      ORDER BY sorties.timestamp DESC");
+  $req->execute(['id_point_sortie' => $_GET['numero'], 'du' => $time_debut, 'au' => $time_fin]);
+  $sortiesDechetterie = $req->fetchAll(PDO::FETCH_ASSOC);
+  $req->closeCursor();
+
+
+  $base = [
+    'h1' => 'Vérification des sorties hors-boutique',
+    'points' => points_sorties($bdd),
+    'numero' => $_GET['numero'],
+    'start' => $_GET['date1'],
+    'end' => $_GET['date2'],
+    'endpoint' => 'verif_sorties',
+    'users' => $users
+  ];
+  require_once 'tete.php';
   ?>
   <div class="container">
-    <h1>Vérification des sorties hors-boutique</h1>
-    <div class="panel-body">
-      <ul class="nav nav-tabs">
-        <?php
-        $reponse = $bdd->query('SELECT * FROM points_sortie');
-        while ($donnees = $reponse->fetch()) {
-          ?>
-          <li class="<?= $_GET['numero'] === $donnees['id'] ? 'active' : '' ?>">
-            <a href="verif_sorties.php?numero=<?= $donnees['id'] ?>&date1=<?= $_GET['date1'] ?>&date2=<?= $_GET['date2'] ?>"><?= $donnees['nom'] ?></a>
-          </li>
-          <?php
-        }
-        $reponse->closeCursor();
-        ?>
-      </ul>
+    <?= headerVerif($base) ?>
+    <?=
+    VerifSortiesTable(array_merge($base, [
+      'h3' => 'Dons simples :',
+      'data' => $sortiesDon,
+      'classe' => ''
+    ]))
+    ?>
+    <?=
+    VerifSortiesTable(array_merge($base, [
+      'h3' => 'Sorties conventionées :',
+      'data' => $sortiesConventions,
+      'classe' => 'c'
+    ]))
+    ?>
 
-      <br>
+    <?=
+    // Nom de l'entreprise
+    VerifSortiesTable(array_merge($base, [
+      'h3' => 'Sorties recyclage:',
+      'data' => $sortiesRecyclage,
+      'classe' => 'r'
+    ]));
+    ?>
 
-      <div class="row">
-        <div class="col-md-3 col-md-offset-9" >
-          <label for="reportrange">Choisissez la période à inspecter:</label><br>
-          <div id="reportrange" class="pull-left" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc">
-            <i class="glyphicon glyphicon-calendar"> </i>
-            <span></span> <b class="caret"></b>
-          </div>
-        </div>
+    <div class="panel panel-info">
+      <div class="panel-heading">
+        <h3 class="panel-title">Sorties poubelles :</h3>
+      </div>
+      <div class="panel-body">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Date de création</th>
+              <th>Masse totale</th>
+              <th>Auteur de la ligne</th>
+              <th></th>
+              <th>Modifié par</th>
+              <th>Le</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <?php foreach ($sortiesPoubelles as $d) { ?>
+              <tr>
+                <td><?= $d['id']; ?></td>
+                <td><?= $d['timestamp']; ?></td>
+                <td><?= $d['masse']; ?></td>
+                <td><?= $users[$d['id_createur']]['mail']; ?></td>
+                <td><a style="appearance: button" class="btn btn-warning btn-sm" href="../ifaces/modification_<?= $base['endpoint'] ?>.php?id=<?= $d['id'] ?>">Modifier</a></td>
+                <td><?= $d['last_hero_timestamp'] !== $d['timestamp'] ? $users[$d['id_last_hero']]['mail'] : '' ?></td>
+                <td><?= $d['last_hero_timestamp'] !== $d['timestamp'] ? $d['last_hero_timestamp'] : '' ?></td>
+              </tr>
+            <?php } ?>
+          </tbody>
+        </table>
       </div>
     </div>
-    <?php
-    $req = $bdd->prepare('SELECT COUNT(id) nid
-                        FROM `sorties`
-                       WHERE sorties.id_point_sortie = :id_point_sortie AND DATE(sorties.timestamp) BETWEEN :du AND :au  AND classe = "sorties" ');
-    $req->execute(['id_point_sortie' => $_GET['numero'], 'du' => $time_debut, 'au' => $time_fin]);
 
-    while ($donnees = $req->fetch()) {
-      if ($donnees['nid'] > 0) {
-        $req->closeCursor();
-        ?>
-        <div class="panel panel-info">
-          <div class="panel-heading"><h3 class="panel-title">Dons simples:</h3> </div>
-          <div class="panel-body">
-            <table class="table">
-              <thead>
-                <tr>
-                  <th>#</th>
-                  <th>Date de création</th>
-                  <th>Type de collecte</th>
-                  <th>Commentaire</th>
-                  <th>Masse totale</th>
-                  <th>Auteur de la ligne</th>
-                  <th></th>
-                  <th>Modifié par</th>
-                  <th>Le</th>
-                </tr>
-              </thead>
+    <div class="panel panel-info">
+      <div class="panel-heading">
+        <h3 class="panel-title">Sorties déchetterie:</h3>
+      </div>
+      <div class="panel-body">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Date de création</th>
+              <th>Commentaire</th>
+              <th>Masse totale</th>
+              <th>Auteur de la ligne</th>
+              <th></th>
+              <th>Modifié par</th>
+              <th>Le</th>
+            </tr>
+          </thead>
 
-              <tbody>
-                <?php
-                $req = $bdd->prepare('SELECT sorties.id,sorties.timestamp ,type_sortie.nom,sorties.commentaire ,sorties.classe classe
-                       FROM sorties ,type_sortie
-                       WHERE type_sortie.id = sorties.id_type_sortie  AND sorties.id_point_sortie = :id_point_sortie AND DATE(sorties.timestamp) BETWEEN :du AND :au
-                       ORDER BY sorties.timestamp DESC');
-                $req->execute(['id_point_sortie' => $_GET['numero'], 'du' => $time_debut, 'au' => $time_fin]);
-                while ($donnees = $req->fetch()) {
-                  $req2 = $bdd->prepare('SELECT SUM(pesees_sorties.masse) masse
-                       FROM pesees_sorties
-                       WHERE  pesees_sorties.id_sortie = :id_sortie ');
-                  $req2->execute(['id_sortie' => $donnees['id']]);
-                  $donnees2 = $req2->fetch();
-                  $req3 = $bdd->prepare('SELECT utilisateurs.mail mail
-                       FROM utilisateurs ,sorties
-                       WHERE  sorties.id = :id_sortie
-                       AND  utilisateurs.id = sorties.id_createur');
-                  $req3->execute(['id_sortie' => $donnees['id']]);
-                  $donnees3 = $req3->fetch();
-                  $req5 = $bdd->prepare('SELECT utilisateurs.mail mail
-                       FROM sorties, utilisateurs
-                       WHERE  sorties.id = :id_sortie
-                       AND  utilisateurs.id = sorties.id_last_hero
-                       ');
-                  $req5->execute(['id_sortie' => $donnees['id']]);
-                  $donnees5 = $req5->fetch();
-                  $req4 = $bdd->prepare('SELECT sorties.last_hero_timestamp lht
-                       FROM sorties
-                       WHERE  sorties.id = :id_sortie
-                       ');
-                  $req4->execute(['id_sortie' => $donnees['id']]);
-                  $donnees4 = $req4->fetch();
-                  ?>
-                  <tr>
-                    <td><?= $donnees['id']; ?></td>
-                    <td><?= $donnees['timestamp']; ?></td>
-                    <td><?= $donnees['nom']; ?></td>
-                    <td><?= $donnees['commentaire']; ?></td>
-                    <td><?= $donnees2['masse']; ?></td>
-                    <td><?= $donnees3['mail']; ?></td>
-                    <td>
-                      <form action="modification_verification_sorties.php?nsortie=<?= $donnees['id']; ?>" method="post">
-                        <input type="hidden" name ="id" id="id" value="<?= $donnees['id']; ?>">
-                        <input type="hidden" name ="nom" id="nom" value="<?= $donnees['nom']; ?>">
-                        <input type="hidden" name ="date1" id="date1" value="<?= $_GET['date1']; ?>">
-                        <input type="hidden" name ="date2" id="date2" value="<?= $_GET['date2']; ?>">
-                        <input type="hidden" name ="npoint" id="npoint" value="<?= $_GET['numero']; ?>">
-                        <button  class="btn btn-warning btn-sm" >Modifier</button>
-                      </form>
-                    </td>
-                    <td><?= $donnees5['mail']; ?></td>
-                    <td><?= $donnees4['lht'] !== '0000-00-00 00:00:00' ? $donnees4['lht'] : '' ?></td>
-                  </tr>
-                  <?php
-                }
-                $req->closeCursor();
-                $req2->closeCursor();
-                $req3->closeCursor();
-                $req4->closeCursor();
-                $req5->closeCursor();
-                ?>
-              </tbody>
-            </table>
-          </div>
-        </div>
-        <?php
-      } else {
-        echo 'Pas de dons sur cette période<br><br>';
-        $req->closeCursor();
-      }
-    }
-
-    $req = $bdd->prepare('SELECT COUNT(id) nid
-                        FROM `sorties`
-                       WHERE sorties.id_point_sortie = :id_point_sortie AND DATE(sorties.timestamp) BETWEEN :du AND :au AND classe = "sortiesc" ');
-    $req->execute(['id_point_sortie' => $_GET['numero'], 'du' => $time_debut, 'au' => $time_fin]);
-
-    while ($donnees = $req->fetch()) {
-      if ($donnees['nid'] > 0) {
-        $req->closeCursor();
-        ?>
-        <div class="panel panel-info">
-          <div class="panel-heading">
-            <h3 class="panel-title">Sorties conventionées:</h3>
-          </div>
-          <div class="panel-body">
-            <table class="table">
-              <thead>
-                <tr>
-                  <th>#</th>
-                  <th>Date de création</th>
-                  <th>Nom du partenaire</th>
-                  <th>Commentaire</th>
-                  <th>Masse totale</th>
-                  <th>Auteur de la ligne</th>
-                  <th></th>
-                  <th>Modifié par</th>
-                  <th>Le</th>
-                </tr>
-              </thead>
-
-              <tbody>
-                <?php
-                $req = $bdd->prepare('SELECT sorties.id,sorties.timestamp ,conventions_sorties.nom,sorties.commentaire,sorties.adherent , sorties.classe classe
-                       FROM sorties ,conventions_sorties
-                       WHERE conventions_sorties.id = sorties.id_convention  AND sorties.id_point_sortie = :id_point_sortie AND DATE(sorties.timestamp) BETWEEN :du AND :au AND classe = "sortiesc"
-                       ORDER BY sorties.timestamp DESC');
-                $req->execute(['id_point_sortie' => $_GET['numero'], 'du' => $time_debut, 'au' => $time_fin]);
-
-                while ($donnees = $req->fetch()) {
-                  $req2 = $bdd->prepare('SELECT SUM(pesees_sorties.masse) masse
-                       FROM pesees_sorties
-                       WHERE  pesees_sorties.id_sortie = :id_sortie ');
-                  $req2->execute(['id_sortie' => $donnees['id']]);
-                  $donnees2 = $req2->fetch();
-                  $req3 = $bdd->prepare('SELECT utilisateurs.mail mail
-                       FROM utilisateurs ,sorties
-                       WHERE  sorties.id = :id_sortie
-                       AND  utilisateurs.id = sorties.id_createur');
-                  $req3->execute(['id_sortie' => $donnees['id']]);
-                  $donnees3 = $req3->fetch();
-                  $req5 = $bdd->prepare('SELECT utilisateurs.mail mail
-                       FROM sorties, utilisateurs
-                       WHERE  sorties.id = :id_sortie
-                       AND  utilisateurs.id = sorties.id_last_hero
-                       ');
-                  $req5->execute(['id_sortie' => $donnees['id']]);
-                  $donnees5 = $req5->fetch();
-                  $req4 = $bdd->prepare('SELECT sorties.last_hero_timestamp lht
-                       FROM sorties
-                       WHERE  sorties.id = :id_sortie');
-                  $req4->execute(['id_sortie' => $donnees['id']]);
-                  $donnees4 = $req4->fetch();
-                  ?>
-                  <tr>
-                    <td><?= $donnees['id']; ?></td>
-                    <td><?= $donnees['timestamp']; ?></td>
-                    <td><?= $donnees['nom']; ?></td>
-                    <td><?= $donnees['commentaire']; ?></td>
-                    <td><?= $donnees2['masse']; ?></td>
-                    <td><?= $donnees3['mail']; ?></td>
-                    <td>
-                      <form action="modification_verification_sortiesc.php?nsortie=<?= $donnees['id']; ?>" method="post">
-                        <input type="hidden" name ="id" id="id" value="<?= $donnees['id']; ?>">
-                        <input type="hidden" name ="nom" id="nom" value="<?= $donnees['nom']; ?>">
-                        <input type="hidden" name ="date1" id="date1" value="<?= $_GET['date1']; ?>">
-                        <input type="hidden" name ="date2" id="date2" value="<?= $_GET['date2']; ?>">
-                        <input type="hidden" name ="npoint" id="npoint" value="<?= $_GET['numero']; ?>">
-                        <button  class="btn btn-warning btn-sm" >Modifier</button>
-                      </form>
-                    <td><?= $donnees5['mail']; ?></td>
-                    <td><?= $donnees4['lht'] !== '0000-00-00 00:00:00' ? $donnees4['lht'] : '' ?></td>
-                  </tr>
-                  <?php
-                }
-                $req->closeCursor();
-                $req2->closeCursor();
-                $req3->closeCursor();
-                $req4->closeCursor();
-                $req5->closeCursor();
-                ?>
-              </tbody>
-            </table>
-          </div>
-        </div>
-        <?php
-      } else {
-        echo 'Pas de sorties en direction des partenaires sur cette période<br><br>';
-        $req->closeCursor();
-      }
-    }
-    $req = $bdd->prepare('SELECT COUNT(id) nid
-                        FROM `sorties`
-                       WHERE sorties.id_point_sortie = :id_point_sortie  AND DATE(sorties.timestamp) BETWEEN :du AND :au   AND classe = "sortiesr" ');
-    $req->execute(['id_point_sortie' => $_GET['numero'], 'du' => $time_debut, 'au' => $time_fin]);
-
-    while ($donnees = $req->fetch()) {
-      if ($donnees['nid'] > 0) {
-        $req->closeCursor();
-        ?>
-        <div class="panel panel-info">
-          <div class="panel-heading"><h3 class="panel-title">Sorties recyclage:</h3> </div>
-          <div class="panel-body">            <table class="table">
-              <thead>
-                <tr>
-                  <th>#</th>
-                  <th>Date de création</th>
-                  <th>Nom de l'entreprise</th>
-                  <th>Commentaire</th>
-                  <th>Masse totale</th>
-                  <th>Auteur de la ligne</th>
-                  <th></th>
-                  <th>Modifié par</th>
-                  <th>Le</th>
-                </tr>
-              </thead>
-
-              <tbody>
-                <?php
-                $req = $bdd->prepare('SELECT sorties.id,sorties.timestamp ,filieres_sortie.nom,sorties.commentaire , sorties.classe classe
-                       FROM sorties ,filieres_sortie
-                       WHERE filieres_sortie.id = sorties.id_filiere  AND sorties.id_point_sortie = :id_point_sortie AND DATE(sorties.timestamp) BETWEEN :du AND :au AND classe = "sortiesr"
-                       ORDER BY sorties.timestamp DESC');
-                $req->execute(['id_point_sortie' => $_GET['numero'], 'du' => $time_debut, 'au' => $time_fin]);
-
-                while ($donnees = $req->fetch()) {
-                  $req2 = $bdd->prepare('SELECT SUM(pesees_sorties.masse) masse
-                       FROM pesees_sorties
-                       WHERE  pesees_sorties.id_sortie = :id_sortie ');
-                  $req2->execute(['id_sortie' => $donnees['id']]);
-                  $donnees2 = $req2->fetch();
-                  $req3 = $bdd->prepare('SELECT utilisateurs.mail mail
-                       FROM utilisateurs ,sorties
-                       WHERE  sorties.id = :id_sortie
-                       AND  utilisateurs.id = sorties.id_createur');
-                  $req3->execute(['id_sortie' => $donnees['id']]);
-                  $donnees3 = $req3->fetch();
-                  $req5 = $bdd->prepare('SELECT utilisateurs.mail mail
-                       FROM sorties, utilisateurs
-                       WHERE  sorties.id = :id_sortie
-                       AND  utilisateurs.id = sorties.id_last_hero');
-                  $req5->execute(['id_sortie' => $donnees['id']]);
-                  $donnees5 = $req5->fetch();
-                  $req4 = $bdd->prepare('SELECT sorties.last_hero_timestamp lht
-                       FROM sorties
-                       WHERE  sorties.id = :id_sortie
-                       ');
-                  $req4->execute(['id_sortie' => $donnees['id']]);
-                  $donnees4 = $req4->fetch();
-                  ?>
-                  <tr>
-                    <td><?= $donnees['id']; ?></td>
-                    <td><?= $donnees['timestamp']; ?></td>
-                    <td><?= $donnees['nom']; ?></td>
-                    <td><?= $donnees['commentaire']; ?></td>
-                    <td><?= $donnees2['masse']; ?></td>
-                    <td><?= $donnees3['mail']; ?></td>
-                    <td>
-                      <form action="modification_verification_sortiesr.php?nsortie=<?= $donnees['id']; ?>" method="post">
-                        <input type="hidden" name ="id" id="id" value="<?= $donnees['id']; ?>">
-                        <input type="hidden" name ="nom" id="nom" value="<?= $donnees['nom']; ?>">
-                        <input type="hidden" name ="date1" id="date1" value="<?= $_GET['date1']; ?>">
-                        <input type="hidden" name ="date2" id="date2" value="<?= $_GET['date2']; ?>">
-                        <input type="hidden" name ="npoint" id="npoint" value="<?= $_GET['numero']; ?>">
-                        <button  class="btn btn-warning btn-sm" >Modifier</button>
-                      </form>
-                    <td><?= $donnees5['mail']; ?></td>
-                    <td><?= $donnees4['lht'] !== '0000-00-00 00:00:00' ? $donnees4['lht'] : '' ?></td>
-                  </tr>
-                  <?php
-                }
-                $req->closeCursor();
-                $req2->closeCursor();
-                $req3->closeCursor();
-                $req4->closeCursor();
-                $req5->closeCursor();
-                ?>
-              </tbody>
-            </table>
-          </div></div>
-        <?php
-      } else {
-        echo 'Pas de sorties recyclage sur cette période<br><br>';
-        $req->closeCursor();
-      }
-    }
-
-    $req = $bdd->prepare('SELECT COUNT(id) nid
-                        FROM `sorties`
-                       WHERE sorties.id_point_sortie = :id_point_sortie AND DATE(sorties.timestamp) BETWEEN :du AND :au AND classe = "sortiesp" ');
-    $req->execute(['id_point_sortie' => $_GET['numero'], 'du' => $time_debut, 'au' => $time_fin]);
-
-    while ($donnees = $req->fetch()) {
-      if ($donnees['nid'] > 0) {
-        $req->closeCursor();
-        ?>
-        <div class="panel panel-info">
-          <div class="panel-heading"><h3 class="panel-title">Sorties Poubelles:</h3> </div>
-          <div class="panel-body">            <table class="table">
-              <thead>
-                <tr>
-                  <th>#</th>
-                  <th>Date de création</th>
-                  <th>Masse totale</th>
-                  <th>Auteur de la ligne</th>
-                  <th></th>
-                  <th>Modifié par</th>
-                  <th>Le</th>
-                </tr>
-              </thead>
-
-              <tbody>
-                <?php
-                $req = $bdd->prepare('SELECT sorties.id,sorties.timestamp , sorties.classe classe
-                       FROM sorties
-                       WHERE sorties.id_point_sortie = :id_point_sortie AND DATE(sorties.timestamp) BETWEEN :du AND :au AND classe = "sortiesp"
-                       ORDER BY sorties.timestamp DESC');
-                $req->execute(['id_point_sortie' => $_GET['numero'], 'du' => $time_debut, 'au' => $time_fin]);
-
-                while ($donnees = $req->fetch()) {
-                  $req2 = $bdd->prepare('SELECT SUM(pesees_sorties.masse) masse
-                       FROM pesees_sorties
-                       WHERE  pesees_sorties.id_sortie = :id_sortie ');
-                  $req2->execute(['id_sortie' => $donnees['id']]);
-                  $donnees2 = $req2->fetch();
-                  $req3 = $bdd->prepare('SELECT utilisateurs.mail mail
-                       FROM utilisateurs ,sorties
-                       WHERE  sorties.id = :id_sortie
-                       AND  utilisateurs.id = sorties.id_createur');
-                  $req3->execute(['id_sortie' => $donnees['id']]);
-                  $donnees3 = $req3->fetch();
-                  $req5 = $bdd->prepare('SELECT utilisateurs.mail mail
-                       FROM sorties, utilisateurs
-                       WHERE  sorties.id = :id_sortie
-                       AND  utilisateurs.id = sorties.id_last_hero');
-                  $req5->execute(['id_sortie' => $donnees['id']]);
-                  $donnees5 = $req5->fetch();
-                  $req4 = $bdd->prepare('SELECT sorties.last_hero_timestamp lht
-                       FROM sorties
-                       WHERE  sorties.id = :id_sortie');
-                  $req4->execute(['id_sortie' => $donnees['id']]);
-                  $donnees4 = $req4->fetch();
-                  ?>
-                  <tr>
-                    <td><?= $donnees['id']; ?></td>
-                    <td><?= $donnees['timestamp']; ?></td>
-                    <td><?= $donnees2['masse']; ?></td>
-                    <td><?= $donnees3['mail']; ?></td>
-                    <td>
-                      <form action="modification_verification_sortiesp.php?nsortie=<?= $donnees['id']; ?>" method="post">
-                        <input type="hidden" name ="id" id="id" value="<?= $donnees['id']; ?>">
-                        <input type="hidden" name ="nom" id="nom" value="<?= $donnees['nom']; ?>">
-                        <input type="hidden" name ="date1" id="date1" value="<?= $_GET['date1']; ?>">
-                        <input type="hidden" name ="date2" id="date2" value="<?= $_GET['date2']; ?>">
-                        <input type="hidden" name ="npoint" id="npoint" value="<?= $_GET['numero']; ?>">
-                        <button  class="btn btn-warning btn-sm" >Modifier</button>
-                      </form>
-                    </td>
-                    <td><?= $donnees5['mail']; ?></td>
-                    <td><?= $donnees4['lht'] !== '0000-00-00 00:00:00' ? $donnees4['lht'] : '' ?></td>
-                  </tr>
-                  <?php
-                }
-                $req->closeCursor();
-                $req2->closeCursor();
-                $req3->closeCursor();
-                $req4->closeCursor();
-                $req5->closeCursor();
-                ?>
-              </tbody>
-            </table>
-          </div>
-        </div>
-        <?php
-      } else {
-        echo 'Pas de poubelles evacuées sur cette période<br><br>';
-        $req->closeCursor();
-      }
-    }
-
-    $req = $bdd->prepare('SELECT COUNT(id) nid
-                        FROM `sorties`
-                       WHERE sorties.id_point_sortie = :id_point_sortie AND DATE(sorties.timestamp) BETWEEN :du AND :au AND classe = "sortiesd" ');
-    $req->execute(['id_point_sortie' => $_GET['numero'], 'du' => $time_debut, 'au' => $time_fin]);
-
-    while ($donnees = $req->fetch()) {
-      if ($donnees['nid'] > 0) {
-        $req->closeCursor();
-        ?>
-        <div class="panel panel-info">
-          <div class="panel-heading"><h3 class="panel-title">Sorties déchetterie:</h3> </div>
-          <div class="panel-body">            <table class="table">
-              <thead>
-                <tr>
-                  <th>#</th>
-                  <th>Date de création</th>
-                  <th>Commentaire</th>
-                  <th>Masse totale</th>
-                  <th>Auteur de la ligne</th>
-                  <th></th>
-                  <th>Modifié par</th>
-                  <th>Le</th>
-                </tr>
-              </thead>
-
-              <tbody>
-                <?php
-                $req = $bdd->prepare('SELECT sorties.id,sorties.timestamp ,sorties.commentaire , sorties.classe classe
-                       FROM sorties ,conventions_sorties
-                       WHERE  sorties.id_point_sortie = :id_point_sortie AND DATE(sorties.timestamp) BETWEEN :du AND :au AND classe = "sortiesd"
-                       GROUP BY id ORDER BY sorties.timestamp DESC
-                       ');
-                $req->execute(['id_point_sortie' => $_GET['numero'], 'du' => $time_debut, 'au' => $time_fin]);
-
-                while ($donnees = $req->fetch()) {
-                  $req2 = $bdd->prepare('SELECT SUM(pesees_sorties.masse) masse
-                       FROM pesees_sorties
-                       WHERE  pesees_sorties.id_sortie = :id_sortie ');
-                  $req2->execute(['id_sortie' => $donnees['id']]);
-                  $donnees2 = $req2->fetch();
-                  $req3 = $bdd->prepare('SELECT utilisateurs.mail mail
-                       FROM utilisateurs ,sorties
-                       WHERE  sorties.id = :id_sortie
-                       AND  utilisateurs.id = sorties.id_createur');
-                  $req3->execute(['id_sortie' => $donnees['id']]);
-                  $donnees3 = $req3->fetch();
-                  $req5 = $bdd->prepare('SELECT utilisateurs.mail mail
-                       FROM sorties, utilisateurs
-                       WHERE  sorties.id = :id_sortie
-                       AND  utilisateurs.id = sorties.id_last_hero');
-                  $req5->execute(['id_sortie' => $donnees['id']]);
-                  $donnees5 = $req5->fetch();
-                  $req4 = $bdd->prepare('SELECT sorties.last_hero_timestamp lht
-                       FROM sorties
-                       WHERE  sorties.id = :id_sortie');
-                  $req4->execute(['id_sortie' => $donnees['id']]);
-                  $donnees4 = $req4->fetch();
-                  ?>
-                  <tr>
-                    <td><?= $donnees['id']; ?></td>
-                    <td><?= $donnees['timestamp']; ?></td>
-                    <td><?= $donnees['commentaire']; ?></td>
-                    <td><?= $donnees2['masse']; ?></td>
-                    <td><?= $donnees3['mail']; ?></td>
-                    <td>
-                      <form action="modification_verification_sortiesd.php?nsortie=<?= $donnees['id']; ?>" method="post">
-                        <input type="hidden" name ="id" id="id" value="<?= $donnees['id']; ?>">
-                        <input type="hidden" name ="nom" id="nom" value="<?= $donnees['nom']; ?>">
-                        <input type="hidden" name ="date1" id="date1" value="<?= $_GET['date1']; ?>">
-                        <input type="hidden" name ="date2" id="date2" value="<?= $_GET['date2']; ?>">
-                        <input type="hidden" name ="npoint" id="npoint" value="<?= $_GET['numero']; ?>">
-                        <button  class="btn btn-warning btn-sm" >Modifier</button>
-                      </form>
-                    <td><?= $donnees5['mail']; ?></td>
-                    <td><?= $donnees4['lht'] !== '0000-00-00 00:00:00' ? $donnees4['lht'] : '' ?></td>
-                    </td>
-                  </tr>
-                  <?php
-                }
-                $req->closeCursor();
-                $req2->closeCursor();
-                $req3->closeCursor();
-                $req4->closeCursor();
-                $req5->closeCursor();
-                ?>
-              </tbody>
-            </table>
-          </div>
-        </div>
-        <?php
-      } else {
-        echo 'Pas de sorties en direction de la dechetterie sur cette periode<br><br>';
-        $req->closeCursor();
-      }
-    }
-    ?>
+          <tbody>
+            <?php foreach ($sortiesDechetterie as $b) { ?>
+              <tr>
+                <td><?= $b['id']; ?></td>
+                <td><?= $b['timestamp']; ?></td>
+                <td><?= $b['commentaire']; ?></td>
+                <td><?= $b['masse']; ?></td>
+                <td><?= $users[$b['id_createur']]['mail']; ?></td>
+                <td><a style="appearance: button" class="btn btn-warning btn-sm" href="../ifaces/modification_<?= $base['endpoint'] ?>.php?id=<?= $b['id'] ?>">Modifier</a></td>
+                <td><?= $b['last_hero_timestamp'] !== $b['timestamp'] ? $users[$b['id_last_hero']]['mail'] : '' ?></td>
+                <td><?= $b['last_hero_timestamp'] !== $b['timestamp'] ? $b['last_hero_timestamp'] : '' ?></td>
+              </tr>
+            <?php } ?>
+          </tbody>
+        </table>
+      </div>
+    </div>
 
   </div><!-- /.container -->
   <script type="text/javascript">

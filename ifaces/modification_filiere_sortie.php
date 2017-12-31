@@ -17,34 +17,34 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+require_once '../core/requetes.php';
+require_once '../core/session.php';
+
 session_start();
 
-
-if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($_SESSION['niveau'], 'j') !== false)) {
+if (is_valid_session() && is_allowed_partners()) {
   require_once '../moteur/dbconfig.php';
   require_once 'tete.php';
-  $req = $bdd->prepare('SELECT couleur FROM filieres_sortie WHERE id = :id ');
-  $req->execute(['id' => $_POST['id']]);
-  $donnees = $req->fetch();
-  $couleur = $donnees['couleur'];
-  $id_type_dechet_evac_current = $_POST['id_type_dechet_evac'];
-  $id_type_dechet_evac_current_tab = explode('a', $id_type_dechet_evac_current);
-  $req->closeCursor();
+  $filieres = filieres_sorties_id($bdd, $_POST['id']);
+  $types_evac = array_reduce(types_dechets_evac($bdd), function ($acc, $e) {
+    $acc[$e['id']] = $e;
+    return $acc;
+  }, []);
   ?>
   <div class="container">
     <h1>Modifier un recycleur</h1>
-    <div class="panel-heading">Modifier les données concernant la filiere n° <?= $_POST['id']; ?>, <?= $_POST['nom']; ?>. </div>
+    <div class="panel-heading">Modifier les données concernant la filiere n° <?= $_POST['id']; ?>, <?= $filieres['nom']; ?>. </div>
     <div class="panel-body">
       <form action="../moteur/modification_filiere_sortie_post.php" method="post">
         <div class="row">
-          <input type="hidden" name ="id" id="id" value="<?= $_POST['id']; ?>">
-          <div class="col-md-2"><label for="nom">Nom:</label> <input type="text"value ="<?= $_POST['nom']; ?>" name="nom" id="nom" class="form-control " required autofocus></div>
-          <div class="col-md-3"><label for="description">Description:</label> <input type="text"value ="<?= $_POST['description']; ?>" name="description" id="description" class="form-control" required></div>
-          <div class="col-md-1"><label for="couleur">Couleur:</label> <input type="color"value ="<?= $couleur; ?>"name="couleur" id="couleur" class="form-control" required></div>
+          <input type="hidden" name="id" value="<?= $_POST['id']; ?>">
+          <div class="col-md-2"><label for="nom">Nom:</label><input type="text" value="<?= $filieres['nom']; ?>" name="nom" class="form-control" required autofocus></div>
+          <div class="col-md-3"><label for="description">Description:</label><input type="text" value="<?= $filieres['description']; ?>" name="description" class="form-control" required></div>
+          <div class="col-md-1"><label for="couleur">Couleur:</label><input type="color"value="<?= $filieres['couleur']; ?>"name="couleur" class="form-control" required></div>
           <div class="col-md-1"><br><button name="creer" class="btn btn-warning">Modifier</button></div>
           <br>
           <a href="edition_filieres_sortie.php">
-            <button name="creer" class="btn btn">Anuler</button>
+            <button class="btn btn">Annuler</button>
           </a>
         </div>
 
@@ -52,18 +52,13 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($
           <div class="col-md-9"><br>
             <label for="tde">Type de déchets enlevés:</label>
             <div class="alert alert-info">
-              <?php
-              $reponse = $bdd->query('SELECT * FROM type_dechets_evac');
-              while ($donnees = $reponse->fetch()) { ?>
+              <?php foreach ($types_evac as $donnees) {?>
                 <input type="checkbox"
-                <?= array_key_exists($donnees['id'], $id_type_dechet_evac_current_tab) ? 'checked' : '' ?>
+                <?= array_key_exists($donnees['id'], $filieres['accepte_type_dechet']) ? 'checked' : '' ?>
                        name="tde<?= $donnees['id']; ?>"
                        id="tde<?= $donnees['id']; ?>" >
                 <label for="tde<?= $donnees['id'] ?>"><?= $donnees['nom'] ?></label>
-                <?php
-              }
-              $reponse->closeCursor();
-              ?>
+                <?php } ?>
             </div>
           </div>
         </div>

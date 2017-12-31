@@ -202,9 +202,8 @@ function new_droits(PDO $bdd, array $droits): string {
     . droits($sorties, 's', $droits));
 }
 
-function new_utilisateur(string $nom, string $prenom, string $mail, string $droits, int $id = 0, string $pass = null): array {
+function new_utilisateur(string $nom, string $prenom, string $mail, string $droits, string $pass = ''): array {
   return [
-    'id' => $id,
     'nom' => $nom,
     'prenom' => $prenom,
     'mail' => $mail,

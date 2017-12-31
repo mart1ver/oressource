@@ -20,18 +20,17 @@
 
 session_start();
 require_once '../core/session.php';
-if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && is_allowed_partners()) {
+if (is_valid_session() && is_allowed_partners()) {
   require_once '../moteur/dbconfig.php';
   $req = $bdd->prepare('SELECT SUM(id) FROM conventions_sorties WHERE nom = :nom ');
   $req->execute(['nom' => $_POST['nom']]);
   $donnees = $req->fetch();
   $req->closeCursor();
-
   if ($donnees['SUM(id)'] > 0) {
     header("Location:../ifaces/conventions_sortie.php?err=Une convention porte deja le meme nom!&nom={$_POST['nom']}&description={$_POST['description']}&couleur=" . substr($_POST['couleur'], 1));
   } else {
-    $req = $bdd->prepare('INSERT INTO conventions_sorties (nom,  couleur, description, visible) VALUES(?, ?, ?, ?)');
-    $req->execute([$_POST['nom'], $_POST['couleur'], $_POST['description'], 'oui']);
+    $req = $bdd->prepare('INSERT INTO conventions_sorties (nom,  couleur, description, visible, id_createur, id_last_hero) VALUES (?, ?, ?, ?, ?, ?)');
+    $req->execute([$_POST['nom'], $_POST['couleur'], $_POST['description'], 'oui', $_SESSION['id'], $_SESSION['id']]);
     $req->closeCursor();
     header('Location:../ifaces/conventions_sortie.php?msg=Convention enregistrée avec succes!');
   }

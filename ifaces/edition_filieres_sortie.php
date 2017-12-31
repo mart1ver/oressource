@@ -23,8 +23,15 @@
 session_start();
 require_once '../moteur/dbconfig.php';
 require_once '../core/composants.php';
+require_once '../core/requetes.php';
+require_once '../core/session.php';
 
-if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($_SESSION['niveau'], 'j') !== false)) {
+if (is_valid_session() && is_allowed_partners()) {
+  $filieres_sortie = filieres_sorties($bdd);
+  $types_dechets_evac = array_reduce(types_dechets_evac($bdd), function ($acc, $e) {
+    $acc[$e['id']] = $e;
+    return $acc;
+  }, []);
   require_once 'tete.php';
   ?>
   <div class="container">
@@ -44,14 +51,9 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($
         <div class="col-md-9"><br>
           <label for="tde">Type de déchets enlevés:</label>
           <div class="alert alert-info">
-            <?php
-            $reponse = $bdd->query('SELECT * FROM type_dechets_evac');
-            while ($donnees = $reponse->fetch()) { ?>
-              <input type="checkbox" name="tde<?= $donnees['id']; ?>" id="tde<?= $donnees['id']; ?>"> <?= '<label for="tde' . $donnees['id'] . '">' . $donnees['nom'] . '.   </label>'; ?>
-              <?php
-            }
-            $reponse->closeCursor();
-            ?>
+            <?php foreach ($types_dechets_evac as $donnees) { ?>
+              <input type="checkbox" name="tde<?= $donnees['id']; ?>" id="tde<?= $donnees['id']; ?>"><label for="tde<?= $donnees['id'] ?>"><?= $donnees['nom'] ?></label>
+            <?php } ?>
           </div>
         </div>
       </div>
@@ -72,50 +74,32 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($
         </tr>
       </thead>
       <tbody>
-        <?php
-        $reponse = $bdd->query('SELECT filieres_sortie.id,
-                                           filieres_sortie.timestamp,
-                                           filieres_sortie.nom,
-                                           filieres_sortie.description,
-                                           filieres_sortie.id_type_dechet_evac,
-                                           filieres_sortie.couleur,
-                                           filieres_sortie.visible
-                                             FROM filieres_sortie');
-
-        while ($donnees = $reponse->fetch()) { ?>
+        <?php foreach ($filieres_sortie as $donnees) {
+          // FIXME corriger la base et format de stockage de la liste.
+          $types = [];
+          foreach ($donnees['accepte_type_dechet'] as $id => $_) {
+            array_push($types, $types_dechets_evac[$id]['nom']);
+          } ?>
           <tr>
             <td><?= $donnees['id']; ?></td>
             <td><?= $donnees['timestamp']; ?></td>
             <td><?= $donnees['nom']; ?></td>
             <td><?= $donnees['description']; ?></td>
-            <td><?php
-              foreach (explode('a', $donnees['id_type_dechet_evac']) as $arrayElement) {
-                $req2 = $bdd->prepare('SELECT nom FROM type_dechets_evac WHERE id = :id ');
-                $req2->execute(['id' => $arrayElement]);
-                $donnees2 = $req2->fetch();
-                if ($donnees2['nom'] !== '') {
-                  echo $donnees2['nom'] . ', ';
-                }
-                $req2->closeCursor();
-              }
-              ?></td>
+            <td><?= implode(', ', $types) ?></td>
             <td><span class="badge" style="background-color:<?= $donnees['couleur']; ?>"><?= $donnees['couleur']; ?></span></td>
-            <td><?= configBtnVisible(['url' => 'filiere_sortie', 'id' => $donnees['id'], 'visible' => $donnees['visible']]) ?></td>
+            <td><?= configBtnVisible(['url' => 'filieres_sortie', 'id' => $donnees['id'], 'visible' => $donnees['visible']]) ?></td>
             <td>
               <form action="modification_filiere_sortie.php" method="post">
-                <input type="hidden" name ="id" id="id" value="<?= $donnees['id']; ?>">
-                <input type="hidden" name ="nom" id="nom" value="<?= $donnees['nom']; ?>">
-                <input type="hidden" name ="description" id="description" value="<?= $donnees['description']; ?>">
-                <input type="hidden" name ="couleur" id="couleur" value="<?= substr($donnees['couleur'], 1); ?>">
-                <input type="hidden" name ="id_type_dechet_evac" id="id_type_dechet_evac" value="<?= $donnees['id_type_dechet_evac']; ?>">
+                <input type="hidden" name="id" value="<?= $donnees['id']; ?>">
+                <input type="hidden" name="nom" value="<?= $donnees['nom']; ?>">
+                <input type="hidden" name="description" value="<?= $donnees['description']; ?>">
+                <input type="hidden" name="couleur" value="<?= substr($donnees['couleur'], 1); ?>">
+                <input type="hidden" name="id_type_dechet_evac" value="<?= $donnees['id_type_dechet_evac']; ?>">
                 <button  class="btn btn-warning btn-sm" >Modifier!</button>
               </form>
             </td>
           </tr>
-          <?php
-        }
-        $reponse->closeCursor();
-        ?>
+          <?php } ?>
       </tbody>
     </table>
   </div><!-- /.container -->

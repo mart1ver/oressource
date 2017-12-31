@@ -21,10 +21,14 @@
 session_start();
 if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($_SESSION['niveau'], 'l') !== false)) {
   require_once '../moteur/dbconfig.php';
-  $req = $bdd->prepare('DELETE FROM utilisateurs WHERE id = :id');
-  $req->execute(['id' => $_POST['id']]);
-  $req->closeCursor();
-  header('Location:../ifaces/edition_utilisateurs.php?msg=Utilisateur definitivement supprimé.');
+  try {
+    $req = $bdd->prepare('DELETE FROM utilisateurs WHERE id = :id');
+    $req->execute(['id' => $_POST['id']]);
+    $req->closeCursor();
+    header('Location:../ifaces/edition_utilisateurs.php?msg=Utilisateur definitivement supprimé.');
+  } catch (PDOException $e) {
+    header('Location:../ifaces/edition_utilisateurs.php?err=Utilisateur non supprimable car il possèdes des entrées dans la base.');
+  }
 } else {
   header('Location:../moteur/destroy.php');
 }

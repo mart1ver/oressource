@@ -21,10 +21,14 @@
 session_start();
 if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($_SESSION['niveau'], 'g') !== false)) {
   require_once '../moteur/dbconfig.php';
-  $req = $bdd->prepare('DELETE FROM grille_objets WHERE id = :id');
-  $req->execute(['id' => $_POST['id']]);
-  $req->closeCursor();
-  header('Location:../ifaces/grilles_prix.php?msg=Objet definitivement supprimé des grilles de prix.' . '&typo=' . $_POST['typo']);
+  try {
+    $req = $bdd->prepare('DELETE FROM grille_objets WHERE id = :id');
+    $req->execute(['id' => $_POST['id']]);
+    $req->closeCursor();
+    header('Location:../ifaces/grilles_prix.php?msg=Objet definitivement supprimé des grilles de prix.' . '&typo=' . $_POST['typo']);
+  } catch (PDOException $e) {
+    header('Location:../ifaces/grilles_prix.php?err=Objet non supprimé de la grilles des prix car il est associé à des ventes.' . '&typo=' . $_POST['typo']);
+  }
 } else {
   header('Location:../moteur/destroy.php');
 }

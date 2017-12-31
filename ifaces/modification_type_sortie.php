@@ -1,5 +1,4 @@
 <?php
-
 /*
   Oressource
   Copyright (C) 2014-2017  Martin Vert and Oressource devellopers
@@ -18,14 +17,30 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-session_start();
-if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($_SESSION['niveau'], 'k') !== false)) {
-  require_once '../moteur/dbconfig.php';
-  $req = $bdd->prepare('UPDATE points_sortie SET visible = :visible WHERE id = :id');
-  $req->execute(['visible' => $_POST['visible'], 'id' => $_POST['id']]);
 
-  $req->closeCursor();
-  header('Location:../ifaces/edition_points_sorties.php');
-} else {
-  header('Location:../moteur/destroy.php');
+session_start();
+
+require_once '../core/composants.php';
+require_once '../core/session.php';
+require_once '../core/requetes.php';
+
+function types_sorties_id(PDO $bdd, int $id): array {
+  $sql = 'SELECT id, nom, couleur, visible, description, timestamp FROM type_sortie WHERE id = :id';
+  return fetch_id($bdd, $sql, $id);
 }
+
+if (is_valid_session() && (strpos($_SESSION['niveau'], 'k') !== false)) {
+  require_once '../moteur/dbconfig.php';
+  require_once 'tete.php';
+  $props = array_merge(['h1' => 'Gestion de la typologie des sorties hors-boutique',
+    'type' => 'type de sortie',
+    'endpoint' => 'type_sortie'
+  ], types_sorties_id($bdd, $_POST['id']));
+  ?>
+  <?= config_types3_page_modif($props) ?>
+  <?php
+  require_once 'pied.php';
+} else {
+  header('Location: ../moteur/destroy.php');
+}
+?>

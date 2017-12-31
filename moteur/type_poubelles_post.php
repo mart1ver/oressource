@@ -19,6 +19,7 @@
  */
 
 session_start();
+
 if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($_SESSION['niveau'], 'g') !== false)) {
   require_once '../moteur/dbconfig.php';
   $ultime = isset($_POST['ultime']) ? 'oui' : 'non';
@@ -28,11 +29,11 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($
   $donnees = $req->fetch();
   $req->closeCursor();
 
-  if ($donnees['SUM(id)'] > 0) { // SI le titre existe
+  if ($donnees['SUM(id)'] > 0) {
     header('Location:../ifaces/edition_types_poubelles.php?err=Un type de bac porte deja le meme nom!&nom=' . $_POST['nom'] . '&description=' . $_POST['description'] . '&masse_bac=' . $_POST['masse_bac'] . '&ultime=' . $_POST['ultime'] . '&couleur=' . substr($_POST['couleur'], 1));
   } else {
-    $req = $bdd->prepare('INSERT INTO types_poubelles (nom,  couleur, description, masse_bac ,ultime , visible) VALUES(?, ?, ?, ?,  ?, ?)');
-    $req->execute([$_POST['nom'], $_POST['couleur'], $_POST['description'], $_POST['masse_bac'], $ultime, 'oui']);
+    $req = $bdd->prepare('INSERT INTO types_poubelles (nom, couleur, description, masse_bac, ultime, visible, id_createur, id_last_hero) VALUES (?, ?, ?, ?,  ?, ?, ?, ?)');
+    $req->execute([$_POST['nom'], $_POST['couleur'], $_POST['description'], $_POST['masse_bac'], $ultime, 'oui', $_SESSION['id'], $_SESSION['id']]);
     $req->closeCursor();
     header('Location:../ifaces/edition_types_poubelles.php?msg=Type de bac enregistré avec succes!');
   }

@@ -25,12 +25,11 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($
   $req->execute(['nom' => $_POST['nom']]);
   $donnees = $req->fetch();
   $req->closeCursor();
-
-  if ($donnees['SUM(id)'] > 0) { // SI le titre existe
+  if ($donnees['SUM(id)'] > 0) {
     header('Location:../ifaces/types_dechets.php?err=Un type de dechet porte deja le meme nom!&nom=' . $_POST['nom'] . '&description=' . $_POST['description'] . '&couleur=' . substr($_POST['couleur'], 1));
   } else {
-    $req = $bdd->prepare('INSERT INTO type_dechets (nom,  couleur, description, visible) VALUES(?, ?,  ?, ?)');
-    $req->execute([$_POST['nom'], $_POST['couleur'], $_POST['description'], 'oui']);
+    $req = $bdd->prepare('INSERT INTO type_dechets (nom,  couleur, description, visible, id_createur, id_last_hero) VALUES (?, ?,  ?, ?, ?, ?)');
+    $req->execute([$_POST['nom'], $_POST['couleur'], $_POST['description'], 'oui', $_SESSION['id'], $_SESSION['id']]);
     $req->closeCursor();
     header('Location:../ifaces/types_dechets.php?msg=Type de dechet collecté enregistrée avec succes!');
   }

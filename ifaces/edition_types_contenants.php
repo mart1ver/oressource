@@ -19,10 +19,21 @@
 
 session_start();
 
-require_once '../moteur/dbconfig.php';
+require_once '../core/requetes.php';
+require_once '../core/session.php';
 require_once '../core/composants.php';
 
-if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($_SESSION['niveau'], 'g') !== false)) {
+if (is_valid_session() && is_allowed_gestion()) {
+  require_once '../moteur/dbconfig.php';
+  $contenants = types_contenants($bdd);
+  $props = [
+    'url' => 'type_contenants',
+    'nom' => $_GET['nom'] ?? '',
+    'masse' => $_GET['masse_bac'] ?? '',
+    'couleur' => $_GET['couleur'] ?? '',
+    'description' => $_GET['description'] ?? '',
+    'textBtn' => 'Créer'
+  ];
   require_once 'tete.php';
   ?>
   <div class="container">
@@ -31,13 +42,7 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($
     <p>Cet outil vous permet notamment d'indiquer le poids de vos bacs, chariots, diables, etc. de manière à pouvoir le soustraire automatiquement au moment de la pesée.</p>
     <div class="panel-body">
       <div class="row">
-        <form action="../moteur/type_contenants_post.php" method="post">
-          <div class="col-md-3"><label for="nom">Nom:</label> <input type="text"                 value ="<?= $_GET['nom'] ?? ''; ?>" name="nom" id="nom" class="form-control " required autofocus></div>
-          <div class="col-md-2"><label for="description">Description:</label> <input type="text" value ="<?= $_GET['description'] ?? ''; ?>" name="description" id="description" class="form-control" required></div>
-          <div class="col-md-2"><label for="masse_bac">Masse de l'objet (Kg):</label> <input type="text" value ="<?= $_GET['masse_bac'] ?? ''; ?>" name="masse_bac" id="masse_bac" class="form-control" required></div>
-          <div class="col-md-1"><label for="couleur">Couleur:</label> <input type="color" value="#<?= $_GET['couleur'] ?? ''; ?>" name="couleur" id="couleur" class="form-control" required></div>
-          <div class="col-md-1"><br><button name="creer" class="btn btn-default">Créer!</button></div>
-        </form>
+        <?= config_types4_form($props) ?>
       </div>
     </div>
 
@@ -55,10 +60,7 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($
         </tr>
       </thead>
       <tbody>
-        <?php
-        $reponse = $bdd->query('SELECT * FROM type_contenants');
-        while ($donnees = $reponse->fetch()) {
-          ?>
+        <?php foreach ($contenants as $donnees) { ?>
           <tr>
             <td><?= $donnees['id']; ?></td>
             <td><?= $donnees['timestamp']; ?></td>
@@ -69,19 +71,12 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($
             <td><?= configBtnVisible(['url' => 'type_contenants', 'id' => $donnees['id'], 'visible' => $donnees['visible']]) ?></td>
             <td>
               <form action="modification_type_contenants.php" method="post">
-                <input type="hidden" name ="id" id="id" value="<?= $donnees['id']; ?>">
-                <input type="hidden" name ="nom" id="nom" value="<?= $donnees['nom']; ?>">
-                <input type="hidden" name ="description" id="description" value="<?= $donnees['description']; ?>">
-                <input type="hidden" name ="masse_bac" id="masse_bac" value="<?= $donnees['masse']; ?>">
-                <input type="hidden" name ="couleur" id="couleur" value="<?= substr($donnees['couleur'], 1); ?>">
-                <button  class="btn btn-warning btn-sm" >Modifier!</button>
+                <input type="hidden" name="id" id="id" value="<?= $donnees['id']; ?>">
+                <button class="btn btn-warning btn-sm">Modifier!</button>
               </form>
             </td>
           </tr>
-          <?php
-        }
-        $reponse->closeCursor();
-        ?>
+        <?php } ?>
       </tbody>
     </table>
   </div><!-- /.container -->

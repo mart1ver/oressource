@@ -50,35 +50,41 @@ if (is_valid_session()) {
   // l'affichage des bilans de collecte, sortie hors-boutique et bilans de vente
   $validUser = is_allowed_bilan();
 
-  $graphm = data_graphs($bdd->prepare('SELECT type_dechets.couleur,type_dechets.nom, sum(vendus.quantite ) somme
-                  FROM type_dechets, vendus
-                  WHERE type_dechets.id = vendus.id_type_dechet
+
+  $graphm = data_graphs(fetch_all('SELECT type_dechets.couleur, type_dechets.nom, sum(vendus.quantite) somme
+                  FROM type_dechets
+                  INNER JOIN vendus
+                  ON type_dechets.id = vendus.id_type_dechet
                   AND DATE(vendus.timestamp) = CURDATE() AND vendus.prix > 0
-                  GROUP BY type_dechets.id'));
+                  GROUP BY type_dechets.nom, type_dechets.couleur', $bdd));
 
-  $grapha = data_graphs($bdd->prepare('SELECT type_dechets.couleur,type_dechets.nom, sum(pesees_sorties.masse) somme
-                      FROM type_dechets, pesees_sorties
-                      WHERE type_dechets.id = pesees_sorties.id_type_dechet
+  $grapha = data_graphs(fetch_all('SELECT type_dechets.couleur, type_dechets.nom, sum(pesees_sorties.masse) somme
+                      FROM type_dechets
+                      INNER JOIN pesees_sorties
+                      ON type_dechets.id = pesees_sorties.id_type_dechet
                       AND DATE(pesees_sorties.timestamp) = CURDATE()
-                      GROUP BY type_dechets.id
+                      GROUP BY type_dechets.id, type_dechets.nom, type_dechets.couleur
                       UNION
-                      SELECT types_poubelles.couleur,types_poubelles.nom, sum(pesees_sorties.masse) somme
-                      FROM types_poubelles,pesees_sorties
-                      WHERE types_poubelles.id = pesees_sorties.id_type_poubelle
+                      SELECT types_poubelles.couleur, types_poubelles.nom, sum(pesees_sorties.masse) somme
+                      FROM types_poubelles
+                      INNER JOIN pesees_sorties
+                      ON types_poubelles.id = pesees_sorties.id_type_poubelle
                       AND DATE(pesees_sorties.timestamp) = CURDATE()
-                      GROUP BY types_poubelles.id
+                      GROUP BY types_poubelles.id, types_poubelles.nom, types_poubelles.couleur
                       UNION
-                      SELECT type_dechets_evac.couleur,type_dechets_evac.nom, sum(pesees_sorties.masse) somme
-                      FROM type_dechets_evac ,pesees_sorties
-                      WHERE type_dechets_evac.id=pesees_sorties.id_type_dechet_evac
+                      SELECT type_dechets_evac.couleur, type_dechets_evac.nom, sum(pesees_sorties.masse) somme
+                      FROM type_dechets_evac
+                      INNER JOIN pesees_sorties
+                      ON type_dechets_evac.id = pesees_sorties.id_type_dechet_evac
                       AND DATE(pesees_sorties.timestamp) = CURDATE()
-                      GROUP BY type_dechets_evac.id'));
+                      GROUP BY type_dechets_evac.id, type_dechets_evac.nom, type_dechets_evac.couleur', $bdd));
 
-  $graphj = data_graphs($bdd->prepare('SELECT type_dechets.couleur, type_dechets.nom, sum(pesees_collectes.masse) somme
-                  FROM type_dechets, pesees_collectes
-                  WHERE type_dechets.id = pesees_collectes.id_type_dechet
+  $graphj = data_graphs(fetch_all('SELECT type_dechets.couleur, type_dechets.nom, sum(pesees_collectes.masse) somme
+                  FROM type_dechets
+                  INNER JOIN pesees_collectes
+                  ON type_dechets.id = pesees_collectes.id_type_dechet
                   AND DATE(pesees_collectes.timestamp) = CURDATE()
-                  GROUP BY type_dechets.id'));
+                  GROUP BY type_dechets.id, type_dechets.nom, type_dechets.couleur', $bdd));
   ?>
 
   <div class="page-header">
@@ -105,7 +111,7 @@ if (is_valid_session()) {
       <div class="col-md-4">
         <h3>Evacué aujourd'hui: <?= $masse_sorties . ' Kgs.'; ?></h3>
         <?php if ($masse_sorties > 0.000) { ?>
-          <div id="grapha" style="height: 180px;"></div>
+          <div id="graphSortie" style="height: 180px;"></div>
           <?php if ($validUser) { ?>
             <p><a class="btn btn-default" href="../ifaces/bilanhb.php?date1=<?= date('d-m-Y'); ?>&date2=<?= date('d-m-Y'); ?>" role="button">Détails &raquo;</a></p>
             <?php
@@ -129,53 +135,30 @@ if (is_valid_session()) {
     </div> <!-- /row -->
   </div> <!-- /container -->
 
-  <!-- Bootstrap core JavaScript + morris + raphael
-  ================================================== -->
-  <!-- Placed at the end of the document so the pages load faster -->
-
   <script type="text/javascript">
     'use strict';
+    const graphj = <?= (json_encode($graphj, JSON_NUMERIC_CHECK)); ?>;
+    const grapha = <?= (json_encode($grapha, JSON_NUMERIC_CHECK)); ?>;
+    const graphm = <?= (json_encode($graphm, JSON_NUMERIC_CHECK)); ?>;
+
     // FIXME: Recuperer les donnees en AJAX au lieu de recalculer toute la page a chaque fois.
-    // Actuellement tout est recuperer via PHP a la generation de la page.
+    const graphMorris = (obj, element) => {
+      if (obj.data.length !== 0) {
+        Morris.Donut({
+          element,
+          data: obj.data,
+          backgroundColor: '  #ccc',
+          labelColor: '#060',
+          colors: obj.colors,
+          formatter: (x) => `${x} Kg.`
+        });
+      }
+    };
+
     document.addEventListener('DOMContentLoaded', () => {
-      // graphj
-      const graphj = <?= (json_encode($graphj, JSON_NUMERIC_CHECK, JSON_FORCE_OBJECT)); ?>;
-      if (graphj.data.length !== 0) {
-        Morris.Donut({
-          element: 'graphj',
-          data: graphj.data,
-          backgroundColor: '#ccc',
-          labelColor: '#060',
-          colors: graphj.colors,
-          formatter: (x) => `${x} Kg.`
-        });
-      }
-
-      // graphm
-      const graphm = <?= (json_encode($graphm, JSON_NUMERIC_CHECK, JSON_FORCE_OBJECT)); ?>;
-      if (graphm.data.length !== 0) {
-        Morris.Donut({
-          element: 'graphm',
-          data: graphm.data,
-          backgroundColor: '#ccc',
-          labelColor: '#060',
-          colors: graphm.colors,
-          formatter: (x) => `${x} pcs.`
-        });
-      }
-
-      // grapha
-      const grapha = <?= (json_encode($grapha, JSON_NUMERIC_CHECK, JSON_FORCE_OBJECT)); ?>;
-      if (grapha.data.length !== 0) {
-        Morris.Donut({
-          element: 'grapha',
-          data: grapha.data,
-          backgroundColor: '#ccc',
-          labelColor: '#060',
-          colors: grapha.colors,
-          formatter: (x) => `${x} Kg.`
-        });
-      }
+      graphMorris(graphj, 'graphj');
+      graphMorris(grapha, 'graphSortie');
+      graphMorris(graphm, 'graphm');
       // Refresh each 300000 msec = 300 secs
       window.setTimeout(window.location.reload, 300000);
     });

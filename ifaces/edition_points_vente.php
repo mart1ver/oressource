@@ -34,6 +34,7 @@ if (is_valid_session() && is_allowed_config()) {
   <div class="container">
     <h1>Gestion des points de vente</h1>
     <div class="panel-heading">Gérez ici les différents points de vente.</div>
+    <p>Attention les points de ventes doivent impérativement avoir des noms distincts!</p>
     <div class="panel-body">
       <div class="row">
         <form action="../moteur/edition_points_vente_post.php" method="post">
@@ -91,7 +92,7 @@ if (is_valid_session() && is_allowed_config()) {
             <td><span class="badge" style="background-color:<?= $point_vente['couleur']; ?>"><?= $point_vente['couleur']; ?></span></td>
             <td><?= $point_vente['commentaire']; ?></td>
             <td><?= $point_vente['surface_vente']; ?></td>
-            <td><?= configBtnVisible(['url' => 'ventes', 'id' => $point_vente['id'], 'visible' => $point_vente['visible']]) ?></td>
+            <td><?= configBtnVisible(['url' => 'points_vente', 'id' => $point_vente['id'], 'visible' => $point_vente['visible']]) ?></td>
             <td>
               <form action="modification_points_vente.php" method="post">
                 <input type="hidden" name="id" id="id" value="<?= $point_vente['id']; ?>">

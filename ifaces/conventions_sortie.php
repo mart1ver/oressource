@@ -24,6 +24,6 @@ echo page_config3([
   'h1' => 'Gestion des conventions avec les partenaires',
   'heading' => "Afin de différencier les partenaires de réemploi au moment de la mise en bilan.",
   'text' => "",
-  'url' => 'convention_sortie',
+  'url' => 'conventions_sorties',
   'functData' => 'convention_sortie'
 ]);

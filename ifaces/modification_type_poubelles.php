@@ -21,41 +21,25 @@ session_start();
 require_once('../moteur/dbconfig.php');
 if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($_SESSION['niveau'], 'g') !== false)) {
   require_once 'tete.php';
+  $req = $bdd->prepare('SELECT couleur FROM types_poubelles WHERE id = :id ');
+  $req->execute(['id' => $_POST['id']]);
+  $donnees = $req->fetch();
+  $couleur = $donnees['couleur'];
+  $req->closeCursor();
   ?>
   <div class="container">
     <h1>Gestion des types et des masses des poubelles de la ville utilisées par la structure</h1>
     <div class="panel-heading">Modifier les données concernant le type de bac n° <?= $_POST['id']; ?>, <?= $_POST['nom']; ?>. </div>
-    <?php
-//on obtient la couleur de la localité dans la base
-
-    $req = $bdd->prepare('SELECT couleur FROM types_poubelles WHERE id = :id ');
-    $req->execute(['id' => $_POST['id']]);
-    $donnees = $req->fetch();
-
-    $couleur = $donnees['couleur'];
-
-    $req->closeCursor();
-    ?>
-
     <div class="panel-body">
       <div class="row">
         <form action="../moteur/modification_type_poubelles_post.php" method="post">
-          <input type="hidden" name ="id" id="id" value="<?= $_POST['id']; ?>">
-
-          <div class="col-md-2"><label for="nom">Nom:</label> <input type="text"value ="<?= $_POST['nom']; ?>" name="nom" id="nom" class="form-control " required autofocus></div>
-          <div class="col-md-3"><label for="description">Description:</label> <input type="text"value ="<?= $_POST['description']; ?>" name="description" id="description" class="form-control" required></div>
-          <div class="col-md-2"><label for="masse_bac">Masse du bac(Kg):</label> <input type="text"value ="<?= $_POST['masse_bac']; ?>" name="masse_bac" id="masse_bac" class="form-control" required></div>
-          <div class="col-md-2"><label for="ultime">Déchet ultime ? </label><br> <input name="ultime" id="ultime" type="checkbox" value ="oui"
-
-                                                                                        <?php
-                                                                                        if ($_POST['ultime'] === 'oui') {
-                                                                                          echo 'checked';
-                                                                                        }
-                                                                                        ?> >Oui.</div>
-          <div class="col-md-1"><label for="couleur">Couleur:</label> <input type="color" value="
-                                                                             <?= $couleur; ?>" name="couleur" id="couleur" class="form-control " required autofocus></div>
-
-          <div class="col-md-1"><br><button name="creer" class="btn btn-warning">Modifier</button></div>
+          <input type="hidden" name="id" value="<?= $_POST['id']; ?>">
+          <div class="col-md-2"><label for="nom">Nom:</label><input type="text" value="<?= $_POST['nom']; ?>" name="nom" id="nom" class="form-control" required autofocus></div>
+          <div class="col-md-3"><label for="description">Description:</label><input type="text" value="<?= $_POST['description']; ?>" name="description" id="description" class="form-control" required></div>
+          <div class="col-md-2"><label for="masse_bac">Masse du bac(Kg):</label><input type="text" value="<?= $_POST['masse_bac']; ?>" name="masse_bac" id="masse_bac" class="form-control" required></div>
+          <div class="col-md-2"><label for="ultime">Déchet ultime ?</label><br><input name="ultime" id="ultime" type="checkbox" value="oui" <?= ($_POST['ultime'] === 'oui') ? 'checked' : '' ?>>Oui.</div>
+          <div class="col-md-1"><label for="couleur">Couleur:</label><input type="color" value="<?= $couleur; ?>" name="couleur" id="couleur" class="form-control " required autofocus></div>
+          <div class="col-md-1"><br><button class="btn btn-warning">Modifier</button></div>
         </form>
         <br>
         <a href="edition_types_poubelles.php">
@@ -73,7 +57,6 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($
   </div>
   </div>
   </div><!-- /.container -->
-
   <?php
   require_once 'pied.php';
 } else {

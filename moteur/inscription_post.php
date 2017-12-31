@@ -35,8 +35,9 @@ if (is_valid_session() && is_allowed_users()) {
   }
 
   if ($_POST['pass1'] === $_POST['pass2']) {
-    utilisateur_insert($bdd, new_utilisateur($_POST['nom'], $_POST['prenom'],
-      $_POST['mail'], new_droits($bdd, $_POST), $_POST['pass1']));
+    $user = new_utilisateur($_POST['nom'], $_POST['prenom'],
+                            $_POST['mail'], new_droits($bdd, $_POST), $_POST['pass1']);
+    utilisateur_insert($bdd, $user);
     header('Location: ../ifaces/utilisateurs.php?msg=Utilisateur ajouté avec succes!');
   } else {
     header('Location: ../ifaces/utilisateurs.php?err=Veuillez confirmer votre mot de passe&nom=' . $_POST['nom'] . '&prenom=' . $_POST['prenom'] . '&mail=' . $_POST['mail']);

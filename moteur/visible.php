@@ -1,4 +1,5 @@
 <?php
+
 /*
   Oressource
   Copyright (C) 2014-2017  Martin Vert and Oressource devellopers
@@ -18,15 +19,23 @@
  */
 
 session_start();
-if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($_SESSION['niveau'], 'h') !== false)) {
-  require_once 'tete.php';
-  ?>
 
-  <h1>Recettes filières de sortie</h1>
+require_once '../core/session.php';
 
-  <?php
-  require_once 'pied.php';
-} else {
-  header('Location: ../moteur/destroy.php');
+function table_visible(PDO $bdd, string $table, int $id, string $visible) {
+  $req = $bdd->prepare("UPDATE $table SET visible = :visible WHERE id = :id");
+  $req->bindParam(':visible', $visible, PDO::PARAM_STR);
+  $req->bindValue(':id', $id, PDO::PARAM_INT);
+  $req->execute();
+  $req->closeCursor();
 }
-?>
+
+if (is_valid_session() && (is_allowed_config() || is_allowed_gestion())) {
+  require_once '../moteur/dbconfig.php';
+  $id = filter_input(INPUT_POST, 'id', FILTER_VALIDATE_INT);
+  $visible = $_POST['visible'] === 'oui' ? 'oui' : 'non';
+  table_visible($bdd, $_POST['table'], $id, $visible);
+  header("Location:{$_SERVER['HTTP_REFERER']}");
+} else {
+  header('Location:../moteur/destroy.php');
+}

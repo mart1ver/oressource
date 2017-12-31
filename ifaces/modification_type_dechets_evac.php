@@ -1,5 +1,4 @@
 <?php
-
 /*
   Oressource
   Copyright (C) 2014-2017  Martin Vert and Oressource devellopers
@@ -18,14 +17,30 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 session_start();
-if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($_SESSION['niveau'], 'k') !== false)) {
-  include('dbconfig.php');
 
-  $req = $bdd->prepare('UPDATE localites SET visible = :visible WHERE id = :id');
-  $req->execute(['visible' => $_POST['visible'], 'id' => $_POST['id']]);
+require_once '../core/composants.php';
+require_once '../core/session.php';
+require_once '../core/requetes.php';
 
-  header('Location:../ifaces/edition_localites.php');
-} else {
-  header('Location:../moteur/destroy.php');
+function type_dechets_evac_id(PDO $bdd, $id): array {
+  $sql = 'SELECT id, nom, couleur, visible, description, timestamp FROM type_dechets_evac WHERE id = :id';
+  return fetch_id($bdd, $sql, $id);
 }
+
+if (is_valid_session() && (strpos($_SESSION['niveau'], 'k') !== false)) {
+  require_once '../moteur/dbconfig.php';
+  require_once 'tete.php';
+  $props = array_merge(['h1' => 'Gestion des types de déchet sortants',
+    'type' => 'type de déchet',
+    'endpoint' => 'type_dechets_evac'
+  ], type_dechets_evac_id($bdd, $_POST['id']));
+  ?>
+  <?= config_types3_page_modif($props) ?>
+  <?php
+  require_once 'pied.php';
+} else {
+  header('Location: ../moteur/destroy.php');
+}
+?>

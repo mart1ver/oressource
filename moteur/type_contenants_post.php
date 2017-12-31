@@ -25,12 +25,11 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($
   $req->execute(['nom' => $_POST['nom']]);
   $donnees = $req->fetch();
   $req->closeCursor();
-
-  if ($donnees['SUM(id)'] > 0) { // SI le titre existe
+  if ($donnees['SUM(id)'] > 0) {
     header('Location:../ifaces/edition_types_contenants.php?err=Un moyen de manutention porte deja le meme nom!&nom=' . $_POST['nom'] . '&description=' . $_POST['description'] . '&masse_bac=' . $_POST['masse_bac'] . '&couleur=' . substr($_POST['couleur'], 1));
   } else {
-    $req = $bdd->prepare('INSERT INTO type_contenants (nom,  couleur, description, masse , visible) VALUES(?, ?, ?,  ?, ?)');
-    $req->execute([$_POST['nom'], $_POST['couleur'], $_POST['description'], $_POST['masse_bac'], 'oui']);
+    $req = $bdd->prepare('INSERT INTO type_contenants (nom, couleur, description, masse, visible, id_createur, id_last_hero) VALUES (?, ?, ?, ?, ?, ?, ?)');
+    $req->execute([$_POST['nom'], $_POST['couleur'], $_POST['description'], $_POST['masse_bac'], 'oui', $_SESSION['id'], $_SESSION['id']]);
     $req->closeCursor();
     header('Location:../ifaces/edition_types_contenants.php?msg=Moyen de manutention enregistré avec succes!');
   }
