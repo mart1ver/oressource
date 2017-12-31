@@ -30,7 +30,6 @@ function serve_config(string $endpoint, string $msg, callable $function) {
       $function($bdd);
       return "$base?msg=Le $msg à été crée avec succes!";
     } catch (PDOException $e) {
-      var_dump($e);
       die;
       return "$base?err=Un $msg porte deja le meme nom!";
     }

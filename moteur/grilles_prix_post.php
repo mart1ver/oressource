@@ -26,13 +26,12 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($
   $req->execute(['nom' => $_POST['nom']]);
   $donnees = $req->fetch();
   $req->closeCursor();
-
-  if ($donnees['SUM(id)'] > 0) { // SI le titre existe
+  if ($donnees['SUM(id)'] > 0) {
     header('Location:../ifaces/grilles_prix.php?err=Un objet porte deja le meme nom!&nom=' . $_POST['nom'] . '&description=' . $_POST['description'] . '&typo=' . $_POST['typo'] . '&prix=' . $_POST['prix']);
     die();
   } else {
-    $req = $bdd->prepare('INSERT INTO grille_objets (nom,  prix, description, id_type_dechet, visible) VALUES(?, ?, ?, ?,? )');
-    $req->execute([$_POST['nom'], $_POST['prix'], $_POST['description'], $_POST['typo'], 'oui']);
+    $req = $bdd->prepare('INSERT INTO grille_objets (nom,  prix, description, id_type_dechet, visible, id_createur, id_last_hero) VALUES(?, ?, ?, ?, ?, ?, ?)');
+    $req->execute([$_POST['nom'], $_POST['prix'], $_POST['description'], $_POST['typo'], 'oui', $_SESSION['id'], $_SESSION['id']]);
     $req->closeCursor();
     header('Location:../ifaces/grilles_prix.php?msg=Objet enregistré avec succes!' . '&typo=' . $_POST['typo']);
   }
