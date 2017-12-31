@@ -91,7 +91,7 @@ if (is_valid_session() && is_allowed_verifications()) {
       <br>
       <div class="row">
         <div class="col-md-3 col-md-offset-9" >
-          <label for="reportrange">Choisissez la période à inspecter::</label><br>
+          <label for="reportrange">Choisissez la période à inspecter:</label><br>
           <div id="reportrange" class="pull-left" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc">
             <i class="fa fa-calendar"></i>
             <span></span><b class="caret"></b>
