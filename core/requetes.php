@@ -188,12 +188,12 @@ function points_sorties_id(PDO $bdd, int $id): array {
 }
 
 function points_collectes(PDO $bdd): array {
-  $sql = 'SELECT id, nom, adresse, couleur, pesee_max, visible FROM points_collecte';
+  $sql = 'SELECT id, nom, adresse, couleur, pesee_max, visible, timestamp, commentaire, pesee_max FROM points_collecte';
   return fetch_all($sql, $bdd);
 }
 
 function points_sorties(PDO $bdd): array {
-  $sql = 'SELECT id, nom, adresse, couleur, visible FROM points_sortie';
+  $sql = 'SELECT id, nom, adresse, couleur, visible, timestamp, commentaire, pesee_max FROM points_sortie';
   return fetch_all($sql, $bdd);
 }
 

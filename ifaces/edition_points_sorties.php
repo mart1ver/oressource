@@ -21,6 +21,7 @@ session_start();
 
 require_once '../moteur/dbconfig.php';
 require_once '../core/composants.php';
+require_once '../core/requetes.php';
 
 if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($_SESSION['niveau'], 'k') !== false)) {
   require_once 'tete.php';
@@ -36,7 +37,7 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($
           <div class="col-md-2"><label for="commentaire">Commentaire:</label><br><br><input type="text" value ="<?= $_GET['commentaire'] ?? ''; ?>" name="commentaire" id="commentaire" class="form-control" required></div>
           <div class="col-md-2"><label for="pesee_max">Masse maxi. d'une pesée (Kg):</label> <input type="text" value ="<?= $_GET['pesee_max'] ?? ''; ?>" name="pesee_max" id="pesee_max" class="form-control" required></div>
           <div class="col-md-1"><label for="couleur">Couleur:</label><br><br><input type="color" value="#<?= $_GET['couleur'] ?? ''; ?>" name="couleur" id="couleur" class="form-control" required></div>
-          <div class="col-md-1"><br><br><button name="creer" class="btn btn-default">Créer!</button></div>
+          <div class="col-md-1"><br><br><button class="btn btn-default">Créer!</button></div>
         </form>
       </div>
     </div>
@@ -56,9 +57,7 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($
       </thead>
 
       <tbody>
-        <?php
-        $reponse = $bdd->query('SELECT * FROM points_sortie');
-        while ($donnees = $reponse->fetch()) { ?>
+        <?php foreach (points_sorties($bdd) as $donnees) { ?>
           <tr>
             <td><?= $donnees['id']; ?></td>
             <td><?= $donnees['timestamp']; ?></td>
@@ -68,22 +67,9 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($
             <td><?= $donnees['commentaire']; ?></td>
             <td><?= $donnees['pesee_max']; ?></td>
             <td><?= configBtnVisible(['url' => 'points_sortie', 'id' => $donnees['id'], 'visible' => $donnees['visible']]) ?></td>
-            <td>
-              <form action="modification_points_sortie.php" method="post">
-                <input type="hidden" name ="id" id="id" value="<?= $donnees['id']; ?>">
-                <input type="hidden" name ="nom" id="nom" value="<?= $donnees['nom']; ?>">
-                <input type="hidden" name ="adresse" id="adresse" value="<?= $donnees['adresse']; ?>">
-                <input type="hidden" name ="commentaire" id="commentaire" value="<?= $donnees['commentaire']; ?>">
-                <input type="hidden" name ="pesee_max" id="pesee_max" value="<?= $donnees['pesee_max']; ?>">
-                <input type="hidden" name ="couleur" id="couleur" value="<?= substr($donnees['couleur'], 1); ?>">
-                <button  class="btn btn-warning  btn-sm" >Modifier</button>
-              </form>
-            </td>
+            <td><a style="appearance: button" class="btn btn-warning btn-sm" href="modification_points_sortie.php?id=<?= $donnees['id'] ?>">Modifier</a></td>
           </tr>
-          <?php
-        }
-        $reponse->closeCursor();
-        ?>
+        <?php } ?>
       </tbody>
     </table>
   </div>
