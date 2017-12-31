@@ -286,6 +286,42 @@ function config_types3_form(array $props): string {
   return ob_get_clean();
 }
 
+function config_types3_page_modif(array $props): string {
+  global $_SERVER;
+  ob_start();
+  ?>
+ <div class="container">
+    <h1><?= $props['h1'] ?></h1>
+    <div class="panel-heading">Modifier les données concernant le <?= $props['type'] ?> n°<?= $props['id'] ?>, <?= $props['nom'] ?>.</div>
+    <div class="panel-body">
+      <div class="row">
+        <?= config_types3_form_modif($props) ?>
+        <br>
+        <a href="<?= $_SERVER['HTTP_REFERER'] ?>">
+          <button class="btn btn">Annuler</button>
+        </a>
+      </div>
+    </div>
+  </div><!-- /.container -->
+  <?php
+  return ob_get_clean();
+}
+
+function config_types3_form_modif(array $props): string {
+  ob_start();
+  ?>
+  <form action="../moteur/modification_<?= $props['endpoint'] ?>_post.php" method="post">
+    <input type="hidden" name="id" value="<?= $props['id'] ?>">
+    <div class="col-md-3"><?= textInput(['name' => 'nom', 'text' => "Nom:"], $props['nom']) ?></div>
+    <div class="col-md-4"><?= textInput(['name' => 'description', 'text' => "Description:"], $props['description']) ?></div>
+    <div class="col-md-1"><label for="couleur">Couleur:</label><input id="couleur" name="couleur" type="color" value="<?= $props['couleur'] ?>" class="form-control" required></div>
+    <div class="col-md-1"><br><button class="btn btn-default">Modifier</button></div>
+  </form>
+  <?php
+  return ob_get_clean();
+}
+
+
 function config_types4_form(array $props): string {
   ob_start();
   ?>

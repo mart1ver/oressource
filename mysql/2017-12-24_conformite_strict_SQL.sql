@@ -306,7 +306,5 @@ ALTER TABLE moyens_paiement     ADD CONSTRAINT UN_MoyensPaiement_nom  UNIQUE KEY
 ALTER TABLE filieres_sortie     ADD CONSTRAINT UN_FilieresSortie_nom  UNIQUE KEY(nom(255));
 ALTER TABLE type_dechets_evac   ADD CONSTRAINT UN_TypeDechetsEvac_nom UNIQUE KEY(nom(255));
 
-ALTER Table localites DROP COLUMN relation_openstreetmap;
-
 Commit;
 SET autocommit = 1;

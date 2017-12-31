@@ -23,18 +23,18 @@ require_once '../core/composants.php';
 require_once '../core/session.php';
 require_once '../core/requetes.php';
 
-function moyens_paiements_id(PDO $bdd, $id): array {
-  $sql = 'SELECT id, nom, couleur, visible, description, timestamp FROM moyens_paiement WHERE id = :id';
+function type_dechets_id(PDO $bdd, $id): array {
+  $sql = 'SELECT id, nom, couleur, visible, description, timestamp FROM type_dechets WHERE id = :id';
   return fetch_id($bdd, $sql, $id);
 }
 
 if (is_valid_session() && (strpos($_SESSION['niveau'], 'k') !== false)) {
   require_once '../moteur/dbconfig.php';
   require_once 'tete.php';
-  $props = array_merge(['h1' => 'Gestions des moyens de paiement en caisse',
-    'type' => 'moyen de paiments',
-    'endpoint' => 'moyens_paiement'
-  ], moyens_paiements_id($bdd, $_POST['id']));
+  $props = array_merge(['h1' => 'Gestions des types de dechets',
+    'type' => 'type de dechets',
+    'endpoint' => 'type_dechets'
+  ], type_dechets_id($bdd, $_POST['id']));
   ?>
   <?= config_types3_page_modif($props) ?>
   <?php
