@@ -30,10 +30,10 @@ header("content-type:application/json");
 function vendus_insert(PDO $bdd, int $id_vente, array $vente): int {
   $sql = 'INSERT INTO vendus (
       timestamp, last_hero_timestamp, id_vente, id_type_dechet,
-      id_objet, quantite, prix, id_createur, id_last_hero
+      id_objet, quantite, prix, remboursement, id_createur, id_last_hero
     ) VALUES (
       :timestamp, :timestamp1, :id_vente, :id_type_dechet,
-      :id_objet, :quantite, :prix, :id_createur, :id_createur1)';
+      :id_objet, :quantite, :prix, 0, :id_createur, :id_createur1)';
   $req = $bdd->prepare($sql);
   $req->bindValue(':timestamp', $vente['date']->format('Y-m-d H:i:s'), PDO::PARAM_STR);
   $req->bindValue(':timestamp1', $vente['date']->format('Y-m-d H:i:s'), PDO::PARAM_STR);
