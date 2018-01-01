@@ -33,6 +33,9 @@ alter table type_dechets_evac MODIFY column visible boolean not null default tru
 UPDATE types_poubelles set visible = (case when visible = 'oui' then 1 else 0 end);
 alter table types_poubelles MODIFY column visible boolean not null default true;
 
+UPDATE types_poubelles set ultime = (case when ultime = 'oui' then 1 else 0 end);
+alter table types_poubelles MODIFY column ultime boolean not null default true;
+
 UPDATE type_sortie set visible = (case when visible = 'oui' then 1 else 0 end);
 alter table type_sortie MODIFY column visible boolean not null default true;
 
