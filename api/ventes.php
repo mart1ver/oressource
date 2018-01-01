@@ -29,11 +29,29 @@ header("content-type:application/json");
 // TODO Faire le neccessaire pour les ventes en lot.
 function vendus_insert(PDO $bdd, int $id_vente, array $vente): int {
   $sql = 'INSERT INTO vendus (
-      timestamp, last_hero_timestamp, id_vente, id_type_dechet, lot,
-      id_objet, quantite, prix, remboursement, id_createur, id_last_hero
+      timestamp,
+      last_hero_timestamp,
+      id_vente,
+      id_type_dechet,
+      lot,
+      id_objet,
+      quantite,
+      prix,
+      remboursement,
+      id_createur,
+      id_last_hero
     ) VALUES (
-      :timestamp, :timestamp1, :id_vente, :id_type_dechet, :lot,
-      :id_objet, :quantite, :prix, :remboursement, :id_createur, :id_createur1)';
+      :timestamp,
+      :timestamp1,
+      :id_vente,
+      :id_type_dechet,
+      :lot,
+      :id_objet,
+      :quantite,
+      :prix,
+      :remboursement,
+      :id_createur,
+      :id_createur1)';
   $req = $bdd->prepare($sql);
   $req->bindValue(':timestamp', $vente['date']->format('Y-m-d H:i:s'), PDO::PARAM_STR);
   $req->bindValue(':timestamp1', $vente['date']->format('Y-m-d H:i:s'), PDO::PARAM_STR);
@@ -62,11 +80,21 @@ function vendus_insert(PDO $bdd, int $id_vente, array $vente): int {
 
 function pesee_vendu_insert(PDO $bdd, int $id_vendus, array $vente): int {
   $sql = 'INSERT INTO pesees_vendus (
-      timestamp, last_hero_timestamp, id, masse,
-      quantite, id_createur, id_last_hero
+      timestamp,
+      last_hero_timestamp,
+      id,
+      masse,
+      quantite,
+      id_createur,
+      id_last_hero
     ) VALUES (
-      :timestamp, :timestamp1, :id_vendu,
-      :masse, :quantite, :id_createur, :id_createur1)';
+      :timestamp,
+      :timestamp1,
+      :id_vendu,
+      :masse,
+      :quantite,
+      :id_createur,
+      :id_createur1)';
   $req = $bdd->prepare($sql);
   $req->bindValue(':timestamp', $vente['date']->format('Y-m-d H:i:s'), PDO::PARAM_STR);
   $req->bindValue(':timestamp1', $vente['date']->format('Y-m-d H:i:s'), PDO::PARAM_STR);
@@ -76,7 +104,6 @@ function pesee_vendu_insert(PDO $bdd, int $id_vendus, array $vente): int {
   foreach ($vente['items'] as $vendu) {
     $masse = parseFloat($vendu['masse']);
     $quantite = parseInt($vendu['quantite']);
-    // Si la masse est égale à 0 on passe.
     if ($masse > 0.000 && $quantite > 0) {
       $req->bindValue(':masse', $masse);
       $req->bindValue(':quantite', $quantite, PDO::PARAM_INT);
@@ -92,11 +119,21 @@ function pesee_vendu_insert(PDO $bdd, int $id_vendus, array $vente): int {
 
 function vente_insert(PDO $bdd, array $vente): int {
   $sql = 'INSERT INTO ventes (
-    timestamp, last_hero_timestamp, commentaire,
-    id_point_vente, id_moyen_paiement, id_createur, id_last_hero
+    timestamp,
+    last_hero_timestamp,
+    commentaire,
+    id_point_vente,
+    id_moyen_paiement,
+    id_createur,
+    id_last_hero
     ) VALUES (
-     :timestamp, :timestamp1, :commentaire,
-     :id_point, :id_moyen, :id_createur, :id_createur1)';
+     :timestamp,
+     :timestamp1,
+     :commentaire,
+     :id_point,
+     :id_moyen,
+     :id_createur,
+     :id_createur1)';
   $req = $bdd->prepare($sql);
   $req->bindValue(':timestamp', $vente['date']->format('Y-m-d H:i:s'), PDO::PARAM_STR);
   $req->bindValue(':timestamp1', $vente['date']->format('Y-m-d H:i:s'), PDO::PARAM_STR);
