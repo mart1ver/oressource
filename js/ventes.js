@@ -69,6 +69,11 @@ function render_numpad( { prix, quantite, masse }) {
   }
 }
 
+function reset_rendu() {
+  rendu = new_rendu();
+  update_rendu();
+}
+
 function reset_numpad() {
   numpad = new_numpad();
   render_numpad(numpad);
@@ -97,8 +102,8 @@ function update_state( { type, objet = {prix: 0, masse: 0.0} }) {
 
 function reset(data) {
   state = new_state();
-  numpad = new_numpad();
-  rendu = new_rendu();
+  reset_numpad();
+  reset_rendu();
   const range = document.createRange();
   range.selectNodeContents(document.getElementById('transaction'));
   range.deleteContents();
