@@ -29,8 +29,8 @@ if (is_valid_session() && is_allowed_partners()) {
   if ($donnees['SUM(id)'] > 0) {
     header("Location:../ifaces/conventions_sortie.php?err=Une convention porte deja le meme nom!&nom={$_POST['nom']}&description={$_POST['description']}&couleur=" . substr($_POST['couleur'], 1));
   } else {
-    $req = $bdd->prepare('INSERT INTO conventions_sorties (nom,  couleur, description, visible, id_createur, id_last_hero) VALUES (?, ?, ?, ?, ?, ?)');
-    $req->execute([$_POST['nom'], $_POST['couleur'], $_POST['description'], 'oui', $_SESSION['id'], $_SESSION['id']]);
+    $req = $bdd->prepare('INSERT INTO conventions_sorties (nom,  couleur, description, id_createur, id_last_hero) VALUES (?, ?, ?, ?, ?)');
+    $req->execute([$_POST['nom'], $_POST['couleur'], $_POST['description'], $_SESSION['id'], $_SESSION['id']]);
     $req->closeCursor();
     header('Location:../ifaces/conventions_sortie.php?msg=Convention enregistrée avec succes!');
   }

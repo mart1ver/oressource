@@ -26,7 +26,7 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($
   $xls_output = "Numéro d'indicateur" . "\t" . 'date' . "\t" . 'nom' . "\t" . 'description';
   $xls_output .= "\n\r";
 
-  $reponse = $bdd->query('SELECT * FROM type_dechets WHERE visible = "oui" ');
+  $reponse = $bdd->query('SELECT * FROM type_dechets WHERE visible = 1');
   while ($donnees = $reponse->fetch()) {
     $xls_output .= $donnees['id'] . "\t" . $donnees['timestamp'] . "\t" . $donnees['nom'] . "\t" . $donnees['description'] . "\n";
   }

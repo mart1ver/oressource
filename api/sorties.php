@@ -136,7 +136,7 @@ function insert_sortie(PDO $bdd, array $sortie): int {
   $req->bindvalue(':timestamp1', $sortie['timestamp']->format('Y-m-d H:i:s'), PDO::PARAM_STR);
   $req->bindvalue(':classe', $sortie['classe'], PDO::PARAM_STR);
   $req->bindvalue(':id_point_sortie', $sortie['id_point_sortie'], PDO::PARAM_INT);
-  $req->bindvalue(':commentaire', $bdd->quote($sortie['commentaire']), PDO::PARAM_STR);
+  $req->bindvalue(':commentaire', $sortie['commentaire'], PDO::PARAM_STR);
   $req->bindvalue(':id_createur', $sortie['id_user'], PDO::PARAM_INT);
   $req->bindvalue(':id_createur1', $sortie['id_user'], PDO::PARAM_INT);
 

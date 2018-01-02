@@ -30,8 +30,7 @@ function set_session(array $user, array $structure) {
   $_SESSION['nom'] = $user['nom'];
   $_SESSION['prenom'] = $user['prenom'];
   $_SESSION['mail'] = $user['mail'];
-
-  $_SESSION['tva_active'] = $structure['tva_active'] === 'oui';
+  $_SESSION['tva_active'] = $structure['tva_active'];
   $_SESSION['taux_tva'] = $structure['taux_tva'];
   $_SESSION['structure'] = $structure['nom'];
   $_SESSION['siret'] = $structure['siret'];
@@ -46,8 +45,8 @@ function set_session(array $user, array $structure) {
   $_SESSION['affsr'] = $structure['affsr'];
   $_SESSION['affsd'] = $structure['affsd'];
   $_SESSION['affsde'] = $structure['affsde'];
-  $_SESSION['pes_vente'] = $structure['pes_vente'] === 'oui';
-  $_SESSION['force_pes_vente'] = $structure['force_pes_vente'] === 'oui';
+  $_SESSION['pes_vente'] = $structure['pes_vente'];
+  $_SESSION['force_pes_vente'] = $structure['force_pes_vente'];
   $_SESSION['saisiec'] = $structure['saisiec'];
 }
 
@@ -59,11 +58,11 @@ function destroy_session() {
 }
 
 function pesees_ventes(): bool {
-  return $_SESSION['pes_vente'];
+  return $_SESSION['pes_vente'] === 1;
 }
 
 function ventes_lots(): bool {
-  return $_SESSION['lot_caisse'];
+  return $_SESSION['lot_caisse'] === 1;
 }
 
 /**
@@ -74,23 +73,23 @@ function is_valid_session(): bool {
 }
 
 function affichage_sortie_don(): bool {
-  return $_SESSION['affsd'] === 'oui';
+  return $_SESSION['affsd'] === 1;
 }
 
 function affichage_sortie_poubelle(): bool {
-  return $_SESSION['affsp'] === 'oui';
+  return $_SESSION['affsp'] === 1;
 }
 
 function affichage_sortie_partenaires(): bool {
-  return $_SESSION['affss'] === 'oui';
+  return $_SESSION['affss'] === 1;
 }
 
 function affichage_sortie_dechetterie(): bool {
-  return $_SESSION['affsde'] === 'oui';
+  return $_SESSION['affsde'] === 1;
 }
 
 function affichage_sortie_recyclage(): bool {
-  return $_SESSION['affsr'] === 'oui';
+  return $_SESSION['affsr'] === 1;
 }
 
 /**
@@ -154,19 +153,19 @@ function is_allowed_edit_date(): bool {
 }
 
 function is_allowed_saisie_date(): bool {
-  return $_SESSION['saisiec'] === 'oui';
+  return $_SESSION['saisiec'] === 1;
 }
 
 function is_collecte_visible(array $point_collecte): bool {
-  return is_allowed_collecte_id($point_collecte['id']) && $point_collecte['visible'] === 'oui';
+  return is_allowed_collecte_id($point_collecte['id']) && $point_collecte['visible'];
 }
 
 function is_sortie_visible(array $point_sortie): bool {
-  return is_allowed_sortie_id($point_sortie['id']) && $point_sortie['visible'] === 'oui';
+  return is_allowed_sortie_id($point_sortie['id']) && $point_sortie['visible'];
 }
 
 function is_vente_visible(array $point_vente): bool {
-  return is_allowed_vente_id($point_vente['id']) && $point_vente['visible'] === 'oui';
+  return is_allowed_vente_id($point_vente['id']) && $point_vente['visible'];
 }
 
 function allowDate(array $json): bool {

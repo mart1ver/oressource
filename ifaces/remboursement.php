@@ -18,24 +18,24 @@
  */
 
 session_start();
-require_once('../moteur/dbconfig.php');
-if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($_SESSION['niveau'], 'v' . $_GET['numero']) !== false)) {
+
+require_once '../core/requetes.php';
+require_once '../core/session.php';
+
+if (is_valid_session() && is_allowed_vente_id($_GET['numero'])) {
+  require_once '../moteur/dbconfig.php';
   require_once 'tete.php';
   ?>
   <div class="panel-body" >
     <fieldset>
       <legend>
         <?php
-        // on determine le numero de la vente
         $req = $bdd->prepare('SELECT max(id) FROM ventes WHERE id_point_vente = :id ');
         $req->execute(['id' => $_GET['numero']]);
         while ($donnees = $req->fetch()) {
           $numero_vente = $donnees['max(id)'] + 1;
         }
         $req->closeCursor();
-        //on affiche le nom du point de vente
-        // On recupère tout le contenu de la table point de collecte
-
         $req = $bdd->prepare('SELECT * FROM points_vente WHERE id = :id ');
         $req->execute(['id' => $_GET['numero']]);
         while ($donnees = $req->fetch()) {
@@ -59,7 +59,7 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($
           <div class="panel-body">
 
             <form action="../moteur/remboursement_post.php" id="formulaire" method="post">
-              <?php if ($_SESSION['saisiec'] === 'oui' && (strpos($_SESSION['niveau'], 'e') !== false)) { ?>
+              <?php if (is_allowed_saisie_date() && (strpos($_SESSION['niveau'], 'e') !== false)) { ?>
                 Date de la vente:  <input type="date" id="antidate" name="antidate" style="height:20px;" value=<?= date('Y-m-d'); ?>>
                 <br>
                 <br>
@@ -138,11 +138,7 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($
             <h3 class="panel-title"><label>Type d'objet:</label></h3>
           </div>
           <div class="panel-body">
-
-            <?php
-            // On recupère tout le contenu de la table point de collecte
-            $reponse = $bdd->query('SELECT * FROM type_dechets WHERE visible = "oui"');
-            while ($donnees = $reponse->fetch()) { ?>
+            <?php foreach (filter_visibles(types_dechets($bdd)) as $donnees) { ?>
               <div class="btn-group">
                 <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" style="margin-left:8px; margin-top:16px;">
                   <span class="badge" id="cool" style="background-color:<?= $donnees['couleur']; ?>"><?= $donnees['nom']; ?></span>
@@ -151,25 +147,18 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($
                   <li><a href="javascript:edite('<?= $donnees['nom']; ?>','0','<?= $donnees['id']; ?>','0')" ><?= $donnees['nom']; ?></a></li>
                   <li class="divider"></li>
                   <?php
-                  // On recupère tout le contenu de la table grille_objets
-                  $req = $bdd->prepare('SELECT * FROM grille_objets WHERE id_type_dechet = :id_type_dechet AND visible = "oui"   ');
+                  $req = $bdd->prepare('SELECT * FROM grille_objets WHERE id_type_dechet = :id_type_dechet AND visible = 1');
                   $req->execute(['id_type_dechet' => $donnees['id']]);
                   $i = 1;
-
                   while ($donneesint = $req->fetch()) { ?>
                     <li><a href="javascript:edite('<?= $donneesint['nom']; ?>','<?= $donneesint['prix']; ?>','<?= $donnees['id']; ?>','<?= $donneesint['id']; ?>')"><?= $donneesint['nom']; ?></a></li>
-                    </li>
                     <?php
                   }
                   $req->closeCursor();
                   ?>
                 </ul>
               </div>
-
-              <?php
-            }
-            $reponse->closeCursor();
-            ?>
+              <?php } ?>
           </div>
 
         </div>

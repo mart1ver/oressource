@@ -18,15 +18,6 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-// TODO a virer une fois la base nettoyee des oui et non.
-function oui_non_to_bool(string $s): bool {
-  if ($s === 'oui') {
-    return true;
-  }
-  return false;
-}
-
-// TODO a virer une fois la base nettoyee des oui et non.
 function bool_to_oui_non(bool $b): string {
   if ($b === true) {
     return 'oui';
@@ -43,17 +34,17 @@ function structure_validate(array $json): array {
     'description' => filter_var($json['description'], FILTER_SANITIZE_STRING),
     'telephone' => filter_var($json['telephone'], FILTER_SANITIZE_STRING), // TODO: regex sur les nombres.
     'mail' => filter_var($json['mail'], FILTER_VALIDATE_EMAIL),
-    'lot' => bool_to_oui_non(filter_var($json['lot'], FILTER_VALIDATE_BOOLEAN)),
-    'viz' => bool_to_oui_non(filter_var($json['viz'], FILTER_VALIDATE_BOOLEAN)),
-    'saisiec' => bool_to_oui_non(filter_var($json['saisiec'], FILTER_VALIDATE_BOOLEAN)),
-    'affsp' => bool_to_oui_non(filter_var($json['affsp'], FILTER_VALIDATE_BOOLEAN)),
-    'affss' => bool_to_oui_non(filter_var($json['affss'], FILTER_VALIDATE_BOOLEAN)),
-    'affsr' => bool_to_oui_non(filter_var($json['affsr'], FILTER_VALIDATE_BOOLEAN)),
-    'affsde' => bool_to_oui_non(filter_var($json['affsde'], FILTER_VALIDATE_BOOLEAN)),
-    'affsd' => bool_to_oui_non(filter_var($json['affsd'], FILTER_VALIDATE_BOOLEAN)),
-    'pes_vente' => bool_to_oui_non(filter_var($json['pes_vente'], FILTER_VALIDATE_BOOLEAN)),
-    'force_pes_vente' => bool_to_oui_non(filter_var($json['force_pes_vente'], FILTER_VALIDATE_BOOLEAN)),
-    'tva_active' => bool_to_oui_non(filter_var($json['tva_active'], FILTER_VALIDATE_BOOLEAN)),
+    'lot' => filter_var($json['lot'], FILTER_VALIDATE_BOOLEAN),
+    'viz' => filter_var($json['viz'], FILTER_VALIDATE_BOOLEAN),
+    'saisiec' => filter_var($json['saisiec'], FILTER_VALIDATE_BOOLEAN),
+    'affsp' => filter_var($json['affsp'], FILTER_VALIDATE_BOOLEAN),
+    'affss' => filter_var($json['affss'], FILTER_VALIDATE_BOOLEAN),
+    'affsr' => filter_var($json['affsr'], FILTER_VALIDATE_BOOLEAN),
+    'affsde' => filter_var($json['affsde'], FILTER_VALIDATE_BOOLEAN),
+    'affsd' => filter_var($json['affsd'], FILTER_VALIDATE_BOOLEAN),
+    'pes_vente' => filter_var($json['pes_vente'], FILTER_VALIDATE_BOOLEAN),
+    'force_pes_vente' => filter_var($json['force_pes_vente'], FILTER_VALIDATE_BOOLEAN),
+    'tva_active' => filter_var($json['tva_active'], FILTER_VALIDATE_BOOLEAN),
     'taux_tva' => filter_var($json['taux_tva'], FILTER_VALIDATE_FLOAT),
     'nb_viz' => filter_var($json['nb_viz'], FILTER_VALIDATE_INT),
     'cr' => filter_var($json['cr'], FILTER_VALIDATE_INT), // TODO: regex sur les nombres.
@@ -61,12 +52,12 @@ function structure_validate(array $json): array {
   return $structure;
 }
 
-function validate_json_login($unsafe_json) {
-  $unsafe_json['username'] = filter_var($unsafe_json['username'], FILTER_VALIDATE_EMAIL);
+function validate_json_login(array $unsafe_json) {
+  $unsafe_json['username'] = filter_var($unsafe_json['username'], FILTER_SANITIZE_STRING);
   return $unsafe_json;
 }
 
-function validate_json_sorties($unsafe_json) {
+function validate_json_sorties(array $unsafe_json) {
   $filters = [
     'id_type_action' => FILTER_DEFAULT, // Peux etre NULL
     'antidate' => FILTER_DEFAULT, // Peux etre NULL validation faite plus tard.
@@ -101,7 +92,7 @@ function validate_json_sorties($unsafe_json) {
   return $json;
 }
 
-function validate_json_collecte($unsafe_json): array {
+function validate_json_collecte(array $unsafe_json): array {
   $filters = [
     'id_type_action' => FILTER_VALIDATE_INT,
     'antidate' => FILTER_DEFAULT,
@@ -140,7 +131,7 @@ function parseDate_Post(string $key): DateTime {
   }
 }
 
-function parseDate($str): DateTime {
+function parseDate(string $str): DateTime {
   if ($str) {
     return DateTime::createFromFormat('Y-m-d', $str);
   } else {
@@ -148,7 +139,7 @@ function parseDate($str): DateTime {
   }
 }
 
-function parseFloat($key): float {
+function parseFloat(string $key): float {
   $result = filter_var($key, FILTER_VALIDATE_FLOAT);
   if ($result === false) {
     throw new UnexpectedValueException('Erreur: Donnee POST invalide float attendu.');
@@ -157,7 +148,7 @@ function parseFloat($key): float {
   }
 }
 
-function parseInt($key): int {
+function parseInt(string $key): int {
   $result = filter_var($key, FILTER_VALIDATE_INT);
   if ($result === false) {
     throw new UnexpectedValueException('Erreur: Donnee invalide int attendu.');

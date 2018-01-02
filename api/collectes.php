@@ -36,7 +36,7 @@ function insert_collecte(PDO $bdd, array $collecte): int {
   // HACK: virer les adherants de la base ou juste changer le type en booleen serieusement...
   $req->bindValue(':localite', $collecte['localite'], PDO::PARAM_INT);
   $req->bindValue(':id_point', $collecte['id_point'], PDO::PARAM_INT);
-  $req->bindValue(':commentaire', $bdd->quote($collecte['commentaire']), PDO::PARAM_STR);
+  $req->bindValue(':commentaire', $collecte['commentaire'], PDO::PARAM_STR);
   $req->bindValue(':id_createur', $collecte['id_user'], PDO::PARAM_INT);
   $req->bindValue(':id_createur1', $collecte['id_user'], PDO::PARAM_INT);
   $req->execute();

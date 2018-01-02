@@ -37,8 +37,8 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($
       }
     }
     $reponsesa->closeCursor();
-    $req = $bdd->prepare('INSERT INTO filieres_sortie (nom,  couleur, description, id_type_dechet_evac, visible, id_createur, id_last_hero) VALUES (?, ?, ?, ?, ?, ?, ?)');
-    $req->execute([$_POST['nom'], $_POST['couleur'], $_POST['description'], $id_dechets, 'oui', $_SESSION['id'], $_SESSION['id']]);
+    $req = $bdd->prepare('INSERT INTO filieres_sortie (nom,  couleur, description, id_type_dechet_evac, id_createur, id_last_hero) VALUES (?, ?, ?, ?, ?, ?)');
+    $req->execute([$_POST['nom'], $_POST['couleur'], $_POST['description'], $id_dechets, $_SESSION['id'], $_SESSION['id']]);
     $req->closeCursor();
     header('Location:../ifaces/edition_filieres_sortie.php?msg=Filiere de sortie enregistrée avec succes!');
   }

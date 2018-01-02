@@ -30,8 +30,8 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($
     header('Location:../ifaces/edition_localites.php?err=Une localite porte deja le meme nom!&nom=' . $_POST['nom'] . '&lien=' . $_POST['lien'] . '&commentaire=' . $_POST['commentaire'] . '&couleur=' . substr($_POST['couleur'], 1));
     die();
   }
-  $req = $bdd->prepare('INSERT INTO localites (nom, relation_openstreetmap, couleur, commentaire, visible, id_createur, id_last_hero) VALUES (?, ?, ?, ?, ?, ?, ?)');
-  $req->execute([$_POST['nom'], $_POST['lien'], $_POST['couleur'], $_POST['commentaire'], 'oui', $_SESSION['id'], $_SESSION['id']]);
+  $req = $bdd->prepare('INSERT INTO localites (nom, relation_openstreetmap, couleur, commentaire, visible, id_createur, id_last_hero) VALUES (?, ?, ?, ?, ?, ?)');
+  $req->execute([$_POST['nom'], $_POST['lien'], $_POST['couleur'], $_POST['commentaire'], $_SESSION['id'], $_SESSION['id']]);
   $req->closeCursor();
   header('Location:../ifaces/edition_localites.php?msg=Localité enregistrée avec succes!');
 } else {

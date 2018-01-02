@@ -21,7 +21,7 @@
 session_start();
 if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($_SESSION['niveau'], 'g') !== false)) {
   require_once '../moteur/dbconfig.php';
-  $ultime = isset($_POST['ultime']) ? 'oui' : 'non';
+  $ultime = isset($_POST['ultime']) ? 1 : 0;
   $req = $bdd->prepare('UPDATE types_poubelles SET nom = :nom,  description = :description,  masse_bac = :masse_bac,  ultime = :ultime , couleur = :couleur  WHERE id = :id');
   $req->execute(['nom' => $_POST['nom'], 'description' => $_POST['description'], 'masse_bac' => $_POST['masse_bac'], 'ultime' => $ultime, 'couleur' => $_POST['couleur'], 'id' => $_POST['id']]);
   $req->closeCursor();
