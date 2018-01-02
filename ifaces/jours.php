@@ -108,15 +108,8 @@ if (is_valid_session() && is_allowed_bilan()) {
   <div class="container">
     <div class="row">
       <div class="col-md-4">
-        <label for="reportrange">Choisissez la période à inspecter:</label>
-        <br>
-        <div id="reportrange" class="pull-left"
-             style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc">
-          <i class="fa fa-calendar"></i>
-          <span></span>
-          <b class="caret"></b>
-        </div>
-      </  div>
+        <?= datePicker() ?>
+      </div>
 
       <div class="col-md-4">
         <label>Choisissez le type d'objet:</label>
@@ -332,16 +325,6 @@ if (is_valid_session() && is_allowed_bilan()) {
     } catch (e) {
     console.log(e);
     }
-  </script>
-
-  <script type="text/javascript">
-    'use strict';
-    $(document).ready(() => {
-    const query = process_get();
-    const base = 'jours.php';
-    const options = set_datepicker(query);
-    bind_datepicker(options, {base, query});
-    });
   </script>
   <?php
   require_once 'pied.php';

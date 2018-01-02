@@ -107,7 +107,7 @@ function bind_datepicker(options, {base, query}) {
     const date2 = picker.endDate.format('DD-MM-YYYY');
 
     const queryString = toQueryString(Object.assign({}, query, {date1, date2}));
-    const url = `./${base}?${queryString}`;
+    const url = `${base}?${queryString}`;
     window.location.href = url;
   });
   $('#options1').click(() => {

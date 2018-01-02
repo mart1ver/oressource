@@ -434,17 +434,23 @@ function page_config3($props) {
   }
 }
 
-function datePicker(): string {
+function datePicker($props=[]): string {
   ob_start();
   ?>
-  <div class="row">
-    <div class="col-md-3 col-md-offset-9" >
+  <div class="<?= $props['css'] ?? '' ?> pull-right">
       <label for="reportrange">Choisissez la période à inspecter:</label><br>
-      <div id="reportrange" class="pull-left" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc">
+      <div id="reportrange" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc">
         <i class="fa fa-calendar"></i>
         <span></span> <b class="caret"></b>
       </div>
-    </div>
+    <script>
+      'use strict';
+      const query = process_get();
+      console.log(query);
+      const base = new URL(location.href);
+      const options = set_datepicker(query);
+      bind_datepicker(options, { base: base.pathname, query });
+    </script>
   </div>
   <?php
   return ob_get_clean();
@@ -466,7 +472,7 @@ function headerVerif(array $props): string {
       ?>
     </ul>
     <br>
-    <?= datePicker() ?>
+    <?= datePicker(['css' => 'row']) ?>
   </div>
   <?php
   return ob_get_clean();

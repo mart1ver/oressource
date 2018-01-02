@@ -22,6 +22,8 @@ session_start();
 
 require_once '../core/session.php';
 require_once '../core/requetes.php';
+require_once '../core/composants.php';
+
 function BilanCollectes1(PDO $bdd, int $id, int $typeCollecte, $start, $fin): array {
   $numero = ($id > 0 ? " AND collectes.id_point_collecte = $id " : ' ');
   $sql = 'SELECT
@@ -170,11 +172,7 @@ if (is_valid_session() && is_allowed_bilan()) {
       <div class="col-md-11">
         <h1>Bilan global</h1>
         <div class="col-md-4 col-md-offset-8" >
-          <label for="reportrange">Choisissez la période à inspecter:</label>
-          <div id="reportrange" class="pull-left" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc">
-            <i class="fa fa-calendar"></i>
-            <span></span> <b class="caret"></b>
-          </div>
+          <?= datePicker() ?>
         </div>
 
         <ul class="nav nav-tabs">
@@ -366,10 +364,6 @@ if (is_valid_session() && is_allowed_bilan()) {
 
     'use strict';
     $(document).ready(() => {
-      const query = process_get();
-      const base = 'bilanc.php';
-      const options = set_datepicker(query);
-      bind_datepicker(options, {base, query});
       graphMorris(<?= json_encode(data_graphs($collectes_TypesCollectes)) ?>, 'graphmasse');
       graphMorris(<?= json_encode(data_graphs($collectes_MasseTot)) ?>, 'graph2masse');
       graphMorris(<?= json_encode(data_graphs($collectes_loca)) ?>, 'graphloca');
