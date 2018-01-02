@@ -36,8 +36,8 @@ function set_session(array $user, array $structure) {
   $_SESSION['siret'] = $structure['siret'];
   $_SESSION['adresse'] = $structure['adresse'];
   $_SESSION['texte_adhesion'] = $structure['texte_adhesion'];
-  $_SESSION['lot_caisse'] = $structure['lot'] === 'oui';
-  $_SESSION['viz_caisse'] = $structure['viz'] === 'oui';
+  $_SESSION['lot_caisse'] = $structure['lot'];
+  $_SESSION['viz_caisse'] = $structure['viz'];
   $_SESSION['nb_viz_caisse'] = $structure['nb_viz'];
   $_SESSION['saisiec'] = $structure['saisiec'];
   $_SESSION['affsp'] = $structure['affsp'];
@@ -47,7 +47,6 @@ function set_session(array $user, array $structure) {
   $_SESSION['affsde'] = $structure['affsde'];
   $_SESSION['pes_vente'] = $structure['pes_vente'];
   $_SESSION['force_pes_vente'] = $structure['force_pes_vente'];
-  $_SESSION['saisiec'] = $structure['saisiec'];
 }
 
 function destroy_session() {
@@ -58,11 +57,11 @@ function destroy_session() {
 }
 
 function pesees_ventes(): bool {
-  return $_SESSION['pes_vente'] === 1;
+  return $_SESSION['pes_vente'];
 }
 
 function ventes_lots(): bool {
-  return $_SESSION['lot_caisse'] === 1;
+  return $_SESSION['lot_caisse'];
 }
 
 /**
@@ -73,23 +72,23 @@ function is_valid_session(): bool {
 }
 
 function affichage_sortie_don(): bool {
-  return $_SESSION['affsd'] === 1;
+  return $_SESSION['affsd'];
 }
 
 function affichage_sortie_poubelle(): bool {
-  return $_SESSION['affsp'] === 1;
+  return $_SESSION['affsp'];
 }
 
 function affichage_sortie_partenaires(): bool {
-  return $_SESSION['affss'] === 1;
+  return $_SESSION['affss'];
 }
 
 function affichage_sortie_dechetterie(): bool {
-  return $_SESSION['affsde'] === 1;
+  return $_SESSION['affsde'];
 }
 
 function affichage_sortie_recyclage(): bool {
-  return $_SESSION['affsr'] === 1;
+  return $_SESSION['affsr'];
 }
 
 /**
@@ -153,7 +152,7 @@ function is_allowed_edit_date(): bool {
 }
 
 function is_allowed_saisie_date(): bool {
-  return $_SESSION['saisiec'] === 1;
+  return $_SESSION['saisiec'];
 }
 
 function is_collecte_visible(array $point_collecte): bool {

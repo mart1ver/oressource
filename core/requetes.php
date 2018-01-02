@@ -334,22 +334,17 @@ function structure(PDO $bdd): array {
   $req->execute();
   $result = $req->fetch(PDO::FETCH_ASSOC);
   $req->closeCursor();
-  return $result;
-}
-
-function structure_bool(PDO $bdd): array {
-  $result = structure($bdd);
-  $result['tva_active'] = $result['tva_active'];
-  $result['lot'] = $result['lot'];
-  $result['viz'] = $result['viz'];
-  $result['saisiec'] = $result['saisiec'];
-  $result['affsp'] = $result['affsp'];
-  $result['affss'] = $result['affss'];
-  $result['affsr'] = $result['affsr'];
-  $result['affsd'] = $result['affsd'];
-  $result['affsde'] = $result['affsde'];
-  $result['pes_vente'] = $result['pes_vente'];
-  $result['force_pes_vente'] = $result['force_pes_vente'];
+  $result['tva_active'] = $result['tva_active'] == '1';
+  $result['lot'] = $result['lot'] == '1';
+  $result['viz'] = $result['viz'] == '1';
+  $result['saisiec'] = $result['saisiec'] == '1';
+  $result['affsp'] = $result['affsp'] == '1';
+  $result['affss'] = $result['affss'] == '1';
+  $result['affsr'] = $result['affsr'] == '1';
+  $result['affsd'] = $result['affsd'] == '1';
+  $result['affsde'] = $result['affsde'] == '1';
+  $result['pes_vente'] = $result['pes_vente'] == '1';
+  $result['force_pes_vente'] = $result['force_pes_vente'] == '1';
   return $result;
 }
 

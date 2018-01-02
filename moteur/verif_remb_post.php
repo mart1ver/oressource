@@ -25,7 +25,7 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($
   $donnees = $reponse->fetch();
   $code = $donnees['cr'];
   $reponse->closeCursor();
-  if (intval($_POST['passrmb'], 10) === $code) {
+  if ($_POST['passrmb'] === $code) {
     header('Location:../ifaces/remboursement.php?numero=' . $_GET['numero']);
   } else {
     header('Location:../ifaces/ventes.php?numero=' . $_GET['numero'] . '&err=mauvais mot de passe');
