@@ -157,15 +157,6 @@ if (is_valid_session() && is_allowed_verifications()) {
       </tbody>
     </table>
   </div><!-- /.container -->
-  <script type="text/javascript">
-    'use strict';
-    $(document).ready(() => {
-      const query = process_get();
-      const base = 'verif_vente.php';
-      const options = set_datepicker(query);
-      bind_datepicker(options, {base, query});
-    });
-  </script>
   <?php
   require_once 'pied.php';
 } else {

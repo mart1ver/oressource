@@ -21,6 +21,7 @@ session_start();
 
 require_once '../core/session.php';
 require_once '../core/requetes.php';
+require_once '../core/composants.php';
 
 if (is_valid_session() && is_allowed_bilan()) {
   require_once './tete.php';
@@ -78,14 +79,7 @@ if (is_valid_session() && is_allowed_bilan()) {
       <div class="col-md-11" >
         <h1>Bilan global</h1>
         <div class="col-md-4 col-md-offset-8" >
-          <label for="reportrange">Choisissez la période à inspecter:</label><br>
-          <div id="reportrange" class="pull-left"
-               style="background: #fff; cursor: pointer;
-               padding: 5px 10px; border: 1px solid #ccc">
-            <i class="fa fa-calendar"></i>
-            <span></span>
-            <b class="caret"></b>
-          </div>
+          <?= datePicker() ?>
         </div>
 
         <ul class="nav nav-tabs">
@@ -316,11 +310,6 @@ if (is_valid_session() && is_allowed_bilan()) {
     'use strict';
 
     $(document).ready(() => {
-      const get = process_get();
-      const base = 'bilanv.php';
-      const options = set_datepicker(get);
-      bind_datepicker(options, Object.assign({ base, get }));
-
       try {
         const dataMv = <?= json_encode($graphMv, JSON_NUMERIC_CHECK); ?>;
         Morris.Donut({

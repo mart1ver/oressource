@@ -230,11 +230,7 @@ if (is_valid_session() && is_allowed_bilan()) {
       <div class="col-md-11 " >
         <h1>Bilan global</h1>
         <div class="col-md-4 col-md-offset-8" >
-          <label for="reportrange">Choisissez la période à inspecter:</label><br>
-          <div id="reportrange" class="pull-left" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc">
-            <i class="fa fa-calendar"></i>
-            <span></span> <b class="caret"></b>
-          </div>
+          <?= datePicker() ?>
         </div>
         <ul class="nav nav-tabs">
           <li><a href="bilanc.php?numero=0&date1=<?= $date1 ?>&date2=<?= $date2 ?>">Collectes</a></li>
@@ -363,16 +359,6 @@ if (is_valid_session() && is_allowed_bilan()) {
           <?php }else{echo '<img src="../images/nodata.jpg" class="img-responsive" alt="Responsive image">';} ?>
     </div>
   </div>
-
-  <script type="text/javascript">
-    'use strict';
-    $(document).ready(() => {
-      const query = process_get();
-      const base = 'bilanhb.php';
-      const options = set_datepicker(query);
-      bind_datepicker(options, { base, query });
-    });
-  </script>
   <?php
   require_once 'pied.php';
 } else {
