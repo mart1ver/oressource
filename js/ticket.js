@@ -119,13 +119,13 @@ function connection_UI_ticket(numpad, ticket, typesItems, pretraitement = ((a, .
     if (value > 0.00) {
       if (value <= window.OressourceEnv.masse_max) {
 
-        const id_ticket = ticket.push({
+        const id_last_insert = ticket.push({
           masse: value,
           type: id
         });
         // Update UI pour du ticket
         const type_dechet = typesItems[id - 1];
-        ticket_update_ui(transaction, totalUI, Object.assign(type_dechet, {id_ticket, ticket}), value);
+        ticket_update_ui(transaction, totalUI, Object.assign(type_dechet, {id_last_insert, ticket}), value);
         // Clear du numpad.
         numpad.reset_numpad();
       } else {
@@ -156,15 +156,14 @@ function html_saisie_item( { id, nom, couleur }, action) {
 // TODO revoir le design...
 function ticket_update_ui(container, totalUI, bag, value) {
   // Constitution du panier
-  console.log(bag);
-  const { _, nom, couleur, id_ticket, ticket } = bag;
+  const { _, nom, couleur, id_last_insert, ticket } = bag;
   const li = document.createElement('li');
   li.setAttribute('class', 'list-group-item');
   const btn = '<button class="btn btn-danger"><i class="glyphicon glyphicon-trash" aria-hidden="true"></i></button>';
   const p = `<p style="margin-left: 5px; display: inline-block">${nom}</p>`;
   li.innerHTML = `${btn}${p}<span class="badge" style="display: inline-block; margin-top: 9px; background-color:${couleur}">${value}</span>`;
   li.getElementsByTagName('button')[0].addEventListener('click', () => {
-    ticket.remove(id_ticket);
+    ticket.remove(id_last_insert);
     const total = window.tickets.reduce((acc, ticket) => acc + ticket.total, 0);
     totalUI.textContent = `Masse totale: ${total} Kg.`;
     li.remove();
