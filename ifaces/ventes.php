@@ -64,7 +64,7 @@ if (is_valid_session() && is_allowed_vente_id($numero)) {
         <div class="panel-body" id="ticket">
           <?php if (is_allowed_saisie_date() && is_allowed_edit_date()) { ?>
             <label for="date">Date de la vente:</label>
-            <input type="date" id="date" name="antidate" style="width:130px; height:20px;" value="<?= date('Y-m-d'); ?>">
+            <input type="date" id="date" name="antidate" value="<?= date('Y-m-d'); ?>">
           <?php } ?>
           <ul class="list-group" id="transaction">
             <!-- Remplis via JavaScript voir script de la page -->

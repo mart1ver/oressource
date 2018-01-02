@@ -60,9 +60,10 @@ if (is_valid_session() && is_allowed_vente_id($_GET['numero'])) {
 
             <form action="../moteur/remboursement_post.php" id="formulaire" method="post">
               <?php if (is_allowed_saisie_date() && (strpos($_SESSION['niveau'], 'e') !== false)) { ?>
-                Date de la vente:  <input type="date" id="antidate" name="antidate" style="height:20px;" value=<?= date('Y-m-d'); ?>>
-                <br>
-                <br>
+                <label for="antidate">Date:</label>
+                <input type="date" id="antidate" name="antidate"
+                       value="<?= date('Y-m-d'); ?>">
+                <br><br>
               <?php } ?>
               <ul id="liste" class="list-group">
                 <li class="list-group-item">Réference: <?= $_GET['numero']; ?>#<?= $numero_vente; ?>, date: <?= date('d-m-Y'); ?><br><?= $nom_pv; ?><br><?= $adresse_pv; ?>,<br>siret: <?= $_SESSION['siret']; ?></li>
