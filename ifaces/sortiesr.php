@@ -137,9 +137,8 @@ if (is_valid_session() && is_allowed_sortie_id($numero)) {
           const id_recycleur = parseInt(select.value, 10);
           // On recupere le bon recycleur.
           const [ recycleur ] = filieres.filter(({id}) => id === id_recycleur);
-
           // On selectione les boutons qui correspondent au possiblites du recyleur.
-          const accepte = recycleur.accepte_type_dechet;
+          const accepte = recycleur.types_dechets;
           const btnList = Array.from(ui.children).filter((e) => {
             return accepte.reduce((acc, id) => acc || parseInt(e.id, 10) === id, false);
           });
