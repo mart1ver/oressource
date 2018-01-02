@@ -118,3 +118,21 @@ function bind_datepicker(options, {base, query}) {
     $('#reportrange').data('daterangepicker').remove();
   });
 }
+
+const MorrisBar = (obj, element, labels, unit, couleur) => {
+  if (obj.data.length !== 0) {
+    return new Morris.Bar({
+      element: element,
+      hideHover: 'auto',
+      data: obj.data,
+      xkey: 'time',
+      ykeys: ['nombre'],
+      labels: [labels],
+      xLabelFormat: dateUStoFR,
+      postUnits: unit,
+      resize: true,
+      barColors: [couleur],
+      goals: [obj.sum / obj.data.length]
+    });
+  }
+};

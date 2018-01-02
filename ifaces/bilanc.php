@@ -349,20 +349,7 @@ if (is_valid_session() && is_allowed_bilan()) {
 
   <script type="text/javascript">
     'use strict';
-    const graphMorris = (obj, element) => {
-      if (obj.data.length !== 0) {
-        Morris.Donut({
-          element,
-          data: obj.data,
-          backgroundColor: '  #ccc',
-          labelColor: '#060',
-          colors: obj.colors,
-          formatter: (x) => `${x} Kg.`
-        });
-      }
-    };
 
-    'use strict';
     $(document).ready(() => {
       graphMorris(<?= json_encode(data_graphs($collectes_TypesCollectes)) ?>, 'graphmasse');
       graphMorris(<?= json_encode(data_graphs($collectes_MasseTot)) ?>, 'graph2masse');
