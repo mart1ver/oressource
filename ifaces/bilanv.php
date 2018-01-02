@@ -35,7 +35,6 @@ if (is_valid_session() && is_allowed_bilan()) {
   $date2 = $date2ft->format('d-m-Y');
 
   $date_query = "date1=$date1&date2=$date2";
-
   $numero = filter_input(INPUT_GET, 'numero', FILTER_VALIDATE_INT);
 
   $bilans = [];
@@ -282,7 +281,7 @@ if (is_valid_session() && is_allowed_bilan()) {
                     ?>
                     <tr>
                       <th scope="row">
-                        <a href="./jours.php?date1=<?= $date_query; ?>&type=<?= $id; ?>"><?= $bilan_mix['nom']; ?></a>
+                        <a href="./jours.php?<?= $date_query; ?>&type=<?= $id; ?>"><?= $bilan_mix['nom']; ?></a>
                       </th>
                       <td><?= round($Mtpe, 2); ?></td>
                       <td><?= round($Ntpe, 2); ?></td>
