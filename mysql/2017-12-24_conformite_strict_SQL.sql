@@ -252,9 +252,6 @@ UPDATE `pesees_vendus` set
     then `timestamp` else `last_hero_timestamp`
   end);
 
-UPDATE pesees_vendus set id = id_vendu;
-ALTER Table pesees_vendus DROP COLUMN id_vendu;
-
 ALTER TABLE sorties        MODIFY COLUMN id_filiere          int DEFAULT 0;
 ALTER TABLE sorties        MODIFY COLUMN id_convention       int DEFAULT 0;
 ALTER TABLE sorties        MODIFY COLUMN id_type_sortie      int DEFAULT 0;
