@@ -252,6 +252,9 @@ UPDATE `pesees_vendus` set
     then `timestamp` else `last_hero_timestamp`
   end);
 
+UPDATE pesees_vendus set id = id_vendu;
+ALTER Table pesees_vendus DROP COLUMN id_vendu;
+
 ALTER TABLE sorties        MODIFY COLUMN id_filiere          int DEFAULT 0;
 ALTER TABLE sorties        MODIFY COLUMN id_convention       int DEFAULT 0;
 ALTER TABLE sorties        MODIFY COLUMN id_type_sortie      int DEFAULT 0;
@@ -310,7 +313,6 @@ ALTER TABLE grille_objets       ADD CONSTRAINT UN_GrilleObjets_nom    UNIQUE KEY
 ALTER TABLE localites           ADD CONSTRAINT UN_localites_nom       UNIQUE KEY(nom(255));
 ALTER TABLE moyens_paiement     ADD CONSTRAINT UN_MoyensPaiement_nom  UNIQUE KEY(nom(255));
 ALTER TABLE filieres_sortie     ADD CONSTRAINT UN_FilieresSortie_nom  UNIQUE KEY(nom(255));
-ALTER TABLE type_dechets_evac   ADD CONSTRAINT UN_TypeDechetsEvac_nom UNIQUE KEY(nom(255));
 
 Commit;
 SET autocommit = 1;

@@ -14,9 +14,6 @@
 -- You should have received a copy of the GNU Affero General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-UPDATE pesees_vendus set id = id_vendus;
+UPDATE pesees_vendus set id = id_vendu;
 
-ALTER Table pesees_vendus ADD CONSTRAINT FK_pesees_vendus_vendus
-foreign key (id) references vendus(id);
-
-ALTER Table pesees_vendus DROP COLUMN id_vendus;
+ALTER Table pesees_vendus DROP COLUMN id_vendu;

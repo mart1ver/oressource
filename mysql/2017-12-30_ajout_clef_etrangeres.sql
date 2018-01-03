@@ -1,9 +1,5 @@
 -- Script pour l'ajout des clefs etrangeres pour la base.
 
-set autocomit = 0;
-
-begin transaction;
-
 /*
   Exemple de requête pour voir les données orphelines.
   select p.*
@@ -24,27 +20,24 @@ foreign key (id_type_dechet) references type_dechets(id);
 alter table vendus add constraint FK_Vendus_Objet
 foreign key (id_objet) references grille_objets(id);
 
-alter table vendus add CONSTRAINT FK_Vendus_Utilisateurs
+alter table vendus add CONSTRAINT FK_Vendus_Createur
 foreign key (id_createur) references utilisateurs(id);
 
-alter table vendus add CONSTRAINT FK_Vendus_Utilisateurs
+alter table vendus add CONSTRAINT FK_Vendus_Editeur
 foreign key (id_last_hero) references utilisateurs(id);
 
 -- Ventes
 
-alter table ventes add constraint FK_Ventes_Ventes
-foreign key (id_vente) references ventes(id);
-
 alter table ventes add constraint FK_Ventes_MoyenPaiement
-foreign key (id_moyen_paiement) references ventes(id);
+foreign key (id_moyen_paiement) references moyens_paiement(id);
 
 alter table ventes add constraint FK_Ventes_PointVente
 foreign key (id_point_vente) references points_vente(id);
 
-alter table ventes add CONSTRAINT FK_Ventes_Utilisateurs
+alter table ventes add CONSTRAINT FK_Ventes_Createur
 foreign key (id_createur) references utilisateurs(id);
 
-alter table ventes add CONSTRAINT FK_Ventes_Utilisateurs
+alter table ventes add CONSTRAINT FK_Ventes_Editeur
 foreign key (id_last_hero) references utilisateurs(id);
 
 -- Pesees Collectes
@@ -73,7 +66,7 @@ alter table pesees_sorties add CONSTRAINT FK_PeseesSorties_TypePoubelles
 foreign key (id_type_poubelle) references types_poubelles(id);
 
 alter table pesees_sorties add CONSTRAINT FK_PeseesSorties_TypeDechetEvac
-foreign key (id_type_dechet_evac) references types_dechet_evac(id);
+foreign key (id_type_dechet_evac) references type_dechets_evac(id);
 
 alter table pesees_sorties add CONSTRAINT FK_PeseesSorties_Createur
 foreign key (id_createur) references utilisateurs(id);
@@ -84,8 +77,8 @@ foreign key (id_last_hero) references utilisateurs(id);
 -- Pesees Vendu
 
 -- Ajoutée par https://github.com/mart1ver/oressource/pull/286
--- alter table pesees_vendus add CONSTRAINT FK_PeseesVendus_Sorties
--- foreign key (id) references vendus(id);
+alter table pesees_vendus add CONSTRAINT FK_PeseesVendus_Vendus
+foreign key (id) references vendus(id);
 
 alter table pesees_vendus add CONSTRAINT FK_PeseesVendus_Createur
 foreign key (id_createur) references utilisateurs(id);
@@ -116,10 +109,6 @@ foreign key (id_createur) references utilisateurs(id);
 
 alter table points_vente add CONSTRAINT FK_PointVente_Editeur
 foreign key (id_last_hero) references utilisateurs(id);
-
--- utilisateurs pose soucis.
--- alter table pesees_collectes add CONSTRAINT FK_PeseesCollectes_Createur
--- foreign key (id_createur) references utilisateurs(id)
 
 -- Collectes
 
@@ -256,13 +245,3 @@ foreign key (id_createur) references utilisateurs(id);
 
 alter table moyens_paiement add CONSTRAINT FK_MoyensPaiment_Editeur
 foreign key (id_last_hero) references utilisateurs(id);
-
-
--- Pose soucis si la db contiens des ventes sans moyen de paiement.
--- alter table ventes add constraint FK_Ventes_MoyenPaiement
--- foreign key (id_moyen_paiement) references moyens_paiement(id);
-
-
-commit;
-
-set autocommit = 1
