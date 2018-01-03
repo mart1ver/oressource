@@ -79,16 +79,6 @@ if (is_valid_session() && is_allowed_verifications()) {
     <?= headerVerif($props); ?>
     <?= tableVerif($props); ?>
   </div><!-- /.container -->
-
-  <script type="text/javascript">
-    'use strict';
-    $(document).ready(() => {
-      const query = process_get();
-      const base = 'verif_collecte.php';
-      const options = set_datepicker(query);
-      bind_datepicker(options, {base, query});
-    });
-  </script>
   <?php
   require_once 'pied.php';
 } else {

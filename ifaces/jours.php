@@ -22,313 +22,113 @@ session_start();
 require_once '../core/requetes.php';
 require_once '../core/session.php';
 require_once '../core/composants.php';
-
-function _generic_histo(PDO $bdd, string $sql, int $type, string $debut, string $fin): array {
+function _generic_histo(PDO $bdd, string $table, string $field, int $type, string $debut, string $fin): array {
+  $sql = "SELECT
+      SUM($field) nombre,
+      DATE_FORMAT(timestamp, '%Y-%m-%d') time
+    FROM $table
+    WHERE DATE($table.timestamp) BETWEEN :du AND :au
+    AND $table.id_type_dechet = :type
+    GROUP BY DATE_FORMAT(timestamp, '%Y-%m-%d')
+    ORDER BY time";
   $stmt = $bdd->prepare($sql);
   $stmt->execute(['du' => $debut, 'au' => $fin, 'type' => $type]);
   $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
-  $interm = 0;
-  $cmpt = 0;
-
-  foreach ($data as $donnees) {
-    $interm += $donnees['nombre'];
-    $cmpt += 1;
-  }
   $stmt->closeCursor();
-
+  $sum = array_reduce($data, function (int $acc, array $e): int {
+    return $acc + $e['nombre'];
+  }, 0.0);
   $result = [
-    'interm' => $interm,
-    'cmpt' => $cmpt
+    'data' => $data,
+    'sum' => $sum,
   ];
   return $result;
 }
 
-function _pesees_colletes(PDO $bdd, int $type, string $debut, string $fin): array {
-  $sql = 'SELECT SUM(masse) nombre, DATE_FORMAT(timestamp, "%Y-%m-%d") time
-        FROM pesees_collectes
-        WHERE DATE(pesees_collectes.timestamp) BETWEEN :du AND :au
-        AND pesees_collectes.id_type_dechet = :type
-        GROUP BY DATE_FORMAT(timestamp, "%Y-%m-%d")
-        ORDER BY time';
-  return _generic_histo($bdd, $sql, $type, $debut, $fin);
+function moy_journa(array $data): float {
+  return ($data['sum'] > 0) ? round($data['sum'] / count($data)) : 0;
 }
 
-function _pesees_sorties(PDO $bdd, int $type, string $debut, string $fin): array {
-  $sql = 'SELECT SUM(masse) nombre, DATE_FORMAT(timestamp, "%Y-%m-%d") time
-        FROM pesees_sorties
-        WHERE DATE(pesees_sorties.timestamp) BETWEEN :du AND :au
-        AND pesees_sorties.id_type_dechet = :type
-        GROUP BY DATE_FORMAT(timestamp, "%Y-%m-%d")
-        ORDER BY time';
-  return _generic_histo($bdd, $sql, $type, $debut, $fin);
+function histogram(array $data, string $element, string $msg, string $type, string $unit): string {
+  $moy_jour = moy_journa($data);
+  if ($moy_jour > 0) {
+    ob_start();
+    ?>
+    <h3>Évolution de la <?= $msg ?> pour la catégorie <?= $type ?></h3>
+    <p>Moyenne journalière: <?= $moy_jour ?> <?= $unit ?>.</p>
+    <div id="<?= $element ?>" style="height: 180px;"></div>
+    <?php
+    return ob_get_clean();
+  }
 }
 
-function _quantit_vendue(PDO $bdd, int $type, string $debut, string $fin): array {
-  $sql = 'SELECT SUM(quantite) nombre, DATE_FORMAT(timestamp, "%Y-%m-%d") time
-          FROM vendus
-          WHERE DATE(vendus.timestamp) BETWEEN :du AND :au
-          AND vendus.id_type_dechet = :type
-          GROUP BY DATE_FORMAT(timestamp, "%Y-%m-%d")
-          ORDER BY time';
-  return _generic_histo($bdd, $sql, $type, $debut, $fin);
+if (!(is_valid_session() && is_allowed_bilan())) {
+  header('Location: ../moteur/destroy.php');
+  die;
 }
 
-function _CA(PDO $bdd, int $type, string $debut, string $fin): array {
-  $sql = 'SELECT SUM(quantite*prix) nombre, DATE_FORMAT(timestamp, "%Y-%m-%d") time
-          FROM vendus
-          WHERE DATE(vendus.timestamp) BETWEEN :du AND :au
-          AND vendus.id_type_dechet = :type
-          GROUP BY DATE_FORMAT(timestamp, "%Y-%m-%d")
-          ORDER BY time';
-  return _generic_histo($bdd, $sql, $type, $debut, $fin);
-}
+require_once '../moteur/dbconfig.php';
 
-if (is_valid_session() && is_allowed_bilan()) {
-  require_once '../moteur/dbconfig.php';
+$types_dechets = types_dechets($bdd);
+$type_selected = filter_input(INPUT_GET, 'type', FILTER_VALIDATE_INT);
+$type = array_values(array_filter($types_dechets, function ($e) use ($type_selected) {
+      return $type_selected === $e['id'];
+    }))[0];
 
-  $types_dechets = types_dechets($bdd);
-  $type_selected = filter_input(INPUT_GET, 'type', FILTER_VALIDATE_INT);
-  $type = array_values(array_filter($types_dechets, function ($e) use ($type_selected) {
-    return $type_selected === $e['id'];
-  }))[0];
+$date1 = isset($_GET['date1']) ? DateTime::createFromFormat('d-m-Y', $_GET['date1']) : new DateTime();
+$time_debut = $date1->format('Y-m-d') . " 00:00:00";
+$start = $date1->format('d-m-Y');
 
-  $nom = $type['nom'];
-  $couleur = $type['couleur'];
+$date2 = isset($_GET['date2']) ? DateTime::createFromFormat('d-m-Y', $_GET['date2']) : new DateTime();
+$time_fin = $date2->format('Y-m-d') . " 00:00:00";
+$end = $date2->format('d-m-Y');
 
-  $date1 = isset($_GET['date1']) ? DateTime::createFromFormat('d-m-Y', $_GET['date1']) : new DateTime();
-  $time_debut = $date1->format('Y-m-d') . " 00:00:00";
-  $start = $date1->format('d-m-Y');
+$histoCol = _generic_histo($bdd, 'pesees_collectes', 'masse', $type_selected, $time_debut, $time_fin);
+$histoSor = _generic_histo($bdd, 'pesees_sorties', 'masse', $type_selected, $time_debut, $time_fin);
+$histoQV = _generic_histo($bdd, 'vendus', 'quantite', $type_selected, $time_debut, $time_fin);
+$histoCA = _generic_histo($bdd, 'vendus', 'quantite * prix', $type_selected, $time_debut, $time_fin);
+require_once 'tete.php';
+?>
 
-  $date2 = isset($_GET['date2']) ? DateTime::createFromFormat('d-m-Y', $_GET['date2']) : new DateTime();
-  $time_fin = $date2->format('Y-m-d') . " 00:00:00";
-  $end = $date2->format('d-m-Y');
-  require_once 'tete.php';
-  ?>
-
-  <div class="container">
-    <div class="row">
-      <div class="col-md-4">
-        <?= datePicker() ?>
-      </div>
-
-      <div class="col-md-4">
-        <label>Choisissez le type d'objet:</label>
-        <br>
-        <select name="select" onchange="location = this.value; return false;">
-          <?php foreach ($types_dechets as $type) { ?>
-            <option value="jours.php?date1=<?= $start ?>&date2=<?= $end ?>&type=<?= $type['id'] ?>"
-                    <?= ($type['id'] === $type_selected) ? 'selected' : ''; ?>><?= $type['nom'] ?></option>
-          <?php } ?>
-        </select>
-      </div>
+<div class="container">
+  <div class="row">
+    <div class="col-md-4">
+      <?= datePicker() ?>
     </div>
 
-    <h2><?= $start === $end ? "Le $start " : "Du $start au $end" ?></h2>
+    <div class="col-md-4">
+      <label>Choisissez le type d'objet:</label>
+      <br>
+      <select name="select" onchange="location = this.value; return false;">
+        <?php foreach ($types_dechets as $t) { ?>
+          <option value="jours.php?date1=<?= $start ?>&date2=<?= $end ?>&type=<?= $t['id'] ?>"
+                  <?= ($t['id'] === $type_selected) ? 'selected' : ''; ?>><?= $t['nom'] ?></option>
+                <?php } ?>
+      </select>
+    </div>
+  </div>
 
-    <?php
-    $histoCol = _pesees_colletes($bdd, $type_selected, $time_debut, $time_fin);
-    $masse_moy_jour = ($histoCol['interm'] === 0) ? 0 : round($histoCol['interm'] / $histoCol['cmpt'], 2);
+  <h2><?= $start === $end ? "Le $start " : "Du $start au $end" ?></h2>
+  <?= histogram($histoCol, 'collectes', 'masse totale collectée', $type['nom'], 'Kg') ?>
+  <?= histogram($histoSor, 'sorties', 'masses totales évacuées hors boutique', $type['nom'], 'Kg') ?>
+  <?= histogram($histoQV, 'qv', 'quantités vendues', $type['nom'], 'Unités') ?>
+  <?= histogram($histoCA, 'ca', 'chiffre de caisse quotidien', $type['nom'], '€') ?>
+</div> <!-- .container -->
 
-    if ($masse_moy_jour !== 0) {
-      echo '<h3>Évolution de la masse totale collectée au ' . $nom . '.</h3> Moyenne journalière: ' . $masse_moy_jour;
-      ?> Kgs.
-      <div id="collectes" style="height: 180px;"></div>
-      <?php
-    }
+<script>
+  // FIXME: Si les performances sont SI affreuses penser à utiliser un WebWorker.
+  const collectes = <?= json_encode($histoCol, JSON_NUMERIC_CHECK) ?>;
+  const sorties = <?= json_encode($histoSor, JSON_NUMERIC_CHECK) ?>;
+  const quantite_vendue = <?= json_encode($histoQV, JSON_NUMERIC_CHECK) ?>;
+  const chiffre_affaire = <?= json_encode($histoCA, JSON_NUMERIC_CHECK) ?>;
+  const couleur = <?= json_encode($type['couleur']) ?>;
 
-    $histoSor = _pesees_sorties($bdd, $type_selected, $time_debut, $time_fin);
-    $masse_moy_jour = ($histoSor['interm'] === 0) ? 0 : round($histoSor['interm'] / $histoSor['cmpt'], 2);
-
-    if ($masse_moy_jour !== 0) {
-      echo '<h3>Évolution des masses totales évacuées hors boutique: ' . $nom . '.</h3> Moyenne journalière: ' . $masse_moy_jour;
-      ?> Kgs.
-      <div id="sorties" style="height: 180px;"></div>
-      <?php
-    }
-
-    $histoQV = _quantit_vendue($bdd, $type_selected, $time_debut, $time_fin);
-    $QV_moy_jour = ($histoQV['interm'] === 0) ? 0 : round($histoQV['interm'] / $histoQV['cmpt'], 2);
-
-    if ($QV_moy_jour !== 0) {
-      echo '<h3>Évolution des quantités: ' . $nom . '.</h3> Moyenne journalière: ' . $QV_moy_jour;
-      ?> Kgs.
-      <div id="qv" style="height: 180px;"></div>
-      <?php
-    }
-
-    $histoCA = _CA($bdd, $type_selected, $time_debut, $time_fin);
-    $CA_moy_jour = ($histoCA['interm'] === 0) ? 0 : round($histoCA['interm'] / $histoCA['cmpt'], 2);
-
-    if ($QV_moy_jour !== 0) {
-      echo '<h3>Évolution du chiffre de caisse quotidien: ' . $nom . '.</h3> Moyenne journalière: ' . $QV_moy_jour;
-      ?> Kgs.
-      <div id="ca" style="height: 180px;"></div>
-
-    <?php } ?>
-  </div> <!-- .container -->
-
-  <script>
-    try {
-    new Morris.Bar({
-    element: 'collectes',
-            data: [
-  <?php
-  $reponse = $bdd->prepare('SELECT
-    SUM(masse) nombre,
-    DATE_FORMAT(timestamp, "%Y-%m-%d") time
-  FROM pesees_collectes
-  WHERE  DATE(pesees_collectes.timestamp) BETWEEN :du AND :au
-  AND pesees_collectes.id_type_dechet = :type
-  GROUP BY DATE_FORMAT(timestamp, "%Y-%m-%d")
-  ORDER BY time');
-
-  $reponse->execute(['du' => $time_debut, 'au' => $time_fin, 'type' => $type_selected]);
-  $interm = 0;
-  $cmpt = 0;
-  while ($donnees = $reponse->fetch()) {
-    $interm = $interm + $donnees['nombre'];
-    $cmpt = $cmpt + 1;
-    echo " { y: '{$donnees['time']}', a: '{$donnees['nombre']}' },";
-  }
-  $reponse->closeCursor();
-  ?>
-            ],
-            xkey: 'y',
-            ykeys: ['a'],
-            labels: ['Masse collectée'],
-            xLabelFormat: dateUStoFR,
-            postUnits: "Kgs.",
-            resize: true,
-            barColors: ['<?= $couleur; ?>'],
-  <?= $cmpt !== 0 ? 'goals: [ ' . $interm / $cmpt . '],' : '' ?>
-    });
-    } catch (e) {
-    console.log(e);
-    }
-  </script>
-
-  <script>
-    try {
-    new Morris.Bar({
-    element: 'sorties',
-            data: [
-  <?php
-  $reponse = $bdd->prepare('SELECT
-    SUM(masse) nombre,
-    DATE_FORMAT(timestamp, "%Y-%m-%d") time
-  FROM pesees_sorties
-  WHERE DATE(pesees_sorties.timestamp) BETWEEN :du AND :au
-  AND pesees_sorties.id_type_dechet = :type
-  GROUP BY DATE_FORMAT(timestamp, "%Y-%m-%d")
-  ORDER BY time');
-
-  $reponse->execute(['du' => $time_debut, 'au' => $time_fin, 'type' => $type_selected]);
-  $interm = 0;
-  $cmpt = 0;
-  while ($donnees = $reponse->fetch()) {
-    $interm = $interm + $donnees['nombre'];
-    $cmpt = $cmpt + 1;
-    echo " { y: '{$donnees['time']}', a: '{$donnees['nombre']}' },";
-  }
-  $reponse->closeCursor();
-  ?>
-            ],
-            xkey: 'y',
-            ykeys: ['a'],
-            labels: ['Masse évacuée hors boutique'],
-            xLabelFormat: dateUStoFR,
-            resize: true,
-            postUnits: "Kgs.",
-            barColors: ['<?= $couleur; ?>'],
-  <?= $cmpt !== 0 ? 'goals: [ ' . $interm / $cmpt . '],' : '' ?>
-    });
-    } catch (e) {
-    console.log(e);
-    }
-  </script>
-
-  <script>
-    try {
-    new Morris.Bar({
-    element: 'qv',
-            data: [
-  <?php
-  $reponse = $bdd->prepare('SELECT
-    SUM(quantite) nombre,
-    DATE_FORMAT(timestamp, "%Y-%m-%d") time
-  FROM vendus
-  WHERE DATE(vendus.timestamp) BETWEEN :du AND :au
-  AND vendus.id_type_dechet = :type
-  GROUP BY DATE_FORMAT(timestamp, "%Y-%m-%d")
-  ORDER BY time');
-
-  $reponse->execute(['du' => $time_debut, 'au' => $time_fin, 'type' => $type_selected]);
-  $interm = 0;
-  $cmpt = 0;
-  while ($donnees = $reponse->fetch()) {
-    $interm = $interm + $donnees['nombre'];
-    $cmpt = $cmpt + 1;
-    echo " { y: '{$donnees['time']}', a: '{$donnees['nombre']}' },";
-  }
-  $reponse->closeCursor();
-  ?>
-            ],
-            xkey: 'y',
-            ykeys: ['a'],
-            labels: ['Q. vendue'],
-            xLabelFormat: dateUStoFR,
-            resize: true,
-            postUnits: "Pcs.",
-            barColors: ['<?= $couleur; ?>'],
-  <?= $cmpt !== 0 ? 'goals: [ ' . $interm / $cmpt . '],' : '' ?>
-    });
-    } catch (e) {
-    console.log(e);
-    }
-  </script>
-
-  <script>
-    try {
-    new Morris.Bar({
-    element: 'ca',
-            data: [
-  <?php
-  $reponse = $bdd->prepare('SELECT
-    SUM(prix * quantite) nombre,
-    DATE_FORMAT(timestamp, "%Y-%m-%d") time
-  FROM vendus
-  WHERE DATE(vendus.timestamp) BETWEEN :du AND :au
-  AND vendus.id_type_dechet = :type
-  GROUP BY DATE_FORMAT(timestamp, "%Y-%m-%d")
-  ORDER BY time');
-
-  $reponse->execute(['du' => $time_debut, 'au' => $time_fin, 'type' => $type_selected]);
-  $interm = 0;
-  $cmpt = 0;
-  while ($donnees = $reponse->fetch()) {
-    $interm = $interm + $donnees['nombre'];
-    $cmpt = $cmpt + 1;
-    echo " { y: '{$donnees['time']}', a: '{$donnees['nombre']}' },";
-  }
-  $reponse->closeCursor();
-  ?>
-            ],
-            xkey: 'y',
-            ykeys: ['a'],
-            labels: ['C.A.'],
-            xLabelFormat: dateUStoFR,
-            resize: true,
-            postUnits: "€",
-            barColors: ['<?= $couleur; ?>'],
-  <?= $cmpt !== 0 ? 'goals: [ ' . $interm / $cmpt . '],' : '' ?>
-    });
-    } catch (e) {
-    console.log(e);
-    }
-  </script>
-  <?php
-  require_once 'pied.php';
-} else {
-  header('Location: ../moteur/destroy.php');
-}
-?>
+  document.addEventListener('DOMContentLoaded', () => {
+    MorrisBar(collectes, 'collectes', 'Masse', ' Kg', couleur);
+    MorrisBar(sorties, 'sorties', 'Masse', ' Kg', couleur);
+    MorrisBar(quantite_vendue, 'qv', 'Qt.V', ' Unités', couleur);
+    MorrisBar(chiffre_affaire, 'ca', "C.A", ' €', couleur);
+  }, false);
+</script>
+<?php
+require_once 'pied.php';

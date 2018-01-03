@@ -446,7 +446,6 @@ function datePicker($props=[]): string {
     <script>
       'use strict';
       const query = process_get();
-      console.log(query);
       const base = new URL(location.href);
       const options = set_datepicker(query);
       bind_datepicker(options, { base: base.pathname, query });

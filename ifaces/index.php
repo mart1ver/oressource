@@ -142,19 +142,6 @@ if (is_valid_session()) {
     const graphm = <?= (json_encode($graphm, JSON_NUMERIC_CHECK)); ?>;
 
     // FIXME: Recuperer les donnees en AJAX au lieu de recalculer toute la page a chaque fois.
-    const graphMorris = (obj, element) => {
-      if (obj.data.length !== 0) {
-        Morris.Donut({
-          element,
-          data: obj.data,
-          backgroundColor: '  #ccc',
-          labelColor: '#060',
-          colors: obj.colors,
-          formatter: (x) => `${x} Kg.`
-        });
-      }
-    };
-
     document.addEventListener('DOMContentLoaded', () => {
       graphMorris(graphj, 'graphj');
       graphMorris(grapha, 'graphSortie');
