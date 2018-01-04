@@ -30,7 +30,6 @@ function serve_config(string $endpoint, string $msg, callable $function) {
       $function($bdd);
       return "$base?msg=Le $msg à été crée avec succes!";
     } catch (PDOException $e) {
-      die;
       return "$base?err=Un $msg porte deja le meme nom!";
     }
   } else {
@@ -39,11 +38,12 @@ function serve_config(string $endpoint, string $msg, callable $function) {
 }
 
 function generic_insert_5Config(PDO $bdd, string $table, string $str0, string $str1, string $int0, array $data) {
+  global $_SESSION;
   $fields = "$str0, $str1, $int0";
   $values = ":$str0, :$str1, :$int0";
   $sql = "INSERT INTO $table
-      ($fields, commentaire, couleur, visible, id_createur, id_last_hero, timestamp, last_hero_timestamp)
-      VALUES ($values, :commentaire, :couleur, 'oui', :id_createur, :id_createur1, :timestamp, :timestamp1)";
+      ($fields, commentaire, couleur, id_createur, id_last_hero)
+      VALUES ($values, :commentaire, :couleur, :id_createur, :id_createur1)";
   $req = $bdd->prepare($sql);
   $req->bindvalue(":$str0", $data[$str0], PDO::PARAM_STR);
   $req->bindvalue(":$str1", $data[$str1], PDO::PARAM_STR);
@@ -51,10 +51,8 @@ function generic_insert_5Config(PDO $bdd, string $table, string $str0, string $s
   
   $req->bindvalue(':commentaire', $data['commentaire'], PDO::PARAM_STR);
   $req->bindvalue(':couleur', $data['couleur'], PDO::PARAM_STR);
-  $req->bindvalue(':id_createur', $data['createur'], PDO::PARAM_INT);
-  $req->bindvalue(':id_createur1', $data['createur'], PDO::PARAM_INT);
-  $req->bindvalue(':timestamp', $data['timestamp']->format('Y-m-d H:i:s'), PDO::PARAM_STR);
-  $req->bindvalue(':timestamp1', $data['timestamp']->format('Y-m-d H:i:s'), PDO::PARAM_STR);
+  $req->bindvalue(':id_createur', $_SESSION['id'], PDO::PARAM_INT);
+  $req->bindvalue(':id_createur1', $_SESSION['id'], PDO::PARAM_INT);
   $req->execute();
 }
 
