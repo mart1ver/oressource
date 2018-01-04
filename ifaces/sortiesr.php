@@ -57,7 +57,7 @@ if (is_valid_session() && is_allowed_sortie_id($numero)) {
         <div class="panel-body">
           <form id="formulaire"> <!-- ONSUBMIT="EnableControl(true)" -->
             <?php if (is_allowed_edit_date()) { ?>
-              <label for="antidate">Date : </label>
+              <label for="antidate">Date: </label>
               <input type="date" id="antidate" name="antidate" value="<?= $date->format('Y-m-d'); ?>">
             <?php } ?>
             <ul class="list-group" id="transaction">  <!--start Ticket Caisse -->
