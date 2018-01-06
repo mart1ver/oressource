@@ -266,8 +266,9 @@ ALTER TABLE type_contenants MODIFY COLUMN masse               DECIMAL DEFAULT 0.
 ALTER TABLE points_sortie   MODIFY COLUMN pesee_max           DECIMAL DEFAULT 0.0 NOT NULL;
 ALTER TABLE points_collecte MODIFY COLUMN pesee_max           DECIMAL DEFAULT 0.0 NOT NULL;
 ALTER TABLE points_vente    MODIFY COLUMN surface_vente       DECIMAL DEFAULT 0.0 NOT NULL;
-ALTER TABLE description_structure MODIFY COLUMN taux_tva      DECIMAL DEFAULT 0.0 NOT NULL;
+ALTER TABLE description_structure MODIFY COLUMN taux_tva      DECIMAL(10,3) DEFAULT 0.0 NOT NULL;
 ALTER TABLE description_structure MODIFY COLUMN id_localite   int DEFAULT 1 NOT NULL;
+ALTER TABLE description_structure MODIFY COLUMN cr            CHAR(32);
 
 ALTER TABLE collectes           MODIFY COLUMN last_hero_timestamp timestamp NOT NULL default now() ON UPDATE now();
 ALTER TABLE conventions_sorties MODIFY COLUMN last_hero_timestamp timestamp NOT NULL default now() ON UPDATE now();

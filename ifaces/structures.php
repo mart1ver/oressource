@@ -29,7 +29,7 @@ require_once('../core/composants.php');
 if (is_valid_session() && is_allowed_config()) {
   require_once('tete.php');
   require_once('../moteur/dbconfig.php');
-  $struct = structure_bool($bdd);
+  $struct = structure($bdd);
   ?>
 
   <div class="container">

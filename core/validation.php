@@ -47,7 +47,7 @@ function structure_validate(array $json): array {
     'tva_active' => filter_var($json['tva_active'], FILTER_VALIDATE_BOOLEAN),
     'taux_tva' => filter_var($json['taux_tva'], FILTER_VALIDATE_FLOAT),
     'nb_viz' => filter_var($json['nb_viz'], FILTER_VALIDATE_INT),
-    'cr' => filter_var($json['cr'], FILTER_VALIDATE_INT), // TODO: regex sur les nombres.
+    'cr' => filter_var($json['cr'], FILTER_SANITIZE_STRING), // TODO: regex sur les nombres.
   ];
   return $structure;
 }

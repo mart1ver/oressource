@@ -40,11 +40,16 @@ if (is_valid_session()) {
   $unsafe_json = json_decode($json_raw, true);
 
   require_once('../moteur/dbconfig.php');
-
-  $structure = structure_validate($unsafe_json);
-  structure_update($bdd, array_merge($structure, [
-    'id' => 1,
-  ]));
+  try {
+    $structure = structure_validate($unsafe_json);
+    structure_update($bdd, array_merge($structure, [
+      'id' => 1,
+    ]));
+  } catch (PDOException $e) {
+    http_response_code(501); // Internal Server Error.
+    echo(json_encode(['error' => "Une erreur est survenue dans Oressource Oups."], JSON_FORCE_OBJECT));
+    throw $e;
+  }
 
   http_response_code(200); // Sucess.
   echo(json_encode(['success' => 'Configuration saved']));
