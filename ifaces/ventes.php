@@ -28,8 +28,9 @@ if (is_valid_session() && is_allowed_vente_id($numero)) {
   require_once '../moteur/dbconfig.php';
 
   // on détermine la référence de la prochaine vente.
-  $req = $bdd->query("SHOW TABLE STATUS where name='ventes'");
-  $numero_vente = $req->fetch()['Auto_increment'];
+  $req = $bdd->prepare('SELECT max(id) id FROM ventes WHERE id_point_vente = :id');
+  $req->execute(['id' => $numero]);
+  $numero_vente = $req->fetch()['id'];
   $req->closeCursor();
 
   $point_vente = points_ventes_id($bdd, $numero);
@@ -239,7 +240,7 @@ if (is_valid_session() && is_allowed_vente_id($numero)) {
                 aria-controls="collapseExample">Remboursement</button>
         <div class="collapse" id="collapserembou">
           <div class="well">
-            <form action="../moteur/verif_remb_post.php?numero=<?= $numero ?>" method="post">
+            <form action="../ifaces/remboursement.php?numero=<?= $numero ?>" method="post">
               <div class="input-group">
                 <input name="passrmb" id="passrmb" type="password" class="form-control" placeholder="Code remboursement caisse">
                 <span class="input-group-btn">

@@ -19,53 +19,66 @@
  */
 
 require_once '../core/session.php';
+require_once '../core/requetes.php';
+require_once '../core/validation.php';
 
 session_start();
 
-if (is_valid_session() && is_allowed_vente_id($_GET['numero'])) {
+if (is_valid_session() && is_allowed_vente_id($_POST['id_point_vente'])) {
   require_once '../moteur/dbconfig.php';
 
-  if (is_allowed_saisie_date() && (strpos($_SESSION['niveau'], 'e') !== false)) {
-    $antidate = $_POST['antidate'] . date(' H:i:s');
-    $req = $bdd->prepare('INSERT INTO ventes (timestamp, commentaire, id_point_vente, id_moyen_paiement, id_createur) VALUES(?,?, ?, ?, ?, ?)');
-    $req->execute([$antidate, $_POST['comm'], $_POST['id_point_vente'], 1, $_SESSION['id']]);
-    $id_vente = $bdd->lastInsertId();
-    $req->closeCursor();
+  $antidate = is_allowed_edit_date() && is_allowed_saisie_date() ? parseDate($_POST['antidate']) : new DateTime('now');
+  $antidate = $antidate->format('Y-m-d H:i:s');
 
-    $i = 1;
-    while ($i <= $_POST['nlignes']) {
-      $tid_type_objet = 'tid_type_objet' . $i;
-      if (isset($_POST[$tid_type_objet])) {
-        $tid_objet = 'tid_objet' . $i;
-        $tquantite = 'tquantite' . $i;
-        $tprix = 'tprix' . $i;
-        $req = $bdd->prepare('INSERT INTO vendus (timestamp, id_vente,  id_type_dechet, id_objet, quantite, remboursement, id_createur) VALUES(?, ?,?, ?, ?, ?, ?)');
-        $req->execute([$antidate, $id_vente, $_POST[$tid_type_objet], $_POST[$tid_objet], $_POST[$tquantite], $_POST[$tprix], $_SESSION['id']]);
-        $req->closeCursor();
-      }
-      $i++;
-    }
+  $req = $bdd->prepare('INSERT INTO ventes (timestamp, last_hero_timestamp, commentaire, id_point_vente, id_moyen_paiement, id_createur, id_last_hero) VALUES (?, ?, ?, ?, ?, ?, ?)');
+  $req->execute([$antidate, $antidate, $_POST['comm'], $_POST['id_point_vente'], 1, $_SESSION['id'], $_SESSION['id']]);
+  $id_vente = $bdd->lastInsertId();
+  $req->closeCursor();
 
-    header('Location:../ifaces/ventes.php?msg=Remboursement effectué &numero=' . $_POST['id_point_vente']);
-  } else {
-    $req = $bdd->prepare('INSERT INTO ventes (commentaire, id_point_vente,id_moyen_paiement, id_createur) VALUES(?,?, ?, ? ,?)');
-    $req->execute([$_POST['comm'], $_POST['id_point_vente'], 1, $_SESSION['id']]);
-    $id_vente = $bdd->lastInsertId();
-    $req->closeCursor();
-
-    $i = 1;
-    while ($i <= $_POST['nlignes']) {
-      $tid_type_objet = 'tid_type_objet' . $i;
+  $i = 1;
+  $req = $bdd->prepare('INSERT INTO vendus (
+    timestamp,
+    last_hero_timestamp,
+    id_vente,
+    id_type_dechet,
+    id_objet,
+    quantite,
+    prix,
+    remboursement,
+    id_createur,
+    id_last_hero
+  ) VALUES (
+    :timestamp,
+    :timestamp1,
+    :id_vente,
+    :id_type_dechet,
+    :id_objet,
+    :quantite,
+    0,
+    :remboursement,
+    :id_createur,
+    :id_createur1)');
+  $req->bindValue(':timestamp', $antidate, PDO::PARAM_STR);
+  $req->bindValue(':timestamp1', $antidate, PDO::PARAM_STR);
+  $req->bindValue(':id_vente', $id_vente, PDO::PARAM_INT);
+  $req->bindValue(':id_createur', $_SESSION['id'], PDO::PARAM_INT);
+  $req->bindValue(':id_createur1', $_SESSION['id'], PDO::PARAM_INT);
+  while ($i <= $_POST['nlignes']) {
+    $tid_type_objet = 'tid_type_objet' . $i;
+    if (isset($_POST[$tid_type_objet])) {
       $tid_objet = 'tid_objet' . $i;
       $tquantite = 'tquantite' . $i;
       $tprix = 'tprix' . $i;
-      $req = $bdd->prepare('INSERT INTO vendus (id_vente,  id_type_dechet, id_objet, quantite, remboursement, id_createur) VALUES(?, ?, ?, ?, ?, ?)');
-      $req->execute([$id_vente, $_POST[$tid_type_objet], $_POST[$tid_objet], $_POST[$tquantite], $_POST[$tprix], $_SESSION['id']]);
-      $req->closeCursor();
-      $i++;
+      $req->bindValue(':id_type_dechet', $_POST[$tid_type_objet], PDO::PARAM_INT);
+      $req->bindValue(':id_objet', $_POST[$tid_objet], PDO::PARAM_INT);
+      $req->bindValue(':quantite', $_POST[$tquantite], PDO::PARAM_INT);
+      $req->bindValue(':remboursement', $_POST[$tprix], PDO::PARAM_STR);
+      $req->execute();
     }
-    header('Location:../ifaces/ventes.php?msg=Remboursement effectué &numero=' . $_POST['id_point_vente']);
+    $i++;
   }
+  $req->closeCursor();
+  header('Location:../ifaces/ventes.php?msg=Remboursement effectué &numero=' . $_POST['id_point_vente']);
 } else {
   header('Location:../moteur/destroy.php');
 }
