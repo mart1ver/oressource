@@ -60,6 +60,7 @@ function generic_insert_config(PDO $bdd, string $table, array $data) {
   $req->bindvalue(':id_createur', $data['createur'], PDO::PARAM_INT);
   $req->bindvalue(':id_createur1', $data['createur'], PDO::PARAM_INT);
   $req->execute();
+  $req->closeCursor();
 }
 
 function generic_insert_5Config(PDO $bdd, string $table, string $str0, string $str1, string $int0, array $data) {
@@ -87,6 +88,7 @@ function generic_insert_5Config(PDO $bdd, string $table, string $str0, string $s
   $req->bindvalue(':id_createur', $data['createur'], PDO::PARAM_INT);
   $req->bindvalue(':id_createur1', $data['createur'], PDO::PARAM_INT);
   $req->execute();
+  $req->closeCursor();
 }
 
 function generic_ctor_post(): array {
