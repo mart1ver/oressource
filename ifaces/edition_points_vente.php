@@ -37,7 +37,7 @@ if (is_valid_session() && is_allowed_config()) {
     <p>Attention les points de ventes doivent impérativement avoir des noms distincts!</p>
     <div class="panel-body">
       <div class="row">
-        <form action="../moteur/edition_points_vente_post.php" method="post">
+        <form action="../moteur/points_vente_post.php" method="post">
           <div class="col-md-2">
             <label for="nom">Nom:</label>
             <br>

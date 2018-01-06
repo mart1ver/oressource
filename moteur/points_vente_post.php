@@ -18,7 +18,6 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 require_once '../core/configs.php';
 
-header('Location:' . serve_config('moyens_paiment', 'moyen de paiement', 'moyenPaiementPost'));
+header('Location:' . serve_config('edition_points_vente', 'point de vente', 'point_ventePost'));

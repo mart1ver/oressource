@@ -20,4 +20,4 @@
 
 require_once '../core/configs.php';
 
-header('Location:' . serve_config('points_collecte', 'point de collecte', 'point_collectePost'));
+header('Location:' . serve_config('edition_points_sorties', 'point de sortie', 'point_sortiePost'));

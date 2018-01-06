@@ -22,8 +22,10 @@ session_start();
 require_once '../moteur/dbconfig.php';
 require_once '../core/composants.php';
 require_once '../core/requetes.php';
+require_once '../core/session.php';
 
-if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($_SESSION['niveau'], 'k') !== false)) {
+
+if (is_valid_session() && is_allowed_config()) {
   require_once 'tete.php';
   ?>
   <div class="container">
@@ -31,7 +33,7 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($
     <div class="panel-heading">Gérez ici les différents points de sortie hors-boutique.</div>
     <div class="panel-body">
       <div class="row">
-        <form action="../moteur/edition_points_sortie_post.php" method="post">
+        <form action="../moteur/points_sortie_post.php" method="post">
           <div class="col-md-3"><label for="nom">Nom:</label><br><br><input type="text"                 value ="<?= $_GET['nom'] ?? ''; ?>" name="nom" id="nom" class="form-control " required autofocus></div>
           <div class="col-md-3"><label for="addresse">Adresse:</label><br><br><input type="text" value="<?= $_GET['adresse'] ?? ''; ?>" name="adresse" id="adresse" class="form-control" required></div>
           <div class="col-md-2"><label for="commentaire">Commentaire:</label><br><br><input type="text" value ="<?= $_GET['commentaire'] ?? ''; ?>" name="commentaire" id="commentaire" class="form-control" required></div>
