@@ -20,4 +20,4 @@
 
 require_once '../core/configs.php';
 
-header('Location:' . serve_config('points_vente', 'point de vente', 'point_ventePost'));
+header('Location: ' . serve_config('types_sortie', 'type de sortie', 'types_sortiePost'));

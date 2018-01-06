@@ -18,7 +18,6 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 require_once '../core/configs.php';
 
-header('Location:' . serve_config('points_sorties', 'point de sortie', 'point_sortiePost'));
+header('Location:' . serve_config('edition_points_collecte', 'point de collecte', 'point_collectePost'));
