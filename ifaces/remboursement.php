@@ -22,30 +22,28 @@ session_start();
 require_once '../core/requetes.php';
 require_once '../core/session.php';
 
-if (is_valid_session() && is_allowed_vente_id($_GET['numero'])) {
+$numero = filter_input(INPUT_GET, 'numero', FILTER_VALIDATE_INT);
+
+if (is_valid_session() && is_allowed_vente_id($numero)) {
   require_once '../moteur/dbconfig.php';
+  $reponse = $bdd->query('SELECT cr FROM `description_structure`');
+  $code = $reponse->fetch()['cr'];
+  $reponse->closeCursor();
+  if ($_POST['passrmb'] !== (string) $code) {
+    header('Location:../ifaces/ventes.php?numero=' . $numero . '&err=mauvais mot de passe');
+    die;
+  }
+
+  $req = $bdd->prepare('SELECT max(id) id FROM ventes WHERE id_point_vente = :id');
+    $req->execute(['id' => $numero]);
+  $numero_vente = $donnees = $req->fetch()['id'] + 1;
+  $req->closeCursor();
+  $point = points_ventes_id($bdd, $numero);
   require_once 'tete.php';
   ?>
   <div class="panel-body" >
     <fieldset>
-      <legend>
-        <?php
-        $req = $bdd->prepare('SELECT max(id) FROM ventes WHERE id_point_vente = :id ');
-        $req->execute(['id' => $_GET['numero']]);
-        while ($donnees = $req->fetch()) {
-          $numero_vente = $donnees['max(id)'] + 1;
-        }
-        $req->closeCursor();
-        $req = $bdd->prepare('SELECT * FROM points_vente WHERE id = :id ');
-        $req->execute(['id' => $_GET['numero']]);
-        while ($donnees = $req->fetch()) {
-          echo$donnees['nom'];
-          $nom_pv = $donnees['nom'];
-          $adresse_pv = $donnees['adresse'];
-        }
-        $req->closeCursor();
-        ?>
-      </legend>
+      <legend><?= $point['nom'] ?></legend>
     </fieldset>
     <div class="row">
       <br>
@@ -57,7 +55,6 @@ if (is_valid_session() && is_allowed_vente_id($_GET['numero'])) {
             </span>
           </div>
           <div class="panel-body">
-
             <form action="../moteur/remboursement_post.php" id="formulaire" method="post">
               <?php if (is_allowed_saisie_date() && (strpos($_SESSION['niveau'], 'e') !== false)) { ?>
                 <label for="antidate">Date:</label>
@@ -66,19 +63,16 @@ if (is_valid_session() && is_allowed_vente_id($_GET['numero'])) {
                 <br><br>
               <?php } ?>
               <ul id="liste" class="list-group">
-                <li class="list-group-item">Réference: <?= $_GET['numero']; ?>#<?= $numero_vente; ?>, date: <?= date('d-m-Y'); ?><br><?= $nom_pv; ?><br><?= $adresse_pv; ?>,<br>siret: <?= $_SESSION['siret']; ?></li>
+                <li class="list-group-item">Réference: <?= $numero; ?>#<?= $numero_vente; ?>, date: <?= date('d-m-Y'); ?><br><?= $point['nom']; ?><br><?= $point['adresse']; ?>,<br>siret: <?= $_SESSION['siret']; ?></li>
+              </ul>
+              <ul class="list-group" id="total"></ul>
 
-              </ul>
-              <ul class="list-group" id="total">
-              </ul>
               <input type="text" class="form-control" placeholder="commentaire" id="comm" name="comm"><br>
-
               <br>
               <input type="hidden"  id="nlignes" name="nlignes">
               <input type="hidden"  id="narticles" name="narticles">
               <input type="hidden"  id="ptot" name="ptot">
-
-              <input type="hidden" name ="id_point_vente" id="id_point_vente" value="<?= $_GET['numero']; ?>">
+              <input type="hidden" name="id_point_vente" id="id_point_vente" value="<?= $numero; ?>">
             </form>
             <ul id="boutons" class="list-group">
               <button class="btn btn-danger btn-lg" onclick="encaisse();">Rembourser!</button>
@@ -164,7 +158,7 @@ if (is_valid_session() && is_allowed_vente_id($_GET['numero'])) {
 
         </div>
         <br>
-        <a href="ventes.php?numero=<?= $_GET['numero']; ?>&nom=<?= $_GET['nom']; ?>&adresse=<?= $_GET['adresse']; ?>">
+        <a href="ventes.php?numero=<?= $numero; ?>">
           <button type="button"  class="btn btn-default pull-right" >
             Retour aux ventes
           </button>

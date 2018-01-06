@@ -273,7 +273,7 @@ CREATE TABLE `moyens_paiement` (
   KEY `FK_MoyensPaiment_Editeur` (`id_last_hero`),
   CONSTRAINT `FK_MoyensPaiment_Createur` FOREIGN KEY (`id_createur`) REFERENCES `utilisateurs` (`id`),
   CONSTRAINT `FK_MoyensPaiment_Editeur` FOREIGN KEY (`id_last_hero`) REFERENCES `utilisateurs` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -282,7 +282,7 @@ CREATE TABLE `moyens_paiement` (
 
 LOCK TABLES `moyens_paiement` WRITE;
 /*!40000 ALTER TABLE `moyens_paiement` DISABLE KEYS */;
-INSERT INTO `moyens_paiement` VALUES (4,'2018-01-03 22:43:22','Especes','billet et pieces ','#732121',1,1,1,'2018-01-03 22:43:30'),(5,'2018-01-03 22:43:22','Cheque','cheques','#c0c0c0',1,1,1,'2018-01-03 22:43:30'),(6,'2018-01-03 22:43:22','Carte Bleue','Carte Bleue','#0000ff',1,1,1,'2018-01-03 22:43:30');
+INSERT INTO `moyens_paiement` VALUES (1,'2018-01-03 22:43:22','Especes','billet et pieces ','#732121',1,1,1,'2018-01-03 22:43:30'),(2,'2018-01-03 22:43:22','Cheque','cheques','#c0c0c0',1,1,1,'2018-01-03 22:43:30'),(3,'2018-01-03 22:43:22','Carte Bleue','Carte Bleue','#0000ff',1,1,1,'2018-01-03 22:43:30');
 /*!40000 ALTER TABLE `moyens_paiement` ENABLE KEYS */;
 UNLOCK TABLES;
 
