@@ -60,27 +60,6 @@ function objet_id(PDO $bdd, int $id_obj) {
   return fetch_id($bdd, 'SELECT * FROM grille_objets WHERE id = :id', $id_obj);
 }
 
-function objet_update(PDO $bdd, int $id, float $prix, string $nom, string $description) {
-  $req = $bdd->prepare('
-      update grille_objets
-      set nom = :nom1,
-          description = :description,
-          prix = :prix
-      where BINARY nom <> :nom2
-      and id = :id');
-  $req->bindValue(':id', $id, PDO::PARAM_INT);
-  $req->bindValue(':prix', $prix);
-  $req->bindParam(':nom1', $nom, PDO::PARAM_STR);
-  $req->bindParam(':nom2', $nom, PDO::PARAM_STR);
-  $req->bindParam(':description', $description, PDO::PARAM_STR);
-  $req->execute();
-  if ($req->rowCount() === 0) {
-    $req->closeCursor();
-    throw new UnexpectedValueException('Un objet avec le meme nom existe deja.');
-  }
-  $req->closeCursor();
-}
-
 function objets(PDO $bdd): array {
   $sql = 'SELECT * FROM grille_objets';
   return fetch_all($sql, $bdd);

@@ -34,13 +34,24 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && is_allowe
   $description = filter_input(INPUT_POST, 'description', FILTER_SANITIZE_STRING);
 
   try {
-    objet_update($bdd, $id, $prix, $nom, $description);
-  } catch (UnexpectedValueException $e) {
-    header("Location:../ifaces/grilles_prix.php?err={$e->getMessage()}&typo={$id}");
-    die();
+    $req = $bdd->prepare('UPDATE grille_objets
+    SET nom = :nom,
+        description = :description,
+        prix = :prix
+    WHERE id = :id');
+    $req->bindValue(':id', $id, PDO::PARAM_INT);
+    $req->bindValue(':prix', $prix);
+    $req->bindParam(':nom', $nom, PDO::PARAM_STR);
+    $req->bindParam(':description', $description, PDO::PARAM_STR);
+    $req->execute();
+    $req->closeCursor();
+    header('Location:../ifaces/grilles_prix.php');
+  } catch (PDOException $e) {
+    if ($e->getCode() == '23000') {
+      header("Location:../ifaces/grilles_prix.php?err={$e->getMessage()}&typo={$id}");
+    }
+    throw $e;
   }
-
-  header('Location:../ifaces/grilles_prix.php');
 } else {
   header('Location:../moteur/destroy.php');
 }
