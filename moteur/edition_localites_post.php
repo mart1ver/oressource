@@ -25,7 +25,7 @@ session_start();
 if (is_valid_session() && is_allowed_config()) {
   require_once '../moteur/dbconfig.php';
   try {
-    $req = $bdd->prepare('INSERT INTO localites (nom, relation_openstreetmap, couleur, commentaire, visible, id_createur, id_last_hero) VALUES (?, ?, ?, ?, ?, ?)');
+    $req = $bdd->prepare('INSERT INTO localites (nom, relation_openstreetmap, couleur, commentaire, id_createur, id_last_hero) VALUES (?, ?, ?, ?, ?, ?)');
     $req->execute([$_POST['nom'], $_POST['lien'], $_POST['couleur'], $_POST['commentaire'], $_SESSION['id'], $_SESSION['id']]);
     $req->closeCursor();
     header('Location:../ifaces/edition_localites.php?msg=Localité enregistrée avec succes!');
