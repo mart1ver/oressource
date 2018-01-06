@@ -18,20 +18,23 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+require_once '../core/session.php';
+
 session_start();
-if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($_SESSION['niveau'], 'g') !== false)) {
+
+if (is_valid_session() && is_allowed_gestion()) {
   require_once '../moteur/dbconfig.php';
-  $req = $bdd->prepare('SELECT SUM(id) FROM type_contenants WHERE nom = :nom ');
-  $req->execute(['nom' => $_POST['nom']]);
-  $donnees = $req->fetch();
-  $req->closeCursor();
-  if ($donnees['SUM(id)'] > 0) {
-    header('Location:../ifaces/edition_types_contenants.php?err=Un moyen de manutention porte deja le meme nom!&nom=' . $_POST['nom'] . '&description=' . $_POST['description'] . '&masse_bac=' . $_POST['masse_bac'] . '&couleur=' . substr($_POST['couleur'], 1));
-  } else {
+  try {
     $req = $bdd->prepare('INSERT INTO type_contenants (nom, couleur, description, masse, id_createur, id_last_hero) VALUES (?, ?, ?, ?, ?, ?)');
     $req->execute([$_POST['nom'], $_POST['couleur'], $_POST['description'], $_POST['masse'], $_SESSION['id'], $_SESSION['id']]);
     $req->closeCursor();
     header('Location:../ifaces/edition_types_contenants.php?msg=Moyen de manutention enregistré avec succes!');
+  } catch (PDOException $e) {
+    if ($e->getCode() == '23000') {
+      header('Location:../ifaces/edition_types_contenants.php?err=Un moyen de manutention porte deja le meme nom!&nom=' . $_POST['nom'] . '&description=' . $_POST['description'] . '&masse_bac=' . $_POST['masse_bac'] . '&couleur=' . substr($_POST['couleur'], 1));
+      die;
+    }
+    throw $e;
   }
 } else {
   header('Location:../moteur/destroy.php');
