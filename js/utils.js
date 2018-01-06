@@ -17,13 +17,13 @@
  */
 
 function toQueryString(obj) {
-    var parts = [];
-    for (var i in obj) {
-        if (obj.hasOwnProperty(i)) {
-            parts.push(encodeURIComponent(i) + "=" + encodeURIComponent(obj[i]));
-        }
+  var parts = [];
+  for (const i in obj) {
+    if (obj.hasOwnProperty(i)) {
+      parts.push(encodeURIComponent(i) + "=" + encodeURIComponent(obj[i]));
     }
-    return parts.join("&");
+  }
+  return parts.join("&");
 }
 
 const dateUStoFR = ({label}) => {
@@ -133,6 +133,19 @@ const MorrisBar = (obj, element, labels, unit, couleur) => {
       resize: true,
       barColors: [couleur],
       goals: [obj.sum / obj.data.length]
+    });
+  }
+};
+
+const graphMorris = (obj, element) => {
+  if (obj.data.length !== 0) {
+    return new Morris.Donut({
+      element,
+      data: obj.data,
+      backgroundColor: '  #ccc',
+      labelColor: '#060',
+      colors: obj.colors,
+      formatter: (x) => `${x} Kg.`
     });
   }
 };
