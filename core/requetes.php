@@ -315,17 +315,17 @@ function structure(PDO $bdd): array {
   $req->execute();
   $result = $req->fetch(PDO::FETCH_ASSOC);
   $req->closeCursor();
-  $result['tva_active'] = $result['tva_active'] == '1';
-  $result['lot'] = $result['lot'] == '1';
-  $result['viz'] = $result['viz'] == '1';
-  $result['saisiec'] = $result['saisiec'] == '1';
-  $result['affsp'] = $result['affsp'] == '1';
-  $result['affss'] = $result['affss'] == '1';
-  $result['affsr'] = $result['affsr'] == '1';
-  $result['affsd'] = $result['affsd'] == '1';
-  $result['affsde'] = $result['affsde'] == '1';
-  $result['pes_vente'] = $result['pes_vente'] == '1';
-  $result['force_pes_vente'] = $result['force_pes_vente'] == '1';
+  $result['tva_active'] = $result['tva_active'];
+  $result['lot'] = $result['lot'];
+  $result['viz'] = $result['viz'];
+  $result['saisiec'] = $result['saisiec'];
+  $result['affsp'] = $result['affsp'];
+  $result['affss'] = $result['affss'];
+  $result['affsr'] = $result['affsr'];
+  $result['affsd'] = $result['affsd'];
+  $result['affsde'] = $result['affsde'];
+  $result['pes_vente'] = $result['pes_vente'];
+  $result['force_pes_vente'] = $result['force_pes_vente'];
   return $result;
 }
 
@@ -354,16 +354,16 @@ function structure_update(PDO $bdd, array $structure) {
     force_pes_vente = :force_pes_vente
     WHERE id = :id';
   $stmt = $bdd->prepare($sql);
-  $stmt->bindValue(':nom', $structure['nom']);
-  $stmt->bindValue(':adresse', $structure['adresse']);
+  $stmt->bindValue(':nom', $structure['nom'], PDO::PARAM_STR);
+  $stmt->bindValue(':adresse', $structure['adresse'], PDO::PARAM_STR);
   $stmt->bindValue(':id_localite', $structure['id_localite'], PDO::PARAM_INT);
-  $stmt->bindValue(':description', $structure['description']);
-  $stmt->bindValue(':siret', $structure['siret']);
-  $stmt->bindValue(':telephone', $structure['telephone']);
-  $stmt->bindValue(':mail', $structure['mail']);
-  $stmt->bindValue(':taux_tva', $structure['taux_tva']);
-  $stmt->bindValue(':tva_active', $structure['tva_active']);
-  $stmt->bindValue(':cr', $structure['cr']);
+  $stmt->bindValue(':description', $structure['description']. PDO::PARAM_STR);
+  $stmt->bindValue(':siret', $structure['siret'], PDO::PARAM_STR);
+  $stmt->bindValue(':telephone', $structure['telephone'], PDO::PARAM_STR);
+  $stmt->bindValue(':mail', $structure['mail'], PDO::PARAM_STR);
+  $stmt->bindValue(':taux_tva', $structure['taux_tva'], PDO::PARAM_STR);
+  $stmt->bindValue(':tva_active', $structure['tva_active'], PDO::PARAM_INT);
+  $stmt->bindValue(':cr', $structure['cr'], PDO::PARAM_STR);
   $stmt->bindValue(':lot', $structure['lot'], PDO::PARAM_INT);
   $stmt->bindValue(':viz', $structure['viz'], PDO::PARAM_INT);
   $stmt->bindValue(':nb_viz', $structure['nb_viz'], PDO::PARAM_INT);
