@@ -26,10 +26,7 @@ if (is_valid_session() === 'oressource' && is_allowed_verifications()) {
   require_once '../moteur/dbconfig.php';
   require_once 'tete.php';
 
-  $users = array_reduce(utilisateurs($bdd), function ($acc, $e) {
-    $acc[$e['id']] = $e;
-    return $acc;
-  }, []);
+  $users = map_by(utilisateurs($bdd), 'id');
 
   $id = $_GET['nvente'];
   $req = $bdd->prepare('SELECT

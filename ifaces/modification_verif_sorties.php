@@ -85,20 +85,14 @@ function strategie_sortie(PDO $bdd, string $classe, int $id): array {
     ];
   } elseif ($classe === 'sortiesc') {
     return [
-      'meta' => array_reduce(filter_visibles(convention_sortie($bdd)), function ($acc, $e) {
-          $acc[$e['id']] = $e;
-          return $acc;
-        }),
+      'meta' => map_by(filter_visibles(convention_sortie($bdd)), 'id'),
       'data' => array_merge(pesees_sorties_evac($bdd, $id), pesees_sorties_items($bdd, $id)),
       'h2' => 'conventionnés',
       'label' => 'Nom du partenaire:'
     ];
   } elseif ($classe === 'sotriesr') {
     return [
-      'meta' => array_reduce(filter_visibles(filieres_sorties($bdd)), function ($acc, $e) {
-          $acc[$e['id']] = $e;
-          return $acc;
-        }),
+      'meta' => map_by(filter_visibles(filieres_sorties($bdd)), 'id'),
       'data' => pesees_sorties_evac($bdd, $id),
       'label' => "Nom de l'entreprise de recyclage:",
       'h2' => 'recyclage'
@@ -110,10 +104,7 @@ function strategie_sortie(PDO $bdd, string $classe, int $id): array {
     ];
   } else {
     return [
-      'meta' => array_reduce(filter_visibles(types_sorties($bdd)), function ($acc, $e) {
-          $acc[$e['id']] = $e;
-          return $acc;
-        }),
+      'meta' => map_by(filter_visibles(types_sorties($bdd)), 'id'),
       'data' => array_merge(pesees_sorties_evac($bdd, $id), pesees_sorties_items($bdd, $id)),
       'h2' => 'dons',
       'label' => 'Type de sortie:'
@@ -123,10 +114,7 @@ function strategie_sortie(PDO $bdd, string $classe, int $id): array {
 
 if (is_valid_session() && is_allowed_verifications()) {
   require_once '../moteur/dbconfig.php';
-  $users = array_reduce(utilisateurs($bdd), function ($acc, $e) {
-    $acc[$e['id']] = $e;
-    return $acc;
-  }, []);
+  $users = map_by(utilisateurs($bdd), 'id');
 
   $filiere_sortie = filieres_sorties($bdd);
   $id = (int) $_GET['id'];

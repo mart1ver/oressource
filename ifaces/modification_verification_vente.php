@@ -24,10 +24,7 @@ require_once '../core/session.php';
 
 if (is_valid_session() && is_allowed_verifications()) {
   require_once '../moteur/dbconfig.php';
-  $users = array_reduce(utilisateurs($bdd), function ($acc, $e) {
-    $acc[$e['id']] = $e;
-    return $acc;
-  }, []);
+  $users = map_by(utilisateurs($bdd), 'id');
 
   $req = $bdd->prepare('SELECT
     vendus.id,

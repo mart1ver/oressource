@@ -17,6 +17,29 @@
   You should have received a copy of the GNU Affero General Public License
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
+/**
+ * Fonction auxillière servant à crée un nouvel `array` indexé par les `$key` de `$a`.
+ * Le but est de pouvoir facilement rechercher des élèments dans un array par leur id.
+ * Avec une compléxité algorithmique de O(n log(n)) et non O(n) si on à un simple tableau|liste.
+ *
+ * Exemple:
+ * ```
+ * $b = [ ['id' => 1, 'data' => 'foo' ]], ['id' => 10, 'data' => 'bar']];
+ * echo map_by($b, 'id');
+ * # [ 1 => ['id' => 1, 'data' => 'foo'], 10 => ['id' => 10, 'data' => 'bar']]
+ * ```
+ * @param array $a Array contenant des array avec toujours la clef $key dedans.
+ * @param type $key Clé sur laquelle nous désirons indexé notre array de retour
+ * @return array Array indéxé par la la key donnée en paramètre
+ */
+function map_by(array $a, $key): array {
+  return array_reduce($a, function ($acc, $e) use ($key) {
+    $acc[$e[$key]] = $e;
+    return $acc;
+  }, []);
+}
+
 function filter_visibles(array $a): array {
   return array_values(array_filter($a, function (array $e) {
       return $e['visible'];

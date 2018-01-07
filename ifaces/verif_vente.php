@@ -33,10 +33,7 @@ if (is_valid_session() && is_allowed_verifications()) {
   $time_debut = DateTime::createFromFormat('d-m-Y', $date1)->format('Y-m-d') . ' 00:00:00';
   $time_fin = DateTime::createFromFormat('d-m-Y', $date2)->format('Y-m-d') . ' 23:59:59';
 
-  $users = array_reduce(utilisateurs($bdd), function ($acc, $e) {
-    $acc[$e['id']] = $e;
-    return $acc;
-  }, []);
+  $users = map_by(utilisateurs($bdd), 'id');
 
   $req = $bdd->prepare('SELECT
     ventes.id,
