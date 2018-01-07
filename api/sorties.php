@@ -211,6 +211,11 @@ if (is_valid_session()) {
     $bdd->rollback();
     http_response_code(400); // Bad Request
     echo(json_encode(['error' => $e->getMessage()], JSON_FORCE_OBJECT));
+  } catch (PDOException $e) {
+    $bdd->rollback();
+    http_response_code(500); // Internal Server Error
+    echo(json_encode(['error' => 'Une erreur est survenue dans Oressource vente annulée.']));
+    throw $e;
   }
 } else {
   http_response_code(401); // Unauthorized.

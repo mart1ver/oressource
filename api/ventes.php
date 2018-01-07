@@ -185,7 +185,7 @@ if (is_valid_session()) {
     echo(json_encode(['error' => $e->getMessage()]));
   } catch (PDOException $e) {
     $bdd->rollback();
-    http_response_code(501); // Internal Server Error
+    http_response_code(500); // Internal Server Error
     echo(json_encode(['error' => 'Une erreur est survenue dans Oressource vente annulée.']));
     throw $e;
   }
