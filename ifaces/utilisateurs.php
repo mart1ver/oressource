@@ -22,6 +22,23 @@ session_start();
 require_once '../core/session.php';
 require_once '../core/requetes.php';
 require_once '../core/composants.php';
+function _page_droit(array $utilisateur = []): array {
+  if ($utilisateur === []) {
+    $utilisateur['niveau'] = '';
+  }
+  return [
+    'text' => "Permissions d'accès",
+    'data' => [
+      [['name' => 'niveaubi', 'text' => "Bilans"], utilisateur_bilan($utilisateur)],
+      [['name' => 'niveaug', 'text' => "Gestion quotidienne"], utilisateur_gestion($utilisateur)],
+      [['name' => 'niveauk', 'text' => "Configuration de Oressource"], utilisateur_config($utilisateur)],
+      [['name' => 'niveauh', 'text' => "Verif. formulaires"], utilisateur_verifications($utilisateur)],
+      [['name' => 'niveaul', 'text' => "Utilisateurs"], utilisateur_users($utilisateur)],
+      [['name' => 'niveauj', 'text' => "Recycleurs et convention partenaires"], utilisateur_partners($utilisateur)],
+      [['name' => 'niveaue', 'text' => "Saisir la date dans les formulaires"], utilisateur_edit_date($utilisateur)]
+    ]
+  ];
+}
 
 if (is_valid_session() && is_allowed_users()) {
   require_once 'tete.php';
@@ -35,18 +52,7 @@ if (is_valid_session() && is_allowed_users()) {
   $info = null;
   if (!isset($_GET['id'])) {
     $urlPost = '../moteur/inscription_post.php';
-    $droits = [
-      'text' => "Permissions d'accès",
-      'data' => [
-        [['name' => 'niveaubi', 'text' => "Bilans"], false],
-        [['name' => 'niveaug', 'text' => "Gestion quotidienne"], false],
-        [['name' => 'niveauk', 'text' => "Configuration de Oressource"], false],
-        [['name' => 'niveauh', 'text' => "Verif. formulaires"], false],
-        [['name' => 'niveaul', 'text' => "Utilisateurs"], false],
-        [['name' => 'niveauj', 'text' => "Recycleurs et convention partenaires"], false],
-        [['name' => 'niveaue', 'text' => "Saisir la date dans les formulaires"], false]
-      ]
-    ];
+    $droits = _page_droit();
 
     $collectes = [
       'text' => "Points de collecte:",
@@ -86,18 +92,7 @@ if (is_valid_session() && is_allowed_users()) {
   } else {
     $urlPost = '../moteur/modification_utilisateur_post.php';
     $utilisateur = utilisateurs_id($bdd, $_GET['id']);
-    $droits = [
-      'text' => "Permissions d'accès",
-      'data' => [
-        [['name' => 'niveaubi', 'text' => "Bilans"], utilisateur_bilan($utilisateur)],
-        [['name' => 'niveaug', 'text' => "Gestion quotidienne"], utilisateur_gestion($utilisateur)],
-        [['name' => 'niveauk', 'text' => "Configuration de Oressource"], utilisateur_config($utilisateur)],
-        [['name' => 'niveauh', 'text' => "Verif. formulaires"], utilisateur_verifications($utilisateur)],
-        [['name' => 'niveaul', 'text' => "Utilisateurs"], utilisateur_users($utilisateur)],
-        [['name' => 'niveauj', 'text' => "Recycleurs et convention partenaires"], utilisateur_partners($utilisateur)],
-        [['name' => 'niveaue', 'text' => "Saisir la date dans les formulaires"], utilisateur_edit_date($utilisateur)]
-      ]
-    ];
+    $droits = _page_droit($utilisateur);
 
     $collectes = [
       'text' => "Points de collecte:",
@@ -134,7 +129,7 @@ if (is_valid_session() && is_allowed_users()) {
     <?= configNav($nav); ?>
     <form action="<?= $urlPost ?>" method="post">
       <?php if (isset($_GET['id'])) { ?>
-        <input type="hidden" name="id" id="id" value="<?= $_GET['id']; ?>">
+        <input type="hidden" name="id" value="<?= $_GET['id']; ?>">
       <?php } ?>
       <div class="row">
         <div class="col-md-4">
@@ -144,8 +139,6 @@ if (is_valid_session() && is_allowed_users()) {
         <div class="col-md-4">
           <?= configCheckboxArea($droits) ?>
         </div>
-        <?php
-        ?>
         <div class="col-md-4">
           <?= configCheckboxArea($collectes) ?>
           <?= configCheckboxArea($ventes) ?>
@@ -155,13 +148,11 @@ if (is_valid_session() && is_allowed_users()) {
         <div class="row">
           <div class="col-md-5 col-md-offset-5">
             <?php if (isset($_GET['id'])) { ?>
-              <button name="modifier" class="btn btn-warning">Modifier</button>
-              <a href="edition_utilisateurs.php">
-                <button name="creer" class="btn btn">Annuler</button>
-              </a>
+              <button class="btn btn-warning">Modifier</button>
+              <a class="btn btn-default" href="edition_utilisateurs.php">Annuler</a>
             </div>
           <?php } else { ?>
-            <button name="creer" class="btn btn-default">Créer!</button>
+            <button class="btn btn-success">Créer</button>
           <?php } ?>
         </div>
       </div>

@@ -47,7 +47,7 @@ if (is_valid_session() && is_allowed_users()) {
           <th>Prénom</th>
           <th>Mail</th>
           <th>Éditer</th>
-          <th>Supprimer!</th>
+          <th>Supprimer</th>
         </tr>
       </thead>
       <tbody>
@@ -58,15 +58,12 @@ if (is_valid_session() && is_allowed_users()) {
             <td><?= $u['prenom']; ?></td>
             <td><?= $u['mail']; ?></td>
             <td>
-              <form action="utilisateurs.php" method="get">
-                <input type="hidden" name="id" id="id" value="<?= $u['id']; ?>">
-                <button class="btn btn-warning btn-sm">Éditer</button>
-              </form>
+              <a href="utilisateurs.php?id=<?= $u['id']; ?>" class="btn btn-warning btn-sm">Éditer</a>
             </td>
             <td>
               <form action="../moteur/sup_utilisateur.php" method="post">
-                <input type="hidden" name ="id" id="id" value="<?= $u['id']; ?>">
-                <button class="btn btn-danger btn-sm ">Supprimer</button>
+                <input type="hidden" name="id" value="<?= $u['id']; ?>">
+                <button class="btn btn-danger btn-sm">Supprimer</button>
               </form>
             </td>
           </tr>
