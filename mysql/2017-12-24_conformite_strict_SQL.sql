@@ -293,6 +293,9 @@ ALTER TABLE vendus              MODIFY COLUMN last_hero_timestamp timestamp NOT 
 ALTER TABLE ventes              MODIFY COLUMN last_hero_timestamp timestamp NOT NULL default now() ON UPDATE now();
 ALTER TABLE pesees_vendus       MODIFY COLUMN last_hero_timestamp timestamp NOT NULL default now() ON UPDATE now();
 
+-- Un vendus peut ne pas avoir id_objet.
+ALTER TABLE `vendus` MODIFY COLUMN `id_objet` int(11) NULL;
+
 -- Un utilisateur dois avoir un email/pseudo unique.
 ALTER TABLE utilisateurs        ADD CONSTRAINT UN_Utilisateur_mail    UNIQUE KEY(mail(255));
 
