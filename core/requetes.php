@@ -479,7 +479,9 @@ function nb_ventes(PDO $bdd, string $start, string $stop, int $id_point_vente = 
     COUNT(DISTINCT(ventes.id)) as nb_ventes
   FROM ventes
   INNER JOIN vendus
-  ON vendus.prix > 0
+  ON ventes.id = vendus.id_vente
+  AND vendus.prix >= 0
+  AND vendus.remboursement = 0
     $cond
   AND DATE(vendus.timestamp)
   BETWEEN :du AND :au";
@@ -498,7 +500,9 @@ function nb_remboursements(PDO $bdd, string $start, string $stop, int $id_point_
     COUNT(DISTINCT(ventes.id)) as nb_remb
   FROM ventes
   INNER JOIN vendus
-  ON vendus.remboursement > 0
+  ON ventes.id = vendus.id_vente
+  AND vendus.remboursement > 0
+  AND vendus.remboursement = 0
     $cond
   AND DATE(vendus.timestamp)
   BETWEEN :du AND :au";
