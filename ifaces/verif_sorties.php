@@ -70,10 +70,7 @@ if (is_valid_session() && is_allowed_verifications()) {
   require_once '../core/requetes.php';
   require_once '../core/composants.php';
 
-  $users = array_reduce(utilisateurs($bdd), function ($acc, $e) {
-    $acc[$e['id']] = $e;
-    return $acc;
-  }, []);
+  $users = map_by(utilisateurs($bdd), 'id');
 
 
   $time_debut = DateTime::createFromFormat('d-m-Y', $_GET['date1'])->format('Y-m-d') . ' 00:00:00';

@@ -28,10 +28,7 @@ require_once '../core/session.php';
 
 if (is_valid_session() && is_allowed_partners()) {
   $filieres_sortie = filieres_sorties($bdd);
-  $types_dechets_evac = array_reduce(types_dechets_evac($bdd), function ($acc, $e) {
-    $acc[$e['id']] = $e;
-    return $acc;
-  }, []);
+  $types_dechets_evac = map_by(types_dechets_evac($bdd), 'id');
   require_once 'tete.php';
   ?>
   <div class="container">
