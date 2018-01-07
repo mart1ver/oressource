@@ -82,8 +82,7 @@ if (is_valid_session() && is_allowed_config()) {
               <?= textInput(['name' => 'siret', 'text' => "Numéro de siret:"], $struct['siret']) ?>
               <label for="description">Présentation générale de la structure:
                 <textarea name="description" id="description" form="form"
-                          rows="10" cols="50" required
-                          value="<?= $struct['description'] ?>"></textarea>
+                          rows="10" cols="50" required><?= $struct['description'] ?></textarea>
               </label>
               <div class="panel panel-default">
                 <h2 class="panel-title">formulaires de sorties hors boutique</h2>

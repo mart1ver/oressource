@@ -382,7 +382,7 @@ function structure_update(PDO $bdd, array $structure) {
   $stmt->bindValue(':nom', $structure['nom'], PDO::PARAM_STR);
   $stmt->bindValue(':adresse', $structure['adresse'], PDO::PARAM_STR);
   $stmt->bindValue(':id_localite', $structure['id_localite'], PDO::PARAM_INT);
-  $stmt->bindValue(':description', $structure['description']. PDO::PARAM_STR);
+  $stmt->bindValue(':description', $structure['description'], PDO::PARAM_STR);
   $stmt->bindValue(':siret', $structure['siret'], PDO::PARAM_STR);
   $stmt->bindValue(':telephone', $structure['telephone'], PDO::PARAM_STR);
   $stmt->bindValue(':mail', $structure['mail'], PDO::PARAM_STR);
