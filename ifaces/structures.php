@@ -85,13 +85,13 @@ if (is_valid_session() && is_allowed_config()) {
                           rows="10" cols="50" required><?= $struct['description'] ?></textarea>
               </label>
               <div class="panel panel-default">
-                <h2 class="panel-title">formulaires de sorties hors boutique</h2>
+                <h2 class="panel-title">Formulaires de sorties hors boutique</h2>
                 <div class="panel-body custom-controls-stacked">
-                  <?= checkBox(['name' => 'affsp', 'text' => "Utiliser l'onglet \"poubelles\""], $struct['affsp']) ?>
-                  <?= checkBox(['name' => 'affss', 'text' => "Utiliser l'onglet \"sorties partenaires\""], $struct['affss']) ?>
-                  <?= checkBox(['name' => 'affsr', 'text' => "Utiliser l'onglet \"recyclage\""], $struct['affsr']) ?>
-                  <?= checkBox(['name' => 'affsd', 'text' => "Utiliser l'onglet \"don\""], $struct['affsd']) ?>
-                  <?= checkBox(['name' => 'affsde', 'text' => "Utiliser l'onglet \"déchetterie\""], $struct['affsde']) ?>
+                  <?= checkBox(['name' => 'affsp', 'text' => "Utiliser l'onglet « poubelles »"], $struct['affsp']) ?>
+                  <?= checkBox(['name' => 'affss', 'text' => "Utiliser l'onglet « sorties partenaires »"], $struct['affss']) ?>
+                  <?= checkBox(['name' => 'affsr', 'text' => "Utiliser l'onglet « recyclage »"], $struct['affsr']) ?>
+                  <?= checkBox(['name' => 'affsd', 'text' => "Utiliser l'onglet « don »"], $struct['affsd']) ?>
+                  <?= checkBox(['name' => 'affsde', 'text' => "Utiliser l'onglet « déchetterie »"], $struct['affsde']) ?>
                 </div>
               </div>
             </div>
@@ -129,13 +129,13 @@ if (is_valid_session() && is_allowed_config()) {
         e.preventDefault();
         const form = new FormData(document.getElementById('form'));
         const data = {
-          nom: form.get('nom'),
+          nom: form.get('nom').trim(),
           adresse: form.get('adresse').trim(),
           id_localite: parseInt(form.get('id_localite'), 10),
-          description: form.get('description'),
-          siret: form.get('siret'),
-          telephone: form.get('telephone'),
-          mail: form.get('mail'),
+          description: form.get('description').trim(),
+          siret: form.get('siret').trim(),
+          telephone: form.get('telephone').trim(),
+          mail: form.get('mail').trim(),
           taux_tva: parseFloat(form.get('taux_tva'), 10),
           cr: form.get('cr'),
           nb_viz: form.get('nb_viz'),
