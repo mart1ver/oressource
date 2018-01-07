@@ -36,30 +36,14 @@ if (is_valid_session() && is_allowed_bilan()) {
   $date2 = $date2ft->format('d-m-Y');
 
   $date_query = "date1=$date1&date2=$date2";
-  $numero = filter_input(INPUT_GET, 'numero', FILTER_VALIDATE_INT);
+  $numero = filter_input(INPUT_GET, 'numero', FILTER_VALIDATE_INT) ?? 0;
 
-  $bilans = [];
-  $bilans_types = [];
-  $bilans_pesees_types = [];
-  $nb_ventes = 0;
-  $remb_nb = 0;
-  $chiffre_affaire = [];
-
-  if ($numero === 0) {
-    $bilans = bilan_ventes($bdd, $time_debut, $time_fin);
-    $bilans_types = bilan_ventes_par_type($bdd, $time_debut, $time_fin);
-    $bilans_pesees_types = bilan_ventes_pesees($bdd, $time_debut, $time_fin);
-    $chiffre_affaire = chiffre_affaire_par_mode_paiement($bdd, $time_debut, $time_fin);
-    $nb_ventes = nb_ventes($bdd, $time_debut, $time_fin);
-    $remb_nb = nb_remboursements($bdd, $time_debut, $time_fin);
-  } else {
-    $bilans = bilan_ventes_point_vente($bdd, $time_debut, $time_fin, $numero);
-    $bilans_types = bilan_ventes_par_type_point_vente($bdd, $time_debut, $time_fin, $numero);
-    $bilans_pesees_types = bilan_ventes_pesees_point_vente($bdd, $time_debut, $time_fin, $numero);
-    $chiffre_affaire = chiffre_affaire_mode_paiement_point_vente($bdd, $time_debut, $time_fin, $numero);
-    $nb_ventes = nb_ventes_point_vente($bdd, $time_debut, $time_fin, $numero);
-    $remb_nb = nb_remboursements_point_vente($bdd, $time_debut, $time_fin, $numero);
-  }
+  $bilans = bilan_ventes($bdd, $time_debut, $time_fin, $numero);
+  $bilans_types = bilan_ventes_par_type($bdd, $time_debut, $time_fin, $numero);
+  $bilans_pesees_types = bilan_ventes_pesees($bdd, $time_debut, $time_fin, $numero);
+  $chiffre_affaire = chiffre_affaire_mode_paiement($bdd, $time_debut, $time_fin, $numero);
+  $nb_ventes = nb_ventes($bdd, $time_debut, $time_fin, $numero);
+  $remb_nb = nb_remboursements($bdd, $time_debut, $time_fin, $numero);
 
   $bilan_pesee_mix = array_reduce(array_keys($bilans_pesees_types), function ($acc, $e)
     use ($bilans_pesees_types, $bilans_types) {
