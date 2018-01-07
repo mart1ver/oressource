@@ -340,17 +340,6 @@ function structure(PDO $bdd): array {
   $req->execute();
   $result = $req->fetch(PDO::FETCH_ASSOC);
   $req->closeCursor();
-  $result['tva_active'] = $result['tva_active'];
-  $result['lot'] = $result['lot'];
-  $result['viz'] = $result['viz'];
-  $result['saisiec'] = $result['saisiec'];
-  $result['affsp'] = $result['affsp'];
-  $result['affss'] = $result['affss'];
-  $result['affsr'] = $result['affsr'];
-  $result['affsd'] = $result['affsd'];
-  $result['affsde'] = $result['affsde'];
-  $result['pes_vente'] = $result['pes_vente'];
-  $result['force_pes_vente'] = $result['force_pes_vente'];
   return $result;
 }
 
