@@ -143,20 +143,22 @@ function utilisateur_insert(PDO $bdd, array $utilisateur): int {
   return $id;
 }
 
-function utilisateur_update(PDO $bdd, array $utilisateur) {
+function utilisateur_update(PDO $bdd, array $utilisateur, int $id) {
   $sql = 'UPDATE utilisateurs SET
-      nom = :nom,
-      prenom = :prenom,
-      mail = :mail,
-      niveau = :niveau
-      WHERE
-      id = :id';
+    nom = :nom,
+    prenom = :prenom,
+    mail = :mail,
+    niveau = :niveau,
+    id_last_hero = :id_editeur
+  WHERE
+    id = :id';
   $stmt = $bdd->prepare($sql);
-  $stmt->bindValue(':id', $utilisateur['id'], PDO::PARAM_INT);
+  $stmt->bindValue(':id', $id, PDO::PARAM_INT);
   $stmt->bindParam(':nom', $utilisateur['nom'], PDO::PARAM_STR);
   $stmt->bindParam(':prenom', $utilisateur['prenom'], PDO::PARAM_STR);
   $stmt->bindParam(':mail', $utilisateur['mail'], PDO::PARAM_STR);
   $stmt->bindParam(':niveau', $utilisateur['niveau'], PDO::PARAM_STR);
+  $stmt->bindParam(':id_editeur', $_SESSION['id'], PDO::PARAM_INT);
   $stmt->execute();
   $stmt->closeCursor();
 }
