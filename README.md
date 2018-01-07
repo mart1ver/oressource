@@ -2,7 +2,7 @@
 
 Système libre et adaptable de quantification et de bilan écologique pour
 ressourcerie écrit à l'aide de [PHP](https://secure.php.net/) compatible avec
-les versions avec 7.0 et superieures et 5.8, JavaScript (Ecmascript 6),
+les versions avec 7.0 et superieures, JavaScript (Ecmascript 6),
 [Bootstrap](http://getbootstrap.com/) et utilisant
 [MariaDB](https://mariadb.org/) ou [MySQL](https://www.mysql.com/) comme système
 de bases de données.
