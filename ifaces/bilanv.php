@@ -288,43 +288,14 @@ if (is_valid_session() && is_allowed_bilan()) {
     </div>
   </div>
 
-  <script src="../js/raphael.js"></script>
-  <script src="../js/morris/morris.js"></script>
   <script type="text/javascript">
     'use strict';
 
     $(document).ready(() => {
-      try {
         const dataMv = <?= json_encode($graphMv, JSON_NUMERIC_CHECK); ?>;
-        Morris.Donut({
-          element: 'graphMV',
-          data: dataMv.data,
-          backgroundColor: '#ccc',
-          labelColor: '#060',
-          colors: dataMv.colors,
-          formatter: (x) => {
-            return `${x} Kgs.`;
-          }
-        });
-      } catch (e) {
-        console.error(e);
-      }
-
-      try {
-        const dataPv = <?= json_encode($graphPv, JSON_NUMERIC_CHECK); ?>;
-        Morris.Donut({
-          element: 'graphPV',
-          data: dataPv.data,
-          backgroundColor: '#ccc',
-          labelColor: '#060',
-          colors: dataPv.colors,
-          formatter: (x) => {
-            return `${x}  €.`;
-          }
-        });
-      } catch (e) {
-        console.error(e);
-      }
+        graphMorris(dataMv, 'graphMV', '€');
+         const dataPv = <?= json_encode($graphPv, JSON_NUMERIC_CHECK); ?>;
+        graphMorris(dataPv, 'graphPV', '€');
     });
   </script>
 
