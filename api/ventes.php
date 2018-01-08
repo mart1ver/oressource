@@ -66,7 +66,7 @@ function vendus_insert(PDO $bdd, int $id_vente, array $vente): int {
       $req->bindValue(':remboursement', 0, PDO::PARAM_STR);
       $req->bindValue(':lot', $vendu['lot'], PDO::PARAM_INT);
       $req->bindValue(':id_type_dechet', $vendu['id_type'], PDO::PARAM_INT);
-      $req->bindValue(':id_objet', $vendu['id_objet'] ?? 0);
+      $req->bindValue(':id_objet', $vendu['id_objet'] ?? NULL);
       $req->bindValue(':quantite', $quantite, PDO::PARAM_INT);
       $req->execute();
     } else {
@@ -183,6 +183,11 @@ if (is_valid_session()) {
     $bdd->rollback();
     http_response_code(400); // Bad Request
     echo(json_encode(['error' => $e->getMessage()]));
+  } catch (PDOException $e) {
+    $bdd->rollback();
+    http_response_code(500); // Internal Server Error
+    echo(json_encode(['error' => 'Une erreur est survenue dans Oressource vente annulée.']));
+    throw $e;
   }
 } else {
   http_response_code(401); // Unauthorized.

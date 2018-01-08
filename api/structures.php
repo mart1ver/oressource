@@ -46,7 +46,7 @@ if (is_valid_session()) {
       'id' => 1,
     ]));
   } catch (PDOException $e) {
-    http_response_code(501); // Internal Server Error.
+    http_response_code(500); // Internal Server Error.
     echo(json_encode(['error' => "Une erreur est survenue dans Oressource Oups."], JSON_FORCE_OBJECT));
     throw $e;
   }

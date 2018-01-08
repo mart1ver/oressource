@@ -122,6 +122,11 @@ if (is_valid_session()) {
     } catch (UnexpectedValueException $e) {
       http_response_code(400); // Bad Request
       echo(json_encode(['error' => $e->getMessage()]));
+    } catch (PDOException $e) {
+      $bdd->rollback();
+      http_response_code(500); // Internal Server Error
+      echo(json_encode(['error' => 'Une erreur est survenue dans Oressource vente annulée.']));
+      throw $e;
     }
   } else {
     http_response_code(403); // Forbidden.

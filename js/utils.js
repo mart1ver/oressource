@@ -137,7 +137,7 @@ const MorrisBar = (obj, element, labels, unit, couleur) => {
   }
 };
 
-const graphMorris = (obj, element) => {
+const graphMorris = (obj, element, unit=' Kg') => {
   if (obj.data.length !== 0) {
     return new Morris.Donut({
       element,
@@ -145,7 +145,7 @@ const graphMorris = (obj, element) => {
       backgroundColor: '  #ccc',
       labelColor: '#060',
       colors: obj.colors,
-      formatter: (x) => `${x} Kg.`
+      formatter: (x) => `${x} ${unit}`
     });
   }
 };
