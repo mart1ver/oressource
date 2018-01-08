@@ -6,7 +6,7 @@ Instalation sous linux (Debian/Ubuntu)
 
 NOTE:
 
-Il faut une version de MySQL >= 5.6.5 et MariaDB >= 10.0.1.
+Il faut une version de MySQL >= 5.6.5 ou MariaDB >= 10.0.1.
 
 Pour une installation avec le mod php de apache:
 
