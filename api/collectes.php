@@ -116,14 +116,14 @@ if (is_valid_session()) {
       // Note: Renvoyer l'url d'acces a la ressource
       echo(json_encode(['id_collecte' => $id_collecte], JSON_NUMERIC_CHECK));
     } catch (InvalidArgumentException $e) {
-      $bdd->rollback();
+      $bdd->rollBack();
       http_response_code(400); // Bad Request
       echo(json_encode(['error' => $e->getMessage()]));
     } catch (UnexpectedValueException $e) {
       http_response_code(400); // Bad Request
       echo(json_encode(['error' => $e->getMessage()]));
     } catch (PDOException $e) {
-      $bdd->rollback();
+      $bdd->rollBack();
       http_response_code(500); // Internal Server Error
       echo(json_encode(['error' => 'Une erreur est survenue dans Oressource vente annulée.']));
       throw $e;

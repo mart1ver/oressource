@@ -60,7 +60,7 @@ function validate_json_login(array $unsafe_json) {
 function validate_json_sorties(array $unsafe_json) {
   $filters = [
     'id_type_action' => FILTER_DEFAULT, // Peux etre NULL
-    'antidate' => FILTER_DEFAULT, // Peux etre NULL validation faite plus tard.
+    'date' => FILTER_DEFAULT, // Peux etre NULL validation faite plus tard.
     'localite' => FILTER_DEFAULT, // Peux etre NULL
     'id_point' => FILTER_VALIDATE_INT,
     'id_user' => FILTER_VALIDATE_INT,
@@ -95,7 +95,7 @@ function validate_json_sorties(array $unsafe_json) {
 function validate_json_collecte(array $unsafe_json): array {
   $filters = [
     'id_type_action' => FILTER_VALIDATE_INT,
-    'antidate' => FILTER_DEFAULT,
+    'date' => FILTER_DEFAULT,
     'localite' => FILTER_VALIDATE_INT,
     'id_point' => FILTER_VALIDATE_INT,
     'id_user' => FILTER_VALIDATE_INT,

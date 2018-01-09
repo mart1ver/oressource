@@ -190,7 +190,7 @@ if (is_valid_session()) {
       }
     }
     if (count($json['evacs'] ?? 0) > 0) {
-      if ($sortie['classe'] === 'sortiesd' || $sortie['classe'] === 'sortiesc' || $sortie['classe'] === 'sortiesc') {
+      if ($sortie['classe'] === 'sortiesd' || $sortie['classe'] === 'sortiesc' || $sortie['classe'] === 'sortiesr') {
         insert_pesee_sortie($bdd, $id_sortie, $sortie, $json['evacs'], 'id_type_dechet_evac');
         $requete_OK = true;
       } elseif ($sortie['classe'] === 'sortiesp') {
@@ -208,11 +208,11 @@ if (is_valid_session()) {
       throw new UnexpectedValueException("Sortie invalide.");
     }
   } catch (UnexpectedValueException $e) {
-    $bdd->rollback();
+    $bdd->rollBack();
     http_response_code(400); // Bad Request
     echo(json_encode(['error' => $e->getMessage()], JSON_FORCE_OBJECT));
   } catch (PDOException $e) {
-    $bdd->rollback();
+    $bdd->rollBack();
     http_response_code(500); // Internal Server Error
     echo(json_encode(['error' => 'Une erreur est survenue dans Oressource vente annulée.']));
     throw $e;
