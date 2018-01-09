@@ -177,3 +177,7 @@ pre {
   margin-left: 8px;
   margin-top: 8px;
 }
+
+.list-group-item {
+  padding: 5px 10px;
+}

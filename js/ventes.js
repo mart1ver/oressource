@@ -212,7 +212,7 @@ function add() {
       const amount = vente.vente_unite ? vente.prix * vente.quantite : vente.prix;
       let html = `
             <span class="badge">${amount.toFixed(2)} €</span>
-            <span class="glyphicon glyphicon-remove" aria-hidden="true"
+            <span class="glyphicon glyphicon-trash" aria-hidden="true"
                   onclick="remove(${id});return false;">
             </span>&nbsp;&nbsp; ${quantite} &#215; ${name}`;
       if (masse > 0 && window.ventes.pesees) {
