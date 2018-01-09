@@ -83,7 +83,6 @@ if (is_valid_session() && is_allowed_collecte_id($numero)) {
         <div class="btn-group" role="group">
           <button id="encaissement" class="btn btn-success btn-lg">C'est pesé!</button>
           <button id="impression" class="btn btn-primary btn-lg" value="Print" ><span class="glyphicon glyphicon-print"></span></button>
-          <button id="reset" class="btn btn-warning btn-lg"><span class="glyphicon glyphicon-refresh"></button>
         </div>
       </div>
     </div> <!-- row -->
@@ -146,7 +145,6 @@ if (is_valid_session() && is_allowed_collecte_id($numero)) {
 
       document.getElementById('encaissement').addEventListener('click', encaisse, false);
       document.getElementById('impression').addEventListener('click', impression_ticket, false);
-      document.getElementById('reset').addEventListener('click', tickets_clear, false);
 
       window.tickets = [ ticketsItem ];
     }, false);

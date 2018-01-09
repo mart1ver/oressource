@@ -77,7 +77,6 @@ if (is_valid_session() && is_allowed_sortie_id($numero)) {
       <div class="btn-group" role="group">
         <button id="encaissement" class="btn btn-success btn-lg">C'est pesé!</button>
         <button id="impression" class="btn btn-primary btn-lg" value="Print"><span class="glyphicon glyphicon-print"></span></button>
-        <button id="reset" class="btn btn-warning btn-lg"><span class="glyphicon glyphicon-refresh"></button>
       </div>
 
     </div><!-- .col-md-4 -->
@@ -139,9 +138,6 @@ if (is_valid_session() && is_allowed_sortie_id($numero)) {
       document.getElementById('encaissement').addEventListener('click', encaisse, false);
       document.getElementById('impression').addEventListener('click', () => {
         impression_ticket(encaisse);
-      }, false);
-      document.getElementById('reset').addEventListener('click', () => {
-        tickets_clear(metadata);
       }, false);
 
       window.tickets = [ ticketItems, ticketEvac ];
