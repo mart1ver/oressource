@@ -159,10 +159,9 @@ function ticket_update_ui(container, totalUI, bag, value) {
   const { _, nom, couleur, id_last_insert, ticket } = bag;
   const li = document.createElement('li');
   li.setAttribute('class', 'list-group-item');
-  const btn = '<button class="btn btn-danger"><i class="glyphicon glyphicon-trash" aria-hidden="true"></i></button>';
-  const p = `<p style="margin-left: 5px; display: inline-block">${nom}</p>`;
-  li.innerHTML = `${btn}${p}<span class="badge" style="display: inline-block; margin-top: 9px; background-color:${couleur}">${value}</span>`;
-  li.getElementsByTagName('button')[0].addEventListener('click', () => {
+  const span = '<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>';
+  li.innerHTML = `${span}&nbsp;&nbsp;${nom}<span class="badge" style="background-color:${couleur}">${value}</span>`;
+  li.getElementsByTagName('span')[0].addEventListener('click', () => {
     ticket.remove(id_last_insert);
     const total = window.tickets.reduce((acc, ticket) => acc + ticket.total, 0);
     totalUI.textContent = `Masse totale: ${total} Kg.`;
