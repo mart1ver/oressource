@@ -149,9 +149,11 @@ function cartList(array $props) {
       <div class="panel-body">
         <form id="formulaire">
           <?php if (is_allowed_saisie_date() && is_allowed_edit_date()) { ?>
-            <label for="antidate">Date:</label>
-            <input type="date" id="antidate" name="antidate"
-                   value="<?= $props['date'] ?>">
+            <div>
+              <label for="antidate">Date:</label>
+              <input type="date" id="antidate" name="date"
+                     value="<?= $props['date'] ?>">
+            </div>
           <?php } ?>
           <ul class="list-group" id="transaction">
             <!-- Filled by Javascript -->

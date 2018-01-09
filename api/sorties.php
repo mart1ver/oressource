@@ -182,15 +182,18 @@ if (is_valid_session()) {
     $bdd->beginTransaction();
     $id_sortie = (int) insert_sortie($bdd, $sortie);
     $requete_OK = false;
-
     if (count($json['items'] ?? 0) > 0) {
       if ($sortie['classe'] === 'sorties' || $sortie['classe'] === 'sortiesc') {
         insert_pesee_sortie($bdd, $id_sortie, $sortie, $json['items'], 'id_type_dechet');
         $requete_OK = true;
       }
     }
+
     if (count($json['evacs'] ?? 0) > 0) {
-      if ($sortie['classe'] === 'sortiesd' || $sortie['classe'] === 'sortiesc' || $sortie['classe'] === 'sortiesr') {
+      if ($sortie['classe'] === 'sortiesd'
+        || $sortie['classe'] === 'sortiesc'
+        || $sortie['classe'] === 'sortiesr'
+        || $sortie['classe'] === 'sorties') {
         insert_pesee_sortie($bdd, $id_sortie, $sortie, $json['evacs'], 'id_type_dechet_evac');
         $requete_OK = true;
       } elseif ($sortie['classe'] === 'sortiesp') {
@@ -203,7 +206,7 @@ if (is_valid_session()) {
     if ($requete_OK) {
       $bdd->commit();
       http_response_code(200); // OK
-      echo(json_encode(['id_sortie' => $id_sortie], JSON_NUMERIC_CHECK));
+      echo(json_encode(['id' => $id_sortie], JSON_NUMERIC_CHECK));
     } else {
       throw new UnexpectedValueException("Sortie invalide.");
     }

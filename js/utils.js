@@ -17,7 +17,7 @@
  */
 
 function toQueryString(obj) {
-  var parts = [];
+  let parts = [];
   for (const i in obj) {
     if (obj.hasOwnProperty(i)) {
       parts.push(encodeURIComponent(i) + "=" + encodeURIComponent(obj[i]));
@@ -26,22 +26,24 @@ function toQueryString(obj) {
   return parts.join("&");
 }
 
-const dateUStoFR = ({label}) => {
-  return new moment(label, 'YYYY-MM-DD').format('DD/MM/YYYY');
-};
+const dateUStoFR = ({label}) => new moment(label, 'YYYY-MM-DD').format('DD/MM/YYYY');
 
 /**
  * Permet d'acceder aux parametres de l'url (query/search/get parameters)
  * sous la forme d'un objet js.
  */
 function process_get() {
-  const val = { };
+  const val = {};
   const query = new URLSearchParams(window.location.search.slice(1)).entries();
   for (const pair of query) {
     val[pair[0]] = pair[1];
   }
   return val;
 }
+
+/* datepicker
+ * Fonctions en rapport avec le Datepicker
+ */
 
 function set_datepicker(data) {
   const startDate = moment(data.date1, 'DD-MM-YYYY');
@@ -52,17 +54,17 @@ function set_datepicker(data) {
     endDate: endDate,
     minDate: moment('01/01/2010', 'MM/DD/YYYY'),
     maxDate: moment('12/31/2020', 'MM/DD/YYYY'),
-    dateLimit: { days: 800 },
+    dateLimit: {days: 800},
     showDropdowns: true,
     showWeekNumbers: true,
     timePicker: false,
     timePickerIncrement: 1,
     timePicker12Hour: true,
     ranges: {
-      "Aujourd'hui": [ moment(), moment() ],
-      'hier': [ moment().subtract(1, 'days'), moment().subtract(1, 'days') ],
-      '7 derniers jours': [ moment().subtract(6, 'days'), moment() ],
-      '30 derniers jours': [ moment().subtract(29, 'days'), moment() ],
+      "Aujourd'hui": [moment(), moment()],
+      'hier': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+      '7 derniers jours': [moment().subtract(6, 'days'), moment()],
+      '30 derniers jours': [moment().subtract(29, 'days'), moment()],
       'Ce mois': [
         moment().startOf('month'),
         moment().endOf('month')
@@ -73,7 +75,7 @@ function set_datepicker(data) {
       ]
     },
     opens: 'left',
-    buttonClasses: [ 'btn btn-default' ],
+    buttonClasses: ['btn btn-default'],
     applyClass: 'btn-small btn-primary',
     cancelClass: 'btn-small',
     locale: {
@@ -84,23 +86,20 @@ function set_datepicker(data) {
       fromLabel: 'Du',
       toLabel: 'Au',
       customRangeLabel: 'Période libre',
-      daysOfWeek: [ 'Di', 'Lu', 'Ma', 'Me', 'Je', 'Ve', 'Sa' ],
-      monthNames: [ 'Janvier', 'Fevrier', 'Mars'
-                , 'Avril', 'Mai', 'Juin'
-                , 'Juillet', 'Aout', 'Septembre'
-                , 'Octobre', 'Novembre', 'Decembre' ],
+      daysOfWeek: ['Di', 'Lu', 'Ma', 'Me', 'Je', 'Ve', 'Sa'],
+      monthNames: ['Janvier', 'Fevrier', 'Mars'
+          , 'Avril', 'Mai', 'Juin'
+          , 'Juillet', 'Aout', 'Septembre'
+          , 'Octobre', 'Novembre', 'Decembre'],
       firstDay: 1
     }
   };
   return options;
 }
 
-function cb(start, end, label) {
-  $('#reportrange span').html(`${start.format('DD MMMM YYYY')} - ${end.format('DD MMMM YYYY')}`);
-}
-
 // TODO: Fix a potential XSS problem with query string.
 function bind_datepicker(options, {base, query}) {
+  const cb = (start, end, label) => $('#reportrange span').html(`${start.format('DD MMMM YYYY')} - ${end.format('DD MMMM YYYY')}`);
   $('#reportrange').daterangepicker(options, cb);
   $('#reportrange').on('apply.daterangepicker', (ev, picker) => {
     const date1 = picker.startDate.format('DD-MM-YYYY');
@@ -119,6 +118,9 @@ function bind_datepicker(options, {base, query}) {
   });
 }
 
+/*
+ * Fonctions pour Morris
+ */
 const MorrisBar = (obj, element, labels, unit, couleur) => {
   if (obj.data.length !== 0) {
     return new Morris.Bar({
@@ -147,5 +149,363 @@ const graphMorris = (obj, element, unit=' Kg') => {
       colors: obj.colors,
       formatter: (x) => `${x} ${unit}`
     });
-  }
+  };
 };
+
+/* GUI
+ * Fonctions de Gestion de l'interface utilisateur des collectes et sorties
+ */
+
+const fillSelect = (select, array) => {
+  array.forEach(({ id, nom }) => {
+    const option = document.createElement('option');
+    option.value = id;
+    option.innerHTML = nom;
+    select.appendChild(option);
+  });
+};
+
+const fillItems = (div, types, push) => types.forEach(e => div.appendChild(html_saisie_item(e, push)));
+
+/*
+ * Prepare une liste de bouton clickable dans l'UI pour la saisie.
+ * @param {Object} { id {Int}, nom{str}, couleur{str} } objet issue de la database.
+ * @param {Function} action fonction a faire en cas de click sur le button.
+ * @returns {Element|html_saisie_item.button}
+ */
+function html_saisie_item({ id, nom, couleur }, action) {
+  const button = document.createElement('button');
+  button.setAttribute('id', id);
+  button.setAttribute('class', 'btn btn-default');
+  button.setAttribute('style', 'margin-left:8px; margin-top:16px;');
+  button.innerHTML = `<span class="badge" style="background-color:${couleur}">${nom}</span>`;
+  button.addEventListener('click', action, false);
+  return button;
+}
+
+// TODO revoir le design...
+function ticket_update_ui(container, totalUI, bag, value) {
+  // Constitution du panier
+  const { _, nom, couleur, id_last_insert, ticket } = bag;
+  const li = document.createElement('li');
+  li.setAttribute('class', 'list-group-item');
+  const span = '<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>';
+  li.innerHTML = `${span}&nbsp;&nbsp;${nom}<span class="badge" style="background-color:${couleur}">${value}</span>`;
+  li.getElementsByTagName('span')[0].addEventListener('click', () => {
+    ticket.remove(id_last_insert);
+    totalUI.textContent = `Masse totale: ${sumMasseTickets(window.tickets)} Kg.`;
+    li.remove();
+  });
+  container.appendChild(li);
+  // Update de l'UI pour la masse du panier.
+  totalUI.textContent = `Masse totale: ${sumMasseTickets(window.tickets)} Kg.`;
+}
+
+/*
+ * Fonction de reset spéciale pour les sorties recyclages.
+ */
+function recycleur_reset() {
+  const select = document.getElementById('id_type_action');
+  // Reactivation des options du select
+  select.value = '';
+  select.selectedIndex = '0';
+  select[0].setAttribute('selected', true);
+  Array.from(select.children).slice(1).forEach((element) => {
+    element.removeAttribute('selected');
+    element.removeAttribute('disabled');
+    element.disabled = false;
+    element.selected = false;
+  });
+  Array.from(document.getElementById('list_evac').children)
+       .forEach(btn => btn.setAttribute('style', 'display: none; visibility: hidden'));
+}
+
+/* Fonction de remise à zéro de l'interface graphique et des tickets en cours.
+ * @return {undefined}
+ */
+function tickets_clear(data) {
+  const classe = data.classe;
+  // On supprime tout le ticket en cours.
+  const range = document.createRange();
+  range.selectNodeContents(document.getElementById('transaction'));
+  range.deleteContents();
+  document.getElementById('commentaire').value = '';
+  document.getElementById('massetot').textContent = 'Masse totale: 0 Kg.';
+  if (classe === 'collecte') {
+    document.getElementById('localite').selectedIndex = '0';
+  }
+  if (classe === 'sortiesr') {
+    recycleur_reset();
+  }
+  if (classe !== 'sortiesp' && classe !== 'sortiesd') {
+    document.getElementById('id_type_action').selectedIndex = '0';
+  }
+
+  // On reset TOUT les tickets. En general il y en aura qu'un...
+  window.tickets.forEach(t => t.reset());
+}
+
+function classeToName(classe) {
+  switch (classe) {
+    case 'collecte': return 'Collecte';
+    case 'sortier':  return 'Sortie recycleur';
+    case 'sorties':  return 'Sortie don';
+    case 'sortiec':  return 'Sortie partenaire';
+    case 'sortiep':  return 'Sortie poubelles';
+    case 'sortied':  return 'Sortie décheterie';
+    default:  throw Error('Classe invalide');
+  }
+}
+
+/*
+ * Code de gestion du login
+ */
+function login(onSuccess = undefined) {
+  const html = `
+  <div class="popup">
+  <form id="formLogin" class="form-signin" method="post">
+    <h2 class="form-signin-heading">Veuillez vous reconnecter</h2>
+    <label class="sr-only" for="mail">Mail :</label>
+    <input id="mail" class="form-control" name="mail" type="email" placeholder="Courriel" autofocus>
+    <label class="sr-only" for="pass">Mot de passe :</label>
+    <input id="pass" class="form-control" name="pass" type="password" placeholder="Mot de passe">
+    <button id="postLogin" class="btn btn-lg btn-primary btn-block glyphicon glyphicon-log-in" type="submit"> Login</button>
+  </form>
+  </div>`;
+  const container = document.createElement('div');
+  container.setAttribute('class', 'overlay');
+  container.innerHTML = html;
+  document.getElementsByTagName('body')[0].appendChild(container);
+  container.setAttribute('style', 'visibility: visible; opacity: 1;');
+  document.getElementById('formLogin').addEventListener('submit', (event) => {
+    event.preventDefault();
+    const form = new FormData(document.getElementById('formLogin'));
+    const username = form.get('mail');
+    const password = form.get('pass');
+    const fetchPromise = fetch('../moteur/login_post.php', {
+      method: 'POST',
+      credidentials: 'include',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json; charset=utf-8'
+      },
+      body: JSON.stringify({username, password})
+    }).then(status)
+      .then((json) => {
+        container.setAttribute('style', 'visibility: hidden;  opacity: 0;');
+        if (onSuccess) {
+          onSuccess();
+        }
+      }).catch((ex) => {
+      console.log('Error:', ex);
+    });
+  }, false);
+}
+
+/*
+ * Client-serveur, ajax
+ */
+function status(response) {
+  if (response.status >= 200
+    && response.status < 300) {
+    return response.json();
+  } else if (response.status === 401) {
+    const error = new Error(response.statusText);
+    error.response = response;
+    error.status = response.status;
+    throw error;
+  } else {
+    console.error(response.statusText);
+    return response;
+  }
+}
+
+// TODO Vrai gestion de la reponse... (future mise en attente...)
+// See https://github.com/github/fetch
+function post_data(url, getData, onFinalise, onImpress = (a, ..._) => a) {
+  return () => {
+    const data = getData();
+    if (Object.keys(data).length > 0) {
+      fetch(url, {
+        credentials: 'include',
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json; charset=utf-8'
+        },
+        body: JSON.stringify(data)
+      }).then(status)
+        .then((response) => onImpress(data, response))
+        .then((response) => onFinalise(data, response))
+        .catch((ex) => {
+          if (ex.status === 401) {
+            login(() => {
+              post_data(url, data, onSuccess);
+            });
+          } else {
+            console.log('Error:', ex);
+          }
+        });
+    }
+  };
+}
+
+function strategie_validation({ classe }) {
+  if (classe === 'sortiesp' || classe === 'sortiesd') {
+    return (_) => true;
+  } else if (classe === 'collecte') {
+    return (obj) => obj.id_type_action > 0 && obj.localite > 0;
+  } else {
+    return (obj) => obj.id_type_action > 0;
+  }
+}
+
+/*
+ * On retourne une closure qui correspond a un encaissement valide.
+ * On fait ca pour pouvoir gerer les differents types de retours vu que les ID
+ * Sont relatives... Par exemple dans les sorties de dechets et d'objet.
+ *
+ * @param {string} url Url de la requete post.
+ * @param {Objects} tickets Mixin de tickets la clef servira a les reconnaitre cote serveur.
+ */
+function prepare_data(tickets, metadata) {
+  const test = strategie_validation(metadata);
+  return () => {
+    // On recupere les sommes de differents tickets.
+    const sum = Object.values(tickets).reduce((acc, t) => acc + t.size, 0.0);
+    const form = new FormData(document.getElementById('formulaire'));
+    const formdata = {
+      localite: parseInt(form.get('localite'), 10),
+      id_type_action: parseInt(form.get('id_type_action'), 10),
+    };
+
+    if (sum > 0 && test(formdata)) {
+      const commentaire = form.get('commentaire').trim(); // On enleve les espaces inutiles.
+      const date = form.get('date');
+      const data = {
+        id_point: window.OressourceEnv.id_point,
+        id_user: window.OressourceEnv.id_user,
+        commentaire,
+        date
+      };
+      // Petit hack pour merger differents types d'objets a envoyer.
+      const items = Object.entries(tickets).reduce((acc, [type, ticket]) => {
+        // [type] c'est parceque la clef est a calculee
+        return { ...acc, ...{ [type]: ticket.to_array() } };
+      }, { });
+      return { ...data, ...formdata, ...items, ...metadata };
+    } else {
+      return {};
+    }
+  };
+}
+
+// TODO: separer la logique de l'UI.
+// Gros Hack pour pouvoir gerer les sorties... On revoie une
+// fonction specialisee.
+// Attention pretrairement ne fait que retourner la masse sauf si on est une sortie poubelles.
+function connection_UI_ticket(numpad, ticket, typesItems, pretraitement = ((a, ..._) => a)) {
+  const totalUI = document.getElementById('massetot');
+  const transaction = document.getElementById('transaction');
+  return (event) => {
+    const id = parseInt(event.currentTarget.id, 10);
+    const type_dechet = typesItems[id - 1];
+    const value = pretraitement(numpad.value, type_dechet.masse_bac); // retourne la masse sauf pour les poubelles.
+    if (value > 0.00 && !isNaN(id)) {
+      if (value <= window.OressourceEnv.masse_max) {
+        const id_last_insert = ticket.push({
+          masse: value,
+          type: id
+        });
+
+        ticket_update_ui(transaction, totalUI, Object.assign(type_dechet, {id_last_insert, ticket}), value);
+        numpad.reset_numpad();
+      } else {
+        numpad.error('Masse supérieure aux limites de pesée de la balance.');
+      }
+    } else {
+      numpad.error('Masse entrée inférieure au poids du conteneur ou inférieure ou égale à 0.');
+    }
+  };
+}
+
+/*
+ * Code de gestion de l'impression
+ */
+
+function dashBreak() {
+  return '<p>--------------------------------------------------------------------------------</p>';
+}
+
+function showTickets(data) {
+  const item = data.hasOwnProperty('items') && data.items.length > 0  ?
+    `<p>Objets de types:</p>${showTicket(data.items, window.OressourceEnv.types_dechet, 'kg')}`: '';
+  return item + (data.hasOwnProperty('evacs') && data.evacs.length > 0 ?
+    ` ${dashBreak()}<p>Dechets de types:</p>${showTicket(data.evacs, window.OressourceEnv.types_evac, 'kg')}` : '');
+}
+
+function showTicket(data, types, unit='kg') {
+  const sum = data.reduce((a, {masse}) => a + masse, 0.0);
+  return [ `<p>Sous total: ${sum} ${unit}</p>${dashBreak()}`,
+    ...data.map(({masse, type}) => {
+    // Dans un monde parfait types serait une Map indexé par les id pour un Accès en O(1)
+    const { nom } = types.find(t => type = t);
+    return `<p>${nom} : ${masse} ${unit}</p>`;
+  }) ].join('');
+}
+
+/*
+ * Cette fonction construit une IFrame et l'imprime et l'iframe est détruite
+ * après impression.
+ */
+function impression_ticket(data, response) {
+  const title = classeToName(data.classe);
+  const html = `
+    <head>
+    <meta charset="utf-8">
+    <title>Ticket</title>
+      <style>
+      p {
+         font-size: 9px;
+       }
+      </style>
+    </head>
+    <body>
+      ${dashBreak()}
+      <p>${document.querySelector('h1').innerHTML}</p>
+      <p>${window.OressourceEnv.structure}</p>
+      <p>${window.OressourceEnv.adresse}</p>
+      ${dashBreak()}
+      <p>Type: ${classeToName(data.classe)}</p>
+      <p>${title} &#x2116;${response.id}</p>
+       ${dashBreak()}
+      <p>Total: ${sumMasseTickets(window.tickets)}</p>
+      ${dashBreak()}
+      ${showTickets(data)}
+      ${dashBreak()}
+    </body>
+  </html>`;
+
+ function closePrint () {
+   document.body.removeChild(this.__container__);
+ }
+
+ function setPrint() {
+    this.contentWindow.__container__ = this;
+    this.contentWindow.onbeforeunload = closePrint;
+    this.contentWindow.onafterprint = closePrint;
+    this.contentWindow.focus();
+    this.contentWindow.print();
+  }
+
+  const iframe = document.createElement('iframe');
+  iframe.onload = setPrint;
+  iframe.style.visibility = 'hidden';
+  iframe.style.position = 'fixed';
+  iframe.style.right = 0;
+  iframe.style.bottom = 0;
+  iframe.src = 'about:blank';
+  iframe.srcdoc = html;
+  document.body.appendChild(iframe);
+  return response;
+}

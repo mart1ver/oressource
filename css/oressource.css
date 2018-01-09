@@ -1,5 +1,6 @@
 /* Move down content because we have a fixed navbar that is 50px tallles
  * textarea ne sont plus resizables */
+
 body {
   padding-top: 50px;
   padding-bottom: 20px;
@@ -159,18 +160,18 @@ input:valid {
 }
 
 pre {
-    display: block;
-    font-family: inherit;
-    padding: 0px;
-    margin: 0 0 10px;
-    font-size: inherit;
-    line-height: 1.42857143;
-    color: #333;
-    word-break: break-all;
-    word-wrap: break-word;
-    background-color: transparent;
-    border: 0px;
-    border-radius: 0px;
+  display: block;
+  font-family: inherit;
+  padding: 0px;
+  margin: 0 0 10px;
+  font-size: inherit;
+  line-height: 1.42857143;
+  color: #333;
+  word-break: break-all;
+  word-wrap: break-word;
+  background-color: transparent;
+  border: 0px;
+  border-radius: 0px;
 }
 
 .btn-num {

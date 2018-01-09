@@ -114,7 +114,7 @@ if (is_valid_session()) {
 
       http_response_code(200); // Created
       // Note: Renvoyer l'url d'acces a la ressource
-      echo(json_encode(['id_collecte' => $id_collecte], JSON_NUMERIC_CHECK));
+      echo(json_encode(['id' => $id_collecte], JSON_NUMERIC_CHECK));
     } catch (InvalidArgumentException $e) {
       $bdd->rollBack();
       http_response_code(400); // Bad Request
