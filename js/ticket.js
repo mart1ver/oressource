@@ -356,12 +356,12 @@ function make_encaissement(url, tickets, metadata) {
     const test = strategie_validation(metadata);
     if (sum > 0 && test(formdata)) {
       const commentaire = form.get('commentaire').trim(); // On enleve les espaces inutiles.
-      const antidate = form.get('antidate');
+      const date = form.get('antidate');
       const data = {
         id_point: window.OressourceEnv.id_point,
         id_user: window.OressourceEnv.id_user,
         commentaire,
-        antidate
+        date
       };
       // Petit hack pour merger differents types d'objets a envoyer.
       const items = Object.entries(tickets).reduce((acc, [type, ticket]) => {
