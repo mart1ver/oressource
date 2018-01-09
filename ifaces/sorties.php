@@ -63,11 +63,6 @@ if (is_valid_session() && is_allowed_sortie_id($numero)) {
             <option value="" hidden disabled selected>Selectionez un type de don</option>
             <!-- Remplis via JavaScript voir script de la page -->
           </select>
-          <label for="localite">Localité :</label>
-          <select name="localite" id="localite" form="formulaire" class="form-control" style="font-size: 12pt" required>
-            <option value="" hidden disabled selected>Selectionez une localité</option>
-            <!-- Remplis via JavaScript voir script de la page -->
-          </select>
         </div>
       </div>
 
@@ -142,14 +137,6 @@ if (is_valid_session() && is_allowed_sortie_id($numero)) {
         item.value = type_collecte.id;
         item.innerHTML = type_collecte.nom;
         div_type_action.appendChild(item);
-      });
-
-      const div_localite = document.getElementById('localite');
-      window.OressourceEnv.localites.forEach((localite) => {
-        const item = document.createElement('option');
-        item.value = localite.id;
-        item.innerHTML = localite.nom;
-        div_localite.appendChild(item);
       });
 
       const metadata = { classe: 'sorties' };

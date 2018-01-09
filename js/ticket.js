@@ -326,7 +326,7 @@ function strategie_validation(metadata) {
   const classe = metadata.classe;
   if (classe === 'sortiesp' || classe === 'sortiesd') {
     return (_) => true;
-  } else if (classe === 'collecte' || classe === 'sorties') {
+  } else if (classe === 'collecte') {
     return (obj) => obj.id_type_action > 0 && obj.localite > 0;
   } else { // Reste des cas.
     return (obj) => obj.id_type_action > 0;
