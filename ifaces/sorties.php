@@ -73,11 +73,7 @@ if (is_valid_session() && is_allowed_sortie_id($numero)) {
     <div class="col-md-4">
       <?= listSaisie(['text' => "Type d'objet:", 'key' => 'list_item']) ?>
       <?= listSaisie(['text' => 'Materiaux et déchets:', 'key' => 'list_evac']) ?>
-
-      <div class="btn-group" role="group">
-        <button id="encaissement" class="btn btn-success btn-lg">C'est pesé!</button>
-        <button id="impression" class="btn btn-primary btn-lg" value="Print"><span class="glyphicon glyphicon-print"></span></button>
-      </div>
+      <?= buttonCollectesSorties() ?>
     </div> <!-- .col-md-4 -->
   </div> <!-- container -->
 
@@ -108,8 +104,8 @@ if (is_valid_session() && is_allowed_sortie_id($numero)) {
       const numpad = new NumPad(document.getElementById('numpad'), window.OressourceEnv.conteneurs);
 
       const typesItems = window.OressourceEnv.types_dechet;
-      const ticketItems = new Ticket();
-      const pushItem = connection_UI_ticket(numpad, ticketItems, typesItems);
+      const ticketItem = new Ticket();
+      const pushItem = connection_UI_ticket(numpad, ticketItem, typesItems);
       fillItems(document.getElementById('list_item'), typesItems, pushItem);
 
       const typesEvacs = window.OressourceEnv.types_evac;
@@ -120,16 +116,12 @@ if (is_valid_session() && is_allowed_sortie_id($numero)) {
       fillSelect(document.getElementById('id_type_action'), window.OressourceEnv.types_action);
 
       const encaisse = prepare_data({
-        items: ticketItems,
+        items: ticketItem,
         evacs: ticketEvac,
       }, {classe: 'sorties'});
 
-      const send = post_data('../api/sorties.php', encaisse, tickets_clear);
-      const sendAndPrint = post_data('../api/sorties.php', encaisse, tickets_clear, impression_ticket);
-      document.getElementById('encaissement').addEventListener('click', send, false);
-      document.getElementById('impression').addEventListener('click', sendAndPrint, false);
-
-      window.tickets = [ticketItems, ticketEvac];
+      initUI('../api/sorties.php', encaisse);
+      window.tickets = [ticketItem, ticketEvac];
     }, false);
   </script>
 

@@ -201,6 +201,42 @@ function ticket_update_ui(container, totalUI, bag, value) {
   totalUI.textContent = `Masse totale: ${sumMasseTickets(window.tickets)} Kg.`;
 }
 
+// TODO: separer la logique de l'UI.
+// Gros Hack pour pouvoir gerer les sorties... On revoie une
+// fonction specialisee.
+// Attention pretrairement ne fait que retourner la masse sauf si on est une sortie poubelles.
+function connection_UI_ticket(numpad, ticket, typesItems, pretraitement = ((a, ..._) => a)) {
+  const totalUI = document.getElementById('massetot');
+  const transaction = document.getElementById('transaction');
+  return (event) => {
+    const id = parseInt(event.currentTarget.id, 10);
+    const type_dechet = typesItems[id - 1];
+    const value = pretraitement(numpad.value, type_dechet.masse_bac); // retourne la masse sauf pour les poubelles.
+    if (value > 0.00 && !isNaN(id)) {
+      if (value <= window.OressourceEnv.masse_max) {
+        const id_last_insert = ticket.push({
+          masse: value,
+          type: id
+        });
+
+        ticket_update_ui(transaction, totalUI, Object.assign(type_dechet, {id_last_insert, ticket}), value);
+        numpad.reset_numpad();
+      } else {
+        numpad.error('Masse supérieure aux limites de pesée de la balance.');
+      }
+    } else {
+      numpad.error('Masse entrée inférieure au poids du conteneur ou inférieure ou égale à 0.');
+    }
+  };
+}
+
+function initUI(url, encaisse) {
+  const send = post_data(url, encaisse, tickets_clear);
+  const sendAndPrint = post_data(url, encaisse, tickets_clear, impression_ticket);
+  document.getElementById('encaissement').addEventListener('click', send, false);
+  document.getElementById('impression').addEventListener('click', sendAndPrint, false);
+}
+
 /*
  * Fonction de reset spéciale pour les sorties recyclages.
  */
@@ -248,11 +284,11 @@ function tickets_clear(data) {
 function classeToName(classe) {
   switch (classe) {
     case 'collecte': return 'Collecte';
-    case 'sortier':  return 'Sortie recycleur';
+    case 'sortiesr':  return 'Sortie recycleur';
     case 'sorties':  return 'Sortie don';
-    case 'sortiec':  return 'Sortie partenaire';
-    case 'sortiep':  return 'Sortie poubelles';
-    case 'sortied':  return 'Sortie décheterie';
+    case 'sortiesc':  return 'Sortie partenaire';
+    case 'sortiesp':  return 'Sortie poubelles';
+    case 'sortiesd':  return 'Sortie décheterie';
     default:  throw Error('Classe invalide');
   }
 }
@@ -400,35 +436,6 @@ function prepare_data(tickets, metadata) {
   };
 }
 
-// TODO: separer la logique de l'UI.
-// Gros Hack pour pouvoir gerer les sorties... On revoie une
-// fonction specialisee.
-// Attention pretrairement ne fait que retourner la masse sauf si on est une sortie poubelles.
-function connection_UI_ticket(numpad, ticket, typesItems, pretraitement = ((a, ..._) => a)) {
-  const totalUI = document.getElementById('massetot');
-  const transaction = document.getElementById('transaction');
-  return (event) => {
-    const id = parseInt(event.currentTarget.id, 10);
-    const type_dechet = typesItems[id - 1];
-    const value = pretraitement(numpad.value, type_dechet.masse_bac); // retourne la masse sauf pour les poubelles.
-    if (value > 0.00 && !isNaN(id)) {
-      if (value <= window.OressourceEnv.masse_max) {
-        const id_last_insert = ticket.push({
-          masse: value,
-          type: id
-        });
-
-        ticket_update_ui(transaction, totalUI, Object.assign(type_dechet, {id_last_insert, ticket}), value);
-        numpad.reset_numpad();
-      } else {
-        numpad.error('Masse supérieure aux limites de pesée de la balance.');
-      }
-    } else {
-      numpad.error('Masse entrée inférieure au poids du conteneur ou inférieure ou égale à 0.');
-    }
-  };
-}
-
 /*
  * Code de gestion de l'impression
  */
@@ -439,17 +446,17 @@ function dashBreak() {
 
 function showTickets(data) {
   const item = data.hasOwnProperty('items') && data.items.length > 0  ?
-    `<p>Objets de types:</p>${showTicket(data.items, window.OressourceEnv.types_dechet, 'kg')}`: '';
+    `<p>Objets de types : </p>${showTicket(data.items, window.OressourceEnv.types_dechet, 'kg')}`: '';
   return item + (data.hasOwnProperty('evacs') && data.evacs.length > 0 ?
-    ` ${dashBreak()}<p>Dechets de types:</p>${showTicket(data.evacs, window.OressourceEnv.types_evac, 'kg')}` : '');
+    ` ${dashBreak()}<p>Dechets de types : </p>${showTicket(data.evacs, window.OressourceEnv.types_evac, 'kg')}` : '');
 }
 
 function showTicket(data, types, unit='kg') {
   const sum = data.reduce((a, {masse}) => a + masse, 0.0);
-  return [ `<p>Sous total: ${sum} ${unit}</p>${dashBreak()}`,
+  return [ `Sous total: ${sum} ${unit}${dashBreak()}`,
     ...data.map(({masse, type}) => {
     // Dans un monde parfait types serait une Map indexé par les id pour un Accès en O(1)
-    const { nom } = types.find(t => type = t);
+    const { nom } = types.find(({ id }) => type === id);
     return `<p>${nom} : ${masse} ${unit}</p>`;
   }) ].join('');
 }
@@ -463,26 +470,24 @@ function impression_ticket(data, response) {
   const html = `
     <head>
     <meta charset="utf-8">
-    <title>Ticket</title>
+    <title>Ticket ${title} &#x2116;${response.id}</title>
       <style>
-      p {
-         font-size: 9px;
-       }
+        size: 21cm 29.7cm;
+        margin: 30mm 45mm 30mm 45mm;
+        p {
+          font-size: 8px;
+        }
       </style>
     </head>
     <body>
-      ${dashBreak()}
       <p>${document.querySelector('h1').innerHTML}</p>
       <p>${window.OressourceEnv.structure}</p>
       <p>${window.OressourceEnv.adresse}</p>
       ${dashBreak()}
-      <p>Type: ${classeToName(data.classe)}</p>
-      <p>${title} &#x2116;${response.id}</p>
-       ${dashBreak()}
-      <p>Total: ${sumMasseTickets(window.tickets)}</p>
+      <p>Type: ${classeToName(data.classe)} &#x2116;${response.id}</p>
+      <p>Total: ${sumMasseTickets(window.tickets)} kg</p>
       ${dashBreak()}
       ${showTickets(data)}
-      ${dashBreak()}
     </body>
   </html>`;
 

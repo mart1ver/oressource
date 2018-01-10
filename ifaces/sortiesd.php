@@ -35,7 +35,6 @@ if (is_valid_session() && is_allowed_sortie_id($numero)) {
   require_once '../moteur/dbconfig.php';
 
   $point_sortie = points_sorties_id($bdd, $numero);
-  $pesee_max = (float) $point_sortie['pesee_max'];
   $date = new Datetime('now');
   $nav = new_nav($point_sortie['nom'], $numero, 4);
   ?>
@@ -49,11 +48,7 @@ if (is_valid_session() && is_allowed_sortie_id($numero)) {
 
     <div class="col-md-4">
       <?= listSaisie(['text' => 'Materiaux et déchets:', 'key' => 'list_evac']) ?>
-
-      <div class="btn-group" role="group">
-        <button id="encaissement" class="btn btn-success btn-lg">C'est pesé!</button>
-        <button id="impression" class="btn btn-primary btn-lg" value="Print"><span class="glyphicon glyphicon-print"></span></button>
-      </div>
+      <?= buttonCollectesSorties() ?>
     </div> <!-- .col-md-4 -->
 
   </div> <!-- .container -->
@@ -73,33 +68,23 @@ if (is_valid_session() && is_allowed_sortie_id($numero)) {
       conteneurs: <?= json_encode(filter_visibles(types_contenants($bdd)), JSON_NUMERIC_CHECK); ?>
     };
   </script>
+
   <script type="text/javascript">
     'use strict';
-
     document.addEventListener('DOMContentLoaded', () => {
       const numpad = new NumPad(document.getElementById('numpad'),
               window.OressourceEnv.conteneurs);
 
-      // Hack en attendant de trouver une solution pour gerer differament les dechets
-      // et les objets qui ont les memes id...
-      // On retourne une closure avec connection_UI_ticket du coup...
       const typesEvacs = window.OressourceEnv.types_evac;
       const ticketEvac = new Ticket();
       const pushEvac = connection_UI_ticket(numpad, ticketEvac, typesEvacs);
+      fillItems(document.getElementById('list_evac'), typesEvacs, pushEvac);
 
-      const div_list_evac = document.getElementById('list_evac');
-      typesEvacs.forEach((item) => {
-        const button = html_saisie_item(item, pushEvac);
-        div_list_evac.appendChild(button);
-      });
+      const encaisse = prepare_data({
+        evacs: ticketEvac,
+      }, {classe: 'sortiesd'});
 
-      const metadata = { classe: 'sortiesd' };
-      const encaisse = make_encaissement('../api/sorties.php', {
-        evacs: ticketEvac
-      }, metadata);
-
-      document.getElementById('encaissement').addEventListener('click', encaisse, false);
-      document.getElementById('impression').addEventListener('click', impression_ticket, false);
+      initUI('../api/sorties.php', encaisse);
 
       window.tickets = [ ticketEvac ];
     }, false);

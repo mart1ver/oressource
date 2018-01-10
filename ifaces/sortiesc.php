@@ -39,8 +39,6 @@ if (is_valid_session() && is_allowed_sortie_id($numero)) {
 
   $point_sortie = points_sorties_id($bdd, $numero);
   $conventions = filter_visibles(convention_sortie($bdd));
-  $pesee_max = (float) $point_sortie['pesee_max'];
-
   $date = new Datetime('now');
   $nav = new_nav($point_sortie['nom'], $numero, 1);
   ?>
@@ -73,12 +71,7 @@ if (is_valid_session() && is_allowed_sortie_id($numero)) {
     <div class="col-md-4">
       <?= listSaisie(['text' => "Type d'objet:", 'key' => 'list_item']) ?>
       <?= listSaisie(['text' => 'Materiaux et déchets:', 'key' => 'list_evac']) ?>
-
-      <div class="btn-group" role="group">
-        <button id="encaissement" class="btn btn-success btn-lg">C'est pesé!</button>
-        <button id="impression" class="btn btn-primary btn-lg" value="Print"><span class="glyphicon glyphicon-print"></span></button>
-      </div>
-
+      <?= buttonCollectesSorties() ?>
     </div><!-- .col-md-4 -->
   </div>
   <script type="text/javascript">
@@ -98,6 +91,7 @@ if (is_valid_session() && is_allowed_sortie_id($numero)) {
       conteneurs: <?= json_encode(types_contenants($bdd), JSON_NUMERIC_CHECK); ?>
     };
   </script>
+
   <script type="text/javascript">
     'use strict';
 
@@ -105,42 +99,23 @@ if (is_valid_session() && is_allowed_sortie_id($numero)) {
       const numpad = new NumPad(document.getElementById('numpad'),
               window.OressourceEnv.conteneurs);
 
-      // Hack en attendant de trouver une solution pour gerer differament les dechets
-      // et les objets qui ont les memes id...
-      // On retourne une closure avec connection_UI_ticket du coup...
-
       const typesItems = window.OressourceEnv.types_dechet;
-      const ticketItems = new Ticket();
-      const pushItem = connection_UI_ticket(numpad, ticketItems, typesItems);
-
-      const div_list_item = document.getElementById('list_item');
-      typesItems.forEach((item) => {
-        const button = html_saisie_item(item, pushItem);
-        div_list_item.appendChild(button);
-      });
+      const ticketItem = new Ticket();
+      const pushItem = connection_UI_ticket(numpad, ticketItem, typesItems);
+      fillItems(document.getElementById('list_item'), typesItems, pushItem);
 
       const typesEvacs = window.OressourceEnv.types_evac;
       const ticketEvac = new Ticket();
       const pushEvac = connection_UI_ticket(numpad, ticketEvac, typesEvacs);
+      fillItems(document.getElementById('list_evac'), typesEvacs, pushEvac);
 
-      const div_list_evac = document.getElementById('list_evac');
-      typesEvacs.forEach((item) => {
-        const button = html_saisie_item(item, pushEvac);
-        div_list_evac.appendChild(button);
-      });
+      const encaisse = prepare_data({
+        items: ticketItem,
+        evacs: ticketEvac,
+      }, {classe: 'sortiesc'});
+      initUI('../api/sorties.php', encaisse);
 
-      const metadata = { classe: 'sortiesc' };
-      const encaisse = make_encaissement('../api/sorties.php', {
-        items: ticketItems,
-        evacs: ticketEvac
-      }, metadata);
-
-      document.getElementById('encaissement').addEventListener('click', encaisse, false);
-      document.getElementById('impression').addEventListener('click', () => {
-        impression_ticket(encaisse);
-      }, false);
-
-      window.tickets = [ ticketItems, ticketEvac ];
+      window.tickets = [ ticketItem, ticketEvac ];
     }, false);
   </script>
 

@@ -132,6 +132,17 @@ function configInfo(array $props) {
   return ob_get_clean();
 }
 
+function buttonCollectesSorties() {
+  ob_start();
+  ?>
+  <div class="btn-group" role="group">
+    <button id="encaissement" class="btn btn-success btn-lg">C'est pesé!</button>
+    <button id="impression" class="btn btn-primary btn-lg" value="Print"><span class="glyphicon glyphicon-print"></span></button>
+  </div>
+  <?php
+  return ob_get_clean();
+}
+
 /*
  * Il ne faut pas changer les id, ni les noms des inputs de ce composant sans modifier
  * le javascript associée.
