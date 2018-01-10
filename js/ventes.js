@@ -41,6 +41,8 @@ function new_rendu() {
   };
 }
 
+const wrapString = (s, n, c) => (s.length > n) ? (s.slice(0, n) + c) : s;
+
 let state = new_state();
 let numpad = new_numpad();
 let rendu = new_rendu();
@@ -95,7 +97,7 @@ function update_state( { type, objet = {prix: 0, masse: 0.0} }) {
   state.last = { type, objet };
   const color = objet.couleur || type.couleur;
   const name = objet.nom || type.nom;
-  const html = `Objet: <span class='badge' id='cool' style="background-color:${color}">${name}</span>`;
+  const html = `<span class='badge' id='cool' style="background-color:${color}">${wrapString(name, 15, '&hellip;')}</span>`;
   document.getElementById('nom_objet').innerHTML = html;
   render_numpad(numpad);
 }
