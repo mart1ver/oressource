@@ -46,7 +46,7 @@ function _generic_histo(PDO $bdd, string $table, string $field, int $type, strin
 }
 
 function moy_journa(array $data): float {
-  return ($data['sum'] > 0) ? round($data['sum'] / count($data['data'])) : 0;
+  return ($data['sum'] > 0) ? round($data['sum'] / count($data['data']),2) : 0;
 }
 
 function histogram(array $data, string $element, string $msg, string $type, string $unit) {
