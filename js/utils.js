@@ -235,6 +235,10 @@ function initUI(url, encaisse) {
   const sendAndPrint = post_data(url, encaisse, tickets_clear, impression_ticket);
   document.getElementById('encaissement').addEventListener('click', send, false);
   document.getElementById('impression').addEventListener('click', sendAndPrint, false);
+  document.getElementById('formulaire').addEventListener('submit', (e) => {
+    e.preventDefault();
+    send();
+  }, false);
 }
 
 /*

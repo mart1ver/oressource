@@ -158,7 +158,7 @@ function cartList(array $props) {
         </h3>
       </div>
       <div class="panel-body">
-        <form id="formulaire">
+        <form id="formulaire" method="POST">
           <?php if (is_allowed_saisie_date() && is_allowed_edit_date()) { ?>
             <div>
               <label for="antidate">Date:</label>
