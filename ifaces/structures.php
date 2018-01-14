@@ -104,7 +104,7 @@ if (is_valid_session() && is_allowed_config()) {
             </div>
             <div class="col-md-1 col-md-offset-1">
               <br>
-              <button id="back" class="btn btn-primary">Sauvegarder la base de données</button>
+              <input type="button" onclick="location.href='exportbase.php';" value="Sauvegarder la base de données" class="btn btn-primary" />
             </div>
           </div>
         </div>
