@@ -22,6 +22,7 @@ session_start();
 require_once '../core/session.php';
 require_once '../core/validation.php';
 require_once '../core/requetes.php';
+require_once '../core/composants.php';
 
 if (is_valid_session() && is_allowed_verifications()) {
 
@@ -87,13 +88,7 @@ if (is_valid_session() && is_allowed_verifications()) {
 
       <br>
       <div class="row">
-        <div class="col-md-3 col-md-offset-9" >
-          <label for="reportrange">Choisissez la période à inspecter:</label><br>
-          <div id="reportrange" class="pull-left" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc">
-            <i class="fa fa-calendar"></i>
-            <span></span><b class="caret"></b>
-          </div>
-        </div>
+        <?= datePicker() ?>
         <?= $date1 === $date2 ? " Le {$date1}," : " Du {$date1} au {$date2}," ?>
       </div>
     </div>
