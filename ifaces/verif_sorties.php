@@ -71,13 +71,13 @@ if (is_valid_session() && is_allowed_verifications()) {
   require_once '../core/composants.php';
 
   $users = map_by(utilisateurs($bdd), 'id');
-
+  $numero = filter_input(INPUT_GET, 'numero', FILTER_VALIDATE_INT);
 
   $time_debut = DateTime::createFromFormat('d-m-Y', $_GET['date1'])->format('Y-m-d') . ' 00:00:00';
   $time_fin = DateTime::createFromFormat('d-m-Y', $_GET['date2'])->format('Y-m-d') . ' 23:59:59';
 
   $base = [
-    'numero' => $_GET['numero'],
+    'numero' => $numero,
     'start' => $_GET['date1'],
     'end' => $_GET['date2'],
     'endpoint' => 'verif_collecte',
@@ -122,7 +122,7 @@ if (is_valid_session() && is_allowed_verifications()) {
   --  localites.nom,
   --  localites.id
       type_sortie.nom");
-  $req->execute(['id_point_sortie' => $_GET['numero'], 'du' => $time_debut, 'au' => $time_fin]);
+  $req->execute(['id_point_sortie' => $numero, 'du' => $time_debut, 'au' => $time_fin]);
   $sortiesDon = $req->fetchAll(PDO::FETCH_ASSOC);
   $req->closeCursor();
 
@@ -145,7 +145,7 @@ if (is_valid_session() && is_allowed_verifications()) {
       sorties.id_convention,
       conventions_sorties.nom
       ORDER BY sorties.timestamp DESC");
-  $req->execute(['id_point_sortie' => $_GET['numero'], 'du' => $time_debut, 'au' => $time_fin]);
+  $req->execute(['id_point_sortie' => $numero, 'du' => $time_debut, 'au' => $time_fin]);
   $sortiesConventions = $req->fetchAll(PDO::FETCH_ASSOC);
   $req->closeCursor();
 
@@ -170,7 +170,7 @@ if (is_valid_session() && is_allowed_verifications()) {
       sorties.id_filiere,
       filieres_sortie.nom
       ORDER BY sorties.timestamp DESC");
-  $req->execute(['id_point_sortie' => $_GET['numero'], 'du' => $time_debut, 'au' => $time_fin]);
+  $req->execute(['id_point_sortie' => $numero, 'du' => $time_debut, 'au' => $time_fin]);
   $sortiesRecyclage = $req->fetchAll(PDO::FETCH_ASSOC);
   $req->closeCursor();
 
@@ -187,7 +187,7 @@ if (is_valid_session() && is_allowed_verifications()) {
       GROUP BY
       $sortiesSQL
       ORDER BY sorties.timestamp DESC");
-  $req->execute(['id_point_sortie' => $_GET['numero'], 'du' => $time_debut, 'au' => $time_fin]);
+  $req->execute(['id_point_sortie' => $numero, 'du' => $time_debut, 'au' => $time_fin]);
   $sortiesPoubelles = $req->fetchAll(PDO::FETCH_ASSOC);
 
   // Sorties dechetteries
@@ -204,7 +204,7 @@ if (is_valid_session() && is_allowed_verifications()) {
       GROUP BY
       $sortiesSQL
       ORDER BY sorties.timestamp DESC");
-  $req->execute(['id_point_sortie' => $_GET['numero'], 'du' => $time_debut, 'au' => $time_fin]);
+  $req->execute(['id_point_sortie' => $numero, 'du' => $time_debut, 'au' => $time_fin]);
   $sortiesDechetterie = $req->fetchAll(PDO::FETCH_ASSOC);
   $req->closeCursor();
 
@@ -212,7 +212,7 @@ if (is_valid_session() && is_allowed_verifications()) {
   $base = [
     'h1' => 'Vérification des sorties hors-boutique',
     'points' => points_sorties($bdd),
-    'numero' => $_GET['numero'],
+    'numero' => $numero,
     'start' => $_GET['date1'],
     'end' => $_GET['date2'],
     'endpoint' => 'verif_sorties',

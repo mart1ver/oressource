@@ -30,7 +30,7 @@ if (is_valid_session() && is_allowed_verifications()) {
   $points_ventes = filter_visibles(points_ventes($bdd));
   $date1 = $_GET['date1'];
   $date2 = $_GET['date2'];
-
+  $numero = filter_input(INPUT_GET, 'numero', FILTER_VALIDATE_INT);
   $time_debut = DateTime::createFromFormat('d-m-Y', $date1)->format('Y-m-d') . ' 00:00:00';
   $time_fin = DateTime::createFromFormat('d-m-Y', $date2)->format('Y-m-d') . ' 23:59:59';
 
@@ -66,7 +66,7 @@ if (is_valid_session() && is_allowed_verifications()) {
     ventes.commentaire,
     moyens_paiement.nom,
     moyens_paiement.couleur');
-  $req->bindParam(':id_point_vente', $_GET['numero'], PDO::PARAM_INT);
+  $req->bindParam(':id_point_vente', $numero, PDO::PARAM_INT);
   $req->bindParam(':du', $time_debut, PDO::PARAM_STR);
   $req->bindParam(':au', $time_fin, PDO::PARAM_STR);
   $req->execute();
@@ -80,7 +80,7 @@ if (is_valid_session() && is_allowed_verifications()) {
     <div class="panel-body">
       <ul class="nav nav-tabs">
         <?php foreach ($points_ventes as $point) { ?>
-          <li <?= $_GET['numero'] === $point['id'] ? 'class="active"' : '' ?>>
+          <li <?= $numero === $point['id'] ? 'class="active"' : '' ?>>
             <a href="verif_vente.php?numero=<?= $point['id'] ?>&date1=<?= $date1 ?>&date2=<?= $date2 ?>"><?= $point['nom']; ?></a>
           </li>
         <?php } ?>
@@ -138,7 +138,7 @@ if (is_valid_session() && is_allowed_verifications()) {
                 <input type="hidden" name="id" value="<?= $v['id']; ?>">
                 <input type="hidden" name="date1" value="<?= $date1 ?>">
                 <input type="hidden" name="date2" value="<?= $date2; ?>">
-                <input type="hidden" name="npoint" value="<?= $_GET['numero']; ?>">
+                <input type="hidden" name="npoint" value="<?= $numero; ?>">
                 <button class="btn btn-warning btn-sm">Modifier</button>
               </form>
             </td>

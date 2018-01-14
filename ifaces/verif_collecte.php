@@ -27,6 +27,7 @@ if (is_valid_session() && is_allowed_verifications()) {
 
   $users = map_by(utilisateurs($bdd), 'id');
 
+  $numero = filter_input(INPUT_GET, 'numero', FILTER_VALIDATE_INT);
   $time_debut = DateTime::createFromFormat('d-m-Y', $_GET['date1'])->format('Y-m-d') . ' 00:00:00';
   $time_fin = DateTime::createFromFormat('d-m-Y', $_GET['date2'])->format('Y-m-d') . ' 23:59:59';
   $req = $bdd->prepare('SELECT
@@ -51,13 +52,13 @@ if (is_valid_session() && is_allowed_verifications()) {
       GROUP BY collectes.id, collectes.commentaire, collectes.timestamp,
          collectes.last_hero_timestamp, type_collecte.nom, localites.nom,
          collectes.id_createur, collectes.id_last_hero, localites.id');
-  $req->execute(['id_point_collecte' => $_GET['numero'], 'du' => $time_debut, 'au' => $time_fin]);
+  $req->execute(['id_point_collecte' => $numero, 'du' => $time_debut, 'au' => $time_fin]);
   $collectes = $req->fetchAll(PDO::FETCH_ASSOC);
 
   $props = [
     'h1' => 'Vérification des collectes',
     'points' => points_collectes($bdd),
-    'numero' => $_GET['numero'],
+    'numero' => $numero,
     'start' => $_GET['date1'],
     'end' => $_GET['date2'],
     'endpoint' => 'verif_collecte',
