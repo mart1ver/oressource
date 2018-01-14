@@ -178,7 +178,7 @@ if (is_valid_session()) {
     }
     $bdd->commit();
     http_response_code(200); // Created
-    echo(json_encode(['id_vente' => $vente_id], JSON_NUMERIC_CHECK));
+    echo(json_encode(['id' => $vente_id], JSON_NUMERIC_CHECK));
   } catch (UnexpectedValueException $e) {
     $bdd->rollback();
     http_response_code(400); // Bad Request

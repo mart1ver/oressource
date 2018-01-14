@@ -132,6 +132,17 @@ function configInfo(array $props) {
   return ob_get_clean();
 }
 
+function buttonCollectesSorties() {
+  ob_start();
+  ?>
+  <div class="btn-group" role="group">
+    <button id="encaissement" class="btn btn-success btn-lg">C'est pesé!</button>
+    <button id="impression" class="btn btn-primary btn-lg" value="Print"><span class="glyphicon glyphicon-print"></span></button>
+  </div>
+  <?php
+  return ob_get_clean();
+}
+
 /*
  * Il ne faut pas changer les id, ni les noms des inputs de ce composant sans modifier
  * le javascript associée.
@@ -149,9 +160,11 @@ function cartList(array $props) {
       <div class="panel-body">
         <form id="formulaire">
           <?php if (is_allowed_saisie_date() && is_allowed_edit_date()) { ?>
-            <label for="antidate">Date:</label>
-            <input type="date" id="antidate" name="antidate"
-                   value="<?= $props['date'] ?>">
+            <div>
+              <label for="antidate">Date:</label>
+              <input type="date" id="antidate" name="date"
+                     value="<?= $props['date'] ?>">
+            </div>
           <?php } ?>
           <ul class="list-group" id="transaction">
             <!-- Filled by Javascript -->
