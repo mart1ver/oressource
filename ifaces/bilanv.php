@@ -146,6 +146,7 @@ if (is_valid_session() && is_allowed_bilan()) {
                 </tbody>
 
                 <tfoot>
+                  <!--
                   <tr>
                     <td align=center colspan=3>
                       <a href="../moteur/export_bilanv.php?numero=<?= $numero; ?>&<?= $date_query; ?>">
@@ -153,6 +154,8 @@ if (is_valid_session() && is_allowed_bilan()) {
                       </a>
                     </td>
                   </tr>
+                  -->
+                  <br>
                 </tfoot>
               </table>
 

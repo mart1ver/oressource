@@ -295,9 +295,11 @@ if (is_valid_session() && is_allowed_bilan()) {
             </tbody>
           </table>
           <br>
+          <!--
           <a href="../moteur/export_bilanc_partype.php?numero=<?= $numero ?>&date1=<?= $date1 ?>&date2=<?= $date2 ?>">
             <button type="button" class="btn btn-default btn-xs" disabled>exporter ces données (.csv) </button>
           </a>
+          -->
         </div>
       </div>
 
@@ -311,9 +313,11 @@ if (is_valid_session() && is_allowed_bilan()) {
           <?= bilanTable3(['id' => 2, 'text' => 'Dechetterie', 'td0' => 'typo', 'td1' => 'somme', 'td2' => '%', 'masse' => $data['masse'], 'data' => $data['dechetteries']]) ?>
           <?= bilanTable3(['id' => 3, 'text' => 'Poubelles', 'td0' => 'typo', 'td1' => 'somme', 'td2' => '%', 'masse' => $data['masse'], 'data' => $data['poubelles']]) ?>
           <?= bilanTable3(['id' => 4, 'text' => 'Recycleurs', 'td0' => 'typo', 'td1' => 'somme', 'td2' => '%', 'masse' => $data['masse'], 'data' => $data['recycleurs']]) ?>
+          <!--
           <a href="../moteur/export_bilanc_parloca.php?numero=<?= $numero ?>&date1=<?= $date1 ?>&date2=<?= $date2 ?>">
             <button type="button" class="btn btn-default btn-xs" disabled>exporter ces données (.csv)</button>
           </a>
+          -->
         </div>
       </div>
     </div>
@@ -351,9 +355,11 @@ if (is_valid_session() && is_allowed_bilan()) {
           </table>
 
           <br>
+          <!--
           <a href="../moteur/export_bilanc_partype.php?numero=<?= $numero ?>&date1=<?= $date1 ?>&date2=<?= $date2 ?>">
             <button type="button" class="btn btn-default btn-xs" disabled>exporter ces données (.csv) </button>
           </a>
+          -->
         </div>
       </div>
           <?php }else{echo '<img src="../images/nodata.jpg" class="img-responsive" alt="Responsive image">';} ?>
