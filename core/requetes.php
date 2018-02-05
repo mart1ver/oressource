@@ -531,14 +531,15 @@ function viz_caisse(PDO $bdd, int $id_point_vente, int $offset): array {
     from ventes
     inner join vendus
       on vendus.id_vente = ventes.id
+      and DATE(ventes.timestamp) = DATE(NOW())
+      and ventes.id_point_vente = :id_point_vente
     inner join moyens_paiement
       on ventes.id_moyen_paiement = moyens_paiement.id
     inner join utilisateurs
       on utilisateurs.id = ventes.id_createur
-    and ventes.id_point_vente = :id_point_vente
-    and date(ventes.timestamp) = date(current_timestamp())
-    group by ventes.id, ventes.timestamp, moyens_paiement.nom, moyens_paiement.couleur
-    ventes.commentaire, ventes.last_hero_timestamp, utilisateurs.mail
+    group by ventes.id, ventes.timestamp, moyens_paiement.nom,
+      moyens_paiement.couleur, ventes.commentaire,
+      ventes.last_hero_timestamp, utilisateurs.mail
     order by ventes.timestamp desc
     limit 0, :offset');
   $reqVentes->bindValue('id_point_vente', $id_point_vente, PDO::PARAM_INT);
