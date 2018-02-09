@@ -362,7 +362,7 @@ function status(response) {
 
 // TODO Vrai gestion de la reponse... (future mise en attente...)
 // See https://github.com/github/fetch
-function post_data(url, getData, onFinalise, onImpress = (a, ..._) => a) {
+function post_data(url, getData, onFinalise, onImpress = (_, a) => a) {
   return () => {
     const data = getData();
     if (Object.keys(data).length > 0) {

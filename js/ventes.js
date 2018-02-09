@@ -102,7 +102,7 @@ function update_state( { type, objet = {prix: 0, masse: 0.0} }) {
   render_numpad(numpad);
 }
 
-function reset(data) {
+function reset(data, response) {
   state = new_state();
   reset_numpad();
   reset_rendu();
@@ -110,17 +110,14 @@ function reset(data) {
   range.selectNodeContents(document.getElementById('transaction'));
   range.deleteContents();
   update_recap(ticket_sum(state.ticket), ticket_quantite(state.ticket));
-  data.json().then(data => {
-    document.getElementById('num_vente').textContent = data.id_vente + 1;
-  });
+  document.getElementById('num_vente').textContent = response.id + 1;
 }
 
 function moyens(methode) {
   state.methode = methode;
 }
 
-function encaisse_vente(event) {
-  event.preventDefault();
+function encaisse_vente() {
   if (state.ticket.size > 0) {
     const url = '../api/ventes.php';
     const date = document.getElementById('date');
@@ -134,7 +131,9 @@ function encaisse_vente(event) {
     if (date !== null) {
       data.date = date.value;
     }
-    post_data(url, data, reset);
+    return data;
+  } else {
+    return {};
   }
 }
 
@@ -250,7 +249,10 @@ document.addEventListener('DOMContentLoaded', () => {
     state.vente_unite = checked;
   });
 
-  document.getElementById('reload').addEventListener('click', () => window.location.reload(), false);
-  document.getElementById('encaissement').addEventListener('click', encaisse_vente, false);
-  document.getElementById('impression').addEventListener('click', () => print, false);
+  const url = '../api/ventes.php';
+  const send = post_data(url, encaisse_vente, reset);
+  // const sendAndPrint = post_data(url, encaisse, tickets_clear, impression_ticket);
+  document.getElementById('encaissement').addEventListener('click', send, false);
+  //document.getElementById('impression').addEventListener('click', () => print, false);
+
 }, false);
