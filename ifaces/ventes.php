@@ -75,7 +75,7 @@ if (is_valid_session() && is_allowed_vente_id($numero)) {
         <div class="panel-footer">
           <input type="text" form="formulaire" class="form-control"
                  name="commentaire" id="commentaire" placeholder="Commentaire">
-
+          <br>
           <button type="button" class="btn btn-warning" data-toggle="collapse"
                   data-target="#collapserendu" aria-expanded="false"
                   aria-controls="collapserendu">Rendu Monnaie</button>
