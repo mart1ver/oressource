@@ -234,7 +234,6 @@ if (is_valid_session() && is_allowed_vente_id($numero)) {
       <div id="boutons" class="list-group">
         <button id="encaissement" class="btn btn-success btn-lg" style="height:60px">Encaisser</button>
         <button id="impression" class="btn btn-primary btn-lg"><span class="glyphicon glyphicon-print"></span></button>
-        <button id="reload" class="btn btn-warning btn-lg"><span class="glyphicon glyphicon-refresh"></button>
         <button id="remboursement" class="btn btn-danger btn-lg" data-toggle="collapse"
                 data-target="#collapserembou" aria-expanded="false"
                 aria-controls="collapseExample">Remboursement</button>
