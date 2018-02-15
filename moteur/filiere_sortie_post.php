@@ -18,9 +18,9 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-require_once '../core/session.php';
+session_start();
 
-session_start;
+require_once '../core/session.php';
 
 if (is_valid_session() && is_allowed_partners()) {
   require_once '../moteur/dbconfig.php';
