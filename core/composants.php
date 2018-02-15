@@ -608,6 +608,7 @@ function textInput(array $props, string $state): string {
          id="<?= $props['name'] ?>"
          value="<?= $state ?>"
          class="form-control"
+         autocomplete="off"
          required/>
     <?php
     return ob_get_clean();
@@ -622,6 +623,7 @@ function mailInput(array $props, string $state): string {
          name="<?= $props['name'] ?>"
          id="<?= $props['name'] ?>"
          class="form-control"
+         autocomplete="off"
          required/>
   <?php
   return ob_get_clean();
