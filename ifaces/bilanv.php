@@ -296,7 +296,7 @@ if (is_valid_session() && is_allowed_bilan()) {
 
     $(document).ready(() => {
         const dataMv = <?= json_encode($graphMv, JSON_NUMERIC_CHECK); ?>;
-        graphMorris(dataMv, 'graphMV', '€');
+        graphMorris(dataMv, 'graphMV', 'Kgs.');
          const dataPv = <?= json_encode($graphPv, JSON_NUMERIC_CHECK); ?>;
         graphMorris(dataPv, 'graphPV', '€');
     });
