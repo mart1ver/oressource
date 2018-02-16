@@ -126,7 +126,7 @@ if (is_valid_session()) {
     document.addEventListener('DOMContentLoaded', () => {
       graphMorris(collectes, 'graphj');
       graphMorris(sorties, 'graphSortie');
-      graphMorris(ventes, 'graphm');
+      graphMorris(ventes, 'graphm','Pcs.');
       // Refresh each 300000 msec = 300 secs
       window.setTimeout(window.location.reload, 300000);
     });
