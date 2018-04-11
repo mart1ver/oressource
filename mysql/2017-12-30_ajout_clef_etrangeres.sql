@@ -59,6 +59,7 @@ foreign key (id_last_hero) references utilisateurs(id);
 alter table pesees_sorties add CONSTRAINT FK_PeseesSorties_Sorties
 foreign key (id_sortie) references sorties(id);
 
+/* Pour l'instant c'est pas applicable sans tout casser.
 alter table pesees_sorties add CONSTRAINT FK_PeseesSorties_TypeDechets
 foreign key (id_type_dechet) references type_dechets(id);
 
@@ -67,6 +68,7 @@ foreign key (id_type_poubelle) references types_poubelles(id);
 
 alter table pesees_sorties add CONSTRAINT FK_PeseesSorties_TypeDechetEvac
 foreign key (id_type_dechet_evac) references type_dechets_evac(id);
+*/
 
 alter table pesees_sorties add CONSTRAINT FK_PeseesSorties_Createur
 foreign key (id_createur) references utilisateurs(id);
@@ -129,6 +131,8 @@ foreign key (id_last_hero) references utilisateurs(id);
 
 -- Sorties
 
+/* Actuellement ce n'est pas possible d'appliquer ces contraintes vu notre schema.
+ * Prochainement on remaniera les tables afin de pouvoir gérer çà.
 alter table sorties add CONSTRAINT FK_Sorties_Filiere
 foreign key (id_filiere) references filieres_sortie(id);
 
@@ -140,6 +144,7 @@ foreign key (id_type_sortie) references type_sortie(id);
 
 alter table sorties add CONSTRAINT FK_Sorties_Localites
 foreign key (id_point_sortie) references localites(id);
+*/
 
 alter table sorties add CONSTRAINT FK_Sorties_Createur
 foreign key (id_createur) references utilisateurs(id);
