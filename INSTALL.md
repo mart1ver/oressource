@@ -123,6 +123,8 @@ Il ne tient qu'à vous de configurer un adressage IP statique pour le serveur
 voir méme un nom de domaine de manière à accéder simplement à Oressource à
 partir de vos ordinateurs clients.
 
+Se connecter avec l'utilisateur: admin@oressource.org, mot de passe: 1234 
+
 ## Configuration coté client
 
 (À venir)
