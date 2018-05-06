@@ -17,8 +17,8 @@ foreign key (id_vente) references ventes(id);
 alter table vendus add constraint FK_Vendus_TypesDechets
 foreign key (id_type_dechet) references type_dechets(id);
 
-alter table vendus add constraint FK_Vendus_Objet
-foreign key (id_objet) references grille_objets(id);
+-- alter table vendus add constraint FK_Vendus_Objet
+-- foreign key (id_objet) references grille_objets(id);
 
 alter table vendus add CONSTRAINT FK_Vendus_Createur
 foreign key (id_createur) references utilisateurs(id);
@@ -59,14 +59,14 @@ foreign key (id_last_hero) references utilisateurs(id);
 alter table pesees_sorties add CONSTRAINT FK_PeseesSorties_Sorties
 foreign key (id_sortie) references sorties(id);
 
-alter table pesees_sorties add CONSTRAINT FK_PeseesSorties_TypeDechets
-foreign key (id_type_dechet) references type_dechets(id);
+-- alter table pesees_sorties add CONSTRAINT FK_PeseesSorties_TypeDechets
+-- foreign key (id_type_dechet) references type_dechets(id);
 
-alter table pesees_sorties add CONSTRAINT FK_PeseesSorties_TypePoubelles
-foreign key (id_type_poubelle) references types_poubelles(id);
+-- alter table pesees_sorties add CONSTRAINT FK_PeseesSorties_TypePoubelles
+-- foreign key (id_type_poubelle) references types_poubelles(id);
 
-alter table pesees_sorties add CONSTRAINT FK_PeseesSorties_TypeDechetEvac
-foreign key (id_type_dechet_evac) references type_dechets_evac(id);
+-- alter table pesees_sorties add CONSTRAINT FK_PeseesSorties_TypeDechetEvac
+-- foreign key (id_type_dechet_evac) references type_dechets_evac(id);
 
 alter table pesees_sorties add CONSTRAINT FK_PeseesSorties_Createur
 foreign key (id_createur) references utilisateurs(id);
@@ -129,17 +129,17 @@ foreign key (id_last_hero) references utilisateurs(id);
 
 -- Sorties
 
-alter table sorties add CONSTRAINT FK_Sorties_Filiere
-foreign key (id_filiere) references filieres_sortie(id);
+-- alter table sorties add CONSTRAINT FK_Sorties_Filiere
+-- foreign key (id_filiere) references filieres_sortie(id);
 
-alter table sorties add CONSTRAINT FK_Sorties_Convention
-foreign key (id_convention) references conventions_sorties(id);
+-- alter table sorties add CONSTRAINT FK_Sorties_Convention
+-- foreign key (id_convention) references conventions_sorties(id);
 
-alter table sorties add CONSTRAINT FK_Sorties_TypeSortie
-foreign key (id_type_sortie) references type_sortie(id);
+-- alter table sorties add CONSTRAINT FK_Sorties_TypeSortie
+-- foreign key (id_type_sortie) references type_sortie(id);
 
-alter table sorties add CONSTRAINT FK_Sorties_Localites
-foreign key (id_point_sortie) references localites(id);
+-- alter table sorties add CONSTRAINT FK_Sorties_Localites
+-- foreign key (id_point_sortie) references localites(id);
 
 alter table sorties add CONSTRAINT FK_Sorties_Createur
 foreign key (id_createur) references utilisateurs(id);

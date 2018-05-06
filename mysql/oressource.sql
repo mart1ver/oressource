@@ -531,18 +531,12 @@ CREATE TABLE `sorties` (
   `id_last_hero` int(11) NOT NULL DEFAULT '0',
   `last_hero_timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
-  KEY `FK_Sorties_Filiere` (`id_filiere`),
-  KEY `FK_Sorties_Convention` (`id_convention`),
-  KEY `FK_Sorties_TypeSortie` (`id_type_sortie`),
   KEY `FK_Sorties_Localites` (`id_point_sortie`),
   KEY `FK_Sorties_Createur` (`id_createur`),
   KEY `FK_Sorties_Editeur` (`id_last_hero`),
-  CONSTRAINT `FK_Sorties_Convention` FOREIGN KEY (`id_convention`) REFERENCES `conventions_sorties` (`id`),
   CONSTRAINT `FK_Sorties_Createur` FOREIGN KEY (`id_createur`) REFERENCES `utilisateurs` (`id`),
   CONSTRAINT `FK_Sorties_Editeur` FOREIGN KEY (`id_last_hero`) REFERENCES `utilisateurs` (`id`),
-  CONSTRAINT `FK_Sorties_Filiere` FOREIGN KEY (`id_filiere`) REFERENCES `filieres_sortie` (`id`),
   CONSTRAINT `FK_Sorties_Localites` FOREIGN KEY (`id_point_sortie`) REFERENCES `localites` (`id`),
-  CONSTRAINT `FK_Sorties_TypeSortie` FOREIGN KEY (`id_type_sortie`) REFERENCES `type_sortie` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -822,7 +816,7 @@ CREATE TABLE `vendus` (
   `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `id_vente` int(11) NOT NULL,
   `id_type_dechet` int(11) NOT NULL,
-  `id_objet` int(11) NOT NULL,
+  `id_objet` int(11),
   `quantite` int(11) NOT NULL,
   `prix` decimal(9,2) NOT NULL,
   `remboursement` decimal(9,2) NOT NULL,
@@ -832,12 +826,10 @@ CREATE TABLE `vendus` (
   PRIMARY KEY (`id`),
   KEY `FK_Vendus_Ventes` (`id_vente`),
   KEY `FK_Vendus_TypesDechets` (`id_type_dechet`),
-  KEY `FK_Vendus_Objet` (`id_objet`),
   KEY `FK_Vendus_Createur` (`id_createur`),
   KEY `FK_Vendus_Editeur` (`id_last_hero`),
   CONSTRAINT `FK_Vendus_Createur` FOREIGN KEY (`id_createur`) REFERENCES `utilisateurs` (`id`),
   CONSTRAINT `FK_Vendus_Editeur` FOREIGN KEY (`id_last_hero`) REFERENCES `utilisateurs` (`id`),
-  CONSTRAINT `FK_Vendus_Objet` FOREIGN KEY (`id_objet`) REFERENCES `grille_objets` (`id`),
   CONSTRAINT `FK_Vendus_TypesDechets` FOREIGN KEY (`id_type_dechet`) REFERENCES `type_dechets` (`id`),
   CONSTRAINT `FK_Vendus_Ventes` FOREIGN KEY (`id_vente`) REFERENCES `ventes` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -874,7 +866,7 @@ CREATE TABLE `ventes` (
   KEY `FK_Ventes_Createur` (`id_createur`),
   KEY `FK_Ventes_Edicteur` (`id_last_hero`),
   CONSTRAINT `FK_Ventes_Createur` FOREIGN KEY (`id_createur`) REFERENCES `utilisateurs` (`id`),
-  CONSTRAINT `FK_Ventes_Edicteur` FOREIGN KEY (`id_last_hero`) REFERENCES `utilisateurs` (`id`),
+  CONSTRAINT `FK_Ventes_Editeur` FOREIGN KEY (`id_last_hero`) REFERENCES `utilisateurs` (`id`),
   CONSTRAINT `FK_Ventes_MoyenPaiement` FOREIGN KEY (`id_moyen_paiement`) REFERENCES `moyens_paiement` (`id`),
   CONSTRAINT `FK_Ventes_PointVente` FOREIGN KEY (`id_point_vente`) REFERENCES `points_vente` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
