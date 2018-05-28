@@ -378,7 +378,6 @@ CREATE TABLE `pesees_vendus` (
   `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `masse` decimal(11,3) NOT NULL,
   `quantite` int(11) NOT NULL,
-  `id_vendu` int(11) NOT NULL,
   `id_createur` int(11) NOT NULL DEFAULT '0',
   `id_last_hero` int(11) NOT NULL DEFAULT '0',
   `last_hero_timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -514,40 +513,6 @@ UNLOCK TABLES;
 --
 -- Table structure for table `sorties`
 --
-
-DROP TABLE IF EXISTS `sorties`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `sorties` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `classe` text NOT NULL,
-  `id_filiere` int(11) DEFAULT '0',
-  `id_convention` int(11) DEFAULT '0',
-  `id_type_sortie` int(11) DEFAULT '0',
-  `id_point_sortie` int(11) NOT NULL,
-  `commentaire` text NOT NULL,
-  `id_createur` int(11) NOT NULL DEFAULT '0',
-  `id_last_hero` int(11) NOT NULL DEFAULT '0',
-  `last_hero_timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`),
-  KEY `FK_Sorties_Localites` (`id_point_sortie`),
-  KEY `FK_Sorties_Createur` (`id_createur`),
-  KEY `FK_Sorties_Editeur` (`id_last_hero`),
-  CONSTRAINT `FK_Sorties_Createur` FOREIGN KEY (`id_createur`) REFERENCES `utilisateurs` (`id`),
-  CONSTRAINT `FK_Sorties_Editeur` FOREIGN KEY (`id_last_hero`) REFERENCES `utilisateurs` (`id`),
-  CONSTRAINT `FK_Sorties_Localites` FOREIGN KEY (`id_point_sortie`) REFERENCES `localites` (`id`),
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `sorties`
---
-
-LOCK TABLES `sorties` WRITE;
-/*!40000 ALTER TABLE `sorties` DISABLE KEYS */;
-/*!40000 ALTER TABLE `sorties` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `type_collecte`
@@ -804,6 +769,41 @@ INSERT INTO `utilisateurs` VALUES (1,'2018-01-03 22:43:28','c1c2c3v1v2v3s1bighlj
 /*!40000 ALTER TABLE `utilisateurs` ENABLE KEYS */;
 UNLOCK TABLES;
 
+
+DROP TABLE IF EXISTS `sorties`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `sorties` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `classe` text NOT NULL,
+  `id_filiere` int(11) DEFAULT '0',
+  `id_convention` int(11) DEFAULT '0',
+  `id_type_sortie` int(11) DEFAULT '0',
+  `id_point_sortie` int(11) NOT NULL,
+  `commentaire` text NOT NULL,
+  `id_createur` int(11) NOT NULL DEFAULT '0',
+  `id_last_hero` int(11) NOT NULL DEFAULT '0',
+  `last_hero_timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `FK_Sorties_Localites` (`id_point_sortie`),
+  KEY `FK_Sorties_Createur` (`id_createur`),
+  KEY `FK_Sorties_Editeur` (`id_last_hero`),
+  CONSTRAINT `FK_Sorties_Createur` FOREIGN KEY (`id_createur`) REFERENCES `utilisateurs` (`id`),
+  CONSTRAINT `FK_Sorties_Editeur` FOREIGN KEY (`id_last_hero`) REFERENCES `utilisateurs` (`id`),
+  CONSTRAINT `FK_Sorties_Localites` FOREIGN KEY (`id_point_sortie`) REFERENCES `localites` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `sorties`
+--
+
+LOCK TABLES `sorties` WRITE;
+/*!40000 ALTER TABLE `sorties` DISABLE KEYS */;
+/*!40000 ALTER TABLE `sorties` ENABLE KEYS */;
+UNLOCK TABLES;
+
 --
 -- Table structure for table `vendus`
 --
@@ -816,13 +816,14 @@ CREATE TABLE `vendus` (
   `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `id_vente` int(11) NOT NULL,
   `id_type_dechet` int(11) NOT NULL,
-  `id_objet` int(11),
+  `id_objet` int(11) DEFAULT NULL,
   `quantite` int(11) NOT NULL,
   `prix` decimal(9,2) NOT NULL,
   `remboursement` decimal(9,2) NOT NULL,
   `id_createur` int(11) NOT NULL DEFAULT '0',
   `id_last_hero` int(11) NOT NULL DEFAULT '0',
   `last_hero_timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `lot` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `FK_Vendus_Ventes` (`id_vente`),
   KEY `FK_Vendus_TypesDechets` (`id_type_dechet`),
