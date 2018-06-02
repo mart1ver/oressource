@@ -113,8 +113,8 @@ function reset(data, response) {
   document.getElementById('num_vente').textContent = response.id + 1;
 }
 
-function moyens(methode) {
-  state.methode = methode;
+function moyens(moyen) {
+  state.moyen = moyen;
 }
 
 function encaisse_vente() {
