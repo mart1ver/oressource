@@ -248,6 +248,9 @@ if (is_valid_session() && is_allowed_bilan()) {
                     if ($obj_vendu === $Notpe) {
                       $mtee = $Mtpe;
                       $certitude = 100;
+                      $masse_vente_moyenne_totale = $moy_masse_vente * $obj_vendu;
+                      $masse_pesees_vendu_esp =  $Mtpe;
+                      $prix_tonne_estime = (($masse_vente_moyenne_totale - $masse_pesees_vendu_esp) + $Mtpe);
                     } else {
                       $masse_vente_moyenne_totale = $moy_masse_vente * $obj_vendu;
                       $masse_pesees_vendu_esp = $moy_masse_vente * $Mtpe;
