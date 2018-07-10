@@ -128,12 +128,12 @@ if (is_valid_session() && is_allowed_vente_id($numero)) {
 
           <label id="labelprix" for="prix">Prix unitaire:</label>
             <input type="number" class="form-control"
-                   placeholder="€" id="prix" min="0" step=0.01 onfocus="fokus(this)">
+                   placeholder="€" id="prix" min="0" step=0.1 onfocus="fokus(this)">
 
           <?php if (pesees_ventes()) { ?>
           <label id="labelmasse" for="masse">Masse unitaire:</label>
               <input type="number" class="form-control" placeholder="Kgs."
-                     id="masse" min="0.000" step=0.001 onfocus="fokus(this)">
+                     id="masse" min="0.000" step=0.01 onfocus="fokus(this)">
           <?php } ?>
           <br/>
 

@@ -210,7 +210,7 @@ function add() {
       const li = document.createElement('li');
       li.setAttribute('id', id);
       li.setAttribute('class', 'list-group-item');
-      const amount = vente.vente_unite ? vente.prix * vente.quantite : vente.prix;
+      const amount = vente.prix * vente.quantite ;
       let html = `
             <span class="badge">${amount.toFixed(2)} €</span>
             <span class="glyphicon glyphicon-trash" aria-hidden="true"
