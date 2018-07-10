@@ -54,7 +54,7 @@ function fokus(element) {
 
 function ticket_sum(ticket) {
   const f = (acc, vente) =>
-    acc + (vente.vente_unite ? vente.prix * vente.quantite : vente.prix);
+    acc + (vente.prix * vente.quantite);
   return ticket.to_array().reduce(f, 0);
 }
 
