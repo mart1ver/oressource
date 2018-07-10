@@ -33,13 +33,16 @@ if (is_valid_session() && is_allowed_verifications() && $_SESSION['viz_caisse'])
   IF(vendus.id_objet > 0, grille_objets.nom, "autre") objet,
   vendus.quantite,
   vendus.prix,
+  vendus.id_createur,
+  vendus.timestamp,
   utilisateurs.mail
   FROM
-  vendus, type_dechets, grille_objets
+  vendus, type_dechets, grille_objets, utilisateurs
   WHERE
   vendus.id_vente = :id_vente
   AND type_dechets.id = vendus.id_type_dechet
-  AND (grille_objets.id = vendus.id_objet OR vendus.id_objet = 0)');
+  AND (grille_objets.id = vendus.id_objet OR vendus.id_objet = 0)
+  GROUP BY vendus.id ');
   $req->execute(['id_vente' => $_GET['nvente']]);
   $donnees = $req->fetchAll(PDO::FETCH_ASSOC);
   $req->closeCursor();
@@ -71,16 +74,14 @@ if (is_valid_session() && is_allowed_verifications() && $_SESSION['viz_caisse'])
       <tbody>
         <?php foreach ($donnees as $d) { ?>
           <tr>
-            <td><?= $donnees['id']; ?></td>
-            <td><?= $donnees['timestamp']; ?></td>
-            <td><?= $donnees['type']; ?></td>
-            <td><?= $donnees['objet']; ?></td>
-            <td><?= $donnees['quantite']; ?></td>
-            <td><?= $donnees['prix']; ?></td>
-            <td><?= $users[$v['id_createur']]['mail'] ?></td>
-            <td><?= $v['last_hero_timestamp'] !== $v['timestamp'] ? $users[$v['id_last_hero']]['mail'] : '' ?></td>
-            <td><?= $v['last_hero_timestamp'] !== $v['timestamp'] ? $v['last_hero_timestamp'] : '' ?></td>
-          </tr>
+            <td><?= $d['id']; ?></td>
+            <td><?= $d['timestamp']; ?></td>
+            <td><?= $d['type']; ?></td>
+            <td><?= $d['objet']; ?></td>
+            <td><?= $d['quantite']; ?></td>
+            <td><?= $d['prix']; ?></td>
+            <td><?= $users[$d['id_createur']]['mail'] ?></td>
+                     </tr>
         <?php } ?>
       </tbody>
     </table>

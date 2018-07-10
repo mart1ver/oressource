@@ -19,8 +19,45 @@
  */
 session_start();
 
+
+
+
+
+require_once '../core/requetes.php';
+require_once '../core/session.php';
+
+if (is_valid_session() && is_allowed_verifications() && $_SESSION['viz_caisse'])  {
+
+
+
+
+
 require_once('../moteur/dbconfig.php');
-if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($_SESSION['niveau'], 'h') !== false)) {
+
+$users = map_by(utilisateurs($bdd), 'id');
+
+  $req = $bdd->prepare('SELECT
+  vendus.id,
+  vendus.timestamp,
+  type_dechets.nom type,
+  IF(vendus.id_objet > 0, grille_objets.nom, "autre") objet,
+  vendus.quantite,
+  vendus.remboursement,
+  vendus.id_createur,
+  vendus.timestamp,
+  utilisateurs.mail
+  FROM
+  vendus, type_dechets, grille_objets, utilisateurs
+  WHERE
+  vendus.id_vente = :id_vente
+  AND type_dechets.id = vendus.id_type_dechet
+  AND (grille_objets.id = vendus.id_objet OR vendus.id_objet = 0)
+  GROUP BY vendus.id ');
+  $req->execute(['id_vente' => $_GET['nvente']]);
+  $donnees = $req->fetchAll(PDO::FETCH_ASSOC);
+  $req->closeCursor();
+
+
   require_once 'tete.php';
   ?>
   <div class="container">
@@ -46,53 +83,19 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($
         </tr>
       </thead>
       <tbody>
-        <?php
-        /*
-          'SELECT type_dechets.couleur,type_dechets.nom, sum(pesees_collectes.masse) somme
-          FROM type_dechets,pesees_collectes
-          WHERE type_dechets.id = pesees_collectes.id_type_dechet AND DATE(pesees_collectes.timestamp) = CURDATE()
-          GROUP BY nom'
+      <?php foreach ($donnees as $d) { ?>
+                 <tr>
+            <td><?= $d['id']; ?></td>
+            <td><?= $d['timestamp']; ?></td>
+            <td><?= $d['type']; ?></td>
+            <td><?= $d['objet']; ?></td>
 
-          SELECT pesees_collectes.id ,pesees_collectes.timestamp  ,type_dechets.nom  , pesees_collectes.masse
-          FROM pesees_collectes ,type_dechets
-          WHERE type_dechets.id = pesees_collectes.id_type_dechet AND pesees_collectes.id_collecte = :id_collecte
-         */
-
-        // On recupère toute la liste des filieres de sortie
-        //   $reponse = $bdd->query('SELECT * FROM grille_objets');
-
-        $req = $bdd->prepare('SELECT vendus.id ,vendus.timestamp
- ,type_dechets.nom type
-,grille_objets.nom objet
- ,vendus.remboursement
- ,vendus.quantite
-,utilisateurs.mail
-
- FROM vendus, type_dechets, grille_objets ,utilisateurs
-
-WHERE vendus.id_vente = :id_vente
-
-AND grille_objets.id = vendus.id_objet
-AND type_dechets.id = vendus.id_type_dechet
-AND utilisateurs.id = vendus.id_createur');
-        $req->execute(['id_vente' => $_GET['nvente']]);
-
-        while ($donnees = $req->fetch()) { ?>
-          <tr>
-            <td><?= $donnees['id']; ?></td>
-            <td><?= $donnees['timestamp']; ?></td>
-            <td><?= $donnees['type']; ?></td>
-            <td><?= $donnees['objet']; ?></td>
-
-            <td><?= $donnees['quantite']; ?></td>
-            <td><?= $donnees['remboursement']; ?></td>
-            <td><?= $donnees['mail']; ?></td>
+            <td><?= $d['quantite']; ?></td>
+            <td><?= $d['remboursement']; ?></td>
+            <td><?= $d['mail']; ?></td>
 
           </tr>
-          <?php
-        }
-        $req->closeCursor();
-        ?>
+      <?php } ?>
       </tbody>
     </table>
 
