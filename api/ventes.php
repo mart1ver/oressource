@@ -66,7 +66,7 @@ function vendus_insert(PDO $bdd, int $id_vente, array $vente): int {
       $req->bindValue(':remboursement', 0, PDO::PARAM_STR);
       $req->bindValue(':lot', $vendu['lot'], PDO::PARAM_INT);
       $req->bindValue(':id_type_dechet', $vendu['id_type'], PDO::PARAM_INT);
-      $req->bindValue(':id_objet', $vendu['id_objet'] ?? NULL);
+      $req->bindValue(':id_objet', $vendu['id_objet'], PDO::PARAM_INT);
       $req->bindValue(':quantite', $quantite, PDO::PARAM_INT);
       $req->execute();
     } else {
