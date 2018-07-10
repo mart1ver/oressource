@@ -179,8 +179,9 @@ function numpad_input(elem) {
 function remove(id) {
   const elem = state.ticket.remove(id);
   document.getElementById(id).remove();
-  update_recap(ticket_quantite(state.ticket), ticket_sum(state.ticket));
   update_rendu();
+  update_recap(ticket_sum(state.ticket),ticket_quantite(state.ticket));
+  
   reset_numpad();
 }
 
