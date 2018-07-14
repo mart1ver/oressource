@@ -54,7 +54,7 @@ function fokus(element) {
 
 function ticket_sum(ticket) {
   const f = (acc, vente) =>
-    acc + (vente.prix * vente.quantite);
+    acc + (vente.lot ? vente.prix : (vente.prix * vente.quantite));
   return ticket.to_array().reduce(f, 0);
 }
 
@@ -218,6 +218,7 @@ function add() {
     if (quantite > 0 && !isNaN(prix)) {
       const current = state.last;
       state.last = undefined;
+      // Idée: Ajouter un champ "prix total" pour eviter de faire un if pour les calculs sur les prix.
       const vente = {
         id_type: current.type.id,
         id_objet: current.objet.id || null,
@@ -232,7 +233,7 @@ function add() {
       const li = document.createElement('li');
       li.setAttribute('id', id);
       li.setAttribute('class', 'list-group-item');
-      const amount = vente.prix * vente.quantite ;
+      const amount = vente.lot ?  vente.prix : vente.prix * vente.quantite;
       let html = `
             <span class="badge">${amount.toFixed(2)} €</span>
             <span class="glyphicon glyphicon-trash" aria-hidden="true"
