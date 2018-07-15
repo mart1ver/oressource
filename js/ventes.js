@@ -191,6 +191,27 @@ function update_recap(total, size) {
   document.getElementById('nom_objet').textContent = "Objet:";
 }
 
+/**
+ * Cette fonction est utilisée lorsque l'on click sur le bouton `ajouter`
+ * du numpad.
+ * On récupére l'état des objets du même type à ajouter au panier puis
+ * on met a jour l'interface graphique du panier.
+ *
+ * Deux points sont assez particulier:
+ *
+ * ## Cas de la vente en lot
+ *
+ * En lot on décide d'appliquer un prix arbitraire à un ensemble d'objet
+ * du même type sans respecter le prix unitaire (une promotion en somme).
+ * On ne peux donc pas utilier comme "prix total" quantité * prix
+ * comme dans la vente unitaire. On prends le prix seulement du lot.
+ *
+ * ## Cas des pesées en vente:
+ *
+ * On ajoute la masse de l'ensemble des objets à ajouter au panier
+ * (Comme dans une collecte ou sortie), on ne pesee pas independament tout
+ * les objets on pesee en lot en somme.
+ */
 function add() {
   if (state.last !== undefined) {
     const { prix, quantite, masse } = get_numpad();
@@ -218,7 +239,7 @@ function add() {
                   onclick="remove(${id});return false;">
             </span>&nbsp;&nbsp; ${quantite} &#215; ${name}`;
       if (masse > 0 && window.ventes.pesees) {
-        html += `, ${(masse * quantite).toFixed(3)} Kgs.`;
+        html += `, ${(masse).toFixed(3)} Kgs.`;
       }
       li.innerHTML = html;
       document.getElementById('transaction').appendChild(li);
