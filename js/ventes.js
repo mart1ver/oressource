@@ -63,7 +63,7 @@ function ticket_quantite(ticket) {
   return ticket.to_array().reduce(f, 0);
 }
 
-function render_numpad( { prix, quantite, masse }) {
+function render_numpad({ prix, quantite, masse }) {
   document.getElementById('quantite').value = quantite;
   document.getElementById('prix').value = prix;
   if (window.ventes.pesees) {
@@ -90,7 +90,7 @@ function get_numpad() {
   };
 }
 
-function update_state( { type, objet = {prix: 0, masse: 0.0} }) {
+function update_state({ type, objet = { prix: 0, masse: 0.0 } }) {
   numpad.prix = objet.prix;
   numpad.quantite = 1;
   numpad.masse = objet.masse || 0.0;
@@ -180,8 +180,8 @@ function remove(id) {
   const elem = state.ticket.remove(id);
   document.getElementById(id).remove();
   update_rendu();
-  update_recap(ticket_sum(state.ticket),ticket_quantite(state.ticket));
-  
+  update_recap(ticket_sum(state.ticket), ticket_quantite(state.ticket));
+
   reset_numpad();
 }
 
