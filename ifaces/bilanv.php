@@ -45,6 +45,8 @@ if (is_valid_session() && is_allowed_bilan()) {
   $nb_ventes = nb_ventes($bdd, $time_debut, $time_fin, $numero);
   $remb_nb = nb_remboursements($bdd, $time_debut, $time_fin, $numero);
 
+  $points_ventes = filter_visibles(points_ventes($bdd));
+
   $bilan_pesee_mix = array_reduce(array_keys($bilans_pesees_types), function ($acc, $e)
     use ($bilans_pesees_types, $bilans_types) {
     if (isset($bilans_types[$e])) {
@@ -84,7 +86,7 @@ if (is_valid_session() && is_allowed_bilan()) {
     <div class="col-md-8 col-md-offset-1" >
       <h2>Bilan des ventes de la structure</h2>
       <ul class="nav nav-tabs">
-        <?php foreach (filter_visibles(points_ventes($bdd)) as $point_vente) { ?>
+        <?php foreach ($points_ventes as $point_vente) { ?>
           <li class="<?= ($numero == $point_vente['id'] ? 'active' : ''); ?>">
             <a href="bilanv.php?<?= $date_query; ?>&numero=<?= $point_vente['id']; ?>"><?= $point_vente['nom']; ?></a>
           </li>
@@ -107,7 +109,7 @@ if (is_valid_session() && is_allowed_bilan()) {
                   <?php if ($numero === 0) { ?>
                     <tr>
                       <td>Nombre de points de vente :</td>
-                      <td><?= nb_points_ventes($bdd); ?></td>
+                      <td><?= count($points_ventes) ?></td>
                     </tr>
                   <?php } ?>
                   <tr>
