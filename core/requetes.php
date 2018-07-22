@@ -174,7 +174,9 @@ function convention_sortie(PDO $bdd): array {
 }
 
 function convention_sortie_by_id(PDO $bdd, int $id): array {
-  $sql = 'SELECT id, nom, couleur, description, timestamp, visible FROM conventions_sortie AND id = :id';
+  $sql = 'SELECT id, nom, couleur, visible, description, timestamp, visible
+  FROM conventions_sorties
+  WHERE id = :id';
   return fetch_id($bdd, $sql, $id);
 }
 

@@ -24,18 +24,13 @@ require_once '../core/composants.php';
 require_once '../core/session.php';
 require_once '../core/requetes.php';
 
-function conventions_sorties_id(PDO $bdd, $id): array {
-  $sql = 'SELECT id, nom, couleur, visible, description, timestamp FROM conventions_sorties WHERE id = :id';
-  return fetch_id($bdd, $sql, $id);
-}
-
 if (is_valid_session() && (strpos($_SESSION['niveau'], 'k') !== false)) {
   require_once '../moteur/dbconfig.php';
   require_once 'tete.php';
   $props = array_merge(['h1' => 'Gestion des partenaires de réemploi.',
     'type' => 'partenaire',
     'endpoint' => 'conventions_sorties'
-  ], conventions_sorties_id($bdd, $_POST['id']));
+  ], convention_sortie_by_id($bdd, $_POST['id']));
   ?>
   <?= config_types3_page_modif($props) ?>
   <?php
