@@ -66,7 +66,7 @@ function fetch_id(PDO $bdd, string $sql, int $id): array {
   return $result;
 }
 
-function fetch_all_id(PDO $bdd, string $sql, int $id) {
+function fetch_all_id(PDO $bdd, string $sql, int $id): array {
   $stmt = $bdd->prepare($sql);
   $stmt->bindParam(':id', $id, PDO::PARAM_INT);
   $stmt->execute();
@@ -75,11 +75,11 @@ function fetch_all_id(PDO $bdd, string $sql, int $id) {
   return $r;
 }
 
-function objet_id_dechet(PDO $bdd, int $id_dechet) {
+function objet_id_dechet(PDO $bdd, int $id_dechet): array {
   return fetch_all_id($bdd, 'SELECT * FROM grille_objets WHERE id_type_dechet = :id', $id_dechet);
 }
 
-function objet_id(PDO $bdd, int $id_obj) {
+function objet_id(PDO $bdd, int $id_obj): array {
   return fetch_id($bdd, 'SELECT * FROM grille_objets WHERE id = :id', $id_obj);
 }
 
@@ -88,7 +88,7 @@ function objets(PDO $bdd): array {
   return fetch_all($sql, $bdd);
 }
 
-function utilisateurs_id(PDO $bdd, int $id) {
+function utilisateurs_id(PDO $bdd, int $id): array {
   $sql = 'SELECT
     id,
     prenom,
@@ -427,7 +427,7 @@ function data_graphs(array $data): array {
   return ['data' => $d, 'colors' => $colors];
 }
 
-function data_graphs_from_bilan($bilan, $key) {
+function data_graphs_from_bilan(array $bilan, string $key): array {
   $data = [];
   $colors = [];
   foreach ($bilan as $_ => $iter) {
@@ -441,7 +441,8 @@ function data_graphs_from_bilan($bilan, $key) {
  * Utile pour vérifier le fond de caisse en fin de vente
  * Equivalent de la touche 'Z' sur une caisse enregistreuse
  */
-function chiffre_affaire_mode_paiement(PDO $bdd, string $start, string $stop, int $id_point_vente = 0) {
+function chiffre_affaire_mode_paiement(PDO $bdd, string $start, 
+  string $stop, int $id_point_vente = 0): array {
   $cond = ($id_point_vente > 0 ? " AND ventes.id_point_vente = $id_point_vente " : ' ');
   $sql = "SELECT
     ventes.id_moyen_paiement AS id_moyen,
@@ -494,7 +495,8 @@ function nb_ventes(PDO $bdd, string $start, string $stop, int $id_point_vente = 
   return $nb_ventes;
 }
 
-function nb_remboursements(PDO $bdd, string $start, string $stop, int $id_point_vente = 0) {
+function nb_remboursements(PDO $bdd, string $start, string $stop,
+ int $id_point_vente = 0): int {
   $cond = ($id_point_vente > 0 ? " AND ventes.id_point_vente = $id_point_vente " : ' ');
   $sql = "SELECT
     COUNT(DISTINCT(ventes.id)) as nb_remb
@@ -584,7 +586,8 @@ function bilan_ventes_par_type(PDO $bdd, string $start, string $stop, int $id_po
   return $result;
 }
 
-function bilan_ventes_pesees(PDO $bdd, string $start, string $stop, int $id_point_vente = 0) {
+function bilan_ventes_pesees(PDO $bdd, string $start, string $stop,
+  int $id_point_vente = 0): array {
   $cond = ($id_point_vente > 0 ? " AND ventes.id_point_vente = $id_point_vente " : ' ');
   $sql = "SELECT
       type_dechets.id as id,
@@ -619,7 +622,8 @@ function bilan_ventes_pesees(PDO $bdd, string $start, string $stop, int $id_poin
   return $result;
 }
 
-function bilan_ventes(PDO $bdd, string $start, string $stop, int $id_point_vente = 0) {
+function bilan_ventes(PDO $bdd, string $start, string $stop,
+  int $id_point_vente = 0): array {
   $cond = ($id_point_vente > 0 ? " AND ventes.id_point_vente = $id_point_vente " : ' ');
   $sql = "SELECT
     COUNT(DISTINCT(ventes.id)) as nb_ventes,
