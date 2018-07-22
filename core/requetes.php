@@ -464,14 +464,6 @@ function chiffre_affaire_mode_paiement(PDO $bdd, string $start, string $stop, in
   return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
-function nb_points_ventes(PDO $bdd) {
-  $sql = 'SELECT COUNT(id) as nb_points_ventes
-                          FROM points_vente';
-  $stmt = $bdd->query($sql);
-  $nb_point_ventes = (int) $stmt->fetch(PDO::FETCH_ASSOC)['nb_points_ventes'];
-  $stmt->closeCursor();
-  return $nb_point_ventes;
-}
 
 function nb_ventes(PDO $bdd, string $start, string $stop, int $id_point_vente = 0) {
   $cond = ($id_point_vente > 0 ? " AND ventes.id_point_vente = $id_point_vente " : ' ');
