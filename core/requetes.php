@@ -468,7 +468,8 @@ function chiffre_affaire_mode_paiement(PDO $bdd, string $start,
 }
 
 
-function nb_ventes(PDO $bdd, string $start, string $stop, int $id_point_vente = 0) {
+function nb_ventes(PDO $bdd, string $start, string $stop,
+ int $id_point_vente = 0): int {
   $cond = ($id_point_vente > 0 ? " AND ventes.id_point_vente = $id_point_vente " : ' ');
   $sql = "SELECT
     COUNT(DISTINCT(ventes.id)) as nb_ventes
@@ -546,7 +547,8 @@ function viz_caisse(PDO $bdd, int $id_point_vente, int $offset): array {
   return $resultat;
 }
 
-function bilan_ventes_par_type(PDO $bdd, string $start, string $stop, int $id_point_vente = 0) {
+function bilan_ventes_par_type(PDO $bdd, string $start, string $stop,
+int $id_point_vente = 0): array {
   $cond = ($id_point_vente > 0 ? " AND ventes.id_point_vente = $id_point_vente " : ' ');
   $sql = "SELECT
     type_dechets.id as id,
