@@ -468,6 +468,12 @@ function data_graphs_from_bilan(array $bilan, string $key): array {
   return ['data' => $data, 'colors' => $colors];
 }
 
+function vendus_case_lot_unit(): string {
+  return "case when vendus.lot > 0
+  then vendus.prix
+  else vendus.prix * vendus.quantite end";
+}
+
 /** Tableau de recap du Chiffre d'Affaire par mode de paiement
  * Utile pour vérifier le fond de caisse en fin de vente
  * Equivalent de la touche 'Z' sur une caisse enregistreuse
@@ -479,7 +485,7 @@ function chiffre_affaire_mode_paiement(PDO $bdd, string $start,
     ventes.id_moyen_paiement AS id_moyen,
     moyens_paiement.nom AS moyen,
     COUNT(DISTINCT(ventes.id)) AS quantite_vendue,
-    SUM(vendus.prix * vendus.quantite) AS total,
+    SUM(' . vendus_case_lot_unit(). ') AS total,
     SUM(vendus.remboursement) AS remboursement
   FROM moyens_paiement
   INNER JOIN ventes
@@ -543,29 +549,29 @@ function nb_remboursements(PDO $bdd, string $start, string $stop,
 
 function viz_caisse(PDO $bdd, int $id_point_vente, int $offset): array {
   $sql = "SELECT
-      ventes.id as id,
-      ventes.timestamp as date_creation,
-      moyens_paiement.nom as moyen,
-      moyens_paiement.couleur as coul,
-      ventes.commentaire as commentaire,
-      ventes.last_hero_timestamp as lht,
-      utilisateurs.mail as mail,
-      SUM(vendus.prix * vendus.quantite) as credit,
-      SUM(vendus.remboursement * vendus.quantite) as debit,
-      SUM(vendus.quantite) as quantite
-    from ventes
-    inner join vendus
-      on vendus.id_vente = ventes.id
-      and DATE(ventes.timestamp) = DATE(NOW())
-      and ventes.id_point_vente = :id_point_vente
-    inner join moyens_paiement
-      on ventes.id_moyen_paiement = moyens_paiement.id
-    inner join utilisateurs
-      on utilisateurs.id = ventes.id_createur
-    group by ventes.id, ventes.timestamp, moyens_paiement.nom,
-      moyens_paiement.couleur, ventes.commentaire,
-      ventes.last_hero_timestamp, utilisateurs.mail
-    order by ventes.timestamp desc
+    ventes.id as id,
+    ventes.timestamp as date_creation,
+    moyens_paiement.nom as moyen,
+    moyens_paiement.couleur as coul,
+    ventes.commentaire as commentaire,
+    ventes.last_hero_timestamp as lht,
+    utilisateurs.mail as mail,
+    SUM(" . vendus_case_lot_unit(). ") as credit,
+    SUM(vendus.remboursement * vendus.quantite) as debit,
+    SUM(vendus.quantite) as quantite
+  from ventes
+  inner join vendus
+    on vendus.id_vente = ventes.id
+    and DATE(ventes.timestamp) = DATE(NOW())
+    and ventes.id_point_vente = :id_point_vente
+  inner join moyens_paiement
+    on ventes.id_moyen_paiement = moyens_paiement.id
+  inner join utilisateurs
+    on utilisateurs.id = ventes.id_createur
+  group by ventes.id, ventes.timestamp, moyens_paiement.nom,
+    moyens_paiement.couleur, ventes.commentaire,
+    ventes.last_hero_timestamp, utilisateurs.mail
+  order by ventes.timestamp desc
   limit 0, :offset";
   $reqVentes = $bdd->prepare($sql);
   $reqVentes->bindValue('id_point_vente', $id_point_vente, PDO::PARAM_INT);
@@ -583,7 +589,7 @@ int $id_point_vente = 0): array {
     type_dechets.id as id,
     type_dechets.couleur as couleur,
     type_dechets.nom as nom,
-    SUM(vendus.prix * vendus.quantite) as chiffre_degage,
+    SUM(" . vendus_case_lot_unit(). ") as chiffre_degage,
     SUM(vendus.quantite) as vendu_quantite,
     SUM(vendus.remboursement) as remb_somme,
     SUM(case when vendus.remboursement > 0 then 1 else 0 end) as remb_quantite
@@ -652,7 +658,7 @@ function bilan_ventes(PDO $bdd, string $start, string $stop,
   $cond = ($id_point_vente > 0 ? " AND ventes.id_point_vente = $id_point_vente " : ' ');
   $sql = "SELECT
     COUNT(DISTINCT(ventes.id)) as nb_ventes,
-    SUM(vendus.prix * vendus.quantite) as chiffre_degage,
+    SUM(" . vendus_case_lot_unit(). ") as chiffre_degage,
     SUM(vendus.quantite) as vendu_quantite,
     SUM(vendus.remboursement) as remb_somme,
     SUM(case when vendus.remboursement > 0 then 1 else 0 end) as remb_quantite,
