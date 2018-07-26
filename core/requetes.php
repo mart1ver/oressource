@@ -184,7 +184,7 @@ function convention_sortie_by_id(PDO $bdd, int $id): array {
 
 function points_collecte_id(PDO $bdd, int $id): array {
   $sql = 'SELECT pesee_max, nom
-          FROM points_collecte
+  FROM points_collecte
   WHERE id = :id';
   return fetch_id($bdd, $sql, $id);
 }
