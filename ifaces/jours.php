@@ -22,6 +22,7 @@ session_start();
 require_once '../core/requetes.php';
 require_once '../core/session.php';
 require_once '../core/composants.php';
+
 function _generic_histo(PDO $bdd, string $table, string $field, int $type, string $debut, string $fin): array {
   $sql = "SELECT
       SUM($field) nombre,
@@ -70,7 +71,7 @@ if (!(is_valid_session() && is_allowed_bilan())) {
 require_once '../moteur/dbconfig.php';
 
 $types_dechets = types_dechets($bdd);
-$type_selected = filter_input(INPUT_GET, 'type', FILTER_VALIDATE_INT);
+$type_selected = filter_input(INPUT_GET, 'type', FILTER_VALIDATE_INT) ?? 1;
 $type = array_values(array_filter($types_dechets, function ($e) use ($type_selected) {
       return $type_selected === $e['id'];
     }))[0];
@@ -86,7 +87,7 @@ $end = $date2->format('d-m-Y');
 $histoCol = _generic_histo($bdd, 'pesees_collectes', 'masse', $type_selected, $time_debut, $time_fin);
 $histoSor = _generic_histo($bdd, 'pesees_sorties', 'masse', $type_selected, $time_debut, $time_fin);
 $histoQV = _generic_histo($bdd, 'vendus', 'quantite', $type_selected, $time_debut, $time_fin);
-$histoCA = _generic_histo($bdd, 'vendus', 'quantite * prix', $type_selected, $time_debut, $time_fin);
+$histoCA = _generic_histo($bdd, 'vendus', vendus_case_lot_unit(), $type_selected, $time_debut, $time_fin);
 require_once 'tete.php';
 ?>
 
