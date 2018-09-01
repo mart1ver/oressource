@@ -230,6 +230,12 @@ function connection_UI_ticket(numpad, ticket, typesItems, pretraitement = ((a, .
   };
 }
 
+/*
+ * Fonction pour facilité la mise en place de la logique de la GUI.
+ *
+ * @param url {string} - Url a contacter avec Fetch ( voir post_data())
+ * @param encaisse {Function} - Fonction à appeller si on click sur le bouton.
+ */
 function initUI(url, encaisse) {
   const send = post_data(url, encaisse, tickets_clear);
   const sendAndPrint = post_data(url, encaisse, tickets_clear, impression_ticket);
@@ -343,7 +349,20 @@ function login(onSuccess = undefined) {
 }
 
 /*
- * Client-serveur, ajax
+ * Dans cette fonction on traite le status code de la réponse donnée par le serveur.
+ * entre 200 et 300 on estime que c'est un succèes.
+ *
+ * Si le status code vaut 401, c'est une erreur.
+ * Sinon c'est un warning non critique.
+ *
+ * <https://en.wikipedia.org/wiki/List_of_HTTP_status_codes>
+ *
+ * @throws - Si on rencontre une erreur critique on lève une exception...
+ * Note Axel: Je suis pas vraiment sur qu'on la récupére pour l'instant ;)
+ *
+ * @param response {object} - Réponse du serveur
+ * @return {Object} - Le corps JSON de la réponse ou la réponse brute si erreur non fatale.
+ *   Sinon un leve une exeception
  */
 function status(response) {
   if (response.status >= 200
@@ -360,8 +379,22 @@ function status(response) {
   }
 }
 
-// TODO Vrai gestion de la reponse... (future mise en attente...)
-// See https://github.com/github/fetch
+
+/*
+ * TODO: Vrai gestion de la reponse... (future mise en attente...)
+ * See: <https://github.com/github/fetch>
+ *
+ * Effecture l'envoi des données au format JSON en utf-8 en POST nos données,
+ *   Et applique des post-traitement défini par les fonctions onFinalise et OnImpress.
+ *
+ * @param {url} - Url ou envoyer nos données
+ * @param {Function} - Fonction à appeller pour obtenir nos données,
+ *  Cette cloture est construite par `prepare_data()`.
+ * @param {Function} - OnFinalise clotûre appellée après avoir soumis les données et obtenu une
+ *  réponse
+ * @param {Function} - OnImpress, par defaut ne fait rien, sinon effecture l'impression du ticket.
+ * @return {Function} - Clotûre qui sera appellée une fois l'encaissement prêt a l'envoi.
+*/
 function post_data(url, getData, onFinalise, onImpress = (_, a) => a) {
   return () => {
     const data = getData();
@@ -390,6 +423,14 @@ function post_data(url, getData, onFinalise, onImpress = (_, a) => a) {
   };
 }
 
+/*
+ * Fonction permetant d'avoir un traitement générique dans encaisse() des différentes
+ * stratégies de vérification d'une entrée utilisateur via le formulaire.
+ *
+ * @param {object}.classe {string} - Classe de sortie ou collecte
+ * @return {Function} - Clotûre permetant de valider certains champs d'un encaissement/enregistement
+ *  Cette clotûre sera du type Objet -> boolean.
+ */
 function strategie_validation({ classe }) {
   if (classe === 'sortiesp' || classe === 'sortiesd') {
     return (_) => true;
@@ -405,8 +446,9 @@ function strategie_validation({ classe }) {
  * On fait ca pour pouvoir gerer les differents types de retours vu que les ID
  * Sont relatives... Par exemple dans les sorties de dechets et d'objet.
  *
- * @param {string} url Url de la requete post.
- * @param {Objects} tickets Mixin de tickets la clef servira a les reconnaitre cote serveur.
+ * @param {String}    - Url de la requete post.
+ * @param {Objects}   - Tickets Mixin de tickets la clef servira a les reconnaitre cote serveur.
+ * @return {Function} - Closure capable de gérer un encaissement.
  */
 function prepare_data(tickets, metadata) {
   const test = strategie_validation(metadata);
@@ -444,10 +486,20 @@ function prepare_data(tickets, metadata) {
  * Code de gestion de l'impression
  */
 
-function dashBreak() {
+const dashBreak = () => {
   return '<p>--------------------------------------------------------------------------------</p>';
 }
 
+/*
+ * Fonction qui permet d'afficher les différents types de Tickets dans le cas des pesées qui
+ * gérent deux types de sortie en une.
+ *
+ * @param data {Object} - Content au moins un ticket items ou evacs valide.
+ * @return     {String} - Chaine contenant les différents types de dechet d'un Ticket.
+ * utilise les variables globales:
+ * - window.OressourceEnv.types_evac
+ * - window.OressourceEnv.types_dechet
+ */
 function showTickets(data) {
   const item = data.hasOwnProperty('items') && data.items.length > 0  ?
     `<p>Objets de types : </p>${showTicket(data.items, window.OressourceEnv.types_dechet, 'kg')}`: '';
@@ -455,19 +507,35 @@ function showTickets(data) {
     ` ${dashBreak()}<p>Dechets de types : </p>${showTicket(data.evacs, window.OressourceEnv.types_evac, 'kg')}` : '');
 }
 
+/*
+ * Cette fonction construit le corps du ticket de casse pour un type particulier (evac ou items)
+ * On itére sur l'ensemble des données pour avoir un <p/> par entree dans notre ticket.
+ *
+ * @param data  {Ticket} - Le ticket que l'on désire ensuite afficher
+ * @param types {object} - types possibles de tickets (evac, items)
+ * @param unit  {string} - unité pour les entrées du ticket
+ */
 function showTicket(data, types, unit='kg') {
   const sum = data.reduce((a, {masse}) => a + masse, 0.0);
   return [ `Sous total: ${sum} ${unit}${dashBreak()}`,
     ...data.map(({masse, type}) => {
-    // Dans un monde parfait types serait une Map indexé par les id pour un Accès en O(1)
-    const { nom } = types.find(({ id }) => type === id);
-    return `<p>${nom} : ${masse} ${unit}</p>`;
-  }) ].join('');
+      // Dans un monde parfait types serait une Map indexé par les id pour un Accès en O(1)
+      const { nom } = types.find(({ id }) => type === id);
+      return `<p>${nom} : ${masse} ${unit}</p>`;
+    })
+  ].join('');
 }
 
 /*
- * Cette fonction construit une IFrame et l'imprime et l'iframe est détruite
+ * Cette fonction construit une <IFrame/> et l'imprime et l'iframe est détruite
  * après impression.
+ *
+ * @param data { Ticket } - Un ticket de sortie ou entrée valide.
+ * @param response { object } - La réponse du serveur.
+ *
+ * La fonction utilise les variables globales suivantes:
+ * @globals window.OressourceEnv.structure
+ * @globals window.OressourceEnv.adresse
  */
 function impression_ticket(data, response) {
   const title = classeToName(data.classe);
@@ -495,16 +563,16 @@ function impression_ticket(data, response) {
     </body>
   </html>`;
 
- function closePrint () {
-   document.body.removeChild(this.__container__);
- }
+  function closePrint () {
+    document.body.removeChild(this.__container__);
+  }
 
- function setPrint() {
-    this.contentWindow.__container__ = this;
-    this.contentWindow.onbeforeunload = closePrint;
-    this.contentWindow.onafterprint = closePrint;
-    this.contentWindow.focus();
-    this.contentWindow.print();
+  function setPrint() {
+      this.contentWindow.__container__ = this;
+      this.contentWindow.onbeforeunload = closePrint;
+      this.contentWindow.onafterprint = closePrint;
+      this.contentWindow.focus();
+      this.contentWindow.print();
   }
 
   const iframe = document.createElement('iframe');

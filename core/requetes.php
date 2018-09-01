@@ -430,7 +430,7 @@ function login_user(PDO $bdd, string $email, string $password): array {
   $passmd5 = md5($password);
   $req = $bdd->prepare('SELECT id, niveau, nom, prenom, mail
                         FROM utilisateurs
-                        WHERE mail = :mail AND pass = :pass LIMIT 1');
+                        WHERE mail = :mail AND pass = :pass');
   $req->bindValue(':mail', $email, PDO::PARAM_STR);
   $req->bindValue(':pass', $passmd5, PDO::PARAM_INT);
   $req->execute();
