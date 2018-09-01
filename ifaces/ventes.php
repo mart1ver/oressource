@@ -181,8 +181,8 @@ if (is_valid_session() && is_allowed_vente_id($numero)) {
             ?>
             <div class='btn-group'>
               <button type="button"
-                      class="btn btn-default <?= count($objs) > 0 ? 'dropdown-toggle' : '' ?>"
-                      <?php if (count($objs) > 0) { ?>
+                      class="btn btn-default <?= (!empty($objs)) ? 'dropdown-toggle' : '' ?>"
+                      <?php if (!empty($objs)) { ?>
                         data-toggle="dropdown"
                       <?php } else { ?>
                         onclick='update_state({ type: <?= json_encode($d, JSON_NUMERIC_CHECK) ?> });
@@ -193,10 +193,11 @@ if (is_valid_session() && is_allowed_vente_id($numero)) {
                   <?= $d['nom'] ?>
                 </span>
               </button>
-              <?php if (count($objs) > 0) { ?>
-                <ul class='dropdown-menu' role='menu'>
+              <?php if (!empty($objs)) { ?>
+                <ul class="dropdown-menu" role="menu">
                   <li style="font-size:18px">
-                    <a href="#" onclick='update_state({ type: <?= json_encode($d, JSON_NUMERIC_CHECK) ?> });
+                    <a href="#" onclick='update_state({
+                          type: <?= json_encode($d, JSON_NUMERIC_CHECK) ?> });
                         return false;'><?= $d['nom'] ?></a>
                   </li>
                   <li class='divider'></li>
@@ -207,11 +208,11 @@ if (is_valid_session() && is_allowed_vente_id($numero)) {
                             objet: <?= json_encode($objet, JSON_NUMERIC_CHECK) ?> });
                           return false;'><?= $objet['nom'] ?></a>
                     </li>
-                  <?php } ?>
+                  <?php } /* for-each objs */ ?>
                 </ul>
-              <?php } ?>
+              <?php } /* if !emtpy(objs) */  ?>
             </div>
-          <?php } ?>
+          <?php } /* for-each type dechets */ ?>
         </div>
       </div>
 
@@ -253,8 +254,9 @@ if (is_valid_session() && is_allowed_vente_id($numero)) {
     </div>
 
     <?php if ($_SESSION['viz_caisse']) { ?>
-      <div id=visualisation" class="col-md-2 col-md-offset-2" style="width: 330px;">
-        <a href="viz_caisse.php?numero=<?= $numero; ?>" target="_blank">Visualiser les <?= $_SESSION['nb_viz_caisse']; ?> dernieres ventes</a>
+      <div id="visualisation" class="col-md-2 col-md-offset-2" style="width: 330px;">
+        <a href="viz_caisse.php?numero=<?= $numero; ?>"
+           target="_blank">Visualiser les <?= $_SESSION['nb_viz_caisse']; ?> dernieres ventes</a>
       </div>
     <?php } ?>
   </div>

@@ -142,7 +142,7 @@ if (is_valid_session() && is_allowed_sortie_id($numero)) {
       const recycleur_choix = make_choix_recycleur(div_list_item, window.OressourceEnv.id_type_action);
       document.getElementById('id_type_action').addEventListener('change', recycleur_choix, false);
 
-      window.tickets = [ ticketsItem ];
+      window.OressourceEnv.tickets = [ ticketsItem ];
     }, false);
   </script>
   <?php

@@ -115,7 +115,7 @@ if (is_valid_session() && is_allowed_sortie_id($numero)) {
       }, {classe: 'sortiesc'});
       initUI('../api/sorties.php', encaisse);
 
-      window.tickets = [ ticketItem, ticketEvac ];
+      window.OressourceEnv.tickets = [ ticketItem, ticketEvac ];
     }, false);
   </script>
 

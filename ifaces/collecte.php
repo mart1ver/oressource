@@ -114,7 +114,7 @@ if (is_valid_session() && is_allowed_collecte_id($numero)) {
       }, {classe: 'collecte'});
       initUI('../api/collectes.php', encaisse);
 
-      window.tickets = [ ticketItem ];
+      window.OressourceEnv.tickets = [ ticketItem ];
     }, false);
   </script>
   <?php
