@@ -104,4 +104,4 @@ class Ticket {
   }
 }
 
-const sumMasseTickets = (ts) => ts.reduce((acc, t) => acc + t.total, 0);
+const sumMasseTickets = (ts) => ts.reduce((acc, t) => acc + t.total, 0.0);
