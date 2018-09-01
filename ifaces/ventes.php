@@ -260,7 +260,10 @@ if (is_valid_session() && is_allowed_vente_id($numero)) {
   </div>
   <script type="text/javascript">
     'use scrict';
-    window.ventes = {
+    // Variables d'environnement de Oressource.
+    window.OressourceEnv = {
+      structure: <?= json_encode($_SESSION['structure']) ?>,
+      adresse: <?= json_encode($_SESSION['adresse']) ?>,
       nb_viz_caisse: <?= json_encode($_SESSION['nb_viz_caisse'], JSON_NUMERIC_CHECK); ?>,
       force_pes_vente: <?= json_encode($_SESSION['force_pes_vente']); ?>,
       pesees: <?= json_encode(pesees_ventes()) ?>,
@@ -271,6 +274,7 @@ if (is_valid_session() && is_allowed_vente_id($numero)) {
       id_user: <?= json_encode($_SESSION['id'], JSON_NUMERIC_CHECK) ?>,
       moyens_paiement: <?= json_encode($moyens_paiement, JSON_NUMERIC_CHECK) ?>
     };
+
   </script>
   <script src="../js/ventes.js"></script>
   <?php

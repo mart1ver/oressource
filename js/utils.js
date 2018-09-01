@@ -293,9 +293,10 @@ function tickets_clear(data) {
 
 function classeToName(classe) {
   switch (classe) {
-    case 'collecte': return 'Collecte';
+    case 'collecte':  return 'Collecte';
+    case 'ventes':    return 'Vente';
     case 'sortiesr':  return 'Sortie recycleur';
-    case 'sorties':  return 'Sortie don';
+    case 'sorties':   return 'Sortie don';
     case 'sortiesc':  return 'Sortie partenaire';
     case 'sortiesp':  return 'Sortie poubelles';
     case 'sortiesd':  return 'Sortie décheterie';

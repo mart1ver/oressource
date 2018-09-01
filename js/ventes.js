@@ -17,13 +17,29 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
+Ticket.prototype.sum_quantite = function () {
+  return this.to_array()
+      .reduce((acc, vente) => acc + vente.quantite, 0);
+}
+
+Ticket.prototype.sum_prix = function () {
+  return this.to_array().reduce(
+    (acc, vente) =>
+      acc + (vente.lot ? vente.prix : (vente.prix * vente.quantite)),
+    0.0);
+}
+
 function new_state() {
-  return {
-    moyen: 1,
+  const s = {
+    moyen: 1, // especes
     ticket: new Ticket(),
     last: undefined,
     vente_unite: true
   };
+  // Hack pour les impressions...
+  window.OressourceEnv.tickets = s.ticket;
+  return s;
 }
 
 function new_numpad() {
@@ -52,21 +68,10 @@ function fokus(element) {
   current_focus = element;
 }
 
-function ticket_sum(ticket) {
-  const f = (acc, vente) =>
-    acc + (vente.lot ? vente.prix : (vente.prix * vente.quantite));
-  return ticket.to_array().reduce(f, 0);
-}
-
-function ticket_quantite(ticket) {
-  const f = (acc, vente) => acc + vente.quantite;
-  return ticket.to_array().reduce(f, 0);
-}
-
 function render_numpad({ prix, quantite, masse }) {
   document.getElementById('quantite').value = quantite;
   document.getElementById('prix').value = prix;
-  if (window.ventes.pesees) {
+  if (window.OressourceEnv) {
     document.getElementById('masse').value = masse;
   }
 }
@@ -109,7 +114,7 @@ function reset(data, response) {
   const range = document.createRange();
   range.selectNodeContents(document.getElementById('transaction'));
   range.deleteContents();
-  update_recap(ticket_sum(state.ticket), ticket_quantite(state.ticket));
+  update_recap(state.ticket.sum_prix(), state.ticket.quantite());
   document.getElementById('num_vente').textContent = response.id + 1;
 }
 
@@ -122,8 +127,9 @@ function encaisse_vente() {
     const url = '../api/ventes.php';
     const date = document.getElementById('date');
     const data = {
-      id_point: window.ventes.point.id,
-      id_user: window.ventes.id_user,
+      classe: 'ventes',
+      id_point: window.OressourceEnv.point.id,
+      id_user: window.OressourceEnv.id_user,
       id_moyen: state.moyen,
       commentaire: document.getElementById('commentaire').value.trim(),
       items: state.ticket.to_array()
@@ -137,34 +143,23 @@ function encaisse_vente() {
   }
 }
 
-function print() {
-  if (state.ticket.size > 0) {
-    const f = () => {
-      if (ventes.tva_active) {
-        const prixtot = ticket_sum(state.ticket).toFixed(2);
-        const ptva = prixtot * ventes.taux_tva.toFixed(2);
-        const prixht = (prixtot - ptva).toFixed(2);
-        return `TVA à ${ventes.taux_tva}% Prix H.T. = ${prixht} + € TVA =  ${ptva} €`;
-      } else {
-        return "Association non assujettie à la TVA.";
-      }
-    };
-    const commentaire = document.getElementById('commentaire').value.strip();
-    const newstr = document.getElementById('ticket').innerHTML;
-    const oldstr = document.body.innerHTML;
-    document.body.innerHTML = `<html><head><title>Ticket</title></head>
-      <body><small>
-      <ul id='liste' class='list-group'>
-      <li class='list-group-item'><b>${commentaire}</b></li>
-      </ul>${newstr}${f()}</body></small>`;
-    window.print();
-    document.body.innerHTML = oldstr;
-    encaisse();
+// Immediatly calling function to get how to print TVA
+const printTva = (() => {
+  if (window.OressourceEnv.tva_active) {
+      return () => {
+      const prixtot = state.ticket.sum_prix().toFixed(2);
+      const taux_tva = window.OressourceEnv.taux_tva.toFixed(2);
+      const ptva = prixtot * taux_tva;
+      const prixht = (prixtot - ptva).toFixed(2);
+      return `TVA à ${taux_tva}% Prix H.T. = ${prixht} + € TVA =  ${ptva} €`;
+    }
+  } else {
+    () => "Association non assujettie à la TVA.";
   }
-}
+})();
 
 function update_rendu() {
-  const total = ticket_sum(state.ticket);
+  const total = state.ticket.sum_prix();
   const input = document.getElementById('reglement');
   rendu.reglement = parseFloat(input.value, 10).toFixed(3);
   rendu.difference = rendu.reglement - total;
@@ -180,8 +175,7 @@ function remove(id) {
   const elem = state.ticket.remove(id);
   document.getElementById(id).remove();
   update_rendu();
-  update_recap(ticket_sum(state.ticket), ticket_quantite(state.ticket));
-
+  update_recap(state.ticket.sum_prix(), state.ticket.sum_quantite());
   reset_numpad();
 }
 
@@ -219,17 +213,19 @@ function add() {
       const current = state.last;
       state.last = undefined;
       // Idée: Ajouter un champ "prix total" pour eviter de faire un if pour les calculs sur les prix.
+
+      const name = current.objet.nom || current.type.nom;
       const vente = {
         id_type: current.type.id,
         id_objet: current.objet.id || null,
         lot: !state.vente_unite,
         quantite,
         prix,
-        masse
+        masse,
+        name, // Hack pour les impressions.
       };
       const id = state.ticket.push(vente);
 
-      const name = current.objet.nom || current.type.nom;
       const li = document.createElement('li');
       li.setAttribute('id', id);
       li.setAttribute('class', 'list-group-item');
@@ -239,12 +235,12 @@ function add() {
             <span class="glyphicon glyphicon-trash" aria-hidden="true"
                   onclick="remove(${id});return false;">
             </span>&nbsp;&nbsp; ${quantite} &#215; ${name}`;
-      if (masse > 0 && window.ventes.pesees) {
+      if (masse > 0 && window.OressourceEnv.pesees) {
         html += `, ${(masse).toFixed(3)} Kgs.`;
       }
       li.innerHTML = html;
       document.getElementById('transaction').appendChild(li);
-      update_recap(ticket_sum(state.ticket), ticket_quantite(state.ticket));
+      update_recap(state.ticket.sum_prix(), state.ticket.sum_quantite());
       update_rendu();
       reset_numpad();
     } else {
@@ -260,7 +256,7 @@ document.addEventListener('DOMContentLoaded', () => {
       document.getElementById('labellot').textContent = label;
       document.getElementById('labelprix').textContent = prix_string;
       document.getElementById('panelcalc').style.backgroundColor = bg_color;
-      if (window.ventes.pesees) {
+      if (window.OressourceEnv.pesees) {
         document.getElementById('labelmasse').textContent = masse_string;
       }
     };
@@ -273,9 +269,12 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   const url = '../api/ventes.php';
+  const ventePrint = (data, response) => {
+    return impression_ticket(data, response, '€', printTva, (t) => t.sum_prix());
+  }
   const send = post_data(url, encaisse_vente, reset);
-  // const sendAndPrint = post_data(url, encaisse, tickets_clear, impression_ticket);
+  const sendAndPrint = post_data(url, encaisse_vente, tickets_clear, ventePrint);
   document.getElementById('encaissement').addEventListener('click', send, false);
-  //document.getElementById('impression').addEventListener('click', () => print, false);
+  document.getElementById('impression').addEventListener('click', sendAndPrint, false);
 
 }, false);
