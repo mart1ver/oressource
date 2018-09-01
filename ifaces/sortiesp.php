@@ -96,7 +96,7 @@ if (is_valid_session() && is_allowed_sortie_id($numero)) {
 
       initUI('../api/sorties.php', encaisse);
 
-      window.tickets = [ ticketEvac ];
+      window.OressourceEnv.tickets = [ ticketEvac ];
     }, false);
   </script>
   <?php

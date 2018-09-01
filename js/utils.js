@@ -191,14 +191,16 @@ function ticket_update_ui(container, totalUI, bag, value) {
   li.setAttribute('class', 'list-group-item');
   const span = '<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>';
   li.innerHTML = `${span}&nbsp;&nbsp;${nom}<span class="badge" style="background-color:${couleur}">${value}</span>`;
+
   li.getElementsByTagName('span')[0].addEventListener('click', () => {
     ticket.remove(id_last_insert);
-    totalUI.textContent = `Masse totale: ${sumMasseTickets(window.tickets)} Kg.`;
+    totalUI.textContent = `Masse totale: ${sumMasseTickets(window.OressourceEnv.tickets)} Kg.`;
     li.remove();
   });
+
   container.appendChild(li);
   // Update de l'UI pour la masse du panier.
-  totalUI.textContent = `Masse totale: ${sumMasseTickets(window.tickets)} Kg.`;
+  totalUI.textContent = `Masse totale: ${sumMasseTickets(window.OressourceEnv.tickets)} Kg.`;
 }
 
 // TODO: separer la logique de l'UI.
@@ -214,11 +216,16 @@ function connection_UI_ticket(numpad, ticket, typesItems, pretraitement = ((a, .
     const value = pretraitement(numpad.value, type_dechet.masse_bac); // retourne la masse sauf pour les poubelles.
     if (value > 0.00 && !isNaN(id)) {
       if (value <= window.OressourceEnv.masse_max) {
-        const id_last_insert = ticket.push({
+        const item = {
           masse: value,
           type: id
-        });
+        };
 
+        item.show = function () {
+          return `<p>${this.name} : ${this.masse} kg</p>`;
+        };
+
+        const id_last_insert = ticket.push(item);
         ticket_update_ui(transaction, totalUI, Object.assign(type_dechet, {id_last_insert, ticket}), value);
         numpad.reset_numpad();
       } else {
@@ -288,7 +295,7 @@ function tickets_clear(data) {
   }
 
   // On reset TOUT les tickets. En general il y en aura qu'un...
-  window.tickets.forEach(t => t.reset());
+  window.OressourceEnv.tickets.forEach(t => t.reset());
 }
 
 function classeToName(classe) {
@@ -487,9 +494,7 @@ function prepare_data(tickets, metadata) {
  * Code de gestion de l'impression
  */
 
-const dashBreak = () => {
-  return '<p>--------------------------------------------------------------------------------</p>';
-}
+const dashBreak = '<p>--------------------------------------------------------------------------------</p>';
 
 /*
  * Fonction qui permet d'afficher les différents types de Tickets dans le cas des pesées qui
@@ -501,11 +506,13 @@ const dashBreak = () => {
  * - window.OressourceEnv.types_evac
  * - window.OressourceEnv.types_dechet
  */
-function showTickets(data) {
+function showTickets(data, unit='kg') {
   const item = data.hasOwnProperty('items') && data.items.length > 0  ?
-    `<p>Objets de types : </p>${showTicket(data.items, window.OressourceEnv.types_dechet, 'kg')}`: '';
+    `${dashBreak}<p>Objets de types : </p>${showTicket(data.items,
+      window.OressourceEnv.types_dechet, unit)}`: '';
   return item + (data.hasOwnProperty('evacs') && data.evacs.length > 0 ?
-    ` ${dashBreak()}<p>Dechets de types : </p>${showTicket(data.evacs, window.OressourceEnv.types_evac, 'kg')}` : '');
+    `${dashBreak}<p>Dechets de types : </p>${showTicket(data.evacs,
+        window.OressourceEnv.types_evac, unit)}` : '');
 }
 
 /*
@@ -517,13 +524,21 @@ function showTickets(data) {
  * @param unit  {string} - unité pour les entrées du ticket
  */
 function showTicket(data, types, unit='kg') {
-  const sum = data.reduce((a, {masse}) => a + masse, 0.0);
-  return [ `Sous total: ${sum} ${unit}${dashBreak()}`,
-    ...data.map(({masse, type}) => {
-      // Dans un monde parfait types serait une Map indexé par les id pour un Accès en O(1)
-      const { nom } = types.find(({ id }) => type === id);
-      return `<p>${nom} : ${masse} ${unit}</p>`;
-    })
+  // Hack on ajoute les noms a la volées pour les sorties/collectes.
+  const new_data = data.map((item) => {
+    if (item.hasOwnProperty('name')) {
+      return item
+    } else {
+      const name = types.find(({ id }) => item.type === id).nom;
+      return { ...item, name };
+    }
+  });
+
+  // Encore un hack pour gérer ventes et collectes/pesees.
+  const accu = unit === 'kg' ? (a, {masse}) => a + masse : (a, {prix}) => a + prix;
+  const sum = new_data.reduce(accu, 0.0);
+  return [ `Sous total: ${sum} ${unit}${dashBreak}`,
+    ...new_data.map((item) => item.show())
   ].join('');
 }
 
@@ -538,8 +553,9 @@ function showTicket(data, types, unit='kg') {
  * @globals window.OressourceEnv.structure
  * @globals window.OressourceEnv.adresse
  */
-function impression_ticket(data, response) {
+function impression_ticket(data, response, unit='kg', tvaStuff=() => '', sumFunc=sumMasseTickets) {
   const title = classeToName(data.classe);
+  // Hack affreux pour gérer les ventes car on utilise pas un objet si global dans leur gestion.
   const html = `
     <head>
     <meta charset="utf-8">
@@ -556,11 +572,11 @@ function impression_ticket(data, response) {
       <p>${document.querySelector('h1').innerHTML}</p>
       <p>${window.OressourceEnv.structure}</p>
       <p>${window.OressourceEnv.adresse}</p>
-      ${dashBreak()}
+      ${tvaStuff()}
+      ${dashBreak}
       <p>Type: ${classeToName(data.classe)} &#x2116;${response.id}</p>
-      <p>Total: ${sumMasseTickets(window.tickets)} kg</p>
-      ${dashBreak()}
-      ${showTickets(data)}
+      <p>Total: ${sumFunc(window.OressourceEnv.tickets)} ${unit}</p>
+      ${showTickets(data, unit)}
     </body>
   </html>`;
 

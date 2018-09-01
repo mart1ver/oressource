@@ -17,6 +17,7 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+// use Ticket from ticket.js
 
 Ticket.prototype.sum_quantite = function () {
   return this.to_array()
@@ -114,7 +115,7 @@ function reset(data, response) {
   const range = document.createRange();
   range.selectNodeContents(document.getElementById('transaction'));
   range.deleteContents();
-  update_recap(state.ticket.sum_prix(), state.ticket.quantite());
+  update_recap(0.0, 0.0);
   document.getElementById('num_vente').textContent = response.id + 1;
 }
 
@@ -224,6 +225,13 @@ function add() {
         masse,
         name, // Hack pour les impressions.
       };
+
+      vente.show = function() {
+        const prix_txt = `${this.prix} €`;
+        const masse_txt = this.masse >= 0.00 ? ` ${this.masse} kg` : '';
+        return `<p>${this.name} : ${prix_txt}${masse_txt}</p>`;
+      };
+
       const id = state.ticket.push(vente);
 
       const li = document.createElement('li');
@@ -273,7 +281,7 @@ document.addEventListener('DOMContentLoaded', () => {
     return impression_ticket(data, response, '€', printTva, (t) => t.sum_prix());
   }
   const send = post_data(url, encaisse_vente, reset);
-  const sendAndPrint = post_data(url, encaisse_vente, tickets_clear, ventePrint);
+  const sendAndPrint = post_data(url, encaisse_vente, reset, ventePrint);
   document.getElementById('encaissement').addEventListener('click', send, false);
   document.getElementById('impression').addEventListener('click', sendAndPrint, false);
 
