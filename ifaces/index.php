@@ -68,9 +68,39 @@ if (is_valid_session()) {
   $masse_collectes = array_reduce($collectes['data'], function ($acc, $e) { return $acc + $e['value']; }, 0.0);
   ?>
 
+  <!-- Script de vérification d'une nouvelle version d'Oressource -->
+  <script>
+  'use strict'
+  // TODO: Change me at new version!!
+  const current_version_number = 'v0.2.0-alpha.rc1';
+  const current_version_published = new Date('2020-10-01T12:00:00Z');
+
+  fetch(`https://api.github.com/repos/mart1ver/oressource/releases`, {
+    method: "GET"
+  }).then((response) => response.json())
+    .then((json) => {
+      const latest = (
+        json.sort((a, b) => {
+        return new Date(b.published_at) - new Date(a.published_at)
+        })[0]).published_at;
+        const latest_date  = new Date(latest);
+
+      if (latest_date > current_version_published) {
+        const html = (
+`<div class="alert alert-warning" role="alert">
+  La version ${latest.tag_name} d'Oressource est disponible !
+  <a href="https://github.com/mart1ver/oressource/blob/master/UPGRADE.md">Comment mettre à jour ?</a>
+</div>`);
+        document
+          .getElementById('bienvenue')
+          .insertAdjacentHTML('afterbegin', html)
+      }
+    });
+    </script>
+
   <div class="page-header">
-    <div class="container">
-      <h1>Bienvenue à bord d'Oressource <?= $_SESSION['prenom']; ?>!</h1>
+    <div class="container" id="bienvenue">
+      <h1>Bienvenue à bord d'Oressource v0.2.0 <?= $_SESSION['prenom']; ?>!</h1>
       <p>Oressource est un outil libre de quantification et de mise en bilan dédié aux structures du ré-emploi</p>
     </div>
   </div> <!-- /container -->
