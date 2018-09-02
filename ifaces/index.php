@@ -68,9 +68,23 @@ if (is_valid_session()) {
   $masse_collectes = array_reduce($collectes['data'], function ($acc, $e) { return $acc + $e['value']; }, 0.0);
   ?>
 
+  <!-- Script de vérification d'une nouvelle version d'Oressource -->
+  <script>
+  var request = new XMLHttpRequest();
+  request.onreadystatechange = function () {
+    if (request.readyState === 4
+     && request.status === 200
+     && parseFloat(request.responseText) > 0.2) {
+      document.getElementById("bienvenue").insertAdjacentHTML('afterbegin', '<div class="alert alert-warning" role="alert">Une nouvelle version d\'Oressource est disponible ! <a href="https://github.com/mart1ver/oressource/blob/master/UPGRADE.md">Comment mettre à jour ?</a></div>');
+    }
+  };
+  request.open("GET", "https://raw.githubusercontent.com/mart1ver/oressource/master/VERSION");
+  request.send();
+  </script>
+
   <div class="page-header">
-    <div class="container">
-      <h1>Bienvenue à bord d'Oressource <?= $_SESSION['prenom']; ?>!</h1>
+    <div class="container" id="bienvenue">
+      <h1>Bienvenue à bord d'Oressource 0.2.0 <?= $_SESSION['prenom']; ?>!</h1>
       <p>Oressource est un outil libre de quantification et de mise en bilan dédié aux structures du ré-emploi</p>
     </div>
   </div> <!-- /container -->
