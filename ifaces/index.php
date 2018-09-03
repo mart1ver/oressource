@@ -70,21 +70,23 @@ if (is_valid_session()) {
 
   <!-- Script de vérification d'une nouvelle version d'Oressource -->
   <script>
-  var request = new XMLHttpRequest();
-  request.onreadystatechange = function () {
-    if (request.readyState === 4
-     && request.status === 200
-     && parseFloat(request.responseText) > 0.2) {
-      document.getElementById("bienvenue").insertAdjacentHTML('afterbegin', '<div class="alert alert-warning" role="alert">Une nouvelle version d\'Oressource est disponible ! <a href="https://github.com/mart1ver/oressource/blob/master/UPGRADE.md">Comment mettre à jour ?</a></div>');
-    }
-  };
-  request.open("GET", "https://raw.githubusercontent.com/mart1ver/oressource/master/VERSION");
-  request.send();
-  </script>
+  'use strict'
+
+  fetch(`https://api.github.com/repos/mart1ver/oressource/releases`, {
+    method: "GET"
+  }).then((response) => response.json())
+    .then((json) => {
+      const current = json.find(e => e.tag_name === "v0.2.0")
+      const latest = json.sort((a, b) => new Date(b.published_at) - new Date(a.published_at))[0]
+      if (new Date(latest.published_at) > new Date(current.published_at)) {
+        document.getElementById("bienvenue").insertAdjacentHTML('afterbegin', `<div class="alert alert-warning" role="alert">La version ${latest.tag_name} d'Oressource est disponible ! <a href="https://github.com/mart1ver/oressource/blob/master/UPGRADE.md">Comment mettre à jour ?</a></div>`)
+      }
+    })
+    </script>
 
   <div class="page-header">
     <div class="container" id="bienvenue">
-      <h1>Bienvenue à bord d'Oressource 0.2.0 <?= $_SESSION['prenom']; ?>!</h1>
+      <h1>Bienvenue à bord d'Oressource v0.2.0 <?= $_SESSION['prenom']; ?>!</h1>
       <p>Oressource est un outil libre de quantification et de mise en bilan dédié aux structures du ré-emploi</p>
     </div>
   </div> <!-- /container -->
