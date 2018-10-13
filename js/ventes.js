@@ -212,71 +212,71 @@ function update_recap(total, size) {
  * les objets on pesee en lot en somme.
  */
 function add() {
-  if (state.last !== undefined) {
-    const { prix, quantite, masse } = get_numpad();
-    if (quantite > 0 && !isNaN(prix)) {
-      const current = state.last;
-      state.last = undefined;
-      // Idée: Ajouter un champ "prix total" pour eviter de faire un if pour les calculs sur les prix.
+  if (state.last == undefined) {
+    return;
+  }
 
-      const name = current.objet.nom || current.type.nom;
-      const vente = {
-        id_type: current.type.id,
-        id_objet: current.objet.id || null,
-        lot: !state.vente_unite,
-        quantite,
-        prix,
-        masse,
-        name, // Hack pour les impressions.
-      };
+  const { prix, quantite, masse } = get_numpad();
+  if (quantite > 0 && !isNaN(prix)) {
+    const current = state.last;
+    state.last = undefined;
+    // Idée: Ajouter un champ "prix total" pour eviter de faire un if pour les calculs sur les prix.
 
-      vente.show = function() {
-        const prix_txt = `${this.prix} €`;
+    const name = current.objet.nom || current.type.nom;
+    const vente = {
+      id_type: current.type.id,
+      id_objet: current.objet.id || null,
+      lot: !state.vente_unite,
+      quantite,
+      prix,
+      masse,
+      name, // Hack pour les impressions.
+      show: function() {
         const masse_txt = this.masse >= 0.00 ? ` ${this.masse} kg` : '';
-        return `<p>${this.name} : ${prix_txt}${masse_txt}</p>`;
-      };
+        return `<p>${this.name} : ${this.prix} €${masse_txt}</p>`;
+      },
+    };
 
-      const id = state.ticket.push(vente);
+    const id = state.ticket.push(vente);
+    const li = document.createElement('li');
 
-      const li = document.createElement('li');
-      li.setAttribute('id', id);
-      li.setAttribute('class', 'list-group-item');
-      const amount = vente.lot ?  vente.prix : vente.prix * vente.quantite;
-      let html = `
-            <span class="badge">${amount.toFixed(2)} €</span>
-            <span class="glyphicon glyphicon-trash" aria-hidden="true"
-                  onclick="remove(${id});return false;">
-            </span>&nbsp;&nbsp; ${quantite} &#215; ${name}`;
-      if (masse > 0 && window.OressourceEnv.pesees) {
-        html += `, ${(masse).toFixed(3)} Kgs.`;
-      }
-      li.innerHTML = html;
-      document.getElementById('transaction').appendChild(li);
-      update_recap(state.ticket.sum_prix(), state.ticket.sum_quantite());
-      update_rendu();
-      reset_numpad();
-    } else {
-      this.input.setCustomValidity('Quantite nulle ou inferieur a 0.');
-    }
+    li.setAttribute('id', id);
+    li.setAttribute('class', 'list-group-item');
+
+    const amount = vente.lot ?  vente.prix : vente.prix * vente.quantite;
+    const masse_msg = masse > 0 && window.OressourceEnv.pesees
+      ? `, ${(masse).toFixed(3)} Kgs.`
+      : '';
+
+    const html = `<span class="badge">${amount.toFixed(2)} €</span>
+        <span class="glyphicon glyphicon-trash" aria-hidden="true"
+              onclick="remove(${id});return false;">
+        </span>&nbsp;&nbsp; ${quantite} &#215; ${name}
+        ${masse_msg}`;
+    li.innerHTML = html;
+    document.getElementById('transaction').appendChild(li);
+    update_recap(state.ticket.sum_prix(), state.ticket.sum_quantite());
+    update_rendu();
+    reset_numpad();
+  } else {
+    this.input.setCustomValidity('Quantite nulle ou inferieur a 0.');
   }
 }
 
 document.addEventListener('DOMContentLoaded', () => {
   $("#typeVente").bootstrapSwitch();
   $("#typeVente").on('switchChange.bootstrapSwitch', (event, checked) => {
-    const lot_or_unite = (label, prix_string, masse_string, bg_color) => {
-      document.getElementById('labellot').textContent = label;
-      document.getElementById('labelprix').textContent = prix_string;
-      document.getElementById('panelcalc').style.backgroundColor = bg_color;
-      if (window.OressourceEnv.pesees) {
-        document.getElementById('labelmasse').textContent = masse_string;
-      }
-    };
-    if (checked) {
-      lot_or_unite("Vente à: ", "Prix unitaire:", "Masse unitaire: ", "white");
-    } else {
-      lot_or_unite("Vente au: ", "Prix du lot: ", "Masse du lot: ", "#E8E6BC");
-    }
+    const [ label, prix_str, masse_string, bg_color ] = (checked
+      ? ["Vente à: ", "Prix unitaire:", "Masse unitaire: ", "white"]
+      : ["Vente au: ", "Prix du lot: ", "Masse du lot: ", "#E8E6BC" ]);
+
+    document.getElementById('labellot').textContent = label;
+    document.getElementById('labelprix').textContent = prix_str;
+    document.getElementById('panelcalc').style.backgroundColor = bg_color;
+
+    const masse_str = window.OressourceEnv.pesees ? masse_string : '';
+    document.getElementById('labelmasse').textContent = masse_str;
+
     state.vente_unite = checked;
   });
 
@@ -284,6 +284,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const ventePrint = (data, response) => {
     return impression_ticket(data, response, '€', printTva, (t) => t.sum_prix());
   }
+
   const send = post_data(url, encaisse_vente, reset);
   const sendAndPrint = post_data(url, encaisse_vente, reset, ventePrint);
   document.getElementById('encaissement').addEventListener('click', send, false);
