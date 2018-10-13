@@ -65,6 +65,7 @@ let numpad = new_numpad();
 let rendu = new_rendu();
 
 let current_focus = document.getElementById('quantite');
+
 function fokus(element) {
   current_focus = element;
 }
@@ -171,6 +172,10 @@ function numpad_input(elem) {
   current_focus.value += elem.value;
 }
 
+/**
+ * Supprime un element dans le panier par son id d'object (id).
+ * @param {integer} id
+ */
 function remove(id) {
   const elem = state.ticket.remove(id);
   document.getElementById(id).remove();
