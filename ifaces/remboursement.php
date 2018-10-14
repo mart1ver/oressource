@@ -230,6 +230,14 @@ if (is_valid_session() && is_allowed_vente_id($numero)) {
               }
 
               function ajout() {
+                // Fix: https://github.com/mart1ver/oressource/issues/347
+                // Un remboursement pouvait ne pas avoir d'id_type_objet ce qui n'est pas correct.
+                // On evite une entrée incorrecte en n'ajoutant pas cette saisie.
+                const id_type_objet = parseInt(document.getElementById('id_type_objet').value);
+                if (isNaN(id_type_objet)) {
+                   return;
+                }
+
                 if (isNaN((parseFloat(document.getElementById('prix').value) * parseFloat(document.getElementById('quantite').value)).toFixed(2))) {
                 } else {
                   if (isNaN(parseInt(document.getElementById('nlignes').value))) {
