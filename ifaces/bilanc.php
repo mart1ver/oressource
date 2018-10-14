@@ -480,6 +480,13 @@ ORDER BY somme DESC');
           
           
        <br>
+<a href="<?php echo  "../moteur/export_bilanc_partype.php?numero=". $_GET['numero']."&date1=" . $_GET['date1']."&date2=" . $_GET['date2']?>">
+
+
+
+      
+        <button type="button" class="btn btn-default btn-xs" disabled>exporter ces données (.csv) </button>
+      </a>
 </div>
   </div>
 
@@ -670,7 +677,9 @@ ORDER BY somme DESC');
 <div id="graph2loca" style="height: 180px;"></div>          
 
 <br>
-       
+       <a href="<?php echo  "../moteur/export_bilanc_parloca.php?numero=". $_GET['numero']."&date1=" . $_GET['date1']."&date2=" . $_GET['date2']?>">
+        <button type="button" class="btn btn-default btn-xs" disabled>exporter ces données (.csv) </button>
+      </a>
   </div>
 </div>
 
