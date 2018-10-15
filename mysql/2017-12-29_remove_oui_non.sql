@@ -14,7 +14,7 @@
 -- You should have received a copy of the GNU Affero General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
--- Aller zou fini les oui/non.
+-- Allez zou fini les oui/non.
 UPDATE moyens_paiement set visible = (case when visible = 'oui' then 1 else 0 end);
 alter table moyens_paiement MODIFY column visible boolean not null default true;
 

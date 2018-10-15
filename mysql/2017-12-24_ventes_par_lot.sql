@@ -17,3 +17,5 @@
 -- Ce script ajoute un champ lot pour savoir si un vendus à été vendu en lot ou à l'unité.
 
 alter table vendus add column lot boolean not null default false;
+
+alter table types_poubelles modify column ultime boolean not null default false;
