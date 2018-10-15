@@ -1,5 +1,9 @@
 -- Script pour l'ajout des clefs etrangeres pour la base.
 
+SET autocommit = 0;
+
+START TRANSACTION;
+
 /*
   Exemple de requête pour voir les données orphelines.
   select p.*
@@ -10,6 +14,340 @@
 */
 
 -- Vendus
+
+-- insert INTO type_dechets (
+-- 	nom,
+-- 	description,
+-- 	couleur,
+-- 	visible,
+-- 	id_createur,
+-- 	id_last_hero
+-- 	) VALUES (
+-- 	"Regulation_de_la_base_de_données",
+-- 	"Ce type existe afin de réguler le saisies incohérentes des anciennes bases.",
+-- 	"#000000",
+-- 	0,
+-- 	1,
+-- 	1
+-- );
+
+-- UPDATE vendus set
+--   `id_type_dechet` = (case
+--     when `id_type_dechet` = 0
+--     then (select id from type_dechets where type_dechets.nom = "Regulation_de_la_base_de_données")
+--     else `id_type_dechet`
+--   end)
+-- where id_type_dechet = 0;
+
+-- Récupération des utilisateurs effacés.
+-- insert into utilisateurs (
+--   nom,
+--   prenom,
+--   pass
+-- ) values()
+--   "utilisateur",
+--   "supprimé",
+--   "utilisateur_suprimée@localhost",
+
+-- ) values (
+
+-- );
+
+update collectes
+  set id_createur = 1
+    where not exists (select 1
+    from utilisateurs u
+    where u.id = collectes.id_createur);
+update collectes
+  set id_last_hero = 1
+    where not exists (select 1
+    from utilisateurs u
+    where u.id = collectes.id_last_hero);
+
+
+update conventions_sorties
+  set id_createur = 1
+    where not exists (select 1
+    from utilisateurs u
+    where u.id = conventions_sorties.id_createur);
+update conventions_sorties
+  set id_last_hero = 1
+    where not exists (select 1
+    from utilisateurs u
+    where u.id = conventions_sorties.id_last_hero);
+
+update description_structure
+  set id_createur = 1
+    where not exists (select 1
+    from utilisateurs u
+    where u.id = description_structure.id_createur);
+update description_structure
+  set id_last_hero = 1
+    where not exists (select 1
+    from utilisateurs u
+    where u.id = description_structure.id_last_hero);
+
+update filieres_sortie
+  set id_createur = 1
+    where not exists (select 1
+    from utilisateurs u
+    where u.id = filieres_sortie.id_createur);
+update filieres_sortie
+  set id_last_hero = 1
+    where not exists (select 1
+    from utilisateurs u
+    where u.id = filieres_sortie.id_last_hero);
+
+update grille_objets
+  set id_createur = 1
+    where not exists (select 1
+    from utilisateurs u
+    where u.id = grille_objets.id_createur);
+update grille_objets
+  set id_last_hero = 1
+    where not exists (select 1
+    from utilisateurs u
+    where u.id = grille_objets.id_last_hero);
+
+update localites
+  set id_createur = 1
+    where not exists (select 1
+    from utilisateurs u
+    where u.id = localites.id_createur);
+update localites
+  set id_last_hero = 1
+    where not exists (select 1
+    from utilisateurs u
+    where u.id = localites.id_last_hero);
+
+update moyens_paiement
+  set id_createur = 1
+    where not exists (select 1
+    from utilisateurs u
+    where u.id = moyens_paiement.id_createur);
+update moyens_paiement
+  set id_last_hero = 1
+    where not exists (select 1
+    from utilisateurs u
+    where u.id = moyens_paiement.id_last_hero);
+
+update pesees_collectes
+  set id_createur = 1
+    where not exists (select 1
+    from utilisateurs u
+    where u.id = pesees_collectes.id_createur);
+update pesees_collectes
+  set id_last_hero = 1
+    where not exists (select 1
+    from utilisateurs u
+    where u.id = pesees_collectes.id_last_hero);
+
+update pesees_sorties
+  set id_createur = 1
+    where not exists (select 1
+    from utilisateurs u
+    where u.id = pesees_sorties.id_createur);
+update pesees_sorties
+  set id_last_hero = 1
+    where not exists (select 1
+    from utilisateurs u
+    where u.id = pesees_sorties.id_last_hero);
+
+update pesees_vendus
+  set id_createur = 1
+    where not exists (select 1
+    from utilisateurs u
+    where u.id = pesees_vendus.id_createur);
+update pesees_vendus
+  set id_last_hero = 1
+    where not exists (select 1
+    from utilisateurs u
+    where u.id = pesees_vendus.id_last_hero);
+
+update points_collecte
+  set id_createur = 1
+    where not exists (select 1
+    from utilisateurs u
+    where u.id = points_collecte.id_createur);
+update points_collecte
+  set id_last_hero = 1
+    where not exists (select 1
+    from utilisateurs u
+    where u.id = points_collecte.id_last_hero);
+
+update points_sortie
+  set id_createur = 1
+    where not exists (select 1
+    from utilisateurs u
+    where u.id = points_sortie.id_createur);
+update points_sortie
+  set id_last_hero = 1
+    where not exists (select 1
+    from utilisateurs u
+    where u.id = points_sortie.id_last_hero);
+
+update points_vente
+  set id_createur = 1
+    where not exists (select 1
+    from utilisateurs u
+    where u.id = points_vente.id_createur);
+update points_vente
+  set id_last_hero = 1
+    where not exists (select 1
+    from utilisateurs u
+    where u.id = points_vente.id_last_hero);
+
+update sorties
+  set id_createur = 1
+    where not exists (select 1
+    from utilisateurs u
+    where u.id = sorties.id_createur);
+update sorties
+  set id_last_hero = 1
+    where not exists (select 1
+    from utilisateurs u
+    where u.id = sorties.id_last_hero);
+
+update type_collecte
+  set id_createur = 1
+    where not exists (select 1
+    from utilisateurs u
+    where u.id = type_collecte.id_createur);
+update type_collecte
+  set id_last_hero = 1
+    where not exists (select 1
+    from utilisateurs u
+    where u.id = type_collecte.id_last_hero);
+
+update type_contenants
+  set id_createur = 1
+    where not exists (select 1
+    from utilisateurs u
+    where u.id = type_contenants.id_createur);
+update type_contenants
+  set id_last_hero = 1
+    where not exists (select 1
+    from utilisateurs u
+    where u.id = type_contenants.id_last_hero);
+
+update type_dechets
+  set id_createur = 1
+    where not exists (select 1
+    from utilisateurs u
+    where u.id = type_dechets.id_createur);
+update type_dechets
+  set id_last_hero = 1
+    where not exists (select 1
+    from utilisateurs u
+    where u.id = type_dechets.id_last_hero);
+
+update type_dechets_evac
+  set id_createur = 1
+    where not exists (select 1
+    from utilisateurs u
+    where u.id = type_dechets_evac.id_createur);
+update type_dechets_evac
+  set id_last_hero = 1
+    where not exists (select 1
+    from utilisateurs u
+    where u.id = type_dechets_evac.id_last_hero);
+
+update type_sortie
+  set id_createur = 1
+    where not exists (select 1
+    from utilisateurs u
+    where u.id = type_sortie.id_createur);
+update type_sortie
+  set id_last_hero = 1
+    where not exists (select 1
+    from utilisateurs u
+    where u.id = type_sortie.id_last_hero);
+
+update types_poubelles
+  set id_createur = 1
+    where not exists (select 1
+    from utilisateurs u
+    where u.id = types_poubelles.id_createur);
+update types_poubelles
+  set id_last_hero = 1
+    where not exists (select 1
+    from utilisateurs u
+    where u.id = types_poubelles.id_last_hero);
+
+update vendus
+  set id_createur = 1
+    where not exists (select 1
+    from utilisateurs u
+    where u.id = vendus.id_createur);
+update vendus
+  set id_last_hero = 1
+    where not exists (select 1
+    from utilisateurs u
+    where u.id = vendus.id_last_hero);
+
+update ventes
+  set id_createur = 1
+    where not exists (select 1
+    from utilisateurs u
+    where u.id = ventes.id_createur);
+
+update ventes
+  set id_last_hero = 1
+    where not exists (select 1
+    from utilisateurs u
+    where u.id = ventes.id_last_hero);
+
+-- Fin de la resolution des utilisateurs supprimée
+
+-- Fin moyen de paiement invalide.
+update ventes
+  set id_moyen_paiement = 1,
+  commentaire = "[Recovery - id_moyen_paiement] Récupération car moyen de paiement invalide"
+    where not exists (select 1
+    from moyens_paiement m
+    where m.id = ventes.id_moyen_paiement);
+
+-- Resolution du cas ou types_dechets = 0 ou inconnu.
+insert into type_dechets (
+  nom,
+  description,
+  couleur,
+  visible,
+  id_createur,
+  id_last_hero
+  ) VALUES (
+  "Regulation_de_la_base_de_données",
+  "Ce type existe afin de réguler le saisies incohérentes des anciennes bases.",
+  "#000000",
+  0,
+  1,
+  1
+);
+
+UPDATE vendus set
+  `id_type_dechet` = (case
+    when `id_type_dechet` = 0
+    then (select id from type_dechets where type_dechets.nom = "Regulation_de_la_base_de_données")
+    else `id_type_dechet`
+  end)
+ where id_type_dechet = 0;
+
+ insert into type_dechets_evac (
+  nom,
+  description,
+  couleur,
+  visible,
+  id_createur,
+  id_last_hero
+  ) VALUES (
+  "Regulation_de_la_base_de_données",
+  "Ce type existe afin de réguler le saisies incohérentes des anciennes bases.",
+  "#000000",
+  0,
+  1,
+  1
+);
+
 
 alter table vendus add constraint FK_Vendus_Ventes
 foreign key (id_vente) references ventes(id);
@@ -245,3 +583,6 @@ foreign key (id_createur) references utilisateurs(id);
 
 alter table moyens_paiement add CONSTRAINT FK_MoyensPaiment_Editeur
 foreign key (id_last_hero) references utilisateurs(id);
+
+Commit;
+SET autocommit = 1;
