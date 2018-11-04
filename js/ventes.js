@@ -72,7 +72,7 @@ function fokus(element) {
 function render_numpad({ prix, quantite, masse }) {
   document.getElementById('quantite').value = quantite;
   document.getElementById('prix').value = prix;
-  if (window.OressourceEnv) {
+  if (window.OressourceEnv.pesees) {
     document.getElementById('masse').value = masse;
   }
 }
