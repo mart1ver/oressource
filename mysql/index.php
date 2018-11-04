@@ -20,3 +20,29 @@
 
 //redirige vers l'index dans /ifaces
 header('Location: ../ifaces/');
+
+function recover_utilisateurs($table, $col) {
+  return ("(update $table
+  set $col = 1
+    where not exists (select 1
+    from utilisateurs u
+    where u.id = $table.$col));");
+}
+
+function recover() {
+  $tables = $bdd->query("SELECT table_name FROM information_schema.tables where table_schema='oressource3'");
+
+  foreach ($tables as $t) {
+    $sql = recover_utilisateurs($t, "id_createur") + recover_utilisateurs($t, "id_last_hero");
+    echo $sql;
+    continue;
+    $bdd->query();
+  }
+}
+
+
+function main() {
+  recover();
+}
+
+main();
