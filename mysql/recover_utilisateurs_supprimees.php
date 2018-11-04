@@ -2,7 +2,7 @@
 
 require_once '../moteur/dbconfig.php';
 
-function recover_utilisateurs(int $admin, string $table, string $col): string {
+function recover_utilisateurs(int $admin, string $table, string $col): string {
   return ("update $table
   set $col = 1
     where not exists (select 1
@@ -12,16 +12,20 @@ function recover_utilisateurs(int $admin, string $table, string $col): string {
 
 function recover(PDO $bdd, string $database_name, int $admin) {
   $tables = $bdd->query("SELECT table_name FROM information_schema.tables
-    where table_schema=$database_name");
+    where table_schema=\"$database_name\"");
 
   foreach ($tables as $t) {
     $name = $t['table_name'];
+
+    if ($name === NULL) {
+      continue;
+    }
+
     $sql = (
       recover_utilisateurs($admin, $name, "id_createur")
     . recover_utilisateurs($admin, $name, "id_last_hero")
+    . "\n"
     );
-    echo($sql);
-    continue;
     $bdd->query();
   }
 }
