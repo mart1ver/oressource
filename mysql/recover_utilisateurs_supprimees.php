@@ -16,7 +16,7 @@ function recover_utilisateurs(int $admin, string $table, array $fields): string 
 function recover(PDO $bdd, string $database_name, int $admin) {
   $tables = $bdd->query("SELECT table_name FROM information_schema.tables
     where table_schema=\"$database_name\"");
-  
+
   $fields = [ 'id_createur', 'id_last_hero'];
   foreach ($tables as $t) {
     $name = $t['table_name'];
