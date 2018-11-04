@@ -116,7 +116,9 @@ UPDATE vendus set
   1
 );
 
-
+--=============================================================================
+-- Ajouts de contraintes sur les clefs etrangeres
+--=============================================================================
 alter table vendus add constraint FK_Vendus_Ventes
 foreign key (id_vente) references ventes(id);
 
