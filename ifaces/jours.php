@@ -76,11 +76,12 @@ $type = array_values(array_filter($types_dechets, function ($e) use ($type_selec
       return $type_selected === $e['id'];
     }))[0];
 
-$date1 = isset($_GET['date1']) ? DateTime::createFromFormat('d-m-Y', $_GET['date1']) : new DateTime();
+$now =  new DateTimeImmutable();
+$date1 = isset($_GET['date1']) ? DateTime::createFromFormat('d-m-Y', $_GET['date1']) : $now->sub(new DateInterval('P10D'));
 $time_debut = $date1->format('Y-m-d') . " 00:00:00";
 $start = $date1->format('d-m-Y');
 
-$date2 = isset($_GET['date2']) ? DateTime::createFromFormat('d-m-Y', $_GET['date2']) : new DateTime();
+$date2 = isset($_GET['date2']) ? DateTime::createFromFormat('d-m-Y', $_GET['date2']) : $now
 $time_fin = $date2->format('Y-m-d') . " 00:00:00";
 $end = $date2->format('d-m-Y');
 
