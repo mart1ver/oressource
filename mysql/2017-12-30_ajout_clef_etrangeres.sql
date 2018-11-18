@@ -62,9 +62,8 @@ insert into moyens_paiement (
 );
 
 update ventes
-  set id_moyen_paiement = (select id from type_dechets 
-      where type_dechets.nom = "[Maintenance] moyens de paiement inconnu")
-    else `id_type_dechet`),
+  set `id_moyen_paiement` = (select id from moyens_paiement
+        where id_moyen_paiement.nom = "[Maintenance] moyens de paiement inconnu"),
     commentaire = "[Maintenance] Récupération car moyen de paiement invalide"
     where not exists (select 1
     from moyens_paiement m
