@@ -41,7 +41,7 @@ function main() {
   $database_name = $base;
 
   // Note: Cas de la petite rockette
-  $admin = 1;
+  $admin = $bdd->query("select id from utilisateurs where mail = inconnu@localhost");
   recover($bdd, $database_name, $admin);
 }
 

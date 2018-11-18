@@ -430,13 +430,15 @@ function login_user(PDO $bdd, string $email, string $password): array {
   $passmd5 = md5($password);
   $req = $bdd->prepare('SELECT id, niveau, nom, prenom, mail
                         FROM utilisateurs
-                        WHERE mail = :mail AND pass = :pass');
+                        WHERE mail = :mail
+                          AND pass = :pass
+                          AND (pass IS NOT NULL)');
   $req->bindValue(':mail', $email, PDO::PARAM_STR);
   $req->bindValue(':pass', $passmd5, PDO::PARAM_INT);
   $req->execute();
   $user = $req->fetch(PDO::FETCH_ASSOC);
   $req->closeCursor();
-  if ($user) {
+  if ($user !== NULL) {
     return $user;
   }
   throw new Exception('Mot de passe ou nom de compte invalide.');
@@ -478,7 +480,7 @@ function vendus_case_lot_unit(): string {
  * Utile pour vérifier le fond de caisse en fin de vente
  * Equivalent de la touche 'Z' sur une caisse enregistreuse
  */
-function chiffre_affaire_mode_paiement(PDO $bdd, string $start, 
+function chiffre_affaire_mode_paiement(PDO $bdd, string $start,
   string $stop, int $id_point_vente = 0): array {
   $cond = ($id_point_vente > 0 ? " AND ventes.id_point_vente = $id_point_vente " : ' ');
   $sql = "SELECT

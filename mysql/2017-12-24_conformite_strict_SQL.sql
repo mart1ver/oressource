@@ -20,6 +20,20 @@ SET autocommit = 0;
 
 START TRANSACTION;
 
+-- Relaxe de la contrainte des mots de passe non null.
+-- Si null utilisateur non loggable
+ALTER TABLE utilisateurs MODIFY column pass text null;
+
+INSERT INTO `utilisateurs` (
+    `timestamp`, `niveau`, `nom`,
+    `prenom`, `mail`, `pass`,
+    `id_createur`, `id_last_hero`, `last_hero_timestamp`
+  ) VALUES (
+    CURRENT_TIMESTAMP, '', '[maintenance]',
+    '[maintenance]', 'inconnu@localhost', '',
+    '1', '1', CURRENT_TIMESTAMP
+);
+
 UPDATE `utilisateurs` set
     `id_createur` = (case
     when `id_createur` = 0 then 1 else `id_createur` end),
