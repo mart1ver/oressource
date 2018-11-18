@@ -28,19 +28,29 @@ if (is_valid_session() && is_allowed_users()) {
   $same_mail = array_filter(utilisateurs($bdd), function ($u) {
     return $u['mail'] === $_POST['mail'];
   });
+  $mail = $_POST['mail'];
+  $nom = $_POST['nom'];
+  $prenom = $_POST['prenom'];
+  $pass1 = $_POST['pass1'];
+  $pass2 = $_POST['pass2'];
 
   if (count($same_mail) > 0) {
-    header('Location:../ifaces/utilisateurs.php?err=Cette addresse email est deja utilisée par un autre utilisateur!&nom=' . $_POST['nom'] . '&prenom=' . $_POST['prenom'] . '&mail=' . $_POST['mail']);
+    header('Location:../ifaces/utilisateurs.php?err=Cette addresse email est deja utilisée par un autre utilisateur!&nom=' . $nom . '&prenom=' . $prenom . '&mail=' . $mail);
     die();
   }
 
-  if ($_POST['pass1'] === $_POST['pass2']) {
-    $user = new_utilisateur($_POST['nom'], $_POST['prenom'],
-                            $_POST['mail'], new_droits($bdd, $_POST), $_POST['pass1']);
+  if ($pass1 === NULL || $pass2 === NULL) {
+    header('Location: ../ifaces/utilisateurs.php?err=Le Mot de passe ne dois pas être vacant.&nom=' . $nom . '&prenom=' . $prenom . '&mail=' . $mail);
+    die();
+  }
+
+  if ($pass1 === $pass2) {
+    $droits = new_droits($bdd, $_POST);
+    $user = new_utilisateur($nom, $prenom, $mail, $droits, $pass1);
     utilisateur_insert($bdd, $user);
     header('Location: ../ifaces/utilisateurs.php?msg=Utilisateur ajouté avec succes!');
   } else {
-    header('Location: ../ifaces/utilisateurs.php?err=Veuillez confirmer votre mot de passe&nom=' . $_POST['nom'] . '&prenom=' . $_POST['prenom'] . '&mail=' . $_POST['mail']);
+    header('Location: ../ifaces/utilisateurs.php?err=Veuillez confirmer votre mot de passe&nom=' . $nom . '&prenom=' . $prenom . '&mail=' . $mail);
   }
 } else {
   header('Location:../moteur/destroy.php');

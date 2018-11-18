@@ -27,6 +27,14 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource') {
   $donnees = $req->fetch();
   $bddpass = $donnees['pass'];
   $req->closeCursor();
+
+  // EsterEgg de https://en.wikipedia.org/wiki/Serial_Experiments_Lain
+  // Un utilisateur ne peut avoir un mot de passe pass null.
+  if ($_POST['pass1'] === NULL || $_POST['pass2'] === NULL) {
+    header('Location: ../ifaces/edition_mdp_utilisateur.php?msg=' . $_SESSION['nom'] . ", vous avez tentée surement par mégarde de vous attribuer un mot de passe vacant. Moi Lain l'intelligence artificielle de Oressource ne peut effectuer cette opération popentiellement dangeureuse.");
+    die();
+  }
+
   if ($_POST['pass1'] === $_POST['pass2'] && $_POST['pass2'] === $_POST['passold']) {
     header('Location: ../ifaces/edition_mdp_utilisateur.php?msg=' . $_SESSION['nom'] . ', vous venez de tenter de modifier votre mot de passe par le même mot de passe, à quoi bon? Par faute de sens dans cette operation administrative, oressource ne procedera à aucun changement.');
   } else {
