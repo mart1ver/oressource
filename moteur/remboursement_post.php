@@ -69,6 +69,10 @@ if (is_valid_session() && is_allowed_vente_id($_POST['id_point_vente'])) {
       $tid_objet = 'tid_objet' . $i;
       $tquantite = 'tquantite' . $i;
       $tprix = 'tprix' . $i;
+      if (!($_POST[$tprix] < 0.0)) {
+        header('Location:../ifaces/ventes.php?err=Les remboursement de 0 euros ne sont pas valides &numero=' . $_POST['id_point_vente']);
+        die();
+      }
       $req->bindValue(':id_type_dechet', $_POST[$tid_type_objet], PDO::PARAM_INT);
       $req->bindValue(':id_objet', $_POST[$tid_objet], PDO::PARAM_INT);
       $req->bindValue(':quantite', $_POST[$tquantite], PDO::PARAM_INT);

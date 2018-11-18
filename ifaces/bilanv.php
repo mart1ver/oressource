@@ -98,7 +98,7 @@ if (is_valid_session() && is_allowed_bilan()) {
 
       <div class="row">
         <h2><?= ($date1 === $date2) ? "Le $date1" : "Du $date1 au $date2"; ?> :</h2>
-        <?php if (!($bilans['chiffre_degage'] > 0)) { ?>
+        <?php if (!($nb_ventes > 0 || $remb_nb > 0)) { ?>
           <img src="../images/nodata.jpg" class="img-responsive" alt="Responsive image">
           <?php
         } else { ?>
