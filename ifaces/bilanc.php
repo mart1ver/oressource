@@ -240,9 +240,6 @@ if (is_valid_session() && is_allowed_bilan()) {
               -->
             </div>
           </div>
-        <?php } else { ?>
-          <img src="../images/nodata.jpg" class="img-responsive" alt="Responsive image">
-        <?php } ?>
       </div>
          <div class="col-md-6">
             <div class="panel panel-default">
@@ -343,6 +340,9 @@ if (is_valid_session() && is_allowed_bilan()) {
             </div>
           </div>
     </div>
+    <?php } else { ?>
+      <img src="../images/nodata.jpg" class="img-responsive" alt="Responsive image">
+    <?php } ?>
   </div>
 </div>
   <script type="text/javascript">
