@@ -263,13 +263,14 @@ $can_config = is_allowed_config();
       <?php
     }
     ?>
-
+    
     <script src="../js/jquery-2.1.1.min.js"></script>
     <script src="../js/bootstrap.min.js"></script>
     <script src="../js/bootstrap-switch.js"></script>
     <script src="../js/raphael.js"></script>
     <script src="../js/morris/morris.min.js"></script>
     <script src="../js/moment.js"></script>
+    <script src="../js/fr.js"></script>
     <script src="../js/daterangepicker.js"></script>
     <script src="../js/utils.js"></script>
     <script src="../js/ticket.js"></script>
