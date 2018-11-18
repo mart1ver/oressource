@@ -63,22 +63,34 @@ if (is_valid_session() && is_allowed_vente_id($_POST['id_point_vente'])) {
   $req->bindValue(':id_vente', $id_vente, PDO::PARAM_INT);
   $req->bindValue(':id_createur', $_SESSION['id'], PDO::PARAM_INT);
   $req->bindValue(':id_createur1', $_SESSION['id'], PDO::PARAM_INT);
+
   while ($i <= $_POST['nlignes']) {
     $tid_type_objet = 'tid_type_objet' . $i;
-    if (isset($_POST[$tid_type_objet])) {
-      $tid_objet = 'tid_objet' . $i;
-      $tquantite = 'tquantite' . $i;
-      $tprix = 'tprix' . $i;
-      if (!($_POST[$tprix] < 0.0)) {
-        header('Location:../ifaces/ventes.php?err=Les remboursement de 0 euros ne sont pas valides &numero=' . $_POST['id_point_vente']);
-        die();
-      }
-      $req->bindValue(':id_type_dechet', $_POST[$tid_type_objet], PDO::PARAM_INT);
-      $req->bindValue(':id_objet', $_POST[$tid_objet], PDO::PARAM_INT);
-      $req->bindValue(':quantite', $_POST[$tquantite], PDO::PARAM_INT);
-      $req->bindValue(':remboursement', $_POST[$tprix], PDO::PARAM_STR);
-      $req->execute();
+    $tid_objet = 'tid_objet' . $i;
+    $tquantite = 'tquantite' . $i;
+    $tprix = 'tprix' . $i;
+
+    if (!isset($_POST[$tid_type_objet])) {
+      header("Location:../ifaces/ventes.php?err=Les remboursement de sans type d'objet ou dechet ne sont pas valides&numero=" . $_POST['id_point_vente']);
+      die();
     }
+
+    if (($_POST[$tprix] <= 0.0)) {
+      header('Location:../ifaces/ventes.php?err=Les remboursement de 0 euros ne sont pas valides&numero=' . $_POST['id_point_vente']);
+      die();
+    }
+
+    if (($_POST[$tquantite] <= 0)) {
+      header('Location:../ifaces/ventes.php?err=Les remboursement avec une quantité nulle ne sont pas possibles&numero=' . $_POST['id_point_vente']);
+      die();
+    }
+
+    $req->bindValue(':id_type_dechet', $_POST[$tid_type_objet], PDO::PARAM_INT);
+    $req->bindValue(':id_objet', $_POST[$tid_objet], PDO::PARAM_INT);
+    $req->bindValue(':quantite', $_POST[$tquantite], PDO::PARAM_INT);
+    $req->bindValue(':remboursement', $_POST[$tprix], PDO::PARAM_STR);
+    $req->execute();
+
     $i++;
   }
   $req->closeCursor();

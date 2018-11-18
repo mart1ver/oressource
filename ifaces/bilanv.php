@@ -56,6 +56,8 @@ if (is_valid_session() && is_allowed_bilan()) {
     return $acc;
   }, []);
 
+  $panier_moyen = $nb_ventes === 0 ? 'Non défini': ($bilans['chiffre_degage'] / $nb_ventes) ."€";
+
   $graphMv = data_graphs_from_bilan($bilans_pesees_types, 'vendu_masse');
   $graphPv = data_graphs_from_bilan($bilans_types, 'chiffre_degage');
   ?>
@@ -126,7 +128,7 @@ if (is_valid_session() && is_allowed_bilan()) {
                   </tr>
                   <tr>
                     <td>Panier moyen :</td>
-                    <td><?= $bilans['chiffre_degage'] / $nb_ventes; ?> €</td>
+                    <td><?= $panier_moyen ?></td>
                   </tr>
                   <tr>
                     <td>Nombre d'objets remboursés :</td>
