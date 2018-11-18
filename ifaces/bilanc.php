@@ -203,7 +203,48 @@ if (is_valid_session() && is_allowed_bilan()) {
         <h2><?= $date1 === $date2 ? "Le {$date1}," : " Du {$date1} au {$date2}," ?>
           Masse collectée: <?= $data['masse'] ?> kg<?= $numero === 0 ? ' , sur ' . count($points_collectes) . ' Point(s) de collecte' : '' ?>.</h2>
         <?php if ($data['masse'] > 0) { ?>
-          <div class="col-md-6">
+        <div class="col-md-6">
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h3 class="panel-title">Répartition par types d'objets</h3>
+            </div>
+
+            <div class="panel-body">
+              <table class="table table-condensed table-striped table table-bordered table-hover" style="border-collapse:collapse;">
+                <thead>
+                  <tr>
+                    <th style="width:300px">type d'objet</th>
+                    <th>Masse collectée</th>
+                    <th>%</th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  <?php foreach ($collectes_MasseTot as $a) { ?>
+                    <tr data-toggle="collapse" data-target=".partyp<?= $a['nom']; ?>">
+                      <td><a href="jours.php?date1=<?= $date1 ?>&date2=<?= $date2 ?>&type=<?= $a['id'] ?>"><?= $a['nom'] ?></a></td>
+                      <td><?= $a['somme']; ?></td>
+                      <td><?= round($a['somme'] * 100 / $data['masse'], 2); ?></td>
+                    </tr>
+
+                  <?php } ?>
+                </tbody>
+              </table>
+
+              <div id="graph2masse" style="height: 180px;"></div> <br><br>
+
+              <!-- TODO: refaire cette fonctionnalité
+              <a href="../moteur/export_bilanc_parloca.php?numero=<?= $numero ?>&date1=<?= $date1 ?>&date2=<?= $date2; ?>">
+                <button type="button" class="btn btn-default btn-xs" disabled>exporter ces données (.csv) </button>
+              </a>
+              -->
+            </div>
+          </div>
+        <?php } else { ?>
+          <img src="../images/nodata.jpg" class="img-responsive" alt="Responsive image">
+        <?php } ?>
+      </div>
+         <div class="col-md-6">
             <div class="panel panel-default">
               <div class="panel-heading">
                 <h3 class="panel-title">Répartition par types de collectes</h3>
@@ -252,8 +293,7 @@ if (is_valid_session() && is_allowed_bilan()) {
               </div>
             </div>
           </div>
-
-          <div class="col-md-6">
+       <div class="col-md-6">
             <div class="panel panel-default">
               <div class="panel-heading">
                 <h3 class="panel-title">Répartition par localité</h3>
@@ -302,51 +342,9 @@ if (is_valid_session() && is_allowed_bilan()) {
               </div>
             </div>
           </div>
-        </div>
-        <div class="col-md-6">
-          <div class="panel panel-default">
-            <div class="panel-heading">
-              <h3 class="panel-title">Répartition par types d'objets</h3>
-            </div>
-
-            <div class="panel-body">
-              <table class="table table-condensed table-striped table table-bordered table-hover" style="border-collapse:collapse;">
-                <thead>
-                  <tr>
-                    <th style="width:300px">type d'objet</th>
-                    <th>Masse collectée</th>
-                    <th>%</th>
-                  </tr>
-                </thead>
-
-                <tbody>
-                  <?php foreach ($collectes_MasseTot as $a) { ?>
-                    <tr data-toggle="collapse" data-target=".partyp<?= $a['nom']; ?>">
-                      <td><a href="jours.php?date1=<?= $date1 ?>&date2=<?= $date2 ?>&type=<?= $a['id'] ?>"><?= $a['nom'] ?></a></td>
-                      <td><?= $a['somme']; ?></td>
-                      <td><?= round($a['somme'] * 100 / $data['masse'], 2); ?></td>
-                    </tr>
-
-                  <?php } ?>
-                </tbody>
-              </table>
-
-              <div id="graph2masse" style="height: 180px;"></div> <br><br>
-
-              <!-- TODO: refaire cette fonctionnalité
-              <a href="../moteur/export_bilanc_parloca.php?numero=<?= $numero ?>&date1=<?= $date1 ?>&date2=<?= $date2; ?>">
-                <button type="button" class="btn btn-default btn-xs" disabled>exporter ces données (.csv) </button>
-              </a>
-              -->
-            </div>
-          </div>
-        <?php } else { ?>
-          <img src="../images/nodata.jpg" class="img-responsive" alt="Responsive image">
-        <?php } ?>
-      </div>
     </div>
   </div>
-
+</div>
   <script type="text/javascript">
     'use strict';
 
