@@ -263,7 +263,7 @@ $can_config = is_allowed_config();
       <?php
     }
     ?>
-    
+
     <script src="../js/jquery-2.1.1.min.js"></script>
     <script src="../js/bootstrap.min.js"></script>
     <script src="../js/bootstrap-switch.js"></script>

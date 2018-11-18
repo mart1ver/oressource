@@ -16,12 +16,6 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
-
-//import moment from 'moment';
-//import localization from 'moment/locale/fr';
-//moment.locale('fr'); // locale définie en francais
-
 function toQueryString(obj) {
   let parts = [];
   for (const i in obj) {
