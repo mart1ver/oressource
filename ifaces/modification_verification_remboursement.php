@@ -22,27 +22,15 @@ session_start();
 require_once '../core/requetes.php';
 require_once '../core/session.php';
 
-if (is_valid_session() === 'oressource' && is_allowed_verifications()) {
+if (is_valid_session() && is_allowed_verifications()) {
   require_once '../moteur/dbconfig.php';
-  require_once 'tete.php';
 
   $users = map_by(utilisateurs($bdd), 'id');
 
   $id = $_GET['nvente'];
-  $req = $bdd->prepare('SELECT
-    vendus.id,
-    vendus.timestamp,
-    type_dechets.nom type,
-    grille_objets.nom objet,
-    vendus.remboursement,
-    vendus.quantite,
-  FROM vendus, type_dechets, grille_objets
-  WHERE vendus.id_vente = :id_vente
-  AND grille_objets.id = vendus.id_objet
-  AND type_dechets.id = vendus.id_type_dechet');
-  $req->execute(['id_vente' => $id]);
-  $rembs = $req->fetchAll(PDO::FETCH_ASSOC);
-  $req->closeCursor();
+  $rembs = vendu_by_id_vente($bdd, $id);
+
+  require_once 'tete.php';
   ?>
   <div class="container">
     <h1>Modifier le remboursement n° <?= $_GET['nvente']; ?></h1>
@@ -76,7 +64,7 @@ if (is_valid_session() === 'oressource' && is_allowed_verifications()) {
             <td><?= $r['objet']; ?></td>
             <td><?= $r['quantite']; ?></td>
             <td><?= $r['remboursement']; ?></td>
-            <td><?= $users[$v['id_createur']]['mail'] ?></td>
+            <td><?= $users[$r['id_createur']]['mail'] ?></td>
             <td><form action="modification_verification_objet_remboursement.php" method="post">
                 <input type="hidden" name="id" value="<?= $r['id']; ?>">
                 <input type="hidden" name="nvente" value="<?= $id ?>">
@@ -87,8 +75,8 @@ if (is_valid_session() === 'oressource' && is_allowed_verifications()) {
                 <input type="hidden" name="npoint" value="<?= $_POST['npoint']; ?>">
                 <button class="btn btn-warning btn-sm">Modifier</button>
               </form>
-            <td><?= $v['last_hero_timestamp'] !== $v['timestamp'] ? $users[$v['id_last_hero']]['mail'] : '' ?></td>
-            <td><?= $v['last_hero_timestamp'] !== $v['timestamp'] ? $v['last_hero_timestamp'] : '' ?></td>
+            <td><?= $r['last_hero_timestamp'] !== $r['timestamp'] ? $users[$r['id_last_hero']]['mail'] : '' ?></td>
+            <td><?= $r['last_hero_timestamp'] !== $r['timestamp'] ? $r['last_hero_timestamp'] : '' ?></td>
           </tr>
         <?php } ?>
       </tbody>

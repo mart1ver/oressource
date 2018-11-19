@@ -24,6 +24,9 @@ require_once '../core/validation.php';
 
 session_start();
 
+// TODO: Réecrire la gestion des remboursements pour avoir quelque chose de plus proche de ventes.
+// Pourquoi pas sinon fair une table dédiée.
+
 if (is_valid_session() && is_allowed_vente_id($_POST['id_point_vente'])) {
   require_once '../moteur/dbconfig.php';
 
@@ -70,7 +73,7 @@ if (is_valid_session() && is_allowed_vente_id($_POST['id_point_vente'])) {
     $tquantite = 'tquantite' . $i;
     $tprix = 'tprix' . $i;
 
-    if (!isset($_POST[$tid_type_objet])) {
+    if (!$_POST[$tid_type_objet]) {
       header("Location:../ifaces/ventes.php?err=Les remboursement de sans type d'objet ou dechet ne sont pas valides&numero=" . $_POST['id_point_vente']);
       die();
     }

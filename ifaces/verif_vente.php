@@ -117,13 +117,17 @@ if (is_valid_session() && is_allowed_verifications()) {
           $remboursements = $v['remb'];
           $quantite = $v['quantite'];
           $masse = $v['masse'];
-          $rembo = $ventes > 0 && $remboursements > 0;
+          $rembo = ($remboursements > 0.00);
           ?>
           <tr>
-            <td><?= $v['id']; ?></td>
+            <td>
+              <span <?= $rembo
+                ? '(class="badge" style="background-color:red"'
+                : '' ?>><?= $v['id'] ?></span>
+            </td>
             <td><?= $v['timestamp']; ?></td>
-            <td><?= !$rembo ? $ventes : '' ?></td>
-            <td><?= $rembo ? $remboursements : '' ?></td>
+            <td><?= $ventes ?></td>
+            <td><?= $remboursements ?></td>
             <td><?= $quantite ?></td>
             <td>
               <span class="badge" style="background-color:<?= $v['couleur']; ?>"><?= $v['moyen']; ?></span>

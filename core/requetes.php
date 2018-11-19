@@ -470,6 +470,37 @@ function data_graphs_from_bilan(array $bilan, string $key): array {
   return ['data' => $data, 'colors' => $colors];
 }
 
+/// Fonction servant à obtenir le détail d'une vente ou
+/// d'un remboursement identifié par son Id vente.
+function vendu_by_id_vente(PDO $bdd, int $id_vente): array {
+  $req = $bdd->prepare('SELECT
+    vendus.id,
+    vendus.id_vente,
+    vendus.timestamp,
+    vendus.quantite,
+    vendus.prix,
+    vendus.remboursement,
+    vendus.id_createur,
+    vendus.id_last_hero,
+    vendus.last_hero_timestamp,
+    type_dechets.nom type,
+    CASE WHEN vendus.id_objet > 0 THEN grille_objets.nom ELSE "autre" END objet,
+    pesees_vendus.masse
+  FROM vendus
+  INNER JOIN type_dechets
+  ON type_dechets.id = vendus.id_type_dechet
+  left JOIN grille_objets
+  ON grille_objets.id = vendus.id_objet
+  LEFT JOIN pesees_vendus
+  ON pesees_vendus.id = vendus.id_vente
+  WHERE vendus.id_vente = :id_vente');
+  $req->bindParam(':id_vente', $id_vente, PDO::PARAM_INT);
+  $req->execute();
+  $vendus = $req->fetchAll(PDO::FETCH_ASSOC);
+  $req->closeCursor();
+  return $vendus;
+}
+
 function vendus_case_lot_unit(): string {
   return "case when vendus.lot > 0
   then vendus.prix

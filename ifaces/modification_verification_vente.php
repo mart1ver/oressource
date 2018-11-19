@@ -26,34 +26,13 @@ if (is_valid_session() && is_allowed_verifications()) {
   require_once '../moteur/dbconfig.php';
   $users = map_by(utilisateurs($bdd), 'id');
 
-  $req = $bdd->prepare('SELECT
-    vendus.id,
-    vendus.id_vente,
-    vendus.timestamp,
-    vendus.quantite,
-    vendus.prix,
-    vendus.id_createur,
-    vendus.id_last_hero,
-    vendus.last_hero_timestamp,
-    type_dechets.nom type,
-    CASE WHEN vendus.id_objet > 0 THEN grille_objets.nom ELSE "autre" END objet,
-    pesees_vendus.masse
-  FROM vendus
-  INNER JOIN type_dechets
-  ON type_dechets.id = vendus.id_type_dechet
-  INNER JOIN grille_objets
-  ON (grille_objets.id = vendus.id_objet OR vendus.id_objet = 0)
-  LEFT JOIN pesees_vendus
-  ON pesees_vendus.id = vendus.id_vente
-  WHERE vendus.id_vente = :id_vente');
-  $req->bindParam(':id_vente', $_GET['nvente'], PDO::PARAM_INT);
-  $req->execute();
-  $vendus = $req->fetchAll(PDO::FETCH_ASSOC);
+  $vendus = vendu_by_id_vente($bdd, $_GET['nvente']);
 
   $reponse = $bdd->prepare('SELECT commentaire FROM ventes WHERE id = :id_vente');
   $reponse->execute(['id_vente' => $_GET['nvente']]);
   $commentaire = $reponse->fetch()['commentaire'];
   $reponse->closeCursor();
+
   require_once 'tete.php';
   ?>
   <div class="container">
