@@ -444,22 +444,17 @@ function login_user(PDO $bdd, string $email, string $password): array {
   throw new Exception('Mot de passe ou nom de compte invalide.');
 }
 
-/**
- * Renvoie les donnees neccessaire a moris.js pour le tableau de bord.
- * @global type $bdd  Connection PDO valide.
- * @param string $sql Requete sql valide
- * @return array Correspondant aux donnees pour morris.js.
- */
+/// Cas particulier de data_graphs_from_bilan pour bilanc.php
 function data_graphs(array $data): array {
-  $d = [];
-  $colors = [];
-  foreach ($data as $iter) {
-    array_push($d, ['value' => $iter['somme'], 'label' => $iter['nom']]);
-    array_push($colors, $iter['couleur']);
-  }
-  return ['data' => $d, 'colors' => $colors];
+  return data_graphs_from_bilan($data, 'somme');
 }
 
+/**
+ * Renvoie les donnees neccessaire a morris.js pour le tableau de bord.
+ * @global PDO $bdd Connection PDO valide.
+ * @param string $key clef pour le champ 'value' de l'array produit.
+ * @return array Correspondant aux donnees pour morris.js.
+ */
 function data_graphs_from_bilan(array $bilan, string $key): array {
   $data = [];
   $colors = [];
@@ -470,7 +465,7 @@ function data_graphs_from_bilan(array $bilan, string $key): array {
   return ['data' => $data, 'colors' => $colors];
 }
 
-/// Fonction servant à obtenir le détail d'une vente ou
+/// Permet d'obtenir le détail d'une vente ou
 /// d'un remboursement identifié par son Id vente.
 function vendu_by_id_vente(PDO $bdd, int $id_vente): array {
   $req = $bdd->prepare('SELECT
@@ -501,6 +496,8 @@ function vendu_by_id_vente(PDO $bdd, int $id_vente): array {
   return $vendus;
 }
 
+/// HACKME: Fonction contenant le code SQL pour gérer les lots.
+/// TODO: Trouver une meilleure méthode.
 function vendus_case_lot_unit(): string {
   return "case when vendus.lot > 0
   then vendus.prix
@@ -535,7 +532,8 @@ function chiffre_affaire_mode_paiement(PDO $bdd, string $start,
   return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
-
+/// Fonction calculant le nombre de ventes réalisé entre la période $start et
+/// $stop.
 function nb_ventes(PDO $bdd, string $start, string $stop,
  int $id_point_vente = 0): int {
   $cond = ($id_point_vente > 0 ? " AND ventes.id_point_vente = $id_point_vente " : ' ');
