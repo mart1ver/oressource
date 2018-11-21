@@ -92,11 +92,12 @@ function utilisateurs_id(PDO $bdd, int $id): array {
   $sql = 'SELECT
     id,
     prenom,
+    pass,
     mail,
     nom,
     niveau
-    FROM utilisateurs
-    WHERE utilisateurs.id = :id';
+  FROM utilisateurs
+  WHERE utilisateurs.id = :id';
   return fetch_id($bdd, $sql, $id);
 }
 

@@ -23,14 +23,14 @@ require_once('../moteur/dbconfig.php');
 require_once('../core/session.php');
 require_once('../core/requetes.php');
 
-if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource') {
+if (is_valid_session()) {
   require_once 'tete.php';
 
-  $mail = filter_input(INPUT_GET, 'mail', FILTER_VALIDATE_EMAIL);
+  $user = utilisateurs_id($bdd, $_SESSION['id']);
   ?>
   <div class="container">
     <h1>Édition de votre mot de passe:</h1>
-    <p>Votre E-mail est: <?= $mail; ?>, il vous est demandé au login.</p>
+    <p>Votre E-mail est: <?= $user['mail']; ?>, il vous est demandé au login.</p>
     <br>
     <div class="panel-body">
       <div class="row">

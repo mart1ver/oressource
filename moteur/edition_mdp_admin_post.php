@@ -25,7 +25,7 @@ require_once '../core/requetes.php';
 
 if (is_valid_session() && is_allowed_users()) {
   require_once 'dbconfig.php';
-  $id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
+  $id = filter_input(INPUT_POST, 'id', FILTER_VALIDATE_INT);
   if ($_POST['pass1'] === $_POST['pass2']) {
     $req = $bdd->prepare('UPDATE utilisateurs SET pass = :pass WHERE id = :id');
     $req->execute(['pass' => md5($_POST['pass1']), 'id' => $id]);
