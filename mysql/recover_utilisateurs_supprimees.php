@@ -13,6 +13,36 @@ function recover_utilisateurs(int $admin, string $table, array $fields): string 
 ");
 }
 
+function recover_points_ventes(PDO $bdd) {
+  $sql0 = 'insert INTO points_vente (
+    nom,
+    commentaire,
+    surface_vente,
+    couleur,
+    visible,
+    id_createur,
+    id_last_hero
+    ) VALUES (
+    "[Maintenance] point de vente inconnu",
+    "Ce type existe afin de réguler le saisies incohérentes des anciennes bases.",
+    0,
+    "#000000",
+    0,
+    1,
+    1
+  );';
+
+  $bdd->query($sql0);
+  $id_point_vente_inconnu = $bdd->lastInsertId();
+
+  $sql1 = "update ventes as V
+  set V.id_point_vente = $id_point_vente_inconnu
+  where not exists (select 1
+  from points_vente PV
+  where PV.id = V.id_point_vente)";
+  $bdd->query($sql1);
+}
+
 function recover(PDO $bdd, string $database_name, int $admin) {
   $tables = $bdd->query("SELECT table_name FROM information_schema.tables
     where table_schema=\"$database_name\"");
@@ -39,6 +69,8 @@ function main() {
   global $bdd;
   global $base;
   $database_name = $base;
+
+  recover_points_ventes($bdd);
 
   // Note: Cas de la petite rockette
   $req = $bdd->query('select id from utilisateurs where mail = "inconnu@localhost"');
