@@ -13,6 +13,12 @@ function recover_utilisateurs(int $admin, string $table, array $fields): string 
 ");
 }
 
+function remove_pesees_collectes_sans_collectes(PDO $bdd) {
+  $sql = "delete P from pesees_collectes as P where not exists (select 1 from collectes as C where P.id_collecte = C.id)";
+
+  $bdd->query($sql);
+}
+
 function recover_points_ventes(PDO $bdd) {
   $sql0 = 'insert INTO points_vente (
     nom,
