@@ -87,6 +87,18 @@ function reset_numpad() {
   render_numpad(numpad);
 }
 
+// Hack: remove all active attribute, and after turn espece On.
+/// Cette fonction remet le choix du moyen de paiement aux especes.
+function reset_paiement() {
+  const moyens_paiement_selector = document.getElementById('moyens');
+  Array.from(moyens_paiement_selector.children).forEach(elem => {
+    elem.classList.remove('active');
+  });
+
+  // L'element 0 c'est les espece.
+  moyens_paiement_selector.children[0].classList.add('active');
+}
+
 function get_numpad() {
   const masseinput = document.getElementById('masse');
   return {
@@ -108,10 +120,13 @@ function update_state({ type, objet = { prix: 0, masse: 0.0 } }) {
   render_numpad(numpad);
 }
 
+
+
 function reset(data, response) {
   state = new_state();
   reset_numpad();
   reset_rendu();
+  reset_paiement();
   const range = document.createRange();
   range.selectNodeContents(document.getElementById('transaction'));
   range.deleteContents();
