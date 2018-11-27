@@ -516,7 +516,7 @@ function chiffre_affaire_mode_paiement(PDO $bdd, string $start,
     ventes.id_moyen_paiement AS id_moyen,
     moyens_paiement.nom AS moyen,
     COUNT(DISTINCT(ventes.id)) AS quantite_vendue,
-    SUM(' . vendus_case_lot_unit(). ') AS total,
+    SUM(" . vendus_case_lot_unit(). ") AS total,
     SUM(vendus.remboursement) AS remboursement
   FROM moyens_paiement
   INNER JOIN ventes
