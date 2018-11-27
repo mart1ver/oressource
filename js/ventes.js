@@ -19,6 +19,15 @@
 
 // use Ticket from ticket.js
 
+//! L'interface des ventes est gérée à l'aide d'un état interne sous forme d'objets JavaScript
+//! et de fonctions les manipulants et d'une interface graphique en HTML+CSS.
+//!
+//! «L'état de référence» sont les objets JS. L'interface graphique n'est qu'une «vue» des données
+//! Par exemple clicker sur «ajouter» rajoute dans la représentation interne d'un panier de
+//! vente l'objet, le prix et la quantité désirée et ensuite met à jour l'interface graphique.
+//! La page et les données sont remises à 0, en cas d'envoi réussi (avec ou sans impressions)
+//! ou de click sur la remise à 0.
+
 Ticket.prototype.sum_quantite = function () {
   return this.to_array()
       .reduce((acc, vente) => acc + vente.quantite, 0);
@@ -58,12 +67,18 @@ function new_rendu() {
   };
 }
 
+/// Fonction permetant de raccoursir une chaine trop longue.
+/// Par exemple
+/// `wrapString("Matériel élèctrique à 0.5€", 15, '…')`
+/// sera evaluée à `"matériel éléc à…"`.
 const wrapString = (s, n, c) => (s.length > n) ? (s.slice(0, n) + c) : s;
 
 let state = new_state();
 let numpad = new_numpad();
 let rendu = new_rendu();
 
+/// Fonction gérant les différents champs du numpad elle est appellée via le "click"
+/// HTML de l'inferface de ifaces/vente.php
 let current_focus = document.getElementById('quantite');
 function fokus(element) {
   current_focus = element;
@@ -87,8 +102,8 @@ function reset_numpad() {
   render_numpad(numpad);
 }
 
-// Hack: remove all active attribute, and after turn espece On.
-/// Cette fonction remet le choix du moyen de paiement aux especes.
+/// Cette fonction remet l'interface du choix du moyen de paiement à son état initial
+/// c'est à dire sur «espèce».
 function reset_paiement() {
   const moyens_paiement_selector = document.getElementById('moyens');
   Array.from(moyens_paiement_selector.children).forEach(elem => {
@@ -99,6 +114,7 @@ function reset_paiement() {
   moyens_paiement_selector.children[0].classList.add('active');
 }
 
+/// Permet de récupérer les saisies du numpad sous la forme d'un objet js.
 function get_numpad() {
   const masseinput = document.getElementById('masse');
   return {
@@ -108,6 +124,7 @@ function get_numpad() {
   };
 }
 
+/// Ajoute au panier l'objet selectionné.
 function update_state({ type, objet = { prix: 0, masse: 0.0 } }) {
   numpad.prix = objet.prix;
   numpad.quantite = 1;
