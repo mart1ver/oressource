@@ -84,7 +84,9 @@ function objet_id(PDO $bdd, int $id_obj): array {
 }
 
 function objets(PDO $bdd): array {
-  $sql = 'SELECT * FROM grille_objets';
+  $sql = 'SELECT *
+  from grille_objets
+  order by nom';
   return fetch_all($sql, $bdd);
 }
 
@@ -225,8 +227,12 @@ function points_ventes_id(PDO $bdd, int $id): array {
 }
 
 function types_contenants(PDO $bdd): array {
-  $sql = 'SELECT id, masse, nom, couleur, visible, description, timestamp
-  FROM type_contenants';
+  $sql = 'SELECT
+    id, masse, nom,
+    couleur, visible, description,
+    timestamp
+  from type_contenants
+  order by nom';
   return fetch_all($sql, $bdd);
 }
 
@@ -283,13 +289,15 @@ function types_dechets_id(PDO $bdd, int $id): array {
 
 function types_sorties(PDO $bdd): array {
   $sql = 'SELECT id, nom, couleur, visible, description, timestamp
-  FROM type_sortie';
+  from type_sortie
+  order by nom';
   return fetch_all($sql, $bdd);
 }
 
 function types_collectes(PDO $bdd): array {
   $sql = 'SELECT id, nom, couleur, visible, timestamp, description
-  FROM type_collecte';
+  from type_collecte
+  order by nom';
   return fetch_all($sql, $bdd);
 }
 
@@ -303,7 +311,8 @@ function types_collectes_id(PDO $bdd, int $id): array {
 function filieres_sorties(PDO $bdd): array {
   $sql = 'SELECT id, nom, visible, id_type_dechet_evac, description,
     couleur, timestamp, last_hero_timestamp, id_createur, id_last_hero
-  FROM filieres_sortie';
+  from filieres_sortie
+  order by nom';
   return array_map(function($filiere) {
     $a = array_filter(explode('a', $filiere['id_type_dechet_evac']), function ($e): bool { return $e !== ''; });
     $b = array_map(function (int $e): int { return $e; }, $a);
