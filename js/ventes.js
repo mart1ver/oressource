@@ -120,17 +120,24 @@ function update_state({ type, objet = { prix: 0, masse: 0.0 } }) {
   render_numpad(numpad);
 }
 
-
-
+/// Effectue le reset des données représentant une vente et de l'interface graphique.
 function reset(data, response) {
   state = new_state();
+
   reset_numpad();
   reset_rendu();
   reset_paiement();
-  const range = document.createRange();
-  range.selectNodeContents(document.getElementById('transaction'));
-  range.deleteContents();
-  update_recap(0.0, 0.0);
+
+  // On remet à zéro le panier
+  {
+    const range = document.createRange();
+    range.selectNodeContents(document.getElementById('transaction'));
+    range.deleteContents();
+    update_recap(0.0, 0.0);
+  }
+
+  // On donne le nouveau numéro «prévisionnel» à la futur vente.
+  // Attention ce numéro est «provisoire» si il y a plusieurs caisses.
   document.getElementById('num_vente').textContent = response.id + 1;
 }
 
@@ -241,10 +248,13 @@ function add() {
         name, // Hack pour les impressions.
       };
 
+      const lot = vente.lot ? 'lot' : '';
+
       vente.show = function() {
         const prix_txt = `${this.prix} €`;
         const masse_txt = this.masse >= 0.00 ? ` ${this.masse} kg` : '';
-        return `<p>${this.name} : ${prix_txt}${masse_txt}</p>`;
+
+        return `<p>${lot} ${this.name} : ${prix_txt}${masse_txt}</p>`;
       };
 
       const id = state.ticket.push(vente);
@@ -257,7 +267,7 @@ function add() {
             <span class="badge">${amount.toFixed(2)} €</span>
             <span class="glyphicon glyphicon-trash" aria-hidden="true"
                   onclick="remove(${id});return false;">
-            </span>&nbsp;&nbsp; ${quantite} &#215; ${name}`;
+            </span>&nbsp;&nbsp; ${lot} ${quantite} &#215; ${name}`;
       if (masse > 0 && window.OressourceEnv.pesees) {
         html += `, ${(masse).toFixed(3)} Kgs.`;
       }
@@ -266,23 +276,26 @@ function add() {
       update_recap(state.ticket.sum_prix(), state.ticket.sum_quantite());
       update_rendu();
       reset_numpad();
+      // Reset du selecteur lot/unité
+      $("#typeVente").bootstrapSwitch('state', true, false);
     } else {
       this.input.setCustomValidity('Quantite nulle ou inferieur a 0.');
     }
   }
 }
 
+const lot_or_unite = (label, prix_string, masse_string, bg_color) => {
+  document.getElementById('labellot').textContent = label;
+  document.getElementById('labelprix').textContent = prix_string;
+  document.getElementById('panelcalc').style.backgroundColor = bg_color;
+  if (window.OressourceEnv.pesees) {
+    document.getElementById('labelmasse').textContent = masse_string;
+  }
+};
+
 document.addEventListener('DOMContentLoaded', () => {
   $("#typeVente").bootstrapSwitch();
   $("#typeVente").on('switchChange.bootstrapSwitch', (event, checked) => {
-    const lot_or_unite = (label, prix_string, masse_string, bg_color) => {
-      document.getElementById('labellot').textContent = label;
-      document.getElementById('labelprix').textContent = prix_string;
-      document.getElementById('panelcalc').style.backgroundColor = bg_color;
-      if (window.OressourceEnv.pesees) {
-        document.getElementById('labelmasse').textContent = masse_string;
-      }
-    };
     if (checked) {
       lot_or_unite("Vente à: ", "Prix unitaire:", "Masse unitaire: ", "white");
     } else {

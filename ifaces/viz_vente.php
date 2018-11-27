@@ -29,6 +29,7 @@ if (is_valid_session() && is_allowed_verifications() && $_SESSION['viz_caisse'])
   $req = $bdd->prepare('SELECT
   vendus.id,
   vendus.timestamp,
+  vendus.lot,
   type_dechets.nom type,
   IF(vendus.id_objet > 0, grille_objets.nom, "autre") objet,
   vendus.quantite,
@@ -68,6 +69,7 @@ if (is_valid_session() && is_allowed_verifications() && $_SESSION['viz_caisse'])
           <th>Objet:</th>
           <th>Quantité</th>
           <th>Prix</th>
+          <th>Lot</th>
           <th>Auteur de la ligne</th>
         </tr>
       </thead>
@@ -80,6 +82,7 @@ if (is_valid_session() && is_allowed_verifications() && $_SESSION['viz_caisse'])
             <td><?= $d['objet']; ?></td>
             <td><?= $d['quantite']; ?></td>
             <td><?= $d['prix']; ?></td>
+            <td><?= $d['lot'] === 0 ? 'unité' : 'lot' ?></td>
             <td><?= $users[$d['id_createur']]['mail'] ?></td>
                      </tr>
         <?php } ?>
