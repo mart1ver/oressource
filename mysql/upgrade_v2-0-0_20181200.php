@@ -55,15 +55,29 @@ function recover(PDO $bdd, string $database_name, int $admin) {
 
   $fields = [ 'id_createur', 'id_last_hero'];
   foreach ($tables as $t) {
-    $name = $t['table_name'];
+    $table = $t['table_name'];
 
     if ($name === NULL || $name === 'utilisateurs') {
       continue;
     }
 
-    $sql = recover_utilisateurs($admin, $name, $fields);
-    $bdd->query($sql);
+    $sql_users = recover_utilisateurs($admin, $table, $fields);
+    $bdd->query($sql_users);
+    $sql_timestamp = recover_timestamp($table);
+    $bdd->query($sql_timestamp);
   }
+}
+
+function recover_timestamp(string $table): string {
+  return "UPDATE `$table` set
+  `id_last_hero` = (case
+    when `id_last_hero` = 0
+    then `id_createur` else `id_last_hero`
+  end),
+  `last_hero_timestamp` = (case
+    when (`last_hero_timestamp` IS NULL) OR (`last_hero_timestamp` = STR_TO_DATE('0000-00-00 00:00:00', '%Y-%m-%d %H:%i:%s'))
+    then `timestamp` else `last_hero_timestamp`
+  end";
 }
 
 /*
@@ -75,6 +89,20 @@ function main() {
   global $bdd;
   global $base;
   $database_name = $base;
+  {
+    $sql_files = [
+      '2017-12-18_drop_adherents.sql',
+      '2017-12-23_pesee_vendus.sql',
+      '2017-12-24_conformite_strict_SQL.sql',
+      '2017-12-24_ventes_par_lot.sql',
+      '2017-12-29_remove_oui_non.sql'
+    ];
+
+    foreach ($sql_files as $file) {
+      $sql = file_get_contents($file);
+      $bdd->exec($sql);
+    }
+  }
 
   recover_points_ventes($bdd);
 
@@ -83,6 +111,12 @@ function main() {
   $id = $req->fetch()['id'];
   $req->closeCursor();
   recover($bdd, $database_name, $id);
+
+
+  {
+    $sql = file_get_contents('2017-12-30_ajout_clef_etrangeres.sql');
+    $bdd->exec($sql);
+  }
 }
 
 main();
