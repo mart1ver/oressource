@@ -14,10 +14,12 @@ Il faut charger les scripts SQL suivants:
 2017-12-30_ajout_clef_etrangeres.sql
 ```
 
-## Si vous avez installé Oressource avant le 12 juin 2015
+## Si par exemple vous avez installé Oressource avant le 12 juin 2015
 
 Mettez à jour votre base de données avec la commande suivante :
 
 ```shell
  mysql -u oressource -h localhost oressource -p < mysql/upgrade_20150612.sql
 ```
+
+Répétez éventuellement (selon la date de votre dernière installation) l'opération avec les autres fichiers upgrade_*.sql.

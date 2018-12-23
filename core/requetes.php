@@ -66,7 +66,7 @@ function fetch_id(PDO $bdd, string $sql, int $id): array {
   return $result;
 }
 
-function fetch_all_id(PDO $bdd, string $sql, int $id) {
+function fetch_all_id(PDO $bdd, string $sql, int $id): array {
   $stmt = $bdd->prepare($sql);
   $stmt->bindParam(':id', $id, PDO::PARAM_INT);
   $stmt->execute();
@@ -75,11 +75,11 @@ function fetch_all_id(PDO $bdd, string $sql, int $id) {
   return $r;
 }
 
-function objet_id_dechet(PDO $bdd, int $id_dechet) {
+function objet_id_dechet(PDO $bdd, int $id_dechet): array {
   return fetch_all_id($bdd, 'SELECT * FROM grille_objets WHERE id_type_dechet = :id', $id_dechet);
 }
 
-function objet_id(PDO $bdd, int $id_obj) {
+function objet_id(PDO $bdd, int $id_obj): array {
   return fetch_id($bdd, 'SELECT * FROM grille_objets WHERE id = :id', $id_obj);
 }
 
@@ -88,7 +88,7 @@ function objets(PDO $bdd): array {
   return fetch_all($sql, $bdd);
 }
 
-function utilisateurs_id(PDO $bdd, int $id) {
+function utilisateurs_id(PDO $bdd, int $id): array {
   $sql = 'SELECT
     id,
     prenom,
@@ -169,55 +169,70 @@ function sortie_id(PDO $bdd, int $id): array {
 }
 
 function convention_sortie(PDO $bdd): array {
-  $sql = 'SELECT id, nom, couleur, description, timestamp, visible FROM conventions_sorties ORDER BY nom';
+  $sql = 'SELECT id, nom, couleur, description, timestamp, visible
+  FROM conventions_sorties
+  ORDER BY nom';
   return fetch_all($sql, $bdd);
 }
 
 function convention_sortie_by_id(PDO $bdd, int $id): array {
-  $sql = 'SELECT id, nom, couleur, description, timestamp, visible FROM conventions_sortie AND id = :id';
+  $sql = 'SELECT id, nom, couleur, visible, description, timestamp, visible
+  FROM conventions_sorties
+  WHERE id = :id';
   return fetch_id($bdd, $sql, $id);
 }
 
 function points_collecte_id(PDO $bdd, int $id): array {
   $sql = 'SELECT pesee_max, nom
-          FROM points_collecte
-          WHERE id = :id
-          LIMIT 1';
+  FROM points_collecte
+  WHERE id = :id';
   return fetch_id($bdd, $sql, $id);
 }
 
 function points_sorties_id(PDO $bdd, int $id): array {
-  $sql = 'SELECT id, pesee_max, nom, adresse, visible FROM points_sortie WHERE id = :id';
+  $sql = 'SELECT id, pesee_max, nom, adresse, visible
+  FROM points_sortie
+  WHERE id = :id';
   return fetch_id($bdd, $sql, $id);
 }
 
 function points_collectes(PDO $bdd): array {
-  $sql = 'SELECT id, nom, adresse, couleur, pesee_max, visible, timestamp, commentaire, pesee_max FROM points_collecte';
+  $sql = 'SELECT id, nom, adresse, couleur, pesee_max,
+    visible, timestamp, commentaire, pesee_max
+  FROM points_collecte';
   return fetch_all($sql, $bdd);
 }
 
 function points_sorties(PDO $bdd): array {
-  $sql = 'SELECT id, nom, adresse, couleur, visible, timestamp, commentaire, pesee_max FROM points_sortie';
+  $sql = 'SELECT id, nom, adresse, couleur,
+    visible, timestamp, commentaire, pesee_max
+  FROM points_sortie';
   return fetch_all($sql, $bdd);
 }
 
 function points_ventes(PDO $bdd): array {
-  $sql = 'SELECT id, nom, adresse, couleur, visible FROM points_vente';
+  $sql = 'SELECT id, nom, adresse, couleur, visible
+  FROM points_vente';
   return fetch_all($sql, $bdd);
 }
 
 function points_ventes_id(PDO $bdd, int $id): array {
-  $sql = 'SELECT id, nom, adresse FROM points_vente WHERE id = :id';
+  $sql = 'SELECT id, nom, adresse
+  FROM points_vente
+  WHERE id = :id';
   return fetch_id($bdd, $sql, $id);
 }
 
 function types_contenants(PDO $bdd): array {
-  $sql = 'SELECT id, masse, nom, couleur, visible, description, timestamp FROM type_contenants';
+  $sql = 'SELECT id, masse, nom, couleur, visible, description, timestamp
+  FROM type_contenants';
   return fetch_all($sql, $bdd);
 }
 
 function types_contenants_id(PDO $bdd, int $id): array {
-  $sql = 'SELECT id, masse, nom, couleur, visible, description, timestamp FROM type_contenants WHERE id = :id';
+  $sql = 'SELECT id, masse, nom, couleur, visible, description, timestamp
+  FROM type_contenants
+  WHERE id = :id';
   return fetch_id($bdd, $sql, $id);
 }
 
@@ -227,52 +242,67 @@ function localites(PDO $bdd): array {
 }
 
 function types_poubelles(PDO $bdd): array {
-  $sql = 'SELECT id, nom, masse_bac, couleur, visible FROM types_poubelles';
+  $sql = 'SELECT id, nom, masse_bac, couleur, visible
+  FROM types_poubelles';
   return fetch_all($sql, $bdd);
 }
 
 function types_poubelles_id(PDO $bdd, int $id): array {
-  $sql = 'SELECT id, nom, masse_bac, couleur, ultime FROM types_poubelles WHERE id = :id';
+  $sql = 'SELECT id, nom, masse_bac, couleur, ultime
+  FROM types_poubelles
+  WHERE id = :id';
   return fetch_id($bdd, $sql, $id);
 }
 
 function types_dechets_evac(PDO $bdd): array {
-  $sql = 'SELECT id, nom, couleur, visible, description, timestamp FROM type_dechets_evac';
+  $sql = 'SELECT id, nom, couleur, visible, description, timestamp
+  FROM type_dechets_evac';
   return fetch_all($sql, $bdd);
 }
 
 function types_dechets_evac_id(PDO $bdd, int $id): array {
-  $sql = 'SELECT id, nom, couleur, description, visible FROM type_dechets_evac WHERE id = :id';
+  $sql = 'SELECT id, nom, couleur, description, visible
+  FROM type_dechets_evac
+  WHERE id = :id';
   return fetch_id($bdd, $sql, $id);
 }
 
 function types_dechets(PDO $bdd): array {
-  $sql = 'SELECT id, nom, couleur, description, visible, timestamp FROM type_dechets';
+  $sql = 'SELECT id, nom, couleur, description, visible, timestamp
+  FROM type_dechets';
   return fetch_all($sql, $bdd);
 }
 
 function types_dechets_id(PDO $bdd, int $id): array {
-  $sql = 'SELECT id, nom, couleur, description, visible FROM type_dechets WHERE id = :id';
+  $sql = 'SELECT id, nom, couleur, description, visible
+  FROM type_dechets
+  WHERE id = :id';
   return fetch_id($bdd, $sql, $id);
 }
 
 function types_sorties(PDO $bdd): array {
-  $sql = 'SELECT id, nom, couleur, visible, description, timestamp FROM type_sortie';
+  $sql = 'SELECT id, nom, couleur, visible, description, timestamp
+  FROM type_sortie';
   return fetch_all($sql, $bdd);
 }
 
 function types_collectes(PDO $bdd): array {
-  $sql = 'SELECT id, nom, couleur, visible, timestamp, description FROM type_collecte';
+  $sql = 'SELECT id, nom, couleur, visible, timestamp, description
+  FROM type_collecte';
   return fetch_all($sql, $bdd);
 }
 
 function types_collectes_id(PDO $bdd, int $id): array {
-  $sql = 'SELECT id, nom, description, couleur, visible FROM type_collecte WHERE id = :id';
+  $sql = 'SELECT id, nom, description, couleur, visible
+  FROM type_collecte
+  WHERE id = :id';
   return fetch_id($bdd, $sql, $id);
 }
 
 function filieres_sorties(PDO $bdd): array {
-  $sql = 'SELECT id, nom, visible, id_type_dechet_evac, description, couleur, timestamp, last_hero_timestamp, id_createur, id_last_hero FROM filieres_sortie';
+  $sql = 'SELECT id, nom, visible, id_type_dechet_evac, description,
+    couleur, timestamp, last_hero_timestamp, id_createur, id_last_hero
+  FROM filieres_sortie';
   return array_map(function($filiere) {
     $a = array_filter(explode('a', $filiere['id_type_dechet_evac']), function ($e): bool { return $e !== ''; });
     $b = array_map(function (int $e): int { return $e; }, $a);
@@ -315,7 +345,7 @@ function nb_categories_poubelles(PDO $bdd): int {
 }
 
 function collecte_id(PDO $bdd, int $id): array {
-  $sql = 'Select id,
+  $sql = 'SELECT id,
     timestamp, id_type_collecte,
     localisation, id_point_collecte,
     commentaire, id_createur,
@@ -326,7 +356,8 @@ function collecte_id(PDO $bdd, int $id): array {
 }
 
 function moyens_paiements(PDO $bdd): array {
-  $sql = 'SELECT id, nom, couleur, visible, description, timestamp FROM moyens_paiement';
+  $sql = 'SELECT id, nom, couleur, visible, description, timestamp
+  FROM moyens_paiement';
   return fetch_all($sql, $bdd);
 }
 
@@ -399,7 +430,7 @@ function login_user(PDO $bdd, string $email, string $password): array {
   $passmd5 = md5($password);
   $req = $bdd->prepare('SELECT id, niveau, nom, prenom, mail
                         FROM utilisateurs
-                        WHERE mail = :mail AND pass = :pass LIMIT 1');
+                        WHERE mail = :mail AND pass = :pass');
   $req->bindValue(':mail', $email, PDO::PARAM_STR);
   $req->bindValue(':pass', $passmd5, PDO::PARAM_INT);
   $req->execute();
@@ -427,7 +458,7 @@ function data_graphs(array $data): array {
   return ['data' => $d, 'colors' => $colors];
 }
 
-function data_graphs_from_bilan($bilan, $key) {
+function data_graphs_from_bilan(array $bilan, string $key): array {
   $data = [];
   $colors = [];
   foreach ($bilan as $_ => $iter) {
@@ -437,17 +468,24 @@ function data_graphs_from_bilan($bilan, $key) {
   return ['data' => $data, 'colors' => $colors];
 }
 
+function vendus_case_lot_unit(): string {
+  return "case when vendus.lot > 0
+  then vendus.prix
+  else vendus.prix * vendus.quantite end";
+}
+
 /** Tableau de recap du Chiffre d'Affaire par mode de paiement
  * Utile pour vérifier le fond de caisse en fin de vente
  * Equivalent de la touche 'Z' sur une caisse enregistreuse
  */
-function chiffre_affaire_mode_paiement(PDO $bdd, string $start, string $stop, int $id_point_vente = 0) {
+function chiffre_affaire_mode_paiement(PDO $bdd, string $start, 
+  string $stop, int $id_point_vente = 0): array {
   $cond = ($id_point_vente > 0 ? " AND ventes.id_point_vente = $id_point_vente " : ' ');
   $sql = "SELECT
     ventes.id_moyen_paiement AS id_moyen,
     moyens_paiement.nom AS moyen,
     COUNT(DISTINCT(ventes.id)) AS quantite_vendue,
-    SUM(vendus.prix * vendus.quantite) AS total,
+    SUM(' . vendus_case_lot_unit(). ') AS total,
     SUM(vendus.remboursement) AS remboursement
   FROM moyens_paiement
   INNER JOIN ventes
@@ -464,16 +502,9 @@ function chiffre_affaire_mode_paiement(PDO $bdd, string $start, string $stop, in
   return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
-function nb_points_ventes(PDO $bdd) {
-  $sql = 'SELECT COUNT(id) as nb_points_ventes
-                          FROM points_vente';
-  $stmt = $bdd->query($sql);
-  $nb_point_ventes = (int) $stmt->fetch(PDO::FETCH_ASSOC)['nb_points_ventes'];
-  $stmt->closeCursor();
-  return $nb_point_ventes;
-}
 
-function nb_ventes(PDO $bdd, string $start, string $stop, int $id_point_vente = 0) {
+function nb_ventes(PDO $bdd, string $start, string $stop,
+ int $id_point_vente = 0): int {
   $cond = ($id_point_vente > 0 ? " AND ventes.id_point_vente = $id_point_vente " : ' ');
   $sql = "SELECT
     COUNT(DISTINCT(ventes.id)) as nb_ventes
@@ -494,7 +525,8 @@ function nb_ventes(PDO $bdd, string $start, string $stop, int $id_point_vente = 
   return $nb_ventes;
 }
 
-function nb_remboursements(PDO $bdd, string $start, string $stop, int $id_point_vente = 0) {
+function nb_remboursements(PDO $bdd, string $start, string $stop,
+ int $id_point_vente = 0): int {
   $cond = ($id_point_vente > 0 ? " AND ventes.id_point_vente = $id_point_vente " : ' ');
   $sql = "SELECT
     COUNT(DISTINCT(ventes.id)) as nb_remb
@@ -516,32 +548,32 @@ function nb_remboursements(PDO $bdd, string $start, string $stop, int $id_point_
 }
 
 function viz_caisse(PDO $bdd, int $id_point_vente, int $offset): array {
-  $reqVentes = $bdd->prepare('
-    select
-      ventes.id as id,
-      ventes.timestamp as date_creation,
-      moyens_paiement.nom as moyen,
-      moyens_paiement.couleur as coul,
-      ventes.commentaire as commentaire,
-      ventes.last_hero_timestamp as lht,
-      utilisateurs.mail as mail,
-      SUM(vendus.prix * vendus.quantite) as credit,
-      SUM(vendus.remboursement * vendus.quantite) as debit,
-      SUM(vendus.quantite) as quantite
-    from ventes
-    inner join vendus
-      on vendus.id_vente = ventes.id
-      and DATE(ventes.timestamp) = DATE(NOW())
-      and ventes.id_point_vente = :id_point_vente
-    inner join moyens_paiement
-      on ventes.id_moyen_paiement = moyens_paiement.id
-    inner join utilisateurs
-      on utilisateurs.id = ventes.id_createur
-    group by ventes.id, ventes.timestamp, moyens_paiement.nom,
-      moyens_paiement.couleur, ventes.commentaire,
-      ventes.last_hero_timestamp, utilisateurs.mail
-    order by ventes.timestamp desc
-    limit 0, :offset');
+  $sql = "SELECT
+    ventes.id as id,
+    ventes.timestamp as date_creation,
+    moyens_paiement.nom as moyen,
+    moyens_paiement.couleur as coul,
+    ventes.commentaire as commentaire,
+    ventes.last_hero_timestamp as lht,
+    utilisateurs.mail as mail,
+    SUM(" . vendus_case_lot_unit(). ") as credit,
+    SUM(vendus.remboursement * vendus.quantite) as debit,
+    SUM(vendus.quantite) as quantite
+  from ventes
+  inner join vendus
+    on vendus.id_vente = ventes.id
+    and DATE(ventes.timestamp) = DATE(NOW())
+    and ventes.id_point_vente = :id_point_vente
+  inner join moyens_paiement
+    on ventes.id_moyen_paiement = moyens_paiement.id
+  inner join utilisateurs
+    on utilisateurs.id = ventes.id_createur
+  group by ventes.id, ventes.timestamp, moyens_paiement.nom,
+    moyens_paiement.couleur, ventes.commentaire,
+    ventes.last_hero_timestamp, utilisateurs.mail
+  order by ventes.timestamp desc
+  limit 0, :offset";
+  $reqVentes = $bdd->prepare($sql);
   $reqVentes->bindValue('id_point_vente', $id_point_vente, PDO::PARAM_INT);
   $reqVentes->bindValue('offset', $offset, PDO::PARAM_INT);
   $reqVentes->execute();
@@ -550,13 +582,14 @@ function viz_caisse(PDO $bdd, int $id_point_vente, int $offset): array {
   return $resultat;
 }
 
-function bilan_ventes_par_type(PDO $bdd, string $start, string $stop, int $id_point_vente = 0) {
+function bilan_ventes_par_type(PDO $bdd, string $start, string $stop,
+int $id_point_vente = 0): array {
   $cond = ($id_point_vente > 0 ? " AND ventes.id_point_vente = $id_point_vente " : ' ');
   $sql = "SELECT
     type_dechets.id as id,
     type_dechets.couleur as couleur,
     type_dechets.nom as nom,
-    SUM(vendus.prix * vendus.quantite) as chiffre_degage,
+    SUM(" . vendus_case_lot_unit(). ") as chiffre_degage,
     SUM(vendus.quantite) as vendu_quantite,
     SUM(vendus.remboursement) as remb_somme,
     SUM(case when vendus.remboursement > 0 then 1 else 0 end) as remb_quantite
@@ -584,7 +617,8 @@ function bilan_ventes_par_type(PDO $bdd, string $start, string $stop, int $id_po
   return $result;
 }
 
-function bilan_ventes_pesees(PDO $bdd, string $start, string $stop, int $id_point_vente = 0) {
+function bilan_ventes_pesees(PDO $bdd, string $start, string $stop,
+  int $id_point_vente = 0): array {
   $cond = ($id_point_vente > 0 ? " AND ventes.id_point_vente = $id_point_vente " : ' ');
   $sql = "SELECT
       type_dechets.id as id,
@@ -619,11 +653,12 @@ function bilan_ventes_pesees(PDO $bdd, string $start, string $stop, int $id_poin
   return $result;
 }
 
-function bilan_ventes(PDO $bdd, string $start, string $stop, int $id_point_vente = 0) {
+function bilan_ventes(PDO $bdd, string $start, string $stop,
+  int $id_point_vente = 0): array {
   $cond = ($id_point_vente > 0 ? " AND ventes.id_point_vente = $id_point_vente " : ' ');
   $sql = "SELECT
     COUNT(DISTINCT(ventes.id)) as nb_ventes,
-    SUM(vendus.prix * vendus.quantite) as chiffre_degage,
+    SUM(" . vendus_case_lot_unit(). ") as chiffre_degage,
     SUM(vendus.quantite) as vendu_quantite,
     SUM(vendus.remboursement) as remb_somme,
     SUM(case when vendus.remboursement > 0 then 1 else 0 end) as remb_quantite,

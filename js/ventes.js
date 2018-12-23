@@ -54,7 +54,7 @@ function fokus(element) {
 
 function ticket_sum(ticket) {
   const f = (acc, vente) =>
-    acc + (vente.vente_unite ? vente.prix * vente.quantite : vente.prix);
+    acc + (vente.lot ? vente.prix : (vente.prix * vente.quantite));
   return ticket.to_array().reduce(f, 0);
 }
 
@@ -63,7 +63,7 @@ function ticket_quantite(ticket) {
   return ticket.to_array().reduce(f, 0);
 }
 
-function render_numpad( { prix, quantite, masse }) {
+function render_numpad({ prix, quantite, masse }) {
   document.getElementById('quantite').value = quantite;
   document.getElementById('prix').value = prix;
   if (window.ventes.pesees) {
@@ -90,7 +90,7 @@ function get_numpad() {
   };
 }
 
-function update_state( { type, objet = {prix: 0, masse: 0.0} }) {
+function update_state({ type, objet = { prix: 0, masse: 0.0 } }) {
   numpad.prix = objet.prix;
   numpad.quantite = 1;
   numpad.masse = objet.masse || 0.0;
@@ -179,8 +179,9 @@ function numpad_input(elem) {
 function remove(id) {
   const elem = state.ticket.remove(id);
   document.getElementById(id).remove();
-  update_recap(ticket_quantite(state.ticket), ticket_sum(state.ticket));
   update_rendu();
+  update_recap(ticket_sum(state.ticket), ticket_quantite(state.ticket));
+
   reset_numpad();
 }
 
@@ -190,12 +191,34 @@ function update_recap(total, size) {
   document.getElementById('nom_objet').textContent = "Objet:";
 }
 
+/**
+ * Cette fonction est utilisée lorsque l'on click sur le bouton `ajouter`
+ * du numpad.
+ * On récupére l'état des objets du même type à ajouter au panier puis
+ * on met a jour l'interface graphique du panier.
+ *
+ * Deux points sont assez particulier:
+ *
+ * ## Cas de la vente en lot
+ *
+ * En lot on décide d'appliquer un prix arbitraire à un ensemble d'objet
+ * du même type sans respecter le prix unitaire (une promotion en somme).
+ * On ne peux donc pas utilier comme "prix total" quantité * prix
+ * comme dans la vente unitaire. On prends le prix seulement du lot.
+ *
+ * ## Cas des pesées en vente:
+ *
+ * On ajoute la masse de l'ensemble des objets à ajouter au panier
+ * (Comme dans une collecte ou sortie), on ne pesee pas independament tout
+ * les objets on pesee en lot en somme.
+ */
 function add() {
   if (state.last !== undefined) {
     const { prix, quantite, masse } = get_numpad();
     if (quantite > 0 && !isNaN(prix)) {
       const current = state.last;
       state.last = undefined;
+      // Idée: Ajouter un champ "prix total" pour eviter de faire un if pour les calculs sur les prix.
       const vente = {
         id_type: current.type.id,
         id_objet: current.objet.id || null,
@@ -210,14 +233,14 @@ function add() {
       const li = document.createElement('li');
       li.setAttribute('id', id);
       li.setAttribute('class', 'list-group-item');
-      const amount = vente.vente_unite ? vente.prix * vente.quantite : vente.prix;
+      const amount = vente.lot ?  vente.prix : vente.prix * vente.quantite;
       let html = `
             <span class="badge">${amount.toFixed(2)} €</span>
             <span class="glyphicon glyphicon-trash" aria-hidden="true"
                   onclick="remove(${id});return false;">
             </span>&nbsp;&nbsp; ${quantite} &#215; ${name}`;
       if (masse > 0 && window.ventes.pesees) {
-        html += `, ${(masse * quantite).toFixed(3)} Kgs.`;
+        html += `, ${(masse).toFixed(3)} Kgs.`;
       }
       li.innerHTML = html;
       document.getElementById('transaction').appendChild(li);

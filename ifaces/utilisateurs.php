@@ -127,7 +127,7 @@ if (is_valid_session() && is_allowed_users()) {
   ?>
   <div class="container">
     <?= configNav($nav); ?>
-    <form action="<?= $urlPost ?>" method="post">
+    <form action="<?= $urlPost ?>" method="post" autocomplete="off">
       <?php if (isset($_GET['id'])) { ?>
         <input type="hidden" name="id" value="<?= $_GET['id']; ?>">
       <?php } ?>
