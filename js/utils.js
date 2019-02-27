@@ -212,7 +212,8 @@ function connection_UI_ticket(numpad, ticket, typesItems, pretraitement = ((a, .
   const transaction = document.getElementById('transaction');
   return (event) => {
     const id = parseInt(event.currentTarget.id, 10);
-    const type_dechet = typesItems[id - 1];
+    // HACK: darnuria Change typesItems into a map latter.
+    const type_dechet = typesItems.find(e => e.id === id);
     const value = pretraitement(numpad.value, type_dechet.masse_bac); // retourne la masse sauf pour les poubelles.
     if (value > 0.00 && !isNaN(id)) {
       if (value <= window.OressourceEnv.masse_max) {

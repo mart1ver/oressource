@@ -448,7 +448,7 @@ function login_user(PDO $bdd, string $email, string $password): array {
   $req->execute();
   $user = $req->fetch(PDO::FETCH_ASSOC);
   $req->closeCursor();
-  if ($user !== NULL) {
+  if ($user) {
     return $user;
   }
   throw new Exception('Mot de passe ou nom de compte invalide.');
