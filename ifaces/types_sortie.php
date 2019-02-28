@@ -26,4 +26,4 @@ echo page_config3([
   'text' => "Permet de différencier les différentes destinations des dons (don a un particulier, une association, lié à une convention, ...).",
   'url' => 'type_sortie',
   'functData' => 'types_sorties'
-]);
+], function() { return is_allowed_gestion(); });

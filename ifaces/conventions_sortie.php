@@ -26,4 +26,4 @@ echo page_config3([
   'text' => "",
   'url' => 'conventions_sorties',
   'functData' => 'convention_sortie'
-]);
+], function () { return is_allowed_partners(); } );

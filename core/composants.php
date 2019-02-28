@@ -424,13 +424,14 @@ function configModif(array $props): string {
   return ob_get_clean();
 }
 
-function page_config3($props) {
+// Hack resolve problem in production with sorties_partenaires
+function page_config3(array $props, callable $droits) {
   require_once 'session.php';
   require_once 'requetes.php';
 
   session_start();
 
-  if (is_valid_session() && is_allowed_config()) {
+  if (is_valid_session() && $droits()) {
     global $bdd;
     ob_start();
     require_once 'tete.php';

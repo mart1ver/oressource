@@ -26,4 +26,4 @@ echo page_config3([
   'text' => "Permet de définir les différents moyens de paiement disponibles aux différents points de vente.",
   'url' => 'moyens_paiement',
   'functData' => 'moyens_paiements'
-]);
+], function () { return is_allowed_gestion(); });
