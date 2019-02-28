@@ -26,4 +26,4 @@ echo page_config3([
   'text' => "Permet de créer son propre jeu de sept famille (ou plus) des objets collectés.",
   'url' => 'type_dechets',
   'functData' => 'types_dechets'
-]);
+], function() { return is_allowed_gestion(); });

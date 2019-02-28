@@ -26,4 +26,4 @@ echo page_config3([
   'text' => "Permet de gérer par classes les déchets et matériaux sortant de la structure",
   'url' => 'type_dechets_evac',
   'functData' => 'types_dechets_evac'
-]);
+], function () { return is_allowed_gestion(); });

@@ -26,4 +26,4 @@ echo page_config3([
   'text' => "Permet de différencier les collectes en fonction de leur origine (apport volontaire, collecte à domicile, collecte en pied d'immeuble...).",
   'url' => 'type_collecte',
   'functData' => 'types_collectes'
-]);
+], function () { return is_allowed_gestion(); });
