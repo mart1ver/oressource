@@ -11,6 +11,11 @@ if [ ! -z $MYSQL_HOST ]; then
     sed -i "s/$host = 'localhost';/$host = '$MYSQL_HOST';/" /var/www/html/moteur/dbconfig.php
 fi
 
+if [ ! -z $MYSQL_PORT ]; then
+    echo "Storing custom mysql port in config!"
+    sed -i "s/$port = 3306;/$port = $MYSQL_PORT;/" /var/www/html/moteur/dbconfig.php
+fi
+
 if [ ! -z $MYSQL_DATABASE ]; then
     echo "Storing custom mysql database in config!"
     sed -i "s/$base = 'oressource';/$base = '$MYSQL_DATABASE';/" /var/www/html/moteur/dbconfig.php

@@ -7,6 +7,7 @@ services:
        - 8787:80
       environment:
        - MYSQL_HOST=database
+       - MYSQL_PORT=3306
        - MYSQL_DATABASE=oressource
        - MYSQL_USER=oressource
        - MYSQL_PASSWORD=password
