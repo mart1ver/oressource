@@ -2,34 +2,25 @@ version: '2'
 services:
   oressource:
       build: .
+      container_name: oressource_web
       ports :
        - 8787:80
-      volumes:
-       - .:/var/www/html/
+      environment:
+       - MYSQL_HOST=database
+       - MYSQL_DATABASE=oressource
+       - MYSQL_USER=oressource
+       - MYSQL_PASSWORD=password
       links:
        - database
 
-  phpmyadmin:
-    image: phpmyadmin/phpmyadmin
-    container_name: phpmyadmin_oressource
-    environment:
-     - PMA_ARBITRARY=0
-     - PMA_HOST=database
-    restart: always
-    ports:
-     - 8780:80
-    volumes:
-     - /sessions
-
   database:
-      image: mysql:5.5
-      container_name: database_oressource
-      ports:
-       - 3306:3306
+      image: mysql:8.0.15
+      container_name: oressource_mysql
+      command: --default-authentication-plugin=mysql_native_password
       environment:
-       - MYSQL_ROOT_PASSWORD=this_is_a_dumb_password
+       - MYSQL_ROOT_PASSWORD=root
        - MYSQL_DATABASE=oressource
        - MYSQL_USER=oressource
-       - MYSQL_PASSWORD=mot_de_passe_a_changer
+       - MYSQL_PASSWORD=password
       volumes:
        - ./data:/var/lib/mysql
