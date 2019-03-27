@@ -44,6 +44,106 @@ require_once('../core/requetes.php');
  * SI un des champs est invalide le serveur reponds 400 Bad request avec un objet json
  * detaillant l'erreur.
  */
+function insert_pesee_sortie(PDO $bdd, int $id_sortie, array $sortie, array $items, string $id_type_field) {
+  $req = $bdd->prepare("INSERT INTO pesees_sorties (
+    timestamp,
+    last_hero_timestamp,
+    masse,
+    $id_type_field,
+    id_sortie,
+    id_createur,
+    id_last_hero
+   ) VALUES(
+    :timestamp,
+    :timestamp1,
+    :masse,
+    :$id_type_field,
+    :id_sortie,
+    :id_createur,
+    :id_createur1)");
+
+  $req->bindValue(':timestamp', $sortie['timestamp']->format('Y-m-d H:i:s'), PDO::PARAM_STR);
+  $req->bindValue(':timestamp1', $sortie['timestamp']->format('Y-m-d H:i:s'), PDO::PARAM_STR);
+  $req->bindValue(':id_sortie', $id_sortie, PDO::PARAM_INT);
+  $req->bindValue(':id_createur', $sortie['id_user'], PDO::PARAM_INT);
+  $req->bindValue(':id_createur1', $sortie['id_user'], PDO::PARAM_INT);
+  foreach ($items as $item) {
+    $masse = (float) parseFloat($item['masse']);
+    $type_dechet = (int) parseInt($item['type']);
+    if ($masse > 0.00 && $type_dechet > 0) {
+      $req->bindValue(':masse', $masse);
+      $req->bindValue(":$id_type_field", $type_dechet, PDO::PARAM_INT);
+      $req->execute();
+    } else {
+      $req->closeCursor();
+      throw new UnexpectedValueException('masse <= 0.0 ou type item inconnu');
+    }
+  }
+}
+
+function specialise_sortie(PDOStatement $stmt, $sortie) {
+  $classe = $sortie['classe'];
+  // Sorties Dons
+  if ($classe === 'sorties') {
+    $stmt->bindvalue(':type_sortie', $sortie['type_sortie'], PDO::PARAM_INT);
+    $stmt->bindvalue(':id_filiere', 0, PDO::PARAM_INT);
+    $stmt->bindvalue(':id_convention', 0, PDO::PARAM_INT);
+    // Sorties recycleur
+  } elseif ($classe === 'sortiesr') {
+    $stmt->bindvalue(':type_sortie', 0, PDO::PARAM_INT);
+    $stmt->bindvalue(':id_filiere', $sortie['type_sortie'], PDO::PARAM_INT);
+    $stmt->bindvalue(':id_convention', 0, PDO::PARAM_INT);
+    // Sorties conventions
+  } elseif ($classe === 'sortiesc') {
+    $stmt->bindvalue(':type_sortie', 0, PDO::PARAM_INT);
+    $stmt->bindvalue(':id_filiere', 0, PDO::PARAM_INT);
+    $stmt->bindvalue(':id_convention', $sortie['type_sortie'], PDO::PARAM_INT);
+  } elseif ($classe === 'sortiesp' || $classe === 'sortiesd') {
+    $stmt->bindvalue(':type_sortie', 0, PDO::PARAM_INT);
+    $stmt->bindvalue(':id_filiere', 0, PDO::PARAM_INT);
+    $stmt->bindvalue(':id_convention', 0, PDO::PARAM_INT);
+  } else {
+    throw new UnexpectedValueException('class de sortie inconnue');
+  }
+  return $stmt;
+}
+
+function insert_sortie(PDO $bdd, array $sortie): int {
+  $sql = 'INSERT INTO sorties (
+      timestamp,
+      last_hero_timestamp,
+      id_filiere,
+      id_convention,
+      id_type_sortie,
+      classe,
+      id_point_sortie,
+      commentaire,
+      id_createur,
+      id_last_hero
+    ) VALUES (
+      :timestamp,
+      :timestamp1,
+      :id_filiere,
+      :id_convention,
+      :type_sortie,
+      :classe,
+      :id_point_sortie,
+      :commentaire,
+      :id_createur,
+      :id_createur1)';
+  $req = $bdd->prepare($sql);
+  $req->bindvalue(':timestamp', $sortie['timestamp']->format('Y-m-d H:i:s'), PDO::PARAM_STR);
+  $req->bindvalue(':timestamp1', $sortie['timestamp']->format('Y-m-d H:i:s'), PDO::PARAM_STR);
+  $req->bindvalue(':classe', $sortie['classe'], PDO::PARAM_STR);
+  $req->bindvalue(':id_point_sortie', $sortie['id_point_sortie'], PDO::PARAM_INT);
+  $req->bindvalue(':commentaire', $sortie['commentaire'], PDO::PARAM_STR);
+  $req->bindvalue(':id_createur', $sortie['id_user'], PDO::PARAM_INT);
+  $req->bindvalue(':id_createur1', $sortie['id_user'], PDO::PARAM_INT);
+
+  $req = specialise_sortie($req, $sortie);
+  $req->execute();
+  return $bdd->lastInsertId();
+}
 
 session_start();
 header("content-type:application/json");
@@ -80,47 +180,45 @@ if (is_valid_session()) {
     require_once('../moteur/dbconfig.php');
 
     $bdd->beginTransaction();
-    $id_sortie = insert_sortie($bdd, $sortie);
+    $id_sortie = (int) insert_sortie($bdd, $sortie);
     $requete_OK = false;
+    if (count($json['items'] ?? 0) > 0) {
+      if ($sortie['classe'] === 'sorties' || $sortie['classe'] === 'sortiesc') {
+        insert_pesee_sortie($bdd, $id_sortie, $sortie, $json['items'], 'id_type_dechet');
+        $requete_OK = true;
+      }
+    }
 
-    if ($sortie['classe'] === 'sorties'
-            || $sortie['classe'] === 'sortiesc') {
-      if (count($json['items']) > 0) {
-        insert_items_sorties($bdd, $id_sortie, $sortie, $json['items']);
+    if (count($json['evacs'] ?? 0) > 0) {
+      if ($sortie['classe'] === 'sortiesd'
+        || $sortie['classe'] === 'sortiesc'
+        || $sortie['classe'] === 'sortiesr'
+        || $sortie['classe'] === 'sorties') {
+        insert_pesee_sortie($bdd, $id_sortie, $sortie, $json['evacs'], 'id_type_dechet_evac');
         $requete_OK = true;
-      }
-      if (count($json['evacs']) > 0) {
-        insert_evac_sorties($bdd, $id_sortie, $sortie, $json['evacs']);
-        $requete_OK = true;
-      }
-    } elseif ($sortie['classe'] === 'sortiesd'
-              || $sortie['classe'] === 'sortiesr') {
-      if (count($json['evacs']) > 0) {
-        insert_evac_sorties($bdd, $id_sortie, $sortie, $json['evacs']);
-        $requete_OK = true;
-      }
-    } elseif ($sortie['classe'] === 'sortiesp') {
-      if (count($json['evacs']) > 0) {
+      } elseif ($sortie['classe'] === 'sortiesp') {
         $sortie['commentaire'] = '';
-        insert_poubelle_sorties($bdd, $id_sortie, $sortie, $json['evacs']);
+        insert_pesee_sortie($bdd, $id_sortie, $sortie, $json['evacs'], 'id_type_poubelle');
         $requete_OK = true;
       }
-    } else {
-      throw new UnexpectedValueException("Classe de sortie inconnue");
     }
 
     if ($requete_OK) {
       $bdd->commit();
-      http_response_code(200); // Created
-      // Note: Renvoyer l'url d'acces a la ressource
-      echo(json_encode(['id_sortie' => $id_sortie], JSON_NUMERIC_CHECK));
+      http_response_code(200); // OK
+      echo(json_encode(['id' => $id_sortie], JSON_NUMERIC_CHECK));
     } else {
-      throw new UnexpectedValueException("Insertion sans objet ni evac abbandon.");
+      throw new UnexpectedValueException("Sortie invalide.");
     }
   } catch (UnexpectedValueException $e) {
-    $bdd->rollback();
+    $bdd->rollBack();
     http_response_code(400); // Bad Request
     echo(json_encode(['error' => $e->getMessage()], JSON_FORCE_OBJECT));
+  } catch (PDOException $e) {
+    $bdd->rollBack();
+    http_response_code(500); // Internal Server Error
+    echo(json_encode(['error' => 'Une erreur est survenue dans Oressource vente annulée.']));
+    throw $e;
   }
 } else {
   http_response_code(401); // Unauthorized.

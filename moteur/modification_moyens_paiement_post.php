@@ -21,11 +21,13 @@
 session_start();
 if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($_SESSION['niveau'], 'k') !== false)) {
   require_once '../moteur/dbconfig.php';
-
-  $req = $bdd->prepare('UPDATE moyens_paiement SET nom = :nom,  description = :description, couleur = :couleur  WHERE id = :id');
+  $req = $bdd->prepare('UPDATE moyens_paiement SET
+    nom = :nom,
+    description = :description,
+    couleur = :couleur
+    WHERE id = :id');
   $req->execute(['nom' => $_POST['nom'], 'description' => $_POST['description'], 'couleur' => $_POST['couleur'], 'id' => $_POST['id']]);
   $req->closeCursor();
-
   header('Location:../ifaces/moyens_paiment.php');
 } else {
   header('Location:../moteur/destroy.php');

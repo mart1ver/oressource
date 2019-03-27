@@ -19,34 +19,32 @@
  */
 
 session_start();
-if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($_SESSION['niveau'], 'j') !== false)) {
-  require_once '../moteur/dbconfig.php';
-  $req = $bdd->prepare('SELECT SUM(id) FROM filieres_sortie WHERE nom = :nom ');
-  $req->execute(['nom' => $_POST['nom']]);
-  $donnees = $req->fetch();
-  $req->closeCursor();
 
-  if ($donnees['SUM(id)'] > 0) { // SI le titre existe
-    header('Location:../ifaces/edition_filieres_sortie.php?err=Une filiere porte deja le meme nom!&nom=' . $_POST['nom'] . '&description=' . $_POST['description'] . '&couleur=' . substr($_POST['couleur'], 1));
-    $req->closeCursor();
-  } else {
-    $req->closeCursor();
-    //on determine le nombre total de type dechets evac
+require_once '../core/session.php';
+
+if (is_valid_session() && is_allowed_partners()) {
+  require_once '../moteur/dbconfig.php';
+  try {
     $id_dechets = '';
     $reponsesa = $bdd->query('SELECT id FROM type_dechets_evac');
-
-    while ($donneessa = $reponsesa->fetch()) {
-      if (isset($_POST['tde' . $donneessa['id']])) {
-        $id_dechets = $id_dechets . 'a' . $donneessa['id'];
+    $data = $reponsesa->fetchAll();
+    foreach ($data as $d) {
+      if (isset($_POST['tde' . $d['id']])) {
+        $id_dechets = $id_dechets . 'a' . $d['id'];
       }
     }
     $reponsesa->closeCursor();
-    //on inssere la filiere de recyclage en base
 
-    $req = $bdd->prepare('INSERT INTO filieres_sortie (nom,  couleur, description, id_type_dechet_evac, visible) VALUES(?, ?, ?,  ?, ?)');
-    $req->execute([$_POST['nom'], $_POST['couleur'], $_POST['description'], $id_dechets, 'oui']);
+    $req = $bdd->prepare('INSERT INTO filieres_sortie (nom,  couleur, description, id_type_dechet_evac, id_createur, id_last_hero) VALUES (?, ?, ?, ?, ?, ?)');
+    $req->execute([$_POST['nom'], $_POST['couleur'], $_POST['description'], $id_dechets, $_SESSION['id'], $_SESSION['id']]);
     $req->closeCursor();
     header('Location:../ifaces/edition_filieres_sortie.php?msg=Filiere de sortie enregistrée avec succes!');
+  } catch (PDOException $e) {
+    if ($e->getCode() == '23000') {
+      header('Location:../ifaces/edition_filieres_sortie.php?err=Une filiere porte deja le meme nom!&nom=' . $_POST['nom'] . '&description=' . $_POST['description'] . '&couleur=' . substr($_POST['couleur'], 1));
+      die;
+    }
+    throw $e;
   }
 } else {
   header('Location:../moteur/destroy.php');

@@ -26,49 +26,37 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($
     <div class="panel-body">
       <br>
       <div class="row">
-
         <form action="../moteur/modification_verification_objet_post.php" method="post">
           <input type="hidden" name ="nvente" id="nvente" value="<?= $_POST['nvente']; ?>">
           <input type="hidden" name ="id" id="id" value="<?= $_POST['id']; ?>">
           <input type="hidden" name ="date1" id="date1" value="<?= $_POST['date1']; ?>">
           <input type="hidden" name ="date2" id="date2" value="<?= $_POST['date2']; ?>">
           <input type="hidden" name ="npoint" id="npoint" value="<?= $_POST['npoint']; ?>">
-
           <div class="col-md-2">
-
             <label for="quantite">Quantité:</label>
             <br><input type="text" value="<?= $_POST['quantite']; ?>" name="quantite" id="quantite" class="form-control" required>
           </div>
-          <div class="col-md-2">
 
+          <div class="col-md-2">
             <label for="prix">Prix:</label>
             <br><input type="text" value="<?= $_POST['prix']; ?>" name="prix" id="prix" class="form-control" required>
-
           </div>
 
           <div class="col-md-2">
-
             <label for="prix">Masse:</label>
-            <br><input type="text" value="<?= $_POST['masse']; ?>" name="masse" id="masse" class="form-control" <?php
-            if ($_POST['masse'] === 0) {
-              echo 'disabled';
-            }
-            ?>  >
-
+            <br><input <?= $_POST['masse'] == 0 ? 'disabled' : '' ?> type="text" value="<?= $_POST['masse']; ?>" name="masse" id="masse" class="form-control">
           </div>
 
           <div class="col-md-3">
-
             <br>
             <button name="creer" class="btn btn-warning">Modifier</button>
             <a href="verif_vente.php?date1=<?= $_POST['date1']; ?>&date2=<?= $_POST['date2']; ?>&numero=<?= $_POST['npoint']; ?>">
               <button name="creer" class="btn btn" style="float: right;">Annuler</button>
             </a>
           </div>
+        </form>
       </div>
-      </form>
     </div>
-
   </div>
 
   </div><!-- /.container -->

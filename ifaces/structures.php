@@ -29,13 +29,13 @@ require_once('../core/composants.php');
 if (is_valid_session() && is_allowed_config()) {
   require_once('tete.php');
   require_once('../moteur/dbconfig.php');
-  $struct = structure_bool($bdd);
+  $struct = structure($bdd);
   ?>
 
   <div class="container">
     <h1>Configuration de Oressource</h1>
     <div class="panel-heading">
-      <h2 class="panel-title">Description de la structure</h2>
+      <h1 class="panel-title"><b>Déscription de la structure:<b></h1>
     </div>
     <form id="form">
       <div class="panel-body">
@@ -82,17 +82,16 @@ if (is_valid_session() && is_allowed_config()) {
               <?= textInput(['name' => 'siret', 'text' => "Numéro de siret:"], $struct['siret']) ?>
               <label for="description">Présentation générale de la structure:
                 <textarea name="description" id="description" form="form"
-                          rows="10" cols="50" required
-                          value="<?= $struct['description'] ?>"></textarea>
+                          rows="10" cols="50" required><?= $struct['description'] ?></textarea>
               </label>
               <div class="panel panel-default">
-                <h2 class="panel-title">formulaires de sorties hors boutique</h2>
+                <h2 class="panel-title">Formulaires de sorties hors boutique</h2>
                 <div class="panel-body custom-controls-stacked">
-                  <?= checkBox(['name' => 'affsp', 'text' => "Utiliser l'onglet \"poubelles\""], $struct['affsp']) ?>
-                  <?= checkBox(['name' => 'affss', 'text' => "Utiliser l'onglet \"sorties partenaires\""], $struct['affss']) ?>
-                  <?= checkBox(['name' => 'affsr', 'text' => "Utiliser l'onglet \"recyclage\""], $struct['affsr']) ?>
-                  <?= checkBox(['name' => 'affsd', 'text' => "Utiliser l'onglet \"don\""], $struct['affsd']) ?>
-                  <?= checkBox(['name' => 'affsde', 'text' => "Utiliser l'onglet \"déchetterie\""], $struct['affsde']) ?>
+                  <?= checkBox(['name' => 'affsp', 'text' => "Utiliser l'onglet « poubelles »"], $struct['affsp']) ?>
+                  <?= checkBox(['name' => 'affss', 'text' => "Utiliser l'onglet « sorties partenaires »"], $struct['affss']) ?>
+                  <?= checkBox(['name' => 'affsr', 'text' => "Utiliser l'onglet « recyclage »"], $struct['affsr']) ?>
+                  <?= checkBox(['name' => 'affsd', 'text' => "Utiliser l'onglet « don »"], $struct['affsd']) ?>
+                  <?= checkBox(['name' => 'affsde', 'text' => "Utiliser l'onglet « déchetterie »"], $struct['affsde']) ?>
                 </div>
               </div>
             </div>
@@ -101,7 +100,11 @@ if (is_valid_session() && is_allowed_config()) {
           <div class="row">
             <div class="col-md-1 col-md-offset-6">
               <br>
-              <button id="send" class="btn btn-default">Enregistrer</button>
+              <button id="send" class="btn btn-warning ">Enregistrer</button>
+            </div>
+            <div class="col-md-1 col-md-offset-1">
+              <br>
+              <input type="button" onclick="location.href='exportbase.php';" value="Sauvegarder la base de données" class="btn btn-primary" />
             </div>
           </div>
         </div>
@@ -126,13 +129,13 @@ if (is_valid_session() && is_allowed_config()) {
         e.preventDefault();
         const form = new FormData(document.getElementById('form'));
         const data = {
-          nom: form.get('nom'),
+          nom: form.get('nom').trim(),
           adresse: form.get('adresse').trim(),
           id_localite: parseInt(form.get('id_localite'), 10),
-          description: form.get('description'),
-          siret: form.get('siret'),
-          telephone: form.get('telephone'),
-          mail: form.get('mail'),
+          description: form.get('description').trim(),
+          siret: form.get('siret').trim(),
+          telephone: form.get('telephone').trim(),
+          mail: form.get('mail').trim(),
           taux_tva: parseFloat(form.get('taux_tva'), 10),
           cr: form.get('cr'),
           nb_viz: form.get('nb_viz'),
@@ -165,7 +168,7 @@ if (is_valid_session() && is_allowed_config()) {
         }).catch((ex) => {
           if (ex.status === 401) {
             login(() => {
-              window.alert('Votre session avait expirée, reappuyé sur enregistrer.');
+              window.alert('Votre session à expirée, reappuyez sur enregistrer.');
             });
           } else {
             console.log('Error:', ex);

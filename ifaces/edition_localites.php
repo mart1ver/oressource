@@ -19,7 +19,9 @@
 
 session_start();
 
-require_once('../moteur/dbconfig.php');
+require_once '../moteur/dbconfig.php';
+require_once '../core/composants.php';
+
 if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($_SESSION['niveau'], 'k') !== false)) {
   require_once 'tete.php';
   ?>
@@ -30,10 +32,10 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($
     <div class="panel-body">
       <div class="row">
         <form action="../moteur/edition_localites_post.php" method="post">
-          <div class="col-md-3"><label for="nom">Nom:</label> <input type="text"                 value ="<?= $_GET['nom']; ?>" name="nom" id="nom" class="form-control " required autofocus></div>
-          <div class="col-md-2"><label for="commentaire">Commentaire:</label> <input type="text" value ="<?= $_GET['commentaire']; ?>" name="commentaire" id="commentaire" class="form-control" required></div>
-          <div class="col-md-3"><label for="lien">Lien externe:</label> <input type="url" value ="<?= $_GET['lien']; ?>" name="lien" id="lien" class="form-control "  ></div>
-          <div class="col-md-1"><label for="couleur">Couleur:</label> <input type="color" value="<?= '#' . $_GET['couleur']; ?>" name="couleur" id="couleur" class="form-control" required></div>
+          <div class="col-md-3"><label for="nom">Nom:</label> <input type="text"                 value ="<?= $_GET['nom'] ?? ''; ?>" name="nom" id="nom" class="form-control" required autofocus></div>
+          <div class="col-md-2"><label for="commentaire">Commentaire:</label> <input type="text" value ="<?= $_GET['commentaire'] ?? ''; ?>" name="commentaire" id="commentaire" class="form-control" required></div>
+          <div class="col-md-3"><label for="lien">Lien externe:</label> <input type="url" value ="<?= $_GET['lien'] ?? ''; ?>" name="lien" id="lien" class="form-control"></div>
+          <div class="col-md-1"><label for="couleur">Couleur:</label> <input type="color" value="#<?= $_GET['couleur'] ?? ''; ?>" name="couleur" id="couleur" class="form-control" required></div>
           <div class="col-md-1"><br><button name="creer" class="btn btn-default">Créer!</button></div>
         </form>
       </div>
@@ -64,37 +66,14 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($
             <td><?= $donnees['commentaire']; ?></td>
             <td><span class="badge" style="background-color:<?= $donnees['couleur']; ?>"><?= $donnees['couleur']; ?></span></td>
             <td><a href="<?= $donnees['relation_openstreetmap']; ?>" target="_blank"><p style="text-align:center"><span class="glyphicon glyphicon-link"></span></p></a></td>
-            <td>
-              <form action="../moteur/localites_visibles.php" method="post"><input type="hidden" name ="id" id="id" value="<?= $donnees['id']; ?>">
-                <input type="hidden" name="visible" id="visible" value="<?php
-                if ($donnees['visible'] === 'oui') {
-                  echo 'non';
-                } else {
-                  echo 'oui';
-                }
-                ?>">
-                       <?php
-                       if ($donnees['visible'] === 'oui') { // SI on a pas de message d'erreur
-                         ?>
-                  <button  class="btn btn-info btn-sm " >
-                    <?php
-                  } else { // SINON
-                    ?>
-                    <button  class="btn btn-danger btn-sm " >
-                      <?php
-                    }
-                    echo $donnees['visible'];
-                    ?>
-                  </button>
-              </form>
-            </td>
+            <td><?= configBtnVisible(['url' => 'localites', 'id' => $donnees['id'], 'visible' => $donnees['visible']]) ?></td>
             <td>
               <form action="modification_localites.php" method="post">
-                <input type="hidden" name ="id" id="id" value="<?= $donnees['id']; ?>">
-                <input type="hidden" name ="nom" id="nom" value="<?= $donnees['nom']; ?>">
-                <input type="hidden" name ="lien" id="lien" value="<?= $donnees['relation_openstreetmap']; ?>">
-                <input type="hidden" name ="commentaire" id="commentaire" value="<?= $donnees['commentaire']; ?>">
-                <input type="hidden" name ="couleur" id="couleur" value="<?= substr($_POST['couleur'], 1); ?>">
+                <input type="hidden" name="id" value="<?= $donnees['id']; ?>">
+                <input type="hidden" name="nom" value="<?= $donnees['nom']; ?>">
+                <input type="hidden" name="lien" value="<?= $donnees['relation_openstreetmap']; ?>">
+                <input type="hidden" name="commentaire" value="<?= $donnees['commentaire']; ?>">
+                <input type="hidden" name="couleur" value="<?= substr($donnees['couleur'], 1); ?>">
                 <button  class="btn btn-warning btn-sm" >Modifier!</button>
               </form>
             </td>

@@ -18,55 +18,25 @@
  */
 
 session_start();
-require_once('../moteur/dbconfig.php');
 
-//Vérification des autorisations de l'utilisateur et des variables de session requisent pour l'affichage de cette page:
-if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($_SESSION['niveau'], 'k') !== false)) {
+require_once '../core/composants.php';
+require_once '../core/session.php';
+require_once '../core/requetes.php';
+
+function moyens_paiements_id(PDO $bdd, $id): array {
+  $sql = 'SELECT id, nom, couleur, visible, description, timestamp FROM moyens_paiement WHERE id = :id';
+  return fetch_id($bdd, $sql, $id);
+}
+
+if (is_valid_session() && (strpos($_SESSION['niveau'], 'k') !== false)) {
+  require_once '../moteur/dbconfig.php';
   require_once 'tete.php';
+  $props = array_merge(['h1' => 'Gestions des moyens de paiement en caisse',
+    'type' => 'moyen de paiments',
+    'endpoint' => 'moyens_paiement'
+  ], moyens_paiements_id($bdd, $_POST['id']));
   ?>
-  <div class="container">
-    <h1>Gestions des moyens de paiement en caisse</h1>
-    <div class="panel-heading">Modifier les données concernant le moyen de paiments n° <?= $_POST['id']; ?>, <?= $_POST['nom']; ?>. </div>
-    <?php
-//on obtien la couleur de la localité dans la base
-
-    $req = $bdd->prepare('SELECT couleur FROM moyens_paiement WHERE id = :id ');
-    $req->execute(['id' => $_POST['id']]);
-    $donnees = $req->fetch();
-
-    $couleur = $donnees['couleur'];
-
-    $req->closeCursor();
-    ?>
-
-    <div class="panel-body">
-      <div class="row">
-        <form action="../moteur/modification_moyens_paiement_post.php" method="post">
-          <input type="hidden" name ="id" id="id" value="<?= $_POST['id']; ?>">
-
-          <div class="col-md-2"><label for="nom">Nom:</label> <input type="text"value ="<?= $_POST['nom']; ?>" name="nom" id="nom" class="form-control " required autofocus></div>
-          <div class="col-md-3"><label for="addresse">Description:</label> <input type="text"value ="<?= $_POST['description']; ?>" name="description" id="description" class="form-control" required></div>
-          <div class="col-md-1"><label for="couleur">Couleur:</label> <input type="color"value ="<?= $couleur; ?>"name="couleur" id="couleur" class="form-control" required></div>
-          <div class="col-md-1"><br><button name="creer" class="btn btn-warning">Modifier</button></div>
-        </form>
-        <br>
-        <a href="moyens_paiment.php">
-          <button name="creer" class="btn btn">Anuler</button>
-        </a>
-
-      </div>
-    </div>
-
-    <br>
-    <div class="row">
-      <div class="col-md-4"></div>
-      <div class="col-md-4"><br> </div>
-      <div class="col-md-4"></div>
-    </div>
-  </div>
-  </div>
-  </div><!-- /.container -->
-
+  <?= config_types3_page_modif($props) ?>
   <?php
   require_once 'pied.php';
 } else {

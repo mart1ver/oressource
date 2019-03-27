@@ -46,30 +46,7 @@ if (is_valid_session() && is_allowed_sortie_id($numero)) {
 
   <div class="container">
     <?= configNav($nav) ?>
-
-    <div class="col-md-4">
-      <div id="ticket" class="panel panel-info" >
-        <div class="panel-heading">
-          <h3 class="panel-title">
-            <label id="massetot">Masse totale: 0 Kg.</label>
-          </h3>
-        </div>
-        <div class="panel-body">
-          <form id="formulaire"> <!-- ONSUBMIT="EnableControl(true)" -->
-            <?php if (is_allowed_edit_date()) { ?>
-              <label for="antidate">Date de la sortie: </label>
-              <input type="date" id="antidate" name="antidate" style="width:130px; height:20px;" value="<?= $date->format('Y-m-d'); ?>">
-            <?php } ?>
-            <ul class="list-group" id="transaction">  <!--start Ticket Caisse -->
-              <!-- Remplis via JavaScript voir script de la page -->
-            </ul> <!--end TicketCaisse -->
-          </form>
-        </div>
-        <div class="panel-footer">
-          <input type="text" form="formulaire" class="form-control" name="commentaire" id="commentaire" placeholder="Commentaire">
-        </div>
-      </div>
-    </div>
+    <?= cartList(['text' => "Masse totale: 0 Kg.", 'date' => $date->format('Y-m-d')]) ?>
 
     <div class="col-md-4">
       <div class="panel panel-info">
@@ -94,13 +71,7 @@ if (is_valid_session() && is_allowed_sortie_id($numero)) {
 
     <div class="col-md-4" >
       <?= listSaisie(['text' => 'Materiaux et déchets:', 'key' => 'list_evac']) ?>
-
-      <div class="btn-group" role="group">
-        <button id="encaissement" class="btn btn-success btn-lg">C'est pesé!</button>
-        <button id="impression" class="btn btn-primary btn-lg" value="Print"><span class="glyphicon glyphicon-print"></span></button>
-        <button id="reset" class="btn btn-warning btn-lg"><span class="glyphicon glyphicon-refresh"></button>
-      </div>
-
+      <?= buttonCollectesSorties() ?>
     </div><!-- .col-md-4 -->
   </div>
 
@@ -118,6 +89,7 @@ if (is_valid_session() && is_allowed_sortie_id($numero)) {
       conteneurs: <?= json_encode(filter_visibles(types_contenants($bdd)), JSON_NUMERIC_CHECK); ?>
     };
   </script>
+
   <script type="text/javascript">
     'use strict';
     function make_choix_recycleur(ui, filieres) {
@@ -130,16 +102,13 @@ if (is_valid_session() && is_allowed_sortie_id($numero)) {
           select[select.selectedIndex].setAttribute('selected', true);
 
           // On desactive tout sauf ce qui viens d'etre choisi.
-          select.querySelectorAll(':not([selected])').forEach((element) => {
-            element.disabled = true;
-          });
+          select.querySelectorAll(':not([selected])').forEach((e) => e.disabled = true);
 
           const id_recycleur = parseInt(select.value, 10);
           // On recupere le bon recycleur.
           const [ recycleur ] = filieres.filter(({id}) => id === id_recycleur);
-
           // On selectione les boutons qui correspondent au possiblites du recyleur.
-          const accepte = recycleur.accepte_type_dechet;
+          const accepte = recycleur.types_dechets;
           const btnList = Array.from(ui.children).filter((e) => {
             return accepte.reduce((acc, id) => acc || parseInt(e.id, 10) === id, false);
           });
@@ -164,22 +133,16 @@ if (is_valid_session() && is_allowed_sortie_id($numero)) {
         div_list_item.appendChild(button);
       });
 
-      const metadata = { classe: 'sortiesr' };
-      const encaisse = make_encaissement('../api/sorties.php', {
-        evacs: ticketsItem
-      }, metadata);
+       const encaisse = prepare_data({
+        evacs: ticketsItem,
+      }, {classe: 'sortiesr'});
 
-      document.getElementById('encaissement').addEventListener('click', encaisse, false);
-      document.getElementById('impression').addEventListener('click', impression_ticket, false);
-      document.getElementById('reset').addEventListener('click', () => {
-        tickets_clear(metadata);
-      }, false);
+      initUI('../api/sorties.php', encaisse);
 
       const recycleur_choix = make_choix_recycleur(div_list_item, window.OressourceEnv.id_type_action);
-
       document.getElementById('id_type_action').addEventListener('change', recycleur_choix, false);
 
-      window.tickets = [ ticketsItem ];
+      window.OressourceEnv.tickets = [ ticketsItem ];
     }, false);
   </script>
   <?php

@@ -28,8 +28,9 @@ if (is_valid_session() && is_allowed_vente_id($numero)) {
   require_once '../moteur/dbconfig.php';
 
   // on détermine la référence de la prochaine vente.
-  $req = $bdd->query("SHOW TABLE STATUS where name='ventes'");
-  $numero_vente = $req->fetch()['Auto_increment'];
+  $req = $bdd->prepare('SELECT max(id) id FROM ventes WHERE id_point_vente = :id');
+  $req->execute(['id' => $numero]);
+  $numero_vente = $req->fetch()['id'];
   $req->closeCursor();
 
   $point_vente = points_ventes_id($bdd, $numero);
@@ -64,7 +65,7 @@ if (is_valid_session() && is_allowed_vente_id($numero)) {
         <div class="panel-body" id="ticket">
           <?php if (is_allowed_saisie_date() && is_allowed_edit_date()) { ?>
             <label for="date">Date de la vente:</label>
-            <input type="date" id="date" name="antidate" style="width:130px; height:20px;" value="<?= date('Y-m-d'); ?>">
+            <input type="date" id="date" name="antidate" value="<?= date('Y-m-d'); ?>">
           <?php } ?>
           <ul class="list-group" id="transaction">
             <!-- Remplis via JavaScript voir script de la page -->
@@ -74,7 +75,7 @@ if (is_valid_session() && is_allowed_vente_id($numero)) {
         <div class="panel-footer">
           <input type="text" form="formulaire" class="form-control"
                  name="commentaire" id="commentaire" placeholder="Commentaire">
-
+          <br>
           <button type="button" class="btn btn-warning" data-toggle="collapse"
                   data-target="#collapserendu" aria-expanded="false"
                   aria-controls="collapserendu">Rendu Monnaie</button>
@@ -121,8 +122,8 @@ if (is_valid_session() && is_allowed_vente_id($numero)) {
           <?php } ?>
 
           <label id="labelquantite" for="quantite">Quantité:</label>
-            <input type="text" class="form-control"
-                   placeholder="Quantité" id="quantite"
+            <input type="number" class="form-control"
+                   placeholder="Quantité" id="quantite" min="0"
                    onfocus="fokus(this)">
 
           <label id="labelprix" for="prix">Prix unitaire:</label>
@@ -180,8 +181,8 @@ if (is_valid_session() && is_allowed_vente_id($numero)) {
             ?>
             <div class='btn-group'>
               <button type="button"
-                      class="btn btn-default <?= count($objs) > 0 ? 'dropdown-toggle' : '' ?>"
-                      <?php if (count($objs) > 0) { ?>
+                      class="btn btn-default <?= (!empty($objs)) ? 'dropdown-toggle' : '' ?>"
+                      <?php if (!empty($objs)) { ?>
                         data-toggle="dropdown"
                       <?php } else { ?>
                         onclick='update_state({ type: <?= json_encode($d, JSON_NUMERIC_CHECK) ?> });
@@ -192,10 +193,11 @@ if (is_valid_session() && is_allowed_vente_id($numero)) {
                   <?= $d['nom'] ?>
                 </span>
               </button>
-              <?php if (count($objs) > 0) { ?>
-                <ul class='dropdown-menu' role='menu'>
+              <?php if (!empty($objs)) { ?>
+                <ul class="dropdown-menu" role="menu">
                   <li style="font-size:18px">
-                    <a href="#" onclick='update_state({ type: <?= json_encode($d, JSON_NUMERIC_CHECK) ?> });
+                    <a href="#" onclick='update_state({
+                          type: <?= json_encode($d, JSON_NUMERIC_CHECK) ?> });
                         return false;'><?= $d['nom'] ?></a>
                   </li>
                   <li class='divider'></li>
@@ -206,11 +208,11 @@ if (is_valid_session() && is_allowed_vente_id($numero)) {
                             objet: <?= json_encode($objet, JSON_NUMERIC_CHECK) ?> });
                           return false;'><?= $objet['nom'] ?></a>
                     </li>
-                  <?php } ?>
+                  <?php } /* for-each objs */ ?>
                 </ul>
-              <?php } ?>
+              <?php } /* if !emtpy(objs) */  ?>
             </div>
-          <?php } ?>
+          <?php } /* for-each type dechets */ ?>
         </div>
       </div>
 
@@ -233,13 +235,12 @@ if (is_valid_session() && is_allowed_vente_id($numero)) {
       <div id="boutons" class="list-group">
         <button id="encaissement" class="btn btn-success btn-lg" style="height:60px">Encaisser</button>
         <button id="impression" class="btn btn-primary btn-lg"><span class="glyphicon glyphicon-print"></span></button>
-        <button id="reload" class="btn btn-warning btn-lg"><span class="glyphicon glyphicon-refresh"></button>
         <button id="remboursement" class="btn btn-danger btn-lg" data-toggle="collapse"
                 data-target="#collapserembou" aria-expanded="false"
                 aria-controls="collapseExample">Remboursement</button>
         <div class="collapse" id="collapserembou">
           <div class="well">
-            <form action="../moteur/verif_remb_post.php?numero=<?= $numero ?>" method="post">
+            <form action="../ifaces/remboursement.php?numero=<?= $numero ?>" method="post">
               <div class="input-group">
                 <input name="passrmb" id="passrmb" type="password" class="form-control" placeholder="Code remboursement caisse">
                 <span class="input-group-btn">
@@ -253,14 +254,18 @@ if (is_valid_session() && is_allowed_vente_id($numero)) {
     </div>
 
     <?php if ($_SESSION['viz_caisse']) { ?>
-      <div id=visualisation" class="col-md-2 col-md-offset-2" style="width: 330px;">
-        <a href="viz_caisse.php?numero=<?= $numero; ?>" target="_blank">Visualiser les <?= $_SESSION['nb_viz_caisse']; ?> dernieres ventes</a>
+      <div id="visualisation" class="col-md-2 col-md-offset-2" style="width: 330px;">
+        <a href="viz_caisse.php?numero=<?= $numero; ?>"
+           target="_blank">Visualiser les <?= $_SESSION['nb_viz_caisse']; ?> dernieres ventes</a>
       </div>
     <?php } ?>
   </div>
   <script type="text/javascript">
     'use scrict';
-    window.ventes = {
+    // Variables d'environnement de Oressource.
+    window.OressourceEnv = {
+      structure: <?= json_encode($_SESSION['structure']) ?>,
+      adresse: <?= json_encode($_SESSION['adresse']) ?>,
       nb_viz_caisse: <?= json_encode($_SESSION['nb_viz_caisse'], JSON_NUMERIC_CHECK); ?>,
       force_pes_vente: <?= json_encode($_SESSION['force_pes_vente']); ?>,
       pesees: <?= json_encode(pesees_ventes()) ?>,
@@ -271,6 +276,7 @@ if (is_valid_session() && is_allowed_vente_id($numero)) {
       id_user: <?= json_encode($_SESSION['id'], JSON_NUMERIC_CHECK) ?>,
       moyens_paiement: <?= json_encode($moyens_paiement, JSON_NUMERIC_CHECK) ?>
     };
+
   </script>
   <script src="../js/ventes.js"></script>
   <?php

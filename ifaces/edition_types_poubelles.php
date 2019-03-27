@@ -19,9 +19,9 @@
 
 session_start();
 
-require_once('../moteur/dbconfig.php');
+require_once '../moteur/dbconfig.php';
+require_once '../core/composants.php';
 
-//Vérification des autorisations de l'utilisateur et des variables de session requisent pour l'affichage de cette page:
 if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($_SESSION['niveau'], 'g') !== false)) {
   require_once 'tete.php';
   ?>
@@ -32,11 +32,11 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($
     <div class="panel-body">
       <div class="row">
         <form action="../moteur/type_poubelles_post.php" method="post">
-          <div class="col-md-3"><label for="nom">Nom:</label> <input type="text"                 value ="<?= $_GET['nom']; ?>" name="nom" id="nom" class="form-control " required autofocus></div>
-          <div class="col-md-2"><label for="description">Description:</label> <input type="text" value ="<?= $_GET['description']; ?>" name="description" id="description" class="form-control" required></div>
-          <div class="col-md-2"><label for="masse_bac">Masse du bac:</label> <input type="text" value ="<?= $_GET['masse_bac']; ?>" name="masse_bac" id="masse_bac" class="form-control" required></div>
-          <div class="col-md-2"><label for="ultime">Déchet ultime ?</label><br> <input name="ultime" id="ultime" type="checkbox" value ="oui">Oui.</div>
-          <div class="col-md-1"><label for="couleur">Couleur:</label> <input type="color" value="<?= '#' . $_GET['couleur']; ?>" name="couleur" id="couleur" class="form-control" required></div>
+          <div class="col-md-3"><label for="nom">Nom:</label> <input type="text"                 value ="<?= $_GET['nom'] ?? ''; ?>" name="nom" id="nom" class="form-control " required autofocus></div>
+          <div class="col-md-2"><label for="description">Description:</label> <input type="text" value ="<?= $_GET['description'] ?? ''; ?>" name="description" id="description" class="form-control" required></div>
+          <div class="col-md-2"><label for="masse_bac">Masse du bac:</label> <input type="text" value ="<?= $_GET['masse_bac'] ?? ''; ?>" name="masse_bac" id="masse_bac" class="form-control" required></div>
+          <div class="col-md-2"><label for="ultime">Déchet ultime ?</label><br> <input <?= ($_GET['ultime'] ?? true) ? 'checked' : '' ?> name="ultime" id="ultime" type="checkbox" value ="TRUE">Oui</div>
+          <div class="col-md-1"><label for="couleur">Couleur:</label> <input type="color" value="#<?= $_GET['couleur'] ?? ''; ?>" name="couleur" id="couleur" class="form-control" required></div>
           <div class="col-md-1"><br><button name="creer" class="btn btn-default">Créer!</button></div>
         </form>
       </div>
@@ -54,15 +54,14 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($
           <th>Couleur</th>
           <th>Visible</th>
           <th></th>
-
         </tr>
       </thead>
+
       <tbody>
         <?php
         $reponse = $bdd->query('SELECT * FROM types_poubelles');
-
-        // On affiche chaque entrée une à une
-        while ($donnees = $reponse->fetch()) { ?>
+        while ($donnees = $reponse->fetch()) {
+          ?>
           <tr>
             <td><?= $donnees['id']; ?></td>
             <td><?= $donnees['timestamp']; ?></td>
@@ -71,46 +70,17 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($
             <td><?= $donnees['masse_bac']; ?></td>
             <td><?= $donnees['ultime']; ?></td>
             <td><span class="badge" style="background-color:<?= $donnees['couleur']; ?>"><?= $donnees['couleur']; ?></span></td>
+            <td><?= configBtnVisible(['url' => 'types_poubelles', 'id' => $donnees['id'], 'visible' => $donnees['visible']]) ?></td>
             <td>
-              <form action="../moteur/type_poubelles_visible.php" method="post">
-
-                <input type="hidden" name ="id" id="id" value="<?= $donnees['id']; ?>">
-                <input type="hidden" name="visible" id="visible" value="<?php
-                if ($donnees['visible'] === 'oui') {
-                  echo 'non';
-                } else {
-                  echo 'oui';
-                }
-                ?>">
-                       <?php
-                       if ($donnees['visible'] === 'oui') { // SI on a pas de message d'erreur
-                         ?>
-                  <button  class="btn btn-info btn-sm " >
-                    <?php
-                  } else { // SINON
-                    ?>
-                    <button  class="btn btn-danger btn-sm " >
-                      <?php
-                    }
-                    echo $donnees['visible'];
-                    ?>
-                  </button>
-              </form>
-            </td>
-            <td>
-
               <form action="modification_type_poubelles.php" method="post">
-
                 <input type="hidden" name ="id" id="id" value="<?= $donnees['id']; ?>">
                 <input type="hidden" name ="nom" id="nom" value="<?= $donnees['nom']; ?>">
                 <input type="hidden" name ="description" id="description" value="<?= $donnees['description']; ?>">
                 <input type="hidden" name ="masse_bac" id="masse_bac" value="<?= $donnees['masse_bac']; ?>">
                 <input type="hidden" name ="ultime" id="ultime" value="<?= $donnees['ultime']; ?>">
-                <input type="hidden" name ="couleur" id="couleur" value="<?= substr($_POST['couleur'], 1); ?>">
-
-                <button  class="btn btn-warning btn-sm" >Modifier!</button>
+                <input type="hidden" name ="couleur" id="couleur" value="<?= substr($donnees['couleur'], 1); ?>">
+                <button  class="btn btn-warning btn-sm">Modifier!</button>
               </form>
-
             </td>
           </tr>
           <?php

@@ -25,17 +25,16 @@ require_once '../core/requetes.php';
 
 if (is_valid_session() && is_allowed_users()) {
   require_once '../moteur/dbconfig.php';
-
-  $same_mail = array_filter(utilisateurs($bdd), function ($u) {
-    return $u['mail'] === $_POST['mail'] && $_POST['nom'] !== $u['nom'] && $_POST['prenom'] !== $u['prenom'];
-  });
-
-  if (count($same_mail) > 0) {
-    header('Location:../ifaces/utilisateurs.php?err=Cette addresse email est deja utilisée par un autre utilisateur');
-    die();
+  try {
+    utilisateur_update($bdd, new_utilisateur($_POST['nom'], $_POST['prenom'], $_POST['mail'], new_droits($bdd, $_POST)), $_POST['id']);
+    header('Location: ../ifaces/edition_utilisateurs.php?msg=Utilisateur modifié avec succes!');
+  } catch (PDOException $e) {
+    if ($e->getCode() == '23000') {
+      header('Location:../ifaces/utilisateurs.php?err=Cette addresse email est deja utilisée par un autre utilisateur');
+      die;
+    }
+    throw $e;
   }
-  utilisateur_update($bdd, new_utilisateur($_POST['nom'], $_POST['prenom'], $_POST['mail'], new_droits($bdd, $_POST), $_POST['id']));
-  header('Location: ../ifaces/edition_utilisateurs.php?msg=Utilisateur modifié avec succes!');
 } else {
   header('Location:../moteur/destroy.php');
 }

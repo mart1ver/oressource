@@ -23,7 +23,7 @@ require_once('../moteur/dbconfig.php');
 require_once('../core/session.php');
 require_once('../core/requetes.php');
 
-if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && is_allowed_users()) {
+if (is_valid_session() && is_allowed_users()) {
   require_once 'tete.php';
 
   $id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);

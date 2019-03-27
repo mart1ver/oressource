@@ -19,8 +19,13 @@
 
 session_start();
 
-require_once('../moteur/dbconfig.php');
-if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($_SESSION['niveau'], 'k') !== false)) {
+require_once '../moteur/dbconfig.php';
+require_once '../core/composants.php';
+require_once '../core/requetes.php';
+require_once '../core/session.php';
+
+
+if (is_valid_session() && is_allowed_config()) {
   require_once 'tete.php';
   ?>
   <div class="container">
@@ -28,17 +33,13 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($
     <div class="panel-heading">Gérez ici les différents points de sortie hors-boutique.</div>
     <div class="panel-body">
       <div class="row">
-        <form action="../moteur/edition_points_sortie_post.php" method="post">
-          <div class="col-md-3"><label for="nom">Nom:</label><br><br><input type="text"                 value ="<?= $_GET['nom']; ?>" name="nom" id="nom" class="form-control " required autofocus></div>
-          <div class="col-md-3"><label for="addresse">Adresse:</label><br><br><input type="text" value="<?= $_GET['adresse']; ?>" name="adresse" id="adresse" class="form-control" required></div>
-          <div class="col-md-2"><label for="commentaire">Commentaire:</label><br><br><input type="text" value ="<?= $_GET['commentaire']; ?>" name="commentaire" id="commentaire" class="form-control" required></div>
-          <div class="col-md-2"><label for="pesee_max">Masse maxi. d'une pesée (Kg):</label> <input type="text" value ="<?= $_GET['pesee_max']; ?>" name="pesee_max" id="pesee_max" class="form-control" required></div>
-          <div class="col-md-1"><label for="couleur">Couleur:</label><br><br><input type="color" value="<?php
-            if (isset($_GET['couleur'])) {
-              echo '#' . $_GET['couleur'];
-            }
-            ?>" name="couleur" id="couleur" class="form-control" required></div>
-          <div class="col-md-1"><br><br><button name="creer" class="btn btn-default">Créer!</button></div>
+        <form action="../moteur/points_sortie_post.php" method="post">
+          <div class="col-md-3"><label for="nom">Nom:</label><br><br><input type="text"                 value ="<?= $_GET['nom'] ?? ''; ?>" name="nom" id="nom" class="form-control " required autofocus></div>
+          <div class="col-md-3"><label for="addresse">Adresse:</label><br><br><input type="text" value="<?= $_GET['adresse'] ?? ''; ?>" name="adresse" id="adresse" class="form-control" required></div>
+          <div class="col-md-2"><label for="commentaire">Commentaire:</label><br><br><input type="text" value ="<?= $_GET['commentaire'] ?? ''; ?>" name="commentaire" id="commentaire" class="form-control" required></div>
+          <div class="col-md-2"><label for="pesee_max">Masse maxi. d'une pesée (Kg):</label> <input type="text" value ="<?= $_GET['pesee_max'] ?? ''; ?>" name="pesee_max" id="pesee_max" class="form-control" required></div>
+          <div class="col-md-1"><label for="couleur">Couleur:</label><br><br><input type="color" value="#<?= $_GET['couleur'] ?? ''; ?>" name="couleur" id="couleur" class="form-control" required></div>
+          <div class="col-md-1"><br><br><button class="btn btn-default">Créer!</button></div>
         </form>
       </div>
     </div>
@@ -56,11 +57,9 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($
           <th>Modifier</th>
         </tr>
       </thead>
-      <tbody>
-        <?php
-        $reponse = $bdd->query('SELECT * FROM points_sortie');
 
-        while ($donnees = $reponse->fetch()) { ?>
+      <tbody>
+        <?php foreach (points_sorties($bdd) as $donnees) { ?>
           <tr>
             <td><?= $donnees['id']; ?></td>
             <td><?= $donnees['timestamp']; ?></td>
@@ -69,47 +68,10 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($
             <td><span class="badge" style="background-color:<?= $donnees['couleur']; ?>"><?= $donnees['couleur']; ?></span></td>
             <td><?= $donnees['commentaire']; ?></td>
             <td><?= $donnees['pesee_max']; ?></td>
-            <td>
-              <form action="../moteur/sorties_visibles_post.php" method="post">
-                <input type="hidden" name ="id" id="id" value="<?= $donnees['id']; ?>">
-                <input type="hidden" name="visible" id="visible" value="<?php
-                if ($donnees['visible'] === 'oui') {
-                  echo 'non';
-                } else {
-                  echo 'oui';
-                }
-                ?>">
-                       <?php
-                       if ($donnees['visible'] === 'oui') { // SI on a pas de message d'erreur
-                         ?>
-                  <button  class="btn btn-info btn-sm " >
-                    <?php
-                  } else { // SINON
-                    ?>
-                    <button  class="btn btn-danger btn-sm " >
-                      <?php
-                    }
-                    echo $donnees['visible'];
-                    ?>
-                  </button>
-              </form>
-            </td>
-            <td>
-              <form action="modification_points_sortie.php" method="post">
-                <input type="hidden" name ="id" id="id" value="<?= $donnees['id']; ?>">
-                <input type="hidden" name ="nom" id="nom" value="<?= $donnees['nom']; ?>">
-                <input type="hidden" name ="adresse" id="adresse" value="<?= $donnees['adresse']; ?>">
-                <input type="hidden" name ="commentaire" id="commentaire" value="<?= $donnees['commentaire']; ?>">
-                <input type="hidden" name ="pesee_max" id="pesee_max" value="<?= $donnees['pesee_max']; ?>">
-                <input type="hidden" name ="couleur" id="couleur" value="<?= substr($_POST['couleur'], 1); ?>">
-                <button  class="btn btn-warning  btn-sm" >Modifier</button>
-              </form>
-            </td>
+            <td><?= configBtnVisible(['url' => 'points_sortie', 'id' => $donnees['id'], 'visible' => $donnees['visible']]) ?></td>
+            <td><a style="appearance: button" class="btn btn-warning btn-sm" href="modification_points_sortie.php?id=<?= $donnees['id'] ?>">Modifier</a></td>
           </tr>
-          <?php
-        }
-        $reponse->closeCursor();
-        ?>
+        <?php } ?>
       </tbody>
     </table>
   </div>

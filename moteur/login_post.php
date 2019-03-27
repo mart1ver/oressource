@@ -45,6 +45,7 @@ require_once('dbconfig.php');
  * HTTP Status code: 401 - Unauthorized
  * { 'error': 'Mauvais identifiant ou mot de passe' }
  */
+
 header('content-type:application/json');
 $json_raw = file_get_contents('php://input');
 $unsafe_json = json_decode($json_raw, true);
@@ -52,6 +53,9 @@ $json = validate_json_login($unsafe_json);
 
 try {
   $email = $json['username'];
+  if ($json['password'] === NULL) {
+    throw new Exception('Mot de passe ou nom de compte invalide.');
+  }
   $pass = $json['password']; // NE PAS FILTRER on utile le hash pas la valeur directe.
   $user = login_user($bdd, $email, $pass);
   session_start();

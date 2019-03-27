@@ -18,34 +18,32 @@
  */
 
 session_start();
-require_once('../moteur/dbconfig.php');
-if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($_SESSION['niveau'], 'v' . $_GET['numero']) !== false)) {
+
+require_once '../core/requetes.php';
+require_once '../core/session.php';
+
+$numero = filter_input(INPUT_GET, 'numero', FILTER_VALIDATE_INT);
+
+if (is_valid_session() && is_allowed_vente_id($numero)) {
+  require_once '../moteur/dbconfig.php';
+  $reponse = $bdd->query('SELECT cr FROM `description_structure`');
+  $code = $reponse->fetch()['cr'];
+  $reponse->closeCursor();
+  if ($_POST['passrmb'] !== (string) $code) {
+    header('Location:../ifaces/ventes.php?numero=' . $numero . '&err=mauvais mot de passe');
+    die;
+  }
+
+  $req = $bdd->prepare('SELECT max(id) id FROM ventes WHERE id_point_vente = :id');
+    $req->execute(['id' => $numero]);
+  $numero_vente = $donnees = $req->fetch()['id'] + 1;
+  $req->closeCursor();
+  $point = points_ventes_id($bdd, $numero);
   require_once 'tete.php';
   ?>
   <div class="panel-body" >
     <fieldset>
-      <legend>
-        <?php
-        // on determine le numero de la vente
-        $req = $bdd->prepare('SELECT max(id) FROM ventes WHERE id_point_vente = :id ');
-        $req->execute(['id' => $_GET['numero']]);
-        while ($donnees = $req->fetch()) {
-          $numero_vente = $donnees['max(id)'] + 1;
-        }
-        $req->closeCursor();
-        //on affiche le nom du point de vente
-        // On recupère tout le contenu de la table point de collecte
-
-        $req = $bdd->prepare('SELECT * FROM points_vente WHERE id = :id ');
-        $req->execute(['id' => $_GET['numero']]);
-        while ($donnees = $req->fetch()) {
-          echo$donnees['nom'];
-          $nom_pv = $donnees['nom'];
-          $adresse_pv = $donnees['adresse'];
-        }
-        $req->closeCursor();
-        ?>
-      </legend>
+      <legend><?= $point['nom'] ?></legend>
     </fieldset>
     <div class="row">
       <br>
@@ -57,27 +55,24 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($
             </span>
           </div>
           <div class="panel-body">
-
             <form action="../moteur/remboursement_post.php" id="formulaire" method="post">
-              <?php if ($_SESSION['saisiec'] === 'oui' && (strpos($_SESSION['niveau'], 'e') !== false)) { ?>
-                Date de la vente:  <input type="date" id="antidate" name="antidate" style="height:20px;" value=<?= date('Y-m-d'); ?>>
-                <br>
-                <br>
+              <?php if (is_allowed_saisie_date() && (strpos($_SESSION['niveau'], 'e') !== false)) { ?>
+                <label for="antidate">Date:</label>
+                <input type="date" id="antidate" name="antidate"
+                       value="<?= date('Y-m-d'); ?>">
+                <br><br>
               <?php } ?>
               <ul id="liste" class="list-group">
-                <li class="list-group-item">Réference: <?= $_GET['numero']; ?>#<?= $numero_vente; ?>, date: <?= date('d-m-Y'); ?><br><?= $nom_pv; ?><br><?= $adresse_pv; ?>,<br>siret: <?= $_SESSION['siret']; ?></li>
+                <li class="list-group-item">Réference: <?= $numero; ?>#<?= $numero_vente; ?>, date: <?= date('d-m-Y'); ?><br><?= $point['nom']; ?><br><?= $point['adresse']; ?>,<br>siret: <?= $_SESSION['siret']; ?></li>
+              </ul>
+              <ul class="list-group" id="total"></ul>
 
-              </ul>
-              <ul class="list-group" id="total">
-              </ul>
               <input type="text" class="form-control" placeholder="commentaire" id="comm" name="comm"><br>
-
               <br>
               <input type="hidden"  id="nlignes" name="nlignes">
               <input type="hidden"  id="narticles" name="narticles">
               <input type="hidden"  id="ptot" name="ptot">
-
-              <input type="hidden" name ="id_point_vente" id="id_point_vente" value="<?= $_GET['numero']; ?>">
+              <input type="hidden" name="id_point_vente" id="id_point_vente" value="<?= $numero; ?>">
             </form>
             <ul id="boutons" class="list-group">
               <button class="btn btn-danger btn-lg" onclick="encaisse();">Rembourser!</button>
@@ -138,11 +133,7 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($
             <h3 class="panel-title"><label>Type d'objet:</label></h3>
           </div>
           <div class="panel-body">
-
-            <?php
-            // On recupère tout le contenu de la table point de collecte
-            $reponse = $bdd->query('SELECT * FROM type_dechets WHERE visible = "oui"');
-            while ($donnees = $reponse->fetch()) { ?>
+            <?php foreach (filter_visibles(types_dechets($bdd)) as $donnees) { ?>
               <div class="btn-group">
                 <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" style="margin-left:8px; margin-top:16px;">
                   <span class="badge" id="cool" style="background-color:<?= $donnees['couleur']; ?>"><?= $donnees['nom']; ?></span>
@@ -151,30 +142,23 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($
                   <li><a href="javascript:edite('<?= $donnees['nom']; ?>','0','<?= $donnees['id']; ?>','0')" ><?= $donnees['nom']; ?></a></li>
                   <li class="divider"></li>
                   <?php
-                  // On recupère tout le contenu de la table grille_objets
-                  $req = $bdd->prepare('SELECT * FROM grille_objets WHERE id_type_dechet = :id_type_dechet AND visible = "oui"   ');
+                  $req = $bdd->prepare('SELECT * FROM grille_objets WHERE id_type_dechet = :id_type_dechet AND visible = 1');
                   $req->execute(['id_type_dechet' => $donnees['id']]);
                   $i = 1;
-
                   while ($donneesint = $req->fetch()) { ?>
                     <li><a href="javascript:edite('<?= $donneesint['nom']; ?>','<?= $donneesint['prix']; ?>','<?= $donnees['id']; ?>','<?= $donneesint['id']; ?>')"><?= $donneesint['nom']; ?></a></li>
-                    </li>
                     <?php
                   }
                   $req->closeCursor();
                   ?>
                 </ul>
               </div>
-
-              <?php
-            }
-            $reponse->closeCursor();
-            ?>
+              <?php } ?>
           </div>
 
         </div>
         <br>
-        <a href="ventes.php?numero=<?= $_GET['numero']; ?>&nom=<?= $_GET['nom']; ?>&adresse=<?= $_GET['adresse']; ?>">
+        <a href="ventes.php?numero=<?= $numero; ?>">
           <button type="button"  class="btn btn-default pull-right" >
             Retour aux ventes
           </button>

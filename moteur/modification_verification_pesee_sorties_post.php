@@ -19,18 +19,30 @@
  */
 
 session_start();
-if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($_SESSION['niveau'], 'h') !== false)) {
-  require_once '../moteur/dbconfig.php';
-  $req = $bdd->prepare('UPDATE pesees_sorties SET id_type_dechet_evac = :id_type_dechet_evac,id_type_dechet = :id_type_dechet, masse = :masse, id_last_hero = :id_last_hero, last_hero_timestamp = NOW()
-    WHERE id = :id');
-  $req->execute(['id_type_dechet' => $_POST['id_type_dechet'], 'id_type_dechet_evac' => $_POST['id_type_dechet_evac'], 'masse' => $_POST['masse'], 'id' => $_POST['id'], 'id_last_hero' => $_SESSION['id']]);
-  $req->closeCursor();
 
-  $req = $bdd->prepare('UPDATE sorties SET  id_last_hero = :id_last_hero, last_hero_timestamp = NOW()
-    WHERE id = :id');
-  $req->execute(['id' => $_POST['nsortie'], 'id_last_hero' => $_SESSION['id']]);
+require_once '../core/session.php';
+
+if (is_valid_session() && is_allowed_verifications()) {
+  require_once '../moteur/dbconfig.php';
+  
+  $sql = 'UPDATE 
+    pesees_sorties SET
+    id_type_dechet_evac = :evac,
+    id_type_dechet = :dechet,
+    id_type_poubelle = :poubelle,
+    masse = :masse, 
+    id_last_hero = :id_last_hero
+    WHERE id = :id';
+  $req = $bdd->prepare($sql);
+  $req->bindValue(':id', $_POST['id'] ?? 0, PDO::PARAM_INT);
+  $req->bindValue(':evac', $_POST['evac'] ?? 0, PDO::PARAM_INT);
+  $req->bindValue(':dechet', $_POST['dechet'] ?? 0, PDO::PARAM_INT);
+  $req->bindValue(':poubelle', $_POST['poubelle'] ?? 0, PDO::PARAM_INT);
+  $req->bindParam(':masse', $_POST['masse'], PDO::PARAM_STR);
+  $req->bindParam(':id_last_hero', $_SESSION['id'], PDO::PARAM_STR);
+  $req->execute();
   $req->closeCursor();
-  header('Location:../ifaces/verif_sorties.php?numero=' . $_POST['npoint'] . '&date1=' . $_POST['date1'] . '&date2=' . $_POST['date2']);
+  header('Location:../ifaces/modification_verif_sorties.php?id=' . (int) $_POST['id_sortie']);
 } else {
   header('Location:../moteur/destroy.php');
 }

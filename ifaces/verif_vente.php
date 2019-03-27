@@ -19,32 +19,60 @@
 
 session_start();
 
-require_once('../core/session.php');
-require_once('../core/validation.php');
-require_once('../core/requetes.php');
+require_once '../core/session.php';
+require_once '../core/validation.php';
+require_once '../core/requetes.php';
+require_once '../core/composants.php';
 
 if (is_valid_session() && is_allowed_verifications()) {
-  require_once 'tete.php';
+
   require_once('../moteur/dbconfig.php');
   $points_ventes = filter_visibles(points_ventes($bdd));
   $date1 = $_GET['date1'];
   $date2 = $_GET['date2'];
+  $numero = filter_input(INPUT_GET, 'numero', FILTER_VALIDATE_INT);
+  $time_debut = DateTime::createFromFormat('d-m-Y', $date1)->format('Y-m-d') . ' 00:00:00';
+  $time_fin = DateTime::createFromFormat('d-m-Y', $date2)->format('Y-m-d') . ' 23:59:59';
 
-  $date1ft = DateTime::createFromFormat('d-m-Y', $date1);
-  $time_debut = $date1ft->format('Y-m-d');
-  $time_debut = $time_debut . ' 00:00:00';
+  $users = map_by(utilisateurs($bdd), 'id');
 
-  $date2ft = DateTime::createFromFormat('d-m-Y', $date2);
-  $time_fin = $date2ft->format('Y-m-d');
-  $time_fin = $time_fin . ' 23:59:59';
-
-  $req = $bdd->prepare('SELECT ventes.id,ventes.timestamp ,moyens_paiement.nom moyen, moyens_paiement.couleur coul, ventes.commentaire ,ventes.last_hero_timestamp lht
-                       FROM ventes, moyens_paiement
-                       WHERE ventes.id_point_vente = :id_point_vente
-                       AND ventes.id_moyen_paiement = moyens_paiement.id
-                       AND DATE(ventes.timestamp) BETWEEN :du AND :au ');
-  $req->execute(['id_point_vente' => $_GET['numero'], 'du' => $time_debut, 'au' => $time_fin]);
+  $req = $bdd->prepare('SELECT
+    ventes.id,
+    ventes.id_createur,
+    ventes.last_hero_timestamp,
+    ventes.timestamp,
+    ventes.id_last_hero,
+    ventes.commentaire,
+    moyens_paiement.nom moyen,
+    moyens_paiement.couleur,
+    SUM(vendus.prix * vendus.quantite) vente,
+    SUM(vendus.quantite) quantite,
+    SUM(vendus.remboursement * vendus.quantite) remb,
+    SUM(pesees_vendus.masse) masse
+  FROM ventes
+  INNER JOIN moyens_paiement
+  ON ventes.id_moyen_paiement = moyens_paiement.id
+  INNER JOIN vendus
+  ON vendus.id_vente = ventes.id
+  LEFT JOIN pesees_vendus
+  ON pesees_vendus.id = vendus.id
+  WHERE ventes.id_point_vente = :id_point_vente
+  AND DATE(ventes.timestamp) BETWEEN :du AND :au
+  GROUP BY ventes.id,
+    ventes.id_createur,
+    ventes.last_hero_timestamp,
+    ventes.timestamp,
+    ventes.id_last_hero,
+    ventes.commentaire,
+    moyens_paiement.nom,
+    moyens_paiement.couleur');
+  $req->bindParam(':id_point_vente', $numero, PDO::PARAM_INT);
+  $req->bindParam(':du', $time_debut, PDO::PARAM_STR);
+  $req->bindParam(':au', $time_fin, PDO::PARAM_STR);
+  $req->execute();
   $data = $req->fetchAll(PDO::FETCH_ASSOC);
+
+  require_once 'tete.php';
   ?>
 
   <div class="container">
@@ -52,22 +80,16 @@ if (is_valid_session() && is_allowed_verifications()) {
     <div class="panel-body">
       <ul class="nav nav-tabs">
         <?php foreach ($points_ventes as $point) { ?>
-          <li<?= $_GET['numero'] === $point['id'] ? 'class="active"' : '' ?>>
-            <a href="<?= "verif_vente.php?numero={$point['id']}&date1={$date1}&date2={$date2}" ?>"><?= $point['nom']; ?></a>
+          <li <?= $numero === $point['id'] ? 'class="active"' : '' ?>>
+            <a href="verif_vente.php?numero=<?= $point['id'] ?>&date1=<?= $date1 ?>&date2=<?= $date2 ?>"><?= $point['nom']; ?></a>
           </li>
         <?php } ?>
       </ul>
 
       <br>
       <div class="row">
-        <div class="col-md-3 col-md-offset-9" >
-          <label for="reportrange">Choisissez la période à inspecter::</label><br>
-          <div id="reportrange" class="pull-left" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc">
-            <i class="fa fa-calendar"></i>
-            <span></span><b class="caret"></b>
-          </div>
-        </div>
-        <?= $date1 === $date2 ? "le '{$date1['date1']}:" : "du {$date1} au  {$date1}:" ?>
+        <?= datePicker() ?>
+        <?= $date1 === $date2 ? " Le {$date1}," : " Du {$date1} au {$date2}," ?>
       </div>
     </div>
 
@@ -89,93 +111,48 @@ if (is_valid_session() && is_allowed_verifications()) {
         </tr>
       </thead>
       <tbody>
-        <?php foreach ($data as $donnees) {
-          $req_ventes = $bdd->prepare('SELECT SUM(vendus.prix * vendus.quantite) vente
-                       FROM vendus
-                       WHERE  vendus.id_vente = :id_vente');
-          $req_ventes->execute(['id_vente' => $donnees['id']]);
-          $ventes = $req_ventes->fetch()['vente'];
-          $req_ventes->closeCursor();
-
-          $req_remb = $bdd->prepare('SELECT SUM(vendus.remboursement * vendus.quantite) remb
-                       FROM vendus
-                       WHERE vendus.id_vente = :id_vente
-                       ');
-          $req_remb->execute(['id_vente' => $donnees['id']]);
-          $remboursements = $req_remb->fetch()['remb'];
-          $req_remb->closeCursor();
-
-          $req_quantite = $bdd->prepare('SELECT SUM(vendus.quantite) quantite
-                       FROM vendus
-                       WHERE  vendus.id_vente = :id_vente');
-          $req_quantite->execute(['id_vente' => $donnees['id']]);
-          $quantite = $req_quantite->fetch()['quantite'];
-          $req_quantite->closeCursor();
-
-          $req_masse = $bdd->prepare('SELECT SUM(pesees_vendus.masse) masse
-                       FROM vendus,pesees_vendus
-                       WHERE vendus.id_vente = :id_vente
-                       AND pesees_vendus.id_vendu =  vendus.id');
-          $req_masse->execute(['id_vente' => $donnees['id']]);
-          $masse = $req_masse->fetch()['masse'];
-          $req_masse->closeCursor();
-
-          $req_createur = $bdd->prepare('SELECT utilisateurs.mail mail
-                       FROM utilisateurs, ventes
-                       WHERE  ventes.id = :id_vente
-                       AND utilisateurs.id = ventes.id_createur');
-          $req_createur->execute(['id_vente' => $donnees['id']]);
-          $createur = $req_createur->fetch();
-          $req_createur->closeCursor();
-          $req_editeur = $bdd->prepare('SELECT utilisateurs.mail mail
-                       FROM utilisateurs, ventes
-                       WHERE  ventes.id = :id_vente
-                       AND utilisateurs.id = ventes.id_last_hero');
-          $req_editeur->execute(['id_vente' => $donnees['id']]);
-          $editeur = $req_editeur->fetch();
-          $req_editeur->closeCursor();
-
-          $rembo = $ventes > 0 && $remboursements > 0;
+        <?php
+        foreach ($data as $v) {
+          $ventes = $v['vente'];
+          $remboursements = $v['remb'];
+          $quantite = $v['quantite'];
+          $masse = $v['masse'];
+          $rembo = ($remboursements > 0.00);
           ?>
           <tr>
-            <td><?= $donnees['id']; ?></td>
-            <td><?= $donnees['timestamp']; ?></td>
-            <td><?= !$rembo ? $ventes : '' ?></td>
-            <td><?= $rembo ? $remboursements : '' ?></td>
+            <td>
+              <span <?= $rembo
+                ? '(class="badge" style="background-color:red"'
+                : '' ?>><?= $v['id'] ?></span>
+            </td>
+            <td><?= $v['timestamp']; ?></td>
+            <td><?= $ventes ?></td>
+            <td><?= $remboursements ?></td>
             <td><?= $quantite ?></td>
             <td>
-              <span class="badge" style="background-color:<?= $donnees['coul']; ?>"><?= $donnees['moyen']; ?></span>
+              <span class="badge" style="background-color:<?= $v['couleur']; ?>"><?= $v['moyen']; ?></span>
             </td>
             <td><?= $masse > 0 ? $masse : '' ?></td>
-            <td style="width:100px"><?= $donnees['commentaire']; ?></td>
-            <td><?= $createur['mail']; ?></td>
+            <td style="width:100px"><?= $v['commentaire']; ?></td>
+            <td><?= $users[$v['id_createur']]['mail'] ?></td>
             <td>
-              <form action="modification_verification_<?= $rembo ? 'remboursement' : 'vente' ?>.php?nvente=<?= $donnees['id']; ?>"
+              <form action="modification_verification_<?= $rembo ? 'remboursement' : 'vente' ?>.php?nvente=<?= $v['id']; ?>"
                     method="post">
-                <input type="hidden" name="moyen" id="moyen" value="<?= $donnees['moyen']; ?>">
-                <input type="hidden" name="id" id="id" value="<?= $donnees['id']; ?>">
-                <input type="hidden" name="date1" id="date1" value="<?= $date1 ?>">
-                <input type="hidden" name="date2" id="date2" value="<?= $date2; ?>">
-                <input type="hidden" name="npoint" id="npoint" value="<?= $_GET['numero']; ?>">
-                <button class="btn btn-warning btn-sm" >Modifier</button>
+                <input type="hidden" name="moyen" value="<?= $v['moyen']; ?>">
+                <input type="hidden" name="id" value="<?= $v['id']; ?>">
+                <input type="hidden" name="date1" value="<?= $date1 ?>">
+                <input type="hidden" name="date2" value="<?= $date2; ?>">
+                <input type="hidden" name="npoint" value="<?= $numero; ?>">
+                <button class="btn btn-warning btn-sm">Modifier</button>
               </form>
             </td>
-            <td><?= $editeur['mail']; ?></td>
-            <td><?= $donnees['lht'] !== '0000-00-00 00:00:00' ? $donnees['lht'] : '' ?></td>
+            <td><?= $v['last_hero_timestamp'] !== $v['timestamp'] ? $users[$v['id_last_hero']]['mail'] : '' ?></td>
+            <td><?= $v['last_hero_timestamp'] !== $v['timestamp'] ? $v['last_hero_timestamp'] : '' ?></td>
           </tr>
         <?php } ?>
       </tbody>
     </table>
   </div><!-- /.container -->
-  <script type="text/javascript">
-    'use strict';
-    $(document).ready(() => {
-      const get = process_get();
-      const options = set_datepicker(get, url);
-      const url = 'verif_vente';
-      bind_datepicker(options, get, url);
-    });
-  </script>
   <?php
   require_once 'pied.php';
 } else {

@@ -18,15 +18,59 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace collecte_post;
-
-use DateTime;
-
 global $bdd;
 
-require_once('../core/session.php');
-require_once('../core/validation.php');
-require_once('../core/requetes.php');
+require_once '../core/session.php';
+require_once '../core/validation.php';
+require_once '../core/requetes.php';
+function insert_collecte(PDO $bdd, array $collecte): int {
+  $req = $bdd->prepare('INSERT INTO collectes
+                            (timestamp, id_type_collecte,
+                            localisation, id_point_collecte,
+                            commentaire, id_createur, id_last_hero)
+                          VALUES (:timestamp, :id_type_action,
+                                  :localite, :id_point,
+                                  :commentaire, :id_createur, :id_createur1)');
+  $req->bindValue(':timestamp', $collecte['timestamp']->format('Y-m-d H:i:s'), PDO::PARAM_STR);
+  $req->bindValue(':id_type_action', $collecte['id_type_action'], PDO::PARAM_INT);
+  $req->bindValue(':localite', $collecte['localite'], PDO::PARAM_INT);
+  $req->bindValue(':id_point', $collecte['id_point'], PDO::PARAM_INT);
+  $req->bindValue(':commentaire', $collecte['commentaire'], PDO::PARAM_STR);
+  $req->bindValue(':id_createur', $collecte['id_user'], PDO::PARAM_INT);
+  $req->bindValue(':id_createur1', $collecte['id_user'], PDO::PARAM_INT);
+  $req->execute();
+  return (int) $bdd->lastInsertId();
+}
+
+// Insere une collecte dans la base.
+// On ecrit le nombre de categories maxi dans la varialble $nombreCategories
+// HACK C'est pas parfait il faudrait comparer aux differents ID de la base.
+// Si des utilisateurs suppriment des objet sa la main c'est la galere...
+// Mais d'un cote niveau tracabilite ils devraient pas supprimer de categories...
+// genere une exception si les masses sont inferieurs a 0.
+
+function insert_items_collecte(PDO $bdd, int $id_collecte, $collecte, $items) {
+  $nombreCategories = nb_categories_dechets_item($bdd);
+  $req = $bdd->prepare('INSERT INTO pesees_collectes
+                            (timestamp, masse, id_collecte, id_type_dechet, id_createur, id_last_hero)
+                        VALUES (:timestamp, :masse, :id_collecte, :id_type_dechet, :id_createur, :id_createur1)');
+  $req->bindValue(':timestamp', $collecte['timestamp']->format('Y-m-d H:i:s'), PDO::PARAM_STR);
+  $req->bindValue(':id_collecte', $id_collecte, PDO::PARAM_INT);
+  $req->bindValue(':id_createur', $collecte['id_user'], PDO::PARAM_INT);
+  $req->bindValue(':id_createur1', $collecte['id_user'], PDO::PARAM_INT);
+  foreach ($items as $item) {
+    $masse = (float) parseFloat($item['masse']);
+    $type_dechet = (int) parseInt($item['type']);
+    if ($masse > 0.00 && $type_dechet <= $nombreCategories) {
+      $req->bindValue(':masse', $masse);
+      $req->bindValue(':id_type_dechet', $type_dechet, PDO::PARAM_INT);
+      $req->execute();
+    } else {
+      $req->closeCursor();
+      throw new UnexpectedValueException('masse <= 0.0 ou type item inconnu');
+    }
+  }
+}
 
 session_start();
 
@@ -70,14 +114,19 @@ if (is_valid_session()) {
 
       http_response_code(200); // Created
       // Note: Renvoyer l'url d'acces a la ressource
-      echo(json_encode(['id_collecte' => $id_collecte], JSON_NUMERIC_CHECK));
+      echo(json_encode(['id' => $id_collecte], JSON_NUMERIC_CHECK));
     } catch (InvalidArgumentException $e) {
-      $bdd->rollback();
+      $bdd->rollBack();
       http_response_code(400); // Bad Request
       echo(json_encode(['error' => $e->getMessage()]));
     } catch (UnexpectedValueException $e) {
       http_response_code(400); // Bad Request
       echo(json_encode(['error' => $e->getMessage()]));
+    } catch (PDOException $e) {
+      $bdd->rollBack();
+      http_response_code(500); // Internal Server Error
+      echo(json_encode(['error' => 'Une erreur est survenue dans Oressource vente annulée.']));
+      throw $e;
     }
   } else {
     http_response_code(403); // Forbidden.

@@ -45,7 +45,6 @@ function bilansSortiesRepartition(PDO $bdd, int $id, $start, $fin): array {
   $numero = ($id > 0 ? " AND sorties.id_point_sortie = $id " : ' ');
   $sql = 'SELECT
     SUM(pesees_sorties.masse) somme,
-    pesees_sorties.timestamp,
     sorties.classe,
     COUNT(distinct sorties.id) ncol
   FROM
@@ -53,7 +52,7 @@ function bilansSortiesRepartition(PDO $bdd, int $id, $start, $fin): array {
   WHERE
     pesees_sorties.timestamp BETWEEN :du AND :au
   AND pesees_sorties.id_sortie = sorties.id ' . $numero . '
-  GROUP BY classe';
+  GROUP BY sorties.classe';
   $stmt = $bdd->prepare($sql);
   $stmt->bindParam(':du', $start, PDO::PARAM_STR);
   $stmt->bindParam(':au', $fin, PDO::PARAM_STR);
@@ -69,7 +68,7 @@ WHERE type_dechets.id = pesees_sorties.id_type_dechet
 AND   pesees_sorties.id_sortie = sorties.id
 AND   sorties.classe = :type0
 AND   pesees_sorties.timestamp BETWEEN :du0 AND :au0 ' . $numero . '
-GROUP BY nom
+GROUP BY type_dechets.id, type_dechets.nom
 UNION
 SELECT type_dechets_evac.nom nom2, sum(pesees_sorties.masse) somme
 FROM type_dechets_evac, pesees_sorties, sorties
@@ -77,7 +76,7 @@ WHERE type_dechets_evac.id = pesees_sorties.id_type_dechet_evac
 AND   pesees_sorties.id_sortie = sorties.id
 AND   sorties.classe = :type1
 AND   pesees_sorties.timestamp BETWEEN :du1 AND :au1 ' . $numero . '
-GROUP BY nom2';
+GROUP BY type_dechets_evac.nom';
   $stmt = $bdd->prepare($sql);
   $stmt->bindParam(':type0', $type, PDO::PARAM_STR);
   $stmt->bindParam(':type1', $type, PDO::PARAM_STR);
@@ -99,7 +98,7 @@ AND
 types_poubelles.id = pesees_sorties.id_type_poubelle
 AND sorties.classe = "sortiesp"
 AND pesees_sorties.timestamp BETWEEN :du AND :au ' . $numero . '
-GROUP BY nom';
+GROUP BY types_poubelles.nom';
   $stmt = $bdd->prepare($sql);
   $stmt->bindParam(':du', $start, PDO::PARAM_STR);
   $stmt->bindParam(':au', $fin, PDO::PARAM_STR);
@@ -152,13 +151,11 @@ function bilanSortiesDon(PDO $bdd, int $id, $start, $fin): array {
   $numero = ($id > 0 ? " AND sorties.id_point_sortie = $id " : ' ');
   $sql = 'SELECT type_sortie.nom, sum(pesees_sorties.masse) somme
 FROM type_sortie, pesees_sorties, sorties
-WHERE
-type_sortie.id=sorties.id_type_sortie
-AND
-pesees_sorties.id_sortie = sorties.id
+WHERE type_sortie.id = sorties.id_type_sortie
+AND pesees_sorties.id_sortie = sorties.id
 AND sorties.classe = "sorties"
 AND pesees_sorties.timestamp BETWEEN :du AND :au ' . $numero . '
-GROUP BY nom';
+GROUP BY type_sortie.nom';
   $stmt = $bdd->prepare($sql);
   $stmt->bindParam(':du', $start, PDO::PARAM_STR);
   $stmt->bindParam(':au', $fin, PDO::PARAM_STR);
@@ -170,13 +167,11 @@ function bilanSortiesConvention(PDO $bdd, int $id, $start, $fin): array {
   $numero = ($id > 0 ? " AND sorties.id_point_sortie = $id " : ' ');
   $sql = 'SELECT conventions_sorties.nom, sum(pesees_sorties.masse) somme, COUNT(sorties.id) nombre
 FROM conventions_sorties, pesees_sorties, sorties
-WHERE
-conventions_sorties.id=sorties.id_convention
-AND
-pesees_sorties.id_sortie = sorties.id
+WHERE conventions_sorties.id=sorties.id_convention
+AND pesees_sorties.id_sortie = sorties.id
 AND sorties.classe = "sortiesc"
 AND pesees_sorties.timestamp BETWEEN :du AND :au ' . $numero . '
-GROUP BY nom';
+GROUP BY conventions_sorties.nom';
   $stmt = $bdd->prepare($sql);
   $stmt->bindParam(':du', $start, PDO::PARAM_STR);
   $stmt->bindParam(':au', $fin, PDO::PARAM_STR);
@@ -194,7 +189,7 @@ AND
 pesees_sorties.id_sortie = sorties.id
 AND sorties.classe = "sortiesr"
 AND pesees_sorties.timestamp BETWEEN :du AND :au ' . $numero . '
-GROUP BY nom';
+GROUP BY filieres_sortie.nom';
   $stmt = $bdd->prepare($sql);
   $stmt->bindParam(':du', $start, PDO::PARAM_STR);
   $stmt->bindParam(':au', $fin, PDO::PARAM_STR);
@@ -235,11 +230,7 @@ if (is_valid_session() && is_allowed_bilan()) {
       <div class="col-md-11 " >
         <h1>Bilan global</h1>
         <div class="col-md-4 col-md-offset-8" >
-          <label for="reportrange">Choisissez la période à inspecter:</label><br>
-          <div id="reportrange" class="pull-left" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc">
-            <i class="fa fa-calendar"></i>
-            <span></span> <b class="caret"></b>
-          </div>
+          <?= datePicker() ?>
         </div>
         <ul class="nav nav-tabs">
           <li><a href="bilanc.php?numero=0&date1=<?= $date1 ?>&date2=<?= $date2 ?>">Collectes</a></li>
@@ -255,7 +246,7 @@ if (is_valid_session() && is_allowed_bilan()) {
       <h2> Bilan des sorties hors-boutique de la structure</h2>
       <ul class="nav nav-tabs">
         <?php foreach ($points_sortie as $p) { ?>
-          <li class="<?= $numero === $p['id'] ? 'active' : '' ?>">
+          <li class="<?= $numero == $p['id'] ? 'active' : '' ?>">
             <a href="bilanhb.php?numero=<?= $p['id'] ?>&date1=<?= $date1 ?>&date2=<?= $date2 ?>"> <?= $p['nom']; ?></a>
           </li>
         <?php } ?>
@@ -271,6 +262,7 @@ if (is_valid_session() && is_allowed_bilan()) {
     <div class="col-md-8 col-md-offset-1">
       <h2><?= $date1 === $date2 ? " Le {$date1}," : " Du {$date1} au {$date2}," ?>
         masse totale évacuée: <?= $data['masse'] ?>kg<?= $numero === 0 ? ' sur ' . count($points_sortie) . ' Point(s) de sorties.' : '.' ?></h2>
+          <?php if($data['masse'] > 0){ ?>
     </div>
   </div>
 
@@ -303,25 +295,29 @@ if (is_valid_session() && is_allowed_bilan()) {
             </tbody>
           </table>
           <br>
+          <!--
           <a href="../moteur/export_bilanc_partype.php?numero=<?= $numero ?>&date1=<?= $date1 ?>&date2=<?= $date2 ?>">
             <button type="button" class="btn btn-default btn-xs" disabled>exporter ces données (.csv) </button>
           </a>
+          -->
         </div>
       </div>
 
       <div class="panel panel-default">
         <div class="panel-heading">
-          <h3 class="panel-title">détail par type d'objets</h3>
+          <h3 class="panel-title">Détail par type d'objets</h3>
         </div>
         <div class="panel-body">
-          <?= bilanTable3(['id' => 0, 'text' => 'Dons simples', 'td0' => 'typo', 'td1' => 'somme', 'td2' => '%', 'masse' => $data['masse'], 'data' => $data['donsSimples']]) ?>
-          <?= bilanTable3(['id' => 1, 'text' => 'Dons aux partenaires', 'td0' => 'typo', 'td1' => 'somme', 'td2' => '%', 'masse' => $data['masse'], 'data' => $data['partenaires']]) ?>
-          <?= bilanTable3(['id' => 2, 'text' => 'Dechetterie', 'td0' => 'typo', 'td1' => 'somme', 'td2' => '%', 'masse' => $data['masse'], 'data' => $data['dechetteries']]) ?>
-          <?= bilanTable3(['id' => 3, 'text' => 'Poubelles', 'td0' => 'typo', 'td1' => 'somme', 'td2' => '%', 'masse' => $data['masse'], 'data' => $data['poubelles']]) ?>
-          <?= bilanTable3(['id' => 4, 'text' => 'Recycleurs', 'td0' => 'typo', 'td1' => 'somme', 'td2' => '%', 'masse' => $data['masse'], 'data' => $data['recycleurs']]) ?>
+          <?= count($data['donsSimples']) ? bilanTable3(['id' => 0, 'text' => 'Dons simples', 'td0' => 'type objet', 'td1' => 'somme', 'td2' => '%', 'masse' => $data['masse'], 'data' => $data['donsSimples']]) : '' ?>
+          <?= count($data['partenaires']) ? bilanTable3(['id' => 1, 'text' => 'Dons aux partenaires', 'td0' => 'type objet', 'td1' => 'somme', 'td2' => '%', 'masse' => $data['masse'], 'data' => $data['partenaires']]) : '' ?>
+          <?= count($data['dechetteries']) ? bilanTable3(['id' => 2, 'text' => 'Dechetterie', 'td0' => 'type objet', 'td1' => 'somme', 'td2' => '%', 'masse' => $data['masse'], 'data' => $data['dechetteries']]) : '' ?>
+          <?= count($data['poubelles']) ? bilanTable3(['id' => 3, 'text' => 'Poubelles', 'td0' => 'type objet', 'td1' => 'somme', 'td2' => '%', 'masse' => $data['masse'], 'data' => $data['poubelles']]) : '' ?>
+          <?= count($data['recycleurs']) ? bilanTable3(['id' => 4, 'text' => 'Recycleurs', 'td0' => 'type objet', 'td1' => 'somme', 'td2' => '%', 'masse' => $data['masse'], 'data' => $data['recycleurs']]) : '' ?>
+          <!--
           <a href="../moteur/export_bilanc_parloca.php?numero=<?= $numero ?>&date1=<?= $date1 ?>&date2=<?= $date2 ?>">
             <button type="button" class="btn btn-default btn-xs" disabled>exporter ces données (.csv)</button>
           </a>
+          -->
         </div>
       </div>
     </div>
@@ -359,23 +355,16 @@ if (is_valid_session() && is_allowed_bilan()) {
           </table>
 
           <br>
+          <!--
           <a href="../moteur/export_bilanc_partype.php?numero=<?= $numero ?>&date1=<?= $date1 ?>&date2=<?= $date2 ?>">
             <button type="button" class="btn btn-default btn-xs" disabled>exporter ces données (.csv) </button>
           </a>
+          -->
         </div>
       </div>
+          <?php }else{echo '<img src="../images/nodata.jpg" class="img-responsive" alt="Responsive image">';} ?>
     </div>
   </div>
-
-  <script type="text/javascript">
-    'use strict';
-    $(document).ready(() => {
-      const get = process_get();
-      const url = 'bilanhb';
-      const options = set_datepicker(get, url);
-      bind_datepicker(options, get, url);
-    });
-  </script>
   <?php
   require_once 'pied.php';
 } else {

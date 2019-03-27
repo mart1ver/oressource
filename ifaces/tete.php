@@ -65,11 +65,15 @@ $can_config = is_allowed_config();
               <li class="nav navbar-nav dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Points de collecte<b class="caret"></b></a>
                 <ul class="dropdown-menu">
-                  <?php foreach (filter_visibles(points_collectes($bdd)) as $point_collecte) { ?>
-                    <li>
-                      <a href="../ifaces/collecte.php?numero=<?= "{$point_collecte['id']}"; ?>"><?= $point_collecte['nom']; ?></a>
-                    </li>
-                  <?php } ?>
+                  <?php foreach (filter_visibles(points_collectes($bdd)) as $point_collecte) {
+                    if (is_allowed_collecte_id($point_collecte['id'])) {
+                      ?>
+                      <li>
+                        <a href="../ifaces/collecte.php?numero=<?= "{$point_collecte['id']}"; ?>"><?= $point_collecte['nom']; ?></a>
+                      </li>
+                    <?php }
+                  }
+                  ?>
                 </ul>
               </li>
               <?php
@@ -79,12 +83,17 @@ $can_config = is_allowed_config();
             <?php if (is_allowed_sortie()) { ?>
               <li class="nav navbar-nav dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Sorties hors-boutique<b class="caret"></b></a>
-                <ul class="dropdown-menu">
-                  <?php foreach (filter_visibles(points_sorties($bdd)) as $point_sortie) { ?>
-                    <li>
-                      <a href="../ifaces/sortiesc.php?numero=<?= "{$point_sortie['id']}"; ?>"><?= $point_sortie['nom']; ?></a>
-                    </li>
-                  <?php } ?>
+                  <ul class="dropdown-menu">
+                    <?php foreach (filter_visibles(points_sorties($bdd)) as $point_sortie) {
+                      if (is_allowed_sortie_id($point_sortie['id'])) {
+                        ?>
+                        <li>
+                          <a href="../ifaces/sortiesc.php?numero=<?= "{$point_sortie['id']}"; ?>"><?= $point_sortie['nom']; ?></a>
+                        </li>
+                        <?php
+                      }
+                    }
+                    ?>
                 </ul>
               </li>
               <?php
@@ -95,12 +104,17 @@ $can_config = is_allowed_config();
               <li class="nav navbar-nav dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Points de vente<b class="caret"></b></a>
                 <ul class="dropdown-menu">
-                  <?php foreach (filter_visibles(points_ventes($bdd)) as $point_vente) { ?>
-                    <li>
-                      <a href="../ifaces/ventes.php?numero=<?= "{$point_vente['id']}"; ?>"
-                         ><?= $point_vente['nom']; ?></a>
-                    </li>
-                  <?php } ?>
+                  <?php foreach (filter_visibles(points_ventes($bdd)) as $point_vente) {
+                    if (is_allowed_vente_id($point_vente['id'])) {
+                        ?>
+                        <li>
+                          <a href="../ifaces/ventes.php?numero=<?= "{$point_vente['id']}"; ?>"
+                             ><?= $point_vente['nom']; ?></a>
+                        </li>
+                        <?php
+                      }
+                    }
+                    ?>
                 </ul>
               </li>
               <?php
@@ -161,7 +175,7 @@ $can_config = is_allowed_config();
                       <a href="../ifaces/edition_filieres_sortie.php">Entreprises de recyclage</a>
                     </li>
                     <li>
-                      <a href="../ifaces/edition_conventions_sortie.php">Conventions avec les partenaires</a>
+                      <a href="../ifaces/conventions_sortie.php">Conventions avec les partenaires</a>
                     </li>
                     <li class="divider"></li>
                   <?php } ?>
@@ -169,7 +183,7 @@ $can_config = is_allowed_config();
                   <!-- Configuration -->
                   <?php if ($can_config) { ?>
                     <li>
-                      <a href="../ifaces/edition_types_sortie.php">Types de sorties hors-boutique</a>
+                      <a href="../ifaces/types_sortie.php">Types de sorties hors-boutique</a>
                     </li>
                     <li>
                       <a href="../ifaces/types_collecte.php">Types de collectes</a>
@@ -254,8 +268,9 @@ $can_config = is_allowed_config();
     <script src="../js/bootstrap.min.js"></script>
     <script src="../js/bootstrap-switch.js"></script>
     <script src="../js/raphael.js"></script>
-    <script src="../js/morris/morris.js"></script>
+    <script src="../js/morris/morris.min.js"></script>
     <script src="../js/moment.js"></script>
+    <script src="../js/fr.js"></script>
     <script src="../js/daterangepicker.js"></script>
     <script src="../js/utils.js"></script>
     <script src="../js/ticket.js"></script>

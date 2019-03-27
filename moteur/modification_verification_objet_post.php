@@ -21,24 +21,31 @@
 session_start();
 if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($_SESSION['niveau'], 'h') !== false)) {
   require_once '../moteur/dbconfig.php';
-  $req = $bdd->prepare('UPDATE vendus SET  prix = :prix, quantite = :quantite, id_last_hero = :id_last_hero, last_hero_timestamp = NOW()
+  $req = $bdd->prepare('UPDATE vendus SET
+    prix = :prix,
+    quantite = :quantite,
+    id_last_hero = :id_last_hero
     WHERE id = :id');
   $req->execute(['prix' => $_POST['prix'], 'quantite' => $_POST['quantite'], 'id' => $_POST['id'], 'id_last_hero' => $_SESSION['id']]);
   $req->closeCursor();
 
-  $req = $bdd->prepare('UPDATE ventes SET  id_last_hero = :id_last_hero, last_hero_timestamp = NOW()
+  $req = $bdd->prepare('UPDATE ventes SET
+    id_last_hero = :id_last_hero
     WHERE id = :id');
   $req->execute(['id' => $_POST['nvente'], 'id_last_hero' => $_SESSION['id']]);
   $req->closeCursor();
 
-  // si la masse et superieure a 0 on l'ecrit dans la base
-  if ($_POST['quantite'] > 0) {
-    $req = $bdd->prepare('UPDATE pesees_vendus SET  id_last_hero = :id_last_hero,masse = :masse, last_hero_timestamp = NOW()
-      WHERE id_vendu = :id');
-    $req->execute(['id' => $_POST['id'], 'id_last_hero' => $_SESSION['id'], 'masse' => $_POST['masse']]);
+  if (isset($_POST['masse'])) {
+    $req = $bdd->prepare('UPDATE pesees_vendus SET
+      id_last_hero = :id_last_hero,
+      masse = :masse
+      WHERE id = :id');
+    $req->bindParam(':id', $_POST['id'], PDO::PARAM_INT);
+    $req->bindParam(':id_last_hero', $_SESSION['id'], PDO::PARAM_INT);
+    $req->bindParam(':masse', $_POST['masse'], PDO::PARAM_STR);
+    $req->execute();
     $req->closeCursor();
   }
-
   header('Location:../ifaces/verif_vente.php?numero=' . $_POST['npoint'] . '&date1=' . $_POST['date1'] . '&date2=' . $_POST['date2']);
 } else {
   header('Location:../moteur/destroy.php');

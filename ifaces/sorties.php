@@ -63,11 +63,6 @@ if (is_valid_session() && is_allowed_sortie_id($numero)) {
             <option value="" hidden disabled selected>Selectionez un type de don</option>
             <!-- Remplis via JavaScript voir script de la page -->
           </select>
-          <label for="localite">Localité :</label>
-          <select name="localite" id="localite" form="formulaire" class="form-control" style="font-size: 12pt" required>
-            <option value="" hidden disabled selected>Selectionez une localité</option>
-            <!-- Remplis via JavaScript voir script de la page -->
-          </select>
         </div>
       </div>
 
@@ -78,14 +73,10 @@ if (is_valid_session() && is_allowed_sortie_id($numero)) {
     <div class="col-md-4">
       <?= listSaisie(['text' => "Type d'objet:", 'key' => 'list_item']) ?>
       <?= listSaisie(['text' => 'Materiaux et déchets:', 'key' => 'list_evac']) ?>
-
-      <div class="btn-group" role="group">
-        <button id="encaissement" class="btn btn-success btn-lg">C'est pesé!</button>
-        <button id="impression" class="btn btn-primary btn-lg" value="Print"><span class="glyphicon glyphicon-print"></span></button>
-        <button id="reset" class="btn btn-warning btn-lg"><span class="glyphicon glyphicon-refresh"></button>
-      </div>
+      <?= buttonCollectesSorties() ?>
     </div> <!-- .col-md-4 -->
   </div> <!-- container -->
+
   <script type="text/javascript">
     // Variables d'environnement de Oressource.
     'use scrict';
@@ -97,74 +88,40 @@ if (is_valid_session() && is_allowed_sortie_id($numero)) {
       user_droit: <?= json_encode($_SESSION['niveau']) ?>,
       id_point: <?= json_encode($numero, JSON_NUMERIC_CHECK) ?>,
       id_type_action: <?= json_encode($types_action, JSON_NUMERIC_CHECK) ?>,
-      types_dechet: <?= json_encode(types_dechets($bdd), JSON_NUMERIC_CHECK) ?>,
+      types_dechet: <?= json_encode(filter_visibles(types_dechets($bdd), JSON_NUMERIC_CHECK)) ?>,
       masse_max: <?= json_encode($point_sortie['pesee_max'], JSON_NUMERIC_CHECK) ?>,
-      types_evac: <?= json_encode(types_dechets_evac($bdd), JSON_NUMERIC_CHECK) ?>,
+      types_evac: <?= json_encode(filter_visibles(types_dechets_evac($bdd), JSON_NUMERIC_CHECK)) ?>,
       conteneurs: <?= json_encode(types_contenants($bdd), JSON_NUMERIC_CHECK) ?>,
       types_action: <?= json_encode($types_action, JSON_NUMERIC_CHECK) ?>,
       localites: <?= json_encode(filter_visibles(localites($bdd)), JSON_NUMERIC_CHECK) ?>,
     };
   </script>
+
   <script type="text/javascript">
     'use strict';
 
     document.addEventListener('DOMContentLoaded', () => {
-      const numpad = new NumPad(document.getElementById('numpad'),
-              window.OressourceEnv.conteneurs);
-
-      // Hack en attendant de trouver une solution pour gerer differament les dechets
-      // et les objets qui ont les memes id...
-      // On retourne une closure avec connection_UI_ticket du coup...
+      const numpad = new NumPad(document.getElementById('numpad'), window.OressourceEnv.conteneurs);
 
       const typesItems = window.OressourceEnv.types_dechet;
-      const ticketItems = new Ticket();
-      const pushItem = connection_UI_ticket(numpad, ticketItems, typesItems);
-
-      const div_list_item = document.getElementById('list_item');
-      typesItems.forEach((item) => {
-        const button = html_saisie_item(item, pushItem);
-        div_list_item.appendChild(button);
-      });
+      const ticketItem = new Ticket();
+      const pushItem = connection_UI_ticket(numpad, ticketItem, typesItems);
+      fillItems(document.getElementById('list_item'), typesItems, pushItem);
 
       const typesEvacs = window.OressourceEnv.types_evac;
       const ticketEvac = new Ticket();
       const pushEvac = connection_UI_ticket(numpad, ticketEvac, typesEvacs);
+      fillItems(document.getElementById('list_evac'), typesEvacs, pushEvac);
 
-      const div_list_evac = document.getElementById('list_evac');
-      typesEvacs.forEach((item) => {
-        const button = html_saisie_item(item, pushEvac);
-        div_list_evac.appendChild(button);
-      });
+      fillSelect(document.getElementById('id_type_action'), window.OressourceEnv.types_action);
 
-      const div_type_action = document.getElementById('id_type_action');
-      window.OressourceEnv.types_action.forEach((type_collecte) => {
-        const item = document.createElement('option');
-        item.value = type_collecte.id;
-        item.innerHTML = type_collecte.nom;
-        div_type_action.appendChild(item);
-      });
-
-      const div_localite = document.getElementById('localite');
-      window.OressourceEnv.localites.forEach((localite) => {
-        const item = document.createElement('option');
-        item.value = localite.id;
-        item.innerHTML = localite.nom;
-        div_localite.appendChild(item);
-      });
-
-      const metadata = { classe: 'sorties' };
-      const encaisse = make_encaissement('../api/sorties.php', {
-        items: ticketItems,
+      const encaisse = prepare_data({
+        items: ticketItem,
         evacs: ticketEvac,
-      }, metadata);
+      }, {classe: 'sorties'});
 
-      document.getElementById('encaissement').addEventListener('click', encaisse, false);
-      document.getElementById('impression').addEventListener('click', impression_ticket, false);
-      document.getElementById('reset').addEventListener('click', () => {
-        tickets_clear(metadata);
-      }, false);
-
-      window.tickets = [ ticketItems, ticketEvac ];
+      initUI('../api/sorties.php', encaisse);
+      window.OressourceEnv.tickets = [ticketItem, ticketEvac];
     }, false);
   </script>
 

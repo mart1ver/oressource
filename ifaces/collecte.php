@@ -21,10 +21,6 @@
 // Pensé pour être fonctionnel sur ecran tactile.
 // Du javascript permet l'interactivité du keypad et des boutons centraux avec le bon de collecte.
 
-namespace collecte;
-
-use Datetime;
-
 global $bdd;
 
 require_once '../core/requetes.php';
@@ -49,7 +45,6 @@ if (is_valid_session() && is_allowed_collecte_id($numero)) {
       <h1><?= $point_collecte['nom']; ?></h1>
     </div>
     <div class="row">
-
       <?= cartList(['text' => "Bon d'apport: 0 Kg.", 'date' => $date->format('Y-m-d')]) ?>
 
       <div class="col-md-4"  >
@@ -79,12 +74,7 @@ if (is_valid_session() && is_allowed_collecte_id($numero)) {
 
       <div class="col-md-4" >
         <?= listSaisie(['text' => "Type d'objet:", 'key' => 'list_item']) ?>
-
-        <div class="btn-group" role="group">
-          <button id="encaissement" class="btn btn-success btn-lg">C'est pesé!</button>
-          <button id="impression" class="btn btn-primary btn-lg" value="Print" ><span class="glyphicon glyphicon-print"></span></button>
-          <button id="reset" class="btn btn-warning btn-lg"><span class="glyphicon glyphicon-refresh"></button>
-        </div>
+        <?= buttonCollectesSorties() ?>
       </div>
     </div> <!-- row -->
   </div> <!--container-->
@@ -105,53 +95,28 @@ if (is_valid_session() && is_allowed_collecte_id($numero)) {
       localites: <?= json_encode(filter_visibles(localites($bdd)), JSON_NUMERIC_CHECK); ?>,
     };
   </script>
+
   <script type="text/javascript">
     'use strict';
-
     document.addEventListener('DOMContentLoaded', () => {
       const numpad = new NumPad(document.getElementById('numpad'),
               window.OressourceEnv.conteneurs);
-      // Passer ticket en param aux evenements?
-      // object global attention!
-
       const typesItems = window.OressourceEnv.types_dechet;
-      const ticketsItem = new Ticket();
-      const pushItems = connection_UI_ticket(numpad, ticketsItem, typesItems);
+      const ticketItem = new Ticket();
+      const pushItems = connection_UI_ticket(numpad, ticketItem, typesItems);
 
-      const div_list_item = document.getElementById('list_item');
-      typesItems.forEach((item) => {
-        const button = html_saisie_item(item, pushItems);
-        div_list_item.appendChild(button);
-      });
+      fillItems(document.getElementById('list_item'), typesItems, pushItems);
+      fillSelect(document.getElementById('id_type_action'), window.OressourceEnv.types_action);
+      fillSelect(document.getElementById('localite'), window.OressourceEnv.localites);
 
-      const div_type_action = document.getElementById('id_type_action');
-      window.OressourceEnv.types_action.forEach((type_collecte) => {
-        const item = document.createElement('option');
-        item.value = type_collecte.id;
-        item.innerHTML = type_collecte.nom;
-        div_type_action.appendChild(item);
-      });
+      const encaisse = prepare_data({
+        items: ticketItem,
+      }, {classe: 'collecte'});
+      initUI('../api/collectes.php', encaisse);
 
-      const div_localite = document.getElementById('localite');
-      window.OressourceEnv.localites.forEach((localite) => {
-        const item = document.createElement('option');
-        item.value = localite.id;
-        item.innerHTML = localite.nom;
-        div_localite.appendChild(item);
-      });
-
-      const encaisse = make_encaissement('../api/collectes.php',
-              { items: ticketsItem },
-              { classe: 'collecte' });
-
-      document.getElementById('encaissement').addEventListener('click', encaisse, false);
-      document.getElementById('impression').addEventListener('click', impression_ticket, false);
-      document.getElementById('reset').addEventListener('click', tickets_clear, false);
-
-      window.tickets = [ ticketsItem ];
+      window.OressourceEnv.tickets = [ ticketItem ];
     }, false);
   </script>
-
   <?php
   include_once 'pied.php';
 } else {

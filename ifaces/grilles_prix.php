@@ -19,26 +19,25 @@
 
 session_start();
 
-require_once '../moteur/dbconfig.php';
 require_once '../core/requetes.php';
 require_once '../core/session.php';
-
-require_once '../core/validation.php'; // pour oui/non -> bool vis-versa
+require_once '../core/composants.php';
 
 $type_obj = filter_input(INPUT_GET, 'id_type_dechet', FILTER_VALIDATE_INT) ?? 1;
 
 if (is_valid_session() && is_allowed_gestion() && $type_obj !== false) {
-  require_once('tete.php');
+  require_once '../moteur/dbconfig.php';
 
   $type_dechets = types_dechets($bdd);
   $grille = objet_id_dechet($bdd, $type_obj);
+  require_once 'tete.php';
   ?>
 
   <div class="container">
     <h1>Grille des prix</h1>
     <ul class="nav nav-tabs">
       <?php foreach ($type_dechets as $type_dechet) { ?>
-        <li class="<?= ($type_obj === $type_dechet['id'] ? 'active' : ''); ?>">
+        <li class="<?= ($type_obj == $type_dechet['id'] ? 'active' : ''); ?>">
           <a href="grilles_prix.php?id_type_dechet=<?= $type_dechet['id']; ?>"><?= $type_dechet['nom']; ?></a>
         </li>
       <?php } ?>
@@ -97,14 +96,7 @@ if (is_valid_session() && is_allowed_gestion() && $type_obj !== false) {
                 <button class="btn btn-danger btn-sm ">Supprimer</button>
               </form>
             </td>
-
-            <td>
-              <form action="../moteur/objet_visible.php" method="post">
-                <input type="hidden" name="id" value="<?= $item['id']; ?>">
-                <input type="hidden" name="visible" value="<?= json_encode(!oui_non_to_bool($item['visible'])); ?>">
-                <button class="btn btn-sm <?= $item['visible'] === 'oui' ? 'btn-info' : 'btn-danger' ?>"><?= $item['visible']; ?></button>
-              </form>
-            </td>
+            <td><?= configBtnVisible(['url' => 'grille_objets', 'id' => $item['id'], 'visible' => $item['visible']]) ?></td>
 
             <td>
               <!-- TODO faire avec une infobulle JS -->

@@ -19,13 +19,48 @@
  */
 
 session_start();
-if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($_SESSION['niveau'], 'h') !== false)) {
+
+require_once '../core/session.php';
+
+if (is_valid_session() && is_allowed_verifications()) {
   require_once '../moteur/dbconfig.php';
-  $req = $bdd->prepare('UPDATE sorties SET id_type_sortie = :id_type_sortie,  id_last_hero = :id_last_hero,  commentaire = :commentaire, last_hero_timestamp = NOW()
-    WHERE id = :id');
-  $req->execute(['id_type_sortie' => $_POST['id_type_sortie'], 'id' => $_POST['id'], 'id_last_hero' => $_SESSION['id'], 'commentaire' => $_POST['commentaire']]);
+  $classe = $_POST['classe'];
+
+  $req = null;
+  $baseSql = 'id_last_hero = :id_last_hero, commentaire = :commentaire';
+  if ($classe === 'sortiesd') {
+    $req = $bdd->prepare("UPDATE sorties SET
+     $baseSql
+    WHERE id = :id");
+  } elseif ($classe === 'sortiesr') {
+    $req = $bdd->prepare("UPDATE sorties SET
+        id_filiere = :id_filiere,
+        $baseSql
+    WHERE id = :id");
+    $req->bindParam(':id_filiere', $_POST['id_meta'], PDO::PARAM_INT);
+  } elseif ($classe === 'sortiesp') {
+    $req = $bdd->prepare("UPDATE sorties SET $baseSql
+    WHERE id = :id");
+  } elseif ($classe === 'sorties') {
+    $req = $bdd->prepare("UPDATE sorties SET
+      id_type_sortie = :id_type_sortie, $baseSql
+    WHERE id = :id");
+    $req->bindParam(':id_type_sortie', $_POST['id_meta'], PDO::PARAM_INT);
+  } elseif ($classe === 'sortiesc') {
+    $req = $bdd->prepare("UPDATE sorties SET
+      id_convention = :id_convention,
+      $baseSql
+    WHERE id = :id");
+    $req->bindParam(':id_convention', $_POST['id_meta'], PDO::PARAM_INT);
+  }
+
+  $_POST['commentaire'] = $_POST['commentaire'] ?? '';
+  $req->bindParam(':id', $_POST['id'], PDO::PARAM_INT);
+  $req->bindParam(':commentaire', $_POST['commentaire'] , PDO::PARAM_STR);
+  $req->bindParam(':id_last_hero', $_SESSION['id'], PDO::PARAM_INT);
+  $req->execute();
   $req->closeCursor();
-  header('Location:../ifaces/verif_sorties.php?numero=' . $_POST['npoint'] . '&date1=' . $_POST['date1'] . '&date2=' . $_POST['date2']);
+  header('Location:../ifaces/modification_verif_sorties.php?id=' . (int) $_POST['id']);
 } else {
   header('Location:../moteur/destroy.php');
 }

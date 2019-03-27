@@ -19,19 +19,20 @@
  */
 
 session_start();
-if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($_SESSION['niveau'], 'g') !== false)) {
-  try {
-    include('dbconfig.php');
-  } catch (Exception $e) {
-    die('Erreur : ' . $e->getMessage());
-  }
 
-  $req = $bdd->prepare('UPDATE type_contenants SET nom = :nom,  description = :description,  masse_bac = :masse_bac,  couleur = :couleur  WHERE id = :id');
-  $req->execute(['nom' => $_POST['nom'], 'description' => $_POST['description'], 'masse_bac' => $_POST['masse_bac'], 'couleur' => $_POST['couleur'], 'id' => $_POST['id']]);
+require '../core/session.php';
 
+if (is_valid_session() && is_allowed_gestion()) {
+  require_once 'dbconfig.php';
+
+  $req = $bdd->prepare('UPDATE type_contenants SET nom = :nom, description = :description, masse = :masse, couleur = :couleur WHERE id = :id');
+  $req->bindParam(':id', $_POST['id'], PDO::PARAM_INT);
+  $req->bindParam(':masse', $_POST['masse'], PDO::PARAM_STR);
+  $req->bindParam(':nom', $_POST['nom'], PDO::PARAM_STR);
+  $req->bindParam(':description', $_POST['description'], PDO::PARAM_STR);
+  $req->bindParam(':couleur', $_POST['couleur'], PDO::PARAM_STR);
+  $req->execute();
   $req->closeCursor();
-
-
   header('Location:../ifaces/edition_types_contenants.php');
 } else {
   header('Location:../moteur/destroy.php');

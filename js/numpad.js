@@ -74,7 +74,7 @@ class NumPad {
         <button class="numkey btn btn-default btn-lg" onclick="number_write('9');" data-value="9">9</button>
       </div>
       <div class="numpad" role="group">
-        <button class="numkey btn btn-default btn-lg" onclick="number_clear;" data-value="C">C</button>
+        <button class="numkey btn btn-default btn-lg" onclick="number_clear();" data-value="C">C</button>
         <button class="numkey btn btn-default btn-lg" onclick="number_write('0');" data-value="0">0</button>
         <button class="numkey btn btn-default btn-lg" onclick="number_write('.');" data-value=".">,</button>
       </div>

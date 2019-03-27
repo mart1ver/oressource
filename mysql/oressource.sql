@@ -1,78 +1,103 @@
--- phpMyAdmin SQL Dump
--- version 4.0.10deb1
--- http://www.phpmyadmin.net
+-- MySQL dump 10.16  Distrib 10.1.29-MariaDB, for debian-linux-gnu (x86_64)
 --
--- Host: localhost
--- Generation Time: Mar 22, 2017 at 04:58 PM
--- Server version: 5.5.54-0ubuntu0.14.04.1
--- PHP Version: 5.5.9-1ubuntu4.20
-
-SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET time_zone = "+00:00";
-
+-- Host: localhost    Database: oressource2
+-- ------------------------------------------------------
+-- Server version	10.1.29-MariaDB-6
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
-
---
--- Database: `oressource_schema_vide`
---
-
--- --------------------------------------------------------
+/*!40101 SET NAMES utf8mb4 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
 -- Table structure for table `collectes`
 --
 
-CREATE TABLE IF NOT EXISTS `collectes` (
+DROP TABLE IF EXISTS `collectes`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `collectes` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `id_type_collecte` int(11) NOT NULL,
-  `adherent` text NOT NULL,
   `localisation` int(11) NOT NULL,
   `id_point_collecte` int(11) NOT NULL,
   `commentaire` text NOT NULL,
-  `id_createur` int(11) NOT NULL DEFAULT 0,
-  `id_last_hero` int(11) NOT NULL DEFAULT 0,
-  `last_hero_timestamp` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+  `id_createur` int(11) NOT NULL DEFAULT '0',
+  `id_last_hero` int(11) NOT NULL DEFAULT '0',
+  `last_hero_timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `FK_Collectes_TypeCollecte` (`id_type_collecte`),
+  KEY `FK_Collectes_PointCollectes` (`id_point_collecte`),
+  KEY `FK_Collectes_Localite` (`localisation`),
+  KEY `FK_Collectes_Createur` (`id_createur`),
+  KEY `FK_Collectes_Editeur` (`id_last_hero`),
+  CONSTRAINT `FK_Collectes_Createur` FOREIGN KEY (`id_createur`) REFERENCES `utilisateurs` (`id`),
+  CONSTRAINT `FK_Collectes_Editeur` FOREIGN KEY (`id_last_hero`) REFERENCES `utilisateurs` (`id`),
+  CONSTRAINT `FK_Collectes_Localite` FOREIGN KEY (`localisation`) REFERENCES `localites` (`id`),
+  CONSTRAINT `FK_Collectes_PointCollectes` FOREIGN KEY (`id_point_collecte`) REFERENCES `points_collecte` (`id`),
+  CONSTRAINT `FK_Collectes_TypeCollecte` FOREIGN KEY (`id_type_collecte`) REFERENCES `type_collecte` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
--- --------------------------------------------------------
+--
+-- Dumping data for table `collectes`
+--
+
+LOCK TABLES `collectes` WRITE;
+/*!40000 ALTER TABLE `collectes` DISABLE KEYS */;
+/*!40000 ALTER TABLE `collectes` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `conventions_sorties`
 --
 
-CREATE TABLE IF NOT EXISTS `conventions_sorties` (
+DROP TABLE IF EXISTS `conventions_sorties`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `conventions_sorties` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `nom` text NOT NULL,
   `description` text NOT NULL,
   `couleur` text NOT NULL,
-  `visible` text NOT NULL,
-  `id_createur` int(11) NOT NULL DEFAULT 0,
-  `id_last_hero` int(11) NOT NULL DEFAULT 0,
-  `last_hero_timestamp` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+  `visible` tinyint(1) NOT NULL DEFAULT '1',
+  `id_createur` int(11) NOT NULL DEFAULT '0',
+  `id_last_hero` int(11) NOT NULL DEFAULT '0',
+  `last_hero_timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `UN_ConvSortie_nom` (`nom`(255)),
+  KEY `FK_ConvSortie_Createur` (`id_createur`),
+  KEY `FK_ConvSortie_Editeur` (`id_last_hero`),
+  CONSTRAINT `FK_ConvSortie_Createur` FOREIGN KEY (`id_createur`) REFERENCES `utilisateurs` (`id`),
+  CONSTRAINT `FK_ConvSortie_Editeur` FOREIGN KEY (`id_last_hero`) REFERENCES `utilisateurs` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `conventions_sorties`
 --
 
-INSERT INTO `conventions_sorties` (`id`, `timestamp`, `nom`, `description`, `couleur`, `visible`, `id_createur`, `id_last_hero`, `last_hero_timestamp`) VALUES
-(1, '2014-07-10 13:28:10', 'la maison de la plage', 'mozaiques', '#828fe4', 'non', 0, 0, '0000-00-00 00:00:00');
-
--- --------------------------------------------------------
+LOCK TABLES `conventions_sorties` WRITE;
+/*!40000 ALTER TABLE `conventions_sorties` DISABLE KEYS */;
+/*!40000 ALTER TABLE `conventions_sorties` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `description_structure`
 --
 
-CREATE TABLE IF NOT EXISTS `description_structure` (
+DROP TABLE IF EXISTS `description_structure`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `description_structure` (
   `id` int(11) NOT NULL,
   `session_timeout` int(11) NOT NULL,
   `nom` text NOT NULL,
@@ -81,557 +106,640 @@ CREATE TABLE IF NOT EXISTS `description_structure` (
   `siret` text NOT NULL,
   `telephone` text NOT NULL,
   `mail` text NOT NULL,
-  `id_localite` text NOT NULL,
+  `id_localite` int(11) NOT NULL DEFAULT '1',
   `texte_adhesion` text NOT NULL,
-  `taux_tva` text NOT NULL,
-  `tva_active` text NOT NULL,
-  `id_createur` int(11) NOT NULL DEFAULT 0,
-  `id_last_hero` int(11) NOT NULL DEFAULT 0,
+  `taux_tva` decimal(10,0) NOT NULL DEFAULT '0',
+  `tva_active` tinyint(1) NOT NULL DEFAULT '1',
+  `id_createur` int(11) NOT NULL DEFAULT '0',
+  `id_last_hero` int(11) NOT NULL DEFAULT '0',
   `last_hero_timestamp` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
   `cr` int(11) NOT NULL,
-  `lot` text NOT NULL,
-  `viz` text NOT NULL,
+  `lot` tinyint(1) NOT NULL DEFAULT '1',
+  `viz` tinyint(1) NOT NULL DEFAULT '1',
   `nb_viz` int(11) NOT NULL,
-  `saisiec` text NOT NULL,
-  `affsp` text NOT NULL,
-  `affss` text NOT NULL,
-  `affsr` text NOT NULL,
-  `affsd` text NOT NULL,
-  `affsde` text NOT NULL,
-  `pes_vente` text NOT NULL,
-  `force_pes_vente` text NOT NULL,
+  `saisiec` tinyint(1) NOT NULL DEFAULT '1',
+  `affsp` tinyint(1) NOT NULL DEFAULT '1',
+  `affss` tinyint(1) NOT NULL DEFAULT '1',
+  `affsr` tinyint(1) NOT NULL DEFAULT '1',
+  `affsd` tinyint(1) NOT NULL DEFAULT '1',
+  `affsde` tinyint(1) NOT NULL DEFAULT '1',
+  `pes_vente` tinyint(1) NOT NULL DEFAULT '1',
+  `force_pes_vente` tinyint(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `description_structure`
 --
 
-INSERT INTO `description_structure` (`id`, `session_timeout`, `nom`, `adresse`, `description`, `siret`, `telephone`, `mail`, `id_localite`, `texte_adhesion`, `taux_tva`, `tva_active`, `id_createur`, `id_last_hero`, `last_hero_timestamp`, `cr`, `lot`, `viz`, `nb_viz`, `saisiec`, `affsp`, `affss`, `affsr`, `affsd`, `affsde`, `pes_vente`, `force_pes_vente`) VALUES
-(1, 30, 'La petite rockette', '125 rue du chemin vert', 'la petite rockette est une asso cool', '508 822 475 00010', '0155286118', 'lapetiterockette@gmail.com', '1', '', '10', 'non', 0, 0, '2017-03-22 15:30:32', 3216, 'oui', 'oui', 30, 'oui', 'oui', 'oui', 'oui', 'oui', 'oui', 'oui', 'non');
-
--- --------------------------------------------------------
+LOCK TABLES `description_structure` WRITE;
+/*!40000 ALTER TABLE `description_structure` DISABLE KEYS */;
+INSERT INTO `description_structure` VALUES (1,30,'La petite rockette','125 rue du chemin vert','la petite rockette est une asso cool','508 822 475 00010','0155286118','lapetiterockette@gmail.com',1,'',10,0,1,1,'2018-01-03 22:43:44',3216,1,1,30,1,1,1,1,1,1,1,0);
+/*!40000 ALTER TABLE `description_structure` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `filieres_sortie`
 --
 
-CREATE TABLE IF NOT EXISTS `filieres_sortie` (
+DROP TABLE IF EXISTS `filieres_sortie`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `filieres_sortie` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `nom` text NOT NULL,
   `id_type_dechet_evac` text NOT NULL,
   `couleur` text NOT NULL,
   `description` text NOT NULL,
-  `visible` text NOT NULL,
-  `id_createur` int(11) NOT NULL DEFAULT 0,
-  `id_last_hero` int(11) NOT NULL DEFAULT 0,
-  `last_hero_timestamp` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+  `visible` tinyint(1) NOT NULL DEFAULT '1',
+  `id_createur` int(11) NOT NULL DEFAULT '0',
+  `id_last_hero` int(11) NOT NULL DEFAULT '0',
+  `last_hero_timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `UN_FilieresSortie_nom` (`nom`(255)),
+  KEY `FK_FiliereSortie_Createur` (`id_createur`),
+  KEY `FK_FiliereSortie_Editeur` (`id_last_hero`),
+  CONSTRAINT `FK_FiliereSortie_Createur` FOREIGN KEY (`id_createur`) REFERENCES `utilisateurs` (`id`),
+  CONSTRAINT `FK_FiliereSortie_Editeur` FOREIGN KEY (`id_last_hero`) REFERENCES `utilisateurs` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `filieres_sortie`
 --
 
-INSERT INTO `filieres_sortie` (`id`, `timestamp`, `nom`, `id_type_dechet_evac`, `couleur`, `description`, `visible`, `id_createur`, `id_last_hero`, `last_hero_timestamp`) VALUES
-(1, '2014-07-10 13:54:43', 'recycle livre', 'a1a2', '#a77a37', 'ramasse livre', 'oui', 0, 0, '0000-00-00 00:00:00');
-
--- --------------------------------------------------------
+LOCK TABLES `filieres_sortie` WRITE;
+/*!40000 ALTER TABLE `filieres_sortie` DISABLE KEYS */;
+/*!40000 ALTER TABLE `filieres_sortie` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `grille_objets`
 --
 
-CREATE TABLE IF NOT EXISTS `grille_objets` (
+DROP TABLE IF EXISTS `grille_objets`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `grille_objets` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `nom` text NOT NULL,
   `description` text NOT NULL,
   `id_type_dechet` int(11) NOT NULL,
-  `visible` text NOT NULL,
-  `prix` text NOT NULL,
-  `id_createur` int(11) NOT NULL DEFAULT 0,
-  `id_last_hero` int(11) NOT NULL DEFAULT 0,
-  `last_hero_timestamp` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=47 ;
+  `visible` tinyint(1) NOT NULL DEFAULT '1',
+  `prix` decimal(10,0) NOT NULL DEFAULT '0',
+  `id_createur` int(11) NOT NULL DEFAULT '0',
+  `id_last_hero` int(11) NOT NULL DEFAULT '0',
+  `last_hero_timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `UN_GrilleObjets_nom` (`nom`(255)),
+  KEY `FK_GrilleObjet_TypeDechet` (`id_type_dechet`),
+  KEY `FK_GrilleObjet_Createur` (`id_createur`),
+  KEY `FK_GrilleObjet_Editeur` (`id_last_hero`),
+  CONSTRAINT `FK_GrilleObjet_Createur` FOREIGN KEY (`id_createur`) REFERENCES `utilisateurs` (`id`),
+  CONSTRAINT `FK_GrilleObjet_Editeur` FOREIGN KEY (`id_last_hero`) REFERENCES `utilisateurs` (`id`),
+  CONSTRAINT `FK_GrilleObjet_TypeDechet` FOREIGN KEY (`id_type_dechet`) REFERENCES `type_dechets` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=43 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `grille_objets`
 --
 
-INSERT INTO `grille_objets` (`id`, `timestamp`, `nom`, `description`, `id_type_dechet`, `visible`, `prix`, `id_createur`, `id_last_hero`, `last_hero_timestamp`) VALUES
-(1, '2014-08-07 13:49:49', 'T-shirt, haut', 'T-shirts et hauts en touts genres', 3, 'oui', '1.5', 0, 0, '0000-00-00 00:00:00'),
-(2, '2014-08-07 14:17:10', 'tv', 'televsion', 1, 'oui', '10', 0, 0, '0000-00-00 00:00:00'),
-(3, '2014-08-07 14:49:46', 'lecteur vhs ', 'lecteur vhs ', 1, 'oui', '5', 0, 0, '0000-00-00 00:00:00'),
-(4, '2014-08-07 14:51:28', 'lecteur dvd', 'lecteur dvd ', 1, 'oui', '5', 0, 0, '0000-00-00 00:00:00'),
-(6, '2014-08-07 14:53:58', 'four micro ondes', 'four', 1, 'oui', '5', 0, 0, '0000-00-00 00:00:00'),
-(7, '2014-08-07 14:54:49', 'étagere billy', 'ikea valeur neuf = ', 2, 'non', '5', 0, 0, '0000-00-00 00:00:00'),
-(8, '2014-08-07 14:55:49', 'puzzle', 'puzzle', 4, 'oui', '1.5', 0, 0, '0000-00-00 00:00:00'),
-(9, '2014-08-07 14:57:03', 'clavier', 'clavier', 5, 'oui', '2', 0, 0, '0000-00-00 00:00:00'),
-(10, '2014-08-07 14:57:18', 'bol', 'bol', 6, 'oui', '0.5', 0, 0, '0000-00-00 00:00:00'),
-(11, '2014-08-07 14:58:51', 'assiette', 'assiette', 6, 'oui', '0.25', 0, 0, '0000-00-00 00:00:00'),
-(12, '2014-08-07 15:02:15', 'bd', 'BD', 7, 'oui', '0.1', 0, 0, '0000-00-00 00:00:00'),
-(13, '2014-08-07 15:02:40', 'polars', 'polars', 7, 'oui', '0.1', 0, 0, '0000-00-00 00:00:00'),
-(14, '2014-08-07 15:03:14', 'vinyle', 'vinyle', 8, 'oui', '0.1', 0, 0, '0000-00-00 00:00:00'),
-(15, '2014-08-07 15:03:28', 'dvd', 'dvd', 8, 'oui', '0.1', 0, 0, '0000-00-00 00:00:00'),
-(16, '2014-08-07 15:03:38', 'vhs', 'vhs', 8, 'oui', '0.1', 0, 0, '0000-00-00 00:00:00'),
-(17, '2014-08-07 15:03:52', 'K7 audio', 'K7 audio', 8, 'oui', '0.1', 0, 0, '0000-00-00 00:00:00'),
-(18, '2014-08-07 15:04:07', 'cadres', 'cadres', 9, 'non', '1', 0, 0, '0000-00-00 00:00:00'),
-(19, '2014-08-07 15:04:37', 'bouteille de gaz', 'heuu...', 10, 'oui', '51', 0, 0, '0000-00-00 00:00:00'),
-(21, '2014-08-12 13:17:05', 'chaise pliante', 'chaise pliante', 2, 'non', '5', 0, 0, '0000-00-00 00:00:00'),
-(22, '2014-09-08 15:21:55', 'pantalon', 'pantalons toutes marques confondues', 3, 'oui', '3', 0, 0, '0000-00-00 00:00:00'),
-(23, '2014-09-09 14:25:50', 'grille pain', 'grille pain', 1, 'oui', '5', 0, 0, '0000-00-00 00:00:00'),
-(24, '2014-10-02 12:36:59', 'chemise', 'chemises en tout genre', 3, 'oui', '3', 0, 0, '0000-00-00 00:00:00'),
-(25, '2014-10-02 12:37:11', 'veste', 'vestes', 3, 'oui', '3', 0, 0, '0000-00-00 00:00:00'),
-(26, '2014-10-02 12:37:31', 'debardeur', 'debardeurs', 3, 'oui', '1', 0, 0, '0000-00-00 00:00:00'),
-(27, '2014-10-02 12:38:00', 'soutien gorge', 'soutien gorges', 3, 'oui', '2', 0, 0, '0000-00-00 00:00:00'),
-(28, '2014-10-02 12:38:13', 'culotte', 'culottes', 3, 'oui', '1', 0, 0, '0000-00-00 00:00:00'),
-(29, '2014-10-02 12:38:27', 'manteau', 'manteaux', 3, 'oui', '5', 0, 0, '0000-00-00 00:00:00'),
-(30, '2014-10-02 12:38:47', 'vétement enfant', 'vetements enfants', 3, 'oui', '1.5', 0, 0, '0000-00-00 00:00:00'),
-(31, '2014-10-02 12:39:02', 'manteau enfant', 'manteau enfant', 3, 'oui', '3', 0, 0, '0000-00-00 00:00:00'),
-(32, '2014-10-02 12:39:24', 'sous vet. enfant', 'sous vet. enfant', 3, 'oui', '1.5', 0, 0, '0000-00-00 00:00:00'),
-(33, '2014-10-02 12:39:56', 'linge de maison', 'linge de maison en tout genre', 3, 'oui', '1.5', 0, 0, '0000-00-00 00:00:00'),
-(34, '2014-10-02 12:40:07', 'sac à  main', 'sac à main', 3, 'oui', '3', 0, 0, '0000-00-00 00:00:00'),
-(35, '2014-10-02 12:40:21', 'pochette', 'pochettes', 3, 'oui', '1.5', 0, 0, '0000-00-00 00:00:00'),
-(36, '2014-10-02 12:40:35', 'cravatte', 'cravattes', 3, 'oui', '0.5', 0, 0, '0000-00-00 00:00:00'),
-(37, '2014-10-02 12:40:49', 'echarpe', 'echarpes ', 3, 'oui', '1', 0, 0, '0000-00-00 00:00:00'),
-(38, '2014-10-02 12:41:06', 'paire de gants', 'paires de gants', 3, 'oui', '1', 0, 0, '0000-00-00 00:00:00'),
-(40, '2015-02-26 11:44:08', 'papeterie ', 'papeterie', 9, 'non', '0', 0, 0, '0000-00-00 00:00:00'),
-(41, '2015-03-09 09:50:55', 'Chaise Collecterie', 'Chaise Collecterie', 10, 'oui', '85', 0, 0, '0000-00-00 00:00:00'),
-(42, '2015-03-09 13:46:35', 'Ordinateur Tour', 'Complet avec clavier & Souris', 5, 'oui', '80', 0, 0, '0000-00-00 00:00:00'),
-(43, '2016-06-06 14:09:18', 'sudoku électronique ', 'sudoku électronique ', 1, 'oui', '0', 0, 0, '0000-00-00 00:00:00'),
-(44, '2016-11-24 11:50:13', 'lot 6 verres', 'lot 6 verres', 6, 'oui', '2', 0, 0, '0000-00-00 00:00:00'),
-(45, '2017-01-23 17:46:18', 'Cuilleres', '1 lot de 12', 9, 'oui', '1', 0, 0, '0000-00-00 00:00:00');
-
--- --------------------------------------------------------
+LOCK TABLES `grille_objets` WRITE;
+/*!40000 ALTER TABLE `grille_objets` DISABLE KEYS */;
+INSERT INTO `grille_objets` VALUES (1,'2018-01-03 22:43:21','T-shirt, haut','T-shirts et hauts en touts genres',3,1,2,1,1,'2018-01-03 22:43:33'),(2,'2018-01-03 22:43:21','tv','televsion',1,1,10,1,1,'2018-01-03 22:43:33'),(3,'2018-01-03 22:43:21','lecteur vhs','lecteur vhs ',1,1,5,1,1,'2018-01-03 22:43:33'),(4,'2018-01-03 22:43:21','lecteur dvd','lecteur dvd ',1,1,5,1,1,'2018-01-03 22:43:33'),(5,'2018-01-03 22:43:21','four micro ondes','four',1,1,5,1,1,'2018-01-03 22:43:33'),(6,'2018-01-03 22:43:21','étagere billy','ikea valeur neuf = ',2,0,5,1,1,'2018-01-03 22:43:33'),(7,'2018-01-03 22:43:21','puzzle','puzzle',4,1,2,1,1,'2018-01-03 22:43:33'),(8,'2018-01-03 22:43:21','clavier','clavier',5,1,2,1,1,'2018-01-03 22:43:33'),(9,'2018-01-03 22:43:21','bol','bol',6,1,1,1,1,'2018-01-03 22:43:33'),(10,'2018-01-03 22:43:21','assiette','assiette',6,1,0,1,1,'2018-01-03 22:43:33'),(11,'2018-01-03 22:43:21','bd','BD',7,1,0,1,1,'2018-01-03 22:43:33'),(12,'2018-01-03 22:43:21','polars','polars',7,1,0,1,1,'2018-01-03 22:43:33'),(13,'2018-01-03 22:43:21','vinyle','vinyle',8,1,0,1,1,'2018-01-03 22:43:33'),(14,'2018-01-03 22:43:21','dvd','dvd',8,1,0,1,1,'2018-01-03 22:43:33'),(15,'2018-01-03 22:43:21','vhs','vhs',8,1,0,1,1,'2018-01-03 22:43:33'),(16,'2018-01-03 22:43:21','K7 audio','K7 audio',8,1,0,1,1,'2018-01-03 22:43:33'),(17,'2018-01-03 22:43:21','cadres','cadres',9,0,1,1,1,'2018-01-03 22:43:33'),(18,'2018-01-03 22:43:21','bouteille de gaz','heuu...',10,1,51,1,1,'2018-01-03 22:43:33'),(19,'2018-01-03 22:43:21','chaise pliante','chaise pliante',2,0,5,1,1,'2018-01-03 22:43:33'),(20,'2018-01-03 22:43:21','pantalon','pantalons toutes marques confondues',3,1,3,1,1,'2018-01-03 22:43:33'),(21,'2018-01-03 22:43:21','grille pain','grille pain',1,1,5,1,1,'2018-01-03 22:43:33'),(22,'2018-01-03 22:43:21','chemise','chemises en tout genre',3,1,3,1,1,'2018-01-03 22:43:33'),(23,'2018-01-03 22:43:21','veste','vestes',3,1,3,1,1,'2018-01-03 22:43:33'),(24,'2018-01-03 22:43:21','debardeur','debardeurs',3,1,1,1,1,'2018-01-03 22:43:33'),(25,'2018-01-03 22:43:21','soutien gorge','soutien gorges',3,1,2,1,1,'2018-01-03 22:43:33'),(26,'2018-01-03 22:43:21','culotte','culottes',3,1,1,1,1,'2018-01-03 22:43:33'),(27,'2018-01-03 22:43:21','manteau','manteaux',3,1,5,1,1,'2018-01-03 22:43:33'),(28,'2018-01-03 22:43:21','vétement enfant','vetements enfants',3,1,2,1,1,'2018-01-03 22:43:33'),(29,'2018-01-03 22:43:21','manteau enfant','manteau enfant',3,1,3,1,1,'2018-01-03 22:43:33'),(30,'2018-01-03 22:43:21','sous vet. enfant','sous vet. enfant',3,1,2,1,1,'2018-01-03 22:43:33'),(31,'2018-01-03 22:43:21','linge de maison','linge de maison en tout genre',3,1,2,1,1,'2018-01-03 22:43:33'),(32,'2018-01-03 22:43:21','sac à  main','sac à main',3,1,3,1,1,'2018-01-03 22:43:33'),(33,'2018-01-03 22:43:21','pochette','pochettes',3,1,2,1,1,'2018-01-03 22:43:33'),(34,'2018-01-03 22:43:21','cravatte','cravattes',3,1,1,1,1,'2018-01-03 22:43:33'),(35,'2018-01-03 22:43:21','echarpe','echarpes ',3,1,1,1,1,'2018-01-03 22:43:33'),(36,'2018-01-03 22:43:21','paire de gants','paires de gants',3,1,1,1,1,'2018-01-03 22:43:33'),(37,'2018-01-03 22:43:21','papeterie ','papeterie',9,0,0,1,1,'2018-01-03 22:43:33'),(38,'2018-01-03 22:43:21','Chaise Collecterie','Chaise Collecterie',10,1,85,1,1,'2018-01-03 22:43:33'),(39,'2018-01-03 22:43:21','Ordinateur Tour','Complet avec clavier & Souris',5,1,80,1,1,'2018-01-03 22:43:33'),(40,'2018-01-03 22:43:21','sudoku électronique ','sudoku électronique ',1,1,0,1,1,'2018-01-03 22:43:33'),(41,'2018-01-03 22:43:21','lot 6 verres','lot 6 verres',6,1,2,1,1,'2018-01-03 22:43:33'),(42,'2018-01-03 22:43:21','Cuilleres','1 lot de 12',9,1,1,1,1,'2018-01-03 22:43:33');
+/*!40000 ALTER TABLE `grille_objets` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `localites`
 --
 
-CREATE TABLE IF NOT EXISTS `localites` (
+DROP TABLE IF EXISTS `localites`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `localites` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `nom` text NOT NULL,
   `couleur` text NOT NULL,
   `relation_openstreetmap` text NOT NULL,
   `commentaire` text NOT NULL,
-  `visible` text NOT NULL,
-  `id_createur` int(11) NOT NULL DEFAULT 0,
-  `id_last_hero` int(11) NOT NULL DEFAULT 0,
-  `last_hero_timestamp` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+  `visible` tinyint(1) NOT NULL DEFAULT '1',
+  `id_createur` int(11) NOT NULL DEFAULT '0',
+  `id_last_hero` int(11) NOT NULL DEFAULT '0',
+  `last_hero_timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `UN_localites_nom` (`nom`(255)),
+  KEY `FK_Localite_Createur` (`id_createur`),
+  KEY `FK_Localite_Editeur` (`id_last_hero`),
+  CONSTRAINT `FK_Localite_Createur` FOREIGN KEY (`id_createur`) REFERENCES `utilisateurs` (`id`),
+  CONSTRAINT `FK_Localite_Editeur` FOREIGN KEY (`id_last_hero`) REFERENCES `utilisateurs` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `localites`
 --
 
-INSERT INTO `localites` (`id`, `timestamp`, `nom`, `couleur`, `relation_openstreetmap`, `commentaire`, `visible`, `id_createur`, `id_last_hero`, `last_hero_timestamp`) VALUES
-(1, '2014-06-15 16:56:47', 'Quartier', '#89cc58', 'http://www.openstreetmap.org/relation/9533', 'quartier rockette chemin vert', 'oui', 0, 0, '0000-00-00 00:00:00');
-
--- --------------------------------------------------------
+LOCK TABLES `localites` WRITE;
+/*!40000 ALTER TABLE `localites` DISABLE KEYS */;
+/*!40000 ALTER TABLE `localites` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `moyens_paiement`
 --
 
-CREATE TABLE IF NOT EXISTS `moyens_paiement` (
+DROP TABLE IF EXISTS `moyens_paiement`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `moyens_paiement` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `nom` text NOT NULL,
   `description` text NOT NULL,
   `couleur` text NOT NULL,
-  `visible` text NOT NULL,
-  `id_createur` int(11) NOT NULL DEFAULT 0,
-  `id_last_hero` int(11) NOT NULL DEFAULT 0,
-  `last_hero_timestamp` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
+  `visible` tinyint(1) NOT NULL DEFAULT '1',
+  `id_createur` int(11) NOT NULL DEFAULT '0',
+  `id_last_hero` int(11) NOT NULL DEFAULT '0',
+  `last_hero_timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `UN_MoyensPaiement_nom` (`nom`(255)),
+  KEY `FK_MoyensPaiment_Createur` (`id_createur`),
+  KEY `FK_MoyensPaiment_Editeur` (`id_last_hero`),
+  CONSTRAINT `FK_MoyensPaiment_Createur` FOREIGN KEY (`id_createur`) REFERENCES `utilisateurs` (`id`),
+  CONSTRAINT `FK_MoyensPaiment_Editeur` FOREIGN KEY (`id_last_hero`) REFERENCES `utilisateurs` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `moyens_paiement`
 --
 
-INSERT INTO `moyens_paiement` (`id`, `timestamp`, `nom`, `description`, `couleur`, `visible`, `id_createur`, `id_last_hero`, `last_hero_timestamp`) VALUES
-(1, '2014-11-28 23:14:25', 'Especes', 'billet et pieces ', '#732121', 'oui', 0, 0, '0000-00-00 00:00:00'),
-(2, '2014-11-28 23:16:30', 'Cheque', 'cheques', '#c0c0c0', 'oui', 0, 0, '0000-00-00 00:00:00'),
-(3, '2015-03-09 13:44:13', 'Carte Bleue', 'Carte Bleue', '#0000ff', 'oui', 0, 0, '0000-00-00 00:00:00');
-
--- --------------------------------------------------------
+LOCK TABLES `moyens_paiement` WRITE;
+/*!40000 ALTER TABLE `moyens_paiement` DISABLE KEYS */;
+INSERT INTO `moyens_paiement` VALUES (1,'2018-01-03 22:43:22','Especes','billet et pieces ','#732121',1,1,1,'2018-01-03 22:43:30'),(2,'2018-01-03 22:43:22','Cheque','cheques','#c0c0c0',1,1,1,'2018-01-03 22:43:30'),(3,'2018-01-03 22:43:22','Carte Bleue','Carte Bleue','#0000ff',1,1,1,'2018-01-03 22:43:30');
+/*!40000 ALTER TABLE `moyens_paiement` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `pesees_collectes`
 --
 
-CREATE TABLE IF NOT EXISTS `pesees_collectes` (
+DROP TABLE IF EXISTS `pesees_collectes`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `pesees_collectes` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `masse` decimal(11,3) NOT NULL,
   `id_collecte` int(11) NOT NULL,
   `id_type_dechet` int(11) NOT NULL,
-  `id_createur` int(11) NOT NULL DEFAULT 0,
-  `id_last_hero` int(11) NOT NULL DEFAULT 0,
-  `last_hero_timestamp` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+  `id_createur` int(11) NOT NULL DEFAULT '0',
+  `id_last_hero` int(11) NOT NULL DEFAULT '0',
+  `last_hero_timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `FK_PeseesCollectes_Collectes` (`id_collecte`),
+  KEY `FK_PeseesCollectes_TypeDechet` (`id_type_dechet`),
+  KEY `FK_PeseesCollectes_Createur` (`id_createur`),
+  KEY `FK_PeseesCollectes_Editeur` (`id_last_hero`),
+  CONSTRAINT `FK_PeseesCollectes_Collectes` FOREIGN KEY (`id_collecte`) REFERENCES `collectes` (`id`),
+  CONSTRAINT `FK_PeseesCollectes_Createur` FOREIGN KEY (`id_createur`) REFERENCES `utilisateurs` (`id`),
+  CONSTRAINT `FK_PeseesCollectes_Editeur` FOREIGN KEY (`id_last_hero`) REFERENCES `utilisateurs` (`id`),
+  CONSTRAINT `FK_PeseesCollectes_TypeDechet` FOREIGN KEY (`id_type_dechet`) REFERENCES `type_dechets` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
--- --------------------------------------------------------
+--
+-- Dumping data for table `pesees_collectes`
+--
+
+LOCK TABLES `pesees_collectes` WRITE;
+/*!40000 ALTER TABLE `pesees_collectes` DISABLE KEYS */;
+/*!40000 ALTER TABLE `pesees_collectes` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `pesees_sorties`
 --
 
-CREATE TABLE IF NOT EXISTS `pesees_sorties` (
+DROP TABLE IF EXISTS `pesees_sorties`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `pesees_sorties` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `masse` decimal(7,3) NOT NULL,
   `id_sortie` int(11) NOT NULL,
-  `id_type_dechet` int(11) NOT NULL,
-  `id_type_poubelle` int(11) NOT NULL,
-  `id_type_dechet_evac` int(11) NOT NULL,
-  `id_createur` int(11) NOT NULL DEFAULT 0,
-  `id_last_hero` int(11) NOT NULL DEFAULT 0,
-  `last_hero_timestamp` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+  `id_type_dechet` int(11) DEFAULT '0',
+  `id_type_poubelle` int(11) DEFAULT '0',
+  `id_type_dechet_evac` int(11) DEFAULT '0',
+  `id_createur` int(11) NOT NULL DEFAULT '0',
+  `id_last_hero` int(11) NOT NULL DEFAULT '0',
+  `last_hero_timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `FK_PeseesSorties_Sorties` (`id_sortie`),
+  KEY `FK_PeseesSorties_TypeDechets` (`id_type_dechet`),
+  KEY `FK_PeseesSorties_TypePoubelles` (`id_type_poubelle`),
+  KEY `FK_PeseesSorties_TypeDechetEvac` (`id_type_dechet_evac`),
+  KEY `FK_PeseesSorties_Createur` (`id_createur`),
+  KEY `FK_PeseesSorties_Editeur` (`id_last_hero`),
+  CONSTRAINT `FK_PeseesSorties_Createur` FOREIGN KEY (`id_createur`) REFERENCES `utilisateurs` (`id`),
+  CONSTRAINT `FK_PeseesSorties_Editeur` FOREIGN KEY (`id_last_hero`) REFERENCES `utilisateurs` (`id`),
+  CONSTRAINT `FK_PeseesSorties_Sorties` FOREIGN KEY (`id_sortie`) REFERENCES `sorties` (`id`),
+  CONSTRAINT `FK_PeseesSorties_TypeDechetEvac` FOREIGN KEY (`id_type_dechet_evac`) REFERENCES `type_dechets_evac` (`id`),
+  CONSTRAINT `FK_PeseesSorties_TypeDechets` FOREIGN KEY (`id_type_dechet`) REFERENCES `type_dechets` (`id`),
+  CONSTRAINT `FK_PeseesSorties_TypePoubelles` FOREIGN KEY (`id_type_poubelle`) REFERENCES `types_poubelles` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
--- --------------------------------------------------------
+--
+-- Dumping data for table `pesees_sorties`
+--
+
+LOCK TABLES `pesees_sorties` WRITE;
+/*!40000 ALTER TABLE `pesees_sorties` DISABLE KEYS */;
+/*!40000 ALTER TABLE `pesees_sorties` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `pesees_vendus`
 --
 
-CREATE TABLE IF NOT EXISTS `pesees_vendus` (
+DROP TABLE IF EXISTS `pesees_vendus`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `pesees_vendus` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `masse` decimal(11,3) NOT NULL,
   `quantite` int(11) NOT NULL,
-  `id_vendu` int(11) NOT NULL,
-  `id_createur` int(11) NOT NULL DEFAULT 0,
-  `id_last_hero` int(11) NOT NULL DEFAULT 0,
-  `last_hero_timestamp` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+  `id_createur` int(11) NOT NULL DEFAULT '0',
+  `id_last_hero` int(11) NOT NULL DEFAULT '0',
+  `last_hero_timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `FK_PeseesVendus_Createur` (`id_createur`),
+  KEY `FK_PeseesVendus_Editeur` (`id_last_hero`),
+  CONSTRAINT `FK_PeseesVendus_Createur` FOREIGN KEY (`id_createur`) REFERENCES `utilisateurs` (`id`),
+  CONSTRAINT `FK_PeseesVendus_Editeur` FOREIGN KEY (`id_last_hero`) REFERENCES `utilisateurs` (`id`),
+  CONSTRAINT `FK_PeseesVendus_Vendus` FOREIGN KEY (`id`) REFERENCES `vendus` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
--- --------------------------------------------------------
+--
+-- Dumping data for table `pesees_vendus`
+--
+
+LOCK TABLES `pesees_vendus` WRITE;
+/*!40000 ALTER TABLE `pesees_vendus` DISABLE KEYS */;
+/*!40000 ALTER TABLE `pesees_vendus` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `points_collecte`
 --
 
-CREATE TABLE IF NOT EXISTS `points_collecte` (
+DROP TABLE IF EXISTS `points_collecte`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `points_collecte` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `nom` text NOT NULL,
   `adresse` text NOT NULL,
   `couleur` text NOT NULL,
   `commentaire` text NOT NULL,
-  `pesee_max` text NOT NULL,
-  `visible` text NOT NULL,
-  `id_createur` int(11) NOT NULL DEFAULT 0,
-  `id_last_hero` int(11) NOT NULL DEFAULT 0,
-  `last_hero_timestamp` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+  `pesee_max` decimal(10,0) NOT NULL DEFAULT '0',
+  `visible` tinyint(1) NOT NULL DEFAULT '1',
+  `id_createur` int(11) NOT NULL DEFAULT '0',
+  `id_last_hero` int(11) NOT NULL DEFAULT '0',
+  `last_hero_timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `UN_PointsSortie_nom` (`nom`(255)),
+  KEY `FK_PointCollecte_Createur` (`id_createur`),
+  KEY `FK_PointCollecte_Editeur` (`id_last_hero`),
+  CONSTRAINT `FK_PointCollecte_Createur` FOREIGN KEY (`id_createur`) REFERENCES `utilisateurs` (`id`),
+  CONSTRAINT `FK_PointCollecte_Editeur` FOREIGN KEY (`id_last_hero`) REFERENCES `utilisateurs` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `points_collecte`
 --
 
-INSERT INTO `points_collecte` (`id`, `timestamp`, `nom`, `adresse`, `couleur`, `commentaire`, `pesee_max`, `visible`, `id_createur`, `id_last_hero`, `last_hero_timestamp`) VALUES
-(1, '2014-04-08 18:06:36', 'Point de collecte en boutique ', '125 rue du chemin vert', '#d13232', 'point de collecte de la roro', '700', 'oui', 0, 0, '0000-00-00 00:00:00');
-
--- --------------------------------------------------------
+LOCK TABLES `points_collecte` WRITE;
+/*!40000 ALTER TABLE `points_collecte` DISABLE KEYS */;
+/*!40000 ALTER TABLE `points_collecte` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `points_sortie`
 --
 
-CREATE TABLE IF NOT EXISTS `points_sortie` (
+DROP TABLE IF EXISTS `points_sortie`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `points_sortie` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `nom` text NOT NULL,
   `adresse` text NOT NULL,
   `couleur` text NOT NULL,
   `commentaire` text NOT NULL,
-  `pesee_max` text NOT NULL,
-  `visible` text NOT NULL,
-  `id_createur` int(11) NOT NULL DEFAULT 0,
-  `id_last_hero` int(11) NOT NULL DEFAULT 0,
-  `last_hero_timestamp` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+  `pesee_max` decimal(10,0) NOT NULL DEFAULT '0',
+  `visible` tinyint(1) NOT NULL DEFAULT '1',
+  `id_createur` int(11) NOT NULL DEFAULT '0',
+  `id_last_hero` int(11) NOT NULL DEFAULT '0',
+  `last_hero_timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `UN_PointsCollecte_nom` (`nom`(255)),
+  KEY `FK_PointSortie_Createur` (`id_createur`),
+  KEY `FK_PointSortie_Editeur` (`id_last_hero`),
+  CONSTRAINT `FK_PointSortie_Createur` FOREIGN KEY (`id_createur`) REFERENCES `utilisateurs` (`id`),
+  CONSTRAINT `FK_PointSortie_Editeur` FOREIGN KEY (`id_last_hero`) REFERENCES `utilisateurs` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `points_sortie`
 --
 
-INSERT INTO `points_sortie` (`id`, `timestamp`, `nom`, `adresse`, `couleur`, `commentaire`, `pesee_max`, `visible`, `id_createur`, `id_last_hero`, `last_hero_timestamp`) VALUES
-(1, '2014-04-08 18:19:28', 'Sorties hors-boutique', '125 rue du chemin vert', '#aa1d7c', 'point de sortie hors boutique principale de la ressourcerie de la petite rockette', '2000', 'oui', 0, 0, '0000-00-00 00:00:00');
-
--- --------------------------------------------------------
+LOCK TABLES `points_sortie` WRITE;
+/*!40000 ALTER TABLE `points_sortie` DISABLE KEYS */;
+/*!40000 ALTER TABLE `points_sortie` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `points_vente`
 --
 
-CREATE TABLE IF NOT EXISTS `points_vente` (
+DROP TABLE IF EXISTS `points_vente`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `points_vente` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `nom` text NOT NULL,
   `adresse` text NOT NULL,
   `couleur` text NOT NULL,
   `commentaire` text NOT NULL,
-  `surface_vente` text NOT NULL,
-  `visible` text NOT NULL,
-  `id_createur` int(11) NOT NULL DEFAULT 0,
-  `id_last_hero` int(11) NOT NULL DEFAULT 0,
-  `last_hero_timestamp` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+  `surface_vente` decimal(10,0) NOT NULL DEFAULT '0',
+  `visible` tinyint(1) NOT NULL DEFAULT '1',
+  `id_createur` int(11) NOT NULL DEFAULT '0',
+  `id_last_hero` int(11) NOT NULL DEFAULT '0',
+  `last_hero_timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `UN_PointsVente_nom` (`nom`(255)),
+  KEY `FK_PointVente_Createur` (`id_createur`),
+  KEY `FK_PointVente_Editeur` (`id_last_hero`),
+  CONSTRAINT `FK_PointVente_Createur` FOREIGN KEY (`id_createur`) REFERENCES `utilisateurs` (`id`),
+  CONSTRAINT `FK_PointVente_Editeur` FOREIGN KEY (`id_last_hero`) REFERENCES `utilisateurs` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `points_vente`
 --
 
-INSERT INTO `points_vente` (`id`, `timestamp`, `nom`, `adresse`, `couleur`, `commentaire`, `surface_vente`, `visible`, `id_createur`, `id_last_hero`, `last_hero_timestamp`) VALUES
-(1, '2014-04-08 18:17:25', 'Boutique de La Petite Rockette', '125 rue du chemin vert', '#a4e06e', 'la caisse principale de la ressourcerie de la petite rockette              ', '280', 'oui', 0, 0, '0000-00-00 00:00:00');
-
--- --------------------------------------------------------
+LOCK TABLES `points_vente` WRITE;
+/*!40000 ALTER TABLE `points_vente` DISABLE KEYS */;
+/*!40000 ALTER TABLE `points_vente` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `sorties`
 --
 
-CREATE TABLE IF NOT EXISTS `sorties` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `classe` text NOT NULL,
-  `adherent` text NOT NULL,
-  `id_filiere` int(11) NOT NULL,
-  `id_convention` int(11) NOT NULL,
-  `id_type_sortie` int(11) NOT NULL,
-  `id_point_sortie` int(11) NOT NULL,
-  `commentaire` text NOT NULL,
-  `id_createur` int(11) NOT NULL DEFAULT 0,
-  `id_last_hero` int(11) NOT NULL DEFAULT 0,
-  `last_hero_timestamp` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `types_poubelles`
---
-
-CREATE TABLE IF NOT EXISTS `types_poubelles` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `nom` text NOT NULL,
-  `description` text NOT NULL,
-  `masse_bac` text NOT NULL,
-  `ultime` text NOT NULL,
-  `couleur` text NOT NULL,
-  `visible` text NOT NULL,
-  `id_createur` int(11) NOT NULL DEFAULT 0,
-  `id_last_hero` int(11) NOT NULL DEFAULT 0,
-  `last_hero_timestamp` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=8 ;
-
---
--- Dumping data for table `types_poubelles`
---
-
-INSERT INTO `types_poubelles` (`id`, `timestamp`, `nom`, `description`, `masse_bac`, `ultime`, `couleur`, `visible`, `id_createur`, `id_last_hero`, `last_hero_timestamp`) VALUES
-(1, '2014-07-17 13:22:03', 'petite poubelle verte', 'tout venant bac 100 litres', '22', 'oui', '#00aa55', 'oui', 0, 0, '0000-00-00 00:00:00'),
-(2, '2014-07-17 13:22:06', 'moyenne poubelle verte', 'moyenne poubelle verte', '27', 'oui', '#00aa55', 'oui', 0, 0, '0000-00-00 00:00:00'),
-(3, '2014-07-17 15:18:10', 'grosse poubelle verte', 'grosse poubelle verte', '32', 'oui', '#00aa55', 'oui', 0, 0, '0000-00-00 00:00:00'),
-(4, '2014-07-17 15:24:42', 'petite poubelle jaune', 'a', '19', 'non', '#ffb506', 'oui', 0, 0, '0000-00-00 00:00:00'),
-(5, '2014-07-23 11:29:05', 'moyenne poubelle jaune', 'emballages bac de 200 l', '27', 'non', '#ffb506', 'oui', 0, 0, '0000-00-00 00:00:00'),
-(6, '2014-07-23 11:29:57', 'grosse poubelle jaune', 'Emballages, bac de 400 litres.', '32', 'non', '#ffb506', 'oui', 0, 0, '0000-00-00 00:00:00'),
-(7, '2014-07-23 11:30:52', 'petite poubelle blanche', 'verre , bac de 100l', '20', 'non', '#c0c0c0', 'oui', 0, 0, '0000-00-00 00:00:00');
-
--- --------------------------------------------------------
-
 --
 -- Table structure for table `type_collecte`
 --
 
-CREATE TABLE IF NOT EXISTS `type_collecte` (
+DROP TABLE IF EXISTS `type_collecte`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `type_collecte` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `nom` text NOT NULL,
   `description` text NOT NULL,
   `couleur` text NOT NULL,
-  `visible` text NOT NULL,
-  `id_createur` int(11) NOT NULL DEFAULT 0,
-  `id_last_hero` int(11) NOT NULL DEFAULT 0,
-  `last_hero_timestamp` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+  `visible` tinyint(1) NOT NULL DEFAULT '1',
+  `id_createur` int(11) NOT NULL DEFAULT '0',
+  `id_last_hero` int(11) NOT NULL DEFAULT '0',
+  `last_hero_timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `UN_TypeCollecte_nom` (`nom`(255)),
+  KEY `FK_TypesCollecte_Createur` (`id_createur`),
+  KEY `FK_TypesCollecte_Editeur` (`id_last_hero`),
+  CONSTRAINT `FK_TypesCollecte_Createur` FOREIGN KEY (`id_createur`) REFERENCES `utilisateurs` (`id`),
+  CONSTRAINT `FK_TypesCollecte_Editeur` FOREIGN KEY (`id_last_hero`) REFERENCES `utilisateurs` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `type_collecte`
 --
 
-INSERT INTO `type_collecte` (`id`, `timestamp`, `nom`, `description`, `couleur`, `visible`, `id_createur`, `id_last_hero`, `last_hero_timestamp`) VALUES
-(1, '2014-07-02 13:21:10', 'Apport volontaire', 'quand une personne apporte d''elle mÃªme un ou des objets Ã  la boutique', '#cb2323', 'oui', 0, 0, '0000-00-00 00:00:00');
-
--- --------------------------------------------------------
+LOCK TABLES `type_collecte` WRITE;
+/*!40000 ALTER TABLE `type_collecte` DISABLE KEYS */;
+/*!40000 ALTER TABLE `type_collecte` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `type_contenants`
 --
 
-CREATE TABLE IF NOT EXISTS `type_contenants` (
+DROP TABLE IF EXISTS `type_contenants`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `type_contenants` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `nom` text NOT NULL,
   `description` text NOT NULL,
-  `masse` text NOT NULL,
+  `masse` decimal(10,0) NOT NULL DEFAULT '0',
   `couleur` text NOT NULL,
-  `visible` text NOT NULL,
-  `id_createur` int(11) NOT NULL DEFAULT 0,
-  `id_last_hero` int(11) NOT NULL DEFAULT 0,
-  `last_hero_timestamp` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=9 ;
+  `visible` tinyint(1) NOT NULL DEFAULT '1',
+  `id_createur` int(11) NOT NULL DEFAULT '0',
+  `id_last_hero` int(11) NOT NULL DEFAULT '0',
+  `last_hero_timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `UN_TypeContenants_nom` (`nom`(255)),
+  KEY `FK_TypesContenants_Createur` (`id_createur`),
+  KEY `FK_TypesContenants_Editeur` (`id_last_hero`),
+  CONSTRAINT `FK_TypesContenants_Createur` FOREIGN KEY (`id_createur`) REFERENCES `utilisateurs` (`id`),
+  CONSTRAINT `FK_TypesContenants_Editeur` FOREIGN KEY (`id_last_hero`) REFERENCES `utilisateurs` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `type_contenants`
 --
 
-INSERT INTO `type_contenants` (`id`, `timestamp`, `nom`, `description`, `masse`, `couleur`, `visible`, `id_createur`, `id_last_hero`, `last_hero_timestamp`) VALUES
-(2, '2014-10-01 16:54:57', 'Roulpratique', 'Roulpratique en alu.', '10', '#019b99', 'oui', 0, 0, '0000-00-00 00:00:00'),
-(3, '2014-10-01 17:06:29', 'diable vert', 'diable vert ', '12', '#dd0c0c', 'oui', 0, 0, '0000-00-00 00:00:00'),
-(4, '2014-10-13 13:28:02', 'roll textille', 'roll textille', '31', '#5037d0', 'oui', 0, 0, '0000-00-00 00:00:00'),
-(5, '2014-11-05 14:25:22', 'caddie', 'petite cage en fer sur roulettes', '11', '#ab26ab', 'oui', 0, 0, '0000-00-00 00:00:00'),
-(6, '2014-11-05 14:25:43', 'cage d3e', 'cage d3e', '39', '#108f99', 'oui', 0, 0, '0000-00-00 00:00:00'),
-(7, '2014-11-05 14:26:11', 'caisse grise', 'grande caisse grise', '3', '#799082', 'oui', 0, 0, '0000-00-00 00:00:00'),
-(8, '2014-11-05 14:27:33', 'petite caisse grise', 'petite caisse grise', '1.5', '#776161', 'oui', 0, 0, '0000-00-00 00:00:00');
-
--- --------------------------------------------------------
+LOCK TABLES `type_contenants` WRITE;
+/*!40000 ALTER TABLE `type_contenants` DISABLE KEYS */;
+INSERT INTO `type_contenants` VALUES (1,'2018-01-03 22:43:26','Roulpratique','Roulpratique en alu.',10,'#019b99',1,1,1,'2018-01-03 22:43:39'),(2,'2018-01-03 22:43:26','diable vert','diable vert ',12,'#dd0c0c',1,1,1,'2018-01-03 22:43:39'),(3,'2018-01-03 22:43:26','roll textille','roll textille',31,'#5037d0',1,1,1,'2018-01-03 22:43:39'),(4,'2018-01-03 22:43:26','caddie','petite cage en fer sur roulettes',11,'#ab26ab',1,1,1,'2018-01-03 22:43:39'),(5,'2018-01-03 22:43:26','cage d3e','cage d3e',39,'#108f99',1,1,1,'2018-01-03 22:43:39'),(6,'2018-01-03 22:43:26','caisse grise','grande caisse grise',3,'#799082',1,1,1,'2018-01-03 22:43:39'),(7,'2018-01-03 22:43:26','petite caisse grise','petite caisse grise',2,'#776161',1,1,1,'2018-01-03 22:43:39');
+/*!40000 ALTER TABLE `type_contenants` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `type_dechets`
 --
 
-CREATE TABLE IF NOT EXISTS `type_dechets` (
+DROP TABLE IF EXISTS `type_dechets`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `type_dechets` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `nom` text NOT NULL,
   `description` text NOT NULL,
   `couleur` text NOT NULL,
-  `visible` text NOT NULL,
-  `id_createur` int(11) NOT NULL DEFAULT 0,
-  `id_last_hero` int(11) NOT NULL DEFAULT 0,
-  `last_hero_timestamp` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=18 ;
+  `visible` tinyint(1) NOT NULL DEFAULT '1',
+  `id_createur` int(11) NOT NULL DEFAULT '0',
+  `id_last_hero` int(11) NOT NULL DEFAULT '0',
+  `last_hero_timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `UN_TypeDechets_nom` (`nom`(255)),
+  KEY `FK_TypesDechets_Createur` (`id_createur`),
+  KEY `FK_TypesDechets_Editeur` (`id_last_hero`),
+  CONSTRAINT `FK_TypesDechets_Createur` FOREIGN KEY (`id_createur`) REFERENCES `utilisateurs` (`id`),
+  CONSTRAINT `FK_TypesDechets_Editeur` FOREIGN KEY (`id_last_hero`) REFERENCES `utilisateurs` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `type_dechets`
 --
 
-INSERT INTO `type_dechets` (`id`, `timestamp`, `nom`, `description`, `couleur`, `visible`, `id_createur`, `id_last_hero`, `last_hero_timestamp`) VALUES
-(1, '2014-04-08 18:21:16', 'matériel électrique', 'matériel électrique', '#e87702', 'oui', 0, 0, '0000-00-00 00:00:00'),
-(2, '2014-04-08 18:21:40', 'mobilier', 'mobilier', '#e83c02', 'oui', 0, 0, '0000-00-00 00:00:00'),
-(3, '2014-04-08 18:22:10', 'textiles, accessoires ', 'textile,accessoires la masse de bijoux Ã©tant nÃ©gligeable ', '#db20df', 'oui', 0, 0, '0000-00-00 00:00:00'),
-(4, '2014-06-22 20:00:31', 'jouets', 'jeux, jouets , comprend aussi les jeux de societÃ©s', '#80ffff', 'oui', 0, 0, '0000-00-00 00:00:00'),
-(5, '2014-06-22 20:34:38', 'informatique', 'ordis, ecrans , claviers , autres pÃ©riphÃ©riques info. DEEE. en fait ... ', '#e902ff', 'oui', 0, 0, '0000-00-00 00:00:00'),
-(6, '2014-07-02 14:00:33', 'vaisselle', 'vaisselle ,tout Ã©tats touts materiaux', '#c0c0c0', 'oui', 0, 0, '0000-00-00 00:00:00'),
-(7, '2014-07-02 22:04:57', 'livres', 'livres magazines journaux ', '#3a02e8', 'oui', 0, 0, '0000-00-00 00:00:00'),
-(8, '2014-07-02 22:06:25', 'supports media', 'cd dvd vinyles cassets minidiscs et consors', '#0b28ff', 'oui', 0, 0, '0000-00-00 00:00:00'),
-(9, '2014-07-02 22:07:24', 'bibelots ', 'bibelots divers objets dÃ©co ', '#c0c0c0', 'oui', 0, 0, '0000-00-00 00:00:00'),
-(10, '2014-07-02 22:08:36', 'autres', 'autres', '#02d4ff', 'oui', 0, 0, '0000-00-00 00:00:00'),
-(11, '2014-07-10 19:29:38', 'bijoux', 'bijoux en tout genre , pese peut mais trÃ¨s bien valorisÃ©', '#3fbf9f', 'oui', 0, 0, '0000-00-00 00:00:00'),
-(12, '2014-10-09 10:10:59', 'mobilier en service', 'mobilier en service', '#bb2222', 'non', 0, 0, '0000-00-00 00:00:00'),
-(13, '2014-10-09 10:11:16', 'mobilier hs', 'mobilier hs', '#bd2d2d', 'non', 0, 0, '0000-00-00 00:00:00'),
-(14, '2016-06-14 13:42:57', 'la réserve des arts', 'petit matériel', '#00ff40', 'non', 0, 0, '0000-00-00 00:00:00'),
-(15, '2016-06-14 13:43:12', 'la collecterie', 'création', '#000000', 'non', 0, 0, '0000-00-00 00:00:00'),
-(16, '2016-06-14 13:43:39', 'de la cave au grenier', 'création', '#000000', 'non', 0, 0, '0000-00-00 00:00:00'),
-(17, '2016-06-14 13:44:00', 'la ressourcerie créative', 'création', '#000000', 'non', 0, 0, '0000-00-00 00:00:00');
-
--- --------------------------------------------------------
+LOCK TABLES `type_dechets` WRITE;
+/*!40000 ALTER TABLE `type_dechets` DISABLE KEYS */;
+INSERT INTO `type_dechets` VALUES (1,'2018-01-03 22:43:26','matériel électrique','matériel électrique','#e87702',1,1,1,'2018-01-03 22:43:40'),(2,'2018-01-03 22:43:26','mobilier','mobilier','#e83c02',1,1,1,'2018-01-03 22:43:40'),(3,'2018-01-03 22:43:26','textiles, accessoires ','textile, accessoires','#db20df',1,1,1,'2018-01-03 22:43:40'),(4,'2018-01-03 22:43:26','jouets','jeux, jouets , comprend aussi les jeux de societés','#80ffff',1,1,1,'2018-01-03 22:43:40'),(5,'2018-01-03 22:43:26','informatique','ordis, ecrans, claviers, autres périphériques info. DEEE. en fait ... ','#e902ff',1,1,1,'2018-01-03 22:43:40'),(6,'2018-01-03 22:43:26','vaisselle','vaisselle, tout états, touts materiaux','#c0c0c0',1,1,1,'2018-01-03 22:43:40'),(7,'2018-01-03 22:43:26','livres','livres magazines journaux ','#3a02e8',1,1,1,'2018-01-03 22:43:40'),(8,'2018-01-03 22:43:26','supports media','cd dvd vinyles cassets minidiscs et consors','#0b28ff',1,1,1,'2018-01-03 22:43:40'),(9,'2018-01-03 22:43:26','bibelots ','bibelots divers objets déco ','#c0c0c0',1,1,1,'2018-01-03 22:43:40'),(10,'2018-01-03 22:43:26','autres','autres','#02d4ff',1,1,1,'2018-01-03 22:43:40'),(11,'2018-01-03 22:43:26','bijoux','bijoux en tout genre, pese peut mais trés bien valorisé','#3fbf9f',1,1,1,'2018-01-03 22:43:40'),(12,'2018-01-03 22:43:26','mobilier en service','mobilier en service','#bb2222',0,1,1,'2018-01-03 22:43:40'),(13,'2018-01-03 22:43:26','mobilier hs','mobilier hs','#bd2d2d',0,1,1,'2018-01-03 22:43:40'),(14,'2018-01-03 22:43:26','la réserve des arts','petit matériel','#00ff40',0,1,1,'2018-01-03 22:43:40'),(15,'2018-01-03 22:43:26','la collecterie','création','#000000',0,1,1,'2018-01-03 22:43:40'),(16,'2018-01-03 22:43:26','de la cave au grenier','création','#000000',0,1,1,'2018-01-03 22:43:40'),(17,'2018-01-03 22:43:26','la ressourcerie créative','création','#000000',0,1,1,'2018-01-03 22:43:40');
+/*!40000 ALTER TABLE `type_dechets` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `type_dechets_evac`
 --
 
-CREATE TABLE IF NOT EXISTS `type_dechets_evac` (
+DROP TABLE IF EXISTS `type_dechets_evac`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `type_dechets_evac` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `nom` text NOT NULL,
   `description` text NOT NULL,
   `couleur` text NOT NULL,
-  `visible` text NOT NULL,
-  `id_createur` int(11) NOT NULL DEFAULT 0,
-  `id_last_hero` int(11) NOT NULL DEFAULT 0,
-  `last_hero_timestamp` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=12 ;
+  `visible` tinyint(1) NOT NULL DEFAULT '1',
+  `id_createur` int(11) NOT NULL DEFAULT '0',
+  `id_last_hero` int(11) NOT NULL DEFAULT '0',
+  `last_hero_timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `UN_TypeDechetsEvac_nom` (`nom`(255)),
+  KEY `FK_TypesDechetsEvac_Createur` (`id_createur`),
+  KEY `FK_TypesDechetsEvac_Editeur` (`id_last_hero`),
+  CONSTRAINT `FK_TypesDechetsEvac_Createur` FOREIGN KEY (`id_createur`) REFERENCES `utilisateurs` (`id`),
+  CONSTRAINT `FK_TypesDechetsEvac_Editeur` FOREIGN KEY (`id_last_hero`) REFERENCES `utilisateurs` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `type_dechets_evac`
 --
 
-INSERT INTO `type_dechets_evac` (`id`, `timestamp`, `nom`, `description`, `couleur`, `visible`, `id_createur`, `id_last_hero`, `last_hero_timestamp`) VALUES
-(1, '2014-11-23 16:31:40', 'metaux', 'ferraille alu ect...', '#8e33ae', 'oui', 0, 0, '0000-00-00 00:00:00'),
-(2, '2014-11-30 15:00:35', 'deee', 'dÃ©chets dâ€™Ã©quipements Ã©lectroniques et Ã©lectromÃ©nagers ', '#000000', 'oui', 0, 0, '0000-00-00 00:00:00'),
-(3, '2014-11-30 15:00:57', 'livres non vendus', 'livres non vendus en boutique, invendables sur place', '#9b4848', 'oui', 0, 0, '0000-00-00 00:00:00'),
-(4, '2014-11-30 15:01:13', 'piles', 'piles', '#925555', 'oui', 0, 0, '0000-00-00 00:00:00'),
-(5, '2014-11-30 15:01:40', 'lampes eco/neons', 'lampes eco/neons', '#000000', 'oui', 0, 0, '0000-00-00 00:00:00'),
-(6, '2014-11-30 15:02:06', 'textile', 'textile', '#846060', 'oui', 0, 0, '0000-00-00 00:00:00'),
-(7, '2014-11-30 15:02:43', 'bois', 'planches ', '#933e3e', 'oui', 0, 0, '0000-00-00 00:00:00'),
-(8, '2014-11-30 15:03:10', 'mobilier hors service', 'mobilier hors service', '#c47878', 'oui', 0, 0, '0000-00-00 00:00:00'),
-(9, '2016-10-25 15:07:57', 'assises', 'assises', '#e98e8e', 'oui', 0, 0, '0000-00-00 00:00:00'),
-(10, '2016-10-25 15:08:14', 'plans de travail', 'plans de travail', '#c02d2d', 'oui', 0, 0, '0000-00-00 00:00:00'),
-(11, '2016-11-07 22:01:59', 'cables', 'cables', '#aa3a3a', 'oui', 0, 0, '0000-00-00 00:00:00');
-
--- --------------------------------------------------------
+LOCK TABLES `type_dechets_evac` WRITE;
+/*!40000 ALTER TABLE `type_dechets_evac` DISABLE KEYS */;
+INSERT INTO `type_dechets_evac` VALUES (1,'2018-01-03 22:43:27','metaux','férraille alu ect...','#8e33ae',1,1,1,'2018-01-03 22:43:34'),(2,'2018-01-03 22:43:27','deee','déchets d\'équipements électroniques et électroménagers','#000000',1,1,1,'2018-01-03 22:43:34'),(3,'2018-01-03 22:43:27','livres non vendus','livres non vendus en boutique, invendables sur place','#9b4848',1,1,1,'2018-01-03 22:43:34'),(4,'2018-01-03 22:43:27','piles','piles','#925555',1,1,1,'2018-01-03 22:43:34'),(5,'2018-01-03 22:43:27','lampes eco/neons','lampes eco/neons','#000000',1,1,1,'2018-01-03 22:43:34'),(6,'2018-01-03 22:43:27','textile','textile','#846060',1,1,1,'2018-01-03 22:43:34'),(7,'2018-01-03 22:43:27','bois','planches ','#933e3e',1,1,1,'2018-01-03 22:43:34'),(8,'2018-01-03 22:43:27','mobilier hors service','mobilier hors service','#c47878',1,1,1,'2018-01-03 22:43:34'),(9,'2018-01-03 22:43:27','assises','assises','#e98e8e',1,1,1,'2018-01-03 22:43:34'),(10,'2018-01-03 22:43:27','plans de travail','plans de travail','#c02d2d',1,1,1,'2018-01-03 22:43:34'),(11,'2018-01-03 22:43:27','cables','cables','#aa3a3a',1,1,1,'2018-01-03 22:43:34');
+/*!40000 ALTER TABLE `type_dechets_evac` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `type_sortie`
 --
 
-CREATE TABLE IF NOT EXISTS `type_sortie` (
+DROP TABLE IF EXISTS `type_sortie`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `type_sortie` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `nom` text NOT NULL,
   `description` text NOT NULL,
   `couleur` text NOT NULL,
-  `visible` text NOT NULL,
-  `id_createur` int(11) NOT NULL DEFAULT 0,
-  `id_last_hero` int(11) NOT NULL DEFAULT 0,
+  `visible` tinyint(1) NOT NULL DEFAULT '1',
+  `id_createur` int(11) NOT NULL DEFAULT '0',
+  `id_last_hero` int(11) NOT NULL DEFAULT '0',
   `last_hero_timestamp` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=8 ;
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `UN_TypeSortie_nom` (`nom`(255)),
+  KEY `FK_TypeSortie_Createur` (`id_createur`),
+  KEY `FK_TypesSortie_Editeur` (`id_last_hero`),
+  CONSTRAINT `FK_TypeSortie_Createur` FOREIGN KEY (`id_createur`) REFERENCES `utilisateurs` (`id`),
+  CONSTRAINT `FK_TypesSortie_Editeur` FOREIGN KEY (`id_last_hero`) REFERENCES `utilisateurs` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `type_sortie`
 --
 
-INSERT INTO `type_sortie` (`id`, `timestamp`, `nom`, `description`, `couleur`, `visible`, `id_createur`, `id_last_hero`, `last_hero_timestamp`) VALUES
-(1, '2014-07-09 12:10:42', 'don à un particulier', 'don d''objet invendable en boutique Ã  un particulier', '#84a8c6', 'oui', 0, 0, '0000-00-00 00:00:00'),
-(2, '2014-07-09 12:13:45', 'don à une association', 'don d''objets Ã  une asso. sans convention', '#c6a13d', 'oui', 0, 0, '0000-00-00 00:00:00'),
-(3, '2014-07-09 12:14:35', 'don à un artiste', 'objets, materiaux donnés Ã  un artiste', '#bf6b1f', 'oui', 0, 0, '0000-00-00 00:00:00'),
-(4, '2014-08-06 16:51:49', 'don à  un salarié', 'don Ã  un salarié', '#bb3333', 'oui', 0, 0, '0000-00-00 00:00:00'),
-(5, '2014-08-06 16:52:10', 'don à un bénévole', 'don à un bénévole', '#155175', 'oui', 0, 0, '0000-00-00 00:00:00'),
-(6, '2016-06-06 14:02:22', 'aménagement des locaux', 'aménagement des locaux', '#da4747', 'oui', 0, 0, '0000-00-00 00:00:00'),
-(7, '2016-06-06 14:03:46', 'ateliers d''animation', 'ateliers d''animation', '#9a15e3', 'oui', 0, 0, '0000-00-00 00:00:00');
+LOCK TABLES `type_sortie` WRITE;
+/*!40000 ALTER TABLE `type_sortie` DISABLE KEYS */;
+INSERT INTO `type_sortie` VALUES (1,'2018-01-03 22:43:27','don à un particulier','don d\'objet invendable en boutique à un particulier','#84a8c6',1,1,1,'2018-01-03 22:43:37'),(2,'2018-01-03 22:43:27','don à une association','don d\'objets à une asso. sans convention','#c6a13d',1,1,1,'2018-01-03 22:43:37'),(3,'2018-01-03 22:43:27','don à un artiste','objets, materiaux donnés à un artiste','#bf6b1f',1,1,1,'2018-01-03 22:43:37'),(4,'2018-01-03 22:43:27','don à un salarié','don à un salarié','#bb3333',1,1,1,'2018-01-03 22:43:37'),(5,'2018-01-03 22:43:27','don à un bénévole','don à un bénévole','#155175',1,1,1,'2018-01-03 22:43:37'),(6,'2018-01-03 22:43:27','aménagement des locaux','aménagement des locaux','#da4747',1,1,1,'2018-01-03 22:43:37'),(7,'2018-01-03 22:43:27','ateliers d\'animation','ateliers d\'animation','#9a15e3',1,1,1,'2018-01-03 22:43:37');
+/*!40000 ALTER TABLE `type_sortie` ENABLE KEYS */;
+UNLOCK TABLES;
 
--- --------------------------------------------------------
+--
+-- Table structure for table `types_poubelles`
+--
+
+DROP TABLE IF EXISTS `types_poubelles`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `types_poubelles` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `nom` text NOT NULL,
+  `description` text NOT NULL,
+  `masse_bac` decimal(10,0) NOT NULL DEFAULT '0',
+  `ultime` tinyint(1) NOT NULL DEFAULT '1',
+  `couleur` text NOT NULL,
+  `visible` tinyint(1) NOT NULL DEFAULT '1',
+  `id_createur` int(11) NOT NULL DEFAULT '0',
+  `id_last_hero` int(11) NOT NULL DEFAULT '0',
+  `last_hero_timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `UN_TypesPoubelles_nom` (`nom`(255)),
+  KEY `FK_TypesPoubelle_Createur` (`id_createur`),
+  KEY `FK_TypesPoubelle_Editeur` (`id_last_hero`),
+  CONSTRAINT `FK_TypesPoubelle_Createur` FOREIGN KEY (`id_createur`) REFERENCES `utilisateurs` (`id`),
+  CONSTRAINT `FK_TypesPoubelle_Editeur` FOREIGN KEY (`id_last_hero`) REFERENCES `utilisateurs` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `types_poubelles`
+--
+
+LOCK TABLES `types_poubelles` WRITE;
+/*!40000 ALTER TABLE `types_poubelles` DISABLE KEYS */;
+INSERT INTO `types_poubelles` VALUES (1,'2018-01-03 22:43:25','petite poubelle verte','tout venant bac 100 litres',22,1,'#00aa55',1,1,1,'2018-01-03 22:43:36'),(2,'2018-01-03 22:43:25','moyenne poubelle verte','moyenne poubelle verte',27,1,'#00aa55',1,1,1,'2018-01-03 22:43:36'),(3,'2018-01-03 22:43:25','grosse poubelle verte','grosse poubelle verte',32,1,'#00aa55',1,1,1,'2018-01-03 22:43:36'),(4,'2018-01-03 22:43:25','petite poubelle jaune','a',19,0,'#ffb506',1,1,1,'2018-01-03 22:43:36'),(5,'2018-01-03 22:43:25','moyenne poubelle jaune','emballages bac de 200 l',27,0,'#ffb506',1,1,1,'2018-01-03 22:43:36'),(6,'2018-01-03 22:43:25','grosse poubelle jaune','Emballages, bac de 400 litres.',32,0,'#ffb506',1,1,1,'2018-01-03 22:43:36'),(7,'2018-01-03 22:43:25','petite poubelle blanche','verre , bac de 100l',20,0,'#c0c0c0',1,1,1,'2018-01-03 22:43:36');
+/*!40000 ALTER TABLE `types_poubelles` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `utilisateurs`
 --
 
-CREATE TABLE IF NOT EXISTS `utilisateurs` (
+DROP TABLE IF EXISTS `utilisateurs`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `utilisateurs` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `niveau` text NOT NULL,
@@ -639,59 +747,148 @@ CREATE TABLE IF NOT EXISTS `utilisateurs` (
   `prenom` text NOT NULL,
   `mail` text NOT NULL,
   `pass` text NOT NULL,
-  `id_createur` int(11) NOT NULL DEFAULT 0,
-  `id_last_hero` int(11) NOT NULL DEFAULT 0,
-  `last_hero_timestamp` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=10 ;
+  `id_createur` int(11) NOT NULL DEFAULT '0',
+  `id_last_hero` int(11) NOT NULL DEFAULT '0',
+  `last_hero_timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `UN_Utilisateur_mail` (`mail`(255)),
+  KEY `FK_Utilisateurs_Createur` (`id_createur`),
+  KEY `FK_Utilisateurs_Editeur` (`id_last_hero`),
+  CONSTRAINT `FK_Utilisateurs_Createur` FOREIGN KEY (`id_createur`) REFERENCES `utilisateurs` (`id`),
+  CONSTRAINT `FK_Utilisateurs_Editeur` FOREIGN KEY (`id_last_hero`) REFERENCES `utilisateurs` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `utilisateurs`
 --
 
-INSERT INTO `utilisateurs` (`id`, `timestamp`, `niveau`, `nom`, `prenom`, `mail`, `pass`, `id_createur`, `id_last_hero`, `last_hero_timestamp`) VALUES
-(1, '2014-06-25 22:58:07', 'c1c2c3v1v2v3s1bighljk', 'oressource', 'cher expérimentateur', 'oressource@lapetiterockette.org', '81dc9bdb52d04dc20036dbd8313ed055', 0, 0, '0000-00-00 00:00:00');
+LOCK TABLES `utilisateurs` WRITE;
+/*!40000 ALTER TABLE `utilisateurs` DISABLE KEYS */;
+INSERT INTO `utilisateurs` VALUES (1,'2018-01-03 22:43:28','c1c2c3v1v2v3s1bighljk','admininstrateur','cher expérimentateur','admin@oressource.org','81dc9bdb52d04dc20036dbd8313ed055',1,1,'2018-01-03 22:43:28');
+/*!40000 ALTER TABLE `utilisateurs` ENABLE KEYS */;
+UNLOCK TABLES;
 
--- --------------------------------------------------------
+
+DROP TABLE IF EXISTS `sorties`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `sorties` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `classe` text NOT NULL,
+  `id_filiere` int(11) DEFAULT '0',
+  `id_convention` int(11) DEFAULT '0',
+  `id_type_sortie` int(11) DEFAULT '0',
+  `id_point_sortie` int(11) NOT NULL,
+  `commentaire` text NOT NULL,
+  `id_createur` int(11) NOT NULL DEFAULT '0',
+  `id_last_hero` int(11) NOT NULL DEFAULT '0',
+  `last_hero_timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `FK_Sorties_Localites` (`id_point_sortie`),
+  KEY `FK_Sorties_Createur` (`id_createur`),
+  KEY `FK_Sorties_Editeur` (`id_last_hero`),
+  CONSTRAINT `FK_Sorties_Createur` FOREIGN KEY (`id_createur`) REFERENCES `utilisateurs` (`id`),
+  CONSTRAINT `FK_Sorties_Editeur` FOREIGN KEY (`id_last_hero`) REFERENCES `utilisateurs` (`id`),
+  CONSTRAINT `FK_Sorties_Localites` FOREIGN KEY (`id_point_sortie`) REFERENCES `localites` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `sorties`
+--
+
+LOCK TABLES `sorties` WRITE;
+/*!40000 ALTER TABLE `sorties` DISABLE KEYS */;
+/*!40000 ALTER TABLE `sorties` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `vendus`
 --
 
-CREATE TABLE IF NOT EXISTS `vendus` (
+DROP TABLE IF EXISTS `vendus`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `vendus` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `id_vente` int(11) NOT NULL,
   `id_type_dechet` int(11) NOT NULL,
-  `id_objet` int(11) NOT NULL,
+  `id_objet` int(11) DEFAULT NULL,
   `quantite` int(11) NOT NULL,
   `prix` decimal(9,2) NOT NULL,
   `remboursement` decimal(9,2) NOT NULL,
-  `id_createur` int(11) NOT NULL DEFAULT 0,
-  `id_last_hero` int(11) NOT NULL DEFAULT 0,
-  `last_hero_timestamp` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+  `id_createur` int(11) NOT NULL DEFAULT '0',
+  `id_last_hero` int(11) NOT NULL DEFAULT '0',
+  `last_hero_timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `lot` tinyint(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  KEY `FK_Vendus_Ventes` (`id_vente`),
+  KEY `FK_Vendus_TypesDechets` (`id_type_dechet`),
+  KEY `FK_Vendus_Createur` (`id_createur`),
+  KEY `FK_Vendus_Editeur` (`id_last_hero`),
+  CONSTRAINT `FK_Vendus_Createur` FOREIGN KEY (`id_createur`) REFERENCES `utilisateurs` (`id`),
+  CONSTRAINT `FK_Vendus_Editeur` FOREIGN KEY (`id_last_hero`) REFERENCES `utilisateurs` (`id`),
+  CONSTRAINT `FK_Vendus_TypesDechets` FOREIGN KEY (`id_type_dechet`) REFERENCES `type_dechets` (`id`),
+  CONSTRAINT `FK_Vendus_Ventes` FOREIGN KEY (`id_vente`) REFERENCES `ventes` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
--- --------------------------------------------------------
+--
+-- Dumping data for table `vendus`
+--
+
+LOCK TABLES `vendus` WRITE;
+/*!40000 ALTER TABLE `vendus` DISABLE KEYS */;
+/*!40000 ALTER TABLE `vendus` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `ventes`
 --
 
-CREATE TABLE IF NOT EXISTS `ventes` (
+DROP TABLE IF EXISTS `ventes`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `ventes` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `id_moyen_paiement` int(11) NOT NULL,
   `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `adherent` text NOT NULL,
   `commentaire` text NOT NULL,
   `id_point_vente` int(11) NOT NULL,
-  `id_createur` int(11) NOT NULL DEFAULT 0,
-  `id_last_hero` int(11) NOT NULL DEFAULT 0,
-  `last_hero_timestamp` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+  `id_createur` int(11) NOT NULL DEFAULT '0',
+  `id_last_hero` int(11) NOT NULL DEFAULT '0',
+  `last_hero_timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `FK_Ventes_MoyenPaiement` (`id_moyen_paiement`),
+  KEY `FK_Ventes_PointVente` (`id_point_vente`),
+  KEY `FK_Ventes_Createur` (`id_createur`),
+  KEY `FK_Ventes_Edicteur` (`id_last_hero`),
+  CONSTRAINT `FK_Ventes_Createur` FOREIGN KEY (`id_createur`) REFERENCES `utilisateurs` (`id`),
+  CONSTRAINT `FK_Ventes_Editeur` FOREIGN KEY (`id_last_hero`) REFERENCES `utilisateurs` (`id`),
+  CONSTRAINT `FK_Ventes_MoyenPaiement` FOREIGN KEY (`id_moyen_paiement`) REFERENCES `moyens_paiement` (`id`),
+  CONSTRAINT `FK_Ventes_PointVente` FOREIGN KEY (`id_point_vente`) REFERENCES `points_vente` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
+--
+-- Dumping data for table `ventes`
+--
+
+LOCK TABLES `ventes` WRITE;
+/*!40000 ALTER TABLE `ventes` DISABLE KEYS */;
+/*!40000 ALTER TABLE `ventes` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2018-01-03 23:49:29

@@ -21,6 +21,7 @@ session_start();
 
 require_once '../core/session.php';
 require_once '../core/requetes.php';
+require_once '../core/composants.php';
 
 if (is_valid_session() && is_allowed_bilan()) {
   require_once './tete.php';
@@ -35,31 +36,16 @@ if (is_valid_session() && is_allowed_bilan()) {
   $date2 = $date2ft->format('d-m-Y');
 
   $date_query = "date1=$date1&date2=$date2";
+  $numero = filter_input(INPUT_GET, 'numero', FILTER_VALIDATE_INT) ?? 0;
 
-  $numero = filter_input(INPUT_GET, 'numero', FILTER_VALIDATE_INT);
+  $bilans = bilan_ventes($bdd, $time_debut, $time_fin, $numero);
+  $bilans_types = bilan_ventes_par_type($bdd, $time_debut, $time_fin, $numero);
+  $bilans_pesees_types = bilan_ventes_pesees($bdd, $time_debut, $time_fin, $numero);
+  $chiffre_affaire = chiffre_affaire_mode_paiement($bdd, $time_debut, $time_fin, $numero);
+  $nb_ventes = nb_ventes($bdd, $time_debut, $time_fin, $numero);
+  $remb_nb = nb_remboursements($bdd, $time_debut, $time_fin, $numero);
 
-  $bilans = [];
-  $bilans_types = [];
-  $bilans_pesees_types = [];
-  $nb_ventes = 0;
-  $remb_nb = 0;
-  $chiffre_affaire = [];
-
-  if ($numero === 0) {
-    $bilans = bilan_ventes($bdd, $time_debut, $time_fin);
-    $bilans_types = bilan_ventes_par_type($bdd, $time_debut, $time_fin);
-    $bilans_pesees_types = bilan_ventes_pesees($bdd, $time_debut, $time_fin);
-    $chiffre_affaire = chiffre_affaire_par_mode_paiement($bdd, $time_debut, $time_fin);
-    $nb_ventes = nb_ventes($bdd, $time_debut, $time_fin);
-    $remb_nb = nb_remboursements($bdd, $time_debut, $time_fin);
-  } else {
-    $bilans = bilan_ventes_point_vente($bdd, $time_debut, $time_debut, $numero);
-    $bilans_types = bilan_ventes_par_type_point_vente($bdd, $time_debut, $time_debut, $numero);
-    $bilans_pesees_types = bilan_ventes_pesees_point_vente($bdd, $time_debut, $time_debut, $numero);
-    $chiffre_affaire = chiffre_affaire_mode_paiement_point_vente($bdd, $time_debut, $time_debut, $numero);
-    $nb_ventes = nb_ventes_point_vente($bdd, $time_debut, $time_fin, $numero);
-    $remb_nb = nb_remboursements_point_vente($bdd, $time_debut, $time_fin, $numero);
-  }
+  $points_ventes = filter_visibles(points_ventes($bdd));
 
   $bilan_pesee_mix = array_reduce(array_keys($bilans_pesees_types), function ($acc, $e)
     use ($bilans_pesees_types, $bilans_types) {
@@ -70,6 +56,8 @@ if (is_valid_session() && is_allowed_bilan()) {
     return $acc;
   }, []);
 
+  $panier_moyen = $nb_ventes === 0 ? 'Non défini': ($bilans['chiffre_degage'] / $nb_ventes) ."€";
+
   $graphMv = data_graphs_from_bilan($bilans_pesees_types, 'vendu_masse');
   $graphPv = data_graphs_from_bilan($bilans_types, 'chiffre_degage');
   ?>
@@ -79,14 +67,7 @@ if (is_valid_session() && is_allowed_bilan()) {
       <div class="col-md-11" >
         <h1>Bilan global</h1>
         <div class="col-md-4 col-md-offset-8" >
-          <label for="reportrange">Choisissez la période à inspecter:</label><br>
-          <div id="reportrange" class="pull-left"
-               style="background: #fff; cursor: pointer;
-               padding: 5px 10px; border: 1px solid #ccc">
-            <i class="fa fa-calendar"></i>
-            <span></span>
-            <b class="caret"></b>
-          </div>
+          <?= datePicker() ?>
         </div>
 
         <ul class="nav nav-tabs">
@@ -107,8 +88,8 @@ if (is_valid_session() && is_allowed_bilan()) {
     <div class="col-md-8 col-md-offset-1" >
       <h2>Bilan des ventes de la structure</h2>
       <ul class="nav nav-tabs">
-        <?php foreach (filter_visibles(points_ventes($bdd)) as $point_vente) { ?>
-          <li class="<?= ($numero === $point_vente['id'] ? 'active' : ''); ?>">
+        <?php foreach ($points_ventes as $point_vente) { ?>
+          <li class="<?= ($numero == $point_vente['id'] ? 'active' : ''); ?>">
             <a href="bilanv.php?<?= $date_query; ?>&numero=<?= $point_vente['id']; ?>"><?= $point_vente['nom']; ?></a>
           </li>
         <?php } ?>
@@ -119,7 +100,7 @@ if (is_valid_session() && is_allowed_bilan()) {
 
       <div class="row">
         <h2><?= ($date1 === $date2) ? "Le $date1" : "Du $date1 au $date2"; ?> :</h2>
-        <?php if (!($bilans['chiffre_degage'] > 0)) { ?>
+        <?php if (!($nb_ventes > 0 || $remb_nb > 0)) { ?>
           <img src="../images/nodata.jpg" class="img-responsive" alt="Responsive image">
           <?php
         } else { ?>
@@ -130,7 +111,7 @@ if (is_valid_session() && is_allowed_bilan()) {
                   <?php if ($numero === 0) { ?>
                     <tr>
                       <td>Nombre de points de vente :</td>
-                      <td><?= nb_points_ventes($bdd); ?></td>
+                      <td><?= count($points_ventes) ?></td>
                     </tr>
                   <?php } ?>
                   <tr>
@@ -147,7 +128,7 @@ if (is_valid_session() && is_allowed_bilan()) {
                   </tr>
                   <tr>
                     <td>Panier moyen :</td>
-                    <td><?= $bilans['chiffre_degage'] / $nb_ventes; ?> €</td>
+                    <td><?= $panier_moyen ?></td>
                   </tr>
                   <tr>
                     <td>Nombre d'objets remboursés :</td>
@@ -169,6 +150,7 @@ if (is_valid_session() && is_allowed_bilan()) {
                 </tbody>
 
                 <tfoot>
+                  <!--
                   <tr>
                     <td align=center colspan=3>
                       <a href="../moteur/export_bilanv.php?numero=<?= $numero; ?>&<?= $date_query; ?>">
@@ -176,6 +158,8 @@ if (is_valid_session() && is_allowed_bilan()) {
                       </a>
                     </td>
                   </tr>
+                  -->
+                  <br>
                 </tfoot>
               </table>
 
@@ -268,6 +252,9 @@ if (is_valid_session() && is_allowed_bilan()) {
                     if ($obj_vendu === $Notpe) {
                       $mtee = $Mtpe;
                       $certitude = 100;
+                      $masse_vente_moyenne_totale = $moy_masse_vente * $obj_vendu;
+                      $masse_pesees_vendu_esp =  $Mtpe;
+                      $prix_tonne_estime = (($masse_vente_moyenne_totale - $masse_pesees_vendu_esp) + $Mtpe);
                     } else {
                       $masse_vente_moyenne_totale = $moy_masse_vente * $obj_vendu;
                       $masse_pesees_vendu_esp = $moy_masse_vente * $Mtpe;
@@ -282,7 +269,7 @@ if (is_valid_session() && is_allowed_bilan()) {
                     ?>
                     <tr>
                       <th scope="row">
-                        <a href="./jours.php?date1=<?= $date_query; ?>&type=<?= $id; ?>"><?= $bilan_mix['nom']; ?></a>
+                        <a href="./jours.php?<?= $date_query; ?>&type=<?= $id; ?>"><?= $bilan_mix['nom']; ?></a>
                       </th>
                       <td><?= round($Mtpe, 2); ?></td>
                       <td><?= round($Ntpe, 2); ?></td>
@@ -311,48 +298,14 @@ if (is_valid_session() && is_allowed_bilan()) {
     </div>
   </div>
 
-  <script src="../js/raphael.js"></script>
-  <script src="../js/morris/morris.js"></script>
   <script type="text/javascript">
     'use strict';
 
     $(document).ready(() => {
-      const get = process_get();
-      const url = 'bilanv';
-      const options = set_datepicker(get, url);
-      bind_datepicker(options, get, url);
-
-      try {
         const dataMv = <?= json_encode($graphMv, JSON_NUMERIC_CHECK); ?>;
-        Morris.Donut({
-          element: 'graphMV',
-          data: dataMv.data,
-          backgroundColor: '#ccc',
-          labelColor: '#060',
-          colors: dataMv.colors,
-          formatter: (x) => {
-            return `${x} Kgs.`;
-          }
-        });
-      } catch (e) {
-        console.error(e);
-      }
-
-      try {
-        const dataPv = <?= json_encode($graphPv, JSON_NUMERIC_CHECK); ?>;
-        Morris.Donut({
-          element: 'graphPV',
-          data: dataPv.data,
-          backgroundColor: '#ccc',
-          labelColor: '#060',
-          colors: dataPv.colors,
-          formatter: (x) => {
-            return `${x}  €.`;
-          }
-        });
-      } catch (e) {
-        console.error(e);
-      }
+        graphMorris(dataMv, 'graphMV', 'Kgs.');
+         const dataPv = <?= json_encode($graphPv, JSON_NUMERIC_CHECK); ?>;
+        graphMorris(dataPv, 'graphPV', '€');
     });
   </script>
 

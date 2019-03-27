@@ -18,22 +18,7 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-session_start();
-if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($_SESSION['niveau'], 'k') !== false)) {
-  require_once '../moteur/dbconfig.php';
-  $req = $bdd->prepare('SELECT SUM(id) FROM moyens_paiement WHERE nom = :nom ');
-  $req->execute(['nom' => $_POST['nom']]);
-  $donnees = $req->fetch();
-  $req->closeCursor();
 
-  if ($donnees['SUM(id)'] > 0) {
-    header('Location:../ifaces/moyens_paiment.php?err=Un moyen de paiement porte deja le meme nom!&nom=' . $_POST['nom'] . '&description=' . $_POST['description'] . '&couleur=' . substr($_POST['couleur'], 1));
-  } else {
-    $req = $bdd->prepare('INSERT INTO moyens_paiement (nom,  couleur, description, visible) VALUES(?, ?,  ?, ?)');
-    $req->execute([$_POST['nom'], $_POST['couleur'], $_POST['description'], 'oui']);
-    $req->closeCursor();
-    header('Location:../ifaces/moyens_paiment.php?msg=Moyen de paiement enregistrée avec succes!');
-  }
-} else {
-  header('Location:../moteur/destroy.php');
-}
+require_once '../core/configs.php';
+
+header('Location:' . serve_config('moyens_paiment', 'moyen de paiement', 'moyenPaiementPost'));

@@ -35,8 +35,6 @@ if (is_valid_session() && is_allowed_sortie_id($numero)) {
   require_once '../moteur/dbconfig.php';
 
   $point_sortie = points_sorties_id($bdd, $numero);
-  $pesee_max = (float) $point_sortie['pesee_max'];
-  $types_poubelles = filter_visibles(types_poubelles($bdd));
   $date = new Datetime('now');
   $nav = new_nav($point_sortie['nom'], $numero, 0);
   ?>
@@ -45,18 +43,11 @@ if (is_valid_session() && is_allowed_sortie_id($numero)) {
     <?= configNav($nav) ?>
     <?= cartList(['text' => "Masse totale: 0 Kg.", 'date' => $date->format('Y-m-d')]) ?>
 
-    <div id="numpad" class="col-md-4" style="width: 220px;">
-      <p>La masse des différents bacs est automatiquement déduite.</p>
-    </div>
+    <div id="numpad" class="col-md-4" style="width: 220px;"></div>
 
     <div class="col-md-4">
       <?= listSaisie(['text' => 'Bacs de sortie des poubelles:', 'key' => 'list_poubelle']) ?>
-
-      <div class="btn-group" role="group">
-        <button id="encaissement" class="btn btn-success btn-lg">C'est pesé!</button>
-        <button id="impression" class="btn btn-primary btn-lg" value="Print"><span class="glyphicon glyphicon-print"></span></button>
-        <button id="reset" class="btn btn-warning btn-lg"><span class="glyphicon glyphicon-refresh"></button>
-      </div>
+      <?= buttonCollectesSorties() ?>
     </div> <!-- .col-md-4 -->
 
   </div> <!-- .container -->
@@ -74,21 +65,16 @@ if (is_valid_session() && is_allowed_sortie_id($numero)) {
       types_evac: <?= json_encode(filter_visibles(types_poubelles($bdd)), JSON_NUMERIC_CHECK); ?>
     };
   </script>
+
   <script type="text/javascript">
     'use strict';
 
     document.addEventListener('DOMContentLoaded', () => {
       const numpad = new NumPad(document.getElementById('numpad'), [ ]);
-
-      // Hack en attendant de trouver une solution pour gerer differament les dechets
-      // et les objets qui ont les memes id...
-      // On retourne une closure avec connection_UI_ticket du coup...
       const typesEvacs = window.OressourceEnv.types_evac;
       const ticketEvac = new Ticket();
-      // TODO prendre en compte la masse des bacs!!
-      const sub_masse_poubelle = (masse, masse_poubelle) => {
-        return masse - masse_poubelle;
-      }
+
+      const sub_masse_poubelle = (masse, masse_poubelle) => masse - masse_poubelle;
       const pushEvac = connection_UI_ticket(numpad, ticketEvac, typesEvacs, sub_masse_poubelle);
 
       const div_list_evac = document.getElementById('list_poubelle');
@@ -104,18 +90,13 @@ if (is_valid_session() && is_allowed_sortie_id($numero)) {
       });
       div_list_evac.appendChild(fragment);
 
-      const metadata = { classe: 'sortiesp' };
-      const encaisse = make_encaissement('../api/sorties.php', {
-        evacs: ticketEvac
-      }, metadata);
+      const encaisse = prepare_data({
+        evacs: ticketEvac,
+      }, {classe: 'sortiesp'});
 
-      document.getElementById('encaissement').addEventListener('click', encaisse, false);
-      document.getElementById('impression').addEventListener('click', impression_ticket, false);
-      document.getElementById('reset').addEventListener('click', () => {
-        tickets_clear(metadata);
-      }, false);
+      initUI('../api/sorties.php', encaisse);
 
-      window.tickets = [ ticketEvac ];
+      window.OressourceEnv.tickets = [ ticketEvac ];
     }, false);
   </script>
   <?php
