@@ -22,7 +22,7 @@ session_start();
 require_once '../core/requetes.php';
 require_once '../core/session.php';
 
-if (is_valid_session() && is_allowed_verifications() && $_SESSION['viz_caisse']) {
+if (is_valid_session() && is_allowed_vente() && $_SESSION['viz_caisse']) {
   require_once '../moteur/dbconfig.php';
   $users = map_by(utilisateurs($bdd), 'id');
 
