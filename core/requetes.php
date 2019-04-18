@@ -141,7 +141,7 @@ function utilisateur_insert(PDO $bdd, array $utilisateur): int {
   $stmt->bindParam(':id_createur', $_SESSION['id'], PDO::PARAM_INT);
   $stmt->bindParam(':id_createur1', $_SESSION['id'], PDO::PARAM_INT);
   $stmt->execute();
-  $id = $bdd->lastInsertId();
+  $id = (int) $bdd->lastInsertId();
   $stmt->closeCursor();
   return $id;
 }
@@ -448,7 +448,7 @@ function login_user(PDO $bdd, string $email, string $password): array {
   $req->execute();
   $user = $req->fetch(PDO::FETCH_ASSOC);
   $req->closeCursor();
-  if ($user !== NULL) {
+  if ($user) {
     return $user;
   }
   throw new Exception('Mot de passe ou nom de compte invalide.');
