@@ -1,73 +1,84 @@
-<?php session_start(); 
-
-require_once('../moteur/dbconfig.php');
-
-//Vérification des autorisations de l'utilisateur et des variables de session requises pour l'affichage de cette page:
-    if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 'k') !== false))
-      { include "tete.php" ?>
-    <div class="container">
-        <h1>Gestion des points de vente</h1> 
-         <div class="panel-heading">Modifier les données concernant le point de vente n° <?php echo $_POST['id']?>, <?php echo $_POST['nom']?>. </div>
 <?php
-//POST ou GET ?
-if (isset($_POST['id']) !== false)
-{
-$id = $_POST['id'];
-}
-else
-{
-$id = $_GET['id'];
-}
-//on obtient la couleur de la localité dans la base
+/*
+  Oressource
+  Copyright (C) 2014-2017  Martin Vert and Oressource devellopers
 
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU Affero General Public License as
+  published by the Free Software Foundation, either version 3 of the
+  License, or (at your option) any later version.
 
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU Affero General Public License for more details.
 
-            // On recupère tout le contenu de la table point de vente
+  You should have received a copy of the GNU Affero General Public License
+  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
+session_start();
+require_once('../moteur/dbconfig.php');
+require_once('../core/session.php');
 
-$req = $bdd->prepare("SELECT couleur FROM points_vente WHERE id = :id ");
-$req->execute(array('id' => $id));
-$donnees = $req->fetch();
+if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && is_allowed_config()) {
+  include_once('tete.php');
 
-$couleur = $donnees['couleur'];
-            
-              $reponse->closeCursor(); // Termine le traitement de la requête
-               
+  // POST ou GET ?
+  if (isset($_POST['id']) !== false) {
+    $id = $_POST['id'];
+  } else {
+    $id = $_GET['id'];
+  }
 
-?>
-      <div class="panel-body">
-        <div class="row">
-        	<form action="../moteur/modification_points_vente_post.php" method="post">
-            <input type="hidden" name ="id" id="id" value="<?php echo $id?>">
-
-  <div class="col-md-3"><label for="nom">Nom:</label><br><br> <input type="text"                 value ="<?php echo $_POST['nom'].$_GET['nom']?>" name="nom" id="nom" class="form-control " required autofocus></div>
-  <div class="col-md-2"><label for="addresse">Adresse:</label><br><br> <input type="text"       value ="<?php echo $_POST['adresse'].$_GET['adresse']?>" name="adresse" id="adresse" class="form-control " required ></div>
-  <div class="col-md-2"><label for="commentaire">Commentaire:</label><br><br> <input type="text" value ="<?php echo $_POST['commentaire'].$_GET['commentaire']?>" name="commentaire" id="commentaire" class="form-control " required ></div>
-   <div class="col-md-1"><label for="surface">Surface de vente (m²):</label> <input type="text" value ="<?php echo $_POST['pesee_max'].$_GET['pesee_max']?>" name="surface" id="surface" class="form-control " required ></div>
-  <div class="col-md-1"><label for="couleur">Couleur:</label><br><br> <input type="color"        value ="<?php echo $couleur ?>" name="couleur" id="couleur" class="form-control " required ></div>
-  <div class="col-md-1"><br><br><button name="creer" class="btn btn-warning">Modifier</button></div>
-</form>
-<br><br>
-<a href="edition_points_vente.php">
-<button name="creer" class="btn btn">Annuler</button>
-</a>
-</div>
-      </div>
-     
-      <br>
+  $req = $bdd->prepare('SELECT couleur, nom, adresse, commentaire, surface_vente as surface
+                        FROM points_vente
+                        WHERE id = :id
+                        LIMIT 1');
+  $req->bindValue(':id', $id, PDO::PARAM_INT);
+  $req->execute();
+  $point_vente = $req->fetch(PDO::FETCH_ASSOC);
+  ?>
+  <div class="container">
+    <h1>Gestion des points de vente</h1>
+    <div class="panel-heading">Modifier les données concernant le point de vente n°<?= $id; ?>, <?= $point_vente['nom']; ?>. </div>
+    <div class="panel-body">
       <div class="row">
-  <div class="col-md-4"></div>
-  <div class="col-md-4"><br> </div>
-  <div class="col-md-4"></div>
-  </div>
-  </div>
-  </div>
-    </div><!-- /.container -->
-   
-<?php include "pied.php";
+        <form action="../moteur/modification_points_vente_post.php" method="post">
+          <input type="hidden" name ="id" id="id" value="<?= $id; ?>">
+          <div class="col-md-3">
+            <label for="nom">Nom:</label>
+            <input type="text" value="<?= $point_vente['nom']; ?>" name="nom" id="nom" class="form-control " required autofocus>
+          </div>
+          <div class="col-md-2">
+            <label for="addresse">Adresse:</label>
+            <input type="text" value="<?= $point_vente['adresse']; ?>" name="adresse" id="adresse" class="form-control " required>
+          </div>
+          <div class="col-md-2">
+            <label for="commentaire">Commentaire:</label>
+            <input type="text" value="<?= $point_vente['commentaire']; ?>" name="commentaire" id="commentaire" class="form-control" required>
+          </div>
+          <div class="col-md-2">
+            <label for="surface">Surface de vente (m²):</label>
+            <input type="text"value="<?= $point_vente['surface']; ?>" name="surface" id="surface" class="form-control " required>
+          </div>
+          <div class="col-md-1">
+            <label for="couleur">Couleur:</label>
+            <input type="color" value="<?= $point_vente['couleur']; ?>" name="couleur" id="couleur" class="form-control" required>
+          </div>
+          <div class="col-md-1">
+            <button type="submit" class="btn btn-warning">Modifier</button>
+          </div>
+        </form>
+        <a href="edition_points_vente.php">
+          <button name="Annuler" class="btn btn">Annuler</button>
+        </a>
+      </div>
+    </div>
+  </div> <!-- /.container -->
+
+  <?php
+  include_once('pied.php');
+} else {
+  header('Location: ../moteur/destroy.php');
 }
-    else
-{
-    header('Location: ../moteur/destroy.php') ;
-}
-?>

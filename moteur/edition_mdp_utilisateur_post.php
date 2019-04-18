@@ -1,98 +1,71 @@
-<?php session_start();
+<?php
 
-//Vérification des autorisations de l'utilisateur et des variables de session requises pour l'utilisation de cette requête:
- if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource")
-{
+/*
+  Oressource
+  Copyright (C) 2014-2017  Martin Vert and Oressource devellopers
 
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU Affero General Public License as
+  published by the Free Software Foundation, either version 3 of the
+  License, or (at your option) any later version.
 
-//on obtien le pass en db (md5) dans $bddpass
- 
-           
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU Affero General Public License for more details.
 
+  You should have received a copy of the GNU Affero General Public License
+  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
-            try
-            {
-            // On se connecte à MySQL
-            include('../moteur/dbconfig.php');
-            }
-            catch(Exception $e)
-            {
-            // En cas d'erreur, on affiche un message et on arrête tout
-            die('Erreur : '.$e->getMessage());
-            }
- 
-            // Si tout va bien, on peut continuer
-            /*
-SELECT SUM(masse),timestamp FROM pesees_collectes WHERE  `timestamp`BETWEEN '2014-09-18 00:00:00' AND '2014-09-24 23:59:59'
-            */
- $req = $bdd->prepare("SELECT pass FROM utilisateurs WHERE  id = :id ");//SELECT `titre_affectation` FROM affectations WHERE titre_affectation = "conssomables" LIMIT 1
-$req->execute(array('id' => $_SESSION['id'] ));
-$donnees = $req->fetch();
-     
-$bddpass = $donnees['pass'];
+session_start();
 
-$req->closeCursor(); // Termine le traitement de la requête
+require_once '../core/requetes.php';
 
+function change_pass(PDO $bdd, int $id, $oldpass='', $pass1='', $pass2=''): string {
+  $user = utilisateurs_id($bdd, $id);
+  // On récupére et hash l'ancien mot de passe donné par l'utilisateur et celui en base.
+  $bddpass = $user['pass'];
+  $oldpass = md5($_POST['passold']);
+  $name = $user['nom'];
 
+  if ($bddpass !== $oldpass) {
+    return 'err=Vous avez fait une erreur dans votre mot de passe actuel';
+  }
 
-// si le mot de passe actuel == le nouveau mot de passe == la verif , message fun
-if ($_POST['pass1'] == $_POST['pass2'] AND $_POST['pass2'] == $_POST['passold'])
-{
-	header('Location: ../ifaces/edition_mdp_utilisateur.php?msg='.$_SESSION['nom'].', vous venez de tenter de modifier votre mot de passe par le même mot de passe, à quoi bon? Par faute de sens dans cette operation administrative, oressource ne procedera à aucun changement.');	
-}
-else
-{
+  // EsterEgg de https://en.wikipedia.org/wiki/Serial_Experiments_Lain
+  // Un utilisateur ne peut avoir un mot de passe pass null.
+  if ($_POST['pass1'] === '' || $_POST['pass2'] === '') {
+    return "err=Vous avez tentée surement par mégarde de vous attribuer un mot de passe vacant. Moi Lain l'intelligence artificielle de Oressource ne peut effectuer cette opération popentiellement dangeureuse.";
+  }
 
-// si passold = pass en bdd 
+  if ($_POST['pass1'] !== $_POST['pass2']) {
+    return "err=Le mot de passe et sa confirmation divergent.";
+  }
 
-if (md5($_POST['passold']) == $bddpass)
-{
+  // A partir de maintenant on sait que pass1 === pass2.
+  // On hash le nouveau mot de passe.
+  $newpass = md5($_POST['pass1']);
 
-// et si pass = pass1 
-if ($_POST['pass1'] == $_POST['pass2'])
-{
+  if ($newpass === $oldpass) {
+    return "err=Vous venez de tenter de modifier votre mot de passe par le même mot de passe, à quoi bon? Par faute de sens dans cette operation administrative, oressource ne procedera à aucun changement.";
+  }
 
-// inscription du nouveau mot de passe en bdd
-	try
-{
-include('dbconfig.php');
-}
-catch(Exception $e)
-{
-        die('Erreur : '.$e->getMessage());
-}
- 
-// Insertion du post à l'aide d'une requête préparée
-// mot de passe crypté md5 
-
-// Insertion du post à l'aide d'une requête préparée
-$req = $bdd->prepare('UPDATE utilisateurs SET pass = :pass WHERE id = :id');
-$req->execute(array('pass' => md5($_POST['pass1']),'id' => $_SESSION['id']));
-
-  $req->closeCursor();
-
-
-
-
-
-
-header('Location: ../ifaces/edition_mdp_utilisateur.php?msg=Mot de passe modifié avec succes, utilisateur: '.$_SESSION['nom']." mail: ".$_SESSION['mail']);	
-}
-else
-{
-
-header( "Location: ../ifaces/edition_mdp_utilisateur.php?err=Veuillez inscrire deux mots de passe semblables");
-}
-}
-else
-{
-header( "Location: ../ifaces/edition_mdp_utilisateur.php?err=Mauvais mot de passe actuel");
-}
+  if ($_POST['pass1'] === $_POST['pass2']) {
+    $req = $bdd->prepare('UPDATE utilisateurs SET pass = :pass WHERE id = :id');
+    $req->execute(['pass' => $newpass, 'id' => $id]);
+    $req->closeCursor();
+    return "msg=Mot de passe modifié avec succes, utilisateur: $name mail: {$user['mail']}";
+  } else {
+    return "err=Veuillez inscrire deux mots de passe semblables";
+  }
 }
 
+if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource') {
+  require_once '../moteur/dbconfig.php';
+  $id = $_SESSION['id'];
+  $str = change_pass($bdd, $id, $_POST['passold'], $_POST['pass1'], $_POST['pass2']);
+  header("Location: ../ifaces/edition_mdp_utilisateur.php?$str");
+} else {
+  header('Location:../moteur/destroy.php');
 }
-else { 
-header('Location:../moteur/destroy.php');
-     }
-?>
-

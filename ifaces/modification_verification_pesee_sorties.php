@@ -1,116 +1,96 @@
-<?php session_start(); 
-
-require_once("../moteur/dbconfig.php");
-
-//Vérification des autorisations de l'utilisateur et des variables de session requises pour l'affichage de cette page:
-  if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 'h') !== false))
-      {  include "tete.php" ?>
-   <div class="container">
-        <h1>Modifier la pesée n° <?php echo $_POST['id']?> appartenant à la sortie <?php echo $_POST['nsortie']?> </h1> 
- <div class="panel-body">
-
-
-
-
-<br>
-
-
-<div class="row">
-   
-        	<form action="../moteur/modification_verification_pesee_sorties_post.php" method="post">
-            <input type="hidden" name ="nsortie" id="ncnsortie" value="<?php echo $_POST['nsortie']?>">
-            <input type="hidden" name ="id" id="id" value="<?php echo $_POST['id']?>">
-            <input type="hidden" name ="masse" id="masse" value="<?php echo $_POST['masse']?>">
-  <input type="hidden" name ="date1" id="date1" value="<?php echo $_POST['date1']?>">
-  <input type="hidden" name ="date2" id="date2" value="<?php echo $_POST['date2']?>">
-    <input type="hidden" name ="npoint" id="npoint" value="<?php echo $_POST['npoint']?>">
-
-
-
 <?php
-   if (isset($_POST['nomtypo']))
-      { ?>
-  <div class="col-md-3">
-  <label for="id_type_dechet">Type d'objet:</label>
-<select name="id_type_dechet" id="id_type_dechet" class="form-control " required>
-            <?php 
-            // On affiche une liste deroulante des type de collecte visibles
-            $reponse = $bdd->query('SELECT * FROM type_dechets');
-            // On affiche chaque entree une à une
-            while ($donnees = $reponse->fetch())
-            {
-              if ($_POST['nomtypo'] == $donnees['nom'])  // SI on a pas de message d'erreur
-{
-  ?>
-    <option value = "<?php echo$donnees['id']?>" selected ><?php echo$donnees['nom']?></option>
-<?php
-} else {
-            ?>
+/*
+  Oressource
+  Copyright (C) 2014-2017  Martin Vert and Oressource devellopers
 
-      <option value = "<?php echo$donnees['id']?>" ><?php echo$donnees['nom']?></option>
-            <?php }}
-            $reponse->closeCursor(); // Termine le traitement de la requête
-            ?>
-    </select>
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU Affero General Public License as
+  published by the Free Software Foundation, either version 3 of the
+  License, or (at your option) any later version.
 
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU Affero General Public License for more details.
 
-</div>
+  You should have received a copy of the GNU Affero General Public License
+  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
-<?php }else { ?>
+session_start();
 
+require_once '../core/session.php';
+require_once '../core/requetes.php';
 
-  <div class="col-md-3">
-  <label for="id_type_dechet">Dechets et materiaux:</label>
-<select name="id_type_dechet_evac" id="id_type_dechet_evac" class="form-control " required>
-            <?php 
-            // On affiche une liste deroulante des type de collecte visibles
-            $reponse = $bdd->query('SELECT * FROM type_dechets_evac ');
-            // On affiche chaque entree une à une
-            while ($donnees = $reponse->fetch())
-            {
-              if ($_POST['nomtypo_evac'] == $donnees['nom'])  // SI on a pas de message d'erreur
-{
-  ?>
-    <option value = "<?php echo$donnees['id']?>" selected ><?php echo$donnees['nom']?></option>
-<?php
-} else {
-            ?>
-
-      <option value = "<?php echo$donnees['id']?>" ><?php echo$donnees['nom']?></option>
-            <?php }}
-            $reponse->closeCursor(); // Termine le traitement de la requête
-            ?>
-    </select>
-  
-</div>
-<?php }?>
-<div class="col-md-3">
-
-    <label for="masse">Masse:</label>
-<br><input type="text"       value ="<?php echo $_POST['masse']?>" name="masse" id="masse" class="form-control " required >
-  <br>
-<button name="creer" class="btn btn-warning">Modifier</button>
- </div>
-</form>
-</div>
-
-
-
-</div>
-
-      
-
-
-
-
-
-  </div><!-- /.container -->
-<?php include "pied.php"; 
+function pesees_sorties_id(PDO $bdd, int $id): array {
+  $sql = 'SELECT
+    pesees_sorties.id,
+    pesees_sorties.masse,
+    pesees_sorties.id_sortie,
+    pesees_sorties.id_type_poubelle poubelle,
+    pesees_sorties.id_type_dechet dechet,
+    pesees_sorties.id_type_dechet_evac evac
+  FROM pesees_sorties
+  WHERE pesees_sorties.id = :id';
+  $r = fetch_id($bdd, $sql, $id);
+  $r['id_type'] = $r['poubelle'] | $r['dechet'] | $r['evac'];
+  return $r;
 }
-    else
-{
-    header('Location: ../moteur/destroy.php') ;
+
+if (is_valid_session() && is_allowed_verifications()) {
+  require_once('../moteur/dbconfig.php');
+
+  $id = (int) ($_GET['id'] ?? 0) | ($_POST['id'] ?? 0);
+  $pesee = pesees_sorties_id($bdd, $id);
+  $meta = [];
+  $type = '';
+  $text = '';
+  if ($pesee['dechet'] > 0) {
+    $type = 'dechet';
+    $text = "Type d'objet:";
+    $meta = filter_visibles(types_dechets($bdd));
+  } elseif ($pesee['evac'] > 0) {
+    $type = 'evac';
+    $text = 'Dechets et materiaux:';
+    $meta = filter_visibles(types_dechets_evac($bdd));
+  } elseif ($pesee['poubelle'] > 0) {
+    $type = 'poubelle';
+    $text = 'Type de poubelle:';
+    $meta = filter_visibles(types_poubelles($bdd));
+  }
+
+  require_once 'tete.php';
+  ?>
+  <div class="container">
+    <h1>Modifier la pesée n° <?= $id ?> appartenant à la sortie <?= $pesee['id_sortie'] ?> </h1>
+    <div class="panel-body">
+      <div class="row">
+        <form action="../moteur/modification_verification_pesee_sorties_post.php" method="post">
+          <input type="hidden" name="id_sortie" value="<?= $pesee['id_sortie'] ?>">
+          <input type="hidden" name="id"      value="<?= $pesee['id'] ?>">
+          <div class="col-md-3">
+            <label for="id_type"><?= $text ?></label>
+            <select id="id_type" name="<?= $type ?>" class="form-control" required>
+              <?php foreach ($meta as $p) { ?>
+                <option <?= $pesee['id_type'] === $p['id'] ? 'selected' : '' ?>
+                  value="<?= $p['id']; ?>"><?= $p['nom'] ?></option>
+                <?php } ?>
+            </select>
+          </div>
+          <div class="col-md-3">
+            <label for="masse">Masse:</label>
+            <input class="form-control" id="masse" type="text"
+                   value="<?= $pesee['masse'] ?>" name="masse" required>
+            <br>
+            <button class="btn btn-warning">Modifier</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div><!-- /.container -->
+  <?php
+  require_once 'pied.php';
+} else {
+  header('Location: ../moteur/destroy.php');
 }
 ?>
-       
-      

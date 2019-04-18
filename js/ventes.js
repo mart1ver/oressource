@@ -1,296 +1,333 @@
-"use strict";
+'use strict';
+/*
+ Oressource
+ Copyright (C) 2014-2017  Martin Vert and Oressource devellopers
 
-var what = "";
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU Affero General Public License as
+ published by the Free Software Foundation, either version 3 of the
+ License, or (at your option) any later version.
 
-function rendu() {
-  if(document.getElementById('rendub').value > 0) {
-    document.getElementById('renduc').value = document.getElementById('rendub').value - document.getElementById('rendua').value;
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU Affero General Public License for more details.
+
+ You should have received a copy of the GNU Affero General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+// use Ticket from ticket.js
+
+//! L'interface des ventes est gérée à l'aide d'un état interne sous forme d'objets JavaScript
+//! et de fonctions les manipulants et d'une interface graphique en HTML+CSS.
+//!
+//! «L'état de référence» sont les objets JS. L'interface graphique n'est qu'une «vue» des données
+//! Par exemple clicker sur «ajouter» rajoute dans la représentation interne d'un panier de
+//! vente l'objet, le prix et la quantité désirée et ensuite met à jour l'interface graphique.
+//! La page et les données sont remises à 0, en cas d'envoi réussi (avec ou sans impressions)
+//! ou de click sur la remise à 0.
+
+Ticket.prototype.sum_quantite = function () {
+  return this.to_array()
+      .reduce((acc, vente) => acc + vente.quantite, 0);
+}
+
+Ticket.prototype.sum_prix = function () {
+  return this.to_array().reduce(
+    (acc, vente) =>
+      acc + (vente.lot ? vente.prix : (vente.prix * vente.quantite)),
+    0.0);
+}
+
+function new_state() {
+  const s = {
+    moyen: 1, // especes
+    ticket: new Ticket(),
+    last: undefined,
+    vente_unite: true
+  };
+  // Hack pour les impressions...
+  window.OressourceEnv.tickets = s.ticket;
+  return s;
+}
+
+function new_numpad() {
+  return {
+    prix: 0,
+    quantite: 0,
+    masse: 0.0
+  };
+}
+
+function new_rendu() {
+  return {
+    reglement: 0,
+    difference: 0
+  };
+}
+
+/// Fonction permetant de raccoursir une chaine trop longue.
+/// Par exemple
+/// `wrapString("Matériel élèctrique à 0.5€", 15, '…')`
+/// sera evaluée à `"matériel éléc à…"`.
+const wrapString = (s, n, c) => (s.length > n) ? (s.slice(0, n) + c) : s;
+
+let state = new_state();
+let numpad = new_numpad();
+let rendu = new_rendu();
+
+/// Fonction gérant les différents champs du numpad elle est appellée via le "click"
+/// HTML de l'inferface de ifaces/vente.php
+let current_focus = document.getElementById('quantite');
+function fokus(element) {
+  current_focus = element;
+}
+
+function render_numpad({ prix, quantite, masse }) {
+  document.getElementById('quantite').value = quantite;
+  document.getElementById('prix').value = prix;
+  if (window.OressourceEnv.pesees) {
+    document.getElementById('masse').value = masse;
   }
 }
 
-function fokus(that) {
-  what = that;
+function reset_rendu() {
+  rendu = new_rendu();
+  update_rendu();
 }
 
-function moyens(moy) {
-  document.getElementById('moyen').value = moy;
+function reset_numpad() {
+  numpad = new_numpad();
+  render_numpad(numpad);
 }
 
-function often(that) {
-  if (document.getElementById('ptot').value > 0 && isNaN(parseInt(document.getElementById('id_type_objet').value))){
-    what.value += that.value;
-    document.getElementById('quantite').value ="";
-    document.getElementById('prix').value ="";
-    if (that.value == "c") { what.value = ""; }
-    if (document.getElementById('rendub').value > 0) {
-      document.getElementById('renduc').value = document.getElementById('rendub').value -  document.getElementById('rendua').value;
+/// Cette fonction remet l'interface du choix du moyen de paiement à son état initial
+/// c'est à dire sur «espèce».
+function reset_paiement() {
+  const moyens_paiement_selector = document.getElementById('moyens');
+  Array.from(moyens_paiement_selector.children).forEach(elem => {
+    elem.classList.remove('active');
+  });
+
+  // L'element 0 c'est les espece.
+  moyens_paiement_selector.children[0].classList.add('active');
+}
+
+/// Permet de récupérer les saisies du numpad sous la forme d'un objet js.
+function get_numpad() {
+  const masseinput = document.getElementById('masse');
+  return {
+    quantite: Number.parseInt(document.getElementById('quantite').value, 10),
+    masse: Number.parseFloat(masseinput === null ? NaN : masseinput.value, 10),
+    prix: Number.parseFloat(document.getElementById('prix').value, 10)
+  };
+}
+
+/// Ajoute au panier l'objet selectionné.
+function update_state({ type, objet = { prix: 0, masse: 0.0 } }) {
+  numpad.prix = objet.prix;
+  numpad.quantite = 1;
+  numpad.masse = objet.masse || 0.0;
+  state.last = { type, objet };
+  const color = objet.couleur || type.couleur;
+  const name = objet.nom || type.nom;
+  const html = `<span class='badge' id='cool' style="background-color:${color}">${wrapString(name, 15, '&hellip;')}</span>`;
+  document.getElementById('nom_objet').innerHTML = html;
+  render_numpad(numpad);
+}
+
+/// Effectue le reset des données représentant une vente et de l'interface graphique.
+function reset(data, response) {
+  state = new_state();
+
+  reset_numpad();
+  reset_rendu();
+  reset_paiement();
+
+  // On remet à zéro le panier
+  {
+    const range = document.createRange();
+    range.selectNodeContents(document.getElementById('transaction'));
+    range.deleteContents();
+    update_recap(0.0, 0.0);
+  }
+
+  // On donne le nouveau numéro «prévisionnel» à la futur vente.
+  // Attention ce numéro est «provisoire» si il y a plusieurs caisses.
+  document.getElementById('num_vente').textContent = response.id + 1;
+}
+
+function moyens(moyen) {
+  state.moyen = moyen;
+}
+
+function encaisse_vente() {
+  if (state.ticket.size > 0) {
+    const url = '../api/ventes.php';
+    const date = document.getElementById('date');
+    const data = {
+      classe: 'ventes',
+      id_point: window.OressourceEnv.point.id,
+      id_user: window.OressourceEnv.id_user,
+      id_moyen: state.moyen,
+      commentaire: document.getElementById('commentaire').value.trim(),
+      items: state.ticket.to_array()
+    };
+    if (date !== null) {
+      data.date = date.value;
     }
-  }
-  if (isNaN(parseInt(document.getElementById('id_type_objet').value))) {
+    return data;
   } else {
-    if (that == null) {
-      document.getElementById('quantite').value ="" ; what = document.getElementById('quantite');
+    return {};
+  }
+}
+
+// Immediatly calling function to get how to print TVA
+const printTva = (() => {
+  if (window.OressourceEnv.tva_active) {
+      return () => {
+      const prixtot = state.ticket.sum_prix().toFixed(2);
+      const taux_tva = window.OressourceEnv.taux_tva.toFixed(2);
+      const ptva = prixtot * taux_tva;
+      const prixht = (prixtot - ptva).toFixed(2);
+      return `TVA à ${taux_tva}% Prix H.T. = ${prixht} + € TVA =  ${ptva} €`;
     }
-    if (that.value == "c") { what.value = ""; }
-    else { what.value += that.value; }
-  }
-}
-
-function suprime(nsligne) {
-  if (parseInt(document.getElementById('nlignes').value) > 1) {
-    var numero_ligne = nsligne.substr(5); // sous_chaine = le numero uniquement
-    document.getElementById('narticles').value = parseInt(document.getElementById('narticles').value) - parseInt(document.getElementById('tquantite'+numero_ligne).value);
-    document.getElementById('ptot').value = parseFloat(document.getElementById('ptot').value) - (parseFloat(document.getElementById('tprix'+numero_ligne).value)*parseFloat(document.getElementById('tquantite'+numero_ligne).value));
-    document.getElementById('recaptotal').innerHTML = parseFloat(document.getElementById('ptot').value).toFixed(2)+'€';
-    document.getElementById('total').innerHTML = '<li class="list-group-item">Soit : '+document.getElementById('narticles').value+' article(s) pour : <span class="badge" style="float:right;">'+parseFloat(document.getElementById('ptot').value).toFixed(2)+'€</span></li>';
-    document.getElementById('tquantite'+numero_ligne).value= "0";
-    document.getElementById('tprix'+numero_ligne).value= "0";
-    document.getElementById('nlignes').value = parseInt(document.getElementById('nlignes').value) - 1;
-    document.getElementById(nsligne).remove();
-    document.getElementById('rendua').value = document.getElementById('ptot').value;
   } else {
-    window.location.reload();
+    () => "Association non assujettie à la TVA.";
   }
+})();
+
+function update_rendu() {
+  const total = state.ticket.sum_prix();
+  const input = document.getElementById('reglement');
+  rendu.reglement = parseFloat(input.value, 10).toFixed(3);
+  rendu.difference = rendu.reglement - total;
+  document.getElementById('somme').value = total;
+  document.getElementById('difference').value = rendu.difference || 0;
 }
 
-function switchlot(state) {
-  function lot_or_unite(type, label, prix_string, masse_string, bg_color) {
-    document.getElementById('sul').value = type;
-    document.getElementById('labellot').innerHTML = label;
-    document.getElementById('labelpul').innerHTML = prix_string;
-    document.getElementById('panelcalc').style.backgroundColor = bg_color;
-    if(document.getElementById('masse') )
-    {
-     document.getElementById('labelmasse').innerHTML = masse_string;
-    } 
-  }
-  if (state == false) {
-    lot_or_unite("lot", "vente au: ", "Prix du lot: ", "Masse du lot: ", "#E8E6BC");
-  } else {
-    lot_or_unite("unite", "vente à: ", "Prix unitaire:", "Masse unitaire: " , "white");
-  }
+function numpad_input(elem) {
+  current_focus.value += elem.value;
 }
 
-function ajout() {
-  if (document.getElementById('id_type_objet').value == ""){}else{
+function remove(id) {
+  const elem = state.ticket.remove(id);
+  document.getElementById(id).remove();
+  update_rendu();
+  update_recap(state.ticket.sum_prix(), state.ticket.sum_quantite());
+  reset_numpad();
+}
 
-  if (document.getElementById('sul').value == "unite") {
-    var prixtemp = document.getElementById('prix').value;
-    prixtemp = prixtemp.replace(",", ".");
-    document.getElementById('prix').value = prixtemp;
-   
-   if(document.getElementById('masse') )
-          {
-    var massetemp = document.getElementById('masse').value;
-    massetemp = massetemp.replace(",", ".");
-    if (force_pes_vente == "oui" && isNaN(parseFloat(massetemp))) {return;}
-    if (isNaN(parseFloat(massetemp))) {document.getElementById('masse').value = "";}else{ 
-    document.getElementById('masse').value = parseFloat(massetemp);
-  }
+function update_recap(total, size) {
+  document.getElementById('total').innerHTML = `<li class="list-group-item">Soit : ${size} article(s) pour : <span class="badge" style="float:right;">${total.toFixed(2)} €</span></li>`;
+  document.getElementById('recaptotal').innerHTML = total.toFixed(2) + ' €';
+  document.getElementById('nom_objet').textContent = "Objet:";
+}
 
+/**
+ * Cette fonction est utilisée lorsque l'on click sur le bouton `ajouter`
+ * du numpad.
+ * On récupére l'état des objets du même type à ajouter au panier puis
+ * on met a jour l'interface graphique du panier.
+ *
+ * Deux points sont assez particulier:
+ *
+ * ## Cas de la vente en lot
+ *
+ * En lot on décide d'appliquer un prix arbitraire à un ensemble d'objet
+ * du même type sans respecter le prix unitaire (une promotion en somme).
+ * On ne peux donc pas utilier comme "prix total" quantité * prix
+ * comme dans la vente unitaire. On prends le prix seulement du lot.
+ *
+ * ## Cas des pesées en vente:
+ *
+ * On ajoute la masse de l'ensemble des objets à ajouter au panier
+ * (Comme dans une collecte ou sortie), on ne pesee pas independament tout
+ * les objets on pesee en lot en somme.
+ */
+function add() {
+  if (state.last !== undefined) {
+    const { prix, quantite, masse } = get_numpad();
+    if (quantite > 0 && !isNaN(prix)) {
+      const current = state.last;
+      state.last = undefined;
+      // Idée: Ajouter un champ "prix total" pour eviter de faire un if pour les calculs sur les prix.
 
-          }
+      const name = current.objet.nom || current.type.nom;
+      const vente = {
+        id_type: current.type.id,
+        id_objet: current.objet.id || null,
+        lot: !state.vente_unite,
+        quantite,
+        prix,
+        masse,
+        name, // Hack pour les impressions.
+      };
 
-    if (isNaN((parseFloat(document.getElementById('prix').value)*parseFloat(document.getElementById('quantite').value)).toFixed(2))) {
+      const lot = vente.lot ? 'lot' : '';
+
+      vente.show = function() {
+        const prix_txt = `${this.prix} €`;
+        const masse_txt = this.masse >= 0.00 ? ` ${this.masse} kg` : '';
+
+        return `<p>${lot} ${this.name} : ${prix_txt}${masse_txt}</p>`;
+      };
+
+      const id = state.ticket.push(vente);
+
+      const li = document.createElement('li');
+      li.setAttribute('id', id);
+      li.setAttribute('class', 'list-group-item');
+      const amount = vente.lot ?  vente.prix : vente.prix * vente.quantite;
+      let html = `
+            <span class="badge">${amount.toFixed(2)} €</span>
+            <span class="glyphicon glyphicon-trash" aria-hidden="true"
+                  onclick="remove(${id});return false;">
+            </span>&nbsp;&nbsp; ${lot} ${quantite} &#215; ${name}`;
+      if (masse > 0 && window.OressourceEnv.pesees) {
+        html += `, ${(masse).toFixed(3)} Kgs.`;
+      }
+      li.innerHTML = html;
+      document.getElementById('transaction').appendChild(li);
+      update_recap(state.ticket.sum_prix(), state.ticket.sum_quantite());
+      update_rendu();
+      reset_numpad();
+      // Reset du selecteur lot/unité
+      $("#typeVente").bootstrapSwitch('state', true, false);
     } else {
-      if (isNaN(parseInt(document.getElementById('nlignes').value))) {
-        document.getElementById('nlignes').value = 1;
-      } else {
-        document.getElementById('nlignes').value=parseInt(document.getElementById('nlignes').value)+ 1;
-      }
-
-      if (isNaN(parseInt(document.getElementById('narticles').value))) {
-        document.getElementById('narticles').value = document.getElementById('quantite').value;
-      } else {
-        document.getElementById('narticles').value=parseInt(document.getElementById('narticles').value)+parseInt(document.getElementById('quantite').value);
-      }
-
-      if (isNaN(parseInt(document.getElementById('ptot').value))) {
-        document.getElementById('ptot').value = document.getElementById('prix').value*document.getElementById('quantite').value;
-      } else {
-        document.getElementById('ptot').value=parseFloat(document.getElementById('ptot').value)+parseFloat(document.getElementById('prix').value*document.getElementById('quantite').value);
-        document.getElementById('rendua').value = document.getElementById('ptot').value
-      }
-        if(document.getElementById('masse') )
-          {
-            var fait = "non" ;
-            if (isNaN(parseInt(document.getElementById('masse').value))) {
-
-            document.getElementById('liste').innerHTML += '<li class="list-group-item" name="ligne'+parseInt(document.getElementById('nlignes').value)+'" id="ligne'+parseInt(document.getElementById('nlignes').value)+'"><span class="badge">'+parseFloat(parseFloat(document.getElementById('prix').value)*parseFloat(document.getElementById('quantite').value)).toFixed(2)+'€'+'</span><span class="glyphicon glyphicon-remove" aria-hidden="true"    onclick="javascirpt:suprime('+"'ligne"+parseInt(document.getElementById('nlignes').value)+"');"+'"></span>&nbsp;&nbsp;'+document.getElementById('quantite').value+' * '+document.getElementById('nom_objet0').value
-        +'<input type="hidden"  id="tid_type_objet'+parseInt(document.getElementById('nlignes').value)+'" name="tid_type_objet'+parseInt(document.getElementById('nlignes').value)+'"value="'+document.getElementById('id_type_objet').value+'">'
-        +'<input type="hidden"  id="tid_objet'+parseInt(document.getElementById('nlignes').value)+'" name="tid_objet'+parseInt(document.getElementById('nlignes').value)+'"value="'+document.getElementById('id_objet').value+'">'
-        +'<input type="hidden"  id="tquantite'+parseInt(document.getElementById('nlignes').value)+'" name="tquantite'+parseInt(document.getElementById('nlignes').value)+'"value="'+document.getElementById('quantite').value+'">'
-        +'<input type="hidden"  id="tprix'+parseInt(document.getElementById('nlignes').value)+'" name="tprix'+parseInt(document.getElementById('nlignes').value)+'"value="'+document.getElementById('prix').value+'"></li>';
-        document.getElementById('total').innerHTML = '<li class="list-group-item">Soit : '+document.getElementById('narticles').value+' article(s) pour : <span class="badge" style="float:right;">'+parseFloat(document.getElementById('ptot').value).toFixed(2)+'€</span></li>';
-      document.getElementById('recaptotal').innerHTML = parseFloat(document.getElementById('ptot').value).toFixed(2)+'€';
-      document.getElementById('nom_objet').innerHTML = "<label>Objet:</label>";
-      document.getElementById('quantite').value = "";
-      document.getElementById('prix').value = "";
-      document.getElementById('id_type_objet').value = "";
-      document.getElementById('id_objet').value = "";
-      document.getElementById('nom_objet0').value = "";
-      fait = "oui";
-            }
-      if(fait == "non"){
-      document.getElementById('liste').innerHTML += '<li class="list-group-item" name="ligne'+parseInt(document.getElementById('nlignes').value)+'" id="ligne'+parseInt(document.getElementById('nlignes').value)+'"><span class="badge">'+parseFloat(parseFloat(document.getElementById('prix').value)*parseFloat(document.getElementById('quantite').value)).toFixed(2)+'€'+'</span><span class="glyphicon glyphicon-remove" aria-hidden="true"    onclick="javascirpt:suprime('+"'ligne"+parseInt(document.getElementById('nlignes').value)+"');"+'"></span>&nbsp;&nbsp;'+document.getElementById('quantite').value+' * '+document.getElementById('nom_objet0').value+", "+parseFloat(document.getElementById('masse').value*parseFloat(document.getElementById('quantite').value))+" Kgs."
-        +'<input type="hidden"  id="tid_type_objet'+parseInt(document.getElementById('nlignes').value)+'" name="tid_type_objet'+parseInt(document.getElementById('nlignes').value)+'"value="'+document.getElementById('id_type_objet').value+'">'
-        +'<input type="hidden"  id="tid_objet'+parseInt(document.getElementById('nlignes').value)+'" name="tid_objet'+parseInt(document.getElementById('nlignes').value)+'"value="'+document.getElementById('id_objet').value+'">'
-        +'<input type="hidden"  id="tquantite'+parseInt(document.getElementById('nlignes').value)+'" name="tquantite'+parseInt(document.getElementById('nlignes').value)+'"value="'+document.getElementById('quantite').value+'">'
-        +'<input type="hidden"  id="tprix'+parseInt(document.getElementById('nlignes').value)+'" name="tprix'+parseInt(document.getElementById('nlignes').value)+'"value="'+document.getElementById('prix').value+'">'
-        +'<input type="hidden"  id="tmasse'+parseInt(document.getElementById('nlignes').value)+'" name="tmasse'+parseInt(document.getElementById('nlignes').value)+'"value="'+document.getElementById('masse').value+'"></li>';
-      document.getElementById('total').innerHTML = '<li class="list-group-item">Soit : '+document.getElementById('narticles').value+' article(s) pour : <span class="badge" style="float:right;">'+parseFloat(document.getElementById('ptot').value).toFixed(2)+'€</span></li>';
-      document.getElementById('recaptotal').innerHTML = parseFloat(document.getElementById('ptot').value).toFixed(2)+'€';
-      document.getElementById('nom_objet').innerHTML = "<label>Objet:</label>";
-      document.getElementById('quantite').value = "";
-      document.getElementById('prix').value = "";
-      document.getElementById('masse').value = "";
-      document.getElementById('id_type_objet').value = "";
-      document.getElementById('id_objet').value = "";
-      document.getElementById('nom_objet0').value = "";
-      fait = "oui";}
-         }else
-         {
-          
-          document.getElementById('liste').innerHTML += '<li class="list-group-item" name="ligne'+parseInt(document.getElementById('nlignes').value)+'" id="ligne'+parseInt(document.getElementById('nlignes').value)+'"><span class="badge">'+parseFloat(parseFloat(document.getElementById('prix').value)*parseFloat(document.getElementById('quantite').value)).toFixed(2)+'€'+'</span><span class="glyphicon glyphicon-remove" aria-hidden="true"    onclick="javascirpt:suprime('+"'ligne"+parseInt(document.getElementById('nlignes').value)+"');"+'"></span>&nbsp;&nbsp;'+document.getElementById('quantite').value+' * '+document.getElementById('nom_objet0').value
-        +'<input type="hidden"  id="tid_type_objet'+parseInt(document.getElementById('nlignes').value)+'" name="tid_type_objet'+parseInt(document.getElementById('nlignes').value)+'"value="'+document.getElementById('id_type_objet').value+'">'
-        +'<input type="hidden"  id="tid_objet'+parseInt(document.getElementById('nlignes').value)+'" name="tid_objet'+parseInt(document.getElementById('nlignes').value)+'"value="'+document.getElementById('id_objet').value+'">'
-        +'<input type="hidden"  id="tquantite'+parseInt(document.getElementById('nlignes').value)+'" name="tquantite'+parseInt(document.getElementById('nlignes').value)+'"value="'+document.getElementById('quantite').value+'">'
-        +'<input type="hidden"  id="tprix'+parseInt(document.getElementById('nlignes').value)+'" name="tprix'+parseInt(document.getElementById('nlignes').value)+'"value="'+document.getElementById('prix').value+'"></li>';
-        document.getElementById('total').innerHTML = '<li class="list-group-item">Soit : '+document.getElementById('narticles').value+' article(s) pour : <span class="badge" style="float:right;">'+parseFloat(document.getElementById('ptot').value).toFixed(2)+'€</span></li>';
-      document.getElementById('recaptotal').innerHTML = parseFloat(document.getElementById('ptot').value).toFixed(2)+'€';
-      document.getElementById('nom_objet').innerHTML = "<label>Objet:</label>";
-      document.getElementById('quantite').value = "";
-      document.getElementById('prix').value = "";
-      document.getElementById('id_type_objet').value = "";
-      document.getElementById('id_objet').value = "";
-      document.getElementById('nom_objet0').value = "";
-      }
+      this.input.setCustomValidity('Quantite nulle ou inferieur a 0.');
     }
-  } else {
-    var prixtemp = document.getElementById('prix').value;
-
-    prixtemp = prixtemp.replace(",", ".");
-    document.getElementById('prix').value = prixtemp;
-    if(document.getElementById('masse') )
-          {
-    var massetemp = document.getElementById('masse').value;
-    massetemp = massetemp.replace(",", ".");
-    if (force_pes_vente == "oui" && isNaN(parseFloat(massetemp))) {return;}
-    if (isNaN(parseFloat(massetemp))) {document.getElementById('masse').value = "";}else{ 
-    document.getElementById('masse').value = parseFloat(massetemp);
   }
-          }
+}
 
-    if (isNaN((parseFloat(document.getElementById('prix').value)*parseFloat(document.getElementById('quantite').value)).toFixed(2))) {
+const lot_or_unite = (label, prix_string, masse_string, bg_color) => {
+  document.getElementById('labellot').textContent = label;
+  document.getElementById('labelprix').textContent = prix_string;
+  document.getElementById('panelcalc').style.backgroundColor = bg_color;
+  if (window.OressourceEnv.pesees) {
+    document.getElementById('labelmasse').textContent = masse_string;
+  }
+};
+
+document.addEventListener('DOMContentLoaded', () => {
+  $("#typeVente").bootstrapSwitch();
+  $("#typeVente").on('switchChange.bootstrapSwitch', (event, checked) => {
+    if (checked) {
+      lot_or_unite("Vente à: ", "Prix unitaire:", "Masse unitaire: ", "white");
     } else {
-      if (isNaN(parseInt(document.getElementById('nlignes').value))) {
-        document.getElementById('nlignes').value = 1;
-      } else {
-        document.getElementById('nlignes').value=parseInt(document.getElementById('nlignes').value)+ 1;
-      }
-
-      if (isNaN(parseInt(document.getElementById('narticles').value))) {
-        document.getElementById('narticles').value = document.getElementById('quantite').value;
-      } else {
-        document.getElementById('narticles').value=parseInt(document.getElementById('narticles').value)+parseInt(document.getElementById('quantite').value);
-      }
-
-      if (isNaN(parseInt(document.getElementById('ptot').value))) {
-        document.getElementById('ptot').value = document.getElementById('prix').value;
-        document.getElementById('rendua').value = document.getElementById('ptot').value ;
-      } else {
-        document.getElementById('ptot').value=parseFloat(document.getElementById('ptot').value)+parseFloat(document.getElementById('prix').value);
-      }
-      if(document.getElementById('masse'))
-          {
-            var fait = "non" ;
-            if (isNaN(parseInt(document.getElementById('masse').value))) {
-
-              document.getElementById('liste').innerHTML += '<li class="list-group-item" name="ligne'+parseInt(document.getElementById('nlignes').value)+'" id="ligne'+parseInt(document.getElementById('nlignes').value)+'"><span class="badge">'+parseFloat(document.getElementById('prix').value).toFixed(2)+'€'+'</span><span class="glyphicon glyphicon-remove" aria-hidden="true"    onclick="javascirpt:suprime('+"'ligne"+parseInt(document.getElementById('nlignes').value)+"');"+'"></span>&nbsp;&nbsp;'+document.getElementById('quantite').value+' * '+document.getElementById('nom_objet0').value
-        +'<input type="hidden"  id="tid_type_objet'+parseInt(document.getElementById('nlignes').value)+'" name="tid_type_objet'+parseInt(document.getElementById('nlignes').value)+'"value="'+document.getElementById('id_type_objet').value+'">'
-        +'<input type="hidden"  id="tid_objet'+parseInt(document.getElementById('nlignes').value)+'" name="tid_objet'+parseInt(document.getElementById('nlignes').value)+'"value="'+document.getElementById('id_objet').value+'">'
-        +'<input type="hidden"  id="tquantite'+parseInt(document.getElementById('nlignes').value)+'" name="tquantite'+parseInt(document.getElementById('nlignes').value)+'"value="'+document.getElementById('quantite').value+'">'
-        +'<input type="hidden"  id="tprix'+parseInt(document.getElementById('nlignes').value)+'" name="tprix'+parseInt(document.getElementById('nlignes').value)+'"value="'+document.getElementById('prix').value/document.getElementById('quantite').value+'"></li>';
-      document.getElementById('total').innerHTML = '<li class="list-group-item">Soit : '+document.getElementById('narticles').value+' article(s) pour : <span class="badge" style="float:right;">'+parseFloat(document.getElementById('ptot').value).toFixed(2)+'€</span></li>';
-      document.getElementById('recaptotal').innerHTML = parseFloat(document.getElementById('ptot').value).toFixed(2)+'€';
-      document.getElementById('nom_objet').innerHTML = "<label>Objet:</label>";
-      document.getElementById('quantite').value = "";
-      document.getElementById('prix').value = "";
-      document.getElementById('id_type_objet').value = "";
-      document.getElementById('id_objet').value = "";
-      document.getElementById('nom_objet0').value = "";
-      fait = "oui";
-            }
-      if(fait == "non"){
-      document.getElementById('liste').innerHTML += '<li class="list-group-item" name="ligne'+parseInt(document.getElementById('nlignes').value)+'" id="ligne'+parseInt(document.getElementById('nlignes').value)+'"><span class="badge">'+parseFloat(document.getElementById('prix').value).toFixed(2)+'€'+'</span><span class="glyphicon glyphicon-remove" aria-hidden="true"    onclick="javascirpt:suprime('+"'ligne"+parseInt(document.getElementById('nlignes').value)+"');"+'"></span>&nbsp;&nbsp;'+document.getElementById('quantite').value+' * '+document.getElementById('nom_objet0').value+", "+parseFloat(document.getElementById('masse').value)+"Kgs."
-        +'<input type="hidden"  id="tid_type_objet'+parseInt(document.getElementById('nlignes').value)+'" name="tid_type_objet'+parseInt(document.getElementById('nlignes').value)+'"value="'+document.getElementById('id_type_objet').value+'">'
-        +'<input type="hidden"  id="tid_objet'+parseInt(document.getElementById('nlignes').value)+'" name="tid_objet'+parseInt(document.getElementById('nlignes').value)+'"value="'+document.getElementById('id_objet').value+'">'
-        +'<input type="hidden"  id="tquantite'+parseInt(document.getElementById('nlignes').value)+'" name="tquantite'+parseInt(document.getElementById('nlignes').value)+'"value="'+document.getElementById('quantite').value+'">'
-        +'<input type="hidden"  id="tprix'+parseInt(document.getElementById('nlignes').value)+'" name="tprix'+parseInt(document.getElementById('nlignes').value)+'"value="'+document.getElementById('prix').value/document.getElementById('quantite').value+'">'
-        +'<input type="hidden"  id="tmasse'+parseInt(document.getElementById('nlignes').value)+'" name="tmasse'+parseInt(document.getElementById('nlignes').value)+'"value="'+document.getElementById('masse').value+'"></li>';
-      document.getElementById('total').innerHTML = '<li class="list-group-item">Soit : '+document.getElementById('narticles').value+' article(s) pour : <span class="badge" style="float:right;">'+parseFloat(document.getElementById('ptot').value).toFixed(2)+'€</span></li>';
-      document.getElementById('recaptotal').innerHTML = parseFloat(document.getElementById('ptot').value).toFixed(2)+'€';
-      document.getElementById('nom_objet').innerHTML = "<label>Objet:</label>";
-      document.getElementById('quantite').value = "";
-      document.getElementById('prix').value = "";
-      document.getElementById('masse').value = "";
-      document.getElementById('id_type_objet').value = "";
-      document.getElementById('id_objet').value = "";
-      document.getElementById('nom_objet0').value = "";
-      fait = "oui"}
-         }else
-         {
-          
-          document.getElementById('liste').innerHTML += '<li class="list-group-item" name="ligne'+parseInt(document.getElementById('nlignes').value)+'" id="ligne'+parseInt(document.getElementById('nlignes').value)+'"><span class="badge">'+parseFloat(document.getElementById('prix').value).toFixed(2)+'€'+'</span><span class="glyphicon glyphicon-remove" aria-hidden="true"    onclick="javascirpt:suprime('+"'ligne"+parseInt(document.getElementById('nlignes').value)+"');"+'"></span>&nbsp;&nbsp;'+document.getElementById('quantite').value+' * '+document.getElementById('nom_objet0').value
-        +'<input type="hidden"  id="tid_type_objet'+parseInt(document.getElementById('nlignes').value)+'" name="tid_type_objet'+parseInt(document.getElementById('nlignes').value)+'"value="'+document.getElementById('id_type_objet').value+'">'
-        +'<input type="hidden"  id="tid_objet'+parseInt(document.getElementById('nlignes').value)+'" name="tid_objet'+parseInt(document.getElementById('nlignes').value)+'"value="'+document.getElementById('id_objet').value+'">'
-        +'<input type="hidden"  id="tquantite'+parseInt(document.getElementById('nlignes').value)+'" name="tquantite'+parseInt(document.getElementById('nlignes').value)+'"value="'+document.getElementById('quantite').value+'">'
-        +'<input type="hidden"  id="tprix'+parseInt(document.getElementById('nlignes').value)+'" name="tprix'+parseInt(document.getElementById('nlignes').value)+'"value="'+document.getElementById('prix').value/document.getElementById('quantite').value+'"></li>';
-      document.getElementById('total').innerHTML = '<li class="list-group-item">Soit : '+document.getElementById('narticles').value+' article(s) pour : <span class="badge" style="float:right;">'+parseFloat(document.getElementById('ptot').value).toFixed(2)+'€</span></li>';
-      document.getElementById('recaptotal').innerHTML = parseFloat(document.getElementById('ptot').value).toFixed(2)+'€';
-      document.getElementById('nom_objet').innerHTML = "<label>Objet:</label>";
-      document.getElementById('quantite').value = "";
-      document.getElementById('prix').value = "";
-      document.getElementById('id_type_objet').value = "";
-      document.getElementById('id_objet').value = "";
-      document.getElementById('nom_objet0').value = "";
-         }
+      lot_or_unite("Vente au: ", "Prix du lot: ", "Masse du lot: ", "#E8E6BC");
     }
+    state.vente_unite = checked;
+  });
+
+  const url = '../api/ventes.php';
+  const ventePrint = (data, response) => {
+    return impression_ticket(data, response, '€', printTva, (t) => t.sum_prix());
   }
+  const send = post_data(url, encaisse_vente, reset);
+  const sendAndPrint = post_data(url, encaisse_vente, reset, ventePrint);
+  document.getElementById('encaissement').addEventListener('click', send, false);
+  document.getElementById('impression').addEventListener('click', sendAndPrint, false);
 
-  if (document.getElementById('rendub').value - document.getElementById('rendua').value > 0) {
-    document.getElementById('renduc').value = document.getElementById('rendub').value - document.getElementById('rendua').value;
-  }
-  document.getElementById('rendua').value = document.getElementById('ptot').value ;
-
-
-}
-
-}
-
-
-
-
-
-
-
-
-function edite(nom,prix,id_type_objet,id_objet) {
-  document.getElementById('nom_objet').innerHTML = "<label>"+nom+"</label>";
-  document.getElementById('quantite').value = "1";
-  document.getElementById('prix').value = parseFloat(prix);
-  document.getElementById('id_type_objet').value = parseFloat(id_type_objet);
-  document.getElementById('id_objet').value = parseFloat(id_objet);
-  document.getElementById('nom_objet0').value = nom;
-}
-
-function encaisse() {
-  if ((parseInt(document.getElementById('nlignes').value) >= 1)
-      && ((document.getElementById('quantite').value == "")
-        || (document.getElementById('quantite').value == "0"))
-      && ((document.getElementById('prix').value == "")
-        || (document.getElementById('prix').value == "0"))) {
-    document.getElementById('comm').value = document.getElementById('commentaire').value;
-    document.getElementById("formulaire").submit();
-  }
-}
+}, false);

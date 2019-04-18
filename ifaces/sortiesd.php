@@ -1,415 +1,97 @@
-<?php session_start(); 
-require_once('../moteur/dbconfig.php');
-if($_SESSION['affsde'] !== "oui"){
-   header("Location:sortiesp.php?numero=" . $_GET['numero']);
-}
-//Vérification des autorisations de l'utilisateur et des variables de session requises pour l'affichage de cette page:
-if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 's'.$_GET['numero']) !== false))
-      { include "tete.php";
-//Oressource 2014, formulaire de sorties hors-boutique
-//Simple formulaire de saisie des matieres d'ouevres sortantes de la structure. (structures partenaires, conventiionnées)
-//Doit etre fonctionnel avec un ecran tactille.
-//Du javascript permet l'interactivité du keypad et des boutons centraux avec le bon de collecte 
-//
-//
-//
-//
-//
-        //on obtient la masse maximum suporté par la balance à ce point de sortie dans la variable $pesee_max
-            //on obtient le nom du point de collecte designé par $GET['numero']
-            $req = $bdd->prepare("SELECT pesee_max FROM points_sortie WHERE id = :id ");
-            $req->execute(array('id' => $_GET['numero']));
-            // On affiche chaque entree une à une
-            while ($donnees = $req->fetch())
-            {
-            $pesee_max = $donnees['pesee_max'];
-            }
-            $reponse->closeCursor(); // Termine le traitement de la requête        
+<?php
+/*
+  Oressource
+  Copyright (C) 2014-2017  Martin Vert and Oressource devellopers
+
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU Affero General Public License as
+  published by the Free Software Foundation, either version 3 of the
+  License, or (at your option) any later version.
+
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU Affero General Public License for more details.
+
+  You should have received a copy of the GNU Affero General Public License
+  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+session_start();
+
+require_once '../core/requetes.php';
+require_once '../core/session.php';
+require_once '../core/composants.php';
+
+$numero = filter_input(INPUT_GET, 'numero', FILTER_VALIDATE_INT);
+
+if (is_valid_session() && is_allowed_sortie_id($numero)) {
+  if (!affichage_sortie_dechetterie()) {
+    header("Location:sortiesp.php?numero=" . $numero);
+    die();
+  }
+
+  require_once 'tete.php';
+  require_once '../moteur/dbconfig.php';
+
+  $point_sortie = points_sorties_id($bdd, $numero);
+  $date = new Datetime('now');
+  $nav = new_nav($point_sortie['nom'], $numero, 4);
   ?>
-<script type="text/javascript">
-function printdiv(divID)
-    {
-      
-       if (parseInt(document.getElementById('najout').value) >= 1) 
-          { 
-            var mtot =<?php 
-                      // On obtient tous les visibles de la table type_dechets de manière à cacluler mtot...
-                      $reponse = $bdd->query('SELECT * FROM type_dechets_evac WHERE visible = "oui"' );
-                      // On affiche chaque entrée une à une
-                      while ($donnees = $reponse->fetch())
-                      {
-                        ?> parseFloat(document.getElementById('<?php echo$donnees['id']?>').value) + <?php
-                      }
-                      $reponse->closeCursor(); // Termine le traitement de la requête
-                      ?>0; 
-      var headstr = "<html><head><title></title></head><body><small><?php echo $_SESSION['structure'] ?><br><?php echo $_SESSION['adresse'] ?><br><label>Bon de sortie déchetterie</label><br>";
-          var footstr = "<br>Masse totale : "+mtot+" Kgs.</body></small>";
-      var newstr = document.all.item(divID).innerHTML;
-      var oldstr = document.body.innerHTML;
-      
-            
-          document.getElementById("formulaire").submit();
-      document.body.innerHTML = headstr+newstr+footstr;
-      window.print();
-      document.body.innerHTML = oldstr;
-      return false;
-      
-          }
-    }
-    function encaisse() {
-  if (parseInt(document.getElementById('najout').value) >= 1) 
-          { 
-         
-          document.getElementById("formulaire").submit();
-          }
-        }
-function submanut(x)
-          {
-            if ((document.getElementById("number").value - x) > 0 )
-            {
-            var text_box = document.getElementById("number");
-            text_box.value = text_box.value - x;
-          }
-          }
-function number_write(x)
-{
-  var text_box = document.getElementById("number");
-  text_box.value = text_box.value + x;
+
+  <div class="container">
+    <?= configNav($nav) ?>
+    <?= cartList(['text' => "Masse totale: 0 Kg.", 'date' => $date->format('Y-m-d')]) ?>
+
+    <!-- Pavee de saisie numerique vcir numpad.js -->
+    <div id="numpad" class="col-md-4"" style="width: 220px;"></div>
+
+    <div class="col-md-4">
+      <?= listSaisie(['text' => 'Materiaux et déchets:', 'key' => 'list_evac']) ?>
+      <?= buttonCollectesSorties() ?>
+    </div> <!-- .col-md-4 -->
+
+  </div> <!-- .container -->
+
+  <script type="text/javascript">
+    // Variables d'environnement de Oressource.
+    'use scrict';
+    window.OressourceEnv = {
+      structure: <?= json_encode($_SESSION['structure']); ?>,
+      adresse: <?= json_encode($_SESSION['adresse']); ?>,
+      id_user: <?= json_encode($_SESSION['id'], JSON_NUMERIC_CHECK); ?>,
+      saisie_collecte: <?= json_encode(is_allowed_saisie_date()); ?>,
+      user_droit: <?= json_encode($_SESSION['niveau']); ?>,
+      id_point: <?= json_encode($numero, JSON_NUMERIC_CHECK); ?>,
+      masse_max: <?= json_encode($point_sortie['pesee_max'], JSON_NUMERIC_CHECK); ?>,
+      types_evac: <?= json_encode(filter_visibles(types_dechets_evac($bdd)), JSON_NUMERIC_CHECK); ?>,
+      conteneurs: <?= json_encode(filter_visibles(types_contenants($bdd)), JSON_NUMERIC_CHECK); ?>
+    };
+  </script>
+
+  <script type="text/javascript">
+    'use strict';
+    document.addEventListener('DOMContentLoaded', () => {
+      const numpad = new NumPad(document.getElementById('numpad'),
+              window.OressourceEnv.conteneurs);
+
+      const typesEvacs = window.OressourceEnv.types_evac;
+      const ticketEvac = new Ticket();
+      const pushEvac = connection_UI_ticket(numpad, ticketEvac, typesEvacs);
+      fillItems(document.getElementById('list_evac'), typesEvacs, pushEvac);
+
+      const encaisse = prepare_data({
+        evacs: ticketEvac,
+      }, {classe: 'sortiesd'});
+
+      initUI('../api/sorties.php', encaisse);
+
+      window.OressourceEnv.tickets = [ ticketEvac ];
+    }, false);
+  </script>
+
+  <?php
+  require_once 'pied.php';
+} else {
+  header('Location:../moteur/destroy.php');
 }
-function number_clear()
-{
-  document.getElementById("number").value = "";
-}
-function recocom()
-{
-  document.getElementById("commentaire").value = document.getElementById("commentaireini").value;
-}
-function tdechet_write(y,z)
- {
-          if (document.getElementById("number").value > 0 && document.getElementById("number").value < <?php echo $pesee_max;?>) 
-          {
-            document.getElementById("massetot").textContent = parseFloat(document.getElementById("massetot").textContent) + parseFloat(document.getElementById("number").value) ;
-            document.getElementById("najout").value = parseInt(document.getElementById("najout").value)+1;
-             document.getElementById(y).textContent = parseFloat(document.getElementById(y).textContent) + parseFloat(document.getElementById("number").value)  ;
-              document.getElementById(z).value = parseFloat(document.getElementById(z).value) + parseFloat(document.getElementById("number").value)  ;
-             document.getElementById("number").value = "";  
-          }
-          }
-function tdechet_clear()
-{
-<?php 
-            // On recupère tout le contenu de la table point de collecte
-            $reponse = $bdd->query('SELECT * FROM type_dechets_evac WHERE visible = "oui"');
- 
-           // On affiche chaque entree une à une
-           while ($donnees = $reponse->fetch())
-           {
-           ?>
-    document.getElementById('<?php echo$donnees['nom']?>').textContent = "0"  ;
-    document.getElementById(<?php echo$donnees['id']?>).value = "0" ; 
-<?php }
-              $reponse->closeCursor(); // Termine le traitement de la requête
-                ?>  
-}
-</script>
-<div class="panel-body">
-          <fieldset>
-       <legend>
-        <?php 
-            // On recupère tout le contenu de la table point de collecte
-          
-            $req = $bdd->prepare("SELECT * FROM points_sortie WHERE id = :id ");
-            $req->execute(array('id' => $_GET['numero']));
- 
-           // On affiche chaque entree une à une
-           while ($donnees = $req->fetch())
-           {
-            echo$donnees['nom'];
-            
-              
-            
-             
-   
-               }
-              $reponse->closeCursor(); // Termine le traitement de la requête
-                ?>
-
-
-
-
-       </legend>
-      
-        
-         
-     
-        
-      </fieldset>   
-<div class="row">
-    
-        <div class="col-md-7 col-md-offset-1" >
-
- <ul class="nav nav-tabs">
-   <?php if ($_SESSION['affsp'] == "oui"){ ?><li><a href="<?php echo  "sortiesp.php?numero=" . $_GET['numero']?>">Poubelles</a></li><?php } ?>
-  <?php if ($_SESSION['affss'] == "oui"){ ?><li><a href="<?php echo  "sortiesc.php?numero=" . $_GET['numero']?>">Sorties partenaires</a></li><?php } ?>
-  <?php if ($_SESSION['affsr'] == "oui"){ ?><li><a href="<?php echo  "sortiesr.php?numero=" . $_GET['numero']?>">Recyclage</a></li><?php } ?>
-  <?php if ($_SESSION['affsd'] == "oui"){ ?><li><a href="<?php echo  "sorties.php?numero=" . $_GET['numero']?>">Don</a></li><?php } ?>
- <?php if ($_SESSION['affsde'] == "oui"){ ?> <li class="active"><a>Déchetterie</a></li><?php } ?>
-</ul>
-    <br>   
-</div>
-</div>          
-<div class="row">
-    
-        <div class="col-md-3 col-md-offset-1" >
-          
-          <form action="../moteur/sortiesd_post.php" method="post" id="formulaire">
-        
-          <input type="hidden" name ="id_point_sortie" id="id_point_sortie" value="<?php echo $_GET['numero']?>">
-          <input type="hidden" id="id_user" name="id_user" value=<?php echo'"'.$_SESSION['id'].'"' ?>  >
-    <input type="hidden" id="saisiec_user" name="saisiec_user" value=<?php echo'"'.$_SESSION['saisiec'].'"' ?>  >
-    <input type="hidden" id="niveau_user" name="niveau_user" value=<?php echo'"'.$_SESSION['niveau'].'"' ?>  >
-          <input type="hidden" name="commentaire" id="commentaire" >
-          <input type="hidden" value="0" name ="najout" id="najout">
-        </div>  
-        <div class="col-md-4" >
-          
-         
-         
-        </div>
-        
-      </div>
-      <div class="row">
-        <br>
-        <div class="col-md-3 col-md-offset-1" >
-        
-
-
-<div class="panel panel-info">
-        <div class="panel-heading">
-    <h3 class="panel-title"><label>Bon de sortie déchetterie: <span id="massetot" >0</span> Kgs.</label></h3>
-  </div>
-  <?php if ($_SESSION['saisiec'] == 'oui' AND (strpos($_SESSION['niveau'], 'e') !== false) ){ ?>
-  <br>
-      <p align="center">   Date de la sortie:  <input type="date" id="antidate" name="antidate" style="width: 130px;height:20px;" value=<?php echo date("Y-m-d") ?>>
-<br>
-</p>
-<?php }?>
-  <div class="panel-body" id="divID"> 
-
-
-
-
-
-
-<?php 
-            // On recupère tout le contenu de la table point de collecte
-            $reponse = $bdd->query('SELECT * FROM type_dechets_evac WHERE visible = "oui"');
- 
-           // On affiche chaque entree une à une
-           while ($donnees = $reponse->fetch())
-           {
-           ?>
-    
-            
-
-
-
-
-
-<ul class="list-group">
-  <li class="list-group-item">
-    <input type="hidden" value="0" name ="<?php echo$donnees['id']?>" id="<?php echo$donnees['id']?>">
-    <span class="badge" id="<?php echo$donnees['nom']?>" style="background-color:<?php echo$donnees['couleur']?>">0</span>
-    <?php echo$donnees['nom']?>
-
-  </li>
-
-
-
-
-
-
-   
-              <?php }
-              $reponse->closeCursor(); // Termine le traitement de la requête
-                ?>
-
-</ul>
- </form>
- 
-           
-        <br>
-</div>
-</div>
-
-
-        </div> 
-         <div class="col-md-2" >
-           
-
-<br><br>
-
-   <div class="col-md-2" style="width: 220px;" >
-
-
-  <div class="panel panel-info">
-        
-  <div class="panel-body"> 
-   
-      <div class="row">
-      
-
-   <div class="input-group">
-      <input type="text" class="form-control" placeholder="Masse" id="number" name="num" style=" margin-left:8px; " >
-      <div class="input-group-btn">
-        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" style=" margin-right:8px; " > <span class="glyphicon glyphicon-minus"></span> <span class="caret"</span></button>
-        
-
-
-        <ul class="dropdown-menu dropdown-menu-right" role="menu">
-        
-  <?php 
-            // On affiche une liste déroulante des localités visibles
-            $reponse = $bdd->query('SELECT * FROM type_contenants WHERE visible = "oui"');
-            // On affiche chaque entrée une à une
-            while ($donnees = $reponse->fetch())
-            {
-            ?>
-      <li><a href="#"  onClick="submanut('<?php echo$donnees['masse']?>');"><?php echo$donnees['nom']?></a></li>
-     
-           
-            <?php }
-            $reponse->closeCursor(); // Termine le traitement de la requête
-            ?>
-
-
-          
-                
-
-
-
-
-                  </ul>
-      </div><!-- /btn-group -->
-    </div><!-- /input-group -->
-
-
-
-      </div>
-      <br>
-    <div class="row">
-      <button class="btn btn-default btn-lg" onclick="number_write('1');" data-value="1" style="margin-left:8px; margin-top:8px;">1</button>
-      <button class="btn btn-default btn-lg" onclick="number_write('2');" data-value="2" style="margin-left:8px; margin-top:8px;">2</button>
-      <button class="btn btn-default btn-lg" onclick="number_write('3');" data-value="3" style="margin-left:8px; margin-top:8px;">3</button>
-    </div>
-    <div class="row">
-      <button class="btn btn-default btn-lg" onclick="number_write('4');" data-value="4" style="margin-left:8px; margin-top:8px;">4</button>
-      <button class="btn btn-default btn-lg" onclick="number_write('5');" data-value="5" style="margin-left:8px; margin-top:8px;">5</button>
-      <button class="btn btn-default btn-lg" onclick="number_write('6');" data-value="6" style="margin-left:8px; margin-top:8px;">6</button>
-    </div>
-    <div class="row">
-      <button class="btn btn-default btn-lg" onclick="number_write('7');" data-value="7" style="margin-left:8px; margin-top:8px;">7</button>
-      <button class="btn btn-default btn-lg" onclick="number_write('8');" data-value="8" style="margin-left:8px; margin-top:8px;">8</button>
-      <button class="btn btn-default btn-lg" onclick="number_write('9');" data-value="9" style="margin-left:8px; margin-top:8px;">9</button>
-    </div>
-    <div class="row">
-      <button class="btn btn-default btn-lg" onclick="number_clear();" data-value="C" style="margin-left:8px; margin-top:8px;">C</button>
-      <button class="btn btn-default btn-lg" onclick="number_write('0');" data-value="0" style="margin-left:8px; margin-top:8px;">0</button>
-      <button class="btn btn-default btn-lg" onclick="number_write('.');" data-value="," style="margin-left:8px; margin-top:8px;">,</button>
-    </div>
-
- 
-
-</div>
-</div>
-
-
-
-  </div>
- 
-           </div> 
-         
-
-
-<div class="col-md-3 col-md-offset-1" >
-          
-
-<div class="row" >
-<div class="panel panel-info">
-        <div class="panel-heading">
-    <h3 class="panel-title"><label>Matériaux et déchets:</label></h3>
-  </div>
-  <div class="panel-body"> 
-      
-
-
-            <?php 
-            // On recupère tout le contenu de la table point de collecte
-            $reponse = $bdd->query('SELECT * FROM type_dechets_evac WHERE visible = "oui"');
- 
-           // On affiche chaque entree une à une
-           while ($donnees = $reponse->fetch())
-           {
-           ?>
-      <div class="btn-group">
-      <button class="btn btn-default" style="margin-left:8px; margin-top:16px;" onclick="tdechet_write('<?php echo$donnees['nom']?>','<?php echo$donnees['id']?>');" ><span class="badge" id="cool" style="background-color:<?php echo$donnees['couleur']?>"><?php echo$donnees['nom']?></span>
- </button>
-      
-    </div>
-   
-                <?php }
-                $reponse->closeCursor(); // Termine le traitement de la requête
-                ?>
-    </div> 
-
-
-
-    </div>
-    <div class="panel panel-info">
-       
-  <div class="panel-body"> 
-
- <input type="text" class="form-control" name="commentaireini" id="commentaireini" placeholder="Commentaire" onchange="recocom()">
-
-</div>
-</div>
-
-
-<div class="row">
-  <br>&nbsp;&nbsp;&nbsp;&nbsp;
-
-
-
-
-
-
-<button class="btn btn-primary btn-lg"  onclick="encaisse();">C'est pesé!</button></form>
-<button class="btn btn-primary btn-lg"  align="center"  onclick="printdiv('divID');" value=" Print " ><span class="glyphicon glyphicon-print"></span></button>
-        <button class="btn btn-warning btn-lg" onclick="tdechet_clear();"><span class="glyphicon glyphicon-refresh"></button>
-      </div>
-
-
-
-
-
-  </div>
-
-
-        </div>
-
-
-      </div>
-      <br><br><br>
-      
-       
-      </div>
-<br>
-
-
-      <?php include "pied.php";  
-} 
-else
-{ 
-        header('Location:../moteur/destroy.php');
-      }
-?>

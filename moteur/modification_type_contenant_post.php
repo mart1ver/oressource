@@ -1,36 +1,39 @@
-<?php session_start();
+<?php
 
-//Vérification des autorisations de l'utilisateur et des variables de session requises pour l'utilisation de cette requête:
- if (isset($_SESSION['id']) AND $_SESSION['systeme'] = "oressource" AND (strpos($_SESSION['niveau'], 'g') !== false))
-{ 
+/*
+  Oressource
+  Copyright (C) 2014-2017  Martin Vert and Oressource devellopers
 
-//martin vert
-// Connexion à la base de données
-try
-{
-include('dbconfig.php');
-}
-catch(Exception $e)
-{
-        die('Erreur : '.$e->getMessage());
-}
- 
-// Insertion du post à l'aide d'une requête préparée
-// mot de passe crypté md5 
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU Affero General Public License as
+  published by the Free Software Foundation, either version 3 of the
+  License, or (at your option) any later version.
 
-// Insertion du post à l'aide d'une requête préparée
-$req = $bdd->prepare('UPDATE type_contenants SET nom = :nom,  description = :description,  masse_bac = :masse_bac,  couleur = :couleur  WHERE id = :id');
-$req->execute(array('nom' => $_POST['nom'],'description' => $_POST['description'],'masse_bac' => $_POST['masse_bac'],'couleur' => $_POST['couleur'],'id' => $_POST['id']));
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU Affero General Public License for more details.
 
+  You should have received a copy of the GNU Affero General Public License
+  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+session_start();
+
+require '../core/session.php';
+
+if (is_valid_session() && is_allowed_gestion()) {
+  require_once 'dbconfig.php';
+
+  $req = $bdd->prepare('UPDATE type_contenants SET nom = :nom, description = :description, masse = :masse, couleur = :couleur WHERE id = :id');
+  $req->bindParam(':id', $_POST['id'], PDO::PARAM_INT);
+  $req->bindParam(':masse', $_POST['masse'], PDO::PARAM_STR);
+  $req->bindParam(':nom', $_POST['nom'], PDO::PARAM_STR);
+  $req->bindParam(':description', $_POST['description'], PDO::PARAM_STR);
+  $req->bindParam(':couleur', $_POST['couleur'], PDO::PARAM_STR);
+  $req->execute();
   $req->closeCursor();
-
-
-
-// Redirection du visiteur vers la page de gestion des points de collecte
-header('Location:../ifaces/edition_types_contenants.php');
+  header('Location:../ifaces/edition_types_contenants.php');
+} else {
+  header('Location:../moteur/destroy.php');
 }
-else { 
-header('Location:../moteur/destroy.php');
-     }
-?>
-
