@@ -141,7 +141,7 @@ function utilisateur_insert(PDO $bdd, array $utilisateur): int {
   $stmt->bindParam(':id_createur', $_SESSION['id'], PDO::PARAM_INT);
   $stmt->bindParam(':id_createur1', $_SESSION['id'], PDO::PARAM_INT);
   $stmt->execute();
-  $id = $bdd->lastInsertId();
+  $id = (int) $bdd->lastInsertId();
   $stmt->closeCursor();
   return $id;
 }
