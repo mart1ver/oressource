@@ -248,6 +248,16 @@ function localites(PDO $bdd): array {
   return fetch_all($sql, $bdd);
 }
 
+function localites_id(PDO $bdd, int $id): array {
+  $sql = 'SELECT
+    id, nom, couleur,
+    visible, commentaire,
+    relation_openstreetmap as lien
+  FROM localites
+  WHERE id = :id';
+  return fetch_id($bdd, $sql, $id);
+}
+
 function types_poubelles(PDO $bdd): array {
   $sql = 'SELECT id, nom, masse_bac, couleur, visible
   FROM types_poubelles';
@@ -255,7 +265,7 @@ function types_poubelles(PDO $bdd): array {
 }
 
 function types_poubelles_id(PDO $bdd, int $id): array {
-  $sql = 'SELECT id, nom, masse_bac, couleur, ultime
+  $sql = 'SELECT id, nom, masse_bac, couleur, ultime, description
   FROM types_poubelles
   WHERE id = :id';
   return fetch_id($bdd, $sql, $id);

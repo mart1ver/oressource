@@ -74,11 +74,6 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($
             <td>
               <form action="modification_type_poubelles.php" method="post">
                 <input type="hidden" name ="id" id="id" value="<?= $donnees['id']; ?>">
-                <input type="hidden" name ="nom" id="nom" value="<?= $donnees['nom']; ?>">
-                <input type="hidden" name ="description" id="description" value="<?= $donnees['description']; ?>">
-                <input type="hidden" name ="masse_bac" id="masse_bac" value="<?= $donnees['masse_bac']; ?>">
-                <input type="hidden" name ="ultime" id="ultime" value="<?= $donnees['ultime']; ?>">
-                <input type="hidden" name ="couleur" id="couleur" value="<?= substr($donnees['couleur'], 1); ?>">
                 <button  class="btn btn-warning btn-sm">Modifier!</button>
               </form>
             </td>
