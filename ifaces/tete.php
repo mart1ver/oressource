@@ -20,6 +20,7 @@
 require_once('../core/requetes.php');
 require_once('../core/session.php');
 require_once('../moteur/dbconfig.php');
+require_once('../core/composants.php');
 
 global $bdd;
 
@@ -29,6 +30,9 @@ $can_verif = is_allowed_verifications();
 $can_users = is_allowed_users();
 $can_parners = is_allowed_partners();
 $can_config = is_allowed_config();
+
+// FIXME: mostly a fix of
+$nav = filter_visibles(new_nav_sorties());
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -80,15 +84,15 @@ $can_config = is_allowed_config();
             }
             ?>
 
-            <?php if (is_allowed_sortie()) { ?>
+            <?php if (is_allowed_sortie() && count($nav) > 0) { ?>
               <li class="nav navbar-nav dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Sorties hors-boutique<b class="caret"></b></a>
                   <ul class="dropdown-menu">
                     <?php foreach (filter_visibles(points_sorties($bdd)) as $point_sortie) {
-                      if (is_allowed_sortie_id($point_sortie['id'])) {
-                        ?>
+                      // ⚠ Hack to fix https://github.com/mart1ver/oressource/issues/370
+                      if (is_allowed_sortie_id($point_sortie['id'])) { ?>
                         <li>
-                          <a href="../ifaces/sortiesc.php?numero=<?= "{$point_sortie['id']}"; ?>"><?= $point_sortie['nom']; ?></a>
+                          <a href="<?= "{$nav[0]['href']}?numero={$point_sortie['id']}" ?>"><?= $point_sortie['nom']; ?></a>
                         </li>
                         <?php
                       }

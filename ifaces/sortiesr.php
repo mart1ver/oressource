@@ -27,7 +27,7 @@ $numero = filter_input(INPUT_GET, 'numero', FILTER_VALIDATE_INT);
 
 if (is_valid_session() && is_allowed_sortie_id($numero)) {
   if (!affichage_sortie_recyclage()) {
-    header("Location:sorties.php?numero=" . $numero);
+    header("Location:index.php");
     die();
   }
 
