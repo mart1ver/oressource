@@ -26,16 +26,25 @@ if (is_valid_session() && is_allowed_partners()) {
   require_once '../moteur/dbconfig.php';
   try {
     $id_dechets = '';
-    $reponsesa = $bdd->query('SELECT id FROM type_dechets_evac');
-    $data = $reponsesa->fetchAll();
-    foreach ($data as $d) {
-      if (isset($_POST['tde' . $d['id']])) {
-        $id_dechets = $id_dechets . 'a' . $d['id'];
+    $types_dechets = $bdd->query('SELECT id FROM type_dechets_evac');
+    foreach ($types_dechets as $type) {
+      if (isset($_POST['tde' . $type['id']])) {
+        $id_dechets = $id_dechets . 'a' . $type['id'];
       }
     }
-    $reponsesa->closeCursor();
+    $types_dechets->closeCursor();
+    if (count($id_dechet) == 0) {
+      header('Location:../ifaces/edition_filieres_sortie.php?err=Veuillez renseigner les types de dechets gérer par la structure!&nom=' . $_POST['nom'] . '&description=' . $_POST['description'] . '&couleur=' . substr($_POST['couleur'], 1));
+      die;
+    }
 
-    $req = $bdd->prepare('INSERT INTO filieres_sortie (nom,  couleur, description, id_type_dechet_evac, id_createur, id_last_hero) VALUES (?, ?, ?, ?, ?, ?)');
+    $req = $bdd->prepare('INSERT INTO filieres_sortie (
+      nom,  couleur, description,
+      id_type_dechet_evac, id_createur, id_last_hero
+    ) VALUES (
+      ?, ?, ?, ?, ?, ?
+    )');
+
     $req->execute([$_POST['nom'], $_POST['couleur'], $_POST['description'], $id_dechets, $_SESSION['id'], $_SESSION['id']]);
     $req->closeCursor();
     header('Location:../ifaces/edition_filieres_sortie.php?msg=Filiere de sortie enregistrée avec succes!');
