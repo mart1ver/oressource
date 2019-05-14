@@ -33,7 +33,7 @@ if (is_valid_session() && is_allowed_partners()) {
       }
     }
     $types_dechets->closeCursor();
-    if (count($id_dechet) == 0) {
+    if (count($id_dechets) == 0) {
       header('Location:../ifaces/edition_filieres_sortie.php?err=Veuillez renseigner les types de dechets gérer par la structure!&nom=' . $_POST['nom'] . '&description=' . $_POST['description'] . '&couleur=' . substr($_POST['couleur'], 1));
       die;
     }
