@@ -20,23 +20,44 @@
 require_once '../core/validation.php';
 
 /* Fonction utile pour la nav des sorties. */
-function new_nav(string $text, int $numero, int $active): array {
+
+
+function new_nav_sorties(): array {
   $links = [
-    [affichage_sortie_poubelle(), ['href' => "sortiesp.php?numero=$numero", 'text' => 'Poubelles']],
-    [affichage_sortie_partenaires(), ['href' => "sortiesc.php?numero=$numero", 'text' => 'Sorties partenaires']],
-    [affichage_sortie_recyclage(), ['href' => "sortiesr.php?numero=$numero", 'text' => 'Recyclage']],
-    [affichage_sortie_don(), ['href' => "sorties.php?numero=$numero", 'text' => 'Dons']],
-    [affichage_sortie_dechetterie(), ['href' => "sortiesd.php?numero=$numero", 'text' => 'Déchetterie']],
+    ['visible' => affichage_sortie_poubelle(), 'href' => "sortiesp.php", 'text' => 'Poubelles'],
+    ['visible' => affichage_sortie_partenaires(), 'href' => "sortiesc.php", 'text' => 'Sorties partenaires'],
+    ['visible' => affichage_sortie_recyclage(), 'href' => "sortiesr.php", 'text' => 'Recyclage'],
+    ['visible' => affichage_sortie_don(), 'href' => "sorties.php", 'text' => 'Dons'],
+    ['visible' => affichage_sortie_dechetterie(), 'href' => "sortiesd.php", 'text' => 'Déchetterie'],
   ];
-  $l = array_map(function ($e) {
-    if ($e[0] === true) {
-      return $e[1];
-    }
+
+  // Don't keep not visibles sorties first remove invisible,
+  // Then throw away the boolean.
+  return $links;
+}
+
+// ⚠ FIXME ⚠ this function is really fragile due to the way we manage
+// sortie this needs a complete rewrite.
+// Rewrited to fix: https://github.com/mart1ver/oressource/issues/370
+function new_nav(string $text, int $numero, int $active): array {
+  $links = new_nav_sorties();
+  // add numero in url fragment
+  $links = array_map(function (array $e) use ($numero) {
+    $e['href'] .= "?numero={$numero}";
+    return $e;
   }, $links);
-  $l[$active]['state'] = true;
+
+  // WARNING: A hack to get the active.
+  $links[$active]['state'] = true;
+
+  // Filter visibles
+  $links = array_values(array_filter($links, function (array $e) {
+    return $e['visible'];
+  }));
+
   $nav = [
     'text' => $text,
-    'links' => $l
+    'links' => $links
   ];
   return $nav;
 }

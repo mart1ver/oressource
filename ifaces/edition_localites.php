@@ -70,10 +70,6 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($
             <td>
               <form action="modification_localites.php" method="post">
                 <input type="hidden" name="id" value="<?= $donnees['id']; ?>">
-                <input type="hidden" name="nom" value="<?= $donnees['nom']; ?>">
-                <input type="hidden" name="lien" value="<?= $donnees['relation_openstreetmap']; ?>">
-                <input type="hidden" name="commentaire" value="<?= $donnees['commentaire']; ?>">
-                <input type="hidden" name="couleur" value="<?= substr($donnees['couleur'], 1); ?>">
                 <button  class="btn btn-warning btn-sm" >Modifier!</button>
               </form>
             </td>

@@ -49,7 +49,8 @@ if (is_valid_session() && is_allowed_partners()) {
           <label for="tde">Type de déchets enlevés:</label>
           <div class="alert alert-info">
             <?php foreach ($types_dechets_evac as $donnees) { ?>
-              <input type="checkbox" name="tde<?= $donnees['id']; ?>" id="tde<?= $donnees['id']; ?>"><label for="tde<?= $donnees['id'] ?>"><?= $donnees['nom'] ?></label>
+              <input type="checkbox" name="tde<?= $donnees['id']; ?>" id="tde<?= $donnees['id']; ?>">
+              <label for="tde<?= $donnees['id'] ?>"><?= $donnees['nom'] ?></label>
             <?php } ?>
           </div>
         </div>
@@ -88,10 +89,6 @@ if (is_valid_session() && is_allowed_partners()) {
             <td>
               <form action="modification_filiere_sortie.php" method="post">
                 <input type="hidden" name="id" value="<?= $donnees['id']; ?>">
-                <input type="hidden" name="nom" value="<?= $donnees['nom']; ?>">
-                <input type="hidden" name="description" value="<?= $donnees['description']; ?>">
-                <input type="hidden" name="couleur" value="<?= substr($donnees['couleur'], 1); ?>">
-                <input type="hidden" name="id_type_dechet_evac" value="<?= $donnees['id_type_dechet_evac']; ?>">
                 <button  class="btn btn-warning btn-sm" >Modifier!</button>
               </form>
             </td>
