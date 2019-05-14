@@ -25,9 +25,13 @@ $base = 'oressource';
 $user = 'oressource';
 $pass = 'hello';
 
+// Dans mysql le bon encodage pour l'utf-8 est utf8mb4.
+// https://medium.com/@adamhooper/in-mysql-never-use-utf8-use-utf8mb4-11761243e434
+$charset = 'utf8mb4';
+
 // Configuration interne de Oressource
 try {
-  $bdd = new PDO("mysql:host=$host;port=$port;dbname=$base;charset=utf8", $user, $pass, [
+  $bdd = new PDO("mysql:host=$host;port=$port;dbname=$base;charset=$charset", $user, $pass, [
     PDO::ATTR_EMULATE_PREPARES => false,
     PDO::MYSQL_ATTR_DIRECT_QUERY => false,
     PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
