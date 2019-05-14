@@ -249,7 +249,10 @@ function localites(PDO $bdd): array {
 }
 
 function types_poubelles(PDO $bdd): array {
-  $sql = 'SELECT id, nom, masse_bac, couleur, visible
+  $sql = 'SELECT
+    id, nom, masse_bac,
+    couleur, visible, description,
+    ultime, timestamp
   FROM types_poubelles';
   return fetch_all($sql, $bdd);
 }

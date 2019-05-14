@@ -20,6 +20,7 @@
 session_start();
 
 require_once '../moteur/dbconfig.php';
+require_once '../core/requetes.php';
 require_once '../core/composants.php';
 
 if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($_SESSION['niveau'], 'g') !== false)) {
@@ -58,35 +59,29 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($
       </thead>
 
       <tbody>
-        <?php
-        $reponse = $bdd->query('SELECT * FROM types_poubelles');
-        while ($donnees = $reponse->fetch()) {
-          ?>
+        <?php foreach (types_poubelles($bdd) as $type) { ?>
           <tr>
-            <td><?= $donnees['id']; ?></td>
-            <td><?= $donnees['timestamp']; ?></td>
-            <td><?= $donnees['nom']; ?></td>
-            <td><?= $donnees['description']; ?></td>
-            <td><?= $donnees['masse_bac']; ?></td>
-            <td><?= $donnees['ultime']; ?></td>
-            <td><span class="badge" style="background-color:<?= $donnees['couleur']; ?>"><?= $donnees['couleur']; ?></span></td>
-            <td><?= configBtnVisible(['url' => 'types_poubelles', 'id' => $donnees['id'], 'visible' => $donnees['visible']]) ?></td>
+            <td><?= $type['id'] ?></td>
+            <td><?= $type['timestamp'] ?></td>
+            <td><?= $type['nom'] ?></td>
+            <td><?= $type['description'] ?></td>
+            <td><?= $type['masse_bac'] ?></td>
+            <td><?= bool_to_oui_non($type['ultime']) ?></td>
+            <td><span class="badge" style="background-color:<?= $type['couleur'] ?>"><?= $type['couleur'] ?></span></td>
+            <td><?= configBtnVisible(['url' => 'types_poubelles', 'id' => $type['id'], 'visible' => $type['visible']]) ?></td>
             <td>
               <form action="modification_type_poubelles.php" method="post">
-                <input type="hidden" name ="id" id="id" value="<?= $donnees['id']; ?>">
-                <input type="hidden" name ="nom" id="nom" value="<?= $donnees['nom']; ?>">
-                <input type="hidden" name ="description" id="description" value="<?= $donnees['description']; ?>">
-                <input type="hidden" name ="masse_bac" id="masse_bac" value="<?= $donnees['masse_bac']; ?>">
-                <input type="hidden" name ="ultime" id="ultime" value="<?= $donnees['ultime']; ?>">
-                <input type="hidden" name ="couleur" id="couleur" value="<?= substr($donnees['couleur'], 1); ?>">
-                <button  class="btn btn-warning btn-sm">Modifier!</button>
+                <input type="hidden" name ="id" id="id" value="<?= $type['id']; ?>">
+                <input type="hidden" name ="nom" id="nom" value="<?= $type['nom']; ?>">
+                <input type="hidden" name ="description" id="description" value="<?= $type['description']; ?>">
+                <input type="hidden" name ="masse_bac" id="masse_bac" value="<?= $type['masse_bac']; ?>">
+                <input type="hidden" name ="ultime" id="ultime" value="<?= $type['ultime']; ?>">
+                <input type="hidden" name ="couleur" id="couleur" value="<?= substr($type['couleur'], 1); ?>">
+                <button class="btn btn-warning btn-sm">Modifier!</button>
               </form>
             </td>
           </tr>
-          <?php
-        }
-        $reponse->closeCursor();
-        ?>
+        <?php } ?>
       </tbody>
     </table>
   </div><!-- /.container -->
