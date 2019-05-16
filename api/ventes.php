@@ -165,7 +165,7 @@ if (is_valid_session()) {
     $json['date'] = allowDate($json) ? parseDate($json['date']) : new DateTime('now');
   } catch (UnexpectedValueException $ex) {
     http_response_code(400); // Bad Request
-    echo(json_encode(['error' => $e->getMessage()]));
+    echo(json_encode(['error' => $ex->getMessage()]));
     die();
   }
 
