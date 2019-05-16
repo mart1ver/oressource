@@ -75,7 +75,7 @@ function vendus_insert(PDO $bdd, int $id_vente, array $vente): int {
     }
   }
   $req->closeCursor();
-  return $bdd->lastInsertId();
+  return (int) $bdd->lastInsertId();
 }
 
 function pesee_vendu_insert(PDO $bdd, int $id_vendus, array $vente): int {
