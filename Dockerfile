@@ -1,10 +1,10 @@
-FROM php:7.0-apache
+FROM php:7.2-apache
 
 # Install PDO MySQL driver
 # See https://github.com/docker-library/php/issues/62
 RUN docker-php-ext-install mysqli pdo pdo_mysql &&\
     apt-get update &&\
-    apt-get install -y zip mysql-client
+    apt-get install -y zip mariadb-client
 
 # copy website data
 COPY . /var/www/html
