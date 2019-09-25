@@ -25,3 +25,4 @@ services:
        - MYSQL_PASSWORD=password
       volumes:
        - ./data:/var/lib/mysql
+       - ./mysql/oressource.sql:/docker-entrypoint-initdb.d/oressource.sql

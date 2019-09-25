@@ -12,7 +12,7 @@ rapide :
 
 3. Allez sur http://localhost:8787/install/ et suivez les étapes
 
-4. Connectez-vous sur http://localhost:8787/ avec le login `admin@admin` et le
-mot de passe `admin` 
+4. Connectez-vous sur http://localhost:8787/ avec le login `admin@oressource.org` et le
+mot de passe `admin`
 
 
