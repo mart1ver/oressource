@@ -33,49 +33,61 @@ require_once('../core/requetes.php');
  */
 
 function telechargement(string $pathTofile, string $type, string $attachementName = "") {
-  $size = filesize($pathTofile);
-  $name = $attachementName === "" ? $pathTofile : $attachementName;
-  header("Content-Type: $type;  charset=utf-8");
-  header("Content-disposition: attachment; filename=\"$name\"");
-  header("Pragma: public");
-  header("Expires: 0");
-  header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
-  header("Cache-Control: private", false);
-  header("Content-Length: $size");
-  ob_start();
-  readfile($pathTofile);
-  ob_end_flush();
+    $size = filesize($pathTofile);
+    $name = $attachementName === "" ? $pathTofile : $attachementName;
+    header('Content-Description: File Transfer');
+    header("Content-Type: $type;  charset=utf-8");
+    header("Content-disposition: attachment; filename=\"$name\"");
+    header("Content-Transfer-Encoding: binary");
+    header("Pragma: public");
+    header("Expires: 0");
+    header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+    header("Cache-Control: private", false);
+    header("Content-Length: $size");
+    ob_start();
+    readfile($pathTofile);
 }
 
 if (is_valid_session() && is_allowed_config()) {
-  require_once('../moteur/dbconfig.php');
-  $struct = structure($bdd)['nom'];
+    require_once('../moteur/dbconfig.php');
 
-  $exportPath = '../mysql/';
-  chdir($exportPath);
+    # Get the ressourcerie name provided in database
+    $struct = structure($bdd)['nom'];
 
-  $exportFileName = 'sauvegarde_oressource';
-  $fileExtention = '.sql';
+    # Go into the ./mysql folder
+    $exportPath = '../mysql/';
+    chdir($exportPath);
 
-  $exportPathServer = $exportFileName . $fileExtention;
-  $worked = exec("mysqldump --opt --host=$host --user=$user --password=$pass $base > \"$exportPathServer\"");
+    # Name the sql dump file
+    $exportFileName = 'sauvegarde_oressource';
+    $fileExtention = '.sql';
+    $exportPathServer = $exportFileName . $fileExtention;
 
-  $fileZip = $exportFileName . '_' . $struct . '.zip';
-  $worked |= exec("zip \"$fileZip\" \"$exportPathServer\"");
-  unlink($exportPathServer);
+    # Dump the database via mysqldump (provided by mysql-client)
+    $worked = exec("mysqldump --opt --host=$host --user=$user --password=$pass $base > \"$exportPathServer\"");
 
-  switch ($worked) {
-    case 0:
-      $AttachName = $exportFileName . '_' . $struct . '_' . date("d-m-Y_H-i-s") . '.zip';
-      telechargement($fileZip, 'application/zip', $AttachName);
-      break;
-    case 1:
-      header("Location:structures.php?err=Probleme pendant l'export du fichier");
-      break;
-    case 2:
-      header("Location:structures.php?err=Probleme pendant l'export de la base");
-      break;
-  }
+    // Remove spaces from name and name the zip file
+    $struct = str_replace(" ", "_", $struct);
+    $fileZip = $exportFileName . '_' . $struct . '.zip';
+
+    # Zip the sql file
+    $worked |= exec("zip \"$fileZip\" \"$exportPathServer\"");
+
+    // Delete sql file
+    unlink($exportPathServer);
+
+    switch ($worked) {
+        case 0:
+            $AttachName = $exportFileName . '_' . $struct . '_' . date("d-m-Y_H-i-s") . '.zip';
+            telechargement($fileZip, 'application/octet-stream', $AttachName);
+            break;
+        case 1:
+            header("Location:structures.php?err=Probleme pendant l'export du fichier");
+            break;
+        case 2:
+            header("Location:structures.php?err=Probleme pendant l'export de la base");
+            break;
+    }
 } else {
-  header('Location:../moteur/destroy.php');
+    header('Location:../moteur/destroy.php');
 }
