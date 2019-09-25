@@ -33,7 +33,7 @@
  * @param mixed $key Clé sur laquelle nous désirons indexé notre array de retour
  * @return array Array indéxé par la la key donnée en paramètre
  */
-function map_by(array $a, mixed $key): array {
+function map_by(array $a, $key): array {
   return array_reduce($a, function ($acc, $e) use ($key) {
     $acc[$e[$key]] = $e;
     return $acc;
