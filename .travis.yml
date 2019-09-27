@@ -1,4 +1,4 @@
 language: php
 php:
 - 7.2
-script:
+script: phpunit .
