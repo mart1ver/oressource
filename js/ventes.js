@@ -156,6 +156,8 @@ function reset(data, response) {
   // On donne le nouveau numéro «prévisionnel» à la futur vente.
   // Attention ce numéro est «provisoire» si il y a plusieurs caisses.
   document.getElementById('num_vente').textContent = response.id + 1;
+  // #FIX: 384 Reset du commentaire associé à la vente.
+  document.getElementById('commentaire').value = '';
 }
 
 function moyens(moyen) {
@@ -164,7 +166,6 @@ function moyens(moyen) {
 
 function encaisse_vente() {
   if (state.ticket.size > 0) {
-    const url = '../api/ventes.php';
     const date = document.getElementById('date');
     const data = {
       classe: 'ventes',

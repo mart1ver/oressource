@@ -45,7 +45,7 @@ if (is_valid_session() && is_allowed_verifications()) {
     ventes.commentaire,
     moyens_paiement.nom moyen,
     moyens_paiement.couleur,
-    SUM(vendus.prix * vendus.quantite) vente,
+    SUM(' . vendus_case_lot_unit(). ') vente,
     SUM(vendus.quantite) quantite,
     SUM(vendus.remboursement * vendus.quantite) remb,
     SUM(pesees_vendus.masse) masse

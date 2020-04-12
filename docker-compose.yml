@@ -1,0 +1,28 @@
+version: '2'
+services:
+  oressource:
+      build: .
+      container_name: oressource_web
+      ports :
+       - 8787:80
+      environment:
+       - MYSQL_HOST=database
+       - MYSQL_PORT=3306
+       - MYSQL_DATABASE=oressource
+       - MYSQL_USER=oressource
+       - MYSQL_PASSWORD=password
+      links:
+       - database
+
+  database:
+      image: mysql:8.0.15
+      container_name: oressource_mysql
+      command: --default-authentication-plugin=mysql_native_password
+      environment:
+       - MYSQL_ROOT_PASSWORD=root
+       - MYSQL_DATABASE=oressource
+       - MYSQL_USER=oressource
+       - MYSQL_PASSWORD=password
+      volumes:
+       - ./data:/var/lib/mysql
+       - ./mysql/oressource.sql:/docker-entrypoint-initdb.d/oressource.sql
