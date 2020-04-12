@@ -166,7 +166,6 @@ function moyens(moyen) {
 
 function encaisse_vente() {
   if (state.ticket.size > 0) {
-    const url = '../api/ventes.php';
     const date = document.getElementById('date');
     const data = {
       classe: 'ventes',
