@@ -81,7 +81,7 @@ function insert_pesee_sortie(PDO $bdd, int $id_sortie, array $sortie, array $ite
   }
 }
 
-function specialise_sortie(PDOStatement $stmt, $sortie) {
+function specialise_sortie(PDOStatement $stmt, array $sortie): PDOStatement {
   $classe = $sortie['classe'];
   // Sorties Dons
   if ($classe === 'sorties') {
@@ -142,7 +142,7 @@ function insert_sortie(PDO $bdd, array $sortie): int {
 
   $req = specialise_sortie($req, $sortie);
   $req->execute();
-  return $bdd->lastInsertId();
+  return (int) $bdd->lastInsertId();
 }
 
 session_start();

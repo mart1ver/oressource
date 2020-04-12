@@ -23,6 +23,7 @@ global $bdd;
 require_once '../core/session.php';
 require_once '../core/validation.php';
 require_once '../core/requetes.php';
+
 function insert_collecte(PDO $bdd, array $collecte): int {
   $req = $bdd->prepare('INSERT INTO collectes
                             (timestamp, id_type_collecte,
@@ -48,8 +49,7 @@ function insert_collecte(PDO $bdd, array $collecte): int {
 // Si des utilisateurs suppriment des objet sa la main c'est la galere...
 // Mais d'un cote niveau tracabilite ils devraient pas supprimer de categories...
 // genere une exception si les masses sont inferieurs a 0.
-
-function insert_items_collecte(PDO $bdd, int $id_collecte, $collecte, $items) {
+function insert_items_collecte(PDO $bdd, int $id_collecte, array $collecte, array $items) {
   $nombreCategories = nb_categories_dechets_item($bdd);
   $req = $bdd->prepare('INSERT INTO pesees_collectes
                             (timestamp, masse, id_collecte, id_type_dechet, id_createur, id_last_hero)
