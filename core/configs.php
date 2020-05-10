@@ -146,7 +146,7 @@ function point_ventePost(PDO $bdd) {
 
 function point_sortiePost(PDO $bdd) {
   $data = array_merge(generic_ctor_post(), point_Post(), [
-    'pesee_max' => (float) filter_input(INPUT_POST, 'surface', FILTER_VALIDATE_FLOAT),
+    'pesee_max' => (float) filter_input(INPUT_POST, 'pesee_max', FILTER_VALIDATE_FLOAT),
   ]);
   generic_insert_5Config($bdd, 'points_sortie', 'nom', 'adresse', 'pesee_max', $data);
 }
