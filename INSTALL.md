@@ -64,7 +64,7 @@ Editer le fichier de configuration de Oressource
 
 ```shell
 cd /var/www/oressource/moteur/
-sudo cp dbconfig.php.exemple dbconfig.php
+sudo cp dbconfig.php.example dbconfig.php
 sudo vi dbconfig.php
 ```
 
@@ -72,7 +72,7 @@ sudo vi dbconfig.php
 
 Créer un fichier oressource.conf
 
-`sudo vi /etc/apache2/site-available/oressource.conf`
+`sudo vi /etc/apache2/sites-available/oressource.conf`
 
 Ajouter les lignes suivantes :
 
