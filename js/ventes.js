@@ -272,7 +272,7 @@ function add() {
         const prix_txt = `${this.prix} €`;
         const masse_txt = this.masse >= 0.00 ? ` ${this.masse} kg` : '';
 
-        return `<p>${lot} ${this.name} : ${prix_txt}${masse_txt}</p>`;
+        return `<p>${lot} ${this.quantite} * ${this.name} = ${prix_txt}${masse_txt}</p>`;
       };
 
       const id = state.ticket.push(vente);
