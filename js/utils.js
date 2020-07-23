@@ -509,11 +509,9 @@ const dashBreak = '<p>----------------------------------------------------------
  */
 function showTickets(data, unit='kg') {
   const item = data.hasOwnProperty('items') && data.items.length > 0  ?
-    `${dashBreak}<p>Objets de types : </p>${showTicket(data.items,
-      window.OressourceEnv.types_dechet, unit)}`: '';
+    `<p>Objets</p>${dashBreak}${showTicket(data.items, window.OressourceEnv.types_dechet, unit)}`: '';
   return item + (data.hasOwnProperty('evacs') && data.evacs.length > 0 ?
-    `${dashBreak}<p>Dechets de types : </p>${showTicket(data.evacs,
-        window.OressourceEnv.types_evac, unit)}` : '');
+    `<p>Matériaux</p>${dashBreak}${showTicket(data.evacs, window.OressourceEnv.types_evac, unit)}` : '');
 }
 
 /*
@@ -522,9 +520,8 @@ function showTickets(data, unit='kg') {
  *
  * @param data  {Ticket} - Le ticket que l'on désire ensuite afficher
  * @param types {object} - types possibles de tickets (evac, items)
- * @param unit  {string} - unité pour les entrées du ticket
  */
-function showTicket(data, types, unit='kg') {
+function showTicket(data, types) {
   // Hack on ajoute les noms a la volées pour les sorties/collectes.
   const new_data = data.map((item) => {
     if (item.hasOwnProperty('name')) {
@@ -535,12 +532,7 @@ function showTicket(data, types, unit='kg') {
     }
   });
 
-  // Encore un hack pour gérer ventes et collectes/pesees.
-  const accu = unit === 'kg' ? (a, {masse}) => a + masse : (a, {prix}) => a + prix;
-  const sum = new_data.reduce(accu, 0.0);
-  return [ `Sous total: ${sum} ${unit}${dashBreak}`,
-    ...new_data.map((item) => item.show())
-  ].join('');
+  return new_data.map((item) => item.show()).join('');
 }
 
 /*
@@ -573,10 +565,10 @@ function impression_ticket(data, response, unit='kg', tvaStuff=() => '', sumFunc
       <p>${document.querySelector('h1').innerHTML}</p>
       <p>${window.OressourceEnv.structure}</p>
       <p>${window.OressourceEnv.adresse}</p>
-      ${tvaStuff()}
       ${dashBreak}
       <p>Type: ${classeToName(data.classe)} &#x2116;${response.id}</p>
-      <p>Total: ${sumFunc(window.OressourceEnv.tickets)} ${unit}</p>
+      ${tvaStuff()}
+      ${dashBreak}
       ${showTickets(data, unit)}
     </body>
   </html>`;
