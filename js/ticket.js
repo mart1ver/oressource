@@ -18,7 +18,7 @@
  */
 
 class Ticket {
-  /*
+  /**
    * Construit un Ticket vide. Cet Object represente un ticket
    * dans les interfaces de sortie et de collecte.
    * Pour l'instait faire un Ticket par type de sortie/collect
@@ -34,9 +34,9 @@ class Ticket {
     this.id_interne = 0;
   }
 
-  /*
+  /**
    * Supprime un objet du ticket par son id.
-   * @param {type} id de l'objet a supprimer du ticket.
+   * @param {number} id de l'objet a supprimer du ticket.
    * @returns {Object} Retourne l'objet supprimee utile en cas de undo/redo.
    */
   remove(id) {
@@ -46,17 +46,17 @@ class Ticket {
     return item;
   }
 
-  /*
+  /**
    * Ajoute un objet au Ticket.
    * L'objet dois etre sous la forme suivante:
    * ```javascript
    * // On suppose que this.id contiens l'id de l'objet.
    * ticket.push({
    *   masse: value,
-   *   type: parseInt(this.id, 10),
+   *   type: type_objet
    * });
    * ```
-   * @param {Object} {id, masse}
+   * @param {Object} item a ajouter
    * @returns {Number} Id interne pour faire le lien avec l'UI en cas de suppression.
    */
   push(item) {
@@ -67,16 +67,15 @@ class Ticket {
     return id;
   }
 
-  /*
-   * La masse totale du ticket.
-   * @type {Int} Masse totale du Ticket.
+  /**
+   * @returns {number} La masse totale du ticket.
    */
   get total() {
     return this._total;
   }
 
-  /*
-   * @type {Int} Nombre d'items dans le ticket.
+  /**
+   * @returns {number} Nombre d'items dans le ticket.
    */
   get size() {
     return this.items.size;
@@ -86,16 +85,24 @@ class Ticket {
     return JSON.stringify(this.to_array());
   }
 
+  /**
+   * Renvoie um `Array` contenant les valeurs.
+   * @returns [any] `Array` d'items.
+   */
   to_array() {
     return [...this.items.values()];
   }
 
+  /**
+   * Renvoie un array `[type, valeur]`
+   * @returns Array[[any, any]]
+   */
   entries() {
     return [...this.items.entries()];
   }
 
-  /*
-   * Remet a 0 le ticket.
+  /**
+   * Remet à zéro le ticket.
    */
   reset() {
     this._total = 0.0;
@@ -104,4 +111,9 @@ class Ticket {
   }
 }
 
+/**
+ * Effectue la somme des totaux de plusieurs `Tickets`.
+ * @param {Array[Ticket]} ts tickets sur lequel effectuer une somme.
+ * @returns {number} somme des tickets.
+ */
 const sumMasseTickets = (ts) => ts.reduce((acc, t) => acc + t.total, 0.0);

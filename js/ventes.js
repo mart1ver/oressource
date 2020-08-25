@@ -28,11 +28,24 @@
 //! La page et les données sont remises à 0, en cas d'envoi réussi (avec ou sans impressions)
 //! ou de click sur la remise à 0.
 
+/**
+ * Represente une ligne du ticket de caisse type, quantitité et objet.
+ * @typedef {{type: {type: string, couleur: string}, objet: {prix: number, masse: number, couleur: string, nom: string}}} Item
+ */
+
+/**
+ * Calcul la somme des quantité sur un ticket
+ * @return {number} Sommes de quantité du ticket
+ */
 Ticket.prototype.sum_quantite = function () {
   return this.to_array()
       .reduce((acc, vente) => acc + vente.quantite, 0);
 }
 
+/**
+ * Calcul la somme des prix sur un ticket
+ * @return {number} sommes des prix du ticket
+ */
 Ticket.prototype.sum_prix = function () {
   return this.to_array().reduce(
     (acc, vente) =>
@@ -40,6 +53,16 @@ Ticket.prototype.sum_prix = function () {
     0.0);
 }
 
+/**
+ * Crée un nouvel état de vente representé par un objet Js:
+ *
+ * - `ticket` : `Ticket` class
+ * - `last` : dernier item ajouté au panier
+ * - `vente_unite`: d'un mode de vente
+ * - `moyen`: moyen de paiement
+ * @typedef {Object} Ticket
+ * @returns {{ moyen: number, ticket: Ticket, last: undefined|Item}}
+ */
 function new_state() {
   const s = {
     moyen: 1, // especes
@@ -52,6 +75,10 @@ function new_state() {
   return s;
 }
 
+/** Crée l'objet qui gère les données du clavier visuel,
+ * avec 0 pour valeur par défaut à tout les champs.
+ * @return {Numpad}
+*/
 function new_numpad() {
   return {
     prix: 0,
@@ -67,23 +94,40 @@ function new_rendu() {
   };
 }
 
-/// Fonction permetant de raccoursir une chaine trop longue.
-/// Par exemple
-/// `wrapString("Matériel élèctrique à 0.5€", 15, '…')`
-/// sera evaluée à `"matériel éléc à…"`.
+/** Fonction permetant de raccoursir une chaine trop longue.
+  *
+  * @param {string} s Chaine a tronquer
+  * @param {number} n Combien de caratères a preserver
+  * @param {string} c Caractère a inserer si on a fait une troncature
+  * @return {string} Chaine tronqué avec eventuellement `c` comme caractère de remplacement.
+  *
+  * ## Exemple
+  * `wrapString("Matériel élèctrique à 0.5€", 15, '…')`
+  * sera evaluée à `"matériel éléc à…"`.
+  *
+  */
 const wrapString = (s, n, c) => (s.length > n) ? (s.slice(0, n) + c) : s;
 
+/** @global */
 let state = new_state();
+/** @global */
 let numpad = new_numpad();
+/** @global */
 let rendu = new_rendu();
 
-/// Fonction gérant les différents champs du numpad elle est appellée via le "click"
-/// HTML de l'inferface de ifaces/vente.php
+/** @global */
 let current_focus = document.getElementById('quantite');
+/** Fonction gérant les différents champs du numpad elle est appellée via le "click"
+  * HTML de l'inferface de ifaces/vente.php
+  * @param {HTMLElement} element
+  */
 function fokus(element) {
   current_focus = element;
 }
 
+/** Réalise l'actualisation du clavier visuel
+  * @param {Numpad} données du clavier visuel
+  */
 function render_numpad({ prix, quantite, masse }) {
   document.getElementById('quantite').value = quantite;
   document.getElementById('prix').value = prix;
@@ -93,17 +137,20 @@ function render_numpad({ prix, quantite, masse }) {
 }
 
 function reset_rendu() {
+  /** @global */
   rendu = new_rendu();
   update_rendu();
 }
 
 function reset_numpad() {
+  /** @global */
   numpad = new_numpad();
   render_numpad(numpad);
 }
 
-/// Cette fonction remet l'interface du choix du moyen de paiement à son état initial
-/// c'est à dire sur «espèce».
+/** Cette fonction remet l'interface du choix du moyen de paiement à son état initial
+  * c'est à dire sur «espèce».
+  */
 function reset_paiement() {
   const moyens_paiement_selector = document.getElementById('moyens');
   Array.from(moyens_paiement_selector.children).forEach(elem => {
@@ -114,7 +161,17 @@ function reset_paiement() {
   moyens_paiement_selector.children[0].classList.add('active');
 }
 
-/// Permet de récupérer les saisies du numpad sous la forme d'un objet js.
+/** Un object pour representer les données saisies au clavier numérique visuel
+ * @typedef {Object<number, number, number>} Numpad
+ * @property {number} quantite (int) quantité saisie dans le clavier numérique visuel
+ * @property {number} masse Masse saisie, si non saisie assignée à `NaN`
+ * @property {number} prix Prix saisi
+ */
+
+/**
+ * Permet de récupérer les saisies du numpad sous la forme d'un objet js.
+ * @returns {Numpad}
+ */
 function get_numpad() {
   const masseinput = document.getElementById('masse');
   return {
@@ -124,7 +181,16 @@ function get_numpad() {
   };
 }
 
-/// Ajoute au panier l'objet selectionné.
+/**
+ * Ajoute au panier l'objet selectionné.
+ *
+ * -.
+ * @param {Item}
+ * - type de l'item ajouté au ticket
+ * - prix de l'item
+ * - masse de l'item
+ *
+ */
 function update_state({ type, objet = { prix: 0, masse: 0.0 } }) {
   numpad.prix = objet.prix;
   numpad.quantite = 1;
@@ -137,8 +203,10 @@ function update_state({ type, objet = { prix: 0, masse: 0.0 } }) {
   render_numpad(numpad);
 }
 
-/// Effectue le reset des données représentant une vente et de l'interface graphique.
-function reset(data, response) {
+/**
+ * Effectue le reset des données représentant une vente et de l'interface graphique.
+ */
+function reset(_, response) {
   state = new_state();
 
   reset_numpad();
@@ -160,10 +228,21 @@ function reset(data, response) {
   document.getElementById('commentaire').value = '';
 }
 
+/**
+ * Met a jour le moyen de paiement représenté par un entier.
+ * @param {number} moyen
+ *
+ * Manipule la globale `state`
+ */
 function moyens(moyen) {
   state.moyen = moyen;
 }
 
+/**
+ * Envoie coté serveur une vente après quelques verifications locales.
+ *
+ * @returns {{} | Item
+ */
 function encaisse_vente() {
   if (state.ticket.size > 0) {
     const date = document.getElementById('date');
@@ -186,9 +265,11 @@ function encaisse_vente() {
 
 /**
  * Fonction d'affichage des informations relative a la TVA et au prix.
- * 
- * Historiquement Oressource a une gestion des prix Hors-Taxe.
- * Si la structure active la TVA alors on calcule un prix TTC.
+ *
+ * ## Cas TVA non active
+ *
+ * Cependant si la structure n'a pas activé la TVA alors le prix est considéré
+ * Hors Taxe et aucun calul n'est fait.
  *
  * ## Cas de la TVA active
  *
@@ -197,10 +278,13 @@ function encaisse_vente() {
  * Si la structure active la TVA les prix affichées en boutiques sont
  * Toutes Taxes Comprises, il conviens alors de calculer un prix HT
  * et la part TVA pour informer, l'usager de la ressourcerie.
+ *
  * Formule: Prix HT = Prix TTC * 100 / (100 + Taux)
  *
  * Source:
  * https://www.service-public.fr/professionnels-entreprises/vosdroits/F24271
+ *
+ * @returns {string}
  */
 const printTva = (() => {
   if (window.OressourceEnv.tva_active) {
@@ -321,6 +405,13 @@ function add() {
   }
 }
 
+/**
+ * Change le mode de vente de unite a lot.
+ * @param {string} label
+ * @param {number} prix_string
+ * @param {undefined|number} masse_string pas lu si `window.OressourceEnv.pesee` est faux.
+ * @param {string} bg_color
+ */
 const lot_or_unite = (label, prix_string, masse_string, bg_color) => {
   document.getElementById('labellot').textContent = label;
   document.getElementById('labelprix').textContent = prix_string;
