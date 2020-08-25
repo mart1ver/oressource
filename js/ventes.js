@@ -184,17 +184,30 @@ function encaisse_vente() {
   }
 }
 
-// Historiquement Oressource a une gestion des prix Hors-Taxe.
-// Si la structure active la TVA alors on calcule un prix TTC.
-// Source:
-// https://www.service-public.fr/professionnels-entreprises/vosdroits/F24271
+/**
+ * Fonction d'affichage des informations relative a la TVA et au prix.
+ * 
+ * Historiquement Oressource a une gestion des prix Hors-Taxe.
+ * Si la structure active la TVA alors on calcule un prix TTC.
+ *
+ * ## Cas de la TVA active
+ *
+ * Actuellement Oressource ne gére que un taux de TVA unique.
+ *
+ * Si la structure active la TVA les prix affichées en boutiques sont
+ * Toutes Taxes Comprises, il conviens alors de calculer un prix HT
+ * et la part TVA pour informer, l'usager de la ressourcerie.
+ * Formule: Prix HT = Prix TTC * 100 / (100 + Taux)
+ *
+ * Source:
+ * https://www.service-public.fr/professionnels-entreprises/vosdroits/F24271
+ */
 const printTva = (() => {
   if (window.OressourceEnv.tva_active) {
     return () => {
-      const ht = state.ticket.sum_prix();
+      const ttc = state.ticket.sum_prix();
       const taux_tva = window.OressourceEnv.taux_tva;
-      const part_tva = ht * taux_tva / 100;
-      const ttc = ht + part_tva;
+      const ht = ttc * 100 / (100 + taux_tva);
       return `Prix HT. = ${ht.toFixed(2)} €<br> Prix TTC. = ${ttc.toFixed(2)} €<br\> dont TVA ${taux_tva}% = ${part_tva.toFixed(2)} €`;
     }
   } else {
