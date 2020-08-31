@@ -81,6 +81,10 @@ class Ticket {
     return this.items.size;
   }
 
+  /** Retourne un Array d'items sous forme de chaine de caractères
+   * au format JSON
+   * @returns {string} JSON en format string.
+  */
   to_json() {
     return JSON.stringify(this.to_array());
   }
