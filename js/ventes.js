@@ -398,6 +398,7 @@ function add() {
       // Idée: Ajouter un champ "prix total" pour eviter de faire un if pour les calculs sur les prix.
 
       const name = current.objet.nom || current.type.nom;
+      const lot_txt = !state.vente_unite ? 'lot' : '';
       const vente = {
         id_type: current.type.id,
         id_objet: current.objet.id || null,
@@ -406,15 +407,15 @@ function add() {
         prix,
         masse,
         name, // Hack pour les impressions.
-      };
-
-      const lot = vente.lot ? 'lot' : '';
-
-      vente.show = function() {
-        const prix_txt = `${this.prix} €`;
-        const masse_txt = this.masse >= 0.00 ? ` ${this.masse} kg` : '';
-
-        return `<p>${lot} ${this.quantite} * ${this.name} = ${prix_txt}${masse_txt}</p>`;
+        /**
+         * Fonction pour afficher une vente dans l'interface web.
+         * @returns {string} Representant un fragment HTML.
+         */
+        show() {
+          const prix_txt = `${this.prix} €`;
+          const masse_txt = this.masse >= 0.00 ? ` ${this.masse} kg` : '';
+          return `<p>${lot_txt} ${this.quantite} * ${this.name} = ${prix_txt}${masse_txt}</p>`;
+        }
       };
 
       const id = state.ticket.push(vente);
@@ -426,8 +427,8 @@ function add() {
       let html = `
             <span class="badge">${amount.toFixed(2)} €</span>
             <span class="glyphicon glyphicon-trash" aria-hidden="true"
-                  onclick="remove(${id});return false;">
-            </span>&nbsp;&nbsp; ${lot} ${quantite} &#215; ${name}`;
+                  onclick="${remove.name}(${id});return false;">
+            </span>&nbsp;&nbsp; ${lot_txt} ${quantite} &#215; ${name}`;
       if (masse > 0 && window.OressourceEnv.pesees) {
         html += `, ${(masse).toFixed(3)} Kgs.`;
       }
