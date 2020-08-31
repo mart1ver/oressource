@@ -354,7 +354,8 @@ function numpad_input(elem) {
  * @param {Number} id de l'objet a retirer
  */
 function remove(id) {
-  const elem = state.ticket.remove(id);
+  // TODO: Ajouter une gestion du Refaire une action/annuler une suppression
+  state.ticket.remove(id);
   document.getElementById(id).remove();
   update_rendu();
   update_recap(state.ticket.sum_prix(), state.ticket.sum_quantite());
