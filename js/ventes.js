@@ -362,9 +362,24 @@ function remove(id) {
   reset_numpad();
 }
 
-function update_recap(total, size) {
-  document.getElementById('total').innerHTML = `<li class="list-group-item">Soit : ${size} article(s) pour : <span class="badge" style="float:right;">${total.toFixed(2)} €</span></li>`;
-  document.getElementById('recaptotal').innerHTML = total.toFixed(2) + ' €';
+/**
+ * Mise a jour des totaux
+ * du récapitulatif d'une vente dans le client web (widget de gauche).
+ *
+ * Et l'objet en cours de saisie du numpad.
+ *
+ * Manipule le DOM pour mettre a jour les champs:
+ * - `total`: Recapitulatif du total prix et nombres d'articles.
+ * - `recaptotal`: Recapitulatif du total en euros €
+ * - `nom_objet`: nom de l'objet en saisie sur le numpad
+ *
+ * @param {number} total_price
+ * @param {number} total_quantity
+ */
+function update_recap(total_price, total_quantity) {
+  const total_price_txt = total_price.toFixed(2)
+  document.getElementById('total').innerHTML = `<li class="list-group-item">Soit : ${total_quantity} article(s) pour : <span class="badge" style="float:right;">${total_price_txt} €</span></li>`;
+  document.getElementById('recaptotal').innerHTML = `${total_price_txt} €`;
   document.getElementById('nom_objet').textContent = "Objet:";
 }
 
