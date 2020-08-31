@@ -464,11 +464,11 @@ const lot_or_unite = (label, prix_string, masse_string, bg_color) => {
 document.addEventListener('DOMContentLoaded', () => {
   $("#typeVente").bootstrapSwitch();
   $("#typeVente").on('switchChange.bootstrapSwitch', (event, checked) => {
-    if (checked) {
-      lot_or_unite("Vente à: ", "Prix unitaire:", "Masse unitaire: ", "white");
-    } else {
-      lot_or_unite("Vente au: ", "Prix du lot: ", "Masse du lot: ", "#E8E6BC");
-    }
+    const args = (checked
+      ? ["Vente à: ", "Prix unitaire:", "Masse unitaire: ", "white"]
+      : ["Vente au: ", "Prix du lot: ", "Masse du lot: ", "#E8E6BC"]
+    );
+    lot_or_unite(...args);
     state.vente_unite = checked;
   });
 
