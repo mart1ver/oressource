@@ -53,19 +53,30 @@ Ticket.prototype.sum_prix = function () {
     0.0);
 }
 
+/** Type representant l'état d'une vente ce type fait le
+ * lien avec l'interface et la logique interne.
+ *
+ * @typedef {Object} Ticket définit dans ticket.js
+ * @typedef {{
+ * moyen: number,  // especes
+ * ticket: Ticket,
+ * last: undefined|Item
+ * vente_unite: boolean
+ * }} EtatVente
+ */
+
 /**
  * Crée un nouvel état de vente representé par un objet Js:
  *
- * - `ticket` : `Ticket` class
+ * - `ticket` : `Ticket` class définie dans ticket.js
  * - `last` : dernier item ajouté au panier
  * - `vente_unite`: d'un mode de vente
  * - `moyen`: moyen de paiement
- * @typedef {Object} Ticket
- * @returns {{ moyen: number, ticket: Ticket, last: undefined|Item}}
+ * @returns {EtatVente} Objet represantant l'etat d'une vente
  */
 function new_state() {
   const s = {
-    moyen: 1, // especes
+    moyen: 1,
     ticket: new Ticket(),
     last: undefined,
     vente_unite: true
@@ -87,6 +98,16 @@ function new_numpad() {
   };
 }
 
+/** Type representant un rendu de monaie.
+ * @typedef {{
+ * reglement: number,
+ * difference: number
+ * }} Rendu
+ */
+
+/** Constructeur d'un nouveau rendu monaie
+ * @returns {Rendu} de monaie
+ */
 function new_rendu() {
   return {
     reglement: 0,
@@ -136,12 +157,14 @@ function render_numpad({ prix, quantite, masse }) {
   }
 }
 
+/** Remise a zéro du rendu de monaie. */
 function reset_rendu() {
   /** @global */
   rendu = new_rendu();
   update_rendu();
 }
 
+/** Remise a zéro du numpad. */
 function reset_numpad() {
   /** @global */
   numpad = new_numpad();
@@ -302,6 +325,9 @@ const printTva = (() => {
   }
 })();
 
+/**
+ * Fonction d'actualisation du rendu visuel de l'interface des ventes.
+ */
 function update_rendu() {
   const total = state.ticket.sum_prix();
   const input = document.getElementById('reglement');
@@ -311,10 +337,22 @@ function update_rendu() {
   document.getElementById('difference').value = rendu.difference || 0;
 }
 
+/**
+ * Hack pas très glorieux pour gérer le «multi-clavier» visuel avec un seul element HTML.
+ * @param {HTMLElement} Element HTML representant un bouton du clavier visuel
+ * sur lequel on viens de cliquer.
+ */
 function numpad_input(elem) {
   current_focus.value += elem.value;
 }
 
+/**
+ * Fonction de retrait d'objet dans l'interface web de vente.
+ * Le retrait d'un objet met a jour le composant du rendu de monaie,
+ * l'etait du ticket et remet a zéro le clavier visuel (Numpad)
+ *
+ * @param {Number} id de l'objet a retirer
+ */
 function remove(id) {
   const elem = state.ticket.remove(id);
   document.getElementById(id).remove();
