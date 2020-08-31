@@ -25,6 +25,22 @@ Voir le fichier [SAUVEGARDE.md](SAUVEGARDE.md)
 
 ## Developement / Contribution
 
+### Dependances logicielles
+
+#### Client web
+
+Des versions pas très a jour sont embarqué dans les sources du dépôt
+
+- [Morris.js](https://morrisjs.github.io/morris.js/)
+- Pour Morris.js [Raphael.js](https://github.com/DmitryBaranovskiy/raphael)
+- [JQuery](https://jquery.com/)
+- [bootstrap.js](https://getbootstrap.com/) de Bootstrap
+
+> Note: Nous sommes conscient qu'une gestion des dépendances JavaScript modernes serait mieux.
+> Voir issue [#394](https://github.com/mart1ver/oressource/issues/394).
+
+### Développer
+
 Si vous souhaitez develloper ou debugger Oressource pensez à modifier le bon
 fichier de configuration de PHP (`php.ini`) afin de pouvoir traquer les erreurs
 plus facilement.
