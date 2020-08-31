@@ -448,8 +448,8 @@ function add() {
 /**
  * Change le mode de vente de unite a lot.
  * @param {string} label
- * @param {number} prix_string
- * @param {undefined|number} masse_string pas lu si `window.OressourceEnv.pesee` est faux.
+ * @param {string} prix_string
+ * @param {string} masse_string pas lu si `window.OressourceEnv.pesee` est faux.
  * @param {string} bg_color
  */
 const lot_or_unite = (label, prix_string, masse_string, bg_color) => {
