@@ -52,9 +52,16 @@ function process_get() {
  * Fonctions en rapport avec le Datepicker
  */
 
-function set_datepicker(data) {
-  const startDate = moment(data.date1, 'DD-MM-YYYY');
-  const endDate = moment(data.date2, 'DD-MM-YYYY');
+/** Fonction pour proposer une configuration par défaut a MomentJS.
+ *
+ * @typedef {{date1: string, date2: string}} dateInterval de date compris entre `date1` et `date2` au format DD-MM-YYYY.
+ * @param {MomentConfig} data
+ *
+ * Modifie l'element DOM a la CSSQuery suivante: `#reportrange span`.
+ */
+function set_datepicker(dateInterval) {
+  const startDate = moment(dateInterval.date1, 'DD-MM-YYYY');
+  const endDate = moment(dateInterval.date2, 'DD-MM-YYYY');
   $('#reportrange span').html(`${startDate.format('DD MMMM YYYY')} - ${endDate.format('DD MMMM YYYY')}`);
   const options = {
     startDate: startDate,
@@ -94,10 +101,12 @@ function set_datepicker(data) {
       toLabel: 'Au',
       customRangeLabel: 'Période libre',
       daysOfWeek: ['Di', 'Lu', 'Ma', 'Me', 'Je', 'Ve', 'Sa'],
-      monthNames: ['Janvier', 'Fevrier', 'Mars'
-          , 'Avril', 'Mai', 'Juin'
-          , 'Juillet', 'Aout', 'Septembre'
-          , 'Octobre', 'Novembre', 'Decembre'],
+      monthNames: [
+        'Janvier', 'Fevrier', 'Mars',
+        'Avril', 'Mai', 'Juin',
+        'Juillet', 'Aout', 'Septembre',
+        'Octobre', 'Novembre', 'Decembre'
+      ],
       firstDay: 1
     }
   };
