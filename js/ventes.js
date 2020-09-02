@@ -39,19 +39,20 @@
  */
 Ticket.prototype.sum_quantite = function () {
   return this.to_array()
-      .reduce((acc, vente) => acc + vente.quantite, 0);
-}
+    .reduce((acc, { quantite }) => acc + quantite, 0);
+};
 
 /**
  * Calcul la somme des prix sur un ticket
  * @return {number} sommes des prix du ticket
  */
 Ticket.prototype.sum_prix = function () {
-  return this.to_array().reduce(
-    (acc, vente) =>
-      acc + (vente.lot ? vente.prix : (vente.prix * vente.quantite)),
-    0.0);
-}
+  return (this
+    .to_array()
+    .reduce((acc, { lot, prix, quantite }) => (
+      acc + (lot ? prix : (prix * quantite))
+    ), 0.0));
+};
 
 /** Type representant l'état d'une vente ce type fait le
  * lien avec l'interface et la logique interne.
@@ -79,7 +80,7 @@ function new_state() {
     moyen: 1,
     ticket: new Ticket(),
     last: undefined,
-    vente_unite: true
+    vente_unite: true,
   };
   // Hack pour les impressions...
   window.OressourceEnv.tickets = s.ticket;
@@ -87,14 +88,14 @@ function new_state() {
 }
 
 /** Crée l'objet qui gère les données du clavier visuel,
- * avec 0 pour valeur par défaut à tout les champs.
+ * avec 0 pour valeur par défaut à tout les champs.
  * @return {Numpad}
 */
 function new_numpad() {
   return {
     prix: 0,
     quantite: 0,
-    masse: 0.0
+    masse: 0.0,
   };
 }
 
@@ -111,7 +112,7 @@ function new_numpad() {
 function new_rendu() {
   return {
     reglement: 0,
-    difference: 0
+    difference: 0,
   };
 }
 
@@ -127,7 +128,7 @@ function new_rendu() {
   * sera evaluée à `"matériel éléc à…"`.
   *
   */
-const wrapString = (s, n, c) => (s.length > n) ? (s.slice(0, n) + c) : s;
+const wrapString = (s, n, c) => ((s.length > n) ? (s.slice(0, n) + c) : s);
 
 /** @global */
 let state = new_state();
@@ -175,13 +176,13 @@ function reset_numpad() {
   * c'est à dire sur «espèce».
   */
 function reset_paiement() {
-  const moyens_paiement_selector = document.getElementById('moyens');
-  Array.from(moyens_paiement_selector.children).forEach(elem => {
+  const moyensPaiementSelector = document.getElementById('moyens');
+  Array.from(moyensPaiementSelector.children).forEach((elem) => {
     elem.classList.remove('active');
   });
 
-  // L'element 0 c'est les espece.
-  moyens_paiement_selector.children[0].classList.add('active');
+  // L'element 0 c'est les especes.
+  moyensPaiementSelector.children[0].classList.add('active');
 }
 
 /** Un object pour representer les données saisies au clavier numérique visuel
@@ -200,7 +201,7 @@ function get_numpad() {
   return {
     quantite: Number.parseInt(document.getElementById('quantite').value, 10),
     masse: Number.parseFloat(masseinput === null ? NaN : masseinput.value, 10),
-    prix: Number.parseFloat(document.getElementById('prix').value, 10)
+    prix: Number.parseFloat(document.getElementById('prix').value, 10),
   };
 }
 
@@ -275,7 +276,7 @@ function encaisse_vente() {
       id_user: window.OressourceEnv.id_user,
       id_moyen: state.moyen,
       commentaire: document.getElementById('commentaire').value.trim(),
-      items: state.ticket.to_array()
+      items: state.ticket.to_array(),
     };
     if (date !== null) {
       data.date = date.value;
@@ -314,14 +315,14 @@ const printTva = (() => {
     return () => {
       const ttc = state.ticket.sum_prix();
       const taux_tva = window.OressourceEnv.taux_tva;
-      const ht = ttc * 100 / (100 + taux_tva);
+      const ht = (ttc * 100) / (100 + taux_tva);
       return `Prix HT. = ${ht.toFixed(2)} €<br> Prix TTC. = ${ttc.toFixed(2)} €<br\> dont TVA ${taux_tva}% = ${part_tva.toFixed(2)} €`;
-    }
+    };
   } else {
     return () => {
       const ht = state.ticket.sum_prix();
       return `Prix HT. = ${ht.toFixed(2)} €<br\>Association non assujettie à la TVA.`;
-    }
+    };
   }
 })();
 
@@ -373,14 +374,14 @@ function remove(id) {
  * - `recaptotal`: Recapitulatif du total en euros €
  * - `nom_objet`: nom de l'objet en saisie sur le numpad
  *
- * @param {number} total_price
+ * @param {number} totalPrice
  * @param {number} total_quantity
  */
-function update_recap(total_price, total_quantity) {
-  const total_price_txt = total_price.toFixed(2)
-  document.getElementById('total').innerHTML = `<li class="list-group-item">Soit : ${total_quantity} article(s) pour : <span class="badge" style="float:right;">${total_price_txt} €</span></li>`;
-  document.getElementById('recaptotal').innerHTML = `${total_price_txt} €`;
-  document.getElementById('nom_objet').textContent = "Objet:";
+function update_recap(totalPrice, totalQuantity) {
+  const totalPriceTxt = totalPrice.toFixed(2);
+  document.getElementById('total').innerHTML = `<li class="list-group-item">Soit : ${totalQuantity} article(s) pour : <span class="badge" style="float:right;">${totalPriceTxt} €</span></li>`;
+  document.getElementById('recaptotal').innerHTML = `${totalPriceTxt} €`;
+  document.getElementById('nom_objet').textContent = 'Objet:';
 }
 
 /**
@@ -407,13 +408,14 @@ function update_recap(total_price, total_quantity) {
 function add() {
   if (state.last !== undefined) {
     const { prix, quantite, masse } = get_numpad();
-    if (quantite > 0 && !isNaN(prix)) {
+    if (quantite > 0 && !Number.isNaN(prix)) {
       const current = state.last;
       state.last = undefined;
-      // Idée: Ajouter un champ "prix total" pour eviter de faire un if pour les calculs sur les prix.
+      // Idée: Ajouter un champ "prix total" pour eviter de faire un if
+      // pour les calculs sur les prix.
 
       const name = current.objet.nom || current.type.nom;
-      const lot_txt = !state.vente_unite ? 'lot' : '';
+      const lotTxt = !state.vente_unite ? 'lot' : '';
       const vente = {
         id_type: current.type.id,
         id_objet: current.objet.id || null,
@@ -427,10 +429,10 @@ function add() {
          * @returns {string} Representant un fragment HTML.
          */
         show() {
-          const prix_txt = `${this.prix} €`;
-          const masse_txt = this.masse >= 0.00 ? ` ${this.masse} kg` : '';
-          return `<p>${lot_txt} ${this.quantite} * ${this.name} = ${prix_txt}${masse_txt}</p>`;
-        }
+          const prixTxt = `${this.prix} €`;
+          const masseTxt = this.masse >= 0.00 ? ` ${this.masse} kg` : '';
+          return `<p>${lotTxt} ${this.quantite} * ${this.name} = ${prixTxt}${masseTxt}</p>`;
+        },
       };
 
       const id = state.ticket.push(vente);
@@ -438,12 +440,12 @@ function add() {
       const li = document.createElement('li');
       li.setAttribute('id', id);
       li.setAttribute('class', 'list-group-item');
-      const amount = vente.lot ?  vente.prix : vente.prix * vente.quantite;
+      const amount = vente.lot ? vente.prix : vente.prix * vente.quantite;
       let html = `
             <span class="badge">${amount.toFixed(2)} €</span>
             <span class="glyphicon glyphicon-trash" aria-hidden="true"
                   onclick="${remove.name}(${id});return false;">
-            </span>&nbsp;&nbsp; ${lot_txt} ${quantite} &#215; ${name}`;
+            </span>&nbsp;&nbsp; ${lotTxt} ${quantite} &#215; ${name}`;
       if (masse > 0 && window.OressourceEnv.pesees) {
         html += `, ${(masse).toFixed(3)} Kgs.`;
       }
@@ -453,7 +455,7 @@ function add() {
       update_rendu();
       reset_numpad();
       // Reset du selecteur lot/unité
-      $("#typeVente").bootstrapSwitch('state', true, false);
+      $('#typeVente').bootstrapSwitch('state', true, false);
     } else {
       this.input.setCustomValidity('Quantite nulle ou inferieur a 0.');
     }
@@ -477,23 +479,23 @@ const lot_or_unite = (label, prix_string, masse_string, bg_color) => {
 };
 
 document.addEventListener('DOMContentLoaded', () => {
-  $("#typeVente").bootstrapSwitch();
-  $("#typeVente").on('switchChange.bootstrapSwitch', (event, checked) => {
+  $('#typeVente').bootstrapSwitch();
+  $('#typeVente').on('switchChange.bootstrapSwitch', (event, checked) => {
     const args = (checked
-      ? ["Vente à: ", "Prix unitaire:", "Masse unitaire: ", "white"]
-      : ["Vente au: ", "Prix du lot: ", "Masse du lot: ", "#E8E6BC"]
+      ? [ 'Vente à: ', 'Prix unitaire:', 'Masse unitaire: ', 'white' ]
+      : [ 'Vente au: ', 'Prix du lot: ', 'Masse du lot: ', '#E8E6BC' ]
     );
     lot_or_unite(...args);
     state.vente_unite = checked;
   });
 
   const url = '../api/ventes.php';
-  const ventePrint = (data, response) => {
-    return impression_ticket(data, response, '€', printTva, (t) => t.sum_prix());
-  }
+  const ventePrint = (
+    (d, r) => impressionTicket(d, r, '€', printTva, (t) => t.sum_prix())
+  );
+
   const send = post_data(url, encaisse_vente, reset);
   const sendAndPrint = post_data(url, encaisse_vente, reset, ventePrint);
   document.getElementById('encaissement').addEventListener('click', send, false);
   document.getElementById('impression').addEventListener('click', sendAndPrint, false);
-
 }, false);
