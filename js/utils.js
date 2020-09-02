@@ -55,13 +55,9 @@ const dateUStoFR = ({ label }) => new moment(label, 'YYYY-MM-DD').format('dddd D
  * @global Récupére les paramètres de l'URL `URLSearchParams`.
  * @returns {object} objet representant les paramètres de la query string.
  */
-function process_get() {
-  const val = {};
-  const query = new URLSearchParams(window.location.search.slice(1)).entries();
-  for (const pair of query) {
-    val[pair[0]] = pair[1];
-  }
-  return val;
+function processGet() {
+  const queryString = new URLSearchParams(window.location.search.slice(1));
+  return Object.fromEntries(queryString);
 }
 
 /* datepicker
