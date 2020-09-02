@@ -7,3 +7,5 @@ _build
 moteur/dbconfig\.php\.example
 *~
 .*~
+
+node_modules/

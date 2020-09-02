@@ -480,10 +480,10 @@ function datePicker($props=[]): string {
       </div>
     <script>
       'use strict';
-      const query = process_get();
+      const query = processGet();
       const base = new URL(location.href);
-      const options = set_datepicker(query);
-      bind_datepicker(options, { base: base.pathname, query });
+      const options = setDatepicker(query);
+      bindDatepicker(options, { base: base.pathname, query });
     </script>
   </div>
   <?php

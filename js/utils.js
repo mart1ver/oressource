@@ -29,14 +29,15 @@
  */
 const toQueryString = (obj) => (Object
   .entries(obj)
-  .map(([key, val]) => `${encodeURIComponent(key)}=${encodeURIComponent(val)}`)
-  .join("&")
+  .map(([ key, val ]) => `${encodeURIComponent(key)}=${encodeURIComponent(val)}`)
+  .join('&')
 );
 
 /**
  * Convertis une date au format américain en format francophone avec jour de la semaine
  *
- * @param {{label: string}} `label` Represente une chaine au format américain YYYY-MM-DD comme: 2020-09-02.
+ * @param {{label: string}} `label` Represente une chaine au format
+ *   américain YYYY-MM-DD comme: 2020-09-02.
  * @returns {string} Chaine representant une date au format dddd DD/MM/YYYY
  *
  * ## Exemple:
@@ -66,18 +67,19 @@ function processGet() {
 
 /** Fonction pour proposer une configuration par défaut a MomentJS.
  *
- * @typedef {{date1: string, date2: string}} dateInterval de date compris entre `date1` et `date2` au format DD-MM-YYYY.
+ * @typedef {{date1: string, date2: string}} dateInterval de date compris entre
+ *  `date1` et `date2` au format DD-MM-YYYY.
  * @param {MomentConfig} data
  *
  * Modifie l'element DOM a la CSSQuery suivante: `#reportrange span`.
  */
-function set_datepicker(dateInterval) {
+function setDatepicker(dateInterval) {
   const startDate = moment(dateInterval.date1, 'DD-MM-YYYY');
   const endDate = moment(dateInterval.date2, 'DD-MM-YYYY');
   $('#reportrange span').html(`${startDate.format('DD MMMM YYYY')} - ${endDate.format('DD MMMM YYYY')}`);
   const options = {
-    startDate: startDate,
-    endDate: endDate,
+    startDate,
+    endDate,
     minDate: moment('01/01/2010', 'MM/DD/YYYY'),
     maxDate: moment('12/31/2030', 'MM/DD/YYYY'),
     dateLimit: { days: 800 },
@@ -87,21 +89,21 @@ function set_datepicker(dateInterval) {
     timePickerIncrement: 1,
     timePicker12Hour: true,
     ranges: {
-      "Aujourd'hui": [moment(), moment()],
-      'hier': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-      '7 derniers jours': [moment().subtract(6, 'days'), moment()],
-      '30 derniers jours': [moment().subtract(29, 'days'), moment()],
+      "Aujourd'hui": [ moment(), moment() ],
+      hier: [ moment().subtract(1, 'days'), moment().subtract(1, 'days') ],
+      '7 derniers jours': [ moment().subtract(6, 'days'), moment() ],
+      '30 derniers jours': [ moment().subtract(29, 'days'), moment() ],
       'Ce mois': [
         moment().startOf('month'),
-        moment().endOf('month')
+        moment().endOf('month'),
       ],
       'Le mois deriner': [
         moment().subtract(1, 'month').startOf('month'),
-        moment().subtract(1, 'month').endOf('month')
-      ]
+        moment().subtract(1, 'month').endOf('month'),
+      ],
     },
     opens: 'left',
-    buttonClasses: ['btn btn-default'],
+    buttonClasses: [ 'btn btn-default' ],
     applyClass: 'btn-small btn-primary',
     cancelClass: 'btn-small',
     locale: {
@@ -112,21 +114,21 @@ function set_datepicker(dateInterval) {
       fromLabel: 'Du',
       toLabel: 'Au',
       customRangeLabel: 'Période libre',
-      daysOfWeek: ['Di', 'Lu', 'Ma', 'Me', 'Je', 'Ve', 'Sa'],
+      daysOfWeek: [ 'Di', 'Lu', 'Ma', 'Me', 'Je', 'Ve', 'Sa' ],
       monthNames: [
         'Janvier', 'Fevrier', 'Mars',
         'Avril', 'Mai', 'Juin',
         'Juillet', 'Aout', 'Septembre',
-        'Octobre', 'Novembre', 'Decembre'
+        'Octobre', 'Novembre', 'Decembre',
       ],
-      firstDay: 1
-    }
+      firstDay: 1,
+    },
   };
   return options;
 }
 
 // TODO: Fix a potential XSS problem with query string.
-function bind_datepicker(options, { base, query }) {
+function bindDatepicker(options, { base, query }) {
   const cb = (start, end, label) => $('#reportrange span').html(`${start.format('DD MMMM YYYY')} - ${end.format('DD MMMM YYYY')}`);
   $('#reportrange').daterangepicker(options, cb);
 
@@ -135,8 +137,8 @@ function bind_datepicker(options, { base, query }) {
       ...query,
       ...{
         date1: picker.startDate.format('DD-MM-YYYY'),
-        date2: picker.endDate.format('DD-MM-YYYY')
-      }
+        date2: picker.endDate.format('DD-MM-YYYY'),
+      },
     });
     window.location.href = `${base}?${queryString}`;
   });
@@ -156,17 +158,17 @@ function bind_datepicker(options, { base, query }) {
 const MorrisBar = (obj, element, labels, unit, couleur) => {
   if (obj.data.length !== 0) {
     return new Morris.Bar({
-      element: element,
+      element,
       hideHover: 'auto',
       data: obj.data,
       xkey: 'time',
-      ykeys: ['nombre'],
-      labels: [labels],
+      ykeys: [ 'nombre' ],
+      labels: [ labels ],
       xLabelFormat: dateUStoFR,
       postUnits: unit,
       resize: true,
-      barColors: [couleur],
-      goals: [obj.sum / obj.data.length]
+      barColors: [ couleur ],
+      goals: [ obj.sum / obj.data.length ],
     });
   }
 };
@@ -179,9 +181,9 @@ const graphMorris = (obj, element, unit = ' Kg') => {
       backgroundColor: '  #ccc',
       labelColor: '#060',
       colors: obj.colors,
-      formatter: (x) => `${x} ${unit}`
+      formatter: (x) => `${x} ${unit}`,
     });
-  };
+  }
 };
 
 /* GUI
@@ -197,15 +199,13 @@ const fillSelect = (select, array) => {
   });
 };
 
-const fillItems = (div, types, push) => types.forEach(e => div.appendChild(html_saisie_item(e, push)));
-
 /**
  * Prepare une liste de bouton clickable dans l'UI pour la saisie.
  * @param {{ id: number, nom: string, couleur: string }} objet issue de la database.
  * @param {Function} action fonction a faire en cas de click sur le button.
  * @returns {HTMLButtonElement} Boutton crée
  */
-function html_saisie_item({ id, nom, couleur }, action) {
+function htmlSaisieItem({ id, nom, couleur }, action) {
   const button = document.createElement('button');
   button.setAttribute('id', id);
   button.setAttribute('class', 'btn btn-default');
@@ -215,6 +215,10 @@ function html_saisie_item({ id, nom, couleur }, action) {
   return button;
 }
 
+const fillItems = (div, types, push) => {
+  types.forEach((e) => div.appendChild(htmlSaisieItem(e, push)));
+};
+
 // TODO revoir le design...
 /**
  * Fonction de mise a jour du ticket des sorties et collectes.
@@ -223,7 +227,7 @@ function html_saisie_item({ id, nom, couleur }, action) {
  * @param {Object} bag
  * @param {number} value
  */
-function ticket_update_ui(container, totalUI, bag, value) {
+function ticketUpdateUI(container, totalUI, bag, value) {
   // Constitution du panier
   const { _, nom, couleur, id_last_insert, ticket } = bag;
   const li = document.createElement('li');
@@ -252,23 +256,22 @@ function connection_UI_ticket(numpad, ticket, typesItems, pretraitement = ((a, .
   return (event) => {
     const id = parseInt(event.currentTarget.id, 10);
     // HACK: darnuria Change typesItems into a map latter.
-    const type_dechet = typesItems.find(e => e.id === id);
+    const type_dechet = typesItems.find((e) => e.id === id);
     const value = pretraitement(numpad.value, type_dechet.masse_bac); // retourne la masse sauf pour les poubelles.
-    if (value > 0.00 && !isNaN(id)) {
+    if (value > 0.00 && !Number.isNaN(id)) {
       if (value <= window.OressourceEnv.masse_max) {
         const item = {
           masse: value,
-          type: id
-        };
-
-        item.show = function () {
-          return `<p>${this.name} : ${this.masse} kg</p>`;
+          type: id,
+          show() {
+            return `<p>${this.name} : ${this.masse} kg</p>`;
+          },
         };
 
         const id_last_insert = ticket.push(item);
-        ticket_update_ui(transaction, totalUI, {
+        ticketUpdateUI(transaction, totalUI, {
           ...type_dechet,
-          ...{ id_last_insert, ticket }
+          ...{ id_last_insert, ticket },
         }, value);
         numpad.reset_numpad();
       } else {
@@ -287,8 +290,8 @@ function connection_UI_ticket(numpad, ticket, typesItems, pretraitement = ((a, .
  * @param encaisse {Function} - Fonction à appeller si on click sur le bouton.
  */
 function initUI(url, encaisse) {
-  const send = post_data(url, encaisse, tickets_clear);
-  const sendAndPrint = post_data(url, encaisse, tickets_clear, impression_ticket);
+  const send = post_data(url, encaisse, ticketsClear);
+  const sendAndPrint = post_data(url, encaisse, ticketsClear, impressionTicket);
   document.getElementById('encaissement').addEventListener('click', send, false);
   document.getElementById('impression').addEventListener('click', sendAndPrint, false);
   document.getElementById('formulaire').addEventListener('submit', (e) => {
@@ -300,7 +303,7 @@ function initUI(url, encaisse) {
 /**
  * Fonction de reset spéciale pour les sorties recyclages.
  */
-function recycleur_reset() {
+function recycleurReset() {
   const select = document.getElementById('id_type_action');
   // Reactivation des options du select
   select.value = '';
@@ -316,9 +319,10 @@ function recycleur_reset() {
     .forEach(btn => btn.setAttribute('style', 'display: none; visibility: hidden'));
 }
 
-/** Fonction de remise à zéro de l'interface graphique et des tickets en cours. */
-function tickets_clear(data) {
-  const classe = data.classe;
+/** Fonction de remise à zéro de l'interface graphique et des tickets en cours.
+ * @param {string} classe soit une sortie soit une collecte.
+ */
+function ticketsClear({ classe }) {
   // On supprime tout le ticket en cours.
   const range = document.createRange();
   range.selectNodeContents(document.getElementById('transaction'));
@@ -329,14 +333,14 @@ function tickets_clear(data) {
     document.getElementById('localite').selectedIndex = '0';
   }
   if (classe === 'sortiesr') {
-    recycleur_reset();
+    recycleurReset();
   }
   if (classe !== 'sortiesp' && classe !== 'sortiesd') {
     document.getElementById('id_type_action').selectedIndex = '0';
   }
 
   // On reset TOUT les tickets. En general il y en aura qu'un...
-  window.OressourceEnv.tickets.forEach(t => t.reset());
+  window.OressourceEnv.tickets.forEach((t) => t.reset());
 }
 
 /** Transforme une classe sous forme d'une chaine humainement representable.
@@ -345,14 +349,14 @@ function tickets_clear(data) {
  */
 function classeToName(classe) {
   switch (classe) {
-    case 'collecte': return 'Collecte';
-    case 'ventes': return 'Vente';
-    case 'sortiesr': return 'Sortie recycleur';
-    case 'sorties': return 'Sortie don';
-    case 'sortiesc': return 'Sortie partenaire';
-    case 'sortiesp': return 'Sortie poubelles';
-    case 'sortiesd': return 'Sortie décheterie';
-    default: throw Error('Classe invalide');
+  case 'collecte': return 'Collecte';
+  case 'ventes': return 'Vente';
+  case 'sortiesr': return 'Sortie recycleur';
+  case 'sorties': return 'Sortie don';
+  case 'sortiesc': return 'Sortie partenaire';
+  case 'sortiesp': return 'Sortie poubelles';
+  case 'sortiesd': return 'Sortie décheterie';
+  default: throw Error('Classe invalide');
   }
 }
 
@@ -386,9 +390,9 @@ function login(onSuccess = undefined) {
       credidentials: 'include',
       headers: {
         'Accept': 'application/json',
-        'Content-Type': 'application/json; charset=utf-8'
+        'Content-Type': 'application/json; charset=utf-8',
       },
-      body: JSON.stringify({ username, password })
+      body: JSON.stringify({ username, password }),
     }).then(status)
       .then((json) => {
         container.setAttribute('style', 'visibility: hidden;  opacity: 0;');
@@ -432,7 +436,6 @@ function status(response) {
   }
 }
 
-
 /**
  *  * TODO: Vrai gestion de la reponse... (future mise en attente...)
  * See: <https://github.com/github/fetch>
@@ -457,9 +460,9 @@ function post_data(url, getData, onFinalise, onImpress = (_, a) => a) {
         method: 'POST',
         headers: {
           'Accept': 'application/json',
-          'Content-Type': 'application/json; charset=utf-8'
+          'Content-Type': 'application/json; charset=utf-8',
         },
-        body: JSON.stringify(data)
+        body: JSON.stringify(data),
       }).then(status)
         .then((response) => onImpress(data, response))
         .then((response) => onFinalise(data, response))
@@ -521,14 +524,17 @@ function prepare_data(tickets, metadata) {
         id_point: window.OressourceEnv.id_point,
         id_user: window.OressourceEnv.id_user,
         commentaire,
-        date
+        date,
       };
       // Petit hack pour merger differents types d'objets a envoyer.
-      const items = Object.entries(tickets).reduce((acc, [type, ticket]) => {
-        // [type] c'est parceque la clef est a calculee
-        return { ...acc, ...{ [type]: ticket.to_array() } };
-      }, {});
-      return { ...data, ...formdata, ...items, ...metadata };
+      const items = Object.entries(tickets).reduce((acc, [ type, ticket ]) => ({
+        ...acc,
+        ...{ [type]: ticket.to_array() },
+      }), {});
+
+      return {
+        ...data, ...formdata, ...items, ...metadata,
+      };
     } else {
       return {};
     }
@@ -552,10 +558,12 @@ const dashBreak = '<p>----------------------------------------------------------
  * - window.OressourceEnv.types_dechet
  */
 function showTickets(data, unit = 'kg') {
-  const item = data.hasOwnProperty('items') && data.items.length > 0 ?
-    `<p>Objets</p>${dashBreak}${showTicket(data.items, window.OressourceEnv.types_dechet, unit)}` : '';
-  return item + (data.hasOwnProperty('evacs') && data.evacs.length > 0 ?
-    `<p>Matériaux</p>${dashBreak}${showTicket(data.evacs, window.OressourceEnv.types_evac, unit)}` : '');
+  const item = (data.hasOwnProperty('items') && data.items.length > 0
+    ? `<p>Objets</p>${dashBreak}${showTicket(data.items, window.OressourceEnv.types_dechet, unit)}`
+    : '');
+  return item + (data.hasOwnProperty('evacs') && data.evacs.length > 0
+    ? `<p>Matériaux</p>${dashBreak}${showTicket(data.evacs, window.OressourceEnv.types_evac, unit)}`
+    : '');
 }
 
 /**
@@ -567,16 +575,16 @@ function showTickets(data, unit = 'kg') {
  */
 function showTicket(data, types) {
   // Hack on ajoute les noms a la volées pour les sorties/collectes.
-  const new_data = data.map((item) => {
+  const newData = data.map((item) => {
     if (item.hasOwnProperty('name')) {
-      return item
+      return item;
     } else {
       const name = types.find(({ id }) => item.type === id).nom;
       return { ...item, name };
     }
   });
 
-  return new_data.map((item) => item.show()).join('');
+  return newData.map((item) => item.show()).join('');
 }
 
 /**
@@ -590,7 +598,7 @@ function showTicket(data, types) {
  * @globals window.OressourceEnv.structure
  * @globals window.OressourceEnv.adresse
  */
-function impression_ticket(data, response, unit='kg', tvaStuff=() => '', sumFunc=sumMasseTickets) {
+function impressionTicket(data, response, unit = 'kg', tvaStuff = () => '', sumFunc = sumMasseTickets) {
   const title = classeToName(data.classe);
   // Hack affreux pour gérer les ventes car on utilise pas un objet si global dans leur gestion.
   const html = `
