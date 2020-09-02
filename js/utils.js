@@ -52,6 +52,8 @@ const dateUStoFR = ({ label }) => new moment(label, 'YYYY-MM-DD').format('dddd D
 /**
  * Permet d'acceder aux parametres de l'url (query/search/get parameters)
  * sous la forme d'un objet js.
+ * @global Récupére les paramètres de l'URL `URLSearchParams`.
+ * @returns {object} objet representant les paramètres de la query string.
  */
 function process_get() {
   const val = {};
