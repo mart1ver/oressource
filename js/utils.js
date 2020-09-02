@@ -130,17 +130,21 @@ function set_datepicker(dateInterval) {
 }
 
 // TODO: Fix a potential XSS problem with query string.
-function bind_datepicker(options, {base, query}) {
+function bind_datepicker(options, { base, query }) {
   const cb = (start, end, label) => $('#reportrange span').html(`${start.format('DD MMMM YYYY')} - ${end.format('DD MMMM YYYY')}`);
   $('#reportrange').daterangepicker(options, cb);
-  $('#reportrange').on('apply.daterangepicker', (ev, picker) => {
-    const date1 = picker.startDate.format('DD-MM-YYYY');
-    const date2 = picker.endDate.format('DD-MM-YYYY');
 
-    const queryString = toQueryString(Object.assign({}, query, {date1, date2}));
-    const url = `${base}?${queryString}`;
-    window.location.href = url;
+  $('#reportrange').on('apply.daterangepicker', (ev, picker) => {
+    const queryString = toQueryString({
+      ...query,
+      ...{
+        date1: picker.startDate.format('DD-MM-YYYY'),
+        date2: picker.endDate.format('DD-MM-YYYY')
+      }
+    });
+    window.location.href = `${base}?${queryString}`;
   });
+
   $('#options1').click(() => {
     $('#reportrange').data('daterangepicker').setOptions(options, cb);
   });
@@ -230,7 +234,7 @@ function ticket_update_ui(container, totalUI, bag, value) {
     li.remove();
   });
 
-  container.appendChild(li);
+  container.append(li);
   // Update de l'UI pour la masse du panier.
   totalUI.textContent = `Masse totale: ${sumMasseTickets(window.OressourceEnv.tickets)} Kg.`;
 }
@@ -259,7 +263,10 @@ function connection_UI_ticket(numpad, ticket, typesItems, pretraitement = ((a, .
         };
 
         const id_last_insert = ticket.push(item);
-        ticket_update_ui(transaction, totalUI, Object.assign(type_dechet, {id_last_insert, ticket}), value);
+        ticket_update_ui(transaction, totalUI, {
+          ...type_dechet,
+          ...{ id_last_insert, ticket }
+        }, value);
         numpad.reset_numpad();
       } else {
         numpad.error('Masse supérieure aux limites de pesée de la balance.');
