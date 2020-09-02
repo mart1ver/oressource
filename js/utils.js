@@ -33,7 +33,21 @@ const toQueryString = (obj) => (Object
   .join("&")
 );
 
-const dateUStoFR = ({label}) => new moment(label, 'YYYY-MM-DD').format('dddd DD/MM/YYYY');
+/**
+ * Convertis une date au format américain en format francophone avec jour de la semaine
+ *
+ * @param {{label: string}} `label` Represente une chaine au format américain YYYY-MM-DD comme: 2020-09-02.
+ * @returns {string} Chaine representant une date au format dddd DD/MM/YYYY
+ *
+ * ## Exemple:
+ *
+ * ```js
+ * //en locale FR-fr
+ * > dateUStoFR('2020-09-02)
+ * `mercredi 02/09/2020`
+ * ```
+ */
+const dateUStoFR = ({ label }) => new moment(label, 'YYYY-MM-DD').format('dddd DD/MM/YYYY');
 
 /**
  * Permet d'acceder aux parametres de l'url (query/search/get parameters)
