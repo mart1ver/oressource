@@ -16,15 +16,22 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-function toQueryString(obj) {
-  let parts = [];
-  for (const i in obj) {
-    if (obj.hasOwnProperty(i)) {
-      parts.push(encodeURIComponent(i) + "=" + encodeURIComponent(obj[i]));
-    }
-  }
-  return parts.join("&");
-}
+/**
+ * Transforme un objet JavaScript en une QueryString
+ * @param {Object} obj object clef-valeur a transformer en QueryQtring
+ * @returns {String} string representant une QueryString.
+ *
+ * ## Exemple:
+ * ```js
+ * > toQueryString({start: "01-01-2020", end: "01-01-2021"})
+ * "start=01-01-2020&end=01-01-2021"
+ * ```
+ */
+const toQueryString = (obj) => (Object
+  .entries(obj)
+  .map(([key, val]) => `${encodeURIComponent(key)}=${encodeURIComponent(val)}`)
+  .join("&")
+);
 
 const dateUStoFR = ({label}) => new moment(label, 'YYYY-MM-DD').format('dddd DD/MM/YYYY');
 
