@@ -175,7 +175,7 @@ const MorrisBar = (obj, element, labels, unit, couleur) => {
   }
 };
 
-const graphMorris = (obj, element, unit=' Kg') => {
+const graphMorris = (obj, element, unit = ' Kg') => {
   if (obj.data.length !== 0) {
     return new Morris.Donut({
       element,
@@ -203,11 +203,11 @@ const fillSelect = (select, array) => {
 
 const fillItems = (div, types, push) => types.forEach(e => div.appendChild(html_saisie_item(e, push)));
 
-/*
+/**
  * Prepare une liste de bouton clickable dans l'UI pour la saisie.
- * @param {Object} { id {Int}, nom{str}, couleur{str} } objet issue de la database.
+ * @param {{ id: number, nom: string, couleur: string }} objet issue de la database.
  * @param {Function} action fonction a faire en cas de click sur le button.
- * @returns {Element|html_saisie_item.button}
+ * @returns {HTMLButtonElement} Boutton crée
  */
 function html_saisie_item({ id, nom, couleur }, action) {
   const button = document.createElement('button');
@@ -220,6 +220,13 @@ function html_saisie_item({ id, nom, couleur }, action) {
 }
 
 // TODO revoir le design...
+/**
+ * Fonction de mise a jour du ticket des sorties et collectes.
+ * @param {Node} container HTML sur lequel ajouter un item.
+ * @param {HTMLElement} totalUI HTMLElement contenant la masse total a afficher.
+ * @param {Object} bag
+ * @param {number} value
+ */
 function ticket_update_ui(container, totalUI, bag, value) {
   // Constitution du panier
   const { _, nom, couleur, id_last_insert, ticket } = bag;
@@ -277,7 +284,7 @@ function connection_UI_ticket(numpad, ticket, typesItems, pretraitement = ((a, .
   };
 }
 
-/*
+/**
  * Fonction pour facilité la mise en place de la logique de la GUI.
  *
  * @param url {string} - Url a contacter avec Fetch ( voir post_data())
@@ -294,7 +301,7 @@ function initUI(url, encaisse) {
   }, false);
 }
 
-/*
+/**
  * Fonction de reset spéciale pour les sorties recyclages.
  */
 function recycleur_reset() {
@@ -310,12 +317,10 @@ function recycleur_reset() {
     element.selected = false;
   });
   Array.from(document.getElementById('list_evac').children)
-       .forEach(btn => btn.setAttribute('style', 'display: none; visibility: hidden'));
+    .forEach(btn => btn.setAttribute('style', 'display: none; visibility: hidden'));
 }
 
-/* Fonction de remise à zéro de l'interface graphique et des tickets en cours.
- * @return {undefined}
- */
+/** Fonction de remise à zéro de l'interface graphique et des tickets en cours. */
 function tickets_clear(data) {
   const classe = data.classe;
   // On supprime tout le ticket en cours.
@@ -338,20 +343,24 @@ function tickets_clear(data) {
   window.OressourceEnv.tickets.forEach(t => t.reset());
 }
 
+/** Transforme une classe sous forme d'une chaine humainement representable.
+ * @param {string} classe de sortie/entrée/vente representée par une string
+ * @returns {string} chaine humainement comprehensible.
+ */
 function classeToName(classe) {
   switch (classe) {
-    case 'collecte':  return 'Collecte';
-    case 'ventes':    return 'Vente';
-    case 'sortiesr':  return 'Sortie recycleur';
-    case 'sorties':   return 'Sortie don';
-    case 'sortiesc':  return 'Sortie partenaire';
-    case 'sortiesp':  return 'Sortie poubelles';
-    case 'sortiesd':  return 'Sortie décheterie';
-    default:  throw Error('Classe invalide');
+    case 'collecte': return 'Collecte';
+    case 'ventes': return 'Vente';
+    case 'sortiesr': return 'Sortie recycleur';
+    case 'sorties': return 'Sortie don';
+    case 'sortiesc': return 'Sortie partenaire';
+    case 'sortiesp': return 'Sortie poubelles';
+    case 'sortiesd': return 'Sortie décheterie';
+    default: throw Error('Classe invalide');
   }
 }
 
-/*
+/**
  * Code de gestion du login
  */
 function login(onSuccess = undefined) {
@@ -383,7 +392,7 @@ function login(onSuccess = undefined) {
         'Accept': 'application/json',
         'Content-Type': 'application/json; charset=utf-8'
       },
-      body: JSON.stringify({username, password})
+      body: JSON.stringify({ username, password })
     }).then(status)
       .then((json) => {
         container.setAttribute('style', 'visibility: hidden;  opacity: 0;');
@@ -391,12 +400,12 @@ function login(onSuccess = undefined) {
           onSuccess();
         }
       }).catch((ex) => {
-      console.log('Error:', ex);
-    });
+        console.log('Error:', ex);
+      });
   }, false);
 }
 
-/*
+/**
  * Dans cette fonction on traite le status code de la réponse donnée par le serveur.
  * entre 200 et 300 on estime que c'est un succèes.
  *
@@ -428,8 +437,8 @@ function status(response) {
 }
 
 
-/*
- * TODO: Vrai gestion de la reponse... (future mise en attente...)
+/**
+ *  * TODO: Vrai gestion de la reponse... (future mise en attente...)
  * See: <https://github.com/github/fetch>
  *
  * Effecture l'envoi des données au format JSON en utf-8 en POST nos données,
@@ -471,12 +480,12 @@ function post_data(url, getData, onFinalise, onImpress = (_, a) => a) {
   };
 }
 
-/*
+/**
  * Fonction permetant d'avoir un traitement générique dans encaisse() des différentes
  * stratégies de vérification d'une entrée utilisateur via le formulaire.
  *
- * @param {object}.classe {string} - Classe de sortie ou collecte
- * @return {Function} - Clotûre permetant de valider certains champs d'un encaissement/enregistement
+ * @param {string} classe de sortie ou collecte
+ * @return {Function} Clotûre permetant de valider certains champs d'un encaissement/enregistement
  *  Cette clotûre sera du type Objet -> boolean.
  */
 function strategie_validation({ classe }) {
@@ -489,7 +498,7 @@ function strategie_validation({ classe }) {
   }
 }
 
-/*
+/**
  * On retourne une closure qui correspond a un encaissement valide.
  * On fait ca pour pouvoir gerer les differents types de retours vu que les ID
  * Sont relatives... Par exemple dans les sorties de dechets et d'objet.
@@ -522,7 +531,7 @@ function prepare_data(tickets, metadata) {
       const items = Object.entries(tickets).reduce((acc, [type, ticket]) => {
         // [type] c'est parceque la clef est a calculee
         return { ...acc, ...{ [type]: ticket.to_array() } };
-      }, { });
+      }, {});
       return { ...data, ...formdata, ...items, ...metadata };
     } else {
       return {};
@@ -536,7 +545,7 @@ function prepare_data(tickets, metadata) {
 
 const dashBreak = '<p>--------------------------------------------------------------------------------</p>';
 
-/*
+/**
  * Fonction qui permet d'afficher les différents types de Tickets dans le cas des pesées qui
  * gérent deux types de sortie en une.
  *
@@ -546,14 +555,14 @@ const dashBreak = '<p>----------------------------------------------------------
  * - window.OressourceEnv.types_evac
  * - window.OressourceEnv.types_dechet
  */
-function showTickets(data, unit='kg') {
-  const item = data.hasOwnProperty('items') && data.items.length > 0  ?
-    `<p>Objets</p>${dashBreak}${showTicket(data.items, window.OressourceEnv.types_dechet, unit)}`: '';
+function showTickets(data, unit = 'kg') {
+  const item = data.hasOwnProperty('items') && data.items.length > 0 ?
+    `<p>Objets</p>${dashBreak}${showTicket(data.items, window.OressourceEnv.types_dechet, unit)}` : '';
   return item + (data.hasOwnProperty('evacs') && data.evacs.length > 0 ?
     `<p>Matériaux</p>${dashBreak}${showTicket(data.evacs, window.OressourceEnv.types_evac, unit)}` : '');
 }
 
-/*
+/**
  * Cette fonction construit le corps du ticket de casse pour un type particulier (evac ou items)
  * On itére sur l'ensemble des données pour avoir un <p/> par entree dans notre ticket.
  *
@@ -574,7 +583,7 @@ function showTicket(data, types) {
   return new_data.map((item) => item.show()).join('');
 }
 
-/*
+/**
  * Cette fonction construit une <IFrame/> et l'imprime et l'iframe est détruite
  * après impression.
  *
@@ -612,16 +621,16 @@ function impression_ticket(data, response, unit='kg', tvaStuff=() => '', sumFunc
     </body>
   </html>`;
 
-  function closePrint () {
+  function closePrint() {
     document.body.removeChild(this.__container__);
   }
 
   function setPrint() {
-      this.contentWindow.__container__ = this;
-      this.contentWindow.onbeforeunload = closePrint;
-      this.contentWindow.onafterprint = closePrint;
-      this.contentWindow.focus();
-      this.contentWindow.print();
+    this.contentWindow.__container__ = this;
+    this.contentWindow.onbeforeunload = closePrint;
+    this.contentWindow.onafterprint = closePrint;
+    this.contentWindow.focus();
+    this.contentWindow.print();
   }
 
   const iframe = document.createElement('iframe');
