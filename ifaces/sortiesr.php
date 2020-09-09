@@ -128,7 +128,7 @@ if (is_valid_session() && is_allowed_sortie_id($numero)) {
 
       const div_list_item = document.getElementById('list_evac');
       typesItems.forEach((item) => {
-        const button = html_saisie_item(item, pushItems);
+        const button = htmlSaisieItem(item, pushItems);
         button.setAttribute('style', 'display: none; visibility: hidden');
         div_list_item.appendChild(button);
       });
