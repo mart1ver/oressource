@@ -18,6 +18,12 @@ changements apporté au logiciel.
 Version comprenant principalement corrections de bugs sur la
 gestion des impressions papier et leur formattage.
 
+
+- Corrections de soucis d'importance mineures detecter par eslint
+- Correction de fautes de styles javascript vu par eslint.
+- Mise en place d'une configuration pour le verificateur syntaxique [eslint](https://eslint.org/)
+- Début du changement de convention de nommage sur le javascript (conformité
+    standard communautaire JS).
 - Mise à jour massive de la documentation de vente.js format jsdoc.
 - Mise à jour de la documentation de ticket.js format jsdoc.
 - [#391](https://github.com/mart1ver/oressource/issues/391) Correction d'un
