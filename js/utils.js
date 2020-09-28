@@ -620,6 +620,7 @@ function impressionTicket(data, response, unit = 'kg', tvaStuff = () => '', sumF
       ${dashBreak}
       <p>Type: ${classeToName(data.classe)} &#x2116;${response.id}</p>
       ${tvaStuff()}
+      <p>Ticket client à conserver.</p>
       ${dashBreak}
       ${showTickets(data, unit)}
     </body>
