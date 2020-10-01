@@ -8,22 +8,8 @@
 Ce script récupére les utilisateurs ayant été suprimmant en possédant encore des données.
 
 ```bash
-php -f recover_utilisateurs_supprimees.php
-```
-
-Attention! De nombreux changements on eu lieu sur la base de donnée.
-Il faut charger les scripts SQL suivants:
-
-```bash
-pushd mysql
-mysql -u oressource -h localhost oressource -p <  \
-  cat 2017-12-18_drop_adherents.sql \
-  2017-12-23_pesee_vendus.sql \
-  2017-12-24_conformite_strict_SQL.sql \
-  2017-12-24_ventes_par_lot.sql \
-  2017-12-29_remove_oui_non.sql \
-  2017-12-30_ajout_clef_etrangeres.sql
-popd
+cd mysql
+php -f upgrade2018v0-2-0.php
 ```
 
 ## Si par exemple vous avez installé Oressource avant le 12 juin 2015
