@@ -18,7 +18,10 @@ changements apporté au logiciel.
 Version comprenant principalement corrections de bugs sur la
 gestion des impressions papier et leur formattage.
 
-
+- Fix d'une erreur dans le script travis merci @HoverEpic PR #383.
+- PR #341 : Ajout d'un script par @yvan-sraka pour vérifier des une mise a jour existe.
+- #396 PR #402 : @AureliaDolo Ajouts d'informations dans le ticket de caisse
+    dates, mentions legales, reformattage.
 - Corrections de soucis d'importance mineures detecter par eslint
 - Correction de fautes de styles javascript vu par eslint.
 - Mise en place d'une configuration pour le verificateur syntaxique [eslint](https://eslint.org/)

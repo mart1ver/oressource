@@ -71,9 +71,14 @@ if (is_valid_session()) {
   <!-- Script de vérification d'une nouvelle version d'Oressource -->
   <script>
   'use strict'
-  // TODO: Change me at new version!!
+  // TODO: Pensez à me change a chaque publication de version
+  // TODO-DO: si on a un build système change moi automatiquement.
+  const user_name = `<?= $_SESSION['prenom']; ?>`;
   const current_version_number = 'v0.2.0-alpha.rc1';
   const current_version_published = new Date('2020-10-01T12:00:00Z');
+  const greeting = `Bienvenue à bord d'Oressource ${current_version_number} ${user_name}!`;
+  // Changement du mesage de bienvenue
+  document.querySelector('#bienvenue h1').innerHTML = greeting;
 
   fetch(`https://api.github.com/repos/mart1ver/oressource/releases`, {
     method: "GET"
@@ -100,7 +105,7 @@ if (is_valid_session()) {
 
   <div class="page-header">
     <div class="container" id="bienvenue">
-      <h1>Bienvenue à bord d'Oressource v0.2.0 <?= $_SESSION['prenom']; ?>!</h1>
+      <h1></h1>
       <p>Oressource est un outil libre de quantification et de mise en bilan dédié aux structures du ré-emploi</p>
     </div>
   </div> <!-- /container -->
