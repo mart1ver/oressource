@@ -567,7 +567,7 @@ function showTickets(data, unit = 'kg') {
 }
 
 /**
- * Cette fonction construit le corps du ticket de casse pour un type particulier (evac ou items)
+ * Cette fonction construit le corps du ticket de caisse pour un type particulier (evac ou items)
  * On itére sur l'ensemble des données pour avoir un <p/> par entree dans notre ticket.
  *
  * @param data  {Ticket} - Le ticket que l'on désire ensuite afficher
@@ -597,6 +597,7 @@ function showTicket(data, types) {
  * La fonction utilise les variables globales suivantes:
  * @globals window.OressourceEnv.structure
  * @globals window.OressourceEnv.adresse
+ * @global moment bibliothèque d'internationnalisation des dates
  */
 function impressionTicket(data, response, unit = 'kg', tvaStuff = () => '', sumFunc = sumMasseTickets) {
   const title = classeToName(data.classe);
@@ -621,7 +622,7 @@ function impressionTicket(data, response, unit = 'kg', tvaStuff = () => '', sumF
       <p>Type: ${classeToName(data.classe)} &#x2116;${response.id}</p>
       ${tvaStuff()}
       <p>Ticket client à conserver.</p>
-      ${dashBreak}
+      <p>Date d'édition du ticket : ${moment().format('DD/MM/YYYY')}</p>
       ${showTickets(data, unit)}
     </body>
   </html>`;
