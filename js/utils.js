@@ -622,7 +622,7 @@ function impressionTicket(data, response, unit = 'kg', tvaStuff = () => '', sumF
       <p>Type: ${classeToName(data.classe)} &#x2116;${response.id}</p>
       ${tvaStuff()}
       <p>Ticket client à conserver.</p>
-      <p>Date d'édition du ticket : ${moment().format('DD/MM/YYYY')}</p>
+      <p>Date d'édition du ticket : ${moment().format('DD/MM/YYYY - HH:mm')}</p>
       ${showTickets(data, unit)}
     </body>
   </html>`;
