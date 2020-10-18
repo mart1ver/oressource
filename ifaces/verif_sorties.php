@@ -76,21 +76,6 @@ if (is_valid_session() && is_allowed_verifications()) {
   $time_debut = DateTime::createFromFormat('d-m-Y', $_GET['date1'])->format('Y-m-d') . ' 00:00:00';
   $time_fin = DateTime::createFromFormat('d-m-Y', $_GET['date2'])->format('Y-m-d') . ' 23:59:59';
 
-  $base = [
-    'numero' => $numero,
-    'start' => $_GET['date1'],
-    'end' => $_GET['date2'],
-    'endpoint' => 'verif_collecte',
-    'users' => $users,
-    'th1' => 'Type de collecte',
-    'th3' => 'Localité',
-    'th4' => 'Masse totale',
-    'users' => $users,
-    'start' => $_GET['date2'],
-    'end' => $_GET['date1']
-  ];
-  
-  
   $sortiesSQL = 'sorties.id,
         sorties.commentaire,
         sorties.timestamp,
@@ -141,7 +126,7 @@ if (is_valid_session() && is_allowed_verifications()) {
       AND DATE(sorties.timestamp) BETWEEN :du AND :au
       AND sorties.classe = 'sortiesc'
       GROUP BY
-      $sortiesSQL,        
+      $sortiesSQL,
       sorties.id_convention,
       conventions_sorties.nom
       ORDER BY sorties.timestamp DESC");
