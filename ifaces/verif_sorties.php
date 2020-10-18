@@ -34,11 +34,12 @@ function VerifSortiesTable(array $props) {
             <th>Commentaire</th>
             <th>Masse totale</th>
             <th>Auteur de la ligne</th>
-            <th></th>
             <th>Modifié par</th>
             <th>Le</th>
+            <th></th>
           </tr>
         </thead>
+
         <tbody>
           <?php foreach ($props['data'] as $d) { ?>
             <tr>
@@ -48,9 +49,9 @@ function VerifSortiesTable(array $props) {
               <td><?= $d['commentaire']; ?></td>
               <td><?= $d['masse']; ?></td>
               <td><?= $users[$d['id_createur']]['mail']; ?></td>
-              <td><a style="appearance: button" class="btn btn-warning btn-sm" href="../ifaces/modification_<?= $props['endpoint'] ?>.php?id=<?= $d['id'] ?>">Modifier</a></td>
               <td><?= $d['last_hero_timestamp'] !== $d['timestamp'] ? $users[$d['id_last_hero']]['mail'] : '' ?></td>
               <td><?= $d['last_hero_timestamp'] !== $d['timestamp'] ? $d['last_hero_timestamp'] : '' ?></td>
+              <td><a style="appearance: button" class="btn btn-warning btn-sm" href="../ifaces/modification_<?= $props['endpoint'] ?>.php?id=<?= $d['id'] ?>">Modifier</a></td>
             </tr>
           <?php } ?>
         </tbody>
