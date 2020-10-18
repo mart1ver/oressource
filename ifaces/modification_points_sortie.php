@@ -36,7 +36,7 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($
         <form action="../moteur/modification_points_sortie_post.php" method="post">
           <input type="hidden" name="id" value="<?= $id; ?>">
           <div class="col-md-3"><label for="nom">Nom:</label><br><br><input type="text" value="<?= $_GET['nom'] ?? $donnees['nom'] ?>" name="nom" id="nom" class="form-control " required autofocus></div>
-          <div class="col-md-2"><label for="addresse">Addresse:</label><br><br><input type="text" value="<?= $_GET['adresse'] ?? $donnees['adresse'] ?>" name="adresse" id="adresse" class="form-control" required></div>
+          <div class="col-md-2"><label for="addresse">Adresse:</label><br><br><input type="text" value="<?= $_GET['adresse'] ?? $donnees['adresse'] ?>" name="adresse" id="adresse" class="form-control" required></div>
           <div class="col-md-2"><label for="commentaire">Commentaire:</label><br><br><input type="text" value ="<?= $_GET['commentaire'] ?? $donnees['commentaire'] ?>" name="commentaire" id="commentaire" class="form-control" required></div>
           <div class="col-md-1"><label for="pesee_max">Pesée maxi:</label><input type="text" value="<?= $_GET['pesee_max'] ?? $donnees['pesee_max'] ?>" name="pesee_max" id="pesee_max" class="form-control" required></div>
           <div class="col-md-1"><label for="couleur">Couleur:</label><br><br><input type="color" value="<?= $donnees['couleur'] ?>" name="couleur" id="couleur" class="form-control" required></div>
