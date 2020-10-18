@@ -66,7 +66,7 @@ require_once '../core/session.php';
 session_start();
 
 if (is_valid_session() && is_allowed_verifications()) {
-  require_once('../moteur/dbconfig.php');
+  require_once '../moteur/dbconfig.php';
   require_once '../core/requetes.php';
   require_once '../core/composants.php';
 

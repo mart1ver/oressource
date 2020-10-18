@@ -78,7 +78,7 @@ function pesees_sortie_poubelle(PDO $bdd, int $id): array {
 }
 
 function strategie_sortie(PDO $bdd, string $classe, int $id): array {
-  if ($classe === 'p') {
+  if ($classe === 'sortiesp') {
     return [
       'data' => pesees_sortie_poubelle($bdd, $id),
       'h2' => 'poubelles',
@@ -90,7 +90,7 @@ function strategie_sortie(PDO $bdd, string $classe, int $id): array {
       'h2' => 'conventionnés',
       'label' => 'Nom du partenaire:'
     ];
-  } elseif ($classe === 'sotriesr') {
+  } elseif ($classe === 'sortiesr') {
     return [
       'meta' => map_by(filter_visibles(filieres_sorties($bdd)), 'id'),
       'data' => pesees_sorties_evac($bdd, $id),
