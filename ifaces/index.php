@@ -78,7 +78,7 @@ if (is_valid_session()) {
   const current_version_published = new Date('2020-10-01T12:00:00Z');
   const greeting = `Bienvenue à bord d'Oressource ${current_version_number} ${user_name}!`;
   // Changement du mesage de bienvenue
-  document.querySelector('#bienvenue h1').innerHTML = greeting;
+  document.querySelector('#bienvenue > h1:nth-child(1)').innerHTML = greeting;
 
   fetch(`https://api.github.com/repos/mart1ver/oressource/releases`, {
     method: "GET"
