@@ -93,7 +93,6 @@ if (is_valid_session() && is_allowed_sortie_id($numero)) {
       types_evac: <?= json_encode(filter_visibles(types_dechets_evac($bdd), JSON_NUMERIC_CHECK)) ?>,
       conteneurs: <?= json_encode(types_contenants($bdd), JSON_NUMERIC_CHECK) ?>,
       types_action: <?= json_encode($types_action, JSON_NUMERIC_CHECK) ?>,
-      localites: <?= json_encode(filter_visibles(localites($bdd)), JSON_NUMERIC_CHECK) ?>,
     };
   </script>
 
