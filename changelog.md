@@ -18,6 +18,7 @@ changements apporté au logiciel.
 Version comprenant principalement corrections de bugs sur la
 gestion des impressions papier et leur formattage.
 
+- Fix [#406](https://github.com/mart1ver/oressource/issues/406) + PR [#407](https://github.com/mart1ver/oressource/issues/407) Si aucune localité etait renseignée une sortie etait impossible
 - Fix [#396](https://github.com/mart1ver/oressource/issues/396) + PR [#404](https://github.com/mart1ver/oressource/issues/404): Moyen de paiement affiché sur les tickets de caisse.
 - Fix d'une erreur dans le script travis merci @HoverEpic PR [#383](https://github.com/mart1ver/oressource/issues/383).
 - PR [#341](https://github.com/mart1ver/oressource/issues/341) : Ajout d'un script par @yvan-sraka pour vérifier des une mise a jour existe.

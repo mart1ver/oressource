@@ -534,7 +534,7 @@ CREATE TABLE `sorties` (
   KEY `FK_Sorties_Editeur` (`id_last_hero`),
   CONSTRAINT `FK_Sorties_Createur` FOREIGN KEY (`id_createur`) REFERENCES `utilisateurs` (`id`),
   CONSTRAINT `FK_Sorties_Editeur` FOREIGN KEY (`id_last_hero`) REFERENCES `utilisateurs` (`id`),
-  CONSTRAINT `FK_Sorties_Localites` FOREIGN KEY (`id_point_sortie`) REFERENCES `localites` (`id`)
+  CONSTRAINT `FK_Sorties_PointSorties` FOREIGN KEY (`id_point_sortie`) REFERENCES `points_sortie` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 

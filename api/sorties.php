@@ -37,7 +37,6 @@ require_once('../core/requetes.php');
  * { 'antidate': NULL | Date
  * , 'classe':   'sortiec' | 'sortie' | 'sortier
  * , 'type_sortie': int // Correspond soit a l'id de convention soit type de sortie soit id filiere.
- * , 'localite': int // TODO: inutilise a ce jour: Correspond a la localite du donateur en cas de sortie don.
  * , 'id_point_sortie': int // point de sortie
  * , 'id_user: int // Utilisateur valide de Oressource.
  * }
@@ -218,7 +217,7 @@ if (is_valid_session()) {
   } catch (PDOException $e) {
     $bdd->rollBack();
     http_response_code(500); // Internal Server Error
-    echo(json_encode(['error' => 'Une erreur est survenue dans Oressource vente annulée.']));
+    echo(json_encode(['error' => 'Une erreur est survenue dans Oressource sortie annulée.']));
     throw $e;
   }
 } else {
