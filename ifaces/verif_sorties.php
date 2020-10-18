@@ -222,40 +222,12 @@ if (is_valid_session() && is_allowed_verifications()) {
     ]));
     ?>
 
-    <div class="panel panel-info">
-      <div class="panel-heading">
-        <h3 class="panel-title">Sorties poubelles :</h3>
-      </div>
-      <div class="panel-body">
-        <table class="table">
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>Date de création</th>
-              <th>Masse totale</th>
-              <th>Auteur de la ligne</th>
-              <th></th>
-              <th>Modifié par</th>
-              <th>Le</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            <?php foreach ($sortiesPoubelles as $d) { ?>
-              <tr>
-                <td><?= $d['id']; ?></td>
-                <td><?= $d['timestamp']; ?></td>
-                <td><?= $d['masse']; ?></td>
-                <td><?= $users[$d['id_createur']]['mail']; ?></td>
-                <td><a style="appearance: button" class="btn btn-warning btn-sm" href="../ifaces/modification_<?= $base['endpoint'] ?>.php?id=<?= $d['id'] ?>">Modifier</a></td>
-                <td><?= $d['last_hero_timestamp'] !== $d['timestamp'] ? $users[$d['id_last_hero']]['mail'] : '' ?></td>
-                <td><?= $d['last_hero_timestamp'] !== $d['timestamp'] ? $d['last_hero_timestamp'] : '' ?></td>
-              </tr>
-            <?php } ?>
-          </tbody>
-        </table>
-      </div>
-    </div>
+    <?=
+    VerifSortiesTable(array_merge($base, [
+      'h3' => 'Sorties poubelles :',
+      'data' => $sortiesPoubelles,
+    ]));
+    ?>
 
     <div class="panel panel-info">
       <div class="panel-heading">
