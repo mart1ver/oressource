@@ -268,7 +268,7 @@ function moyens(moyen) {
 /**
  * Envoie coté serveur une vente après quelques verifications locales.
  *
- * @returns {{} | Item
+ * @returns {{} | Item}
  */
 function encaisse_vente() {
   if (state.ticket.size > 0) {
