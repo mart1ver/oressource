@@ -98,29 +98,22 @@ if (is_valid_session() && is_allowed_verifications()) {
         sorties.id_last_hero,
         sorties.last_hero_timestamp';
   // Sorties Dons
-  // FIXME: On à jamais utilisé les localités dans les sorties dons #Oups.
   $req = $bdd->prepare("SELECT
         $sortiesSQL,
         sorties.id_type_sortie id_type,
         type_sortie.nom,
-  --      localites.nom localisation,
-  --      localites.id localite,
         SUM(pesees_sorties.masse) masse
       FROM sorties
       INNER JOIN pesees_sorties
       ON sorties.id = pesees_sorties.id_sortie
       INNER JOIN type_sortie
       ON type_sortie.id = sorties.id_type_sortie
-  --    INNER JOIN localites
-  --    ON localites.id = sorties.localisation
       WHERE sorties.id_point_sortie = :id_point_sortie
       AND DATE(sorties.timestamp) BETWEEN :du AND :au
       AND sorties.classe = 'sorties'
       GROUP BY
       $sortiesSQL,
       sorties.id_type_sortie,
-  --  localites.nom,
-  --  localites.id
       type_sortie.nom");
   $req->execute(['id_point_sortie' => $numero, 'du' => $time_debut, 'au' => $time_fin]);
   $sortiesDon = $req->fetchAll(PDO::FETCH_ASSOC);
