@@ -18,6 +18,7 @@ changements apporté au logiciel.
 Version comprenant principalement corrections de bugs sur la
 gestion des impressions papier et leur formattage.
 
+- Fix #396: Moyen de paiement affiché sur les tickets de caisse.
 - Fix d'une erreur dans le script travis merci @HoverEpic PR #383.
 - PR #341 : Ajout d'un script par @yvan-sraka pour vérifier des une mise a jour existe.
 - #396 PR #402 : @AureliaDolo Ajouts d'informations dans le ticket de caisse

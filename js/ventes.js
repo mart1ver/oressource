@@ -72,11 +72,14 @@ Ticket.prototype.sum_prix = function () {
  * - `ticket` : `Ticket` class définie dans ticket.js
  * - `last` : dernier item ajouté au panier
  * - `vente_unite`: d'un mode de vente
- * - `moyen`: moyen de paiement
+ * - `moyen`: id moyen de paiement dans `window.OressourceEnv.moyens_paiement`
+ *    defini dans `ventes.php`
  * @returns {EtatVente} Objet represantant l'etat d'une vente
  */
 function new_state() {
   const s = {
+    // TODO: Attention c'est hardcodé alors que c'est géré en base!
+    // Voir commentaire de la fonction! :)
     moyen: 1,
     ticket: new Ticket(),
     last: undefined,
