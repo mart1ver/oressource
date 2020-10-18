@@ -182,14 +182,14 @@ if (is_valid_session()) {
     $bdd->beginTransaction();
     $id_sortie = (int) insert_sortie($bdd, $sortie);
     $requete_OK = false;
-    if (count($json['items'] ?? 0) > 0) {
+    if (count($json['items'] ?? []) > 0) {
       if ($sortie['classe'] === 'sorties' || $sortie['classe'] === 'sortiesc') {
         insert_pesee_sortie($bdd, $id_sortie, $sortie, $json['items'], 'id_type_dechet');
         $requete_OK = true;
       }
     }
 
-    if (count($json['evacs'] ?? 0) > 0) {
+    if (count($json['evacs'] ?? []) > 0) {
       if ($sortie['classe'] === 'sortiesd'
         || $sortie['classe'] === 'sortiesc'
         || $sortie['classe'] === 'sortiesr'
