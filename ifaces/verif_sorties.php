@@ -229,42 +229,13 @@ if (is_valid_session() && is_allowed_verifications()) {
     ]));
     ?>
 
-    <div class="panel panel-info">
-      <div class="panel-heading">
-        <h3 class="panel-title">Sorties déchetterie:</h3>
-      </div>
-      <div class="panel-body">
-        <table class="table">
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>Date de création</th>
-              <th>Commentaire</th>
-              <th>Masse totale</th>
-              <th>Auteur de la ligne</th>
-              <th></th>
-              <th>Modifié par</th>
-              <th>Le</th>
-            </tr>
-          </thead>
+    <?=
+    VerifSortiesTable(array_merge($base, [
+      'h3' => 'Sorties déchetterie :',
+      'data' => $sortiesDechetterie,
+    ]));
+    ?>
 
-          <tbody>
-            <?php foreach ($sortiesDechetterie as $b) { ?>
-              <tr>
-                <td><?= $b['id']; ?></td>
-                <td><?= $b['timestamp']; ?></td>
-                <td><?= $b['commentaire']; ?></td>
-                <td><?= $b['masse']; ?></td>
-                <td><?= $users[$b['id_createur']]['mail']; ?></td>
-                <td><a style="appearance: button" class="btn btn-warning btn-sm" href="../ifaces/modification_<?= $base['endpoint'] ?>.php?id=<?= $b['id'] ?>">Modifier</a></td>
-                <td><?= $b['last_hero_timestamp'] !== $b['timestamp'] ? $users[$b['id_last_hero']]['mail'] : '' ?></td>
-                <td><?= $b['last_hero_timestamp'] !== $b['timestamp'] ? $b['last_hero_timestamp'] : '' ?></td>
-              </tr>
-            <?php } ?>
-          </tbody>
-        </table>
-      </div>
-    </div>
   </div><!-- /.container -->
   <?php
   require_once 'pied.php';
