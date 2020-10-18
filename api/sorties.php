@@ -45,7 +45,7 @@ require_once('../core/requetes.php');
  * detaillant l'erreur.
  */
 function insert_pesee_sortie(PDO $bdd, int $id_sortie, array $sortie, array $items, string $id_type_field) {
-  $req = $bdd->prepare("INSERT INTO pesees_sorties (
+  $sql = "INSERT INTO pesees_sorties (
     timestamp,
     last_hero_timestamp,
     masse,
@@ -60,7 +60,8 @@ function insert_pesee_sortie(PDO $bdd, int $id_sortie, array $sortie, array $ite
     :$id_type_field,
     :id_sortie,
     :id_createur,
-    :id_createur1)");
+    :id_createur1)";
+  $req = $bdd->prepare($sql);
 
   $req->bindValue(':timestamp', $sortie['timestamp']->format('Y-m-d H:i:s'), PDO::PARAM_STR);
   $req->bindValue(':timestamp1', $sortie['timestamp']->format('Y-m-d H:i:s'), PDO::PARAM_STR);
