@@ -588,6 +588,27 @@ function showTicket(data, types) {
 }
 
 /**
+ * Renvoie le nom representable pour un humain associé a un id de moyen de paiement.
+ * @param {Array<Object>} moyens de paiement disponnible données issues de la DB.
+ * @param {number} moyenId moyenId represente un id valide de moyen de paiement.
+ * @returns {string} Nom du moyen de paiement ou "Moyen de paiement inconnu!"
+ */
+const showMoyen = (moyens, moyenId) => {
+  return moyens.find(({id}) => id === moyenId).nom || "moyen de paiement inconnu!";
+}
+
+/**
+ * Represente un moyen de paiement comme une chaine de caractère.
+ * pour l'interface des tickets de caisse.
+ * @param {number} moyenId represente un id valide de moyen de paiement.
+ * @returns {string} chaine formatté HTML decrivant le moyen de paiment ou rien.
+ */
+const showPaiement = (moyenId) => {
+  const moyens = window.OressourceEnv.moyens_paiement || null;
+  return (moyens ? `<p>Payé en ${showMoyen(moyens, moyenId)}</p>` : '');
+}
+
+/**
  * Cette fonction construit une <IFrame/> et l'imprime et l'iframe est détruite
  * après impression.
  *
@@ -621,6 +642,7 @@ function impressionTicket(data, response, unit = 'kg', tvaStuff = () => '', sumF
       ${dashBreak}
       <p>Type: ${classeToName(data.classe)} &#x2116;${response.id}</p>
       ${tvaStuff()}
+      ${showPaiement(data.id_moyen)}
       <p>Ticket client à conserver.</p>
       <p>Date d'édition du ticket : ${moment().format('DD/MM/YYYY - HH:mm')}</p>
       ${showTickets(data, unit)}
