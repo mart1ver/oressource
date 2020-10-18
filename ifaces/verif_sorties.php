@@ -220,14 +220,12 @@ if (is_valid_session() && is_allowed_verifications()) {
     VerifSortiesTable(array_merge($base, [
       'h3' => 'Dons simples :',
       'data' => $sortiesDon,
-      'classe' => ''
     ]))
     ?>
     <?=
     VerifSortiesTable(array_merge($base, [
       'h3' => 'Sorties conventionées :',
       'data' => $sortiesConventions,
-      'classe' => 'c'
     ]))
     ?>
 
@@ -236,7 +234,6 @@ if (is_valid_session() && is_allowed_verifications()) {
     VerifSortiesTable(array_merge($base, [
       'h3' => 'Sorties recyclage:',
       'data' => $sortiesRecyclage,
-      'classe' => 'r'
     ]));
     ?>
 
