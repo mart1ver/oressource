@@ -74,8 +74,8 @@ if (is_valid_session()) {
   // TODO: Pensez à me change a chaque publication de version
   // TODO-DO: si on a un build système change moi automatiquement.
   const user_name = `<?= $_SESSION['prenom']; ?>`;
-  const current_version_number = 'v0.2.0-alpha.rc1';
-  const current_version_published = new Date('2020-10-01T12:00:00Z');
+  const current_version_number = 'v0.3.0';
+  const current_version_published = new Date('2020-10-25T11:24:49Z');
   const greeting = `Bienvenue à bord d'Oressource ${current_version_number} ${user_name}!`;
   // Changement du mesage de bienvenue
   document.querySelector('#bienvenue > h1:nth-child(1)').innerHTML = greeting;
