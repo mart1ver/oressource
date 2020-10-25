@@ -18,8 +18,13 @@ changements apporté au logiciel.
 Version comprenant principalement corrections de bugs sur la
 gestion des impressions papier et leur formattage.
 
-- Fix [#406](https://github.com/mart1ver/oressource/issues/406) + PR [#407](https://github.com/mart1ver/oressource/issues/407) Si aucune localité etait renseignée une sortie etait impossible
-- Fix [#396](https://github.com/mart1ver/oressource/issues/396) + PR [#404](https://github.com/mart1ver/oressource/issues/404): Moyen de paiement affiché sur les tickets de caisse.
+- Fix erreurs de syntaxes dans le script d'installation web + cleanup.
+- Fix-PR [#408](https://github.com/mart1ver/oressource/pull/408/files) Plusieurs bugs sur les sorties.
+- PR: [#412](https://github.com/mart1ver/oressource/pull/412) Amélioration interface des verif de sorties le bouton est tout a gauche maintenant aussi factorisé la gestion des vues dans ce code.
+- fix [#399](https://github.com/mart1ver/oressource/issues/399) bug des sorties
+seules les sorties don etait prises en compte :(
+- fix [#406](https://github.com/mart1ver/oressource/issues/406) + pr [#407](https://github.com/mart1ver/oressource/issues/407) si aucune localité etait renseignée une sortie etait impossible
+- fix [#396](https://github.com/mart1ver/oressource/issues/396) + pr [#404](https://github.com/mart1ver/oressource/issues/404): moyen de paiement affiché sur les tickets de caisse.
 - Fix d'une erreur dans le script travis merci @HoverEpic PR [#383](https://github.com/mart1ver/oressource/issues/383).
 - PR [#341](https://github.com/mart1ver/oressource/issues/341) : Ajout d'un script par @yvan-sraka pour vérifier des une mise a jour existe.
 - Fix [#396](https://github.com/mart1ver/oressource/issues/396) PR [#402](https://github.com/mart1ver/oressource/issues/402) : @AureliaDolo Ajouts d'informations dans le ticket de caisse
