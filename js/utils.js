@@ -229,7 +229,9 @@ const fillItems = (div, types, push) => {
  */
 function ticketUpdateUI(container, totalUI, bag, value) {
   // Constitution du panier
-  const { _, nom, couleur, id_last_insert, ticket } = bag;
+  const {
+    _, nom, couleur, id_last_insert, ticket,
+  } = bag;
   const li = document.createElement('li');
   li.setAttribute('class', 'list-group-item');
   const span = '<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>';
@@ -316,7 +318,7 @@ function recycleurReset() {
     element.selected = false;
   });
   Array.from(document.getElementById('list_evac').children)
-    .forEach(btn => btn.setAttribute('style', 'display: none; visibility: hidden'));
+    .forEach((btn) => btn.setAttribute('style', 'display: none; visibility: hidden'));
 }
 
 /** Fonction de remise à zéro de l'interface graphique et des tickets en cours.
@@ -385,16 +387,16 @@ function login(onSuccess = undefined) {
     const form = new FormData(document.getElementById('formLogin'));
     const username = form.get('mail');
     const password = form.get('pass');
-    const fetchPromise = fetch('../moteur/login_post.php', {
+    fetch('../moteur/login_post.php', {
       method: 'POST',
       credidentials: 'include',
       headers: {
-        'Accept': 'application/json',
+        Accept: 'application/json',
         'Content-Type': 'application/json; charset=utf-8',
       },
       body: JSON.stringify({ username, password }),
     }).then(status)
-      .then((json) => {
+      .then((_) => {
         container.setAttribute('style', 'visibility: hidden;  opacity: 0;');
         if (onSuccess) {
           onSuccess();
@@ -459,7 +461,7 @@ function post_data(url, getData, onFinalise, onImpress = (_, a) => a) {
         credentials: 'include',
         method: 'POST',
         headers: {
-          'Accept': 'application/json',
+          Accept: 'application/json',
           'Content-Type': 'application/json; charset=utf-8',
         },
         body: JSON.stringify(data),
@@ -593,9 +595,9 @@ function showTicket(data, types) {
  * @param {number} moyenId moyenId represente un id valide de moyen de paiement.
  * @returns {string} Nom du moyen de paiement ou "Moyen de paiement inconnu!"
  */
-const showMoyen = (moyens, moyenId) => {
-  return moyens.find(({id}) => id === moyenId).nom || "moyen de paiement inconnu!";
-}
+const showMoyen = (moyens, moyenId) => (
+  moyens.find(({id}) => id === moyenId).nom || "moyen de paiement inconnu!"
+);
 
 /**
  * Represente un moyen de paiement comme une chaine de caractère.
@@ -606,7 +608,7 @@ const showMoyen = (moyens, moyenId) => {
 const showPaiement = (moyenId) => {
   const moyens = window.OressourceEnv.moyens_paiement || null;
   return (moyens ? `<p>Payé en ${showMoyen(moyens, moyenId)}</p>` : '');
-}
+};
 
 /**
  * Cette fonction construit une <IFrame/> et l'imprime et l'iframe est détruite
