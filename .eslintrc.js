@@ -21,7 +21,7 @@ module.exports = {
     rules: {
         strict: [ 'error', 'safe' ],
         'no-cond-assign': [ 'error', 'always' ],
-        indent: [ 'warn', 4 ],
+        indent: [ 'warn', 2 ],
         'array-bracket-spacing': [ 'warn', 'always' ],
         'no-const-assign': 'error',
         radix: 'error',

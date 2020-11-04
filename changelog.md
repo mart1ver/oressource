@@ -45,9 +45,7 @@ quantitées dans les tickets de caisse papier
 - [#393](https://github.com/mart1ver/oressource/issues/393) Tenir un carnet
 des changements apporté au logiciel
 
-
 ### version 0.2.0 et antérieur
 
 Très grosse refonte générale, changement sur la base de donnée, corrections de
 bugs.
-
