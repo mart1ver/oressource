@@ -76,7 +76,7 @@ Créer un fichier oressource.conf
 
 Ajouter les lignes suivantes :
 
-```
+```xml
 <VirtualHost *:80>
     ServerName    oressource.example.com
     DocumentRoot  /var/www/oressource/
@@ -105,16 +105,12 @@ Si vous avez mis en place Oressource sur le même ordinateur sur le même
 ordinateur que votre navigateur web, Vous pourrez avec le navigateur accedez à
 l'écran de connection via l'URL :
 
-```
-http://localhost/oressource
-```
+<http://localhost/oressource>
 
 Si votre installation est sur autre ordinateur qui ne dispose pas d'un nom de
 domaine, accedez à Oressource à l'aide d'un ordinateur client via l'adresse:
 
-```
-http://IP_DU_SERVEUR/oressource
-```
+<http://IP_DU_SERVEUR/oressource>
 
 L' adresse IP du serveur peut etre obtenue à l'aide d'une simple commande
 `ifconfig` ou `ip a` sur le serveur.
