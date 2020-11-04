@@ -620,7 +620,7 @@ const showPaiement = (moyenId) => {
  * @globals window.OressourceEnv.adresse
  * @global moment bibliothèque d'internationnalisation des dates
  */
-function impressionTicket(data, response, unit = 'kg', tvaStuff = () => '', sumFunc = sumMasseTickets) {
+function impressionTicket(data, response, tvaStuff = () => '') {
   const title = classeToName(data.classe);
   // Hack affreux pour gérer les ventes car on utilise pas un objet si global dans leur gestion.
   const html = `
@@ -639,7 +639,7 @@ function impressionTicket(data, response, unit = 'kg', tvaStuff = () => '', sumF
       ${showPaiement(data.id_moyen)}
       <p>Ticket client à conserver.</p>
       <p>Date d'édition du ticket : ${moment().format('DD/MM/YYYY - HH:mm')}</p>
-      ${showTickets(data, unit)}
+      ${showTickets(data)}
     </body>
   </html>`;
 
