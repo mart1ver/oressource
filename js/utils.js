@@ -631,16 +631,16 @@ function impressionTicket(data, response, unit = 'kg', tvaStuff = () => '', sumF
     </head>
     <body>
       <h1>${window.OressourceEnv.structure}</h1>
-		<h2>${document.querySelector('h1').innerHTML}<br/>
-      ${window.OressourceEnv.adresse}<br/>
-		SIRET : ${window.OressourceEnv.siret}<br/>
+		<h2>${document.querySelector('h1').innerHTML}<br>
+      ${window.OressourceEnv.adresse}<br>
+		SIRET : ${window.OressourceEnv.siret}<br>
 		tel : ${window.OressourceEnv.tel}</h2>
       ${dashBreak}
-      <h2>Type: ${classeToName(data.classe)} &#x2116;${response.id}<br/>
-		Le : ${moment().format('DD/MM/YYYY - HH:mm')}<br/>
+      <h2>Type: ${classeToName(data.classe)} &#x2116;${response.id}<br}>
+		Le : ${moment().format('DD/MM/YYYY - HH:mm')}<br>
 		Caisse : ${window.OressourceEnv.nom_user}</h2>
       ${tvaStuff()}
-      <p>${showPaiement(data.id_moyen)}<br/>
+      <p>${showPaiement(data.id_moyen)}<br>
 		Nb articles : ${state.ticket.sum_quantite()}</p>
 		${dashBreak}
 	<h2>Détail des articles</h2>

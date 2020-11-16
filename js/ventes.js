@@ -319,13 +319,13 @@ const printTva = (() => {
       const ttc = state.ticket.sum_prix();
       const taux_tva = window.OressourceEnv.taux_tva;
       const ht = (ttc * 100) / (100 + taux_tva);
-		const part_tva = tc - ht:
+		const part_tva = ttc - ht;
       return `<h2> Prix TTC = ${ttc.toFixed(2)} €<br> Prix HT. = ${ht.toFixed(2)} €<br> TVA ${taux_tva}% = ${part_tva.toFixed(2)} € </h2>`;
     };
   } else {
     return () => {
       const ht = state.ticket.sum_prix();
-      return `<h2>Prix HT. = ${ht.toFixed(2)} €<br>Association non assujettie à la TVA.</h2>`;
+      return `<h2>Prix HT = ${ht.toFixed(2)} €<br>Association non assujettie à la TVA.</h2>`;
     };
   }
 })();
