@@ -428,6 +428,7 @@ function add() {
         prix,
         masse,
         name, // Hack pour les impressions.
+		montant,
         /**
          * Fonction pour afficher une vente dans l'interface web.
          * @returns {string} Representant un fragment HTML.
