@@ -627,13 +627,7 @@ function impressionTicket(data, response, unit = 'kg', tvaStuff = () => '', sumF
     <head>
     <meta charset="utf-8">
     <title>Ticket ${title} &#x2116;${response.id}</title>
-      <style>
-        size: 21cm 29.7cm;
-        margin: 30mm 45mm 30mm 45mm;
-        p {
-          font-size: 8px;
-        }
-      </style>
+    <link rel="stylesheet" href="../css/ticket_impression.css" type="text/css">
     </head>
     <body>
       <p>${document.querySelector('h1').innerHTML}</p>

@@ -1,0 +1,45 @@
+/** CSS des tickets d'impression
+ * Auteur initial: Jean jlinux <jeannevoux14@gmail.com>
+ * License: AGPLv3
+ * Testé avec chromium sur une EPSON POS
+ */
+
+@page {
+  size: 8cm 15cm ;
+}
+
+html {
+  font-family: sans-serif;
+  font-size: 0.5rem;
+}
+
+p {
+  font-size: 1rem;
+}
+
+table {
+  table-layout: fixed;
+  width: 300px;
+  border-collapse: separate;
+  border: 2px solid black;
+}
+
+td, th {
+  border: 1px solid black;
+  padding: 5px 2px;
+  text-align: center;
+}
+
+th {
+  background-color: rgb(235,235,235);
+}
+
+td {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+caption {
+  caption-side: bottom;
+}
