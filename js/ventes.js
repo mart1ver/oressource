@@ -420,6 +420,7 @@ function add() {
 
       const name = current.objet.nom || current.type.nom;
       const lotTxt = !state.vente_unite ? 'lot' : '';
+		const montant = quantite * prix;
       const vente = {
         id_type: current.type.id,
         id_objet: current.objet.id || null,
