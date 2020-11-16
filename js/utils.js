@@ -545,7 +545,7 @@ function prepare_data(tickets, metadata) {
  * Code de gestion de l'impression
  */
 
-const dashBreak = '<p>--------------------------------------------------------------------------------</p>';
+const dashBreak = '<p>-----------------------------------</p>';
 
 /**
  * Fonction qui permet d'afficher les différents types de Tickets dans le cas des pesées qui
@@ -559,7 +559,7 @@ const dashBreak = '<p>----------------------------------------------------------
  */
 function showTickets(data, unit = 'kg') {
   const item = (data.hasOwnProperty('items') && data.items.length > 0
-    ? `<p>Objets</p>${dashBreak}${showTicket(data.items, window.OressourceEnv.types_dechet, unit)}`
+    ? `${dashBreak}${showTicket(data.items, window.OressourceEnv.types_dechet, unit)}`
     : '');
   return item + (data.hasOwnProperty('evacs') && data.evacs.length > 0
     ? `<p>Matériaux</p>${dashBreak}${showTicket(data.evacs, window.OressourceEnv.types_evac, unit)}`
@@ -627,25 +627,35 @@ function impressionTicket(data, response, unit = 'kg', tvaStuff = () => '', sumF
     <head>
     <meta charset="utf-8">
     <title>Ticket ${title} &#x2116;${response.id}</title>
-      <style>
-        size: 21cm 29.7cm;
-        margin: 30mm 45mm 30mm 45mm;
-        p {
-          font-size: 8px;
-        }
-      </style>
+    <link rel="stylesheet" href="../css/ticket_impression.css" type="text/css">
     </head>
     <body>
-      <p>${document.querySelector('h1').innerHTML}</p>
-      <p>${window.OressourceEnv.structure}</p>
-      <p>${window.OressourceEnv.adresse}</p>
+      <h1>${window.OressourceEnv.structure}</h1>
+		<h2>${document.querySelector('h1').innerHTML}<br/>
+      ${window.OressourceEnv.adresse}<br/>
+		SIRET : ${window.OressourceEnv.siret}<br/>
+		tel : ${window.OressourceEnv.tel}</h2>
       ${dashBreak}
-      <p>Type: ${classeToName(data.classe)} &#x2116;${response.id}</p>
+      <h2>Type: ${classeToName(data.classe)} &#x2116;${response.id}<br/>
+		Le : ${moment().format('DD/MM/YYYY - HH:mm')}<br/>
+		Caisse : ${window.OressourceEnv.nom_user}</h2>
       ${tvaStuff()}
-      ${showPaiement(data.id_moyen)}
-      <p>Ticket client à conserver.</p>
-      <p>Date d'édition du ticket : ${moment().format('DD/MM/YYYY - HH:mm')}</p>
-      ${showTickets(data, unit)}
+      <p>${showPaiement(data.id_moyen)}<br/>
+		Nb articles : ${state.ticket.sum_quantite()}</p>
+		${dashBreak}
+	<h2>Détail des articles</h2>
+	<table>
+	<caption>Nombre de lignes éditées : ${data.items.length} </caption>
+	<tr>
+	<th width= "5px"> Qte </th>
+	<th width= "20px"> Nom objet </th>
+	<th width= "8px"> P.U. € </th>
+	<th width= "10px"> Total </th>
+	</tr>
+	${showTickets(data, unit)}
+	</table>
+	${dashBreak}
+      <p>Ticket client à conserver.</p>      
     </body>
   </html>`;
 
