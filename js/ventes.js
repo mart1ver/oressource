@@ -436,7 +436,13 @@ function add() {
           const montantTotal = this.quantite * this.prix;
           const prixTxt = `${this.prix.toFixed(2)} €`;
           const masseTxt = this.masse >= 0.00 ? ` ${this.masse} kg` : '';
-          return `<p>${lotTxt} ${this.quantite} * ${this.name} ${prixTxt} ${montantTotal.toFixed(2)} €${masseTxt}</p>`;
+          return (
+          `<tr>
+            <td>${lotTxt} ${this.quantite}</td>
+            <td>${this.name}</td>
+            <td>${prixTxt}${masseTxt}</td>
+            <td>${montantTotal.toFixed(2)} €</td>
+           </tr>`);
         },
       };
 
