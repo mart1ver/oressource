@@ -545,7 +545,7 @@ function prepare_data(tickets, metadata) {
  * Code de gestion de l'impression
  */
 
-const dashBreak = '<p>--------------------------------------------------------------------------------</p>';
+const dashBreak = '<p>-----------------------------------</p>';
 
 /**
  * Fonction qui permet d'afficher les différents types de Tickets dans le cas des pesées qui
@@ -559,7 +559,7 @@ const dashBreak = '<p>----------------------------------------------------------
  */
 function showTickets(data, unit = 'kg') {
   const item = (data.hasOwnProperty('items') && data.items.length > 0
-    ? `<p>Objets</p>${dashBreak}${showTicket(data.items, window.OressourceEnv.types_dechet, unit)}`
+    ? `<p>Ventes</p>${dashBreak}${showTicket(data.items, window.OressourceEnv.types_dechet, unit)}`
     : '');
   return item + (data.hasOwnProperty('evacs') && data.evacs.length > 0
     ? `<p>Matériaux</p>${dashBreak}${showTicket(data.evacs, window.OressourceEnv.types_evac, unit)}`
