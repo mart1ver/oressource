@@ -437,7 +437,7 @@ function add() {
         show() {
           const prixTxt = `${this.prix.toFixed(2)} €`;
           const masseTxt = this.masse >= 0.00 ? ` ${this.masse} kg` : '';
-			const total = '${this.montant.toFixed(2)} €';
+			const total = `${this.montant.toFixed(2)} €`;
           return `<tr>
 			<td> ${lotTxt} ${this.quantite} </td>
 			<td> ${this.name} </td>
