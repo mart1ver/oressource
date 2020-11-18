@@ -640,6 +640,7 @@ function impressionTicket(data, response, tvaStuff = () => '') {
       ${dashBreak}
       <h2>Type: ${classeToName(data.classe)} &#x2116;${response.id}</h2>
       <p>Le : ${moment().format('DD/MM/YYYY - HH:mm')}</p>
+      <p>Caisse : ${window.OressourceEnv.nom_user}</p>
       <strong>${tvaStuff()}</strong>
       <p>${showPaiement(data.id_moyen)}</p>
       <p>Nb articles : ${state.ticket.sum_quantite()}</p>
