@@ -13,14 +13,17 @@ Le dernier des fix de bug.
 Dans ce fichier, nous tachons de tenir un historique humainement suivable des
 changements apporté au logiciel.
 
+### Version v0.3.x
+
+- PR[#413](https://github.com/mart1ver/oressource/pull/413) travis.ci retiré car on utilisais pas mais ça gachais des ressources de calcul partagées
+- PR[#417](https://github.com/mart1ver/oressource/pull/417) Reduction de la taille de la ligne de séparation des tickets d'impression
+- PR[#415](https://github.com/mart1ver/oressource/pull/415) Ajout CSS pour impression tickets sur Chromium a test sur Firefox!
+
 ### Version v0.3.0
 
 Version comprenant principalement corrections de bugs sur la
 gestion des impressions papier et leur formattage.
 
-- PR[#413](https://github.com/mart1ver/oressource/pull/413) travis.ci retiré car on utilisais pas mais ça gachais des ressources de calcul partagées
-- PR[#417](https://github.com/mart1ver/oressource/pull/417) Reduction de la taille de la ligne de séparation des tickets d'impression
-- PR[#415](https://github.com/mart1ver/oressource/pull/415) Ajout CSS pour impression tickets sur Chromium a test sur Firefox!
 - Fix erreurs de syntaxes dans le script d'installation web + cleanup.
 - Fix-PR [#408](https://github.com/mart1ver/oressource/pull/408/files) Plusieurs bugs sur les sorties.
 - PR: [#412](https://github.com/mart1ver/oressource/pull/412) Amélioration interface des verif de sorties le bouton est tout a gauche maintenant aussi factorisé la gestion des vues dans ce code.
