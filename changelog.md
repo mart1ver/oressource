@@ -1,6 +1,6 @@
 # Carnet de changement du projet
 
-## Semantique des numéros de version
+## Sémantique des numéros de version
 
 Le premier numéro indique des changements majeurs qui cassent par exemple l'api
 ou des usages du logiciel
@@ -18,6 +18,9 @@ changements apporté au logiciel.
 Version comprenant principalement corrections de bugs sur la
 gestion des impressions papier et leur formattage.
 
+- PR[#413](https://github.com/mart1ver/oressource/pull/413) travis.ci retiré car on utilisais pas mais ça gachais des ressources de calcul partagées
+- PR[#417](https://github.com/mart1ver/oressource/pull/417) Reduction de la taille de la ligne de séparation des tickets d'impression
+- PR[#415](https://github.com/mart1ver/oressource/pull/415) Ajout CSS pour impression tickets sur Chromium a test sur Firefox!
 - Fix erreurs de syntaxes dans le script d'installation web + cleanup.
 - Fix-PR [#408](https://github.com/mart1ver/oressource/pull/408/files) Plusieurs bugs sur les sorties.
 - PR: [#412](https://github.com/mart1ver/oressource/pull/412) Amélioration interface des verif de sorties le bouton est tout a gauche maintenant aussi factorisé la gestion des vues dans ce code.
@@ -45,7 +48,9 @@ quantitées dans les tickets de caisse papier
 - [#393](https://github.com/mart1ver/oressource/issues/393) Tenir un carnet
 des changements apporté au logiciel
 
+
 ### version 0.2.0 et antérieur
 
 Très grosse refonte générale, changement sur la base de donnée, corrections de
 bugs.
+
