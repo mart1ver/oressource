@@ -229,7 +229,9 @@ const fillItems = (div, types, push) => {
  */
 function ticketUpdateUI(container, totalUI, bag, value) {
   // Constitution du panier
-  const { _, nom, couleur, id_last_insert, ticket } = bag;
+  const {
+    _, nom, couleur, id_last_insert, ticket,
+  } = bag;
   const li = document.createElement('li');
   li.setAttribute('class', 'list-group-item');
   const span = '<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>';
@@ -316,7 +318,7 @@ function recycleurReset() {
     element.selected = false;
   });
   Array.from(document.getElementById('list_evac').children)
-    .forEach(btn => btn.setAttribute('style', 'display: none; visibility: hidden'));
+    .forEach((btn) => btn.setAttribute('style', 'display: none; visibility: hidden'));
 }
 
 /** Fonction de remise à zéro de l'interface graphique et des tickets en cours.
@@ -385,16 +387,16 @@ function login(onSuccess = undefined) {
     const form = new FormData(document.getElementById('formLogin'));
     const username = form.get('mail');
     const password = form.get('pass');
-    const fetchPromise = fetch('../moteur/login_post.php', {
+    fetch('../moteur/login_post.php', {
       method: 'POST',
       credidentials: 'include',
       headers: {
-        'Accept': 'application/json',
+        Accept: 'application/json',
         'Content-Type': 'application/json; charset=utf-8',
       },
       body: JSON.stringify({ username, password }),
     }).then(status)
-      .then((json) => {
+      .then((_) => {
         container.setAttribute('style', 'visibility: hidden;  opacity: 0;');
         if (onSuccess) {
           onSuccess();
@@ -459,7 +461,7 @@ function post_data(url, getData, onFinalise, onImpress = (_, a) => a) {
         credentials: 'include',
         method: 'POST',
         headers: {
-          'Accept': 'application/json',
+          Accept: 'application/json',
           'Content-Type': 'application/json; charset=utf-8',
         },
         body: JSON.stringify(data),
@@ -557,12 +559,12 @@ const dashBreak = '<p>-----------------------------------</p>';
  * - window.OressourceEnv.types_evac
  * - window.OressourceEnv.types_dechet
  */
-function showTickets(data, unit = 'kg') {
+function showTickets(data) {
   const item = (data.hasOwnProperty('items') && data.items.length > 0
-    ? `<p>Ventes</p>${dashBreak}${showTicket(data.items, window.OressourceEnv.types_dechet, unit)}`
+    ? `<p>Ventes</p>${dashBreak}${showTicket(data.items, window.OressourceEnv.types_dechet)}`
     : '');
   return item + (data.hasOwnProperty('evacs') && data.evacs.length > 0
-    ? `<p>Matériaux</p>${dashBreak}${showTicket(data.evacs, window.OressourceEnv.types_evac, unit)}`
+    ? `<p>Matériaux</p>${dashBreak}${showTicket(data.evacs, window.OressourceEnv.types_evac)}`
     : '');
 }
 
@@ -593,9 +595,9 @@ function showTicket(data, types) {
  * @param {number} moyenId moyenId represente un id valide de moyen de paiement.
  * @returns {string} Nom du moyen de paiement ou "Moyen de paiement inconnu!"
  */
-const showMoyen = (moyens, moyenId) => {
-  return moyens.find(({id}) => id === moyenId).nom || "moyen de paiement inconnu!";
-}
+const showMoyen = (moyens, moyenId) => (
+  moyens.find(({id}) => id === moyenId).nom || "moyen de paiement inconnu!"
+);
 
 /**
  * Represente un moyen de paiement comme une chaine de caractère.
@@ -606,7 +608,7 @@ const showMoyen = (moyens, moyenId) => {
 const showPaiement = (moyenId) => {
   const moyens = window.OressourceEnv.moyens_paiement || null;
   return (moyens ? `<p>Payé en ${showMoyen(moyens, moyenId)}</p>` : '');
-}
+};
 
 /**
  * Cette fonction construit une <IFrame/> et l'imprime et l'iframe est détruite
@@ -620,7 +622,7 @@ const showPaiement = (moyenId) => {
  * @globals window.OressourceEnv.adresse
  * @global moment bibliothèque d'internationnalisation des dates
  */
-function impressionTicket(data, response, unit = 'kg', tvaStuff = () => '', sumFunc = sumMasseTickets) {
+function impressionTicket(data, response, tvaStuff = () => '') {
   const title = classeToName(data.classe);
   // Hack affreux pour gérer les ventes car on utilise pas un objet si global dans leur gestion.
   const html = `
@@ -639,24 +641,22 @@ function impressionTicket(data, response, unit = 'kg', tvaStuff = () => '', sumF
       ${showPaiement(data.id_moyen)}
       <p>Ticket client à conserver.</p>
       <p>Date d'édition du ticket : ${moment().format('DD/MM/YYYY - HH:mm')}</p>
-      ${showTickets(data, unit)}
+      ${showTickets(data)}
     </body>
   </html>`;
 
+  const iframe = document.createElement('iframe');
   function closePrint() {
     document.body.removeChild(this.__container__);
   }
 
-  function setPrint() {
+  iframe.onload = function () {
     this.contentWindow.__container__ = this;
     this.contentWindow.onbeforeunload = closePrint;
     this.contentWindow.onafterprint = closePrint;
     this.contentWindow.focus();
     this.contentWindow.print();
-  }
-
-  const iframe = document.createElement('iframe');
-  iframe.onload = setPrint;
+  };
   iframe.style.visibility = 'hidden';
   iframe.style.position = 'fixed';
   iframe.style.right = 0;

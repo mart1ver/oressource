@@ -494,7 +494,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const url = '../api/ventes.php';
   const ventePrint = (
-    (d, r) => impressionTicket(d, r, '€', printTva, (t) => t.sum_prix())
+    (d, r) => impressionTicket(d, r, printTva)
   );
 
   const send = post_data(url, encaisse_vente, reset);

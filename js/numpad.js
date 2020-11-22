@@ -16,13 +16,6 @@
  You should have received a copy of the GNU Affero General Public License
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-//
-// Inspired from https://github.com/declandewet/common-tags/ lib
-function stripIndent(html) {
-// remove the shortest leading indentation from each line
-  const indent = Math.min(...html[0].match(/^[ \t]*(?=\S)/gm).map(el => el.length));
-  return html[0].replace(new RegExp('^[ \\t]{' + indent + '}', 'gm'), '');
-}
 
 function number_write(x) {
   const text_box = document.getElementById("number");
@@ -52,7 +45,7 @@ class NumPad {
 
     const div = document.createElement('div');
     div.setAttribute('class', 'panel panel-info');
-    div.innerHTML = stripIndent`
+    div.innerHTML = `
     <div id="saisie" class="panel-heading input-group">
       <input type="text" class="form-control" placeholder="Masse" id="number" name="num">
     </div>
