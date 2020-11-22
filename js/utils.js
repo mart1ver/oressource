@@ -645,20 +645,18 @@ function impressionTicket(data, response, tvaStuff = () => '') {
     </body>
   </html>`;
 
+  const iframe = document.createElement('iframe');
   function closePrint() {
     document.body.removeChild(this.__container__);
   }
 
-  function setPrint() {
+  iframe.onload = function () {
     this.contentWindow.__container__ = this;
     this.contentWindow.onbeforeunload = closePrint;
     this.contentWindow.onafterprint = closePrint;
     this.contentWindow.focus();
     this.contentWindow.print();
-  }
-
-  const iframe = document.createElement('iframe');
-  iframe.onload = setPrint;
+  };
   iframe.style.visibility = 'hidden';
   iframe.style.position = 'fixed';
   iframe.style.right = 0;
