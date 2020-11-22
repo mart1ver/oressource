@@ -559,12 +559,12 @@ const dashBreak = '<p>-----------------------------------</p>';
  * - window.OressourceEnv.types_evac
  * - window.OressourceEnv.types_dechet
  */
-function showTickets(data, unit = 'kg') {
+function showTickets(data) {
   const item = (data.hasOwnProperty('items') && data.items.length > 0
-    ? `<p>Ventes</p>${dashBreak}${showTicket(data.items, window.OressourceEnv.types_dechet, unit)}`
+    ? `<p>Ventes</p>${dashBreak}${showTicket(data.items, window.OressourceEnv.types_dechet)}`
     : '');
   return item + (data.hasOwnProperty('evacs') && data.evacs.length > 0
-    ? `<p>Matériaux</p>${dashBreak}${showTicket(data.evacs, window.OressourceEnv.types_evac, unit)}`
+    ? `<p>Matériaux</p>${dashBreak}${showTicket(data.evacs, window.OressourceEnv.types_evac)}`
     : '');
 }
 
