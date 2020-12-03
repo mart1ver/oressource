@@ -20,4 +20,15 @@
 
 //page d'accueil du projet
 //redirige vers l'index dans /ifaces
-header('Location: ifaces/');
+//ou la page de setup
+
+if (file_exists(DB_CONFIG)) {
+    header("HTTP/1.1 301 Moved Permanently");
+    header("Location: ifaces/");
+} else {
+    header('HTTP/1.1 302 Found');
+    header('Location: setup.php');
+}
+
+header('Connection: close');
+die;
