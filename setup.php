@@ -14,14 +14,14 @@ define('DB_CONFIG_EXEMPLE', ROOT.'/moteur/dbconfig.php.example');
 
 // Define msg
 define('MSG_HTML_TITLE', '[Étape %d] Installation de Oressource');
-define('MSG_HTML_CONTINUE', '<a href="%s%s%d"><button type="button" %s>Continuer</button></a>');
+define('MSG_HTML_CONTINUE', '<a href="%s%s%d" class="continue"><button type="button" %s>Continuer</button></a>');
 
 define('MSG_HTML_FINAL_TITLE', 'Fin de votre installation');
 define('MSG_HTML_FINAL_CONTENT', '<div>Vous pouvez vous connecter au compte Administrateur<br /><i>Par mesure de sécurité, nous vous conseillons de supprimer le fichier `setup.php`</i></div><div class="user"><b>Identifant:</b> %s</div><div class="user"><b>Mot de passe:</b> Il n\'y a que vous à le connaître</div>');
 define('MSG_HTML_FINAL_CONTENT_ERROR', 'Ho non ...<br />Il semble y avoir un ou des problemes avec votre installation, ce qui va demander une intervention manuel de votre part.<br />Référez-vous au fichier d\'installation `INSTALL.md` pour la marche a suivre.');
 
 define('MSG_HTML_STEP1_TITLE', 'Verification de l\'instance');
-define('MSG_HTML_STEP1_SUB', '<span id="badge success">%d</span><span id="badge warning">%d</span><span id="badge errors">%d</span>');
+define('MSG_HTML_STEP1_SUB', '<span class="tag--success">%d</span><span class="tag--warning">%d</span><span class="tag--danger">%d</span>');
 define('MSG_HTML_STEP1_SUCCESS', 'Réussite: ');
 define('MSG_HTML_STEP1_WARNING', 'Mises en gardes: ');
 define('MSG_HTML_STEP1_ERRORS', 'Problèmes critiques: ');
@@ -37,7 +37,7 @@ define('MSG_HTML_STEP2_FORM_PWD', 'Mot de passe');
 define('MSG_HTML_STEP2_FORM_PWD_SUB', 'Mot de passe de l\'utilisateur');
 define('MSG_HTML_STEP2_FORM_DBN', 'Base de données');
 define('MSG_HTML_STEP2_FORM_DBN_SUB', 'Nom de la base de données que devra utiliser Oressource');
-define('MSG_HTML_STEP2_FORM_ERROR', 'The fiel `%d` cannot be empty');
+define('MSG_HTML_STEP2_FORM_ERROR', 'The fiel `%s` cannot be empty');
 
 define('MSG_HTML_STEP3_TITLE', 'Configuration de l\'Administrateur');
 define('MSG_HTML_STEP3_SUB', 'Pour configurer votre compte administrateur, merci de fournir les information ce dessous.');
@@ -50,7 +50,7 @@ define('MSG_HTML_STEP3_FORM_PASS_ERROR', 'Le mot de passe et sa confirmation ne 
 define('MSG_HTML_STEP3_FORM_EMAIL', 'E-mail');
 define('MSG_HTML_STEP3_FORM_EMAIL_SUB', 'l\'email de l\'administrateur');
 define('MSG_HTML_STEP3_FORM_EMAIL_ERROR', 'Votre email semble mal formé');
-define('MSG_HTML_STEP3_FORM_ERROR', 'The fiel `%d` cannot be empty');
+define('MSG_HTML_STEP3_FORM_ERROR', 'The fiel `%s` cannot be empty');
 
 define('MSG_REQUIRE_PHP', 'Your PHP %s version is supported');
 define('MSG_REQUIRE_PDO', 'PHP `pdo_mysql` is install and loaded');
@@ -282,6 +282,8 @@ function setup_header(int $step): void
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="robots" content="noindex,nofollow" />
     <title><?php echo $title ?></title>
+    <link rel="stylesheet" type="text/css" href="css/knacss.css">
+    <?php setup_css() ?>
 </head>
 <body>
     <h1><?php echo $title ?></h1>
@@ -304,6 +306,59 @@ function setup_footer(): void
     ?>
 </body>
 </html>
+    <?php
+}
+
+function setup_css(): void
+{
+    ?>
+    <style>
+        h1 {
+            border-bottom: 1px solid;
+        }
+        h1, h2, #total, .sub {
+            text-align: center;
+        }
+        main {
+            width: max-content;
+            margin: auto;
+            position: relative;
+            min-width: 50%;
+        }
+        #total span {
+            margin: 1em;
+            padding: .5em;
+        }
+        #total span::before {
+            font-weight: bold;
+            padding-left: .2em;
+            padding-right: .5em;
+        }
+        .tag--success::before {content: "✓";}
+        .tag--warning::before {content: "!";}
+        .tag--danger::before  {content: "✕";}
+        .continue {
+            right: 0;
+            bottom: -5em;
+            position: absolute;
+        }
+        label, span, .tag {
+            display: block;
+        }
+        label {
+            padding: 1.5em 0;
+        }
+        .tag {
+            margin-top: .5em;
+            font-style: italic;
+        }
+        input {
+            display: block;
+        }
+        .user {
+            padding-top: 1em;
+        }
+    </style>
     <?php
 }
 
@@ -368,7 +423,7 @@ function status_to_html(string &$body, array $status, int $step): void
     }
 
     $body .= sprintf(
-        '<h2>%s</h2>%s%s%s%s',
+        '<h2>%s</h2><div id="total">%s</div>%s%s%s',
         MSG_HTML_STEP1_TITLE,
         sprintf(
             MSG_HTML_STEP1_SUB,
@@ -388,7 +443,7 @@ function status_to_html(string &$body, array $status, int $step): void
             PHP_URL_PATH
         ),
         '?step=',
-        $step++,
+        ++$step,
         $button
     );
 }
@@ -397,7 +452,7 @@ function db_html_form(string &$body, string $error_list): void
 {
     $body .= sprintf(
         '<h2>%s</h2>
-        <span>%s</span>
+        <span class="sub">%s</span>
         <div>%s</div>
         <form action="" method="post">
             %s
@@ -405,7 +460,7 @@ function db_html_form(string &$body, string $error_list): void
             %s
             %s
 
-            <input type="submit" value="Continuer">
+            <input type="submit" value="Continuer" class="continue">
         </form>',
         MSG_HTML_STEP2_TITLE,
         MSG_HTML_STEP2_SUB,
@@ -421,7 +476,7 @@ function user_html_form(string &$body, string $error_list): void
 {
     $body .= sprintf(
         '<h2>%s</h2>
-        <span>%s</span>
+        <span class="sub">%s</span>
         <div>%s</div>
         <form action="" method="post">
             %s
@@ -429,7 +484,7 @@ function user_html_form(string &$body, string $error_list): void
             %s
             %s
 
-            <input type="submit" value="Continuer">
+            <input type="submit" value="Continuer" class="continue">
         </form>',
         MSG_HTML_STEP3_TITLE,
         MSG_HTML_STEP3_SUB,
@@ -446,7 +501,7 @@ function html_input(string $id, string $type, string $title, string $help, strin
     return sprintf(
         '<label for="%s">%s :
             <input type="%s" id="%s" name="%s" value="%s" placeholder="%s" required>
-            <span>%s</span>
+            <span class="tag">%s</span>
         </label>',
         $id,
         $title,
@@ -601,7 +656,7 @@ function user_validate(array &$error): void
         $error[] = sprintf(MSG_HTML_STEP3_FORM_ERROR, MSG_HTML_STEP3_FORM_EMAIL);
     }
 
-    if ((isset($_POST['PASS']) && $_POST['PASS'] === '') && isset($_POST['PASS_VAL'])) {
+    if ((isset($_POST['PASS']) && $_POST['PASS'] !== '') && isset($_POST['PASS_VAL'])) {
         if ($_POST['PASS'] === $_POST['PASS_VAL']) {
             $_SESSION['USER']['PASS'] = md5($_POST['PASS']);
         } else {
