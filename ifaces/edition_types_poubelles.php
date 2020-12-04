@@ -24,6 +24,7 @@ require_once '../core/composants.php';
 
 if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($_SESSION['niveau'], 'g') !== false)) {
   require_once 'tete.php';
+  $types_poubelles = $bdd->query('SELECT * FROM types_poubelles');
   ?>
   <div class="container">
     <h1>Gestion de la typologie et de la masse des différentes poubelles mises à disposition de la structure par la ville</h1>
@@ -58,17 +59,14 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($
       </thead>
 
       <tbody>
-        <?php
-        $reponse = $bdd->query('SELECT * FROM types_poubelles');
-        while ($donnees = $reponse->fetch()) {
-          ?>
+        <?php foreach ($types_poubelles as $donnees) { ?>
           <tr>
             <td><?= $donnees['id']; ?></td>
             <td><?= $donnees['timestamp']; ?></td>
             <td><?= $donnees['nom']; ?></td>
             <td><?= $donnees['description']; ?></td>
             <td><?= $donnees['masse_bac']; ?></td>
-            <td><?= $donnees['ultime']; ?></td>
+            <td class="garbage ultime-<?= $donnees['ultime']; ?>"></td>
             <td><span class="badge" style="background-color:<?= $donnees['couleur']; ?>"><?= $donnees['couleur']; ?></span></td>
             <td><?= configBtnVisible(['url' => 'types_poubelles', 'id' => $donnees['id'], 'visible' => $donnees['visible']]) ?></td>
             <td>
@@ -78,15 +76,13 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($
               </form>
             </td>
           </tr>
-          <?php
-        }
-        $reponse->closeCursor();
-        ?>
+        <?php } ?>
       </tbody>
     </table>
   </div><!-- /.container -->
 
   <?php
+  $types_poubelles->closeCursor();
   require_once 'pied.php';
 } else {
   header('Location: ../moteur/destroy.php');

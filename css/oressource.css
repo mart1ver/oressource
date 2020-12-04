@@ -182,3 +182,18 @@ pre {
 .list-group-item {
   padding: 5px 10px;
 }
+
+/* poubelles type */
+.garbage.ultime-0::before,
+.garbage.ultime-1::before {
+  font-weight: bold;
+  padding-left: 1px;
+}
+
+.garbage.ultime-0::before {
+  content: "✕ Non";
+}
+
+.garbage.ultime-1::before {
+  content: "✓ Oui";
+}
