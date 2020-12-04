@@ -76,12 +76,73 @@ define('MSG_SET_ERROR_CONFIG_DUMP', 'Critical error when try to read the config 
 define('MSG_SET_ERROR_CONFIG_SET', 'Fail to write the config file');
 
 // Define msg log
+define('MSG_SETUP_END', '[INFO] Setup is over, enjoy your oressource');
+define('MSG_ENV_ERROR', '[DIE] Environment variable `%s` does not exist or is empty');
+define('MSG_CONFIG_FILE_EXIST', '[DIE] File `'.DB_CONFIG.'` already exist');
+define('MSG_DB_CONNECT_ERROR', '[DIE] Can\'t establishing a database connection, check env var and if the database is running');
+define('MSG_ADMIN_EMAIL_ERROR', '[DIE] Bad e-mail format `%s`');
 define('MSG_SQLINSERT_ERROR_CONNECT', '[ERROR] %s');
 define('MSG_SQLINSERT_ERROR_EXEC', '[ERROR] Can\'t execute sql query:\n%s');
 
 // MAIN
-function main(): void
+function main_cli(array $config)
 {
+    $status = array(
+        'success' => array(),
+        'warning' => array(),
+        'errors' => array()
+    );
+
+    // Check && Load ENV var
+    load_env_cli($config, $status['errors']);
+
+    // Check requirement
+    required_conf($status);
+    required_mode($status);
+
+    // Show config info
+    array_to_cli_list($status['warning'], MSG_HTML_STEP1_WARNING, 'warning');
+    if (! empty($status['errors'])) {
+        array_to_cli_list($status['errors'], MSG_HTML_STEP1_ERRORS, 'errors');
+        die(1);
+    }
+
+    // Check db connection
+    if (! db_is_reachable($config['DB'])) {
+        error_log(MSG_DB_CONNECT_ERROR);
+        die(1);
+    }
+
+    // Check admin config
+    if (! filter_var($config['USER']['EMAIL'], FILTER_VALIDATE_EMAIL) !== false) {
+        error_log(sprintf(MSG_ADMIN_EMAIL_ERROR, $config['USER']['EMAIL']));
+        die(1);
+    }
+
+    // Set oressource
+    set_oressource_db($config['DB'], $status['errors']);
+    set_oressource_admin($config['DB'], $config['USER'], $status['errors']);
+    set_oressource_config_file($config['DB'], $status['errors']);
+    if (! empty($status['errors'])) {
+        array_to_cli_list($status['errors'], MSG_HTML_STEP1_ERRORS, 'errors');
+        die(1);
+    }
+
+    // End
+    error_log(MSG_SETUP_END);
+    die(0);
+}
+
+function main(array $session_init): void
+{
+    // Session start
+    session_start();
+    if (empty($_SESSION)) {
+        $_SESSION['STEP'] = 1;
+        $_SESSION['USER'] = $session_init['USER'];
+        $_SESSION['DB'] = $session_init['DB'];
+    }
+
     $body = '';
     $step = step();
     $status = array(
@@ -107,7 +168,10 @@ function main(): void
             if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 db_validate($status['errors']);
 
-                if (empty($status['errors'])) {
+                if (
+                    empty($status['errors']) &&
+                    db_is_reachable($_SESSION['DB'])
+                ) {
                     $_SESSION['STEP'] = 3;
                     goto_step($_SESSION['STEP']);
                 } else {
@@ -144,9 +208,9 @@ function main(): void
             );
             break;
         case '4':
-            set_oressource_db($status['errors']);
-            set_oressource_admin($status['errors']);
-            set_oressource_config_file($status['errors']);
+            set_oressource_db($_SESSION['DB'], $status['errors']);
+            set_oressource_admin($_SESSION['DB'], $_SESSION['USER'], $status['errors']);
+            set_oressource_config_file($_SESSION['DB'], $status['errors']);
 
             final_html_result(
                 $body,
@@ -395,6 +459,52 @@ function html_input(string $id, string $type, string $title, string $help, strin
     );
 }
 
+// FUNCTION CLI
+function array_to_cli_list(array $arr, string $title, string $class): void
+{
+    if (empty($arr)) {
+        return;
+    }
+
+    error_log(
+        sprintf(
+            '[%s] %s ',
+            $class,
+            $title
+        )
+    );
+
+    foreach ($arr as &$v) {
+        error_log('-- '.$v);
+    }
+}
+
+function load_env_cli(array &$config, array &$error)
+{
+    // Load DB config
+    $config['DB']['HOST'] = get_env_cli('_or_db_host', $error);
+    $config['DB']['USER'] = get_env_cli('_or_db_user', $error);
+    $config['DB']['PASS'] = get_env_cli('_or_db_pass', $error);
+    $config['DB']['NAME'] = get_env_cli('_or_db_name', $error);
+
+    // Load Admin config
+    $config['USER']['NAME']  = get_env_cli('_or_user_name', $error);
+    $config['USER']['EMAIL'] = get_env_cli('_or_user_email', $error);
+    $config['USER']['PASS']  = md5(get_env_cli('_or_user_pass', $error));
+}
+
+function get_env_cli(string $name, array &$error): string
+{
+    $buff = getenv($name);
+
+    if ($buff === false || $buff === '') {
+        $error[] = sprintf(MSG_ENV_ERROR, $name);
+        return '';
+    }
+
+    return $buff;
+}
+
 // FUNCTION Setup
 function required_conf(array &$status): void
 {
@@ -502,7 +612,7 @@ function user_validate(array &$error): void
     }
 }
 
-function set_oressource_db(array &$error): void
+function set_oressource_db(array $db, array &$error): void
 {
     $db_dump = file_get_contents(DB_DUMP);
 
@@ -511,14 +621,13 @@ function set_oressource_db(array &$error): void
         return;
     }
 
-    if (! insert_sql_dump($db_dump, $_SESSION['DB'])) {
+    if (! insert_sql_dump($db_dump, $db)) {
         $error[] = MSG_SET_ERROR_DB_INSERT;
     }
 }
 
-function set_oressource_admin(array &$error): void
+function set_oressource_admin(array $db, array $user, array &$error): void
 {
-    $db = $_SESSION['DB'];
     $query = 'UPDATE `utilisateurs` SET `prenom`=:user, `mail`=:mail, `pass`=:pass WHERE `id`=1';
 
     try {
@@ -533,11 +642,9 @@ function set_oressource_admin(array &$error): void
     }
 
     $stmt = $pdo->prepare($query);
-    $stmt->bindParam(':user', $_SESSION['USER']['NAME']);
-    $stmt->bindParam(':mail', $_SESSION['USER']['EMAIL']);
-    $stmt->bindParam(':pass', $_SESSION['USER']['PASS']);
-
-    error_log($stmt);
+    $stmt->bindParam(':user', $user['NAME']);
+    $stmt->bindParam(':mail', $user['EMAIL']);
+    $stmt->bindParam(':pass', $user['PASS']);
 
     if ($stmt->execute() === false) {
         $error[] = sprintf(MSG_SQLINSERT_ERROR_EXEC, $query);
@@ -546,7 +653,7 @@ function set_oressource_admin(array &$error): void
     unset($pdo);
 }
 
-function set_oressource_config_file(array &$error): void
+function set_oressource_config_file(array $db, array &$error): void
 {
     $config_dump = file_get_contents(DB_CONFIG_EXEMPLE);
 
@@ -555,7 +662,7 @@ function set_oressource_config_file(array &$error): void
         return;
     }
 
-    $host = explode(':', $_SESSION['DB']['HOST']);
+    $host = explode(':', $db['HOST']);
     if (count($host) !== 2) {
         $host[1] = 3306;
     }
@@ -570,9 +677,9 @@ function set_oressource_config_file(array &$error): void
     $replace = array(
         '$host = \''.$host[0].'\'',
         '$port = '.$host[1].'',
-        '$base = \''.$_SESSION['DB']['NAME'].'\'',
-        '$user = \''.$_SESSION['DB']['USER'].'\'',
-        '$pass = \''.$_SESSION['DB']['PASS'].'\''
+        '$base = \''.$db['NAME'].'\'',
+        '$user = \''.$db['USER'].'\'',
+        '$pass = \''.$db['PASS'].'\''
     );
     $config_dump = str_replace(
         $search,
@@ -651,30 +758,37 @@ function db_is_reachable(array $db): bool
     return true;
 }
 
-// Redirect if config file exist
-if (file_exists(DB_CONFIG)) {
-    header('HTTP/1.1 301 Moved Permanently');
-    header('Location: /ifaces/');
-    header('Connection: close');
-    die;
-}
-
-// Session start
-session_start();
-if (empty($_SESSION)) {
-    $_SESSION['STEP'] = 1;
-    $_SESSION['USER'] = array(
+$config_init = array(
+    'USER' => array(
         'NAME' => '',
         'EMAIL' => '',
         'PASS' => ''
-    );
-    $_SESSION['DB'] = array(
+    ),
+    'DB' => array(
         'HOST' => 'localhost',
         'USER' => '',
         'PASS' => '',
         'NAME' => ''
-    );
-}
+    )
+);
 
 // Start setup
-main();
+if (php_sapi_name() === 'cli') {
+    // Die if config file exist
+    if (file_exists(DB_CONFIG)) {
+        error_log(MSG_CONFIG_FILE_EXIST);
+        die(2);
+    }
+
+    main_cli($config_init);
+} else {
+    // Redirect if config file exist
+    if (file_exists(DB_CONFIG)) {
+        header('HTTP/1.1 301 Moved Permanently');
+        header('Location: /ifaces/');
+        header('Connection: close');
+        die;
+    }
+    
+    main($config_init);
+}
