@@ -37,7 +37,7 @@ define('MSG_HTML_STEP2_FORM_PWD', 'Mot de passe');
 define('MSG_HTML_STEP2_FORM_PWD_SUB', 'Mot de passe de l\'utilisateur');
 define('MSG_HTML_STEP2_FORM_DBN', 'Base de données');
 define('MSG_HTML_STEP2_FORM_DBN_SUB', 'Nom de la base de données que devra utiliser Oressource');
-define('MSG_HTML_STEP2_FORM_ERROR', 'The fiel `%s` cannot be empty');
+define('MSG_HTML_STEP2_FORM_ERROR', 'Le champ `%s` ne peut pas etre vide');
 
 define('MSG_HTML_STEP3_TITLE', 'Configuration de l\'Administrateur');
 define('MSG_HTML_STEP3_SUB', 'Pour configurer votre compte administrateur, merci de fournir les information ce dessous.');
@@ -50,39 +50,39 @@ define('MSG_HTML_STEP3_FORM_PASS_ERROR', 'Le mot de passe et sa confirmation ne 
 define('MSG_HTML_STEP3_FORM_EMAIL', 'E-mail');
 define('MSG_HTML_STEP3_FORM_EMAIL_SUB', 'l\'email de l\'administrateur');
 define('MSG_HTML_STEP3_FORM_EMAIL_ERROR', 'Votre email semble mal formé');
-define('MSG_HTML_STEP3_FORM_ERROR', 'The fiel `%s` cannot be empty');
+define('MSG_HTML_STEP3_FORM_ERROR', 'Le champ `%s` ne peut pas etre vide');
 
-define('MSG_REQUIRE_PHP', 'Your PHP %s version is supported');
-define('MSG_REQUIRE_PDO', 'PHP `pdo_mysql` is install and loaded');
-define('MSG_REQUIRE_MYSQLI', 'PHP `mysqli` is install and loaded');
-define('MSG_REQUIRE_TZONE', 'Timezone is defined at %s');
-define('MSG_REQUIRE_MOTEURFOLDER', 'We can write the configuration file');
-define('MSG_REQUIRE_CONFEX', 'We can read configuration exemple file');
-define('MSG_REQUIRE_DBDUMP', 'We can read database template');
+define('MSG_REQUIRE_PHP', 'Votre version de PHP %s est prise en charge');
+define('MSG_REQUIRE_PDO', 'PHP `pdo_mysql` est installé et chargé');
+define('MSG_REQUIRE_MYSQLI', 'PHP `mysqli` est installé et chargé');
+define('MSG_REQUIRE_TZONE', 'Timezone est défini à %s');
+define('MSG_REQUIRE_MOTEURFOLDER', 'Nous pouvons écrire le fichier de configuration');
+define('MSG_REQUIRE_CONFEX', 'Nous pouvons lire le fichier d\'exemple de configuration');
+define('MSG_REQUIRE_DBDUMP', 'Nous pouvons lire le modèle de base de données');
 
-define('MSG_REQUIRE_WARN_PHP', 'You running under an old and insecure version of PHP %s. Please consider to update it');
-define('MSG_REQUIRE_WARN_TZONE', 'Configuration `date.timezone` on `php.ini` is empty');
+define('MSG_REQUIRE_WARN_PHP', 'Vous utilisez une version ancienne et non sécurisée de PHP %s. Veuillez envisager de la mettre à jour');
+define('MSG_REQUIRE_WARN_TZONE', 'Configuration `date.timezone` dans `php.ini` est vide');
 
-define('MSG_REQUIRE_ERROR_PHP', 'Your PHP %s is to old and insecure. PHP update greater then %s is required for Oressource.');
-define('MSG_REQUIRE_ERROR_PDO', 'You need to install `pdo_mysql` for PHP');
-define('MSG_REQUIRE_ERROR_MYSQLI', 'You need to install `mysqli` for PHP');
-define('MSG_REQUIRE_ERROR_MOTEURFOLDER', 'Can\'t write the config file on `%s`');
-define('MSG_REQUIRE_ERROR_CONFEX', 'Can\'t read `%s` exemple file');
-define('MSG_REQUIRE_ERROR_DBDUMP', 'Can\'t read `%s` database template');
+define('MSG_REQUIRE_ERROR_PHP', 'Votre PHP %s est trop ancien et non sécurisé. Une mise à jour PHP supérieure à %s est requise pour Oressource');
+define('MSG_REQUIRE_ERROR_PDO', 'Vous devez installer `pdo_mysql` pour PHP');
+define('MSG_REQUIRE_ERROR_MYSQLI', 'Vous devez installer `mysqli` pour PHP');
+define('MSG_REQUIRE_ERROR_MOTEURFOLDER', 'Impossible d \' écrire le fichier de configuration `%s`');
+define('MSG_REQUIRE_ERROR_CONFEX', 'Impossible de lire le fichier d\'exemple `%s`');
+define('MSG_REQUIRE_ERROR_DBDUMP', 'Impossible de lire le modèle de base de données `%s`');
 
-define('MSG_SET_ERROR_DB_DUMP', 'Critical error when try to read the DB template file');
-define('MSG_SET_ERROR_DB_INSERT', 'Fail to insert DB template');
-define('MSG_SET_ERROR_CONFIG_DUMP', 'Critical error when try to read the config exemple');
-define('MSG_SET_ERROR_CONFIG_SET', 'Fail to write the config file');
+define('MSG_SET_ERROR_DB_DUMP', 'Erreur critique lors de la lecture du fichier base de données');
+define('MSG_SET_ERROR_DB_INSERT', 'Impossible d\'insérer le modèle de base de données');
+define('MSG_SET_ERROR_CONFIG_DUMP', 'Erreur critique lors de la lecture du fichier d\'exemple de configuration');
+define('MSG_SET_ERROR_CONFIG_SET', 'Echec de l \' écriture du fichier de configuration');
 
 // Define msg log
-define('MSG_SETUP_END', '[INFO] Setup is over, enjoy your oressource');
-define('MSG_ENV_ERROR', '[DIE] Environment variable `%s` does not exist or is empty');
-define('MSG_CONFIG_FILE_EXIST', '[DIE] File `'.DB_CONFIG.'` already exist');
-define('MSG_DB_CONNECT_ERROR', '[DIE] Can\'t establishing a database connection, check env var and if the database is running');
-define('MSG_ADMIN_EMAIL_ERROR', '[DIE] Bad e-mail format `%s`');
+define('MSG_SETUP_END', '[INFO] La configuration est terminée, profitez bien de votre oressource');
+define('MSG_ENV_ERROR', '[ERROR] La variable d\'environnement `%s` est vide ou n\'existe pas');
+define('MSG_CONFIG_FILE_EXIST', '[ERROR] Le fichier `'.DB_CONFIG.'` existe déjà');
+define('MSG_DB_CONNECT_ERROR', '[ERROR] Impossible de ce connecter à la base de données, vérifiez vos variables d\'environnement et si la base de données est en cours d\'exécution');
+define('MSG_ADMIN_EMAIL_ERROR', '[ERROR] Format de courrier électronique incorrect `%s`');
 define('MSG_SQLINSERT_ERROR_CONNECT', '[ERROR] %s');
-define('MSG_SQLINSERT_ERROR_EXEC', '[ERROR] Can\'t execute sql query:\n%s');
+define('MSG_SQLINSERT_ERROR_EXEC', '[ERROR] Impossible d\'exécuter la requête SQL:\n%s');
 
 // MAIN
 function main_cli(array $config)
