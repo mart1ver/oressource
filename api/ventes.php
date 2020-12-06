@@ -27,7 +27,7 @@ require_once '../core/validation.php';
 header("content-type:application/json");
 
 // TODO Faire le neccessaire pour les ventes en lot.
-function vendus_insert(PDO $bdd, int $id_vente, array $vente): int {
+function vendus_insert(PDO $bdd, int $id_vente, array $vente): array {
   $sql = 'INSERT INTO vendus (
       timestamp,
       last_hero_timestamp,
@@ -58,6 +58,7 @@ function vendus_insert(PDO $bdd, int $id_vente, array $vente): int {
   $req->bindValue(':id_vente', $id_vente, PDO::PARAM_INT);
   $req->bindValue(':id_createur', $vente['id_user'], PDO::PARAM_INT);
   $req->bindValue(':id_createur1', $vente['id_user'], PDO::PARAM_INT);
+  $id_vendus = [];
   foreach ($vente['items'] as $vendu) {
     $prix = parseFloat($vendu['prix']);
     $quantite = parseInt($vendu['quantite']);
@@ -69,16 +70,17 @@ function vendus_insert(PDO $bdd, int $id_vente, array $vente): int {
       $req->bindValue(':id_objet', $vendu['id_objet'], PDO::PARAM_INT);
       $req->bindValue(':quantite', $quantite, PDO::PARAM_INT);
       $req->execute();
+      $id_vendus[] = $bdd->lastInsertId();
     } else {
       $req->closeCursor();
       throw new UnexpectedValueException('prix < 0.00 ou type item inconnu');
     }
   }
   $req->closeCursor();
-  return (int) $bdd->lastInsertId();
+  return $id_vendus;
 }
 
-function pesee_vendu_insert(PDO $bdd, int $id_vendus, array $vente): int {
+function pesee_vendu_insert(PDO $bdd, array $id_vendus, array $vente): int {
   $sql = 'INSERT INTO pesees_vendus (
       timestamp,
       last_hero_timestamp,
@@ -98,14 +100,16 @@ function pesee_vendu_insert(PDO $bdd, int $id_vendus, array $vente): int {
   $req = $bdd->prepare($sql);
   $req->bindValue(':timestamp', $vente['date']->format('Y-m-d H:i:s'), PDO::PARAM_STR);
   $req->bindValue(':timestamp1', $vente['date']->format('Y-m-d H:i:s'), PDO::PARAM_STR);
-  $req->bindValue(':id_vendu', $id_vendus, PDO::PARAM_INT);
   $req->bindValue(':id_createur', $vente['id_user'], PDO::PARAM_INT);
   $req->bindValue(':id_createur1', $vente['id_user'], PDO::PARAM_INT);
   foreach ($vente['items'] as $vendu) {
     $masse = parseFloat($vendu['masse']);
     $quantite = parseInt($vendu['quantite']);
+    $id_vendu = current($id_vendus);
+    next($id_vendus);
     if ($masse > 0.000 && $quantite > 0) {
       $req->bindValue(':masse', $masse);
+      $req->bindValue(':id_vendu', $id_vendu, PDO::PARAM_INT);
       $req->bindValue(':quantite', $quantite, PDO::PARAM_INT);
       $req->execute();
     } elseif ($masse < 0.000 && $quantite === 0) {
@@ -172,9 +176,9 @@ if (is_valid_session()) {
   $bdd->beginTransaction();
   try {
     $vente_id = vente_insert($bdd, $json);
-    $vendu_id = vendus_insert($bdd, $vente_id, $json);
+    $vendu_ids = vendus_insert($bdd, $vente_id, $json);
     if (pesees_ventes()) {
-      pesee_vendu_insert($bdd, $vendu_id, $json);
+      pesee_vendu_insert($bdd, $vendu_ids, $json);
     }
     $bdd->commit();
     http_response_code(200); // Created
