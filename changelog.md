@@ -15,6 +15,8 @@ changements apporté au logiciel.
 
 ### Version v0.3.x
 
+- PR[424](https://github.com/mart1ver/oressource/pull/424) issue [#405](https://github.com/mart1ver/oressource/issues/405) fix 0/1 au lieu d'un terme comme oui/non dans les editions de type de poubelles
+- PR[420](https://github.com/mart1ver/oressource/pull/420) Fix issue [419](https://github.com/mart1ver/oressource/issues/419) impossibles de saisir plusieurs objets avec masse en vente
 - PR[#413](https://github.com/mart1ver/oressource/pull/413) travis.ci retiré car on utilisais pas mais ça gachais des ressources de calcul partagées
 - PR[#417](https://github.com/mart1ver/oressource/pull/417) Reduction de la taille de la ligne de séparation des tickets d'impression
 - PR[#415](https://github.com/mart1ver/oressource/pull/415) Ajout CSS pour impression tickets sur Chromium a test sur Firefox!
