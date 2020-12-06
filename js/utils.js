@@ -657,6 +657,7 @@ function impressionTicket(data, response, tvaStuff = () => '') {
           <th width="5px">Qte</th>
           <th width="20px">Nom objet</th>
           <th width="8px">P.U. €</th>
+          <th width="8px">masse en kg</th>
           <th width="10px"> Total</th>
         </tr>
         ${showTickets(data)}

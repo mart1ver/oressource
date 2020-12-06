@@ -440,7 +440,8 @@ function add() {
           `<tr>
             <td>${lotTxt} ${this.quantite}</td>
             <td>${this.name}</td>
-            <td>${prixTxt}${masseTxt}</td>
+            <td>${prixTxt}</td>
+            <td>${masseTxt}</td>
             <td>${montantTotal.toFixed(2)} €</td>
            </tr>`);
         },
