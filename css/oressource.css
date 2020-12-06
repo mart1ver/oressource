@@ -14,6 +14,16 @@ textarea {
   resize:none;
 }
 
+/* Accessibility */
+tbody tr {
+  box-sizing: border-box;
+  border-left: 1em solid transparent;
+}
+
+tbody tr:hover {
+  border-left-color: initial;
+}
+
 /* Style for valid or Invalid form entry */
 input:invalid {
   border: 1px solid red;
