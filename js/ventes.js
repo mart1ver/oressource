@@ -319,12 +319,13 @@ const printTva = (() => {
       const ttc = state.ticket.sum_prix();
       const taux_tva = window.OressourceEnv.taux_tva;
       const ht = (ttc * 100) / (100 + taux_tva);
-      return `Prix HT. = ${ht.toFixed(2)} €<br> Prix TTC. = ${ttc.toFixed(2)} €<br\> dont TVA ${taux_tva}% = ${part_tva.toFixed(2)} €`;
+      const part_tva = ttc - ht;
+      return `Prix TTC = ${ttc.toFixed(2)} €<br> Prix HT = ${ht.toFixed(2)} €<br> TVA ${taux_tva}% = ${part_tva.toFixed(2)} €`;
     };
   } else {
     return () => {
       const ht = state.ticket.sum_prix();
-      return `Prix HT. = ${ht.toFixed(2)} €<br\>Association non assujettie à la TVA.`;
+      return `Prix HT = ${ht.toFixed(2)} €<br>Association non assujettie à la TVA.`;
     };
   }
 })();
@@ -432,9 +433,10 @@ function add() {
          * @returns {string} Representant un fragment HTML.
          */
         show() {
-          const prixTxt = `${this.prix} €`;
+          const montantTotal = this.quantite * this.prix;
+          const prixTxt = `${this.prix.toFixed(2)} €`;
           const masseTxt = this.masse >= 0.00 ? ` ${this.masse} kg` : '';
-          return `<p>${lotTxt} ${this.quantite} * ${this.name} = ${prixTxt}${masseTxt}</p>`;
+          return `<p>${lotTxt} ${this.quantite} * ${this.name} ${prixTxt} ${montantTotal.toFixed(2)} €${masseTxt}</p>`;
         },
       };
 
