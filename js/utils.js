@@ -631,6 +631,13 @@ const showPaiement = (moyenId) => {
 function impressionTicket(data, response, tvaStuff = () => '') {
   const title = classeToName(data.classe);
   // Hack affreux pour gérer les ventes car on utilise pas un objet si global dans leur gestion.
+
+  const vente_info = (data.classe == 'vente' ? `
+    <p>${showPaiement(data.id_moyen)}</p>
+    <p>Nb articles : ${state.ticket.sum_quantite()}</p>`
+    : ''
+  );
+  const things = data.items || data.evacs;
   const html = `
     <head>
     <meta charset="utf-8">
@@ -647,12 +654,11 @@ function impressionTicket(data, response, tvaStuff = () => '') {
       <h2>Type: ${classeToName(data.classe)} &#x2116;${response.id}</h2>
       <p>Le : ${moment().format('DD/MM/YYYY - HH:mm')}</p>
       <strong>${tvaStuff()}</strong>
-      <p>${showPaiement(data.id_moyen)}</p>
-      <p>Nb articles : ${state.ticket.sum_quantite()}</p>
+      ${vente_info}
       ${dashBreak}
       <h2>Détail des articles</h2>
       <table>
-        <caption>Nombre de lignes éditées : ${data.items.length}</caption>
+        <caption>Nombre de lignes éditées : ${things.length}</caption>
         <tr>
           <th width="5px">Qte</th>
           <th width="20px">Nom objet</th>
