@@ -27,7 +27,7 @@ if (is_valid_session() && is_allowed_gestion()) {
 
   $req = $bdd->prepare('UPDATE type_contenants SET nom = :nom, description = :description, masse = :masse, couleur = :couleur WHERE id = :id');
   $req->bindParam(':id', $_POST['id'], PDO::PARAM_INT);
-  $req->bindParam(':masse', $_POST['masse'], PDO::PARAM_STR);
+  $req->bindParam(':masse', (int)$_POST['masse'], PDO::PARAM_INT);
   $req->bindParam(':nom', $_POST['nom'], PDO::PARAM_STR);
   $req->bindParam(':description', $_POST['description'], PDO::PARAM_STR);
   $req->bindParam(':couleur', $_POST['couleur'], PDO::PARAM_STR);
