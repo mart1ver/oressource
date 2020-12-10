@@ -266,6 +266,8 @@ if (is_valid_session() && is_allowed_vente_id($numero)) {
     window.OressourceEnv = {
       structure: <?= json_encode($_SESSION['structure']) ?>,
       adresse: <?= json_encode($_SESSION['adresse']) ?>,
+      siret: <?= json_encode($_SESSION['siret']) ?>,
+      tel: <?= json_encode($_SESSION['tel']) ?>,
       nb_viz_caisse: <?= json_encode($_SESSION['nb_viz_caisse'], JSON_NUMERIC_CHECK); ?>,
       force_pes_vente: <?= json_encode($_SESSION['force_pes_vente']); ?>,
       pesees: <?= json_encode(pesees_ventes()) ?>,
@@ -274,6 +276,7 @@ if (is_valid_session() && is_allowed_vente_id($numero)) {
       taux_tva: <?= json_encode($_SESSION['taux_tva'], JSON_NUMERIC_CHECK); ?>,
       point: <?= json_encode(points_ventes_id($bdd, $numero), JSON_NUMERIC_CHECK); ?>,
       id_user: <?= json_encode($_SESSION['id'], JSON_NUMERIC_CHECK) ?>,
+      nom_user: <?= json_encode($_SESSION['nom'], JSON_NUMERIC_CHECK) ?>,
       moyens_paiement: <?= json_encode($moyens_paiement, JSON_NUMERIC_CHECK) ?>
     };
 

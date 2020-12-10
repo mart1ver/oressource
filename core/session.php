@@ -34,6 +34,7 @@ function set_session(array $user, array $structure) {
   $_SESSION['taux_tva'] = $structure['taux_tva'];
   $_SESSION['structure'] = $structure['nom'];
   $_SESSION['siret'] = $structure['siret'];
+  $_SESSION['tel'] = $structure['telephone'];
   $_SESSION['adresse'] = $structure['adresse'];
   $_SESSION['texte_adhesion'] = $structure['texte_adhesion'];
   $_SESSION['lot_caisse'] = $structure['lot'];
