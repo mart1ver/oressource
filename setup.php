@@ -281,11 +281,11 @@ function setup_header(int $step): void
     <meta name="viewport" content="width=device-width" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="robots" content="noindex,nofollow" />
-    <title><?php echo $title ?></title>
+    <title><?= $title ?></title>
     <?php setup_css() ?>
 </head>
 <body>
-    <h1><?php echo $title ?></h1>
+    <h1><?= $title ?></h1>
     <?php
 }
 
@@ -294,7 +294,7 @@ function setup_body(string $content): void
     ?>
     <main>
         <article class="box">
-        <?php echo $content ?>
+        <?= $content ?>
         </article>
     </main>
     <?php
