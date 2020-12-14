@@ -811,19 +811,19 @@ function db_is_reachable(array $db): bool
     return true;
 }
 
-$config_init = array(
-    'USER' => array(
+$config_init = [
+    'USER' => [
         'NAME' => '',
         'EMAIL' => '',
         'PASS' => ''
-    ),
-    'DB' => array(
+    ],
+    'DB' => [
         'HOST' => 'localhost',
         'USER' => '',
         'PASS' => '',
         'NAME' => ''
-    )
-);
+    ]
+];
 
 // Start setup
 if (php_sapi_name() === 'cli') {

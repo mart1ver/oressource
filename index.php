@@ -22,7 +22,7 @@
 //redirige vers l'index dans /ifaces
 //ou la page de setup
 
-if (file_exists(DB_CONFIG)) {
+if (file_exists(__DIR__.'/moteur/dbconfig.php')) {
     header("HTTP/1.1 301 Moved Permanently");
     header("Location: ifaces/");
 } else {
