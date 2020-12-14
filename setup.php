@@ -88,9 +88,9 @@ define('MSG_SQLINSERT_ERROR_EXEC', '[ERROR] Impossible d\'exécuter la requête 
 function main_cli(array $config)
 {
     $status = array(
-        'success' => array(),
-        'warning' => array(),
-        'errors' => array()
+        'success' => [],
+        'warning' => [],
+        'errors' => []
     );
 
     // Check && Load ENV var
@@ -146,9 +146,9 @@ function main(array $session_init): void
     $body = '';
     $step = step();
     $status = array(
-        'success' => array(),
-        'warning' => array(),
-        'errors' => array()
+        'success' => [],
+        'warning' => [],
+        'errors' => []
     );
 
     // Redirect to force validate all step
@@ -192,7 +192,7 @@ function main(array $session_init): void
             if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 user_validate($status['errors']);
 
-                if ($status['errors'] === array()) {
+                if ($status['errors'] === []) {
                     $_SESSION['STEP'] = 4;
                     goto_step($_SESSION['STEP']);
                 }
@@ -227,7 +227,7 @@ function main(array $session_init): void
             required_mode($status);
 
             // If no error permite access to the next step
-            if ($status['errors'] === array()) {
+            if ($status['errors'] === []) {
                 $_SESSION['STEP'] = 2;
             }
 
