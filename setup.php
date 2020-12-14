@@ -414,14 +414,9 @@ function array_to_html_list(array $arr, string $title, string $class): string
 function status_to_html(string &$body, array $status, int $step): void
 {
     $button = 'enabled';
-    $sCount = array(
-        'success' => count($status['success']),
-        'warning' => count($status['warning']),
-        'errors' => count($status['errors'])
-    );
 
     // Disable next button if an error exist
-    if ($sCount['errors'] !== 0) {
+    if ($status['errors'] !== []) {
         $button = 'disabled';
     }
 
@@ -430,9 +425,9 @@ function status_to_html(string &$body, array $status, int $step): void
         MSG_HTML_STEP1_TITLE,
         sprintf(
             MSG_HTML_STEP1_SUB,
-            $sCount['success'],
-            $sCount['warning'],
-            $sCount['errors']
+            count($status['success']),
+            count($status['warning']),
+            count($status['errors'])
         ),
         array_to_html_list($status['success'], MSG_HTML_STEP1_SUCCESS, 'success'),
         array_to_html_list($status['warning'], MSG_HTML_STEP1_WARNING, 'warning'),
