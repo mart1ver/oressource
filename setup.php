@@ -4,7 +4,7 @@ declare(strict_types=1);
 // Define basic
 define('PHP_V', phpversion());
 define('PHP_V_WARN', '7.1');
-define('PHP_V_MIN', '7.2');
+define('PHP_V_MIN', '7.4');
 
 define('ROOT', __DIR__);
 define('MOTEUR', ROOT.'/moteur');
