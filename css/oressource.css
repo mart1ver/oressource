@@ -15,13 +15,21 @@ textarea {
 }
 
 /* Accessibility */
-tbody tr {
-  box-sizing: border-box;
-  border-left: 1em solid transparent;
+tbody tr td:first-child {
+  position: relative;
 }
 
-tbody tr:hover {
-  border-left-color: initial;
+tbody tr td:first-child::before {
+  content: '';
+  inset: 0;
+  left: -1em;
+  position: absolute;
+  border-left: 1em solid transparent;
+  border-radius: 3px;
+}
+
+tbody tr:hover td:first-child::before {
+  border-color: initial;
 }
 
 /* Style for valid or Invalid form entry */
