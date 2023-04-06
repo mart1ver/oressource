@@ -1,4 +1,29 @@
 # ORessource
+# Ce dépot n'est plus maintenu 
+Aprés 10 ans d'éxistence, Oressource se doit d'étre réécrit, en effet les choix techchnologiques initiaux ( php, bootstrap et peut etre aussi mysql... ) s'averrent de moins en moins pertinents au regard de l'utilité rééle de l'utilitaire.
+
+Le choix des languages
+
+C'est en tant qu'amateur total que fin 2013 je me posait la question : comment, en termes de traçabilité, atteindre le niveau de professionalisme des grands acteurs du recyclage? nous avions besoin d'un logiciel, il en existait un... : payant au nombre de poste, source fermée, technologie windev...   
+
+[merci olive de ubuntu-fr](https://doc.ubuntu-fr.org/utilisateurs/olive)
+
+
+
+
+
+
+
+merci principalement à [darnuria](https://github.com/darnuria) pour sa 'revitalisation' du code sur la fin, merci 
+
+
+
+
+
+
+
+
+
 
 Système libre et adaptable de quantification et de bilan écologique pour
 ressourcerie écrit à l'aide de [PHP](https://secure.php.net/) compatible avec
