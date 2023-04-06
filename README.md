@@ -1,21 +1,22 @@
 # ORessource
+
 # Ce dépot n'est plus maintenu 
-Aprés 10 ans d'éxistence, Oressource se doit d'étre réécrit, en effet les choix techchnologiques initiaux ( php, bootstrap et peut etre aussi mysql... ) s'averrent de moins en moins pertinents au regard de l'utilité rééle de l'utilitaire.
 
-Le choix des languages
+Aprés 10 ans d'éxistence, Oressource se doit d'étre réécrit, en effet les choix techchnologiques initiaux ( php, bootstrap et peut etre aussi mysql... ) s'averrent de moins en moins pertinents au regard de l'utilité rééle du logiciel.
 
-C'est en tant qu'amateur total que fin 2013 je me posait la question : comment, en termes de traçabilité, atteindre le niveau de professionalisme des grands acteurs du recyclage? nous avions besoin d'un logiciel, il en existait un... : payant au nombre de poste, source fermée, technologie windev...   
+C'est en tant que résponsable d'un humble atelier d'une ressourcerie et qu'amateur total que fin 2013 je me posait cette question : 
+Comment, en termes de traçabilité, atteindre au moins le niveau de professionalisme des grands acteurs du recyclage? 
+Nous avions besoin d'un logiciel, il en existait un... : payant au nombre de poste, source fermée, technologie windev... 
+Merci à [olive de ubuntu-fr](https://doc.ubuntu-fr.org/utilisateurs/olive) que je croisait de temps en temps , et qui un soir m'a conseillé de me lancer : coder c'est avant tout se documenter, et puis on commence simple... , on voit bien ce que ca donne...
+Oressource n'est pas resté notre outil interne bien longtemps car certains de nos collegues se retrouvaient confrontés aux memes enjeux qu nous finalement : produire un bilan écologique fiable , précis et en temps réél sans passer par des procedures trop pompeuses.
 
-[merci olive de ubuntu-fr](https://doc.ubuntu-fr.org/utilisateurs/olive)
+Depuis le temps est passé de nombreuses àmeliorations et correctifs ont étés apportés. Merci principalement à [darnuria](https://github.com/darnuria) pour sa 'revitalisation' du code sur la fin, merci à tout ceux qui ont contribués à Oressource depuis .
+
+ 
 
 
 
-
-
-
-
-merci principalement à [darnuria](https://github.com/darnuria) pour sa 'revitalisation' du code sur la fin, merci 
-
+pousse au fork? v2
 
 
 
