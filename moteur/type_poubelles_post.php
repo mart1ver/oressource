@@ -26,8 +26,22 @@ if (is_valid_session() && is_allowed_gestion()) {
   require_once '../moteur/dbconfig.php';
   try {
     $ultime = isset($_POST['ultime']) ? 1 : 0;
-    $req = $bdd->prepare('INSERT INTO types_poubelles (nom, couleur, description, masse_bac, ultime, id_createur, id_last_hero) VALUES (?, ?, ?,  ?, ?, ?, ?)');
-    $req->execute([$_POST['nom'], $_POST['couleur'], $_POST['description'], $_POST['masse_bac'], $ultime, $_SESSION['id'], $_SESSION['id']]);
+    $req = $bdd->prepare('INSERT INTO
+      types_poubelles (
+        nom, couleur, description,
+        masse, ultime, id_createur, id_last_hero
+      ) VALUES (
+        :nom, :couleur, :description,
+        :masse, :ultime, :id_createur, :id_last_hero)
+    ');
+    $req->bindParam(':nom', $_POST['nom'], PDO::PARAM_STR);
+    $req->bindParam(':couleur', $_POST['couleur'], PDO::PARAM_STR);
+    $req->bindParam(':description', $_POST['description'], PDO::PARAM_STR);
+    $req->bindParam(':masse', (int)$_POST['masse_bac'], PDO::PARAM_INT);
+    $req->bindParam(':ultime', $ultime, PDO::PARAM_INT);
+    $req->bindParam(':id_createur', $_SESSION['id'], PDO::PARAM_INT);
+    $req->bindParam(':id_last_hero', $_SESSION['id'], PDO::PARAM_INT);
+    $req->execute();
     $req->closeCursor();
     header('Location:../ifaces/edition_types_poubelles.php?msg=Type de bac enregistré avec succes!');
   } catch (PDOException $e) {
