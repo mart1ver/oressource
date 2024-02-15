@@ -266,6 +266,8 @@ if (is_valid_session() && is_allowed_vente_id($numero)) {
     window.OressourceEnv = {
       structure: <?= json_encode($_SESSION['structure']) ?>,
       adresse: <?= json_encode($_SESSION['adresse']) ?>,
+      siret: <?= json_encode($_SESSION['siret']) ?>,
+      tel: <?= json_encode($_SESSION['tel']) ?>,
       nb_viz_caisse: <?= json_encode($_SESSION['nb_viz_caisse'], JSON_NUMERIC_CHECK); ?>,
       force_pes_vente: <?= json_encode($_SESSION['force_pes_vente']); ?>,
       pesees: <?= json_encode(pesees_ventes()) ?>,

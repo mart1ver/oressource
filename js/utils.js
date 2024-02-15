@@ -266,7 +266,13 @@ function connection_UI_ticket(numpad, ticket, typesItems, pretraitement = ((a, .
           masse: value,
           type: id,
           show() {
-            return `<p>${this.name} : ${this.masse} kg</p>`;
+            return (`<tr>
+              <td></td>
+              <td>${this.name}</td>
+              <td></td>
+              <td>${this.masse}</td>
+              <td></td>
+            </tr>`);
           },
         };
 
@@ -625,6 +631,13 @@ const showPaiement = (moyenId) => {
 function impressionTicket(data, response, tvaStuff = () => '') {
   const title = classeToName(data.classe);
   // Hack affreux pour gérer les ventes car on utilise pas un objet si global dans leur gestion.
+
+  const vente_info = (data.classe == 'vente' ? `
+    <p>${showPaiement(data.id_moyen)}</p>
+    <p>Nb articles : ${state.ticket.sum_quantite()}</p>`
+    : ''
+  );
+  const things = data.items || data.evacs;
   const html = `
     <head>
     <meta charset="utf-8">
@@ -632,16 +645,31 @@ function impressionTicket(data, response, tvaStuff = () => '') {
     <link rel="stylesheet" href="../css/ticket_impression.css" type="text/css">
     </head>
     <body>
-      <p>${document.querySelector('h1').innerHTML}</p>
-      <p>${window.OressourceEnv.structure}</p>
+      <h1>${window.OressourceEnv.structure}</h1>
+      <h2>${document.querySelector('h1').innerHTML}</h2>
       <p>${window.OressourceEnv.adresse}</p>
+      <p>SIRET : ${window.OressourceEnv.siret}</p>
+      <p>tel : ${window.OressourceEnv.tel}</p>
       ${dashBreak}
-      <p>Type: ${classeToName(data.classe)} &#x2116;${response.id}</p>
-      ${tvaStuff()}
-      ${showPaiement(data.id_moyen)}
+      <h2>Type: ${classeToName(data.classe)} &#x2116;${response.id}</h2>
+      <p>Le : ${moment().format('DD/MM/YYYY - HH:mm')}</p>
+      <strong>${tvaStuff()}</strong>
+      ${vente_info}
+      ${dashBreak}
+      <h2>Détail des articles</h2>
+      <table>
+        <caption>Nombre de lignes éditées : ${things.length}</caption>
+        <tr>
+          <th width="5px">Qte</th>
+          <th width="20px">Nom objet</th>
+          <th width="8px">P.U. €</th>
+          <th width="8px">masse en kg</th>
+          <th width="10px"> Total</th>
+        </tr>
+        ${showTickets(data)}
+      </table>
+      ${dashBreak}
       <p>Ticket client à conserver.</p>
-      <p>Date d'édition du ticket : ${moment().format('DD/MM/YYYY - HH:mm')}</p>
-      ${showTickets(data)}
     </body>
   </html>`;
 
