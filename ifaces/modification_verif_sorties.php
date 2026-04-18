@@ -17,8 +17,6 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-session_start();
-
 require_once '../core/requetes.php';
 require_once '../core/session.php';
 require_once '../core/composants.php';
@@ -129,7 +127,6 @@ if (is_valid_session() && is_allowed_verifications()) {
     ], strategie_sortie($bdd, $classe, $id));
   require_once 'tete.php';
   ?>
-  <div class="container">
     <h1>Modifier la sortie n° <?= $id ?></h1>
 
     <div class="panel-body">
@@ -157,7 +154,6 @@ if (is_valid_session() && is_allowed_verifications()) {
 
     <h2>Pesées incluses dans cette sortie <?= $props['h2'] ?>:</h2>
     <?= listPesees($props) ?>
-  </div><!-- /.container -->
   <?php
   require_once 'pied.php';
 } else {

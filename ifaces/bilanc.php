@@ -18,8 +18,6 @@
  */
 
 // Bilan des collectes
-session_start();
-
 require_once '../core/session.php';
 require_once '../core/requetes.php';
 require_once '../core/composants.php';
@@ -167,41 +165,42 @@ if (is_valid_session() && is_allowed_bilan()) {
   ];
   ?>
 
-  <div class="container">
-    <div class="row">
-      <div class="col-md-11">
-        <h1>Bilan global</h1>
-        <div class="col-md-4 col-md-offset-8" >
-          <?= datePicker() ?>
-        </div>
 
-        <ul class="nav nav-tabs">
-          <li class="active"><a>Collectes</a></li>
-          <li><a href="bilanhb.php?numero=0&date1=<?= $date1 ?>&date2=<?= $date2 ?>">Sorties hors-boutique</a></li>
-          <li><a href="bilanv.php?numero=0&date1=<?= $date1 ?>&date2=<?= $date2 ?>">Ventes</a></li>
-        </ul>
+    <div class="row">
+      <div class="col-md-8">
+      </div>
+      <div class="col-md-4">
+        <div class="col-md-12" >
+          <?php echo datePicker() ?>
+        </div>
       </div>
     </div>
-  </div>
+
+    <ul class="nav nav-tabs">
+          <li><a href="recapitulatif.php">Récapitulatif</a></li>
+          <li class="active"><a>Collectes</a></li>
+          <li><a href="bilanhb.php?numero=0&date1=<?php echo $date1 ?>&date2=<?php echo $date2 ?>">Sorties hors-boutique</a></li>
+          <li><a href="bilanv.php?numero=0&date1=<?php echo $date1 ?>&date2=<?php echo $date2 ?>">Ventes</a></li>
+        </ul>
 
   <div class="row">
     <div class="col-md-8 col-md-offset-1" >
       <h2> Bilan des collectes de la structure</h2>
       <ul class="nav nav-tabs">
         <?php foreach ($points_collectes as $p) { ?>
-          <li class="<?= $numero == $p['id'] ? 'active' : '' ?>">
-            <a href="bilanc.php?numero=<?= $p['id'] ?>&date1=<?= $date1 ?>&date2=<?= $date2; ?>"><?= $p['nom']; ?></a>
+          <li class="<?php echo $numero == $p['id'] ? 'active' : '' ?>">
+            <a href="bilanc.php?numero=<?php echo $p['id'] ?>&date1=<?php echo $date1 ?>&date2=<?php echo $date2; ?>"><?php echo $p['nom']; ?></a>
           </li>
         <?php } ?>
-        <li class="<?= $numero === 0 ? 'active' : '' ?>">
-          <a href="bilanc.php?numero=0&date1=<?= $date1 ?>&date2=<?= $date2; ?>">Tous les points</a>
+        <li class="<?php echo $numero === 0 ? 'active' : '' ?>">
+          <a href="bilanc.php?numero=0&date1=<?php echo $date1 ?>&date2=<?php echo $date2; ?>">Tous les points</a>
         </li>
       </ul>
       <br>
 
       <div class="row">
-        <h2><?= $date1 === $date2 ? "Le {$date1}," : " Du {$date1} au {$date2}," ?>
-          Masse collectée: <?= $data['masse'] ?> kg<?= $numero === 0 ? ' , sur ' . count($points_collectes) . ' Point(s) de collecte' : '' ?>.</h2>
+        <h2><?php echo $date1 === $date2 ? "Le {$date1}," : " Du {$date1} au {$date2}," ?>
+          Masse collectée: <?php echo $data['masse'] ?> kg<?php echo $numero === 0 ? ' , sur ' . count($points_collectes) . ' Point(s) de collecte' : '' ?>.</h2>
         <?php if ($data['masse'] > 0) { ?>
         <div class="col-md-6">
           <div class="panel panel-default">
@@ -221,10 +220,10 @@ if (is_valid_session() && is_allowed_bilan()) {
 
                 <tbody>
                   <?php foreach ($collectes_MasseTot as $a) { ?>
-                    <tr data-toggle="collapse" data-target=".partyp<?= $a['nom']; ?>">
-                      <td><a href="jours.php?date1=<?= $date1 ?>&date2=<?= $date2 ?>&type=<?= $a['id'] ?>"><?= $a['nom'] ?></a></td>
-                      <td><?= $a['somme']; ?></td>
-                      <td><?= round($a['somme'] * 100 / $data['masse'], 2); ?></td>
+                    <tr data-toggle="collapse" data-target=".partyp<?php echo $a['nom']; ?>">
+                      <td><a href="jours.php?date1=<?php echo $date1 ?>&date2=<?php echo $date2 ?>&type=<?php echo $a['id'] ?>"><?php echo $a['nom'] ?></a></td>
+                      <td><?php echo $a['somme']; ?></td>
+                      <td><?php echo round($a['somme'] * 100 / $data['masse'], 2); ?></td>
                     </tr>
 
                   <?php } ?>
@@ -234,7 +233,7 @@ if (is_valid_session() && is_allowed_bilan()) {
               <div id="graph2masse" style="height: 180px;"></div> <br><br>
 
               <!-- TODO: refaire cette fonctionnalité
-              <a href="../moteur/export_bilanc_parloca.php?numero=<?= $numero ?>&date1=<?= $date1 ?>&date2=<?= $date2; ?>">
+              <a href="../moteur/export_bilanc_parloca.php?numero=<?php echo $numero ?>&date1=<?php echo $date1 ?>&date2=<?php echo $date2; ?>">
                 <button type="button" class="btn btn-default btn-xs" disabled>exporter ces données (.csv) </button>
               </a>
               -->
@@ -260,20 +259,20 @@ if (is_valid_session() && is_allowed_bilan()) {
 
                   <tbody>
                     <?php foreach ($collectes_TypesCollectes as $p) { ?>
-                      <tr data-toggle="collapse" data-target=".parmasse<?= $p['id']; ?>">
-                        <td><?= $p['nom']; ?></td>
-                        <td><?= $p['ncol']; ?></td>
-                        <td><?= $p['somme']; ?></td>
-                        <td><?= round($p['somme'] * 100 / $data['masse'], 2); ?></td>
+                      <tr data-toggle="collapse" data-target=".parmasse<?php echo $p['id']; ?>">
+                        <td><?php echo $p['nom']; ?></td>
+                        <td><?php echo $p['ncol']; ?></td>
+                        <td><?php echo $p['somme']; ?></td>
+                        <td><?php echo round($p['somme'] * 100 / $data['masse'], 2); ?></td>
                       </tr>
                       <?php foreach (BilanCollectes1($bdd, $numero, $p['id'], $time_debut, $time_fin) as $d) { ?>
-                        <tr class="collapse parmasse<?= $p['id']; ?>">
+                        <tr class="collapse parmasse<?php echo $p['id']; ?>">
                           <td>
-                            <a href="jours.php?date1=<?= $date1 ?>&date2=<?= $date2 ?>&type=<?= $d['id'] ?>"><?= $d['nom']; ?></a>
+                            <a href="jours.php?date1=<?php echo $date1 ?>&date2=<?php echo $date2 ?>&type=<?php echo $d['id'] ?>"><?php echo $d['nom']; ?></a>
                           </td>
                           <td></td>
-                          <td><?= $d['somme'] ?> kg</td>
-                          <td><?= round($d['somme'] * 100 / $data['masse'], 2) ?> %</td>
+                          <td><?php echo $d['somme'] ?> kg</td>
+                          <td><?php echo round($d['somme'] * 100 / $data['masse'], 2) ?> %</td>
                         </tr>
                       <?php } ?>
                     <?php } ?>
@@ -283,7 +282,7 @@ if (is_valid_session() && is_allowed_bilan()) {
                 <div id="graphmasse" style="height: 180px;"></div>
 
                 <!-- TODO: refaire cette fonctionnalité
-                <a href="../moteur/export_bilanc_partype.php?numero=<?= $numero ?>&date1=<?= $date1 ?>&date2=<?= $date2 ?>">
+                <a href="../moteur/export_bilanc_partype.php?numero=<?php echo $numero ?>&date1=<?php echo $date1 ?>&date2=<?php echo $date2 ?>">
                   <button type="button" class="btn btn-default btn-xs" disabled>exporter ces données (.csv)</button>
                 </a>
                 -->
@@ -309,20 +308,20 @@ if (is_valid_session() && is_allowed_bilan()) {
 
                   <tbody>
                     <?php foreach ($collectes_loca as $a) { ?>
-                      <tr data-toggle="collapse" data-target=".parloc<?= $a['localite']; ?>">
-                        <td><?= $a['nom']; ?></td>
-                        <td><?= $a['ncol']; ?></td>
-                        <td><?= $a['somme']; ?></td>
-                        <td><?= round($a['somme'] * 100 / $data['masse'], 2); ?></td>
+                      <tr data-toggle="collapse" data-target=".parloc<?php echo $a['localite']; ?>">
+                        <td><?php echo $a['nom']; ?></td>
+                        <td><?php echo $a['ncol']; ?></td>
+                        <td><?php echo $a['somme']; ?></td>
+                        <td><?php echo round($a['somme'] * 100 / $data['masse'], 2); ?></td>
                       </tr>
                       <?php foreach (BilanCollecte3($bdd, $numero, $a['localite'], $time_debut, $time_fin) as $b) { ?>
-                        <tr class="collapse parloc<?= $a['localite'] ?>">
+                        <tr class="collapse parloc<?php echo $a['localite'] ?>">
                           <td class="hiddenRow">
-                            <a href="jours.php?date1=<?= $date1 ?>&date2=<?= $date2 ?>&type=<?= $b['id'] ?>"><?= $b['nom'] ?></a>
+                            <a href="jours.php?date1=<?php echo $date1 ?>&date2=<?php echo $date2 ?>&type=<?php echo $b['id'] ?>"><?php echo $b['nom'] ?></a>
                           </td>
                           <td></td>
-                          <td class="hiddenRow"><?= $b['somme'] ?> kg</td>
-                          <td class="hiddenRow"><?= round($b['somme'] * 100 / $data['masse'], 2) ?> %</td>
+                          <td class="hiddenRow"><?php echo $b['somme'] ?> kg</td>
+                          <td class="hiddenRow"><?php echo round($b['somme'] * 100 / $data['masse'], 2) ?> %</td>
                         </tr>
                       <?php } ?>
                     <?php } ?>
@@ -332,7 +331,7 @@ if (is_valid_session() && is_allowed_bilan()) {
                 <div id="graphloca" style="height: 180px;"></div>
 
                 <!-- TODO: refaire cette fonctionnalité
-                <a href="../moteur/export_bilanc_parloca.php?numero=<?= $numero ?>&date1=<?= $date1 ?>&date2=<?= $date2; ?>">
+                <a href="../moteur/export_bilanc_parloca.php?numero=<?php echo $numero ?>&date1=<?php echo $date1 ?>&date2=<?php echo $date2; ?>">
                   <button type="button" class="btn btn-default btn-xs" disabled>exporter ces données (.csv) </button>
                 </a>
                 -->
@@ -345,13 +344,14 @@ if (is_valid_session() && is_allowed_bilan()) {
     <?php } ?>
   </div>
 </div>
+</div>
   <script type="text/javascript">
     'use strict';
 
     $(document).ready(() => {
-      graphMorris(<?= json_encode(data_graphs($collectes_TypesCollectes)) ?>, 'graphmasse');
-      graphMorris(<?= json_encode(data_graphs($collectes_MasseTot)) ?>, 'graph2masse');
-      graphMorris(<?= json_encode(data_graphs($collectes_loca)) ?>, 'graphloca');
+      graphMorris(<?php echo json_encode(data_graphs($collectes_TypesCollectes)) ?>, 'graphmasse');
+      graphMorris(<?php echo json_encode(data_graphs($collectes_MasseTot)) ?>, 'graph2masse');
+      graphMorris(<?php echo json_encode(data_graphs($collectes_loca)) ?>, 'graphloca');
     });
   </script>
   <?php

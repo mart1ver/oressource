@@ -1,3 +1,6 @@
+<?php
+require_once("../core/session.php");
+?>
 <!DOCTYPE html>
 <!--
   Oressource
@@ -29,28 +32,15 @@
     <link href="../css/oressource.css" type="text/css" rel="stylesheet">
   </head>
   <body>
-    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-      <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="../">Oressource</a>
-        </div>
-      </div>
-    </nav>
-
     <div class="wrapper">
-      <form id="formLogin" class="form-signin" method="post">
-        <h2 class="form-signin-heading">Veuillez vous connecter</h2>
+      <form id="formLogin" class="form-signin" method="post" style="box-shadow: 0px 2px 10px -3px rgba(0,0,0,0.1); border-radius: 6px;">
+        <center><img src="../images/logo_oressource.png" height=40 style="text-align: center; margin-top: 20px;"></center>
+        <h2 class="form-signin-heading" style="margin-top: 40px;">Veuillez vous connecter</h2>
         <label class="sr-only" for="mail">Mail :</label>
         <input id="mail" class="form-control" name="mail" type="email" placeholder="Courriel" autofocus>
         <label class="sr-only" for="pass">Mot de passe :=</label>
         <input id="pass" class="form-control" name="pass" type="password" placeholder="Mot de passe">
-        <button id="postLogin" class="btn btn-lg btn-primary btn-block glyphicon glyphicon-log-in" type="submit"> Login</button>
+        <button id="postLogin" class="btn btn-lg btn-primary btn-block" type="submit"><span class="glyphicon glyphicon-log-in"></span> Login</button>
       </form>
     </div>
 
@@ -80,16 +70,13 @@
             body: JSON.stringify({ username, password })
           }).then(status)
                   .then((json) => {
-                    // redirection vers l'index en attendant de pouvoir faire mieux.
-                    window.location.href = '../ifaces/index.php';
+                    window.location.href = '../ifaces/welcome.php';
                   }).catch((ex) => {
             div.setAttribute('style', 'width:80%; margin:auto; visibility: visible; display: block');
           });
         }, false);
       }, false);
     </script>
-    <footer>
-      <p class="text-left">Oressource 2014-2019</p>
-    </footer>
+
   </body>
 </html>

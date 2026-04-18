@@ -17,8 +17,6 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 // Oressource 2017, Bilan des ventes
-session_start();
-
 require_once '../core/session.php';
 require_once '../core/requetes.php';
 require_once '../core/composants.php';
@@ -62,44 +60,41 @@ if (is_valid_session() && is_allowed_bilan()) {
   $graphPv = data_graphs_from_bilan($bilans_types, 'chiffre_degage');
   ?>
 
-  <div class="container">
-    <div class="row">
-      <div class="col-md-11" >
-        <h1>Bilan global</h1>
-        <div class="col-md-4 col-md-offset-8" >
-          <?= datePicker() ?>
-        </div>
 
-        <ul class="nav nav-tabs">
-          <li>
-            <a href="bilanc.php?<?= $date_query; ?>&numero=0">Collectes</a>
-          </li>
-          <li>
-            <a href="bilanhb.php?<?= $date_query; ?>&numero=0">Sorties hors-boutique</a>
-          </li>
-          <li class="active"><a href="#">Ventes</a></li>
-        </ul>
+  <div class="row">
+    <div class="col-md-8">
+
+    </div>
+    <div class="col-md-4">
+      <div class="col-md-12" >
+        <?php echo datePicker() ?>
       </div>
-    </div> <!-- row -->
-  </div> <!-- container -->
+    </div>
+  </div>
 
-  <hr/>
+  <ul class="nav nav-tabs">
+    <li><a href="recapitulatif.php">Récapitulatif</a></li>
+    <li><a href="bilanc.php?<?php echo $date_query; ?>&numero=0">Collectes</a></li>
+    <li><a href="bilanhb.php?<?php echo $date_query; ?>&numero=0">Sorties hors-boutique</a></li>
+    <li class="active"><a href="#">Ventes</a></li>
+  </ul>
+
   <div class="row">
     <div class="col-md-8 col-md-offset-1" >
       <h2>Bilan des ventes de la structure</h2>
       <ul class="nav nav-tabs">
         <?php foreach ($points_ventes as $point_vente) { ?>
-          <li class="<?= ($numero == $point_vente['id'] ? 'active' : ''); ?>">
-            <a href="bilanv.php?<?= $date_query; ?>&numero=<?= $point_vente['id']; ?>"><?= $point_vente['nom']; ?></a>
+          <li class="<?php echo ($numero == $point_vente['id'] ? 'active' : ''); ?>">
+            <a href="bilanv.php?<?php echo $date_query; ?>&numero=<?php echo $point_vente['id']; ?>"><?php echo $point_vente['nom']; ?></a>
           </li>
         <?php } ?>
-        <li class="<?= ($numero === 0 ? 'active' : ''); ?>">
-          <a href="bilanv.php?<?= $date_query; ?>&numero=0">Tous les points</a>
+        <li class="<?php echo ($numero === 0 ? 'active' : ''); ?>">
+          <a href="bilanv.php?<?php echo $date_query; ?>&numero=0">Tous les points</a>
         </li>
       </ul>
 
       <div class="row">
-        <h2><?= ($date1 === $date2) ? "Le $date1" : "Du $date1 au $date2"; ?> :</h2>
+        <h2><?php echo ($date1 === $date2) ? "Le $date1" : "Du $date1 au $date2"; ?> :</h2>
         <?php if (!($nb_ventes > 0 || $remb_nb > 0)) { ?>
           <img src="../images/nodata.jpg" class="img-responsive" alt="Responsive image">
           <?php
@@ -111,55 +106,45 @@ if (is_valid_session() && is_allowed_bilan()) {
                   <?php if ($numero === 0) { ?>
                     <tr>
                       <td>Nombre de points de vente :</td>
-                      <td><?= count($points_ventes) ?></td>
+                      <td><?php echo count($points_ventes) ?></td>
                     </tr>
                   <?php } ?>
                   <tr>
                     <td>Chiffre total dégagé  :</td>
-                    <td><?= $bilans['chiffre_degage']; ?> €</td>
+                    <td><?php echo $bilans['chiffre_degage']; ?> €</td>
                   </tr>
                   <tr>
                     <td>Nombre d'objets vendus :</td>
-                    <td><?= $bilans['vendu_quantite']; ?></td>
+                    <td><?php echo $bilans['vendu_quantite']; ?></td>
                   </tr>
                   <tr>
                     <td>Nombre de ventes :</td>
-                    <td><?= $nb_ventes; ?></td>
+                    <td><?php echo $nb_ventes; ?></td>
                   </tr>
                   <tr>
                     <td>Panier moyen :</td>
-                    <td><?= $panier_moyen ?></td>
+                    <td><?php echo $panier_moyen ?></td>
                   </tr>
                   <tr>
                     <td>Nombre d'objets remboursés :</td>
-                    <td><?= $bilans['remb_quantite']; ?>
+                    <td><?php echo $bilans['remb_quantite']; ?>
                     </td>
                   </tr>
                   <tr>
                     <td>Nombre de remboursemments :</td>
-                    <td><?= $remb_nb; ?></td>
+                    <td><?php echo $remb_nb; ?></td>
                   </tr>
                   <tr>
                     <td>Somme remboursée :</td>
-                    <td><?= $bilans['remb_somme']; ?> €</td>
+                    <td><?php echo $bilans['remb_somme']; ?> €</td>
                   </tr>
                   <tr>
                     <td>Masse pesée en caisse :</td>
-                    <td><?= $bilans['vendu_masse']; ?> Kgs</td>
+                    <td><?php echo $bilans['vendu_masse']; ?> Kgs</td>
                   </tr>
                 </tbody>
 
                 <tfoot>
-                  <!--
-                  <tr>
-                    <td align=center colspan=3>
-                      <a href="../moteur/export_bilanv.php?numero=<?= $numero; ?>&<?= $date_query; ?>">
-                        <button type="button" class="btn btn-default btn-xs">Exporter les ventes de cette période (.csv)</button>
-                      </a>
-                    </td>
-                  </tr>
-                  -->
-                  <br>
                 </tfoot>
               </table>
 
@@ -178,10 +163,10 @@ if (is_valid_session() && is_allowed_bilan()) {
                 <tbody>
                   <?php foreach ($chiffre_affaire as $ligne) { ?>
                     <tr>
-                      <td><?= $ligne['moyen']; ?></td>
-                      <td><?= $ligne['quantite_vendue']; ?></td>
-                      <td><?= $ligne['total']; ?></td>
-                      <td><?= $ligne['remboursement']; ?></td>
+                      <td><?php echo $ligne['moyen']; ?></td>
+                      <td><?php echo $ligne['quantite_vendue']; ?></td>
+                      <td><?php echo $ligne['total']; ?></td>
+                      <td><?php echo $ligne['remboursement']; ?></td>
                     </tr>
                   <?php } ?>
                 </tbody>
@@ -191,7 +176,7 @@ if (is_valid_session() && is_allowed_bilan()) {
             </div>
 
             <div class="col-md-6 ">
-              <h3 style="text-align:center;">Chiffre de caisse : <?= $bilans['chiffre_degage'] - $bilans['remb_somme']; ?> €</h3>
+              <h3 style="text-align:center;">Chiffre de caisse : <?php echo $bilans['chiffre_degage'] - $bilans['remb_somme']; ?> €</h3>
               <h4>Récapitulatif par type d'objet</h4>
               <table class="table table-hover">
                 <thead>
@@ -208,12 +193,12 @@ if (is_valid_session() && is_allowed_bilan()) {
                   <?php foreach ($bilans_types as $id => $bilan_type) { ?>
                     <tr>
                       <th scope="row">
-                        <a href="./jours.php?<?= $date_query; ?>&type=<?= $id; ?>"><?= $bilan_type['nom']; ?></a>
+                        <a href="./jours.php?<?php echo $date_query; ?>&type=<?php echo $id; ?>"><?php echo $bilan_type['nom']; ?></a>
                       </th>
-                      <td><?= $bilan_type['chiffre_degage']; ?></td>
-                      <td><?= $bilan_type['vendu_quantite']; ?></td>
-                      <td><?= $bilan_type['remb_somme']; ?></td>
-                      <td><?= $bilan_type['remb_quantite']; ?></td>
+                      <td><?php echo $bilan_type['chiffre_degage']; ?></td>
+                      <td><?php echo $bilan_type['vendu_quantite']; ?></td>
+                      <td><?php echo $bilan_type['remb_somme']; ?></td>
+                      <td><?php echo $bilan_type['remb_quantite']; ?></td>
                     </tr>
                   <?php } ?>
                 </tbody>
@@ -269,19 +254,19 @@ if (is_valid_session() && is_allowed_bilan()) {
                     ?>
                     <tr>
                       <th scope="row">
-                        <a href="./jours.php?<?= $date_query; ?>&type=<?= $id; ?>"><?= $bilan_mix['nom']; ?></a>
+                        <a href="./jours.php?<?php echo $date_query; ?>&type=<?php echo $id; ?>"><?php echo $bilan_mix['nom']; ?></a>
                       </th>
-                      <td><?= round($Mtpe, 2); ?></td>
-                      <td><?= round($Ntpe, 2); ?></td>
-                      <td><?= $Notpe; ?></td>
-                      <td><?= $obj_vendu; ?></td>
-                      <td><?= round($prix_tonne_estime, 2); ?></td>
-                      <td><?= round(($chiffre_degage / $prix_tonne_estime) * 1000, 2); ?></td>
+                      <td><?php echo round($Mtpe, 2); ?></td>
+                      <td><?php echo round($Ntpe, 2); ?></td>
+                      <td><?php echo $Notpe; ?></td>
+                      <td><?php echo $obj_vendu; ?></td>
+                      <td><?php echo round($prix_tonne_estime, 2); ?></td>
+                      <td><?php echo round(($chiffre_degage / $prix_tonne_estime) * 1000, 2); ?></td>
                       <td>
                         <span class='badge'
                               id='Bcertitude'
-                              style='background-color: RGB(<?= $Rvalue; ?>,<?= $Gvalue; ?>,0);'
-                              ><?= $certitude; ?> %</span>
+                              style='background-color: RGB(<?php echo $Rvalue; ?>,<?php echo $Gvalue; ?>,0);'
+                              ><?php echo $certitude; ?> %</span>
                       </td>
                     </tr>
                   <?php } ?>
@@ -298,13 +283,22 @@ if (is_valid_session() && is_allowed_bilan()) {
     </div>
   </div>
 
+<div class="pull-right">
+      <a href="../moteur/export_bilanv.php?numero=<?php echo $numero; ?>&<?php echo $date_query; ?>">
+        <button type="button" class="btn btn-default btn-xs">Exporter les ventes de cette période (.csv)</button>
+      </a> <br/>
+      <a href="../moteur/export_bilanv_objets.php?numero=<?php echo $numero; ?>&<?php echo $date_query; ?>">
+        <button type="button" class="btn btn-default btn-xs">Exporter les articles vendus de cette période (.csv)</button>
+      </a>
+</div>
+
   <script type="text/javascript">
     'use strict';
 
     $(document).ready(() => {
-        const dataMv = <?= json_encode($graphMv, JSON_NUMERIC_CHECK); ?>;
+        const dataMv = <?php echo json_encode($graphMv, JSON_NUMERIC_CHECK); ?>;
         graphMorris(dataMv, 'graphMV', 'Kgs.');
-         const dataPv = <?= json_encode($graphPv, JSON_NUMERIC_CHECK); ?>;
+         const dataPv = <?php echo json_encode($graphPv, JSON_NUMERIC_CHECK); ?>;
         graphMorris(dataPv, 'graphPV', '€');
     });
   </script>

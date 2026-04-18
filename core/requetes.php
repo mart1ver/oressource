@@ -507,7 +507,7 @@ function vendu_by_id_vente(PDO $bdd, int $id_vente): array {
   left JOIN grille_objets
   ON grille_objets.id = vendus.id_objet
   LEFT JOIN pesees_vendus
-  ON pesees_vendus.id = vendus.id_vente
+  ON pesees_vendus.id = vendus.id
   WHERE vendus.id_vente = :id_vente');
   $req->bindParam(':id_vente', $id_vente, PDO::PARAM_INT);
   $req->execute();
@@ -609,7 +609,8 @@ function viz_caisse(PDO $bdd, int $id_point_vente, int $offset): array {
     utilisateurs.mail as mail,
     SUM(" . vendus_case_lot_unit(). ") as credit,
     SUM(vendus.remboursement * vendus.quantite) as debit,
-    SUM(vendus.quantite) as quantite
+    SUM(vendus.quantite) as quantite,
+    SUM(pesees_vendus.masse) as masse
   from ventes
   inner join vendus
     on vendus.id_vente = ventes.id
@@ -619,6 +620,8 @@ function viz_caisse(PDO $bdd, int $id_point_vente, int $offset): array {
     on ventes.id_moyen_paiement = moyens_paiement.id
   inner join utilisateurs
     on utilisateurs.id = ventes.id_createur
+  LEFT JOIN pesees_vendus
+  ON pesees_vendus.id = vendus.id
   group by ventes.id, ventes.timestamp, moyens_paiement.nom,
     moyens_paiement.couleur, ventes.commentaire,
     ventes.last_hero_timestamp, utilisateurs.mail

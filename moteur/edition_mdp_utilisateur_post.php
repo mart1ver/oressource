@@ -18,8 +18,7 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-session_start();
-
+require_once '../core/session.php';
 require_once '../core/requetes.php';
 
 function change_pass(PDO $bdd, int $id, $oldpass='', $pass1='', $pass2=''): string {

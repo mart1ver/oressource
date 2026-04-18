@@ -17,7 +17,6 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-session_start();
 require_once '../core/requetes.php';
 require_once '../core/session.php';
 require_once '../core/composants.php';
@@ -73,11 +72,10 @@ if (is_valid_session() && is_allowed_verifications()) {
   require_once 'tete.php';
   ?>
 
-  <div class="container" style="width:1300px">
     <?= headerVerif($props); ?>
     <?= tableVerif($props); ?>
-  </div><!-- /.container -->
-  <?php
+
+<?php
   require_once 'pied.php';
 } else {
   header('Location: ../moteur/destroy.php');

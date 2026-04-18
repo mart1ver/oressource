@@ -17,8 +17,6 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-session_start();
-
 require_once '../core/requetes.php';
 require_once '../core/session.php';
 require_once '../core/composants.php';
@@ -44,7 +42,10 @@ if (is_valid_session() && is_allowed_sortie_id($numero)) {
   $nav = new_nav($point_sortie['nom'], $numero, 2);
   ?>
 
-  <div class="container">
+  <?php if (count(filter_visibles(points_sorties($bdd))) > 1): ?>
+  <span id="label_point_vente_nom" class="label label-primary"><?= $point_sortie['nom']; ?></span>
+  <?php endif; ?>
+
     <?= configNav($nav) ?>
     <?= cartList(['text' => "Masse totale: 0 Kg.", 'date' => $date->format('Y-m-d')]) ?>
 
@@ -70,10 +71,11 @@ if (is_valid_session() && is_allowed_sortie_id($numero)) {
     </div>
 
     <div class="col-md-4" >
+      <div style="min-height: 441px;">
       <?= listSaisie(['text' => 'Materiaux et déchets:', 'key' => 'list_evac']) ?>
       <?= buttonCollectesSorties() ?>
+      </div>
     </div><!-- .col-md-4 -->
-  </div>
 
   <script type="text/javascript">
     // Variables d'environnement de Oressource.

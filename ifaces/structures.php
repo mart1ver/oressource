@@ -20,8 +20,6 @@
 
 // Modification de la configuration des structures
 
-session_start();
-
 require_once('../core/session.php');
 require_once('../core/requetes.php');
 require_once('../core/composants.php');
@@ -32,7 +30,6 @@ if (is_valid_session() && is_allowed_config()) {
   $struct = structure($bdd);
   ?>
 
-  <div class="container">
     <h1>Configuration de Oressource</h1>
     <div class="panel-heading">
       <h1 class="panel-title"><b>Déscription de la structure:<b></h1>
@@ -100,17 +97,17 @@ if (is_valid_session() && is_allowed_config()) {
           <div class="row">
             <div class="col-md-1 col-md-offset-6">
               <br>
-              <button id="send" class="btn btn-warning ">Enregistrer</button>
+              <button id="send" class="btn btn-primary ">Enregistrer</button>
             </div>
             <div class="col-md-1 col-md-offset-1">
               <br>
-              <input type="button" onclick="location.href='exportbase.php';" value="Sauvegarder la base de données" class="btn btn-primary" />
+              <button class="btn btn-link" form="formExport">  <span class="glyphicon glyphicon-cloud-download"></span>&nbsp;Télécharger une copie de la base de données</button>
             </div>
           </div>
         </div>
       </div>
     </form>
-  </div>
+  <form id="formExport" action="exportbase.php" method="POST"></form>
   <script type="text/javascript">
     'use strict';
     const structure = <?= json_encode($struct); ?>;

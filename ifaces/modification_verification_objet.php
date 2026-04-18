@@ -17,11 +17,11 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-session_start();
+require_once('../core/session.php');
+
 if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($_SESSION['niveau'], 'h') !== false)) {
   require_once 'tete.php';
   ?>
-  <div class="container">
     <h1>Modifier l'objet vendu n° <?= $_POST['id']; ?> appartenant à la vente <?= $_POST['nvente']; ?> </h1>
     <div class="panel-body">
       <br>
@@ -44,7 +44,7 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($
 
           <div class="col-md-2">
             <label for="prix">Masse:</label>
-            <br><input <?= $_POST['masse'] == 0 ? 'disabled' : '' ?> type="text" value="<?= $_POST['masse']; ?>" name="masse" id="masse" class="form-control">
+            <br><input <?= $_POST['masse']; ?> type="text" value="<?= $_POST['masse']; ?>" name="masse" id="masse" class="form-control">
           </div>
 
           <div class="col-md-3">
@@ -59,7 +59,6 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($
     </div>
   </div>
 
-  </div><!-- /.container -->
   <?php
   require_once 'pied.php';
 } else {

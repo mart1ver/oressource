@@ -17,8 +17,6 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-session_start();
-
 require_once '../core/session.php';
 require_once '../core/requetes.php';
 
@@ -29,15 +27,12 @@ if (is_valid_session() && $_SESSION['viz_caisse'] && is_allowed_vente_id($numero
 
   $nb_viz_caisse = (int) ($_SESSION['nb_viz_caisse']);
   ?>
-
-  <div class="container">
     <h1>Visualisation des <?= $nb_viz_caisse; ?> derniere ventes</h1>
     <p align="right">
-      <input class="btn btn-default btn-lg" type='button'name='quitter' value='Quitter' OnClick="window.close();"/></p>
+      <input class="btn btn-default btn-lg" type='button' value='Retour' OnClick="location.href='<?php echo explode('ifaces', $_SERVER['SCRIPT_NAME'])[0].'ifaces/ventes.php?numero='.$numero ?>';"/></p>
     <div class="panel-body">
       <br>
     </div>
-
     <table class="table">
       <thead>
         <tr>
@@ -46,6 +41,7 @@ if (is_valid_session() && $_SESSION['viz_caisse'] && is_allowed_vente_id($numero
           <th>Crédit</th>
           <th>Débit</th>
           <th>Nombre d'objets</th>
+          <th>Masse pesée</th>
           <th>Moyen de paiement</th>
           <th>Commentaire</th>
           <th>Auteur de la ligne</th>
@@ -61,19 +57,20 @@ if (is_valid_session() && $_SESSION['viz_caisse'] && is_allowed_vente_id($numero
             <td><?= $vente['credit']; ?></td>
             <td><?= $vente['debit']; ?></td>
             <td><?= $vente['quantite']; ?></td>
+            <td><?= $vente['masse']; ?></td>
             <td><span class="badge" style="background-color: <?= $vente['coul']; ?>"><?= $vente['moyen']; ?></span></td>
             <td style="width:100px"><?= $vente['commentaire']; ?></td>
             <td><?= $vente['mail']; ?></td>
             <td>
               <?php if ($vente['credit'] > 0 && !($vente['debit'] > 0)) { ?>
-                <form action="viz_vente.php?nvente=<?= $vente['id']; ?>" method="post">
+                <form action="viz_vente.php?numero=<?php echo $numero;?>&nvente=<?= $vente['id']; ?>" method="post">
                   <input type="hidden" name="id" id="id" value="<?= $vente['id']; ?>">
                   <input type="hidden" name="npoint" id="npoint" value="<?= $numero; ?>">
                   <button class="btn btn-primary btn-sm" ><span class="glyphicon glyphicon-search"></span></button>
                 </form>
                 <?php
               } else { ?>
-                <form action="viz_remboursement.php?nvente=<?= $vente['id']; ?>" method="post">
+                <form action="viz_remboursement.php?numero=<?php echo $numero;?>&nvente=<?= $vente['id']; ?>" method="post">
                   <input type="hidden" name="id" id="id" value="<?= $vente['id']; ?>">
                   <input type="hidden" name="npoint" id="npoint" value="<?= $numero; ?>">
                   <button class="btn btn-danger btn-sm"><span class="glyphicon glyphicon-search"></span></button>
@@ -84,7 +81,6 @@ if (is_valid_session() && $_SESSION['viz_caisse'] && is_allowed_vente_id($numero
         <?php } ?>
       </tbody>
     </table>
-  </div><!-- /.container -->
   <?php
   require_once 'pied.php';
 } else {

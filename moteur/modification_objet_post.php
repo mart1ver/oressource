@@ -22,8 +22,6 @@ require_once('../moteur/dbconfig.php');
 require_once('../core/session.php');
 require_once('../core/requetes.php');
 
-session_start();
-
 if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && is_allowed_bilan()) {
   require_once('../moteur/dbconfig.php');
 

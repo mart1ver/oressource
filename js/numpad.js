@@ -45,12 +45,14 @@ class NumPad {
 
     const div = document.createElement('div');
     div.setAttribute('class', 'panel panel-info');
+    div.style.width = "220px"
+    div.style.margin = "0 auto"
     div.innerHTML = `
     <div id="saisie" class="panel-heading input-group">
       <input type="text" class="form-control" placeholder="Masse" id="number" name="num">
     </div>
 
-    <div class="panel-body" >
+    <div class="panel-body">
       <div class="numpad" role="group">
         <button class="numkey btn btn-default btn-lg" onclick="number_write('1');" data-value="1">1</button>
         <button class="numkey btn btn-default btn-lg" onclick="number_write('2');" data-value="2">2</button>

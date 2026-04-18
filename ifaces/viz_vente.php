@@ -17,8 +17,6 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-session_start();
-
 require_once '../core/requetes.php';
 require_once '../core/session.php';
 
@@ -31,29 +29,36 @@ if (is_valid_session() && is_allowed_vente() && $_SESSION['viz_caisse']) {
   vendus.timestamp,
   vendus.lot,
   type_dechets.nom type,
-  IF(vendus.id_objet > 0, grille_objets.nom, "autre") objet,
+  IF(vendus.id_objet is not NULL, grille_objets.nom, "autre") AS objet,
   vendus.quantite,
   vendus.prix,
   vendus.id_createur,
   vendus.timestamp,
-  utilisateurs.mail
-  FROM
-  vendus, type_dechets, grille_objets, utilisateurs
-  WHERE
+  utilisateurs.mail,
+  pesees_vendus.masse
+  FROM 
+  vendus
+  JOIN type_dechets ON type_dechets.id = vendus.id_type_dechet
+  LEFT JOIN grille_objets ON grille_objets.id = vendus.id_objet
+  JOIN utilisateurs ON utilisateurs.id = vendus.id_createur
+  LEFT JOIN pesees_vendus
+  ON pesees_vendus.id = vendus.id
+WHERE 
   vendus.id_vente = :id_vente
-  AND type_dechets.id = vendus.id_type_dechet
-  AND (grille_objets.id = vendus.id_objet OR vendus.id_objet = 0)
-  GROUP BY vendus.id ');
+ORDER BY 
+  vendus.id');
+
   $req->execute(['id_vente' => $_GET['nvente']]);
   $donnees = $req->fetchAll(PDO::FETCH_ASSOC);
   $req->closeCursor();
 
   require_once 'tete.php';
+
+  $numero = filter_input(INPUT_GET, 'numero', FILTER_VALIDATE_INT);
   ?>
-  <div class="container">
     <h1>Visualiser la vente n° <?= $_GET['nvente']; ?></h1>
     <p align="right">
-      <input class="btn btn-default btn-lg" type='button'name='quitter' value='Quitter' OnClick="window.close();"/></p>
+      <input class="btn btn-default btn-lg" type='button' value='Retour' OnClick="location.href='<?php echo explode('ifaces', $_SERVER['SCRIPT_NAME'])[0].'ifaces/viz_caisse.php?numero='.$numero ?>';"/></p>
     <div class="panel-body">
       <br>
 
@@ -68,6 +73,7 @@ if (is_valid_session() && is_allowed_vente() && $_SESSION['viz_caisse']) {
           <th>Type d'objet:</th>
           <th>Objet:</th>
           <th>Quantité</th>
+          <th>Masse</th>
           <th>Prix</th>
           <th>Lot</th>
           <th>Auteur de la ligne</th>
@@ -81,6 +87,7 @@ if (is_valid_session() && is_allowed_vente() && $_SESSION['viz_caisse']) {
             <td><?= $d['type']; ?></td>
             <td><?= $d['objet']; ?></td>
             <td><?= $d['quantite']; ?></td>
+            <td><?= $d['masse']; ?></td>
             <td><?= $d['prix']; ?></td>
             <td><?= $d['lot'] === 0 ? 'unité' : 'lot' ?></td>
             <td><?= $users[$d['id_createur']]['mail'] ?></td>
@@ -88,8 +95,6 @@ if (is_valid_session() && is_allowed_vente() && $_SESSION['viz_caisse']) {
         <?php } ?>
       </tbody>
     </table>
-  </div><!-- /.container -->
-
   <?php
   require_once 'pied.php';
 } else {

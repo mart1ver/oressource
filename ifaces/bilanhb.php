@@ -18,8 +18,6 @@
  */
 
 // Bilan des sorties hors boutique
-session_start();
-
 require_once '../core/session.php';
 require_once '../core/requetes.php';
 require_once '../core/composants.php';
@@ -27,11 +25,11 @@ require_once '../core/composants.php';
 function sortie_type(string $type): string {
   switch ($type) {
     case 'sortiesc';
-      return 'don aux partenaires';
+      return 'Sorties partenaires';
     case 'sorties';
-      return 'don';
+      return 'Don';
     case 'sortiesd';
-      return 'dechetterie';
+      return 'Dechetterie';
     case 'sortiesp';
       return 'poubelles';
     case 'sortiesr';
@@ -42,21 +40,25 @@ function sortie_type(string $type): string {
 }
 
 function bilansSortiesRepartition(PDO $bdd, int $id, $start, $fin): array {
-  $numero = ($id > 0 ? " AND sorties.id_point_sortie = $id " : ' ');
+  $numero = ($id > 0 ? " AND sorties.id_point_sortie = $id " : '');
+
   $sql = 'SELECT
-    SUM(pesees_sorties.masse) somme,
+    SUM(pesees_sorties.masse) AS somme,
     sorties.classe,
-    COUNT(distinct sorties.id) ncol
-  FROM
-    pesees_sorties, sorties
-  WHERE
-    pesees_sorties.timestamp BETWEEN :du AND :au
-  AND pesees_sorties.id_sortie = sorties.id ' . $numero . '
-  GROUP BY sorties.classe';
+    type_dechets.nom AS type_dechet,
+    COUNT(DISTINCT sorties.id) AS ncol
+  FROM pesees_sorties
+  JOIN sorties ON pesees_sorties.id_sortie = sorties.id
+  LEFT JOIN type_dechets ON pesees_sorties.id_type_dechet = type_dechets.id
+  WHERE pesees_sorties.timestamp BETWEEN :du AND :au
+  ' . $numero . '
+  GROUP BY sorties.classe, type_dechets.nom';
+
   $stmt = $bdd->prepare($sql);
   $stmt->bindParam(':du', $start, PDO::PARAM_STR);
   $stmt->bindParam(':au', $fin, PDO::PARAM_STR);
   $stmt->execute();
+
   return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
@@ -225,33 +227,34 @@ if (is_valid_session() && is_allowed_bilan()) {
   $data = strategie($bdd, $numero, $time_debut, $time_fin);
   ?>
 
-  <div class="container">
-    <div class="row">
-      <div class="col-md-11 " >
-        <h1>Bilan global</h1>
-        <div class="col-md-4 col-md-offset-8" >
-          <?= datePicker() ?>
-        </div>
-        <ul class="nav nav-tabs">
-          <li><a href="bilanc.php?numero=0&date1=<?= $date1 ?>&date2=<?= $date2 ?>">Collectes</a></li>
-          <li class="active"><a>Sorties hors-boutique</a></li>
-          <li><a href="bilanv.php?numero=0&date1=<?= $date1 ?>&date2=<?= $date2 ?>">Ventes</a></li>
-        </ul>
+  <div class="row">
+    <div class="col-md-8">
+    </div>
+    <div class="col-md-4">
+      <div class="col-md-12" >
+        <?php echo datePicker() ?>
       </div>
     </div>
   </div>
+
+  <ul class="nav nav-tabs">
+    <li><a href="recapitulatif.php">Récapitulatif</a></li>
+    <li><a href="bilanc.php?numero=0&date1=<?php echo $date1 ?>&date2=<?php echo $date2 ?>">Collectes</a></li>
+    <li class="active"><a>Sorties hors-boutique</a></li>
+    <li><a href="bilanv.php?numero=0&date1=<?php echo $date1 ?>&date2=<?php echo $date2 ?>">Ventes</a></li>
+  </ul>
 
   <div class="row">
     <div class="col-md-8 col-md-offset-1">
       <h2> Bilan des sorties hors-boutique de la structure</h2>
       <ul class="nav nav-tabs">
         <?php foreach ($points_sortie as $p) { ?>
-          <li class="<?= $numero == $p['id'] ? 'active' : '' ?>">
-            <a href="bilanhb.php?numero=<?= $p['id'] ?>&date1=<?= $date1 ?>&date2=<?= $date2 ?>"> <?= $p['nom']; ?></a>
+          <li class="<?php echo $numero == $p['id'] ? 'active' : '' ?>">
+            <a href="bilanhb.php?numero=<?php echo $p['id'] ?>&date1=<?php echo $date1 ?>&date2=<?php echo $date2 ?>"> <?php echo $p['nom']; ?></a>
           </li>
         <?php } ?>
-        <li class="<?= $numero === 0 ? 'active' : '' ?>">
-          <a href="bilanhb.php?numero=0&date1=<?= $date1 ?>&date2=<?= $date2 ?>">Tous les points</a>
+        <li class="<?php echo $numero === 0 ? 'active' : '' ?>">
+          <a href="bilanhb.php?numero=0&date1=<?php echo $date1 ?>&date2=<?php echo $date2 ?>">Tous les points</a>
         </li>
       </ul>
       <br>
@@ -260,8 +263,8 @@ if (is_valid_session() && is_allowed_bilan()) {
 
   <div class="row">
     <div class="col-md-8 col-md-offset-1">
-      <h2><?= $date1 === $date2 ? " Le {$date1}," : " Du {$date1} au {$date2}," ?>
-        masse totale évacuée: <?= $data['masse'] ?>kg<?= $numero === 0 ? ' sur ' . count($points_sortie) . ' Point(s) de sorties.' : '.' ?></h2>
+      <h2><?php echo $date1 === $date2 ? " Le {$date1}," : " Du {$date1} au {$date2}," ?>
+        masse totale évacuée: <?php echo $data['masse'] ?>kg<?php echo $numero === 0 ? ' sur ' . count($points_sortie) . ' Point(s) de sorties.' : '.' ?></h2>
           <?php if($data['masse'] > 0){ ?>
     </div>
   </div>
@@ -270,14 +273,15 @@ if (is_valid_session() && is_allowed_bilan()) {
     <div class="col-md-5 col-md-offset-1">
       <div class="panel panel-default">
         <div class="panel-heading">
-          <h3 class="panel-title">Répartition par classe de sorties</h3>
+          <h3 class="panel-title">Répartition par classe de sorties et par type</h3>
         </div>
 
         <div class="panel-body">
           <table class="table table-condensed table-striped table table-bordered table-hover" style="border-collapse:collapse;">
             <thead>
               <tr>
-                <th style="width:300px">Classe:</th>
+                <th style="width:100px">Classe</th>
+                <th style="width:200px">Type</th>
                 <th>Nbr.de bons de sortie</th>
                 <th>Masse évacuée</th>
                 <th>%</th>
@@ -285,18 +289,19 @@ if (is_valid_session() && is_allowed_bilan()) {
             </thead>
             <tbody>
               <?php foreach ($data['repartitions'] as $rep) { ?>
-                <tr data-toggle="collapse" data-target=".parmasse<?= $rep['classe'] ?>">
-                  <td><?= sortie_type($rep['classe']) ?></td>
-                  <td><?= $rep['ncol'] ?></td>
-                  <td><?= $rep['somme'] ?></td>
-                  <td><?= round($rep['somme'] * 100 / $data['masse'], 2); ?></td>
+                <tr data-toggle="collapse" data-target=".parmasse<?php echo $rep['classe'] ?>">
+                  <td><?php echo sortie_type($rep['classe']) ?></td>
+                  <td><?php echo $rep['type_dechet'] ?></td>
+                  <td><?php echo $rep['ncol'] ?></td>
+                  <td><?php echo $rep['somme'] ?></td>
+                  <td><?php echo round($rep['somme'] * 100 / $data['masse'], 2); ?></td>
                 </tr>
               <?php } ?>
             </tbody>
           </table>
           <br>
           <!--
-          <a href="../moteur/export_bilanc_partype.php?numero=<?= $numero ?>&date1=<?= $date1 ?>&date2=<?= $date2 ?>">
+          <a href="../moteur/export_bilanc_partype.php?numero=<?php echo $numero ?>&date1=<?php echo $date1 ?>&date2=<?php echo $date2 ?>">
             <button type="button" class="btn btn-default btn-xs" disabled>exporter ces données (.csv) </button>
           </a>
           -->
@@ -308,13 +313,13 @@ if (is_valid_session() && is_allowed_bilan()) {
           <h3 class="panel-title">Détail par type d'objets</h3>
         </div>
         <div class="panel-body">
-          <?= count($data['donsSimples']) ? bilanTable3(['id' => 0, 'text' => 'Dons simples', 'td0' => 'type objet', 'td1' => 'somme', 'td2' => '%', 'masse' => $data['masse'], 'data' => $data['donsSimples']]) : '' ?>
-          <?= count($data['partenaires']) ? bilanTable3(['id' => 1, 'text' => 'Dons aux partenaires', 'td0' => 'type objet', 'td1' => 'somme', 'td2' => '%', 'masse' => $data['masse'], 'data' => $data['partenaires']]) : '' ?>
-          <?= count($data['dechetteries']) ? bilanTable3(['id' => 2, 'text' => 'Dechetterie', 'td0' => 'type objet', 'td1' => 'somme', 'td2' => '%', 'masse' => $data['masse'], 'data' => $data['dechetteries']]) : '' ?>
-          <?= count($data['poubelles']) ? bilanTable3(['id' => 3, 'text' => 'Poubelles', 'td0' => 'type objet', 'td1' => 'somme', 'td2' => '%', 'masse' => $data['masse'], 'data' => $data['poubelles']]) : '' ?>
-          <?= count($data['recycleurs']) ? bilanTable3(['id' => 4, 'text' => 'Recycleurs', 'td0' => 'type objet', 'td1' => 'somme', 'td2' => '%', 'masse' => $data['masse'], 'data' => $data['recycleurs']]) : '' ?>
+          <?php count($data['donsSimples']) ? bilanTable3(['id' => 0, 'text' => 'Dons simples', 'td0' => 'type objet', 'td1' => 'somme', 'td2' => '%', 'masse' => $data['masse'], 'data' => $data['donsSimples']]) : '' ?>
+          <?php count($data['partenaires']) ? bilanTable3(['id' => 1, 'text' => 'Sorties partenaires', 'td0' => 'type objet', 'td1' => 'somme', 'td2' => '%', 'masse' => $data['masse'], 'data' => $data['partenaires']]) : '' ?>
+          <?php count($data['dechetteries']) ? bilanTable3(['id' => 2, 'text' => 'Dechetterie', 'td0' => 'type objet', 'td1' => 'somme', 'td2' => '%', 'masse' => $data['masse'], 'data' => $data['dechetteries']]) : '' ?>
+          <?php count($data['poubelles']) ? bilanTable3(['id' => 3, 'text' => 'Poubelles', 'td0' => 'type objet', 'td1' => 'somme', 'td2' => '%', 'masse' => $data['masse'], 'data' => $data['poubelles']]) : '' ?>
+          <?php count($data['recycleurs']) ? bilanTable3(['id' => 4, 'text' => 'Recycleurs', 'td0' => 'type objet', 'td1' => 'somme', 'td2' => '%', 'masse' => $data['masse'], 'data' => $data['recycleurs']]) : '' ?>
           <!--
-          <a href="../moteur/export_bilanc_parloca.php?numero=<?= $numero ?>&date1=<?= $date1 ?>&date2=<?= $date2 ?>">
+          <a href="../moteur/export_bilanc_parloca.php?numero=<?php echo $numero ?>&date1=<?php echo $date1 ?>&date2=<?php echo $date2 ?>">
             <button type="button" class="btn btn-default btn-xs" disabled>exporter ces données (.csv)</button>
           </a>
           -->
@@ -329,12 +334,12 @@ if (is_valid_session() && is_allowed_bilan()) {
         </div>
 
         <div class="panel-body">
-          <?= bilanTable3Hover(['text' => 'Dons simples', 'td0' => 'Type de sortie', 'td1' => 'masse', 'td2' => '%', 'masse' => $data['masse'], 'data' => bilanSortiesDon($bdd, $numero, $time_debut, $time_fin)]) ?>
-          <?= bilanTable3Hover(['text' => 'Recycleurs', 'td0' => 'Nom du recycleur', 'td1' => 'masse', 'td2' => '%', 'masse' => $data['masse'], 'data' => bilanSortiesRecycleur($bdd, $numero, $time_debut, $time_fin)]) ?>
+          <?php echo bilanTable3Hover(['text' => 'Dons simples', 'td0' => 'Type de sortie', 'td1' => 'masse', 'td2' => '%', 'masse' => $data['masse'], 'data' => bilanSortiesDon($bdd, $numero, $time_debut, $time_fin)]) ?>
+          <?php echo bilanTable3Hover(['text' => 'Recycleurs', 'td0' => 'Nom du recycleur', 'td1' => 'masse', 'td2' => '%', 'masse' => $data['masse'], 'data' => bilanSortiesRecycleur($bdd, $numero, $time_debut, $time_fin)]) ?>
 
           <table class="table table-condensed table-striped table table-bordered table-hover" style="border-collapse:collapse;">
             <thead>
-            <th style="width:300px">Dons aux partenaires</th>
+            <th style="width:300px">Sorties partenaires</th>
             <tr>
               <th style="width:300px">Nom du partenaire</th>
               <th>Nbr. de sorties</th>
@@ -345,10 +350,10 @@ if (is_valid_session() && is_allowed_bilan()) {
             <tbody>
               <?php foreach (bilanSortiesConvention($bdd, $numero, $time_debut, $time_fin) as $p) { ?>
                 <tr>
-                  <td><?= $p['nom']; ?></td>
-                  <td><?= $p['nombre']; ?></td>
-                  <td><?= $p['somme']; ?></td>
-                  <td><?= round($p['somme'] * 100 / $data['masse'], 2); ?></td>
+                  <td><?php echo $p['nom']; ?></td>
+                  <td><?php echo $p['nombre']; ?></td>
+                  <td><?php echo $p['somme']; ?></td>
+                  <td><?php echo round($p['somme'] * 100 / $data['masse'], 2); ?></td>
                 </tr>
               <?php } ?>
             </tbody>
@@ -356,7 +361,7 @@ if (is_valid_session() && is_allowed_bilan()) {
 
           <br>
           <!--
-          <a href="../moteur/export_bilanc_partype.php?numero=<?= $numero ?>&date1=<?= $date1 ?>&date2=<?= $date2 ?>">
+          <a href="../moteur/export_bilanc_partype.php?numero=<?php echo $numero ?>&date1=<?php echo $date1 ?>&date2=<?php echo $date2 ?>">
             <button type="button" class="btn btn-default btn-xs" disabled>exporter ces données (.csv) </button>
           </a>
           -->
@@ -365,6 +370,8 @@ if (is_valid_session() && is_allowed_bilan()) {
           <?php }else{echo '<img src="../images/nodata.jpg" class="img-responsive" alt="Responsive image">';} ?>
     </div>
   </div>
+</div>
+
   <?php
   require_once 'pied.php';
 } else {

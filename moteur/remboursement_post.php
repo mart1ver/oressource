@@ -22,8 +22,6 @@ require_once '../core/session.php';
 require_once '../core/requetes.php';
 require_once '../core/validation.php';
 
-session_start();
-
 // TODO: Réecrire la gestion des remboursements pour avoir quelque chose de plus proche de ventes.
 // Pourquoi pas sinon fair une table dédiée.
 

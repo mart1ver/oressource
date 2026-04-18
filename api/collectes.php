@@ -72,8 +72,6 @@ function insert_items_collecte(PDO $bdd, int $id_collecte, array $collecte, arra
   }
 }
 
-session_start();
-
 header("content-type:application/json");
 
 if (is_valid_session()) {

@@ -17,7 +17,8 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-require_once '../core/validation.php';
+require_once __DIR__ . '/validation.php';
+require_once __DIR__ . '/session.php';
 
 /* Fonction utile pour la nav des sorties. */
 
@@ -111,9 +112,6 @@ function configNav(array $props) {
   ob_start();
   ?>
   <nav class="navbar">
-    <div class="header-header">
-      <h1><?= $props['text'] ?></h1>
-    </div>
     <ul class="nav nav-tabs">
       <?php foreach ($props['links'] as $link) { ?>
         <?= linkNav($link) ?>
@@ -178,7 +176,7 @@ function cartList(array $props) {
           <label id="massetot"><?= $props['text'] ?></label>
         </h3>
       </div>
-      <div class="panel-body">
+      <div class="panel-body" style="min-height: 386px;">
         <form id="formulaire" method="POST">
           <?php if (is_allowed_saisie_date() && is_allowed_edit_date()) { ?>
             <div>
@@ -325,7 +323,6 @@ function config_types3_page_modif(array $props): string {
   global $_SERVER;
   ob_start();
   ?>
- <div class="container">
     <h1><?= $props['h1'] ?></h1>
     <div class="panel-heading">Modifier les données concernant le <?= $props['type'] ?> n°<?= $props['id'] ?>, <?= $props['nom'] ?>.</div>
     <div class="panel-body">
@@ -337,7 +334,6 @@ function config_types3_page_modif(array $props): string {
         </a>
       </div>
     </div>
-  </div><!-- /.container -->
   <?php
   return ob_get_clean();
 }
@@ -450,17 +446,13 @@ function page_config3(array $props, callable $droits) {
   require_once 'session.php';
   require_once 'requetes.php';
 
-  session_start();
-
   if (is_valid_session() && $droits()) {
     global $bdd;
     ob_start();
     require_once 'tete.php';
     $props['data'] = $props['functData']($bdd);
     ?>
-    <div class="container">
-      <?= config_types3($props) ?>
-    </div><!-- /.container -->
+    <?= config_types3($props) ?>
     <?php
     require_once 'pied.php';
     return ob_get_clean();

@@ -27,8 +27,6 @@ require_once '../core/requetes.php';
 require_once '../core/session.php';
 require_once '../core/composants.php';
 
-session_start();
-
 $numero = filter_input(INPUT_GET, 'numero', FILTER_VALIDATE_INT);
 
 if (is_valid_session() && is_allowed_collecte_id($numero)) {
@@ -39,11 +37,10 @@ if (is_valid_session() && is_allowed_collecte_id($numero)) {
   $types_action = filter_visibles(types_collectes($bdd));
   $date = new Datetime('now');
   ?>
+  <?php if (count(filter_visibles(points_collectes($bdd))) > 1): ?>
+  <span id="label_point_vente_nom" class="label label-primary"><?= $point_collecte['nom']; ?></span>
+  <?php endif; ?>
 
-  <div class="container">
-    <div class="header-header">
-      <h1><?= $point_collecte['nom']; ?></h1>
-    </div>
     <div class="row">
       <?= cartList(['text' => "Bon d'apport: 0 Kg.", 'date' => $date->format('Y-m-d')]) ?>
 
@@ -77,7 +74,6 @@ if (is_valid_session() && is_allowed_collecte_id($numero)) {
         <?= buttonCollectesSorties() ?>
       </div>
     </div> <!-- row -->
-  </div> <!--container-->
 
   <script type="text/javascript">
     // Variables d'environnement de Oressource.

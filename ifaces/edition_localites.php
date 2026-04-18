@@ -17,15 +17,13 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-session_start();
-
 require_once '../moteur/dbconfig.php';
+require_once '../core/session.php';
 require_once '../core/composants.php';
 
 if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($_SESSION['niveau'], 'k') !== false)) {
   require_once 'tete.php';
   ?>
-  <div class="container">
     <h1>Gestion des localités de collecte</h1>
     <div class="panel-heading">Définissez ici les localité d'origine possibles pour les matériaux entrant.</div>
     <p>Ces localités sont renseignées au moment de la collecte et permettent d'estimer l'impact territorial de la structure </p>
@@ -80,7 +78,6 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($
         ?>
       </tbody>
     </table>
-  </div><!-- /.container -->
   <?php
   require_once 'pied.php';
 } else {

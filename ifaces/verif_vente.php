@@ -17,8 +17,6 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-session_start();
-
 require_once '../core/session.php';
 require_once '../core/validation.php';
 require_once '../core/requetes.php';
@@ -75,8 +73,7 @@ if (is_valid_session() && is_allowed_verifications()) {
   require_once 'tete.php';
   ?>
 
-  <div class="container">
-    <h1>verification des ventes</h1>
+  <h1>verification des ventes</h1>
     <div class="panel-body">
       <ul class="nav nav-tabs">
         <?php foreach ($points_ventes as $point) { ?>
@@ -152,7 +149,7 @@ if (is_valid_session() && is_allowed_verifications()) {
         <?php } ?>
       </tbody>
     </table>
-  </div><!-- /.container -->
+
   <?php
   require_once 'pied.php';
 } else {

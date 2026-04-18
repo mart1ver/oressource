@@ -17,8 +17,6 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-session_start();
-
 require_once '../core/requetes.php';
 require_once '../core/session.php';
 require_once '../core/composants.php';
@@ -81,7 +79,7 @@ $date1 = isset($_GET['date1']) ? DateTime::createFromFormat('d-m-Y', $_GET['date
 $time_debut = $date1->format('Y-m-d') . " 00:00:00";
 $start = $date1->format('d-m-Y');
 
-$date2 = isset($_GET['date2']) ? DateTime::createFromFormat('d-m-Y', $_GET['date2']) : $now; 
+$date2 = isset($_GET['date2']) ? DateTime::createFromFormat('d-m-Y', $_GET['date2']) : $now;
 $time_fin = $date2->format('Y-m-d') . " 00:00:00";
 $end = $date2->format('d-m-Y');
 

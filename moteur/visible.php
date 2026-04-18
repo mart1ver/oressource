@@ -18,8 +18,6 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-session_start();
-
 require_once '../core/session.php';
 
 function table_visible(PDO $bdd, string $table, int $id, bool $visible) {

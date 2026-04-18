@@ -18,7 +18,8 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-session_start();
+require_once '../core/session.php';
+
 if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($_SESSION['niveau'], 'h') !== false)) {
   require_once '../moteur/dbconfig.php';
   $req = $bdd->prepare('UPDATE collectes SET id_type_collecte = :id_type_collecte, localisation = :localisation, id_last_hero = :id_last_hero, last_hero_timestamp = NOW(), commentaire =:commentaire

@@ -20,15 +20,12 @@
 require_once '../core/requetes.php';
 require_once '../core/session.php';
 
-session_start();
-
 if (is_valid_session() && is_allowed_partners()) {
   require_once '../moteur/dbconfig.php';
   require_once 'tete.php';
   $filieres = filieres_sorties_id($bdd, $_POST['id']);
   $types_evac = map_by(types_dechets_evac($bdd), 'id');
   ?>
-  <div class="container">
     <h1>Modifier un recycleur</h1>
     <div class="panel-heading">Modifier les données concernant la filiere n° <?= $_POST['id']; ?>, <?= $filieres['nom']; ?>. </div>
     <div class="panel-body">
@@ -62,7 +59,6 @@ if (is_valid_session() && is_allowed_partners()) {
       </form>
     </div>
     <br>
-  </div><!-- /.container -->
   <?php
   require_once 'pied.php';
 } else {

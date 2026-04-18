@@ -20,8 +20,6 @@
 
 require_once '../core/session.php';
 
-session_start();
-
 if (is_valid_session() && is_allowed_config()) {
   require_once '../moteur/dbconfig.php';
   try {

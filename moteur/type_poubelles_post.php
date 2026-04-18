@@ -18,9 +18,8 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-require_once '../core/session.php';
 
-session_start();
+require_once __DIR__ . '/../core/session.php';
 
 if (is_valid_session() && is_allowed_gestion()) {
   require_once '../moteur/dbconfig.php';

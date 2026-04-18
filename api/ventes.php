@@ -18,11 +18,9 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-session_start();
-
-require_once '../core/session.php';
-require_once '../core/requetes.php';
-require_once '../core/validation.php';
+require_once __DIR__ . '/../core/session.php';
+require_once __DIR__ . '/../core/requetes.php';
+require_once __DIR__ . '/../core/validation.php';
 
 header("content-type:application/json");
 
@@ -196,5 +194,5 @@ if (is_valid_session()) {
 } else {
   http_response_code(401); // Unauthorized.
   echo(json_encode(['error' => "Session Invalide ou expiree."], JSON_FORCE_OBJECT));
-  die();
+  //die();
 }

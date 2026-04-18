@@ -25,8 +25,6 @@ require_once('../core/requetes.php');
 
 global $bdd;
 
-session_start();
-
 header("content-type:application/json");
 
 if (is_valid_session()) {

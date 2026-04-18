@@ -17,8 +17,8 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-session_start();
 require_once('../moteur/dbconfig.php');
+require_once('../core/session.php');
 
 if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($_SESSION['niveau'], 'k') !== false)) {
   require_once 'tete.php';
@@ -28,7 +28,6 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($
   $donnees = $req->fetch(PDO::FETCH_ASSOC);
   $req->closeCursor();
   ?>
-<div class="container">
     <h1>Gestions des points de sortie hors-boutique</h1>
     <div class="panel-heading">Modifier les données concernant le point de sortie n°<?= $id ?>, <?= $donnees['nom']; ?>.</div>
     <div class="panel-body">
@@ -48,7 +47,6 @@ if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && (strpos($
         </a>
       </div>
     </div>
-  </div><!-- /.container -->
   <?php
   require_once 'pied.php';
 } else {

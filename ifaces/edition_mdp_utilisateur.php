@@ -17,8 +17,6 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-session_start();
-
 require_once('../moteur/dbconfig.php');
 require_once('../core/session.php');
 require_once('../core/requetes.php');
@@ -28,7 +26,7 @@ if (is_valid_session()) {
 
   $user = utilisateurs_id($bdd, $_SESSION['id']);
   ?>
-  <div class="container">
+
     <h1>Édition de votre mot de passe:</h1>
     <p>Votre E-mail est: <?= $user['mail']; ?>, il vous est demandé au login.</p>
     <br>
@@ -54,7 +52,7 @@ if (is_valid_session()) {
           </div>
       </div>
     </div>
-  </div>
+
   <?php
   require_once 'pied.php';
 } else {

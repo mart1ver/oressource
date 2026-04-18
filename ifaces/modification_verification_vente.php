@@ -17,8 +17,6 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-session_start();
-
 require_once '../core/requetes.php';
 require_once '../core/session.php';
 
@@ -35,7 +33,6 @@ if (is_valid_session() && is_allowed_verifications()) {
 
   require_once 'tete.php';
   ?>
-  <div class="container">
     <h1>Modifier la vente n° <?= $_GET['nvente']; ?></h1>
     <div class="panel-body">
       <br>
@@ -118,7 +115,6 @@ if (is_valid_session() && is_allowed_verifications()) {
         <?php } ?>
       </tbody>
     </table>
-  </div><!-- /.container -->
 
   <?php
   require_once 'pied.php';

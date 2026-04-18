@@ -17,8 +17,6 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-session_start();
-
 require_once '../core/session.php';
 require_once '../core/requetes.php';
 require_once '../core/composants.php';
@@ -37,7 +35,6 @@ if (is_valid_session() && is_allowed_users()) {
   ];
   ?>
 
-  <div class="container">
     <?= configNav($info) ?>
     <table class="table">
       <thead>
@@ -70,7 +67,6 @@ if (is_valid_session() && is_allowed_users()) {
         <?php } ?>
       </tbody>
     </table>
-  </div><!-- /.container -->
   <?php
   require_once 'pied.php';
 } else {

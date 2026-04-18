@@ -18,8 +18,6 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-session_start();
-
 require '../core/session.php';
 
 if (is_valid_session() && is_allowed_gestion()) {

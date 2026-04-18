@@ -17,8 +17,6 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-session_start();
-
 require_once '../core/requetes.php';
 require_once '../core/session.php';
 require_once '../core/composants.php';
@@ -33,7 +31,6 @@ if (is_valid_session() && is_allowed_gestion() && $type_obj !== false) {
   require_once 'tete.php';
   ?>
 
-  <div class="container">
     <h1>Grille des prix</h1>
     <ul class="nav nav-tabs">
       <?php foreach ($type_dechets as $type_dechet) { ?>
@@ -107,7 +104,6 @@ if (is_valid_session() && is_allowed_gestion() && $type_obj !== false) {
         <?php } ?>
       </tbody>
     </table>
-  </div><!-- /.container -->
 
   <?php
   require_once 'pied.php';

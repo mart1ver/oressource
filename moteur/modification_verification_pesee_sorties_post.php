@@ -18,8 +18,6 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-session_start();
-
 require_once '../core/session.php';
 
 if (is_valid_session() && is_allowed_verifications()) {
@@ -33,13 +31,33 @@ if (is_valid_session() && is_allowed_verifications()) {
     masse = :masse, 
     id_last_hero = :id_last_hero
     WHERE id = :id';
+
+
   $req = $bdd->prepare($sql);
   $req->bindValue(':id', $_POST['id'] ?? 0, PDO::PARAM_INT);
-  $req->bindValue(':evac', $_POST['evac'] ?? 0, PDO::PARAM_INT);
-  $req->bindValue(':dechet', $_POST['dechet'] ?? 0, PDO::PARAM_INT);
-  $req->bindValue(':poubelle', $_POST['poubelle'] ?? 0, PDO::PARAM_INT);
+
+  if (isset ($_POST['dechet'])) {
+      
+    $req->bindValue(':dechet',  $_POST['dechet'], PDO::PARAM_INT);
+    $req->bindValue(':poubelle', null, PDO::PARAM_NULL);
+    $req->bindValue(':evac', null, PDO::PARAM_NULL);
+  }
+  if (isset ($_POST['poubelle'])) {
+
+      $req->bindValue(':dechet', null, PDO::PARAM_NULL);
+      $req->bindValue(':poubelle', $_POST['poubelle'], PDO::PARAM_INT);
+      $req->bindValue(':evac', null, PDO::PARAM_NULL);
+  }
+  if (isset ($_POST['evac'])) {
+      $req->bindValue(':dechet', null, PDO::PARAM_NULL);
+      $req->bindValue(':poubelle', null, PDO::PARAM_NULL);
+      $req->bindValue(':evac', $_POST['evac'], PDO::PARAM_INT);
+
+  }
+
   $req->bindParam(':masse', $_POST['masse'], PDO::PARAM_STR);
   $req->bindParam(':id_last_hero', $_SESSION['id'], PDO::PARAM_STR);
+
   $req->execute();
   $req->closeCursor();
   header('Location:../ifaces/modification_verif_sorties.php?id=' . (int) $_POST['id_sortie']);

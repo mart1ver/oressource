@@ -17,8 +17,6 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-session_start();
-
 require_once('../core/session.php');
 
 $numero = filter_input(INPUT_GET, 'numero', FILTER_VALIDATE_INT);
@@ -30,7 +28,7 @@ if (is_valid_session() && is_allowed_vente_id($numero)) {
   // on détermine la référence de la prochaine vente.
   $req = $bdd->prepare('SELECT max(id) id FROM ventes WHERE id_point_vente = :id');
   $req->execute(['id' => $numero]);
-  $numero_vente = $req->fetch()['id'];
+  $numero_vente = $req->fetch()['id']+1;
   $req->closeCursor();
 
   $point_vente = points_ventes_id($bdd, $numero);
@@ -38,14 +36,13 @@ if (is_valid_session() && is_allowed_vente_id($numero)) {
   $objets = filter_visibles(objets($bdd));
   $moyens_paiement = filter_visibles(moyens_paiements($bdd));
   ?>
+    <?php if (count(filter_visibles(points_ventes($bdd))) > 1):?>
+    <span id="label_point_vente_nom" class="label label-primary"><?= $point_vente['nom']; ?></span>
+    <?php endif; ?>
 
-  <div class="container">
-    <nav class="navbar">
-      <div class="header-header">
-        <h1><?= $point_vente['nom']; ?></h1>
-      </div>
-    </nav>
+    <div id="message" ></div>
 
+    <div class="row">
     <div class="col-md-4">
       <div id="ticket" class="panel panel-info" >
         <div class="panel-heading">
@@ -62,7 +59,7 @@ if (is_valid_session() && is_allowed_vente_id($numero)) {
           -->
         </div>
 
-        <div class="panel-body" id="ticket">
+        <div class="panel-body" id="ticket" style="min-height: 412px;">
           <?php if (is_allowed_saisie_date() && is_allowed_edit_date()) { ?>
             <label for="date">Date de la vente:</label>
             <input type="date" id="date" name="antidate" value="<?= date('Y-m-d'); ?>">
@@ -101,10 +98,15 @@ if (is_valid_session() && is_allowed_vente_id($numero)) {
           </div>
         </div>
       </div>
+      <?php if ($_SESSION['viz_caisse']) { ?>
+      <div id="visualisation" class="pull-right" >
+        <a href="viz_caisse.php?numero=<?= $numero; ?>">Visualiser les <?= $_SESSION['nb_viz_caisse']; ?> dernieres ventes</a>
+      </div>
+    <?php } ?>
     </div>
 
-    <div class="col-md-4" style="width: 220px;">
-      <div class="panel panel-info">
+    <div class="col-md-3">
+      <div class="panel panel-info" style="width: 220px; margin: 0 auto;">
         <div class="panel-heading">
           <h3 class="panel-title">
             <label id="nom_objet">Objet:</label>
@@ -167,12 +169,12 @@ if (is_valid_session() && is_allowed_vente_id($numero)) {
       </div>
     </div>
 
-    <div class="col-md-4" >
+    <div class="col-md-5" >
       <div class="panel panel-info">
         <div class="panel-heading">
           <h3 class="panel-title">Type d'objet:</h3>
         </div>
-        <div class="panel-body">
+        <div class="panel-body" style="min-height: 355px;">
           <?php
           foreach ($dechets as $d) {
             $objs = array_filter($objets, function($e) use ($d) {
@@ -232,14 +234,20 @@ if (is_valid_session() && is_allowed_vente_id($numero)) {
         </div>
       </div>
 
-      <div id="boutons" class="list-group">
-        <button id="encaissement" class="btn btn-success btn-lg" style="height:60px">Encaisser</button>
-        <button id="impression" class="btn btn-primary btn-lg"><span class="glyphicon glyphicon-print"></span></button>
-        <button id="remboursement" class="btn btn-danger btn-lg" data-toggle="collapse"
+      <div id="boutons" class="list-group row">
+        <div class="col-md-6 text-left">
+        <button id="encaissement" class="btn btn-success btn-lg btn-block" style="height: 60px;">Encaisser</button>
+        </div>
+        <div class="col-md-2 text-center" style="padding-right: 0; padding-left: 0;">
+        <button id="impression" class="btn btn-primary btn-lg btn-block" style="height: 60px;"><span class="glyphicon glyphicon-print"></span></button>
+        </div>
+        <div class="col-md-4 text-right">
+        <button id="remboursement" class="btn btn-danger btn btn-block" style="margin-top: 25px;" data-toggle="collapse"
                 data-target="#collapserembou" aria-expanded="false"
                 aria-controls="collapseExample">Remboursement</button>
-        <div class="collapse" id="collapserembou">
-          <div class="well">
+        </div>
+        <div class="collapse col-md-12" id="collapserembou" style="margin-top: 15px;">
+          <div class="well" style="margin-bottom: 0;">
             <form action="../ifaces/remboursement.php?numero=<?= $numero ?>" method="post">
               <div class="input-group">
                 <input name="passrmb" id="passrmb" type="password" class="form-control" placeholder="Code remboursement caisse">
@@ -252,14 +260,7 @@ if (is_valid_session() && is_allowed_vente_id($numero)) {
         </div>
       </div>
     </div>
-
-    <?php if ($_SESSION['viz_caisse']) { ?>
-      <div id="visualisation" class="col-md-2 col-md-offset-2" style="width: 330px;">
-        <a href="viz_caisse.php?numero=<?= $numero; ?>"
-           target="_blank">Visualiser les <?= $_SESSION['nb_viz_caisse']; ?> dernieres ventes</a>
-      </div>
-    <?php } ?>
-  </div>
+    </div>
   <script type="text/javascript">
     'use scrict';
     // Variables d'environnement de Oressource.

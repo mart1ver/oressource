@@ -2,8 +2,8 @@
  * textarea ne sont plus resizables */
 
 body {
-  padding-top: 50px;
   padding-bottom: 20px;
+  background: url("../images/bg_callmetak.jpg");
 }
 
 h1 {
@@ -196,4 +196,61 @@ pre {
 
 .garbage.ultime-1::before {
   content: "✓ Oui";
+}
+
+#nav_main.navbar .navbar-nav > li > a {
+  color: #1ea082;
+}
+
+#nav_main.navbar .navbar-nav > li {
+  margin-left: 10px;
+}
+
+#nav_main.navbar .navbar-nav > li.active > a, #nav_main.navbar .navbar-nav > li > a:hover {
+  background: #1ea082;
+  border-radius: 6px;
+  color: #fff;
+}
+
+#nav_main.navbar {
+  margin-bottom: 15px;
+  padding: 12px;
+}
+
+#nav_main.navbar .navbar-brand {
+  height: 44px;
+  line-height: 38px;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 5px;
+}
+
+#nav_main.navbar .navbar-brand img {
+  height: 40px;
+}
+
+#nav_main.navbar .navbar-nav > li > a {
+  padding-top: 12px;
+  padding-bottom: 12px;
+}
+
+#main, #nav_main.navbar {
+  box-shadow: 0px 2px 10px -3px rgba(0,0,0,0.1);
+  border: 1px solid #ececec;
+  border-radius: 6px;
+  margin-top: 15px;
+  background: #fff;
+}
+
+#main {
+  padding: 20px;
+  position: relative;
+}
+
+#label_point_vente_nom {
+  position: absolute; top: -9px; left: 15px; background: #fafafa; color: #555; border: 1px solid #ececec;
+}
+
+.breadcrumb .active {
+  font-weight: bold;
 }

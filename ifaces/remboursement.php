@@ -17,8 +17,6 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-session_start();
-
 require_once '../core/requetes.php';
 require_once '../core/session.php';
 
@@ -47,7 +45,7 @@ if (is_valid_session() && is_allowed_vente_id($numero)) {
     </fieldset>
     <div class="row">
       <br>
-      <div class="col-md-2 col-md-offset-2" style="width: 330px;" >
+      <div class="col-md-4" >
         <div class="panel panel-danger" id="divID">
           <div class="panel-heading">
             <label class="panel-title">Remboursement:</label>
@@ -82,9 +80,8 @@ if (is_valid_session() && is_allowed_vente_id($numero)) {
           </div>
         </div>
       </div>
-      <div class="col-md-3" style="width: 220px;">
-
-        <div class="panel panel-danger">
+      <div class="col-md-3">
+        <div class="panel panel-danger" style="width: 220px; margin: 0 auto;">
           <div class="panel-heading">
             <h3 class="panel-title"id="nom_objet"><label>Objet:</label></h3>
           </div>
@@ -127,7 +124,7 @@ if (is_valid_session() && is_allowed_vente_id($numero)) {
         </div>
 
       </div>
-      <div class="col-md-3" >
+      <div class="col-md-5" >
         <div class="panel panel-danger">
           <div class="panel-heading">
             <h3 class="panel-title"><label>Type d'objet:</label></h3>

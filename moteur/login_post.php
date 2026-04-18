@@ -58,7 +58,6 @@ try {
   }
   $pass = $json['password']; // NE PAS FILTRER on utile le hash pas la valeur directe.
   $user = login_user($bdd, $email, $pass);
-  session_start();
   $structure = structure($bdd);
   set_session($user, $structure);
   http_response_code(200); // OK

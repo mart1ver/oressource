@@ -17,20 +17,14 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
  */
-session_start();
-
-
-
-
 
 require_once '../core/requetes.php';
 require_once '../core/session.php';
 
-if (is_valid_session() && is_allowed_verifications() && $_SESSION['viz_caisse'])  {
-
-
-
-
+if (!is_valid_session() || !is_allowed_verifications() || !isset($_SESSION['viz_caisse']) || !$_SESSION['viz_caisse'])  {
+  header('Location: ../moteur/destroy.php');
+  exit;
+}
 
 require_once('../moteur/dbconfig.php');
 
@@ -57,13 +51,13 @@ $users = map_by(utilisateurs($bdd), 'id');
   $donnees = $req->fetchAll(PDO::FETCH_ASSOC);
   $req->closeCursor();
 
+$numero = filter_input(INPUT_GET, 'numero', FILTER_VALIDATE_INT);
 
   require_once 'tete.php';
   ?>
-  <div class="container">
     <h1>Visualiser le remboursement n° <?= $_GET['nvente']; ?></h1>
     <p align="right">
-      <input class="btn btn-default btn-lg" type='button'name='quitter' value='Quitter' OnClick="window.close();"/></p>
+      <input class="btn btn-default btn-lg" type='button'name='quitter' value='Retour' OnClick="location.href='<?php echo explode('ifaces', $_SERVER['SCRIPT_NAME'])[0].'ifaces/viz_caisse.php?numero='.$numero ?>';"/></p>
     <div class="panel-body">
       <br>
 
@@ -98,12 +92,5 @@ $users = map_by(utilisateurs($bdd), 'id');
       <?php } ?>
       </tbody>
     </table>
-
-  </div><!-- /.container -->
-
   <?php
   require_once 'pied.php';
-} else {
-  header('Location: ../moteur/destroy.php');
-}
-?>

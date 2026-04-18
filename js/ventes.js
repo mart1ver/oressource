@@ -148,6 +148,10 @@ let current_focus = document.getElementById('quantite');
   */
 function fokus(element) {
   current_focus = element;
+  let content= Number.parseFloat(element.value, 10);
+  if (content=='0') {
+    element.value='';
+  }
 }
 
 /** Réalise l'actualisation du clavier visuel
@@ -413,6 +417,8 @@ function add() {
   if (state.last !== undefined) {
     const { prix, quantite, masse } = get_numpad();
     if (quantite > 0 && !Number.isNaN(prix)) {
+      document.getElementById('message').textContent= "";
+
       const current = state.last;
       state.last = undefined;
       // Idée: Ajouter un champ "prix total" pour eviter de faire un if
@@ -462,7 +468,20 @@ function add() {
       // Reset du selecteur lot/unité
       $('#typeVente').bootstrapSwitch('state', true, false);
     } else {
-      this.input.setCustomValidity('Quantite nulle ou inferieur a 0.');
+      if (quantite <=0) {
+        document.getElementById('message').textContent= 'Quantité nulle ou inférieure à 0.';
+      }
+      else {
+        if (Number.isNaN(prix) || prix <=0) {
+          document.getElementById('message').textContent= 'Prix nul ou inférieur à 0';
+        }
+        else  {
+          if (Number.isNaN(masse) || masse <0) {
+            document.getElementById('message').textContent= 'Masse invalide';
+          }
+        }
+      }
+
     }
   }
 }

@@ -16,6 +16,9 @@
   You should have received a copy of the GNU Affero General Public License
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
+require_once '../core/session.php';
+
 function VerifSortiesTable(array $props) {
   $users = $props['users'];
   ob_start();
@@ -61,10 +64,6 @@ function VerifSortiesTable(array $props) {
   <?php
   return ob_get_clean();
 }
-
-require_once '../core/session.php';
-
-session_start();
 
 if (is_valid_session() && is_allowed_verifications()) {
   require_once '../moteur/dbconfig.php';
@@ -199,8 +198,7 @@ if (is_valid_session() && is_allowed_verifications()) {
   ];
   require_once 'tete.php';
   ?>
-  <div class="container">
-    <?= headerVerif($base) ?>
+  <?= headerVerif($base) ?>
     <?=
     VerifSortiesTable(array_merge($base, [
       'h3' => 'Dons simples :',
@@ -235,8 +233,6 @@ if (is_valid_session() && is_allowed_verifications()) {
       'data' => $sortiesDechetterie,
     ]));
     ?>
-
-  </div><!-- /.container -->
   <?php
   require_once 'pied.php';
 } else {

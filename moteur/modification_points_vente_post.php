@@ -20,8 +20,6 @@
 
 require_once('../core/session.php');
 
-session_start();
-
 // Vérification des autorisations de l'utilisateur et des variables de session requises pour l'utilisation de cette requête:
 if (isset($_SESSION['id']) && $_SESSION['systeme'] === 'oressource' && is_allowed_config()) {
   include_once('../moteur/dbconfig.php');

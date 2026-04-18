@@ -4,8 +4,10 @@
   "description": "Webapplication de gestion de ressourceries.",
   "license": "AGPL-3.0",
   "main": "",
-  "dependencies": {},
   "devDependencies": {
+    "@faker-js/faker": "^9.6.0",
+    "@playwright/test": "^1.51.0",
+    "@types/node": "^22.13.10",
     "eslint": "^7.12.1",
     "eslint-config-airbnb": "^18.2.0",
     "eslint-plugin-import": "^2.22.1",
@@ -15,9 +17,7 @@
     "husky": "^4.3.0",
     "lint-staged": "^10.5.1"
   },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
+  "scripts": {},
   "repository": {
     "type": "git",
     "url": "https://github.com/mart1ver/oressource"
@@ -25,5 +25,8 @@
   "author": "Martin Vert",
   "contributors": [
     "Axel Viala | darnuria <darnuria@darnuria.eu>"
-  ]
+  ],
+  "dependencies": {
+    "@victor-teles/playwright-php": "https://github.com/victor-teles/playwright-php/tarball/main"
+  }
 }
