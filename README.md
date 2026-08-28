@@ -16,22 +16,17 @@ Internet Explorer ou Opera ne sont pas supportés à ce jour.
 ORessource est né fin 2013 d'un besoin très concret : permettre à une
 ressourcerie de suivre ses flux avec le même niveau de traçabilité que les
 grands acteurs du recyclage, sans dépendre d'un logiciel propriétaire payant
-au poste. Le premier commit date du 25 mai 2014.
+. Le premier commit date du 25 mai 2014.
 
 Le projet a connu plusieurs années de développement intense, avec l'aide
 précieuse d'Axel Viala ([darnuria](https://github.com/darnuria)), qui a
 largement contribué à faire évoluer et à revitaliser le code, ainsi que de
-nombreux autres contributeurs (voir plus bas).
-
-**Contrairement à ce que ce README a pu laisser penser un temps, ORessource
-n'est pas un projet à l'arrêt : il est toujours activement maintenu et
-exploité en production dans plusieurs ressourceries.**
+nombreux autres contributeurs .
 
 Depuis 2025, la [Coopérative 24ème](https://24eme.fr/) — spécialisée dans le
 logiciel libre pour les acteurs de l'économie sociale — développe et héberge
-activement ORessource sur [oressource.org](https://oressource.org/), à
-l'initiative de la ressourcerie La Brigaille (Marseille). Ils proposent
-notamment :
+activement ORessource sur [oressource.org](https://oressource.org/)
+. Ils proposent notamment :
 
 - de l'hébergement d'instances clé en main, à prix libre, pour les
   ressourceries qui ne veulent pas s'auto-héberger ;
@@ -42,9 +37,6 @@ notamment :
 de génération d'instances, rendez-vous sur
 [oressource.org](https://oressource.org/) et sur leur dépôt
 [24eme/ORessource_generator](https://github.com/24eme/ORessource_generator).
-
-Ce dépôt (`mart1ver/oressource`) reste le dépôt d'origine du cœur applicatif
-d'ORessource, et continue d'être maintenu.
 
 ## Installation
 
